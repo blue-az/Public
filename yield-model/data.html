@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | Dataset</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Dataset</span>
+            <h1>Board Yield Data</h1>
+            <p class="subtitle">30 boards, 14 component types, yield per board.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>Board Data Structure</h2>
+            <table class="table">
+                <tr>
+                    <th>Column</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                </tr>
+                <tr>
+                    <td>Board</td>
+                    <td>Board identifier (1-30)</td>
+                    <td>int</td>
+                </tr>
+                <tr>
+                    <td>A - JD</td>
+                    <td>Component counts (14 types)</td>
+                    <td>int</td>
+                </tr>
+                <tr>
+                    <td>Yield</td>
+                    <td>Manufacturing yield percentage</td>
+                    <td>float</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Component Types (14)</h2>
+            <div class="code">A, DIP, DIPD, Nsth, nshthd, nsmthd, J, G, Ct, Cb, SOTt, SOTb, GD, JD</div>
+        </section>
+
+        <section class="section">
+            <h2>Dataset Statistics</h2>
+            <table class="table">
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Total Boards</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td>Component Types</td>
+                    <td>14</td>
+                </tr>
+                <tr>
+                    <td>Mean Yield</td>
+                    <td>89.07%</td>
+                </tr>
+                <tr>
+                    <td>Median Yield</td>
+                    <td>90.95%</td>
+                </tr>
+                <tr>
+                    <td>Std Dev</td>
+                    <td>10.34%</td>
+                </tr>
+                <tr>
+                    <td>Best Yield</td>
+                    <td>99.91% (Board #11)</td>
+                </tr>
+                <tr>
+                    <td>Worst Yield</td>
+                    <td>61.67% (Board #23)</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Sample Board Data</h2>
+            <table class="table">
+                <tr>
+                    <th>Board</th>
+                    <th>A</th>
+                    <th>DIP</th>
+                    <th>DIPD</th>
+                    <th>Nsth</th>
+                    <th>G</th>
+                    <th>Ct</th>
+                    <th>Yield</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>123</td>
+                    <td>580</td>
+                    <td>34</td>
+                    <td>202</td>
+                    <td>1024</td>
+                    <td>50</td>
+                    <td>86.32%</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>323</td>
+                    <td>240</td>
+                    <td>18</td>
+                    <td>288</td>
+                    <td>314</td>
+                    <td>60</td>
+                    <td>80.64%</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>20</td>
+                    <td>292</td>
+                    <td>18</td>
+                    <td>240</td>
+                    <td>560</td>
+                    <td>746</td>
+                    <td>84.10%</td>
+                </tr>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>Source: data/board_yield_data.csv, IMPLEMENTATION_SUMMARY.md</p>
+        </footer>
+    </div>
+</body>
+</html>

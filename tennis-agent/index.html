@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | Personal Tennis Analytics Cockpit</title>
+    <meta name="description" content="TennisAgent is a personal tennis analytics platform that integrates Apple Watch, Zepp, Babolat, and Garmin sensor data for practice and match analysis.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                    <a href="#support">support</a>
+                </div>
+                <div class="cart">
+                    <span>agentic analyst's cockpit</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="banner">
+            <div class="banner-left">
+                <div class="banner-highlight">
+                    <p class="banner-eyebrow">multi-sensor integration</p>
+                    <h2>Your Personal Tennis Analytics Cockpit</h2>
+                    <p>Analyze practice sessions and tournament matches using data from Apple Watch, Zepp racquet sensor, Babolat PIQ, and Garmin heart rate.</p>
+                    <div class="banner-actions">
+                        <a href="tools.html" class="primary">view 100+ tools</a>
+                        <a href="sensors.html" class="ghost">sensor setup</a>
+                    </div>
+                </div>
+                <div class="banner-strip">
+                    <a href="tools.html" class="strip-link">
+                        <p class="strip-title">100+ tools</p>
+                        <p>analysis, visualization, ML</p>
+                    </a>
+                    <a href="sensors.html" class="strip-link">
+                        <p class="strip-title">4 sensors</p>
+                        <p>watch, racquet, heart rate</p>
+                    </a>
+                    <a href="tasks.html" class="strip-link">
+                        <p class="strip-title">deterministic</p>
+                        <p>tau-bench principles</p>
+                    </a>
+                </div>
+            </div>
+            <aside class="banner-right">
+                <div class="promo-card">
+                    <p class="promo-tag">data sources</p>
+                    <h3>Unified Tennis Database</h3>
+                    <p class="promo-lead">Sessions from Apple Watch, Zepp Universal, Babolat PIQ, and Garmin merged into one queryable database.</p>
+                    <a href="sensors.html" class="promo-btn">see sensors</a>
+                </div>
+                <div class="promo-card secondary">
+                    <p class="promo-tag">agentic engine</p>
+                    <h3>Natural Language Queries</h3>
+                    <p class="promo-lead">"Analyze my best session" - the agent builds and executes multi-step plans automatically.</p>
+                    <a href="tasks.html" class="promo-btn">see tasks</a>
+                </div>
+            </aside>
+        </section>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="tasks.html" class="nav-item">tasks</a>
+            <a href="rules.html" class="nav-item">rules</a>
+            <a href="principles.html" class="nav-item">tau-bench</a>
+            <a href="architecture.html" class="nav-item">architecture</a>
+        </section>
+
+        <main class="content">
+            <aside class="sidebar">
+                <div class="sidebar-block">
+                    <h4>example queries</h4>
+                    <ul>
+                        <li>"analyze my best session"</li>
+                        <li>"show linked data for 2024-12-15"</li>
+                        <li>"visualize zepp impact heatmap"</li>
+                        <li>"how many matches did I play in 2024?"</li>
+                        <li>"compare heart rate in wins vs losses"</li>
+                    </ul>
+                </div>
+                <div class="sidebar-block">
+                    <h4>tool categories</h4>
+                    <ul>
+                        <li><a href="tools.html#session">Session Management</a></li>
+                        <li><a href="tools.html#analysis">Analysis</a></li>
+                        <li><a href="tools.html#visualization">Visualization</a></li>
+                        <li><a href="tools.html#ml">Machine Learning</a></li>
+                        <li><a href="tools.html#data">Data Sync</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <section class="tiles">
+                <article class="tile">
+                    <div class="tile-header">
+                        <span>analysis</span>
+                        <span>swing detection</span>
+                    </div>
+                    <h3>detect_swings</h3>
+                    <p>Detect swing events in Apple Watch sensor data using rotation threshold (default 10 rad/s).</p>
+                </article>
+                <article class="tile">
+                    <div class="tile-header">
+                        <span>visualization</span>
+                        <span>impact position</span>
+                    </div>
+                    <h3>visualize_zepp_impact</h3>
+                    <p>Generate scatter plot of Zepp impact positions with jitter and 5-zone overlays.</p>
+                </article>
+                <article class="tile">
+                    <div class="tile-header">
+                        <span>analysis</span>
+                        <span>fatigue</span>
+                    </div>
+                    <h3>detect_fatigue_patterns</h3>
+                    <p>Compare first vs last quarter performance in Babolat match to detect fatigue.</p>
+                </article>
+                <article class="tile">
+                    <div class="tile-header">
+                        <span>session</span>
+                        <span>linked data</span>
+                    </div>
+                    <h3>analyze_linked_session</h3>
+                    <p>Comprehensive linked session analysis with Apple Watch + Zepp per-swing metrics and correlations.</p>
+                </article>
+                <article class="tile">
+                    <div class="tile-header">
+                        <span>ml</span>
+                        <span>classification</span>
+                    </div>
+                    <h3>predict_stroke_type</h3>
+                    <p>Predict stroke types (FH/BH/Serve) for Apple Watch session using trained ML model.</p>
+                </article>
+                <article class="tile">
+                    <div class="tile-header">
+                        <span>analysis</span>
+                        <span>heart rate</span>
+                    </div>
+                    <h3>analyze_hr_by_outcome</h3>
+                    <p>Compare heart rate statistics in wins vs losses across your match history.</p>
+                </article>
+            </section>
+
+            <aside class="sidebar right">
+                <div class="sidebar-block">
+                    <h4>sensor support</h4>
+                    <div class="badge">Apple Watch (100Hz IMU)</div>
+                    <div class="badge">Zepp Universal (333Hz)</div>
+                    <div class="badge">Babolat PIQ Sensor</div>
+                    <div class="badge">Garmin Heart Rate</div>
+                </div>
+                <div class="sidebar-block">
+                    <h4>data layer</h4>
+                    <div class="analyst-card">
+                        <div class="analyst-photo">DB</div>
+                        <div>
+                            <p class="analyst-name">SQLite Unified</p>
+                            <p class="analyst-note">tennis_unified.db - all sources merged</p>
+                        </div>
+                    </div>
+                    <a href="architecture.html" class="ghost wide">view architecture</a>
+                </div>
+                <div class="sidebar-block">
+                    <h4>execution model</h4>
+                    <p class="small">Deterministic agentic engine with plan-then-execute workflow. Natural language parsing with pattern matching.</p>
+                    <a href="principles.html" class="primary wide">tau-bench principles</a>
+                </div>
+            </aside>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">Personal tennis analytics with multi-sensor integration.</p>
+            </div>
+            <div class="footer-links">
+                <a href="sensors.html">sensors</a>
+                <a href="tools.html">tools</a>
+                <a href="principles.html">tau-bench</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Agentic Analyst's Cockpit</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | System Architecture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="tasks.html" class="nav-item">tasks</a>
+            <a href="rules.html" class="nav-item">rules</a>
+            <a href="principles.html" class="nav-item">tau-bench</a>
+            <a href="architecture.html" class="nav-item active">architecture</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>System Architecture</h2>
+                <p class="page-subtitle">Agentic Analyst's Cockpit - Component Overview</p>
+            </div>
+
+            <section class="data-section">
+                <h3>High-Level Architecture</h3>
+                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 20px; overflow-x: auto; font-size: 12px; line-height: 1.5;">
+┌─────────────────────────────────────────────────────────────────────┐
+│                    AGENTIC ANALYST'S COCKPIT                        │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  USER INTERFACE                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Command Input: [analyze my best session            ] [Run]   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                      │
+│  ┌──────────────────────┐  ┌────────────────────────────────────┐ │
+│  │ BLUEPRINT PANEL       │  │ EXECUTION TRACE                    │ │
+│  │                        │  │                                    │ │
+│  │ Step 1: find_best     │  │ [19:26:03] Parsing query...       │ │
+│  │ Step 2: get_summary   │  │ [19:26:05] find_best_session()    │ │
+│  │ Step 3: detect_swings │  │ [19:26:05] Found: bab_20230512    │ │
+│  │ Step 4: visualize     │  │ [19:26:06] get_session_summary()  │ │
+│  │                        │  │ [19:26:07] Detected 150 swings   │ │
+│  │ [Approve] [Cancel]    │  │ [19:26:09] Completed in 4.23s     │ │
+│  └──────────────────────┘  └────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  AGENTIC ENGINE                                                      │
+│  State: IDLE → PLANNING → AWAITING_APPROVAL → RUNNING → COMPLETED   │
+│                                                                      │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐ │
+│  │ PlanBuilder       │  │ ToolRegistry     │  │ ExecutionContext │ │
+│  │                    │  │                  │  │                  │ │
+│  │ • Pattern match   │  │ • 100+ tools     │  │ • Session cache  │ │
+│  │ • Entity extract  │  │ • Typed params   │  │ • Step results   │ │
+│  │ • Build plan      │  │ • Execute fn     │  │ • Dependency     │ │
+│  │                    │  │                  │  │   resolution     │ │
+│  └──────────────────┘  └──────────────────┘  └──────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  DATA LAYER (TennisDataClient)                                       │
+│                                                                      │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐ │
+│  │ tennis_watch.db   │  │ ztennis.db       │  │ BabPopExt.db     │ │
+│  │ (Apple Watch)     │  │ (Zepp Universal) │  │ (Babolat PIQ)    │ │
+│  │                    │  │                  │  │                  │ │
+│  │ • sessions        │  │ • swings         │  │ • tb_activities  │ │
+│  │ • raw_sensor_buf  │  │ • origins        │  │ • tb_shots       │ │
+│  │   (100Hz IMU)     │  │   (333Hz data)   │  │ • piq_scores     │ │
+│  └──────────────────┘  └──────────────────┘  └──────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+                </pre>
+            </section>
+
+            <section class="data-section">
+                <h3>State Machine</h3>
+                <pre style="background: #1a1a1a; color: #e0e0e0; padding: 20px; overflow-x: auto; font-size: 12px; line-height: 1.5;">
+┌──────┐  parse_query()   ┌──────────┐
+│ IDLE ├─────────────────→│ PLANNING │
+└──────┘                   └────┬─────┘
+                                │ Plan generated
+                                ▼
+                    ┌────────────────────────┐
+                    │  AWAITING_APPROVAL     │
+                    └────┬──────────────┬────┘
+            approve()   │              │ cancel()
+                        ▼              ▼
+                   ┌──────────┐   ┌──────────┐
+                   │ RUNNING  │   │ CANCELLED│
+                   └────┬─────┘   └──────────┘
+                        │ success / error
+                        ▼
+           ┌───────────┐     ┌────────┐
+           │ COMPLETED │     │ FAILED │
+           └───────────┘     └────────┘
+                </pre>
+            </section>
+
+            <section class="data-section">
+                <h3>Component Responsibilities</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Location</th>
+                            <th>Responsibility</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AgenticEngine</td>
+                            <td>agentic_engine.py</td>
+                            <td>State machine, plan execution, event callbacks</td>
+                        </tr>
+                        <tr>
+                            <td>PlanBuilder</td>
+                            <td>plan_builder.py</td>
+                            <td>NL parsing, pattern matching, plan generation</td>
+                        </tr>
+                        <tr>
+                            <td>ToolRegistry</td>
+                            <td>tool_registry.py</td>
+                            <td>Tool registration, parameter validation, execution</td>
+                        </tr>
+                        <tr>
+                            <td>ExecutionContext</td>
+                            <td>execution_context.py</td>
+                            <td>Caching, step results, dependency resolution</td>
+                        </tr>
+                        <tr>
+                            <td>TennisDataClient</td>
+                            <td>data_client.py</td>
+                            <td>SQLite queries, sensor data retrieval</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="data-section">
+                <h3>Execution Flow</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Step</th>
+                            <th>Action</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>User enters query: "analyze my best session"</td>
+                            <td>Raw query string</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>PlanBuilder.build_plan() - pattern matching</td>
+                            <td>ExecutionPlan with 4 steps</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>UI displays Blueprint Panel for approval</td>
+                            <td>User clicks "Approve"</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>AgenticEngine.execute_plan() - iterate steps</td>
+                            <td>Tool calls with resolved params</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>ToolRegistry executes each tool</td>
+                            <td>Results cached in ExecutionContext</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Final step produces visualization</td>
+                            <td>Chart saved to /tmp/tennis_viz</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="data-section">
+                <h3>Caching Strategy</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Cache Type</th>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Session Cache</td>
+                            <td>session_id</td>
+                            <td>Session summary dict</td>
+                        </tr>
+                        <tr>
+                            <td>Sensor Data Cache</td>
+                            <td>session_id</td>
+                            <td>DataFrame with sensor readings</td>
+                        </tr>
+                        <tr>
+                            <td>Step Results</td>
+                            <td>step_{id}_result</td>
+                            <td>Tool execution result</td>
+                        </tr>
+                        <tr>
+                            <td>Query Cache</td>
+                            <td>query_hash</td>
+                            <td>Previous execution result</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="info-banner">
+                <h4>Implementation Details</h4>
+                <p>Full source code in <code>cockpit_poc/agent/</code>. Run tests with <code>python -m pytest tests/</code>. Interactive mode: <code>python test_agent.py</code>.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">Personal tennis analytics with multi-sensor integration.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="principles.html">tau-bench</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Agentic Analyst's Cockpit</p>
+        </footer>
+    </div>
+</body>
+</html>

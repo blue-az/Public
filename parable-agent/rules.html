@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~*~ ParableAgent - Rules ~*~</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="sub-header">
+            <h1 class="rainbow-text">~*~ System Rules ~*~</h1>
+            <p class="subtitle"><a href="index.html">[Back to Home]</a></p>
+        </header>
+
+        <hr class="fancy-hr">
+
+        <div class="page-content">
+            <h2 class="section-title">ParableAgent Operating Rules</h2>
+            <p style="text-align: center; color: #FFFF00; margin-bottom: 20px;">The Laws That Govern Deterministic Parable Analysis</p>
+
+            <div class="rules-container">
+                <div class="rule-category">
+                    <h3 class="sparkle">Data Integrity Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R1</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Canonical Source Only</span>
+                                <p>All parable data must originate from the canonical Gospels (Matthew, Mark, Luke, John). No apocryphal or extra-biblical sources.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R2</span>
+                            <div class="rule-content">
+                                <span class="rule-name">No Data Fabrication</span>
+                                <p>The system SHALL NOT generate, invent, or hallucinate parables, references, or theological interpretations not present in the database.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R3</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Fixed Dataset</span>
+                                <p>The parable database contains exactly 39 entries. This number is immutable during operation.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R4</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Reference Accuracy</span>
+                                <p>Bible references must be exact (Book Chapter:Verse format). No approximate or ranged references.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-category">
+                    <h3 class="sparkle">Query Processing Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R5</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Deterministic Resolution</span>
+                                <p>Identical queries MUST produce identical results. No randomness in query resolution (except for explicit random_parable).</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R6</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Explicit Matching</span>
+                                <p>Theme matching uses defined synonym lists. Unknown themes return empty results, not guesses.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R7</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Case Insensitivity</span>
+                                <p>All text matching is case-insensitive. "MERCY" = "mercy" = "Mercy".</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R8</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Partial Match Support</span>
+                                <p>Keyword searches support partial matching. "sow" matches "sower" and "sown".</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-category">
+                    <h3 class="sparkle">Response Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R9</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Structured Output</span>
+                                <p>All responses follow predefined schemas. No free-form text generation for data fields.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R10</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Complete Responses</span>
+                                <p>Retrieval operations return all matching results, not samples or subsets (unless pagination requested).</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R11</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Explicit Failures</span>
+                                <p>When no results match, return explicit "not found" - never empty responses without explanation.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R12</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Source Attribution</span>
+                                <p>Every result includes its source reference. No unsourced claims.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-category">
+                    <h3 class="sparkle">Tool Interaction Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R13</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Pure Functions</span>
+                                <p>Tools are stateless. No tool call affects the outcome of any other tool call.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R14</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Composability</span>
+                                <p>Tool outputs can be used as inputs to other tools. The system supports tool chaining.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R15</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Read-Only Operations</span>
+                                <p>All standard tools are read-only. No tool modifies the underlying parable database.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R16</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Ordered Results</span>
+                                <p>List results are always sorted consistently (alphabetically by default, or by specified criterion).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-category">
+                    <h3 class="sparkle">Theme Classification Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R17</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Fixed Theme Set</span>
+                                <p>Exactly 14 themes exist: Mercy, Forgiveness, Kingdom, Prayer, Faithfulness, Repentance, Stewardship, Judgment, Love, Humility, Watchfulness, Grace, Obedience, Righteousness.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R18</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Multi-Theme Assignment</span>
+                                <p>A parable may belong to multiple themes. The Good Samaritan is both "Mercy" and "Love".</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R19</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Theme Hierarchy</span>
+                                <p>Primary themes take precedence in default sorting. Secondary themes are listed afterward.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-category">
+                    <h3 class="sparkle">Error Handling Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R20</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Graceful Degradation</span>
+                                <p>Invalid inputs receive helpful error messages, not crashes or undefined behavior.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R21</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Input Validation</span>
+                                <p>All inputs are validated before processing. Invalid book names, malformed references, etc. are rejected with explanation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="fancy-hr">
+
+            <div class="info-box">
+                <h3>Rule Count: <span class="highlight">21 Rules</span></h3>
+                <p>These rules implement the <a href="principles.html" style="color: #00FFFF;">Tau-Bench Principles</a> and ensure reliable, predictable behavior!</p>
+            </div>
+        </div>
+
+        <hr class="fancy-hr">
+
+        <footer>
+            <p class="copyright"><a href="index.html">[Return to Homepage]</a> | <a href="tools.html">[View Tools]</a> | <a href="tasks.html">[View Tasks]</a></p>
+        </footer>
+    </div>
+</body>
+</html>

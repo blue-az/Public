@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | Tau-Bench Implementation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Tau-Bench</span>
+            <h1>Reliability Principles</h1>
+            <p class="subtitle">Deterministic execution aligned with Project Phoenix.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>Pass^k Reliability</h2>
+            <p>Deterministic queries return consistent outputs (for example, "find best board" yields Board #11 every time). Physics optimization uses deterministic SLSQP.</p>
+        </section>
+
+        <section class="section">
+            <h2>Domain Policy Following</h2>
+            <ul>
+                <li>12 rules govern data integrity, query processing, and physics constraints.</li>
+                <li>Component validation enforces A-N only.</li>
+                <li>Board IDs validated in the 1-30 range.</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Structured Tool Use</h2>
+            <ul>
+                <li>13 tools with typed parameters in the cockpit registry.</li>
+                <li>Parameter validation before execution.</li>
+                <li>JSON-serializable returns for deterministic reporting.</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Four-Phase Implementation</h2>
+            <ul>
+                <li>Phase 1: Glass Box (Blueprint Panel shows plan before execution).</li>
+                <li>Phase 2: Human-in-the-Loop (Approve/Cancel before run).</li>
+                <li>Phase 3: Progressive Disclosure (drill into results).</li>
+                <li>Phase 4: Multi-Modal Output (matplotlib visualizations).</li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <p>Source: YieldModel CLAUDE.md, PROJECT_PHOENIX_OVERVIEW.md</p>
+        </footer>
+    </div>
+</body>
+</html>

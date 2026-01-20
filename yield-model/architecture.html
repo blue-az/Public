@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | Architecture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Architecture</span>
+            <h1>Yield Analyst's Cockpit</h1>
+            <p class="subtitle">Deterministic planning, execution, and visualization pipeline.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>High-Level Architecture</h2>
+            <div class="code">
++-------------------------------------------------------------------+
+|                     YIELD ANALYST'S COCKPIT                       |
++-------------------------------------------------------------------+
+
++-------------------------------------------------------------------+
+|  USER INTERFACE                                                   |
+|  +-------------------------------------------------------------+  |
+|  | Command Input: [analyze best board              ] [Run]     |  |
+|  +-------------------------------------------------------------+  |
+|                                                                   |
+|  +----------------------+  +----------------------------------+  |
+|  | BLUEPRINT PANEL      |  | EXECUTION TRACE                  |  |
+|  | Step 1: find_best    |  | [19:26:03] Parsing query...       |  |
+|  | Step 2: get_summary  |  | [19:26:05] find_best_board()      |  |
+|  | Step 3: analyze      |  | [19:26:05] Found: Board #11       |  |
+|  | [Approve] [Cancel]   |  | [19:26:06] Completed in 1.8s      |  |
+|  +----------------------+  +----------------------------------+  |
++-------------------------------------------------------------------+
+                                |
+                                v
++-------------------------------------------------------------------+
+|  AGENTIC ENGINE                                                   |
+|  State: IDLE -> PLANNING -> AWAITING_APPROVAL -> RUNNING -> DONE |
+|                                                                   |
+|  +------------------+  +------------------+  +-----------------+ |
+|  | PlanBuilder       |  | ToolRegistry     |  | ExecutionContext | |
+|  | - Pattern match   |  | - 13 tools       |  | - Three-tier     | |
+|  | - Entity extract  |  | - Typed params   |  |   caching        | |
+|  | - Build plan      |  | - Execute fn     |  | - Step results   | |
+|  +------------------+  +------------------+  +-----------------+ |
++-------------------------------------------------------------------+
+                                |
+                                v
++-------------------------------------------------------------------+
+|  DATA LAYER (YieldDataClient)                                     |
+|                                                                   |
+|  +-----------------------------+  +----------------------------+ |
+|  | board_yield_data.csv         |  | fab_configs.json           | |
+|  | (30 boards, 14 components)   |  | (Semiconductor configs)    | |
+|  +-----------------------------+  +----------------------------+ |
++-------------------------------------------------------------------+
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Component Responsibilities</h2>
+            <table class="table">
+                <tr>
+                    <th>Component</th>
+                    <th>Location</th>
+                    <th>Responsibility</th>
+                </tr>
+                <tr>
+                    <td>AgenticEngine</td>
+                    <td>agentic_engine.py</td>
+                    <td>State machine, plan execution</td>
+                </tr>
+                <tr>
+                    <td>PlanBuilder</td>
+                    <td>plan_builder.py</td>
+                    <td>NL parsing, pattern matching</td>
+                </tr>
+                <tr>
+                    <td>ToolRegistry</td>
+                    <td>tool_registry.py</td>
+                    <td>13 tool registrations, execution</td>
+                </tr>
+                <tr>
+                    <td>ExecutionContext</td>
+                    <td>execution_context.py</td>
+                    <td>Three-tier caching</td>
+                </tr>
+                <tr>
+                    <td>YieldDataClient</td>
+                    <td>data_client.py</td>
+                    <td>CSV loading and data access</td>
+                </tr>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>Source: domains/YieldModel/CLAUDE.md</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | IC Manufacturing Yield Analysis</title>
+    <meta name="description" content="YieldModel is an IC manufacturing yield analysis domain with a physics-based optimization model and deterministic agentic cockpit.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">YieldModel v4.1</span>
+            <h1>IC Manufacturing Yield Analysis</h1>
+            <p class="subtitle">Agentic Analyst's Cockpit for PCB/IC yield prediction.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>Domain Overview</h2>
+            <p>YieldModel analyzes IC manufacturing yield using deterministic tools and a physics-based optimization model. It supports a traditional CLI (9 tools) and an Agentic Cockpit (13 tools) with visualizations.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>30 PCB Boards</h3>
+                    <p>14 component types per board with yield measurements.</p>
+                </div>
+                <div class="card">
+                    <h3>18 Tools Total</h3>
+                    <p>9 CLI tools + 13 cockpit tools (overlap across variations).</p>
+                </div>
+                <div class="card">
+                    <h3>Physics Model</h3>
+                    <p>Deterministic optimization using SLSQP and fault probability bounds.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Yield Formula</h2>
+            <div class="code">Y = ∏(1 - p_i)^n_i</div>
+            <p>Y is the board yield (probability of no defects), p_i is the fault probability for component type i, and n_i is the count of that component on the board.</p>
+        </section>
+
+        <section class="section">
+            <h2>Agentic Flow</h2>
+            <div class="code">IDLE -> PLANNING -> AWAITING_APPROVAL -> RUNNING -> COMPLETED</div>
+            <p>PlanBuilder generates a step sequence, the Blueprint Panel surfaces it for approval, and the Agentic Engine executes with full traceability.</p>
+        </section>
+
+        <section class="section">
+            <h2>Dataset Preview</h2>
+            <table class="table">
+                <tr>
+                    <th>Board</th>
+                    <th>A</th>
+                    <th>DIP</th>
+                    <th>Nsth</th>
+                    <th>G</th>
+                    <th>Ct</th>
+                    <th>Yield</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>123</td>
+                    <td>580</td>
+                    <td>202</td>
+                    <td>1024</td>
+                    <td>50</td>
+                    <td>86.32%</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>323</td>
+                    <td>240</td>
+                    <td>288</td>
+                    <td>314</td>
+                    <td>60</td>
+                    <td>80.64%</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>20</td>
+                    <td>292</td>
+                    <td>240</td>
+                    <td>560</td>
+                    <td>746</td>
+                    <td>84.10%</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Quick Start Queries</h2>
+            <div class="code">
+"analyze best board"
+"compare boards 5 and 12"
+"show yield distribution"
+"run physics model"
+"export data to csv"
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>YieldModel - IC Manufacturing Yield Analysis</p>
+            <p>Built on Project Phoenix / tau-bench (MIT)</p>
+        </footer>
+    </div>
+</body>
+</html>

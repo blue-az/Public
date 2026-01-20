@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | System Rules</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="tasks.html" class="nav-item">tasks</a>
+            <a href="rules.html" class="nav-item active">rules</a>
+            <a href="principles.html" class="nav-item">tau-bench</a>
+            <a href="architecture.html" class="nav-item">architecture</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>System Rules</h2>
+                <p class="page-subtitle">Domain policies governing TennisAgent tool execution</p>
+            </div>
+
+            <div class="rules-container">
+                <section class="rule-category">
+                    <h3>Data Integrity Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R1</span>
+                            <div class="rule-content">
+                                <span class="rule-name">No Data Fabrication</span>
+                                <p>Tools SHALL NOT generate, invent, or hallucinate sensor readings, session data, or match results not present in the database.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R2</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Timestamp Integrity</span>
+                                <p>All timestamps are stored in UTC. Display conversions happen at presentation layer only.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R3</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Sensor Source Attribution</span>
+                                <p>Every data point must be traceable to its source sensor (AppleWatch, Zepp, Babolat, Garmin).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="rule-category">
+                    <h3>Query Processing Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R4</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Deterministic Resolution</span>
+                                <p>Identical queries MUST produce identical results. No randomness in query resolution or tool execution.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R5</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Date Format Normalization</span>
+                                <p>Dates are normalized to YYYY-MM-DD format. Relative dates ("yesterday", "last week") are resolved at parse time.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R6</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Session ID Resolution</span>
+                                <p>Session IDs support device prefix matching. "watch_20251113" resolves to full Apple Watch session ID.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R7</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Default Date Range</span>
+                                <p>Queries without explicit date range default to last 52 weeks unless tool specifies otherwise.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="rule-category">
+                    <h3>Tool Execution Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R8</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Pure Functions</span>
+                                <p>Query tools are stateless. No tool call affects the outcome of any subsequent tool call (except explicit data mutations).</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R9</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Parameter Validation</span>
+                                <p>All tool parameters are validated before execution. Invalid session IDs, dates, or sensor types are rejected with error.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R10</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Dependency Resolution</span>
+                                <p>Step dependencies (e.g., $step_0_result.session_id) are resolved before tool execution using ExecutionContext.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R11</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Caching Strategy</span>
+                                <p>Session summaries and sensor data are cached per-execution to avoid redundant database queries.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="rule-category">
+                    <h3>Sensor-Specific Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R12</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Apple Watch Threshold</span>
+                                <p>Default swing detection threshold is 10 rad/s rotation rate. Configurable per-tool call.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R13</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Linked Session Tolerance</span>
+                                <p>Sessions are considered "linked" if start times are within 5 minutes (configurable via tolerance_minutes).</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R14</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Minimum Swing Count</span>
+                                <p>Zepp sessions require minimum 10 swings to be considered valid for analysis (configurable via min_swings).</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R15</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Babolat Activity ID Format</span>
+                                <p>Babolat activity IDs follow format "MAC_ADDRESS_NUMBER" (e.g., "9C:68:5B:00:35:65_657").</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="rule-category">
+                    <h3>Visualization Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R16</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Default Output Directory</span>
+                                <p>Visualizations are saved to /tmp/tennis_viz by default unless output_dir is specified.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R17</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Impact Zone Overlay</span>
+                                <p>Zepp impact visualizations show 5-zone overlay by default (show_zones=True).</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R18</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Jitter for Anti-Overplotting</span>
+                                <p>Scatter plots use jitter (default 0.03) to prevent point overlap on identical positions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="rule-category">
+                    <h3>Error Handling Rules</h3>
+                    <div class="rule-list">
+                        <div class="rule-item">
+                            <span class="rule-number">R19</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Graceful Degradation</span>
+                                <p>Missing data returns structured error with context, not crashes. Query continues with available data.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R20</span>
+                            <div class="rule-content">
+                                <span class="rule-name">Explicit Not Found</span>
+                                <p>When no results match, return explicit "not found" message with search criteria, not empty result.</p>
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">R21</span>
+                            <div class="rule-content">
+                                <span class="rule-name">State Machine Recovery</span>
+                                <p>On error during RUNNING state, transition to FAILED with error context preserved for debugging.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="info-banner">
+                <h4>Policy Enforcement</h4>
+                <p>These rules implement <a href="principles.html">tau-bench principles</a> for the tennis analytics domain. Every tool execution is validated against these policies.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">Personal tennis analytics with multi-sensor integration.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="principles.html">tau-bench</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Agentic Analyst's Cockpit</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | Domain Rules</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Domain Rules</span>
+            <h1>Deterministic Policies</h1>
+            <p class="subtitle">Integrity, processing, and physics constraints.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>Data Integrity Rules</h2>
+            <table class="table">
+                <tr>
+                    <th>Rule</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>R1</td>
+                    <td>No yield fabrication; values originate from board_yield_data.csv.</td>
+                </tr>
+                <tr>
+                    <td>R2</td>
+                    <td>Board IDs are 1-indexed integers (1-30).</td>
+                </tr>
+                <tr>
+                    <td>R3</td>
+                    <td>Component types are uppercase letters (A-N).</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Query Processing Rules</h2>
+            <table class="table">
+                <tr>
+                    <th>Rule</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>R4</td>
+                    <td>Deterministic outputs: same query yields same results.</td>
+                </tr>
+                <tr>
+                    <td>R5</td>
+                    <td>Board ID validation precedes summary or comparison.</td>
+                </tr>
+                <tr>
+                    <td>R6</td>
+                    <td>Default top_n is 1 for find_best_board.</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Physics Model Rules</h2>
+            <table class="table">
+                <tr>
+                    <th>Rule</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>R7</td>
+                    <td>Fault probabilities bounded in [0.0, max_fault_prob].</td>
+                </tr>
+                <tr>
+                    <td>R8</td>
+                    <td>Default max_fault_prob is 0.05 (5%).</td>
+                </tr>
+                <tr>
+                    <td>R9</td>
+                    <td>SLSQP optimization minimizes squared error.</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Caching Rules</h2>
+            <table class="table">
+                <tr>
+                    <th>Rule</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>R10</td>
+                    <td>Board summaries cached by board_id.</td>
+                </tr>
+                <tr>
+                    <td>R11</td>
+                    <td>Physics results cached by max_fault_prob.</td>
+                </tr>
+                <tr>
+                    <td>R12</td>
+                    <td>Component statistics cached by component type.</td>
+                </tr>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>Rules derived from cockpit_poc/agent/tool_registry.py behavior.</p>
+        </footer>
+    </div>
+</body>
+</html>

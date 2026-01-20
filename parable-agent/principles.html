@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~*~ ParableAgent - Tau-Bench Principles ~*~</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="sub-header">
+            <h1 class="rainbow-text">~*~ Tau-Bench Principles ~*~</h1>
+            <p class="subtitle"><a href="index.html">[Back to Home]</a></p>
+        </header>
+
+        <hr class="fancy-hr">
+
+        <div class="page-content">
+            <h2 class="section-title">Tool-Agent-User Interaction Benchmark</h2>
+            <p style="text-align: center; color: #FFFF00; margin-bottom: 20px;">Benchmarking Reliable Agent Systems</p>
+
+            <div class="principle-intro">
+                <div class="info-box">
+                    <h3>What is Tau-Bench?</h3>
+                    <p><span class="highlight">Tau-Bench</span> (Tool-Agent-User) is a benchmark framework for evaluating AI agents on their ability to interact with users, use tools/APIs, and follow domain-specific rules. ParableAgent is designed using tau-bench principles to ensure <em>consistent, reliable, and verifiable</em> results.</p>
+                </div>
+            </div>
+
+            <hr class="fancy-hr">
+
+            <h2 class="section-title sparkle">Core Principles</h2>
+
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <div class="principle-icon">&#128202;</div>
+                    <h3>1. Pass^k Reliability</h3>
+                    <p>A task only succeeds if the agent completes it correctly in <span class="highlight">ALL k attempts</span>. This strict metric ensures consistent performance, not lucky one-offs. ParableAgent targets 100% reliability across repeated queries.</p>
+                    <div class="code-box">
+                        <p class="code-line">&gt; pass^5("mercy parables")</p>
+                        <p class="code-line" style="color: #00FFFF;">// Must succeed 5/5 times!</p>
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-icon">&#128221;</div>
+                    <h3>2. Domain Policy Following</h3>
+                    <p>Agents must follow <span class="highlight">domain-specific rules</span> written in natural language. ParableAgent adheres to 21 rules governing data integrity, query processing, and response formatting.</p>
+                    <div class="code-box">
+                        <p class="code-line">&gt; check_policy("valid_theme")</p>
+                        <p class="code-line" style="color: #00FFFF;">// Rule: Theme must be in 14 defined themes</p>
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-icon">&#128483;</div>
+                    <h3>3. User Simulation</h3>
+                    <p>Tau-bench uses <span class="highlight">dynamic user simulation</span> to test agent responses. Users may have incomplete information, change their minds, or make compound requests. The agent must handle all scenarios gracefully.</p>
+                    <div class="code-box">
+                        <p class="code-line">&gt; user: "Actually, show me Luke's parables"</p>
+                        <p class="code-line" style="color: #00FFFF;">// Agent must adapt to changes</p>
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-icon">&#128451;</div>
+                    <h3>4. Database State Evaluation</h3>
+                    <p>Success is measured by <span class="highlight">comparing database states</span> - the expected final state vs actual state after agent actions. This provides deterministic, verifiable evaluation with no ambiguity.</p>
+                    <div class="code-box">
+                        <p class="code-line">&gt; verify_state(expected, actual)</p>
+                        <p class="code-line" style="color: #00FFFF;">// Binary: PASS or FAIL</p>
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-icon">&#128295;</div>
+                    <h3>5. Structured Tool Use</h3>
+                    <p>Agents interact via <span class="highlight">defined APIs</span> with typed parameters. ParableAgent's 21 tools each have explicit inputs and outputs - no ambiguous function calls or undefined behaviors.</p>
+                    <div class="code-box">
+                        <p class="code-line">&gt; search_by_theme(theme: string)</p>
+                        <p class="code-line" style="color: #00FFFF;">// Returns: Parable[] (typed!)</p>
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-icon">&#127919;</div>
+                    <h3>6. Compound Request Handling</h3>
+                    <p>Users often make <span class="highlight">multiple requests at once</span>. A robust agent must fully resolve ALL parts - partial completion is a failure. "Show mercy parables AND count them" requires both actions.</p>
+                    <div class="code-box">
+                        <p class="code-line">&gt; "List AND compare the lost parables"</p>
+                        <p class="code-line" style="color: #00FFFF;">// Must do BOTH operations!</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="fancy-hr">
+
+            <h2 class="section-title sparkle">Common Agent Failure Modes</h2>
+            <p style="text-align: center; color: #FF6B6B; margin-bottom: 20px;">Tau-bench identifies these key challenges for agents:</p>
+
+            <div class="principles-grid">
+                <div class="principle-card" style="border-color: #FF6B6B;">
+                    <div class="principle-icon">&#10060;</div>
+                    <h3>Wrong Argument</h3>
+                    <p>Agent uses <span class="highlight">incorrect parameters</span> when calling tools. Example: searching for theme "merciful" when the database expects "mercy".</p>
+                </div>
+
+                <div class="principle-card" style="border-color: #FF6B6B;">
+                    <div class="principle-icon">&#10067;</div>
+                    <h3>Wrong Decision</h3>
+                    <p>Agent makes <span class="highlight">logical errors</span> despite having correct information. Example: showing Matthew parables when user asked for Mark.</p>
+                </div>
+
+                <div class="principle-card" style="border-color: #FF6B6B;">
+                    <div class="principle-icon">&#189;</div>
+                    <h3>Partial Resolution</h3>
+                    <p>Agent only completes <span class="highlight">part of a compound request</span>. Example: listing parables but forgetting to also compare them as requested.</p>
+                </div>
+            </div>
+
+            <hr class="fancy-hr">
+
+            <div class="comparison-section">
+                <h2 class="section-title">Tau-Bench Evaluation Approach</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Component</th>
+                        <th class="ta-col">Description</th>
+                        <th class="prob-col">ParableAgent Implementation</th>
+                    </tr>
+                    <tr>
+                        <td>Database</td>
+                        <td class="ta-col">Structured data storage</td>
+                        <td class="prob-col">39 parables in JSON format</td>
+                    </tr>
+                    <tr>
+                        <td>APIs</td>
+                        <td class="ta-col">Typed function interfaces</td>
+                        <td class="prob-col">21 Python tools</td>
+                    </tr>
+                    <tr>
+                        <td>Policies</td>
+                        <td class="ta-col">Natural language rules</td>
+                        <td class="prob-col">21 domain rules in Markdown</td>
+                    </tr>
+                    <tr>
+                        <td>Tasks</td>
+                        <td class="ta-col">User interaction scenarios</td>
+                        <td class="prob-col">21 defined task templates</td>
+                    </tr>
+                    <tr>
+                        <td>Evaluation</td>
+                        <td class="ta-col">State comparison</td>
+                        <td class="prob-col">Deterministic output matching</td>
+                    </tr>
+                </table>
+            </div>
+
+            <hr class="fancy-hr">
+
+            <div class="info-box">
+                <h3 class="blink">Why Tau-Bench Matters</h3>
+                <p>For <span class="highlight">biblical scholarship</span>, reliability is paramount. Tau-bench principles ensure ParableAgent is not just accurate once, but <span class="highlight">consistently accurate every time</span>. The pass^k metric means you can trust the same query to always return the same results - essential for serious study and teaching.</p>
+            </div>
+        </div>
+
+        <hr class="fancy-hr">
+
+        <footer>
+            <p class="copyright"><a href="index.html">[Return to Homepage]</a> | <a href="tools.html">[View Tools]</a> | <a href="rules.html">[View Rules]</a> | <a href="tasks.html">[View Tasks]</a></p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Phoenix | Architecture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Architecture</span>
+            <h1>Technical Architecture</h1>
+            <p class="subtitle">Project structure, execution modes, and planning engine.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="philosophy.html">Philosophy</a>
+            <a href="four-phases.html">Four Phases</a>
+            <a href="principles.html">Principles</a>
+            <a href="tau-bench.html">Tau-Bench</a>
+            <a href="domains.html">Domains</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="operations.html">Operations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Project Structure</h2>
+            <div class="code">
+project-phoenix/
+|-- domains/TennisAgent/cli/     # CLI: main.py, chat.py, nli_parser.py
+|-- cockpit_poc/                 # Analyst's Cockpit GUI
+|   |-- tkinter_cockpit.py       # Multi-device visualization
+|   |-- agent/                   # Agentic Cockpit (deterministic, Phase 4)
+|   `-- chatkit/                 # ChatKit Mode (LLM-driven, LangGraph)
+|-- PyAI/                        # Documentation
+|-- ORIGINAL_DOCUMENTATION/      # Tau-bench reference docs
+`-- validate/                    # Ground truth validation tools
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Execution Modes</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>CLI</h3>
+                    <p>Direct tool execution and natural language queries.</p>
+                </div>
+                <div class="card">
+                    <h3>Analyst's Cockpit</h3>
+                    <p>GUI visualization for multi-device and multi-modal analysis.</p>
+                </div>
+                <div class="card">
+                    <h3>Agentic Cockpit</h3>
+                    <p>Four-phase deterministic execution with plan previews and controls.</p>
+                </div>
+                <div class="card">
+                    <h3>ChatKit Mode</h3>
+                    <p>LLM-driven mode used for development experimentation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Planning Engine</h2>
+            <p>PlanBuilder converts natural language into deterministic tool sequences using regex pattern matching. Execution is orchestrated by a state machine in the Agentic Engine.</p>
+        </section>
+
+        <footer class="footer">
+            <p>Source: /home/blueaz/Python/project-phoenix/CLAUDE.md</p>
+        </footer>
+    </div>
+</body>
+</html>

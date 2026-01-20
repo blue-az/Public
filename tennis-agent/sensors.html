@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | Sensor Integration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item active">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="tasks.html" class="nav-item">tasks</a>
+            <a href="rules.html" class="nav-item">rules</a>
+            <a href="principles.html" class="nav-item">tau-bench</a>
+            <a href="architecture.html" class="nav-item">architecture</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>Sensor Integration</h2>
+                <p class="page-subtitle">Four sensor sources unified into one queryable database</p>
+            </div>
+
+            <div class="surfaces-grid">
+                <div class="surface-card hard">
+                    <div class="surface-header">
+                        <span class="surface-icon">AW</span>
+                        <h3>Apple Watch</h3>
+                    </div>
+                    <div class="surface-stats">
+                        <div class="surface-stat">
+                            <span class="stat-value">100Hz</span>
+                            <span class="stat-desc">sample rate</span>
+                        </div>
+                        <div class="surface-stat">
+                            <span class="stat-value">IMU</span>
+                            <span class="stat-desc">sensor type</span>
+                        </div>
+                        <div class="surface-stat">
+                            <span class="stat-value">Wrist</span>
+                            <span class="stat-desc">position</span>
+                        </div>
+                    </div>
+                    <div class="surface-details">
+                        <h4>Data Captured</h4>
+                        <ul>
+                            <li>Accelerometer (x, y, z)</li>
+                            <li>Gyroscope rotation rates</li>
+                            <li>Device motion quaternions</li>
+                            <li>Heart rate (optional)</li>
+                        </ul>
+                        <h4>Database</h4>
+                        <p>tennis_watch.db - sessions table + raw_sensor_buffer</p>
+                        <h4>Sync Method</h4>
+                        <p>Mac server at 192.168.8.108:8080</p>
+                    </div>
+                </div>
+
+                <div class="surface-card clay">
+                    <div class="surface-header">
+                        <span class="surface-icon">ZU</span>
+                        <h3>Zepp Universal</h3>
+                    </div>
+                    <div class="surface-stats">
+                        <div class="surface-stat">
+                            <span class="stat-value">333Hz</span>
+                            <span class="stat-desc">sample rate</span>
+                        </div>
+                        <div class="surface-stat">
+                            <span class="stat-value">IMU</span>
+                            <span class="stat-desc">sensor type</span>
+                        </div>
+                        <div class="surface-stat">
+                            <span class="stat-value">Racquet</span>
+                            <span class="stat-desc">position</span>
+                        </div>
+                    </div>
+                    <div class="surface-details">
+                        <h4>Data Captured</h4>
+                        <ul>
+                            <li>Impact position (x, y)</li>
+                            <li>Swing type classification</li>
+                            <li>Rotation speed</li>
+                            <li>Swing power metrics</li>
+                        </ul>
+                        <h4>Database</h4>
+                        <p>ztennis.db - swings table + origins</p>
+                        <h4>Sync Method</h4>
+                        <p>Zepp app export to SQLite</p>
+                    </div>
+                </div>
+
+                <div class="surface-card grass">
+                    <div class="surface-header">
+                        <span class="surface-icon">BB</span>
+                        <h3>Babolat PIQ</h3>
+                    </div>
+                    <div class="surface-stats">
+                        <div class="surface-stat">
+                            <span class="stat-value">PIQ</span>
+                            <span class="stat-desc">score system</span>
+                        </div>
+                        <div class="surface-stat">
+                            <span class="stat-value">Shot</span>
+                            <span class="stat-desc">classification</span>
+                        </div>
+                        <div class="surface-stat">
+                            <span class="stat-value">Racquet</span>
+                            <span class="stat-desc">position</span>
+                        </div>
+                    </div>
+                    <div class="surface-details">
+                        <h4>Data Captured</h4>
+                        <ul>
+                            <li>PIQ score (0-200 scale)</li>
+                            <li>Shot type (FH/BH/Serve)</li>
+                            <li>Ball speed (m/s)</li>
+                            <li>Spin and power metrics</li>
+                        </ul>
+                        <h4>Database</h4>
+                        <p>BabPopExt.db - extracted from app logs</p>
+                        <h4>Sync Method</h4>
+                        <p>ADB pull from Android phone</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="surfaces-grid" style="margin-top: 20px;">
+                <div class="surface-card" style="grid-column: span 3;">
+                    <div class="surface-header" style="background: linear-gradient(120deg, #8e44ad, #9b59b6);">
+                        <span class="surface-icon">GM</span>
+                        <h3>Garmin Heart Rate</h3>
+                    </div>
+                    <div class="surface-stats">
+                        <div class="surface-stat">
+                            <span class="stat-value">1Hz</span>
+                            <span class="stat-desc">sample rate</span>
+                        </div>
+                        <div class="surface-stat">
+                            <span class="stat-value">HR</span>
+                            <span class="stat-desc">primary metric</span>
+                        </div>
+                        <div class="surface-stat">
+                            <span class="stat-value">Wrist</span>
+                            <span class="stat-desc">position</span>
+                        </div>
+                    </div>
+                    <div class="surface-details">
+                        <h4>Data Captured</h4>
+                        <p>Heart rate timeseries during matches and practice sessions. Used for fatigue analysis, win/loss correlation, and performance zone tracking.</p>
+                        <h4>Database</h4>
+                        <p>Integrated via match_history.csv linking</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="data-section">
+                <h3>Unified Data Layer</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Database</th>
+                            <th>Primary Table</th>
+                            <th>Key Metrics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Apple Watch</td>
+                            <td>tennis_watch.db</td>
+                            <td>raw_sensor_buffer</td>
+                            <td>Rotation rate, acceleration, timestamps</td>
+                        </tr>
+                        <tr>
+                            <td>Zepp Universal</td>
+                            <td>ztennis.db</td>
+                            <td>swings, origins</td>
+                            <td>Impact position, swing type, power</td>
+                        </tr>
+                        <tr>
+                            <td>Babolat PIQ</td>
+                            <td>BabPopExt.db</td>
+                            <td>tb_activities, tb_shots</td>
+                            <td>PIQ score, speed, shot classification</td>
+                        </tr>
+                        <tr>
+                            <td>Garmin</td>
+                            <td>garmin_hr.db</td>
+                            <td>hr_samples</td>
+                            <td>Heart rate, HR zones</td>
+                        </tr>
+                        <tr>
+                            <td>Match History</td>
+                            <td>match_history.csv</td>
+                            <td>-</td>
+                            <td>Opponent, score, outcome, tournament</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="data-section">
+                <h3>Linked Sessions</h3>
+                <p style="margin-bottom: 15px;">TennisAgent can detect and link sessions from multiple sensors recorded on the same date. This enables cross-sensor validation and richer analysis.</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Link Type</th>
+                            <th>Sensors</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AW + Zepp</td>
+                            <td>Apple Watch + Zepp Universal</td>
+                            <td>Compare wrist vs racquet swing detection, validate swing counts</td>
+                        </tr>
+                        <tr>
+                            <td>Match + Babolat</td>
+                            <td>match_history + Babolat PIQ</td>
+                            <td>Correlate PIQ scores with match outcomes</td>
+                        </tr>
+                        <tr>
+                            <td>Match + Garmin</td>
+                            <td>match_history + Garmin HR</td>
+                            <td>Analyze heart rate in wins vs losses</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="info-banner">
+                <h4>Sensor Sync Commands</h4>
+                <p>Use these tools to keep your data current:</p>
+                <ul style="margin-top: 10px; color: #e0e0e0;">
+                    <li><code>sync_apple_watch</code> - Pull latest sessions from Mac server</li>
+                    <li><code>refresh_babolat_data</code> - Regenerate BabPopExt.db from logs</li>
+                    <li><code>pull_babolat_from_phone</code> - ADB pull from Android</li>
+                    <li><code>detect_linked_sessions</code> - Auto-detect and save session pairs</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">Personal tennis analytics with multi-sensor integration.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="principles.html">tau-bench</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Agentic Analyst's Cockpit</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | Natural Language Tasks</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="tasks.html" class="nav-item active">tasks</a>
+            <a href="rules.html" class="nav-item">rules</a>
+            <a href="principles.html" class="nav-item">tau-bench</a>
+            <a href="architecture.html" class="nav-item">architecture</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>Natural Language Tasks</h2>
+                <p class="page-subtitle">Query patterns recognized by the agentic engine's plan builder</p>
+            </div>
+
+            <div class="intro-box">
+                <h4>How Tasks Work</h4>
+                <p>The PlanBuilder uses pattern matching to parse natural language queries. When you say "analyze my best session", it matches the ["analyze", "best"] pattern and builds a multi-step execution plan using the appropriate tools.</p>
+            </div>
+
+            <div class="tasks-container">
+                <section class="task-category">
+                    <h3>Session Analysis</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">"analyze my best session"</span>
+                            <p>Finds session with most swings, loads summary, detects swings, and generates visualization</p>
+                            <span class="task-example">Tools: find_best_session → get_session_summary → detect_swings → visualize_session</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"compare last 3 sessions"</span>
+                            <p>Retrieves recent sessions and generates comparison metrics</p>
+                            <span class="task-example">Tools: get_recent_sessions → compare_sessions</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"show linked data for 2024-12-15"</span>
+                            <p>Gets synchronized Apple Watch + Zepp data for the specified date</p>
+                            <span class="task-example">Tools: get_linked_session_data → visualize_linked_comparison</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"analyze session from yesterday"</span>
+                            <p>Analyzes the most recent session with full metrics</p>
+                            <span class="task-example">Tools: get_recent_sessions → analyze_apple_watch_session</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="task-category">
+                    <h3>Visualization Requests</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">"visualize zepp impact heatmap"</span>
+                            <p>Generates density heatmap of racquet impact positions</p>
+                            <span class="task-example">Tools: visualize_zepp_impact_heatmap</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"show impact dashboard"</span>
+                            <p>Opens interactive Zepp impact dashboard in browser</p>
+                            <span class="task-example">Tools: visualize_zepp_impact_dashboard</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"visualize my session"</span>
+                            <p>Generates timeseries visualization of session sensor data</p>
+                            <span class="task-example">Tools: visualize_session (viz_type=timeseries)</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"show 3D trajectory for swing 5"</span>
+                            <p>Creates 3D visualization comparing wrist and racquet paths</p>
+                            <span class="task-example">Tools: visualize_trajectory (swing_index=5)</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="task-category">
+                    <h3>Match Statistics</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">"how many matches did I play in 2024?"</span>
+                            <p>Returns total matches, wins, losses, and win percentage for the year</p>
+                            <span class="task-example">Tools: get_match_count (year=2024)</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"what is my win rate?"</span>
+                            <p>Calculates overall win percentage from match history</p>
+                            <span class="task-example">Tools: get_match_count</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"show my last match result"</span>
+                            <p>Returns opponent, score, and outcome of most recent match</p>
+                            <span class="task-example">Tools: get_latest_match_result</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"how many tournaments did I play?"</span>
+                            <p>Counts distinct tournaments with match breakdown</p>
+                            <span class="task-example">Tools: get_tournament_count</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="task-category">
+                    <h3>Heart Rate Analysis</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">"compare heart rate in wins vs losses"</span>
+                            <p>Analyzes HR statistics by match outcome</p>
+                            <span class="task-example">Tools: analyze_hr_by_outcome (outcome="all")</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"what was my max heart rate during wins?"</span>
+                            <p>Returns max HR for winning matches</p>
+                            <span class="task-example">Tools: analyze_hr_by_outcome (outcome="wins")</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"is my heart rate higher when I win?"</span>
+                            <p>Compares average HR between wins and losses</p>
+                            <span class="task-example">Tools: analyze_hr_by_outcome</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="task-category">
+                    <h3>Sensor Inventory</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">"how many sensor types do I have?"</span>
+                            <p>Lists all sensor sources with session counts</p>
+                            <span class="task-example">Tools: get_sensor_inventory</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"how many Zepp sessions this month?"</span>
+                            <p>Returns practice session count and swing statistics</p>
+                            <span class="task-example">Tools: get_zepp_session_count</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"show data sources"</span>
+                            <p>Displays all available data sources with record counts</p>
+                            <span class="task-example">Tools: show_data_sources</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="task-category">
+                    <h3>Data Export</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">"export session to CSV"</span>
+                            <p>Exports session data to specified format</p>
+                            <span class="task-example">Tools: export_data (format="csv")</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"sync apple watch data"</span>
+                            <p>Pulls latest sessions from Mac server</p>
+                            <span class="task-example">Tools: sync_apple_watch</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">"refresh babolat data"</span>
+                            <p>Regenerates BabPopExt.db from app logs</p>
+                            <span class="task-example">Tools: refresh_babolat_data</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="info-banner">
+                <h4>Execution Flow</h4>
+                <p>IDLE → PLANNING → AWAITING_APPROVAL → RUNNING → COMPLETED</p>
+                <p style="margin-top: 10px;">The agent parses your query, builds a multi-step plan, shows it for approval, then executes each tool in sequence with dependency resolution.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">Personal tennis analytics with multi-sensor integration.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="principles.html">tau-bench</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Agentic Analyst's Cockpit</p>
+        </footer>
+    </div>
+</body>
+</html>

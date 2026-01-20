@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | Task Patterns</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Task Patterns</span>
+            <h1>Natural Language Queries</h1>
+            <p class="subtitle">PlanBuilder converts intent into deterministic execution plans.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>Session Analysis</h2>
+            <table class="table">
+                <tr>
+                    <th>Query</th>
+                    <th>Plan Generated</th>
+                </tr>
+                <tr>
+                    <td>"analyze best board"</td>
+                    <td>find_best_board -> get_board_summary -> analyze_component_impact -> visualize_yield_distribution</td>
+                </tr>
+                <tr>
+                    <td>"compare boards 5 and 12"</td>
+                    <td>get_board_summary (x2) -> compare_boards</td>
+                </tr>
+                <tr>
+                    <td>"compare top 5 boards"</td>
+                    <td>find_best_board -> compare_boards (placeholder IDs in plan)</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Physics Analysis</h2>
+            <table class="table">
+                <tr>
+                    <th>Query</th>
+                    <th>Plan Generated</th>
+                </tr>
+                <tr>
+                    <td>"run physics model"</td>
+                    <td>run_physics_model -> analyze_component_impact</td>
+                </tr>
+                <tr>
+                    <td>"analyze component impact"</td>
+                    <td>analyze_component_impact</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Visualization</h2>
+            <table class="table">
+                <tr>
+                    <th>Query</th>
+                    <th>Plan Generated</th>
+                </tr>
+                <tr>
+                    <td>"show yield distribution"</td>
+                    <td>visualize_yield_distribution</td>
+                </tr>
+                <tr>
+                    <td>"histogram"</td>
+                    <td>visualize_yield_distribution</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Board Queries</h2>
+            <table class="table">
+                <tr>
+                    <th>Query</th>
+                    <th>Plan Generated</th>
+                </tr>
+                <tr>
+                    <td>"show board 5 summary"</td>
+                    <td>get_board_summary</td>
+                </tr>
+                <tr>
+                    <td>"find top 10 boards"</td>
+                    <td>find_best_board</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Export</h2>
+            <table class="table">
+                <tr>
+                    <th>Query</th>
+                    <th>Plan Generated</th>
+                </tr>
+                <tr>
+                    <td>"export data to csv"</td>
+                    <td>export_data (format csv, filename yield_data_export.csv)</td>
+                </tr>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>Source: cockpit_poc/agent/plan_builder.py</p>
+        </footer>
+    </div>
+</body>
+</html>

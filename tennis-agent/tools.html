@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | 100+ Analysis Tools</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item active">tools</a>
+            <a href="tasks.html" class="nav-item">tasks</a>
+            <a href="rules.html" class="nav-item">rules</a>
+            <a href="principles.html" class="nav-item">tau-bench</a>
+            <a href="architecture.html" class="nav-item">architecture</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>100+ Analysis Tools</h2>
+                <p class="page-subtitle">Registered tools in the TennisAgent tool registry</p>
+            </div>
+
+            <div class="tools-grid">
+                <div class="tool-category" id="session">
+                    <h3>Session Management</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">find_best_session</span>
+                            <p>Find the session with most swings or highest peak rotation</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_session_summary</span>
+                            <p>Get comprehensive summary of a session (metadata, swings, statistics)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_recent_sessions</span>
+                            <p>Get N most recent sessions, optionally filtered by device</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_linked_session_data</span>
+                            <p>Get synchronized Apple Watch + Zepp data for a date</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">detect_linked_sessions</span>
+                            <p>Find potential Apple Watch + Zepp session pairs and auto-save to database</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">sync_apple_watch</span>
+                            <p>Sync Apple Watch sessions from Mac server (192.168.8.108:8080)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_match_count</span>
+                            <p>Count matches played (total, wins, losses, win percentage)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_latest_match_result</span>
+                            <p>Get most recent tournament match result (opponent, score, outcome)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_zepp_session_count</span>
+                            <p>Get Zepp practice session count and swing statistics for month/year</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_babolat_session_count</span>
+                            <p>Get Babolat practice session count and shot statistics for month/year</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_tournament_count</span>
+                            <p>Get count of distinct tournaments played</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_sensor_inventory</span>
+                            <p>Count sensor types and sessions (Babolat, Zepp, Apple Watch, Garmin)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category" id="analysis">
+                    <h3>Analysis Tools</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">detect_swings</span>
+                            <p>Detect swing events in Apple Watch sensor data using rotation threshold</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">compare_sessions</span>
+                            <p>Compare metrics across multiple sessions</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_linked_session</span>
+                            <p>Comprehensive linked session analysis with per-swing metrics and correlations</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_match_consistency</span>
+                            <p>Measure shot consistency for Babolat match by shot type and metric</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">detect_fatigue_patterns</span>
+                            <p>Detect fatigue by comparing first vs last quarter performance</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_rally_patterns</span>
+                            <p>Analyze rally characteristics and patterns in Babolat match</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">generate_match_insights</span>
+                            <p>Generate Babolat-app-style narrative coaching insights</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">compare_swing_detection</span>
+                            <p>Compare Apple Watch swing detection against Zepp Universal</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_apple_watch_session</span>
+                            <p>Analyze standalone Apple Watch session with swing detection and summary</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_hr_by_outcome</span>
+                            <p>Compare heart rate in wins vs losses (avg HR, max HR by outcome)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_match_trends</span>
+                            <p>Analyze match trends over time with shot counts and win/loss correlations</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_match_piq_stats</span>
+                            <p>Get average PIQ scores (forehand, backhand, serve) for matches</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">correlate_hr_with_swings</span>
+                            <p>Correlate heart rate with swing activity</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_session_fatigue</span>
+                            <p>Analyze fatigue patterns within a session</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category" id="visualization">
+                    <h3>Visualization Tools</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_session</span>
+                            <p>Generate visualization of session sensor data (timeseries, 3d, heatmap)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_zepp_impact</span>
+                            <p>Scatter plot of Zepp impact positions with jitter and 5-zone overlays</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_zepp_impact_heatmap</span>
+                            <p>Density heatmap of Zepp impact positions</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_zepp_impact_dashboard</span>
+                            <p>Interactive Zepp impact dashboard with browser controls</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_zepp_rotation</span>
+                            <p>Visualize aggregated rotation data with raw and smoothed signals</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_zepp_session_progression</span>
+                            <p>Scatter plot of Zepp swings over time for single practice session</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_aw_stroke_wrap</span>
+                            <p>Wrap continuous Apple Watch signals into stroke segments</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_aw_zepp_wrap_peaks</span>
+                            <p>Wrap AW peaks with Zepp swing timestamps (normalized to max)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_linked_comparison</span>
+                            <p>Visualize linked session with AW time-series and Zepp swing markers overlaid</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_apple_watch_session</span>
+                            <p>4-panel dashboard visualizing Apple Watch session distributions</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_match_timeline</span>
+                            <p>Shot-by-shot timeline scatter plot with PIQ scores and speed</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_consistency_report</span>
+                            <p>Multi-panel consistency analysis report with charts by shot type</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_rally_patterns</span>
+                            <p>Rally pattern analysis with length distribution and pie charts</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_fatigue_analysis</span>
+                            <p>Fatigue analysis with quarterly performance comparison</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_trajectory</span>
+                            <p>3D swing trajectory comparing Apple Watch (wrist) and Zepp (racquet) paths</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_babolat_activity</span>
+                            <p>Babolat PIQ session with shot distribution and speed metrics</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_piq_trend</span>
+                            <p>Plot PIQ scores over time for tournament matches</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_match_trends</span>
+                            <p>Shot type trends over time as line chart (FH, BH, serve by month)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category" id="ml">
+                    <h3>Machine Learning</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">train_stroke_classifier</span>
+                            <p>Train ML model to classify stroke types (FH/BH/Serve) from Apple Watch data</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">predict_stroke_type</span>
+                            <p>Predict stroke types for Apple Watch session using trained model</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">train_swing_classifier</span>
+                            <p>Train swing classifier with cross-sensor validation</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_misclassifications</span>
+                            <p>Analyze misclassified swings to improve model</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">flag_ambiguous_swings</span>
+                            <p>Flag swings with low classification confidence</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_consensus_classification</span>
+                            <p>Get consensus classification across multiple sensors</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category" id="data">
+                    <h3>Data Management</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">export_data</span>
+                            <p>Export session data to file (CSV, JSON, PNG)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">refresh_babolat_data</span>
+                            <p>Refresh BabPopExt.db by extracting latest data from Babolat log files</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">pull_babolat_from_phone</span>
+                            <p>Pull Babolat data from connected Android phone via adb</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">update_golden_session_metadata</span>
+                            <p>Populate golden session manifests from watch.db timestamps</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">build_unified_session</span>
+                            <p>Build unified session from multiple sensor sources</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">export_zepp_training_data</span>
+                            <p>Export Zepp data formatted for ML training</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Utility Tools</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">show_capabilities</span>
+                            <p>Show all available agent capabilities organized by category</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">show_data_sources</span>
+                            <p>Show all available data sources with record counts and status</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">create_practice_plan</span>
+                            <p>Create practice plan based on weaknesses</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">generate_training_recommendations</span>
+                            <p>Generate personalized training recommendations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-banner">
+                <h4>Deterministic Tool Execution</h4>
+                <p>All tools follow <a href="principles.html">tau-bench principles</a> - identical inputs produce identical outputs. Tools are pure functions with no side effects on query operations.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">Personal tennis analytics with multi-sensor integration.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="sensors.html">sensors</a>
+                <a href="principles.html">tau-bench</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Agentic Analyst's Cockpit</p>
+        </footer>
+    </div>
+</body>
+</html>

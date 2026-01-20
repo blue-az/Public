@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | Tool Catalog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Tool Catalog</span>
+            <h1>Agentic Cockpit Tools</h1>
+            <p class="subtitle">13 deterministic tools registered in the YieldModel cockpit.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>Board Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                    <th>Parameters</th>
+                </tr>
+                <tr>
+                    <td>find_best_board</td>
+                    <td>Find highest-yield board or component count leader.</td>
+                    <td>metric (yield or component name), top_n</td>
+                </tr>
+                <tr>
+                    <td>find_worst_board</td>
+                    <td>Find lowest-yield board.</td>
+                    <td>bottom_n</td>
+                </tr>
+                <tr>
+                    <td>rank_boards</td>
+                    <td>Rank all boards by yield.</td>
+                    <td>limit</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Analysis Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                    <th>Parameters</th>
+                </tr>
+                <tr>
+                    <td>get_board_summary</td>
+                    <td>Comprehensive board details and statistics.</td>
+                    <td>board_id (required)</td>
+                </tr>
+                <tr>
+                    <td>analyze_component_impact</td>
+                    <td>Component-yield correlation analysis.</td>
+                    <td>none</td>
+                </tr>
+                <tr>
+                    <td>compare_boards</td>
+                    <td>Compare multiple boards side-by-side.</td>
+                    <td>board_ids (list, required)</td>
+                </tr>
+                <tr>
+                    <td>run_physics_model</td>
+                    <td>Physics-based optimization of fault probabilities.</td>
+                    <td>max_fault_prob (default 0.05)</td>
+                </tr>
+                <tr>
+                    <td>find_outliers</td>
+                    <td>Boards with yields &gt; 2 standard deviations from mean.</td>
+                    <td>threshold (default 2.0)</td>
+                </tr>
+                <tr>
+                    <td>get_component_statistics</td>
+                    <td>Statistics for a specific component type.</td>
+                    <td>component (A-N, required)</td>
+                </tr>
+                <tr>
+                    <td>predict_yield</td>
+                    <td>Predict yield for a hypothetical configuration.</td>
+                    <td>components (object, required)</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Visualization Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                    <th>Parameters</th>
+                </tr>
+                <tr>
+                    <td>visualize_yield_distribution</td>
+                    <td>Yield histogram and summary statistics.</td>
+                    <td>none</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Export + Info Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                    <th>Parameters</th>
+                </tr>
+                <tr>
+                    <td>export_data</td>
+                    <td>Export analysis results to CSV or JSON.</td>
+                    <td>format (csv/json), filename (required)</td>
+                </tr>
+                <tr>
+                    <td>show_capabilities</td>
+                    <td>Display agent capabilities and available tools.</td>
+                    <td>none</td>
+                </tr>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>Source: cockpit_poc/agent/tool_registry.py</p>
+        </footer>
+    </div>
+</body>
+</html>

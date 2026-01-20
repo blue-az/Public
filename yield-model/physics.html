@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | Physics Model</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Physics Model</span>
+            <h1>Yield Optimization</h1>
+            <p class="subtitle">Physics-based fault probability estimation with deterministic SLSQP.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>The Yield Formula</h2>
+            <div class="code">Y = ∏(1 - p_i)^n_i</div>
+            <p>Y is the probability of zero defects, p_i is the fault probability for component i, and n_i is the component count on a board.</p>
+        </section>
+
+        <section class="section">
+            <h2>SLSQP Optimization</h2>
+            <ul>
+                <li>Optimizer: scipy.optimize.minimize (SLSQP)</li>
+                <li>Bounds: 0.0 to max_fault_prob (default 0.05)</li>
+                <li>Objective: minimize squared error between predicted and observed yields</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Model Comparison</h2>
+            <table class="table">
+                <tr>
+                    <th>Metric</th>
+                    <th>Physics Model</th>
+                </tr>
+                <tr>
+                    <td>RMSE</td>
+                    <td>0.037089</td>
+                </tr>
+                <tr>
+                    <td>MAE</td>
+                    <td>0.025884</td>
+                </tr>
+                <tr>
+                    <td>Linear Regression Baseline</td>
+                    <td>11.81% better RMSE than physics model</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Sample Results</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Best Board</h3>
+                    <p>Board #11: 99.91% yield</p>
+                </div>
+                <div class="card">
+                    <h3>Worst Board</h3>
+                    <p>Board #23: 61.67% yield</p>
+                </div>
+                <div class="card">
+                    <h3>Most Reliable Component</h3>
+                    <p>GD: 0.0000% fault probability</p>
+                </div>
+                <div class="card">
+                    <h3>Least Reliable Component</h3>
+                    <p>JD: 0.4910% fault probability</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Source: IMPLEMENTATION_SUMMARY.md, cockpit_poc/agent/tool_registry.py</p>
+        </footer>
+    </div>
+</body>
+</html>

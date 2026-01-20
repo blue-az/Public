@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | Tau-Bench Principles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="tasks.html" class="nav-item">tasks</a>
+            <a href="rules.html" class="nav-item">rules</a>
+            <a href="principles.html" class="nav-item active">tau-bench</a>
+            <a href="architecture.html" class="nav-item">architecture</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>Tau-Bench Principles</h2>
+                <p class="page-subtitle">Tool-Agent-User Interaction Benchmark for Reliable Analytics</p>
+            </div>
+
+            <div class="intro-box">
+                <h4>What is Tau-Bench?</h4>
+                <p>Tau-Bench (Tool-Agent-User) is a benchmark framework for evaluating AI agents on their ability to interact with users, use tools/APIs, and follow domain-specific rules. TennisAgent implements tau-bench principles to ensure deterministic, reliable, and verifiable results when analyzing your tennis practice data.</p>
+            </div>
+
+            <section class="principles-section">
+                <h3>Core Principles</h3>
+                <div class="principles-grid">
+                    <div class="principle-card">
+                        <span class="principle-number">01</span>
+                        <h4>Pass^k Reliability</h4>
+                        <p>A query succeeds only if it produces correct results in ALL k attempts. TennisAgent tools are deterministic - "analyze my best session" returns identical results every time with the same underlying data.</p>
+                    </div>
+                    <div class="principle-card">
+                        <span class="principle-number">02</span>
+                        <h4>Domain Policy Following</h4>
+                        <p>The agent follows 21 rules governing data integrity, query processing, and tool execution. Tennis-specific constraints ensure valid sensor readings and proper session linking.</p>
+                    </div>
+                    <div class="principle-card">
+                        <span class="principle-number">03</span>
+                        <h4>User Simulation</h4>
+                        <p>Tau-bench tests agents with dynamic user behavior - incomplete info, changed requests, compound queries. TennisAgent handles "show my best session, actually make it last week's" gracefully.</p>
+                    </div>
+                    <div class="principle-card">
+                        <span class="principle-number">04</span>
+                        <h4>Database State Evaluation</h4>
+                        <p>Success is measured by comparing expected vs actual database states after queries. Binary pass/fail - no partial credit for "close enough" analytics.</p>
+                    </div>
+                    <div class="principle-card">
+                        <span class="principle-number">05</span>
+                        <h4>Structured Tool Use</h4>
+                        <p>All 100+ tools have typed parameters and explicit return schemas. detect_swings(session_id: string, threshold: number) returns SwingResult - no ambiguous outputs.</p>
+                    </div>
+                    <div class="principle-card">
+                        <span class="principle-number">06</span>
+                        <h4>Compound Request Handling</h4>
+                        <p>Multi-part queries must be fully resolved. "Analyze my best session AND compare it to last week" requires both operations - partial completion is failure.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="failure-section">
+                <h3>Common Failure Modes</h3>
+                <p class="section-intro">Tau-bench identifies three key challenges that TennisAgent is designed to avoid:</p>
+                <div class="failure-grid">
+                    <div class="failure-card">
+                        <span class="failure-icon">!</span>
+                        <h4>Wrong Argument</h4>
+                        <p>Using incorrect parameters in tool calls. Example: passing "AppleWatch" when the database expects "watch" as device filter.</p>
+                    </div>
+                    <div class="failure-card">
+                        <span class="failure-icon">?</span>
+                        <h4>Wrong Decision</h4>
+                        <p>Logical errors despite correct information. Example: returning Zepp data when user requested Apple Watch session.</p>
+                    </div>
+                    <div class="failure-card">
+                        <span class="failure-icon">1/2</span>
+                        <h4>Partial Resolution</h4>
+                        <p>Completing only part of compound requests. Example: finding best session but forgetting to also visualize it as requested.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="comparison-section">
+                <h3>Tau-Bench Implementation</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Tau-Bench Description</th>
+                            <th>TennisAgent Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Database</td>
+                            <td>Structured data storage</td>
+                            <td>SQLite: tennis_watch.db, ztennis.db, BabPopExt.db</td>
+                        </tr>
+                        <tr>
+                            <td>APIs</td>
+                            <td>Typed function interfaces</td>
+                            <td>100+ Python tools in ToolRegistry</td>
+                        </tr>
+                        <tr>
+                            <td>Policies</td>
+                            <td>Natural language rules</td>
+                            <td>21 domain rules for tennis analytics</td>
+                        </tr>
+                        <tr>
+                            <td>Tasks</td>
+                            <td>User interaction scenarios</td>
+                            <td>Pattern-matched query templates in PlanBuilder</td>
+                        </tr>
+                        <tr>
+                            <td>Evaluation</td>
+                            <td>State comparison</td>
+                            <td>Deterministic output matching via ExecutionContext</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="info-banner">
+                <h4>Why This Matters for Your Tennis Data</h4>
+                <p>When you ask "how many swings did I hit yesterday?", you need a reliable answer. Tau-bench principles ensure TennisAgent returns the same accurate count whether you ask once or ten times. No hallucinated statistics, no inconsistent swing counts, no mysterious changes between queries.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">Personal tennis analytics with multi-sensor integration.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="rules.html">rules</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Agentic Analyst's Cockpit</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optiver Phoenix :: Execution Rules</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="rain"></div>
+
+    <header class="site-header">
+        <h1>Execution Rules</h1>
+        <p class="subtitle">Operational constraints drawn from Optiver variation rule sets.</p>
+        <a class="back-link" href="index.html">Return to Geo-Matrix Hub</a>
+    </header>
+
+    <main class="wrap">
+        <section class="panel">
+            <h2>Navigation</h2>
+            <section class="nav-grid">
+                <a href="tools.html" class="nav-item">tools</a>
+                <a href="tasks.html" class="nav-item">tasks</a>
+                <a href="rules.html" class="nav-item">rules</a>
+                <a href="principles.html" class="nav-item">principles</a>
+                <a href="architecture.html" class="nav-item">architecture</a>
+            </section>
+        </section>
+
+        <section class="panel">
+            <h2>V1-V2 Core Rules</h2>
+            <div class="list-card">
+                <ul>
+                    <li>Data must be loaded before any analysis or feature calculation.</li>
+                    <li>Stock IDs range from 0-199, date IDs represent trading days.</li>
+                    <li>Target variable is price movement at market close.</li>
+                    <li>V2 features are Numba-accelerated for performance.</li>
+                    <li>Time-series CV uses a purge gap to prevent leakage.</li>
+                    <li>Zero-sum adjustment ensures market-neutral predictions.</li>
+                    <li>Export/verify follows Write-Then-Verify pattern.</li>
+                    <li>LightGBM is the primary model with MAE objective.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>V3 Advanced ML Rules</h2>
+            <div class="list-card">
+                <ul>
+                    <li>SHAP values require trained model and test data.</li>
+                    <li>SHAP importance can differ from gain-based importance.</li>
+                    <li>Optuna uses TPE Bayesian optimization, ideally with CV.</li>
+                    <li>Stacking ensembles rely on OOF predictions to avoid leakage.</li>
+                    <li>Walk-forward backtests simulate production conditions.</li>
+                    <li>Regime analysis identifies performance clusters.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>V4-V5 Monitoring + Parallel Rules</h2>
+            <div class="list-card">
+                <ul>
+                    <li>PSI &lt; 0.1 indicates stability; PSI &gt; 0.25 is significant drift.</li>
+                    <li>KS test uses alpha=0.05 by default for drift detection.</li>
+                    <li>Concept drift reflects feature-target relationship changes.</li>
+                    <li>Covariate shift uses a domain classifier (AUC &gt; 0.6 indicates shift).</li>
+                    <li>Missing value spikes can signal pipeline issues.</li>
+                    <li>Parallel CV and backtests rely on ThreadPoolExecutor.</li>
+                    <li>max_workers should not exceed available CPU cores.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>V6 Synthesis Rules</h2>
+            <div class="list-card">
+                <ul>
+                    <li>Synthesis profiles: quick (explore), standard (model), comprehensive (full).</li>
+                    <li>Quick profile: load, summary, target analysis, report.</li>
+                    <li>Standard profile: features, model, basic report.</li>
+                    <li>Comprehensive profile: parallel features, CV, backtest, monitoring, full report.</li>
+                    <li>Deployment decisions: deploy, defer, reject, or retrain.</li>
+                    <li>Five deployment criteria: data quality, drift, CV MAE, Sharpe, alerts.</li>
+                    <li>Reports follow structured templates for analysis, model, and monitoring.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Rules sourced from Optiver variations/variation_1-5/rules.py</p>
+    </footer>
+</body>
+</html>
