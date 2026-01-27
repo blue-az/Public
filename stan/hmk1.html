@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 1: KNN Classification | Stan</title>
+    <meta name="description" content="K-Nearest Neighbors classification with cross-validation techniques from Stats 315A.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Part of Project Phoenix</a>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">Stan</span>
+                <span class="logo-text">Statistical Learning</span>
+            </a>
+            <nav class="header-nav">
+                <a href="index.html">Explore</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="tools.html">Tools</a>
+                <a href="cockpit.html">Cockpit</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="index.html">Explore</a>
+        <span>/</span>
+        Homework 1: KNN Classification
+    </div>
+
+    <div class="page-content">
+        <section class="section">
+            <h2>KNN Classification</h2>
+            <p><strong>Homework 1</strong> covers K-Nearest Neighbors classification with cross-validation techniques, exploring confidence bands, leave-one-out CV, and k-fold validation on simulated classification data.</p>
+
+            <div class="card-meta" style="margin: 1.5rem 0;">
+                <span class="meta-tag">KNN</span>
+                <span class="meta-tag">Leave-One-Out CV</span>
+                <span class="meta-tag">K-Fold CV</span>
+                <span class="meta-tag chapter">ESLII Chapter 2</span>
+                <span class="meta-tag chapter">ESLII Chapter 7</span>
+            </div>
+
+            <h3>Learning Objectives</h3>
+            <ul>
+                <li>Implement K-Nearest Neighbors classification from scratch</li>
+                <li>Understand bias-variance tradeoff in choosing K</li>
+                <li>Apply leave-one-out and k-fold cross-validation</li>
+                <li>Construct and interpret confidence bands for error rates</li>
+            </ul>
+
+            <h3>ESLII Reference</h3>
+            <p>This homework draws from Chapter 2 (Overview of Supervised Learning) and Chapter 7 (Model Assessment and Selection) of Elements of Statistical Learning, 2nd Edition.</p>
+        </section>
+
+        <section class="section">
+            <h2>Available Scripts</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Script</th>
+                        <th>Description</th>
+                        <th>Subdirectory</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>sim_data.py</code></td>
+                        <td>Generate simulated classification data with known class boundaries</td>
+                        <td>1/</td>
+                    </tr>
+                    <tr>
+                        <td><code>knn.py</code></td>
+                        <td>K-Nearest Neighbors implementation with configurable K</td>
+                        <td>1/</td>
+                    </tr>
+                    <tr>
+                        <td><code>cv.py</code></td>
+                        <td>Cross-validation utilities (LOO-CV and k-fold)</td>
+                        <td>1/</td>
+                    </tr>
+                    <tr>
+                        <td><code>report.py</code></td>
+                        <td>Generate analysis report with visualizations</td>
+                        <td>1/</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Quick Start</h2>
+            <div class="code-block">
+<span class="comment"># CLI exploration</span>
+cd domains/Stan/cli
+python main.py "homework 1"
+
+<span class="comment"># Cockpit GUI</span>
+cd domains/Stan/cockpit
+python stan_cockpit.py
+<span class="comment"># Enter: "explore homework 1 KNN classification"</span>
+
+<span class="comment"># Direct tool access</span>
+<span class="keyword">from</span> unified_agent <span class="keyword">import</span> StanDataClient, ToolRegistry
+client = StanDataClient()
+tools = ToolRegistry(client)
+result = tools.get_tool(<span class="string">'load_hmk1_info'</span>)({})
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Related Tools</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>load_hmk1_info</code></td>
+                        <td>Get Homework 1 metadata and available scripts</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_hmk1_scripts</code></td>
+                        <td>List all Python scripts in the Hmk1 directory</td>
+                    </tr>
+                    <tr>
+                        <td><code>find_by_technique</code></td>
+                        <td>Search homeworks by technique (e.g., "KNN")</td>
+                    </tr>
+                    <tr>
+                        <td><code>compare_homeworks</code></td>
+                        <td>Compare this homework with others</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>Stan Domain</h4>
+                <a href="index.html">Explore Homeworks</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="tools.html">Tool Registry</a>
+                <a href="cockpit.html">Agentic Cockpit</a>
+            </div>
+            <div>
+                <h4>Other Homeworks</h4>
+                <a href="hmk2.html">Hmk 2: Zipcode Analysis</a>
+                <a href="hmk3.html">Hmk 3: Discriminant Analysis</a>
+                <a href="hmk4.html">Hmk 4: Naive Bayes</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Stan Domain - Project Phoenix Framework | Built on tau-bench (MIT License, Sierra Research)</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Registry | Stan</title>
+    <meta name="description" content="Complete tool registry for the Stan domain with 19 tools across multiple categories.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Part of Project Phoenix</a>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">Stan</span>
+                <span class="logo-text">Statistical Learning</span>
+            </a>
+            <nav class="header-nav">
+                <a href="index.html">Explore</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="tools.html" class="active">Tools</a>
+                <a href="cockpit.html">Cockpit</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        Tool Registry
+    </div>
+
+    <div class="page-content">
+        <section class="section">
+            <h2>Tool Registry Overview</h2>
+            <p>Stan provides 19 deterministic tools organized into three categories for exploring Stats 315A coursework. All tools follow the Project Phoenix tool specification and are fully tested.</p>
+
+            <div class="phases-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="phase-card">
+                    <span class="phase-num">8</span>
+                    <h4>Homework Tools</h4>
+                    <p>Per-homework info and scripts</p>
+                </div>
+                <div class="phase-card">
+                    <span class="phase-num">5</span>
+                    <h4>Cross-Homework</h4>
+                    <p>Compare and search across homeworks</p>
+                </div>
+                <div class="phase-card">
+                    <span class="phase-num">4</span>
+                    <h4>Utility</h4>
+                    <p>Metadata and capabilities</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Homework Tools</h2>
+            <p>Load information and list scripts for each of the four homework assignments.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tool Name</th>
+                        <th>Description</th>
+                        <th>Parameters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>load_hmk1_info</code></td>
+                        <td>Get Homework 1 (KNN Classification) information and available scripts</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_hmk1_scripts</code></td>
+                        <td>List available scripts for KNN homework</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>load_hmk2_info</code></td>
+                        <td>Get Homework 2 (Zipcode Analysis) information and available scripts</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_hmk2_scripts</code></td>
+                        <td>List available scripts for zipcode analysis homework</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>load_hmk3_info</code></td>
+                        <td>Get Homework 3 (Discriminant Analysis) information and available scripts</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_hmk3_scripts</code></td>
+                        <td>List available scripts for discriminant analysis homework</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>load_hmk4_info</code></td>
+                        <td>Get Homework 4 (Naive Bayes) information and available scripts</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_hmk4_scripts</code></td>
+                        <td>List available scripts for Naive Bayes and data piling homework</td>
+                        <td>None</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Cross-Homework Tools</h2>
+            <p>Search, compare, and explore across all homework assignments.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tool Name</th>
+                        <th>Description</th>
+                        <th>Parameters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>compare_homeworks</code></td>
+                        <td>Compare two homework assignments side-by-side</td>
+                        <td><code>hmk1: int, hmk2: int</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>find_by_technique</code></td>
+                        <td>Find homeworks that use a specific technique</td>
+                        <td><code>technique: str</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>find_by_chapter</code></td>
+                        <td>Find homeworks covering a specific ESLII chapter</td>
+                        <td><code>chapter: int</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>list_all_scripts</code></td>
+                        <td>List all available Python scripts across all homeworks</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>suggest_technique</code></td>
+                        <td>Get technique recommendations for a given problem type</td>
+                        <td><code>problem: str</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Utility Tools</h2>
+            <p>Access domain capabilities and metadata.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tool Name</th>
+                        <th>Description</th>
+                        <th>Parameters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>show_capabilities</code></td>
+                        <td>List all available tools with descriptions</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_homework_info</code></td>
+                        <td>Get metadata for any homework by number</td>
+                        <td><code>homework: int</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>get_chapter_references</code></td>
+                        <td>Get all ESLII chapter references with homework mappings</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_script_info</code></td>
+                        <td>Get detailed information about a specific script</td>
+                        <td><code>script_name: str</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Usage Example</h2>
+            <div class="code-block">
+<span class="keyword">from</span> unified_agent <span class="keyword">import</span> StanDataClient, ToolRegistry, ExecutionContext
+
+<span class="comment"># Initialize</span>
+client = StanDataClient()
+context = ExecutionContext()
+tools = ToolRegistry(client, context)
+
+<span class="comment"># Direct tool invocation</span>
+result = tools.get_tool(<span class="string">'load_hmk1_info'</span>)({})
+print(result)
+<span class="comment"># {"status": "success", "homework": 1, "name": "KNN Classification", ...}</span>
+
+<span class="comment"># Compare homeworks</span>
+comparison = tools.get_tool(<span class="string">'compare_homeworks'</span>)({
+    <span class="string">'hmk1'</span>: 1,
+    <span class="string">'hmk2'</span>: 4
+})
+
+<span class="comment"># Find by technique</span>
+knn_homeworks = tools.get_tool(<span class="string">'find_by_technique'</span>)({
+    <span class="string">'technique'</span>: <span class="string">'KNN'</span>
+})
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Tool Rules</h2>
+            <p>The following rules govern tool behavior in the Stan domain:</p>
+            <ul>
+                <li>Use <code>load_hmk{N}_info</code> to get homework metadata before exploring scripts</li>
+                <li>ESLII chapter references should be returned as chapter numbers (e.g., "Chapter 2, 7")</li>
+                <li>Script paths should be returned with their subdirectory context when applicable</li>
+                <li>When listing scripts, include the homework number for context</li>
+                <li>Homework numbers are 1-4 corresponding to the four Stats 315A assignments</li>
+                <li>If a homework path doesn't exist, return an empty script list without error</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>Stan Domain</h4>
+                <a href="index.html">Explore Homeworks</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="tools.html">Tool Registry</a>
+                <a href="cockpit.html">Agentic Cockpit</a>
+            </div>
+            <div>
+                <h4>Reference</h4>
+                <a href="#">Elements of Statistical Learning</a>
+                <a href="https://proto.efehnconsulting.com/project-phoenix/">Project Phoenix</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Stan Domain - Project Phoenix Framework | Built on tau-bench (MIT License, Sierra Research)</p>
+        </div>
+    </footer>
+</body>
+</html>

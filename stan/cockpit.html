@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Cockpit | Stan</title>
+    <meta name="description" content="Tkinter GUI implementing all four phases of the Project Phoenix framework for the Stan domain.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Part of Project Phoenix</a>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">Stan</span>
+                <span class="logo-text">Statistical Learning</span>
+            </a>
+            <nav class="header-nav">
+                <a href="index.html">Explore</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="tools.html">Tools</a>
+                <a href="cockpit.html" class="active">Cockpit</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        Agentic Cockpit
+    </div>
+
+    <div class="page-content">
+        <section class="section">
+            <h2>Stan Cockpit GUI</h2>
+            <p>The Stan Cockpit is a Tkinter-based graphical interface implementing all four phases of the Project Phoenix Agentic Framework. It provides visual plan preview, real-time execution tracing, and multi-modal output.</p>
+
+            <div class="code-block">
+<span class="comment"># Launch the Cockpit</span>
+cd domains/Stan/cockpit
+python stan_cockpit.py
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>UI Components</h2>
+
+            <h3>Blueprint Panel (Phase 1: Glass Box)</h3>
+            <p>Preview the execution plan before running. See each step, the tools that will be invoked, and their expected outputs.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Plan Preview</td>
+                        <td>Visual breakdown of steps before execution</td>
+                    </tr>
+                    <tr>
+                        <td>Tool Indicators</td>
+                        <td>Each step shows the tool and parameters</td>
+                    </tr>
+                    <tr>
+                        <td>Approve/Cancel</td>
+                        <td>User control before execution begins</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Execution Trace (Phase 2: Human-in-Loop)</h3>
+            <p>Real-time log of execution events with click-to-inspect functionality.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Live Logging</td>
+                        <td>Events appear as execution progresses</td>
+                    </tr>
+                    <tr>
+                        <td>Click to Inspect</td>
+                        <td>Select any entry to see details</td>
+                    </tr>
+                    <tr>
+                        <td>Pause/Resume</td>
+                        <td>Control execution in real-time</td>
+                    </tr>
+                    <tr>
+                        <td>Cancel</td>
+                        <td>Abort execution at any point</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Inspector Panel (Phase 3: Progressive Disclosure)</h3>
+            <p>Drill down into step details with JSON highlighting and expandable sections.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Step Details</td>
+                        <td>Tool name, parameters, timing</td>
+                    </tr>
+                    <tr>
+                        <td>JSON Viewer</td>
+                        <td>Syntax-highlighted result data</td>
+                    </tr>
+                    <tr>
+                        <td>Expandable</td>
+                        <td>Show/hide nested data structures</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Artifact Workspace (Phase 4: Multi-Modal Output)</h3>
+            <p>View and export results in multiple formats.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Results View</td>
+                        <td>Formatted display of execution results</td>
+                    </tr>
+                    <tr>
+                        <td>Chart Rendering</td>
+                        <td>Matplotlib visualizations (if applicable)</td>
+                    </tr>
+                    <tr>
+                        <td>Export JSON</td>
+                        <td>Download results as JSON file</td>
+                    </tr>
+                    <tr>
+                        <td>Export CSV</td>
+                        <td>Download tabular data as CSV</td>
+                    </tr>
+                    <tr>
+                        <td>Export PNG</td>
+                        <td>Download charts as images</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Keyboard Shortcuts</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Shortcut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Ctrl+N</code></td>
+                        <td>New query (clear and focus input)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Ctrl+L</code></td>
+                        <td>Clear execution trace</td>
+                    </tr>
+                    <tr>
+                        <td><code>Enter</code></td>
+                        <td>Submit query (when input focused)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Escape</code></td>
+                        <td>Cancel current operation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Example Queries</h2>
+            <p>Try these queries in the Cockpit to explore the Stan domain:</p>
+            <div class="code-block">
+<span class="comment"># Basic homework exploration</span>
+homework 1
+homework 2
+
+<span class="comment"># Cross-homework comparison</span>
+compare 1 4
+compare homework 1 and 3
+
+<span class="comment"># Search by technique</span>
+suggest classification
+find KNN
+
+<span class="comment"># List resources</span>
+list scripts
+show capabilities
+
+<span class="comment"># Chapter-based exploration</span>
+chapter 7
+chapter 18
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Menu Items</h2>
+            <h3>File Menu</h3>
+            <ul>
+                <li><strong>New Query</strong> - Clear and start fresh</li>
+                <li><strong>Export Results</strong> - Save current results</li>
+                <li><strong>Exit</strong> - Close the application</li>
+            </ul>
+
+            <h3>View Menu</h3>
+            <ul>
+                <li><strong>Clear Trace</strong> - Clear execution log</li>
+                <li><strong>Toggle Inspector</strong> - Show/hide inspector panel</li>
+            </ul>
+
+            <h3>Help Menu</h3>
+            <ul>
+                <li><strong>About</strong> - Version and credits</li>
+                <li><strong>Documentation</strong> - Open this page</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>CLI Alternative</h2>
+            <p>For terminal-based interaction, use the Stan CLI:</p>
+            <div class="code-block">
+<span class="comment"># Interactive REPL mode</span>
+cd domains/Stan/cli
+python main.py
+
+Stan> list homeworks
+Stan> info 1
+Stan> scripts
+Stan> techniques
+Stan> compare 1 4
+Stan> quit
+
+<span class="comment"># Single command mode</span>
+python main.py "homework 1"
+python main.py "compare 1 4"
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>Stan Domain</h4>
+                <a href="index.html">Explore Homeworks</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="tools.html">Tool Registry</a>
+                <a href="cockpit.html">Agentic Cockpit</a>
+            </div>
+            <div>
+                <h4>Reference</h4>
+                <a href="#">Elements of Statistical Learning</a>
+                <a href="https://proto.efehnconsulting.com/project-phoenix/">Project Phoenix</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Stan Domain - Project Phoenix Framework | Built on tau-bench (MIT License, Sierra Research)</p>
+        </div>
+    </footer>
+</body>
+</html>
