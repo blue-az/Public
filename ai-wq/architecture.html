@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture | AI_WQ</title>
+    <meta name="description" content="Four-Phase Agentic Framework with unified agent architecture.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>AI_WQ Architecture</h1>
+            <p class="subtitle">Four-Phase Agentic Framework</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html" class="active">Architecture</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Phase Status</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Status</th>
+                        <th>Components</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Phase 0: Foundation</strong></td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                        <td>CLI, DataClient, ToolRegistry, ExecutionContext</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 1: Glass Box</strong></td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                        <td>PlanBuilder, AgenticEngine, BlueprintPanel, ExecutionTrace</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 2: Human-in-Loop</strong></td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                        <td>Pause/Resume/Cancel controls, InspectorPanel</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 3: Progressive Disclosure</strong></td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                        <td>Expandable blueprint details, tabbed inspector</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 4: Multi-Modal Output</strong></td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                        <td>ArtifactWorkspace, charts, PNG/CSV/JSON export</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Architecture Layers</h2>
+            <div class="flow-diagram">
++------------------------------------------------------------------+
+|                    AI_WQ Unified Interface                        |
+|  +---------------+  +---------------+  +---------------+          |
+|  |    Project    |  |     Model     |  |   Notebook    |          |
+|  |    Explorer   |  |   Discovery   |  |    Browser    |          |
+|  +---------------+  +---------------+  +---------------+          |
++------------------------------------------------------------------+
+                              |
+                              v
++------------------------------------------------------------------+
+|                      ToolRegistry (~18 tools)                     |
+|  +--------------------------------------------------------------+ |
+|  | PROJECT TOOLS (2 per project)                                | |
+|  | - load_proj{1-6}_info                                        | |
+|  | - list_proj{N}_notebooks/models/modules                      | |
+|  +--------------------------------------------------------------+ |
+|  | CROSS-PROJECT TOOLS                                          | |
+|  | - compare_projects, find_similar_projects                    | |
+|  | - list_all_models, suggest_technique                         | |
+|  +--------------------------------------------------------------+ |
+|  | UTILITY TOOLS                                                | |
+|  | - show_capabilities, get_project_info                        | |
+|  +--------------------------------------------------------------+ |
++------------------------------------------------------------------+
+                              |
+                              v
++------------------------------------------------------------------+
+|                 ExecutionContext (3-Tier Cache)                   |
+|  step_results: Dict[int, Any]     # Per-execution step outputs   |
+|  model_cache: Dict[str, Any]      # Loaded models                |
+|  data_cache: Dict[str, Any]       # Project data caching         |
++------------------------------------------------------------------+
+                              |
+                              v
++------------------------------------------------------------------+
+|                        AIDataClient                               |
+|  Source: ~/Python/WQ_AI/AI/                                      |
+|  - Proj1: Camera trap images, CNN models                         |
+|  - Proj2: Cassava dataset, pretrained/fine-tuned models          |
+|  - Proj3: YOLO datasets, augmentation pipelines                  |
+|  - Proj4: Face datasets, MTCNN/FaceNet models                    |
+|  - Proj5: GAN training data, generator/discriminator             |
+|  - Proj6: Diffusion prompts, pipeline configs                    |
++------------------------------------------------------------------+</div>
+        </section>
+
+        <section class="section">
+            <h2>Agentic Engine State Machine</h2>
+            <div class="flow-diagram">
+        +--------+
+        |  IDLE  |
+        +--------+
+             |
+             v
+      +-----------+
+      | PLANNING  |   <-- parse_query()
+      +-----------+
+             |
+             v
++---------------------+
+| AWAITING_APPROVAL   |   <-- approve_plan()
++---------------------+
+             |
+             v
+       +---------+
+       | RUNNING |  -----> COMPLETED
+       +---------+
+          |   ^
+          v   |
+       +--------+
+       | PAUSED |   <-- pause() / resume()
+       +--------+
+          |
+          v
+      +-----------+
+      | CANCELLED |
+      +-----------+</div>
+        </section>
+
+        <section class="section">
+            <h2>File Structure</h2>
+            <div class="code">domains/AI_WQ/
++-- cli/
+|   +-- main.py                  # Phase 0: CLI interface (cmd.Cmd)
++-- cockpit/
+|   +-- ai_wq_cockpit.py         # Phase 1-4: tkinter GUI
+|   +-- ui_components/
+|       +-- blueprint_panel.py   # Plan preview
+|       +-- execution_trace.py   # Real-time log
+|       +-- inspector_panel.py   # Detail drill-down
+|       +-- artifact_workspace.py # Multi-modal output
++-- unified_agent/
+|   +-- data_client.py           # AIDataClient
+|   +-- tool_registry.py         # ~18 tools
+|   +-- execution_context.py     # 3-tier caching
+|   +-- plan_builder.py          # Query -> Plan
+|   +-- agentic_engine.py        # State machine
++-- variations/
+|   +-- variation_1/             # 6 tools (Proj 1-2)
+|   +-- variation_2/             # 10 tools (+ Proj 3-4)
+|   +-- variation_3/             # 18 tools (+ Proj 5-6, cross-project)
++-- Proj1-6/                     # Symlinks to source data
++-- DOMAIN_README.md</div>
+        </section>
+
+        <section class="section">
+            <h2>Plan Builder Pattern Priority</h2>
+            <p>The plan builder uses regex pattern matching with the following priority:</p>
+            <ol>
+                <li><strong>Cross-project patterns</strong> - "compare", "similar", "suggest"</li>
+                <li><strong>Project-specific patterns</strong> - "project 1", "yolo", "gan", "diffusion"</li>
+                <li><strong>Exploration patterns</strong> - "list models", "list projects", "info N"</li>
+                <li><strong>Fallback</strong> - "explore", "overview"</li>
+            </ol>
+            <p>More specific patterns must be matched first to ensure correct plan generation.</p>
+        </section>
+
+        <section class="section">
+            <h2>Example Query Flows</h2>
+            <h3>Flow 1: Project Exploration</h3>
+            <div class="code">User: "What's available in the face recognition project?"
+  -> load_proj4_info
+  -> list_proj4_modules
+  -> Result: MTCNN, InceptionResNet notebooks + Python modules</div>
+
+            <h3>Flow 2: Cross-Project Analysis</h3>
+            <div class="code">User: "Compare CNNs vs YOLOv8 for object detection"
+  -> compare_projects(proj1, proj3)
+  -> suggest_technique("detection")
+  -> Result: Technique comparison with recommendations</div>
+
+            <h3>Flow 3: Model Discovery</h3>
+            <div class="code">User: "What pre-trained models are available?"
+  -> list_all_models
+  -> Result: Models by project with paths</div>
+
+            <h3>Flow 4: Technique Recommendation</h3>
+            <div class="code">User: "Best approach for image generation?"
+  -> suggest_technique("generation")
+  -> Result: GAN (Proj5) or Diffusion (Proj6) recommendations</div>
+        </section>
+
+        <section class="section">
+            <h2>Key Design Decisions</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Lightweight Implementation</h3>
+                    <p>Focus on exploration and metadata; heavy ML ops use source notebooks directly</p>
+                </div>
+                <div class="card">
+                    <h3>Source Reference</h3>
+                    <p>Data lives at ~/Python/WQ_AI/AI/, accessed via symlinks for separation</p>
+                </div>
+                <div class="card">
+                    <h3>Tool Composition</h3>
+                    <p>Cross-project tools compose project-specific tools for complex queries</p>
+                </div>
+                <div class="card">
+                    <h3>Educational Focus</h3>
+                    <p>Tools designed for learning and exploration, not production inference</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>AI_WQ Domain - Project Phoenix | Source: WorldQuant University (CC BY-NC-ND 4.0)</p>
+            <a href="index.html" class="back-link">Back to AI_WQ Home</a>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes | Meal Planning & Recipe Management</title>
+    <meta name="description" content="Comprehensive meal planning and recipe management domain with 28 plant-based recipes, grocery lists, inventory tracking, and store orders.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Part of Project Phoenix - tau-bench Domain</a>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">&#127869;</span>
+                <span class="logo-text">Recipes</span>
+            </a>
+            <nav class="header-nav">
+                <a href="index.html" class="active">Home</a>
+                <a href="categories.html">Categories</a>
+                <a href="tools.html">Tools</a>
+                <a href="meal-planning.html">Meal Planning</a>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="search-section">
+        <div class="search-bar">
+            <span>&#128269;</span>
+            <input type="text" placeholder="Search recipes, ingredients, or try 'find tofu recipes'...">
+            <button>Search</button>
+        </div>
+    </section>
+
+    <main class="main-container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">28</div>
+                <div class="label">Recipes</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">38</div>
+                <div class="label">Ingredients</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">8</div>
+                <div class="label">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">26</div>
+                <div class="label">Tools (V4)</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Browse by Category</h2>
+            <a href="categories.html">View All</a>
+        </div>
+
+        <div class="category-pills">
+            <a href="categories.html#pasta" class="category-pill">Pasta & Noodles</a>
+            <a href="categories.html#breads" class="category-pill">Breads & Flatbreads</a>
+            <a href="categories.html#fritters" class="category-pill">Fritters & Fried</a>
+            <a href="categories.html#mains" class="category-pill">Main Dishes</a>
+            <a href="categories.html#sauces" class="category-pill">Sauces</a>
+            <a href="categories.html#dairy-free" class="category-pill">Dairy-Free</a>
+            <a href="categories.html#desserts" class="category-pill">Frozen Desserts</a>
+            <a href="categories.html#index" class="category-pill">By Ingredient</a>
+        </div>
+
+        <div class="section-header">
+            <h2>Featured Recipes</h2>
+            <a href="categories.html">See All Recipes</a>
+        </div>
+
+        <div class="recipes-grid">
+            <a href="categories.html#pasta" class="recipe-card">
+                <div class="card-image">
+                    <span class="emoji">&#127837;</span>
+                    <span class="category-badge">Pasta</span>
+                </div>
+                <div class="card-body">
+                    <h3>Eggless Fettuccine</h3>
+                    <p>A simple semolina-blend pasta perfect for the pasta machine. Settings 4-5 work well.</p>
+                    <div class="card-meta">
+                        <span>&#127758; Italian</span>
+                        <span>&#127807; Vegan</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="categories.html#fritters" class="recipe-card">
+                <div class="card-image" style="background: linear-gradient(135deg, #845ef7 0%, #7950f2 100%);">
+                    <span class="emoji">&#129388;</span>
+                    <span class="category-badge">Fritters</span>
+                </div>
+                <div class="card-body">
+                    <h3>Tempeh Katsu</h3>
+                    <p>The best plant-based chicken substitute. Texture "almost too close" to chicken.</p>
+                    <div class="card-meta">
+                        <span>&#127758; Japanese</span>
+                        <span>&#127807; Vegan</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="categories.html#mains" class="recipe-card">
+                <div class="card-image" style="background: linear-gradient(135deg, #845ef7 0%, #7950f2 100%);">
+                    <span class="emoji">&#127812;</span>
+                    <span class="category-badge">Main Dish</span>
+                </div>
+                <div class="card-body">
+                    <h3>Slow Cooker Mushroom Confit</h3>
+                    <p>Dried mushrooms rehydrate to 6-8x their weight. Excellent over pasta rags.</p>
+                    <div class="card-meta">
+                        <span>&#128293; Slow Cooker</span>
+                        <span>&#127807; Vegan</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="categories.html#fritters" class="recipe-card">
+                <div class="card-image" style="background: linear-gradient(135deg, #ffa94d 0%, #ff922b 100%);">
+                    <span class="emoji">&#127859;</span>
+                    <span class="category-badge">Street Food</span>
+                </div>
+                <div class="card-body">
+                    <h3>Karantika</h3>
+                    <p>Algerian chickpea custard. Traditional street food with harissa and cumin.</p>
+                    <div class="card-meta">
+                        <span>&#127758; North African</span>
+                        <span>&#127807; Vegan</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <section class="section">
+            <h2>Domain Features</h2>
+            <div class="recipes-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <div style="padding: 1rem;">
+                    <h3 style="color: var(--burgundy);">&#128214; Recipe Lookup</h3>
+                    <p>Search recipes by title, category, cuisine, or ingredients. Case-insensitive with deterministic results.</p>
+                </div>
+                <div style="padding: 1rem;">
+                    <h3 style="color: var(--burgundy);">&#128197; Meal Planning</h3>
+                    <p>Create weekly meal plans, scale servings, and generate shopping lists automatically.</p>
+                </div>
+                <div style="padding: 1rem;">
+                    <h3 style="color: var(--burgundy);">&#129474; Pantry Discovery</h3>
+                    <p>Find recipes using ingredients you have. Get substitution suggestions.</p>
+                </div>
+                <div style="padding: 1rem;">
+                    <h3 style="color: var(--burgundy);">&#11088; Favorites & History</h3>
+                    <p>Track cooking history, save favorites, add notes, and rate recipes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Quick Start</h2>
+            <div class="code-block">
+<span class="comment"># List all categories</span>
+list_categories()
+
+<span class="comment"># Search recipes by title</span>
+find_recipes_by_title(<span class="string">"fettuccine"</span>)
+
+<span class="comment"># Get recipe with ingredients</span>
+get_recipe_by_id(<span class="string">11</span>)  <span class="comment"># Tempeh Katsu</span>
+get_recipe_ingredients(<span class="string">11</span>)
+
+<span class="comment"># Find recipes using available ingredients</span>
+find_recipes_by_pantry([<span class="string">"chickpea flour"</span>, <span class="string">"cumin"</span>])
+
+<span class="comment"># Create a meal plan</span>
+create_meal_plan(<span class="string">"Week 1"</span>, [1, 7, 11, 13, 15])
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>Recipes Domain</h4>
+                <a href="index.html">Home</a>
+                <a href="categories.html">Browse Recipes</a>
+                <a href="tools.html">Tool Registry</a>
+                <a href="meal-planning.html">Meal Planning</a>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+                <a href="https://proto.efehnconsulting.com/project-phoenix/">Project Phoenix</a>
+            </div>
+            <div>
+                <h4>Source</h4>
+                <a href="#">Plant-Based Cookbook</a>
+                <a href="#">tau-bench Framework</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Recipes Domain - Project Phoenix | Built on tau-bench (MIT License)</p>
+        </div>
+    </footer>
+</body>
+</html>

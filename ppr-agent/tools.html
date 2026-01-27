@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools | PPR_Agent</title>
+    <meta name="description" content="6 analytical tools for medical device market intelligence.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>PPR_Agent Tools</h1>
+            <p class="subtitle">6 Analytical Capabilities</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html" class="active">Tools</a>
+            <a href="data.html">Database</a>
+            <a href="companies.html">Companies</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Tool Overview</h2>
+            <p>PPR_Agent provides 6 analytical tools for comprehensive market intelligence. Tools are distributed across 4 variations based on use case.</p>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="number">6</div>
+                    <div class="label">Total Tools</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">73</div>
+                    <div class="label">Sample Tasks</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">4</div>
+                    <div class="label">Variations</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>GetTopDevicesByImplants</h2>
+            <div class="badge">Rankings</div>
+            <p>Retrieves the top devices ranked by US implant volume for a specified year. Optionally filter by company or device category.</p>
+            <h3>Parameters</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>year</code></td>
+                        <td>integer</td>
+                        <td>Yes</td>
+                        <td>Report year (2008-2024)</td>
+                    </tr>
+                    <tr>
+                        <td><code>limit</code></td>
+                        <td>integer</td>
+                        <td>No</td>
+                        <td>Max devices to return (default: 10)</td>
+                    </tr>
+                    <tr>
+                        <td><code>company</code></td>
+                        <td>string</td>
+                        <td>No</td>
+                        <td>ABT, BSX, or MDT</td>
+                    </tr>
+                    <tr>
+                        <td><code>device_category</code></td>
+                        <td>string</td>
+                        <td>No</td>
+                        <td>CRT-D, CRT-P, ICD, Pacemaker, etc.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Example</h3>
+            <div class="code">get_top_devices_by_implants(year=2024, limit=10, company="ABT", device_category="CRT-D")</div>
+        </section>
+
+        <section class="section">
+            <h2>GetMarketShareTrend</h2>
+            <div class="badge">Market Analysis</div>
+            <p>Calculates market share percentages for each company over a time period. Shows how Abbott, Boston Scientific, and Medtronic compare year-by-year.</p>
+            <h3>Parameters</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>start_year</code></td>
+                        <td>integer</td>
+                        <td>Yes</td>
+                        <td>Starting year (2008-2024)</td>
+                    </tr>
+                    <tr>
+                        <td><code>end_year</code></td>
+                        <td>integer</td>
+                        <td>Yes</td>
+                        <td>Ending year (2008-2024)</td>
+                    </tr>
+                    <tr>
+                        <td><code>device_category</code></td>
+                        <td>string</td>
+                        <td>No</td>
+                        <td>Filter by device type</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Example</h3>
+            <div class="code">get_market_share_trend(start_year=2019, end_year=2024, device_category="CRT-D")</div>
+        </section>
+
+        <section class="section">
+            <h2>CompareCompanies</h2>
+            <div class="badge">Competitive Intelligence</div>
+            <p>Compares specified companies across multiple metrics including device count, device families, and total implants over a time period.</p>
+            <h3>Parameters</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>companies</code></td>
+                        <td>array</td>
+                        <td>Yes</td>
+                        <td>List of companies ["ABT", "BSX", "MDT"]</td>
+                    </tr>
+                    <tr>
+                        <td><code>start_year</code></td>
+                        <td>integer</td>
+                        <td>Yes</td>
+                        <td>Starting year</td>
+                    </tr>
+                    <tr>
+                        <td><code>end_year</code></td>
+                        <td>integer</td>
+                        <td>Yes</td>
+                        <td>Ending year</td>
+                    </tr>
+                    <tr>
+                        <td><code>device_category</code></td>
+                        <td>string</td>
+                        <td>No</td>
+                        <td>Filter by device type</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Example</h3>
+            <div class="code">compare_companies(companies=["MDT", "BSX"], start_year=2019, end_year=2024, device_category="ICD")</div>
+        </section>
+
+        <section class="section">
+            <h2>GetDeviceLongevity</h2>
+            <div class="badge">Lifecycle Analysis</div>
+            <p>Finds device families that have been in the market for the longest time, showing their market longevity and lifetime implant volumes.</p>
+            <h3>Parameters</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>min_years</code></td>
+                        <td>integer</td>
+                        <td>No</td>
+                        <td>Minimum years in market (default: 5)</td>
+                    </tr>
+                    <tr>
+                        <td><code>limit</code></td>
+                        <td>integer</td>
+                        <td>No</td>
+                        <td>Max devices to return (default: 20)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Example</h3>
+            <div class="code">get_device_longevity(min_years=5, limit=20)</div>
+        </section>
+
+        <section class="section">
+            <h2>GetYearOverYearGrowth</h2>
+            <div class="badge">Trend Analysis</div>
+            <p>Calculates year-over-year growth rates showing how implant volumes changed between consecutive years.</p>
+            <h3>Parameters</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>start_year</code></td>
+                        <td>integer</td>
+                        <td>Yes</td>
+                        <td>Starting year</td>
+                    </tr>
+                    <tr>
+                        <td><code>end_year</code></td>
+                        <td>integer</td>
+                        <td>Yes</td>
+                        <td>Ending year</td>
+                    </tr>
+                    <tr>
+                        <td><code>company</code></td>
+                        <td>string</td>
+                        <td>No</td>
+                        <td>Filter by company</td>
+                    </tr>
+                    <tr>
+                        <td><code>device_category</code></td>
+                        <td>string</td>
+                        <td>No</td>
+                        <td>Filter by device type</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Example</h3>
+            <div class="code">get_year_over_year_growth(start_year=2019, end_year=2024, company="ABT")</div>
+        </section>
+
+        <section class="section">
+            <h2>SearchDevices</h2>
+            <div class="badge">Search</div>
+            <p>Searches for devices by name or model number using partial text matching.</p>
+            <h3>Parameters</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>search_term</code></td>
+                        <td>string</td>
+                        <td>Yes</td>
+                        <td>Text to search for</td>
+                    </tr>
+                    <tr>
+                        <td><code>year</code></td>
+                        <td>integer</td>
+                        <td>No</td>
+                        <td>Filter by year</td>
+                    </tr>
+                    <tr>
+                        <td><code>company</code></td>
+                        <td>string</td>
+                        <td>No</td>
+                        <td>Filter by company</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Example</h3>
+            <div class="code">search_devices(search_term="Quadra", year=2024, company="ABT")</div>
+        </section>
+
+        <section class="section">
+            <h2>Tool Distribution by Variation</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>V1 Complete</th>
+                        <th>V2 Basic</th>
+                        <th>V3 Temporal</th>
+                        <th>V4 Competitive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GetTopDevicesByImplants</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>GetMarketShareTrend</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td>-</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                    </tr>
+                    <tr>
+                        <td>CompareCompanies</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td>-</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                    </tr>
+                    <tr>
+                        <td>GetDeviceLongevity</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td>-</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>GetYearOverYearGrowth</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td>-</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>SearchDevices</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                        <td>-</td>
+                        <td><span class="tech-tag green">Yes</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>PPR_Agent Domain - Project Phoenix | Medical Device Market Intelligence</p>
+            <a href="index.html" class="back-link">Back to PPR_Agent Home</a>
+        </footer>
+    </div>
+</body>
+</html>

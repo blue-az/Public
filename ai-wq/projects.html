@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | AI_WQ</title>
+    <meta name="description" content="6 computer vision projects covering classification, detection, recognition, and generative models.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>AI_WQ Projects</h1>
+            <p class="subtitle">6 Computer Vision Projects</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html" class="active">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Project Overview</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Domain</th>
+                        <th>Key Techniques</th>
+                        <th>Data Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Proj1</strong></td>
+                        <td>Image Classification (Wildlife)</td>
+                        <td>CNN, Binary/Multiclass</td>
+                        <td>Images</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proj2</strong></td>
+                        <td>Transfer Learning (Cassava)</td>
+                        <td>Fine-tuning, Callbacks</td>
+                        <td>Images</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proj3</strong></td>
+                        <td>Object Detection</td>
+                        <td>YOLOv8, Data Augmentation</td>
+                        <td>Images + Annotations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proj4</strong></td>
+                        <td>Face Recognition</td>
+                        <td>MTCNN, InceptionResNet, Flask</td>
+                        <td>Face Images</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proj5</strong></td>
+                        <td>GANs</td>
+                        <td>Generator/Discriminator</td>
+                        <td>Training Images</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proj6</strong></td>
+                        <td>Diffusion Models</td>
+                        <td>Stable Diffusion, Prompting</td>
+                        <td>Text Prompts</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Proj1: Image Classification</h2>
+            <div class="badge primary">Camera Traps</div>
+            <p>CNN from scratch for wildlife camera trap image classification. Covers binary classification (animal/no animal) and multiclass species identification.</p>
+            <h3>Notebooks</h3>
+            <ul>
+                <li><strong>011</strong> - Image as Data: Loading and preprocessing camera trap images</li>
+                <li><strong>013</strong> - Binary Classification: Animal vs. no animal detection</li>
+                <li><strong>014</strong> - Multiclass Classification: Species identification</li>
+            </ul>
+            <h3>Techniques</h3>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <span class="tech-tag">CNN from scratch</span>
+                <span class="tech-tag">Custom training loops</span>
+                <span class="tech-tag">Data preprocessing</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Proj2: Transfer Learning</h2>
+            <div class="badge primary">Cassava Disease</div>
+            <p>Fine-tuning pretrained models for cassava leaf disease detection. Demonstrates transfer learning with callbacks for early stopping.</p>
+            <h3>Notebooks</h3>
+            <ul>
+                <li><strong>023</strong> - Multiclass Classification: Disease category prediction</li>
+                <li><strong>024</strong> - Transfer Learning: Fine-tuning pretrained models</li>
+                <li><strong>025</strong> - Callbacks: Early stopping and model checkpointing</li>
+            </ul>
+            <h3>Models</h3>
+            <ul>
+                <li><code>pretrained_model.pth</code> - Base pretrained weights</li>
+                <li><code>model_trained.pth</code> - Fine-tuned model</li>
+            </ul>
+            <h3>Techniques</h3>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <span class="tech-tag">EfficientNet</span>
+                <span class="tech-tag">ResNet50</span>
+                <span class="tech-tag">VGG16</span>
+                <span class="tech-tag">Early stopping</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Proj3: Object Detection</h2>
+            <div class="badge primary">YOLOv8</div>
+            <p>Object detection using YOLOv8 with custom training and data augmentation pipelines.</p>
+            <h3>Notebooks</h3>
+            <ul>
+                <li><strong>033</strong> - Basic YOLO: Introduction to object detection</li>
+                <li><strong>034</strong> - Custom Objects: Training on custom datasets</li>
+                <li><strong>035</strong> - Data Augmentation: Improving model robustness</li>
+            </ul>
+            <h3>Techniques</h3>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <span class="tech-tag">YOLOv8</span>
+                <span class="tech-tag">Bounding boxes</span>
+                <span class="tech-tag">Augmentation pipelines</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Proj4: Face Recognition</h2>
+            <div class="badge primary">MTCNN + FaceNet</div>
+            <p>Face detection and recognition with MTCNN and InceptionResNet, deployed as a Flask API.</p>
+            <h3>Notebooks</h3>
+            <ul>
+                <li><strong>043</strong> - MTCNN: Face detection</li>
+                <li><strong>044</strong> - InceptionResNet: Face embedding extraction</li>
+                <li><strong>045</strong> - Flask API: Web service deployment</li>
+            </ul>
+            <h3>Modules</h3>
+            <ul>
+                <li><code>facenet.py</code> - FaceNet embedding model</li>
+                <li><code>wq_face_recognition.py</code> - Recognition pipeline</li>
+                <li><code>wq_app.py</code> - Flask web application</li>
+            </ul>
+            <h3>Techniques</h3>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <span class="tech-tag">MTCNN</span>
+                <span class="tech-tag">InceptionResNet</span>
+                <span class="tech-tag">Embeddings</span>
+                <span class="tech-tag">Flask API</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Proj5: Generative Adversarial Networks</h2>
+            <div class="badge primary">GANs</div>
+            <p>Training GANs with generator and discriminator networks for image generation.</p>
+            <h3>Notebooks</h3>
+            <ul>
+                <li><strong>052</strong> - Vanilla GAN: Basic GAN architecture and training</li>
+            </ul>
+            <h3>Models</h3>
+            <ul>
+                <li><code>generator_99.pth</code> - Trained generator weights</li>
+                <li><code>discriminator_99.pth</code> - Trained discriminator weights</li>
+            </ul>
+            <h3>Techniques</h3>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <span class="tech-tag">DCGAN</span>
+                <span class="tech-tag">Generator</span>
+                <span class="tech-tag">Discriminator</span>
+                <span class="tech-tag">Adversarial training</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Proj6: Diffusion Models</h2>
+            <div class="badge primary">Stable Diffusion</div>
+            <p>Text-to-image generation using Stable Diffusion with prompt engineering techniques.</p>
+            <h3>Notebooks</h3>
+            <ul>
+                <li><strong>062</strong> - Diffusion Pipelines: Text-to-image generation</li>
+            </ul>
+            <h3>Techniques</h3>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <span class="tech-tag">Stable Diffusion</span>
+                <span class="tech-tag">Prompt engineering</span>
+                <span class="tech-tag">Text-to-image</span>
+                <span class="tech-tag">Pipeline configs</span>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>AI_WQ Domain - Project Phoenix | Source: WorldQuant University (CC BY-NC-ND 4.0)</p>
+            <a href="index.html" class="back-link">Back to AI_WQ Home</a>
+        </footer>
+    </div>
+</body>
+</html>

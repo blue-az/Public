@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Model | Recipes</title>
+    <meta name="description" content="18 data tables for recipes, planning, inventory, and shopping.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Part of Project Phoenix - tau-bench Domain</a>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">&#127869;</span>
+                <span class="logo-text">Recipes</span>
+            </a>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="categories.html">Categories</a>
+                <a href="tools.html">Tools</a>
+                <a href="meal-planning.html">Meal Planning</a>
+                <a href="data.html" class="active">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Data Model</h1>
+        <p class="subtitle">18 Tables for Complete Recipe Management</p>
+    </div>
+
+    <main class="main-container">
+        <section class="section">
+            <h2>Data Sources</h2>
+            <p>The domain has two data sources: plant-based cookbook (derived JSON) and household management (JSON fixtures).</p>
+            <div class="code-block">
+recipes/
+├── data/
+│   ├── plant-based-cookbook.md    <span class="comment"># Source of truth for recipes</span>
+│   └── v1/                        <span class="comment"># Derived JSON tables</span>
+│       ├── categories.json        <span class="comment"># 8 categories</span>
+│       ├── recipes.json           <span class="comment"># 28 recipes</span>
+│       ├── ingredients.json       <span class="comment"># 38 ingredients</span>
+│       ├── recipe_ingredients.json <span class="comment"># 59 mappings</span>
+│       ├── techniques.json        <span class="comment"># 6 techniques</span>
+│       ├── meal_plans.json        <span class="comment"># Runtime state</span>
+│       ├── favorites.json
+│       ├── cook_history.json
+│       ├── recipe_notes.json
+│       └── recipe_ratings.json
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Table Categories</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Tables</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Users</strong></td>
+                        <td>users, households, members</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recipes</strong></td>
+                        <td>recipes, ingredients, recipe_ingredients, categories, techniques</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Planning</strong></td>
+                        <td>meal_plans, meal_plan_entries, meal_history</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inventory</strong></td>
+                        <td>inventory_items</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shopping</strong></td>
+                        <td>grocery_lists, grocery_list_items</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stores</strong></td>
+                        <td>stores, store_products, orders, order_items</td>
+                    </tr>
+                    <tr>
+                        <td><strong>System</strong></td>
+                        <td>audit_logs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Personalization</strong></td>
+                        <td>favorites, cook_history, recipe_notes, recipe_ratings</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Core Tables</h2>
+
+            <h3>recipes</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>recipe_id</td><td>int</td><td>Primary key (1-28)</td></tr>
+                    <tr><td>title</td><td>string</td><td>Recipe title</td></tr>
+                    <tr><td>category_id</td><td>int</td><td>FK to categories</td></tr>
+                    <tr><td>cuisine</td><td>string</td><td>Cuisine type</td></tr>
+                    <tr><td>meal_type</td><td>string</td><td>Breakfast/Lunch/Dinner</td></tr>
+                    <tr><td>servings</td><td>int</td><td>Default servings</td></tr>
+                    <tr><td>prep_time_min</td><td>int</td><td>Prep time in minutes</td></tr>
+                    <tr><td>cook_time_min</td><td>int</td><td>Cook time in minutes</td></tr>
+                    <tr><td>calories_per_serving</td><td>int</td><td>Calorie count</td></tr>
+                    <tr><td>protein_g_per_serving</td><td>int</td><td>Protein in grams</td></tr>
+                    <tr><td>is_peanut_free</td><td>bool</td><td>Peanut-free flag</td></tr>
+                </tbody>
+            </table>
+
+            <h3>ingredients</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>ingredient_id</td><td>int</td><td>Primary key (1001+)</td></tr>
+                    <tr><td>ingredient_name</td><td>string</td><td>Ingredient name</td></tr>
+                    <tr><td>grocery_section</td><td>string</td><td>Store section</td></tr>
+                    <tr><td>default_unit</td><td>string</td><td>Default unit (g, ml, etc.)</td></tr>
+                    <tr><td>pantry_staple_flag</td><td>bool</td><td>Common staple item</td></tr>
+                    <tr><td>peanut_free_flag</td><td>bool</td><td>Safe for peanut allergies</td></tr>
+                </tbody>
+            </table>
+
+            <h3>recipe_ingredients</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>recipe_id</td><td>int</td><td>FK to recipes</td></tr>
+                    <tr><td>ingredient_id</td><td>int</td><td>FK to ingredients</td></tr>
+                    <tr><td>quantity</td><td>float</td><td>Amount needed</td></tr>
+                    <tr><td>unit</td><td>string</td><td>Measurement unit</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>ID Strategy</h2>
+            <p>Deterministic ID assignment for reproducible evaluation:</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>ID Range</th>
+                        <th>Strategy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>categories</td><td>1-8</td><td>Order from markdown</td></tr>
+                    <tr><td>recipes</td><td>1-28</td><td>Sequential by category</td></tr>
+                    <tr><td>ingredients</td><td>1001+</td><td>Offset from recipe IDs</td></tr>
+                    <tr><td>techniques</td><td>1-6</td><td>Sequential</td></tr>
+                    <tr><td>meal_plans</td><td>6000+</td><td>Runtime auto-increment</td></tr>
+                    <tr><td>grocery_lists</td><td>8000+</td><td>Runtime auto-increment</td></tr>
+                    <tr><td>orders</td><td>10000+</td><td>Runtime auto-increment</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Data Pipeline</h2>
+            <div class="code-block">
+plant-based-cookbook.md  -->  parse_cookbook.py  -->  data/v1/*.json
+     (source of truth)           (parser)            (derived data)
+
+<span class="comment"># Regenerate JSON from markdown</span>
+cd domains/Recipes
+python scripts/parse_cookbook.py
+
+<span class="comment"># Dry run (preview without writing)</span>
+python scripts/parse_cookbook.py --dry-run
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>Recipes Domain</h4>
+                <a href="index.html">Home</a>
+                <a href="categories.html">Browse Recipes</a>
+                <a href="tools.html">Tool Registry</a>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Recipes Domain - Project Phoenix | Built on tau-bench (MIT License)</p>
+        </div>
+    </footer>
+</body>
+</html>

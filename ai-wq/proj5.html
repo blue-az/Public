@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 5: GANs | AI_WQ</title>
+    <meta name="description" content="Generative Adversarial Networks with generator and discriminator training.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge primary">Project 5</div>
+            <h1>Generative Adversarial Networks</h1>
+            <p class="subtitle">Generator & Discriminator Training</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="variations.html">Variations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>Training Generative Adversarial Networks (GANs) for image generation. This project covers the adversarial training paradigm with generator and discriminator networks competing to produce realistic images.</p>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem;">
+                <span class="tech-tag">Vanilla GAN</span>
+                <span class="tech-tag">DCGAN</span>
+                <span class="tech-tag">Generator</span>
+                <span class="tech-tag">Discriminator</span>
+                <span class="tech-tag data">Training Images</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Notebooks</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Notebook</th>
+                        <th>Topic</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>052</strong></td>
+                        <td>Vanilla GAN</td>
+                        <td>Basic GAN architecture, adversarial training, image generation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Available Models</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>File</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Generator</td>
+                        <td><code>generator_99.pth</code></td>
+                        <td>Trained generator weights (epoch 99)</td>
+                    </tr>
+                    <tr>
+                        <td>Discriminator</td>
+                        <td><code>discriminator_99.pth</code></td>
+                        <td>Trained discriminator weights (epoch 99)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Key Techniques</h2>
+            <ul>
+                <li><strong>Adversarial Training</strong> - Minimax game between generator and discriminator</li>
+                <li><strong>Generator Network</strong> - Transforms latent vectors to images via transposed convolutions</li>
+                <li><strong>Discriminator Network</strong> - Binary classifier distinguishing real from fake images</li>
+                <li><strong>Training Stability</strong> - Techniques for stable GAN training (batch norm, LeakyReLU)</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Available Tools</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                        <th>Variation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>load_proj5_info</code></td>
+                        <td>Get Project 5 (GANs) information and resources</td>
+                        <td>V3</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_proj5_models</code></td>
+                        <td>List GAN models (generator/discriminator)</td>
+                        <td>V3</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>AI_WQ Domain - Project Phoenix | Source: WorldQuant University (CC BY-NC-ND 4.0)</p>
+            <a href="projects.html" class="back-link">Back to Projects</a>
+        </footer>
+    </div>
+</body>
+</html>

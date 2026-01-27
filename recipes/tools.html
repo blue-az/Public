@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools | Recipes</title>
+    <meta name="description" content="26 tools across 4 variations for recipe lookup, meal planning, and more.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Part of Project Phoenix - tau-bench Domain</a>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">&#127869;</span>
+                <span class="logo-text">Recipes</span>
+            </a>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="categories.html">Categories</a>
+                <a href="tools.html" class="active">Tools</a>
+                <a href="meal-planning.html">Meal Planning</a>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Tool Registry</h1>
+        <p class="subtitle">26 Tools for Recipe Management and Meal Planning</p>
+    </div>
+
+    <main class="main-container">
+        <section class="section">
+            <h2>V1: Recipe Lookup (10 tools)</h2>
+            <p>Read-only tools for searching and browsing recipes.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>list_categories</code></td>
+                        <td>List all recipe categories</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_recipe_by_id</code></td>
+                        <td>Get recipe by ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_recipes</code></td>
+                        <td>List recipes, optionally by category</td>
+                    </tr>
+                    <tr>
+                        <td><code>find_recipes_by_title</code></td>
+                        <td>Search by title substring (case-insensitive)</td>
+                    </tr>
+                    <tr>
+                        <td><code>filter_recipes_by_cuisine</code></td>
+                        <td>Filter by cuisine type</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_recipe_ingredients</code></td>
+                        <td>Get ingredients for a recipe</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_ingredient_by_id</code></td>
+                        <td>Get ingredient details</td>
+                    </tr>
+                    <tr>
+                        <td><code>find_ingredient_by_name</code></td>
+                        <td>Search ingredients by name</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_recipes_by_ingredient</code></td>
+                        <td>Find recipes using an ingredient</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_technique</code></td>
+                        <td>Get technique reference</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>V2: Meal Planning (+4 tools = 14 total)</h2>
+            <p>Create meal plans and generate shopping lists.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>scale_recipe_servings</code></td>
+                        <td>Scale ingredients to target servings</td>
+                    </tr>
+                    <tr>
+                        <td><code>create_meal_plan</code></td>
+                        <td>Create meal plans with recipe entries</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_meal_plan</code></td>
+                        <td>Retrieve meal plan with recipe details</td>
+                    </tr>
+                    <tr>
+                        <td><code>generate_shopping_list</code></td>
+                        <td>Aggregate ingredients from a meal plan</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>V3: Pantry & Discovery (+4 tools = 18 total)</h2>
+            <p>Find recipes based on what you have and get substitutions.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>find_recipes_by_pantry</code></td>
+                        <td>Find recipes using available ingredients</td>
+                    </tr>
+                    <tr>
+                        <td><code>suggest_substitution</code></td>
+                        <td>Suggest ingredient substitutions</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_common_ingredients</code></td>
+                        <td>Most-used ingredients across recipes</td>
+                    </tr>
+                    <tr>
+                        <td><code>find_similar_recipes</code></td>
+                        <td>Recipes with overlapping ingredients</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>V4: Favorites, History, Notes & Ratings (+8 tools = 26 total)</h2>
+            <p>Track your cooking journey and personalize recipes.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>add_favorite</code></td>
+                        <td>Mark a recipe as favorite</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_favorites</code></td>
+                        <td>List all favorite recipes</td>
+                    </tr>
+                    <tr>
+                        <td><code>log_cook_event</code></td>
+                        <td>Record when a recipe was cooked</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_cook_history</code></td>
+                        <td>View cooking history</td>
+                    </tr>
+                    <tr>
+                        <td><code>add_recipe_note</code></td>
+                        <td>Add personal note to a recipe</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_recipe_notes</code></td>
+                        <td>Get notes for a recipe</td>
+                    </tr>
+                    <tr>
+                        <td><code>rate_recipe</code></td>
+                        <td>Rate a recipe (1-5 stars)</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_top_rated</code></td>
+                        <td>List highest-rated recipes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Usage Examples</h2>
+            <div class="code-block">
+<span class="comment"># V1: Recipe Lookup</span>
+categories = list_categories()
+recipes = find_recipes_by_title(<span class="string">"tofu"</span>)
+ingredients = get_recipe_ingredients(<span class="string">5</span>)
+
+<span class="comment"># V2: Meal Planning</span>
+scaled = scale_recipe_servings(<span class="string">5</span>, <span class="string">8</span>)  <span class="comment"># Scale recipe 5 to 8 servings</span>
+plan = create_meal_plan(<span class="string">"Week of Jan 6"</span>, [1, 5, 12, 18])
+shopping = generate_shopping_list(plan_id)
+
+<span class="comment"># V3: Pantry Discovery</span>
+can_make = find_recipes_by_pantry([<span class="string">"tofu"</span>, <span class="string">"rice"</span>, <span class="string">"soy sauce"</span>])
+sub = suggest_substitution(<span class="string">"butter"</span>)  <span class="comment"># Returns: "coconut oil"</span>
+
+<span class="comment"># V4: Favorites & History</span>
+add_favorite(<span class="string">5</span>)
+log_cook_event(<span class="string">5</span>, <span class="string">"2025-01-15"</span>)
+rate_recipe(<span class="string">5</span>, <span class="string">5</span>)  <span class="comment"># 5 stars!</span>
+add_recipe_note(<span class="string">5</span>, <span class="string">"Added extra garlic, delicious!"</span>)
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>Recipes Domain</h4>
+                <a href="index.html">Home</a>
+                <a href="categories.html">Browse Recipes</a>
+                <a href="tools.html">Tool Registry</a>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Recipes Domain - Project Phoenix | Built on tau-bench (MIT License)</p>
+        </div>
+    </footer>
+</body>
+</html>

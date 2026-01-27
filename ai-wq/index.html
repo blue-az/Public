@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI_WQ | Computer Vision & Generative AI</title>
+    <meta name="description" content="Project Phoenix domain for WorldQuant University's AI Lab curriculum covering deep learning for computer vision.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>AI_WQ</h1>
+            <p class="subtitle">Computer Vision & Generative AI</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="number">6</div>
+                <div class="label">Projects</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">18</div>
+                <div class="label">Tools</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">3</div>
+                <div class="label">Variations</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">5</div>
+                <div class="label">Phases</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Domain Overview</h2>
+            <p>AI_WQ is a Project Phoenix domain for WorldQuant University's AI Lab curriculum covering deep learning for computer vision. It implements the complete Four-Phase Agentic Framework with CLI, Cockpit GUI, and unified agent architecture.</p>
+            <p>The domain spans 6 projects from basic image classification through generative models, providing a comprehensive exploration of modern computer vision techniques.</p>
+        </section>
+
+        <section class="section">
+            <h2>Project Catalog</h2>
+            <div class="grid">
+                <div class="card project-card">
+                    <h3>Proj1: Image Classification</h3>
+                    <p>CNN from scratch for wildlife camera trap images. Binary and multiclass classification.</p>
+                    <div class="techniques">
+                        <span class="tech-tag">CNN</span>
+                        <span class="tech-tag">Binary</span>
+                        <span class="tech-tag">Multiclass</span>
+                    </div>
+                    <a href="proj1.html">View Details</a>
+                </div>
+                <div class="card project-card">
+                    <h3>Proj2: Transfer Learning</h3>
+                    <p>Fine-tuning pretrained models for cassava disease detection with callbacks.</p>
+                    <div class="techniques">
+                        <span class="tech-tag">Fine-tuning</span>
+                        <span class="tech-tag">Pretrained</span>
+                        <span class="tech-tag">Callbacks</span>
+                    </div>
+                    <a href="proj2.html">View Details</a>
+                </div>
+                <div class="card project-card">
+                    <h3>Proj3: Object Detection</h3>
+                    <p>YOLOv8 for object detection with data augmentation techniques.</p>
+                    <div class="techniques">
+                        <span class="tech-tag">YOLOv8</span>
+                        <span class="tech-tag">Detection</span>
+                        <span class="tech-tag">Augmentation</span>
+                    </div>
+                    <a href="proj3.html">View Details</a>
+                </div>
+                <div class="card project-card">
+                    <h3>Proj4: Face Recognition</h3>
+                    <p>MTCNN and InceptionResNet for face detection with Flask API deployment.</p>
+                    <div class="techniques">
+                        <span class="tech-tag">MTCNN</span>
+                        <span class="tech-tag">InceptionResNet</span>
+                        <span class="tech-tag">Flask API</span>
+                    </div>
+                    <a href="proj4.html">View Details</a>
+                </div>
+                <div class="card project-card">
+                    <h3>Proj5: GANs</h3>
+                    <p>Generative Adversarial Networks with generator and discriminator training.</p>
+                    <div class="techniques">
+                        <span class="tech-tag">Vanilla GAN</span>
+                        <span class="tech-tag">Generator</span>
+                        <span class="tech-tag">Discriminator</span>
+                    </div>
+                    <a href="proj5.html">View Details</a>
+                </div>
+                <div class="card project-card">
+                    <h3>Proj6: Diffusion Models</h3>
+                    <p>Stable Diffusion for text-to-image generation with prompt engineering.</p>
+                    <div class="techniques">
+                        <span class="tech-tag">Stable Diffusion</span>
+                        <span class="tech-tag">Prompting</span>
+                        <span class="tech-tag">Text-to-Image</span>
+                    </div>
+                    <a href="proj6.html">View Details</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Quick Start</h2>
+            <h3>CLI (Phase 0)</h3>
+            <div class="code">cd domains/AI_WQ/cli
+python main.py
+
+AI_WQ> <span class="highlight">list projects</span>
+AI_WQ> <span class="highlight">info 1</span>
+AI_WQ> <span class="highlight">models</span>
+AI_WQ> <span class="highlight">suggest detection</span>
+AI_WQ> <span class="highlight">compare 1 3</span></div>
+
+            <h3>Cockpit GUI (Phase 1-4)</h3>
+            <div class="code">cd domains/AI_WQ/cockpit
+python ai_wq_cockpit.py</div>
+            <p>Features: Blueprint Panel, Execution Trace, Inspector Panel, Artifact Workspace, Pause/Resume/Cancel</p>
+
+            <h3>Agentic Interface</h3>
+            <div class="code"><span class="highlight-primary">from</span> unified_agent <span class="highlight-primary">import</span> AIDataClient, ToolRegistry, ExecutionContext
+<span class="highlight-primary">from</span> unified_agent <span class="highlight-primary">import</span> PlanBuilder, AgenticEngine
+
+<span class="highlight-secondary"># Initialize</span>
+client = AIDataClient()
+context = ExecutionContext()
+tools = ToolRegistry(client, context)
+engine = AgenticEngine(tools, context)
+
+<span class="highlight-secondary"># Parse query and execute</span>
+plan = engine.parse_query(<span class="highlight">"explore project 1 image classification"</span>)
+engine.approve_plan()
+result = engine.execute()</div>
+        </section>
+
+        <section class="section">
+            <h2>Key Features</h2>
+            <div class="grid grid-4">
+                <div class="card">
+                    <h3>Cross-Project Analysis</h3>
+                    <p>Compare techniques across all 6 projects</p>
+                </div>
+                <div class="card">
+                    <h3>Model Discovery</h3>
+                    <p>Find pretrained models and weights</p>
+                </div>
+                <div class="card">
+                    <h3>Technique Suggestions</h3>
+                    <p>Get recommendations for CV problems</p>
+                </div>
+                <div class="card">
+                    <h3>Glass Box Execution</h3>
+                    <p>Preview plans before running</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>AI_WQ Domain - Project Phoenix | Source: WorldQuant University (CC BY-NC-ND 4.0)</p>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="back-link">Back to Project Phoenix</a>
+        </footer>
+    </div>
+</body>
+</html>

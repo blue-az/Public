@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPR_Agent | Medical Device Market Intelligence</title>
+    <meta name="description" content="Product Performance Report data extraction and analysis for cardiac rhythm management devices.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>PPR_Agent</h1>
+            <p class="subtitle">Medical Device Market Intelligence</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="data.html">Database</a>
+            <a href="companies.html">Companies</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="number">2,374</div>
+                <div class="label">Devices</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">57.8M</div>
+                <div class="label">US Implants</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">17</div>
+                <div class="label">Years</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">3</div>
+                <div class="label">Companies</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Domain Overview</h2>
+            <p>PPR_Agent is an automated system for extracting and analyzing cardiac rhythm management (CRM) device data from Product Performance Reports (PPRs) published by Abbott, Boston Scientific, and Medtronic.</p>
+            <p>The system covers 17 years of data (2008-2024) with comprehensive market share analysis, competitive intelligence, and trend forecasting capabilities.</p>
+        </section>
+
+        <section class="section">
+            <h2>Database Coverage</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Devices</td>
+                        <td>2,374</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>Total US Implants</td>
+                        <td>57.8 million</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>Year Coverage</td>
+                        <td>2008-2024 (17 years)</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>Companies</td>
+                        <td>3 (ABT, BSX, MDT)</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>Complete 3-Company Coverage</td>
+                        <td>2014-2024 (11 years)</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>Data Quality</td>
+                        <td>95.7% identification rate</td>
+                        <td><span class="tech-tag green">Excellent</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Device Categories</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3>Pacemaker</h3>
+                    <p>844 devices, 35.8M implants</p>
+                    <div class="meta">Traditional rhythm management</div>
+                </div>
+                <div class="card">
+                    <h3>ICD</h3>
+                    <p>902 devices, 12.0M implants</p>
+                    <div class="meta">Implantable Cardioverter Defibrillator</div>
+                </div>
+                <div class="card">
+                    <h3>CRT-D</h3>
+                    <p>511 devices, 8.5M implants</p>
+                    <div class="meta">Cardiac Resynchronization Therapy</div>
+                </div>
+                <div class="card">
+                    <h3>CRT-P</h3>
+                    <p>116 devices, 1.4M implants</p>
+                    <div class="meta">CRT Pacemaker (no defibrillator)</div>
+                </div>
+                <div class="card">
+                    <h3>S-ICD</h3>
+                    <p>Subcutaneous ICD</p>
+                    <div class="meta">No transvenous leads</div>
+                </div>
+                <div class="card">
+                    <h3>TPS / Leadless</h3>
+                    <p>1 device, 100K implants</p>
+                    <div class="meta">Leadless pacemaker technology</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Sample Queries</h2>
+            <div class="code"><span class="highlight-secondary"># What were the top 10 devices by implant volume in 2024?</span>
+get_top_devices_by_implants(year=2024, limit=10)
+
+<span class="highlight-secondary"># Show Abbott's market share trend for CRT-D over the last 5 years</span>
+get_market_share_trend(start_year=2019, end_year=2024, device_category="CRT-D")
+
+<span class="highlight-secondary"># Compare Medtronic and Boston Scientific ICD devices</span>
+compare_companies(companies=["MDT", "BSX"], start_year=2019, end_year=2024, device_category="ICD")
+
+<span class="highlight-secondary"># Which device families have been in the market the longest?</span>
+get_device_longevity(min_years=5, limit=20)
+
+<span class="highlight-secondary"># Find all Quadra devices in the database</span>
+search_devices(search_term="Quadra")</div>
+        </section>
+
+        <section class="section">
+            <h2>Available Tools</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>GetTopDevicesByImplants</h3>
+                    <p>Rankings by implant volume with year, company, and category filters</p>
+                </div>
+                <div class="card">
+                    <h3>GetMarketShareTrend</h3>
+                    <p>Market share percentages over time by company and category</p>
+                </div>
+                <div class="card">
+                    <h3>CompareCompanies</h3>
+                    <p>Multi-company competitive analysis across metrics</p>
+                </div>
+                <div class="card">
+                    <h3>GetDeviceLongevity</h3>
+                    <p>Long-term product tracking and lifecycle analysis</p>
+                </div>
+                <div class="card">
+                    <h3>GetYearOverYearGrowth</h3>
+                    <p>Growth trend analysis with YoY calculations</p>
+                </div>
+                <div class="card">
+                    <h3>SearchDevices</h3>
+                    <p>Text search for device families and model numbers</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>PPR_Agent Domain - Project Phoenix | Medical Device Market Intelligence</p>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="back-link">Back to Project Phoenix</a>
+        </footer>
+    </div>
+</body>
+</html>

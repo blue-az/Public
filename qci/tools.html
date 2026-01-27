@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools | QCiAgent</title>
+    <meta name="description" content="21 analytical tools for quantum computing product intelligence.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>QCiAgent Tools</h1>
+            <p class="subtitle">21 Analytical Capabilities</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="tools.html" class="active">Tools</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Tool Overview</h2>
+            <p>QCiAgent provides 21 tools across 3 variations, covering product discovery, financial analysis, and interview preparation.</p>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="number">8</div>
+                    <div class="label">V1 Core</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">6</div>
+                    <div class="label">V2 Extended</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">7</div>
+                    <div class="label">V3 Interview</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>V1: Core Tools (8)</h2>
+            <div class="badge">Product Discovery</div>
+
+            <h3>search_products</h3>
+            <p>Search for QCi products by name, category, or keyword.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>query</code></td><td>string</td><td>Yes</td><td>Search term</td></tr>
+                    <tr><td><code>category</code></td><td>string</td><td>No</td><td>quantum_optimization, software, quantum_ml</td></tr>
+                </tbody>
+            </table>
+
+            <h3>get_product_details</h3>
+            <p>Get detailed specifications for a specific product.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>product_id</code></td><td>string</td><td>Yes</td><td>dirac-1, dirac-2, dirac-3, qatalyst, qci-reservoir</td></tr>
+                </tbody>
+            </table>
+
+            <h3>get_solutions</h3>
+            <p>Get industry solutions offered by QCi.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>industry</code></td><td>string</td><td>No</td><td>finance, logistics, pharmaceutical, energy, manufacturing</td></tr>
+                </tbody>
+            </table>
+
+            <h3>match_use_case</h3>
+            <p>Find use cases matching customer requirements.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>industry</code></td><td>string</td><td>No</td><td>Industry vertical</td></tr>
+                    <tr><td><code>problem_keywords</code></td><td>string</td><td>No</td><td>Keywords describing the problem</td></tr>
+                </tbody>
+            </table>
+
+            <h3>compare_products</h3>
+            <p>Compare multiple products side by side.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>product_ids</code></td><td>array</td><td>Yes</td><td>List of product IDs to compare</td></tr>
+                </tbody>
+            </table>
+
+            <h3>recommend_product</h3>
+            <p>Get product recommendations based on requirements.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>industry</code></td><td>string</td><td>No</td><td>Customer's industry</td></tr>
+                    <tr><td><code>problem_size</code></td><td>integer</td><td>No</td><td>Number of variables</td></tr>
+                    <tr><td><code>budget_tier</code></td><td>string</td><td>No</td><td>starter, professional, enterprise</td></tr>
+                </tbody>
+            </table>
+
+            <h3>get_customer_stories</h3>
+            <p>Get customer success stories and testimonials.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>industry</code></td><td>string</td><td>No</td><td>Industry filter</td></tr>
+                </tbody>
+            </table>
+
+            <h3>get_technologies</h3>
+            <p>Get information about QCi's quantum computing technologies.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>technology_id</code></td><td>string</td><td>No</td><td>tech-eqc, tech-photonic, tech-qubo</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>V2: Extended Tools (6)</h2>
+            <div class="badge">Financial Analysis</div>
+
+            <h3>analyze_roi</h3>
+            <p>Calculate return on investment for deploying a QCi product.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>product_id</code></td><td>string</td><td>Yes</td><td>Product to analyze</td></tr>
+                    <tr><td><code>industry</code></td><td>string</td><td>Yes</td><td>Customer's industry</td></tr>
+                    <tr><td><code>annual_problem_runs</code></td><td>integer</td><td>No</td><td>Expected annual runs (default: 1000)</td></tr>
+                    <tr><td><code>classical_cost_per_run</code></td><td>number</td><td>No</td><td>Current cost per run (default: $100)</td></tr>
+                    <tr><td><code>implementation_months</code></td><td>integer</td><td>No</td><td>Implementation time (default: 6)</td></tr>
+                </tbody>
+            </table>
+
+            <h3>calculate_tco</h3>
+            <p>Calculate total cost of ownership over multiple years.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>product_id</code></td><td>string</td><td>Yes</td><td>Product to analyze</td></tr>
+                    <tr><td><code>years</code></td><td>integer</td><td>No</td><td>Years for TCO (default: 3)</td></tr>
+                    <tr><td><code>deployment</code></td><td>string</td><td>No</td><td>cloud or on-premise</td></tr>
+                </tbody>
+            </table>
+
+            <h3>simulate_performance</h3>
+            <p>Simulate quantum performance for a given problem size.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>product_id</code></td><td>string</td><td>Yes</td><td>Product to simulate</td></tr>
+                    <tr><td><code>problem_size</code></td><td>integer</td><td>Yes</td><td>Number of variables</td></tr>
+                    <tr><td><code>problem_type</code></td><td>string</td><td>No</td><td>qubo, ising, routing</td></tr>
+                </tbody>
+            </table>
+
+            <h3>benchmark_products</h3>
+            <p>Benchmark QCi products against classical solutions.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>problem_sizes</code></td><td>array</td><td>No</td><td>List of problem sizes to benchmark</td></tr>
+                </tbody>
+            </table>
+
+            <h3>generate_proposal</h3>
+            <p>Generate a sales proposal for a customer.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>customer_name</code></td><td>string</td><td>Yes</td><td>Customer or company name</td></tr>
+                    <tr><td><code>industry</code></td><td>string</td><td>Yes</td><td>Customer's industry</td></tr>
+                    <tr><td><code>product_id</code></td><td>string</td><td>Yes</td><td>Recommended product</td></tr>
+                    <tr><td><code>problem_description</code></td><td>string</td><td>Yes</td><td>Description of problem</td></tr>
+                    <tr><td><code>problem_size</code></td><td>integer</td><td>No</td><td>Estimated problem size</td></tr>
+                </tbody>
+            </table>
+
+            <h3>predict_scaling</h3>
+            <p>Predict how performance scales with problem size.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>product_id</code></td><td>string</td><td>Yes</td><td>Product to analyze</td></tr>
+                    <tr><td><code>start_size</code></td><td>integer</td><td>No</td><td>Starting size (default: 10)</td></tr>
+                    <tr><td><code>end_size</code></td><td>integer</td><td>No</td><td>Ending size (default: 1000)</td></tr>
+                    <tr><td><code>steps</code></td><td>integer</td><td>No</td><td>Data points (default: 10)</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>V3: Interview Preparation Tools (7)</h2>
+            <div class="badge">Interview Prep</div>
+
+            <h3>analyze_job_requirements</h3>
+            <p>Parse and analyze job requirements from job description.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>position</code></td><td>string</td><td>No</td><td>Position title</td></tr>
+                    <tr><td><code>focus_area</code></td><td>string</td><td>No</td><td>skills, experience, or education</td></tr>
+                </tbody>
+            </table>
+
+            <h3>map_experience_to_requirements</h3>
+            <p>Map candidate experience to job requirements with match scoring.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>candidate_name</code></td><td>string</td><td>No</td><td>Name of candidate</td></tr>
+                </tbody>
+            </table>
+
+            <h3>identify_skill_gaps</h3>
+            <p>Identify gaps between candidate skills and job requirements.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>include_learning_plan</code></td><td>boolean</td><td>No</td><td>Include learning resources</td></tr>
+                </tbody>
+            </table>
+
+            <h3>generate_talking_points</h3>
+            <p>Generate interview talking points and STAR stories.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>focus</code></td><td>string</td><td>No</td><td>strengths, gaps, company_fit, or all</td></tr>
+                </tbody>
+            </table>
+
+            <h3>prepare_interview_questions</h3>
+            <p>Generate questions to ask in the interview.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>category</code></td><td>string</td><td>No</td><td>role, team, company, technical, or all</td></tr>
+                </tbody>
+            </table>
+
+            <h3>generate_preparation_report</h3>
+            <p>Generate comprehensive interview preparation report.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>format</code></td><td>string</td><td>No</td><td>summary, detailed, or executive</td></tr>
+                    <tr><td><code>sections</code></td><td>array</td><td>No</td><td>Specific sections to include</td></tr>
+                </tbody>
+            </table>
+
+            <h3>run_preparation_workflow</h3>
+            <p>Run multi-step interview preparation workflow.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>workflow</code></td><td>string</td><td>No</td><td>full, experience_analysis, or interview_prep</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Tool Distribution by Variation</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>V1</th>
+                        <th>V2</th>
+                        <th>V3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>search_products</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>get_product_details</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>get_solutions</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>match_use_case</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>compare_products</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>recommend_product</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>get_customer_stories</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>get_technologies</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>analyze_roi</td><td>-</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>calculate_tco</td><td>-</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>simulate_performance</td><td>-</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>benchmark_products</td><td>-</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>generate_proposal</td><td>-</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>predict_scaling</td><td>-</td><td><span class="tech-tag green">Yes</span></td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>analyze_job_requirements</td><td>-</td><td>-</td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>map_experience_to_requirements</td><td>-</td><td>-</td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>identify_skill_gaps</td><td>-</td><td>-</td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>generate_talking_points</td><td>-</td><td>-</td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>prepare_interview_questions</td><td>-</td><td>-</td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>generate_preparation_report</td><td>-</td><td>-</td><td><span class="tech-tag green">Yes</span></td></tr>
+                    <tr><td>run_preparation_workflow</td><td>-</td><td>-</td><td><span class="tech-tag green">Yes</span></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>QCiAgent Domain - Project Phoenix | Quantum Computing Intelligence</p>
+            <a href="index.html" class="back-link">Back to QCiAgent Home</a>
+        </footer>
+    </div>
+</body>
+</html>

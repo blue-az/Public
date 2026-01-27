@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database | PPR_Agent</title>
+    <meta name="description" content="SQLite database with 2,374 devices and 57.8 million implants.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>PPR_Agent Database</h1>
+            <p class="subtitle">2,374 Devices | 57.8M Implants | 17 Years</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="data.html" class="active">Database</a>
+            <a href="companies.html">Companies</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Database Schema</h2>
+            <h3>Main Table: devices</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td>INTEGER</td>
+                        <td>Primary key (auto-increment)</td>
+                    </tr>
+                    <tr>
+                        <td><code>company</code></td>
+                        <td>TEXT</td>
+                        <td>ABT, BSX, or MDT</td>
+                    </tr>
+                    <tr>
+                        <td><code>year</code></td>
+                        <td>INTEGER</td>
+                        <td>Report year (2008-2024)</td>
+                    </tr>
+                    <tr>
+                        <td><code>device_category</code></td>
+                        <td>TEXT</td>
+                        <td>CRT-D, CRT-P, ICD, S-ICD, Pacemaker, Leadless Pacemaker, TPS</td>
+                    </tr>
+                    <tr>
+                        <td><code>device_family</code></td>
+                        <td>TEXT</td>
+                        <td>Device name (e.g., "Quadra Assura")</td>
+                    </tr>
+                    <tr>
+                        <td><code>model_number</code></td>
+                        <td>TEXT</td>
+                        <td>Model code (e.g., "CD3369-40Q")</td>
+                    </tr>
+                    <tr>
+                        <td><code>registered_us_implants</code></td>
+                        <td>INTEGER</td>
+                        <td>Total US implants (cumulative)</td>
+                    </tr>
+                    <tr>
+                        <td><code>estimated_revenue_usd_millions</code></td>
+                        <td>REAL</td>
+                        <td>Revenue estimate (optional)</td>
+                    </tr>
+                    <tr>
+                        <td><code>data_source</code></td>
+                        <td>TEXT</td>
+                        <td>'automated' or 'manual'</td>
+                    </tr>
+                    <tr>
+                        <td><code>extraction_date</code></td>
+                        <td>TIMESTAMP</td>
+                        <td>When data was extracted</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Analytical Views</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3>market_share</h3>
+                    <p>Company market share percentages by year and category</p>
+                </div>
+                <div class="card">
+                    <h3>yoy_growth</h3>
+                    <p>Year-over-year growth rates for trend analysis</p>
+                </div>
+                <div class="card">
+                    <h3>data_coverage</h3>
+                    <p>Coverage quality assessment by year and company</p>
+                </div>
+                <div class="card">
+                    <h3>device_summary</h3>
+                    <p>Aggregated device counts by company/year/category</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Coverage by Category</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Devices</th>
+                        <th>Total Implants</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pacemaker</td>
+                        <td>844</td>
+                        <td>35.8M</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>ICD</td>
+                        <td>902</td>
+                        <td>12.0M</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>CRT-D</td>
+                        <td>511</td>
+                        <td>8.5M</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>CRT-P</td>
+                        <td>116</td>
+                        <td>1.4M</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>TPS (Leadless)</td>
+                        <td>1</td>
+                        <td>100K</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Data Extraction Pipeline</h2>
+            <div class="flow-diagram">
+PDF Reports (ABT, BSX, MDT)
+         |
+         v
++-------------------+
+|  extract_pdfs.py  |   Company-specific parsing patterns
++-------------------+
+         |
+         v
++-------------------+
+|  CSV Files (51)   |   extracted_data/*.csv
++-------------------+
+         |
+         v
++-------------------+
+| import_csv_to_db  |   Duplicate detection, validation
++-------------------+
+         |
+         v
++-------------------+
+|  ppr_agent.db     |   SQLite with 2,374 devices
++-------------------+</div>
+        </section>
+
+        <section class="section">
+            <h2>Company-Specific PDF Formats</h2>
+            <h3>Abbott (ABT)</h3>
+            <div class="code"><span class="highlight-secondary"># Format: Device name with trademark symbols followed by "MODEL [code]"</span>
+Quadra Assura(TM) CRT-D MODEL CD3369-40Q
+<span class="highlight-secondary"># Pattern: Looks for trademark symbols and "MODEL" keyword</span></div>
+
+            <h3>Boston Scientific (BSX)</h3>
+            <div class="code"><span class="highlight-secondary"># Format: All-caps device family followed by "Models: [codes]"</span>
+DYNAGEN/INOGEN/ORIGEN CRT-D Models: G050/G051/G056/...
+<span class="highlight-secondary"># Pattern: All-caps name + category, then "Models:" with colon</span></div>
+
+            <h3>Medtronic (MDT)</h3>
+            <div class="code"><span class="highlight-secondary"># Format: "Excluding NBD" survival line with device name at end</span>
+Excluding NBD 99.7% 99.3% ... Maximo II CRT-D
+<span class="highlight-secondary"># Pattern: Extracts name after last percentage/decimal</span>
+<span class="highlight-secondary"># Note: Format changed in 2019 from decimals (0.997) to percentages (99.7%)</span></div>
+        </section>
+
+        <section class="section">
+            <h2>Common Database Queries</h2>
+            <div class="code"><span class="highlight-secondary"># Total devices</span>
+sqlite3 ppr_agent.db "SELECT COUNT(*) FROM devices;"
+
+<span class="highlight-secondary"># By company</span>
+sqlite3 ppr_agent.db "SELECT company, COUNT(*) as devices, SUM(registered_us_implants) as implants FROM devices GROUP BY company;"
+
+<span class="highlight-secondary"># Top devices by implant count</span>
+sqlite3 ppr_agent.db "SELECT company, year, device_family, registered_us_implants FROM devices ORDER BY registered_us_implants DESC LIMIT 10;"
+
+<span class="highlight-secondary"># Export to CSV</span>
+sqlite3 -header -csv ppr_agent.db "SELECT * FROM market_share;" > market_share.csv</div>
+        </section>
+
+        <section class="section">
+            <h2>Data Quality</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Devices</th>
+                        <th>Coverage</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Abbott (ABT)</td>
+                        <td>1,202</td>
+                        <td>94.9%</td>
+                        <td><span class="tech-tag green">Excellent</span></td>
+                    </tr>
+                    <tr>
+                        <td>Boston Scientific (BSX)</td>
+                        <td>163</td>
+                        <td>100.0%</td>
+                        <td><span class="tech-tag green">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>Medtronic (MDT)</td>
+                        <td>924</td>
+                        <td>96.0%</td>
+                        <td><span class="tech-tag green">Excellent</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Overall</strong></td>
+                        <td><strong>2,289</strong></td>
+                        <td><strong>95.7%</strong></td>
+                        <td><span class="tech-tag green">Production Ready</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>PPR_Agent Domain - Project Phoenix | Medical Device Market Intelligence</p>
+            <a href="index.html" class="back-link">Back to PPR_Agent Home</a>
+        </footer>
+    </div>
+</body>
+</html>

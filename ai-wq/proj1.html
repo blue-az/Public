@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1: Image Classification | AI_WQ</title>
+    <meta name="description" content="CNN from scratch for wildlife camera trap image classification.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge primary">Project 1</div>
+            <h1>Image Classification</h1>
+            <p class="subtitle">CNN for Wildlife Camera Traps</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="variations.html">Variations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>Build convolutional neural networks from scratch for wildlife camera trap image classification. This project covers the fundamentals of image-as-data, binary classification (animal vs. no animal), and multiclass species identification.</p>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem;">
+                <span class="tech-tag">CNN</span>
+                <span class="tech-tag">Binary Classification</span>
+                <span class="tech-tag">Multiclass</span>
+                <span class="tech-tag data">Images</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Notebooks</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Notebook</th>
+                        <th>Topic</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>011</strong></td>
+                        <td>Image as Data</td>
+                        <td>Loading and preprocessing camera trap images, understanding image tensors</td>
+                    </tr>
+                    <tr>
+                        <td><strong>013</strong></td>
+                        <td>Binary Classification</td>
+                        <td>Animal vs. no animal detection using CNN</td>
+                    </tr>
+                    <tr>
+                        <td><strong>014</strong></td>
+                        <td>Multiclass Classification</td>
+                        <td>Species identification across multiple categories</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Key Techniques</h2>
+            <ul>
+                <li><strong>CNN from scratch</strong> - Building convolutional layers, pooling, and fully connected layers</li>
+                <li><strong>Custom training loops</strong> - Forward pass, loss calculation, backpropagation</li>
+                <li><strong>Data preprocessing</strong> - Image normalization, resizing, tensor conversion</li>
+                <li><strong>Batch processing</strong> - DataLoaders and efficient GPU utilization</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Available Tools</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>load_proj1_info</code></td>
+                        <td>Get Project 1 information and available resources</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_proj1_notebooks</code></td>
+                        <td>List available notebooks for image classification</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Quick Start</h2>
+            <div class="code"><span class="highlight-secondary"># Get project info</span>
+result = tools.get_tool(<span class="highlight">'load_proj1_info'</span>)({})
+
+<span class="highlight-secondary"># List notebooks</span>
+notebooks = tools.get_tool(<span class="highlight">'list_proj1_notebooks'</span>)({})</div>
+        </section>
+
+        <footer class="footer">
+            <p>AI_WQ Domain - Project Phoenix | Source: WorldQuant University (CC BY-NC-ND 4.0)</p>
+            <a href="projects.html" class="back-link">Back to Projects</a>
+        </footer>
+    </div>
+</body>
+</html>
