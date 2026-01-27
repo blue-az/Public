@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proj2: Real Estate | WQ</title>
+    <meta name="description" content="Buenos Aires and Mexico City real estate price prediction with linear regression.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Proj2</span>
+            <h1>Real Estate Prediction</h1>
+            <p class="subtitle">Buenos Aires & Mexico City Price Analysis</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="textbook.html">Textbook</a>
+            <a href="variations.html">Variations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>Proj2 builds regression models to predict apartment prices in Buenos Aires and Mexico City. The project progressively adds features and complexity across 4 lessons.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Data Source</h3>
+                    <p>CSV files with apartment listings including size, location, and neighborhood.</p>
+                </div>
+                <div class="card">
+                    <h3>Techniques</h3>
+                    <p>Linear Regression, Ridge, Feature Engineering, OneHotEncoder</p>
+                </div>
+                <div class="card">
+                    <h3>Evaluation</h3>
+                    <p>Mean Absolute Error (MAE), baseline comparison</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Lesson Workflows</h2>
+            <table class="table">
+                <tr>
+                    <th>Lesson</th>
+                    <th>Topic</th>
+                    <th>Pipeline</th>
+                    <th>Query</th>
+                </tr>
+                <tr>
+                    <td>2.1</td>
+                    <td>Price and Size</td>
+                    <td>Size -> LinearRegression</td>
+                    <td><code>"run lesson 2.1"</code></td>
+                </tr>
+                <tr>
+                    <td>2.2</td>
+                    <td>Price and Location</td>
+                    <td>Lat/Lon -> Imputer + LinearRegression</td>
+                    <td><code>"run lesson 2.2"</code></td>
+                </tr>
+                <tr>
+                    <td>2.3</td>
+                    <td>Price and Neighborhood</td>
+                    <td>Neighborhood -> OneHotEncoder + Ridge</td>
+                    <td><code>"run lesson 2.3"</code></td>
+                </tr>
+                <tr>
+                    <td>2.4</td>
+                    <td>Price and Everything</td>
+                    <td>All Features -> Full Pipeline</td>
+                    <td><code>"run lesson 2.4"</code></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Data Files</h2>
+            <div class="code">
+Proj2/data/
+├── buenos-aires--1.csv    <span class="highlight"># Lesson 2.1 data</span>
+├── buenos-aires--2.csv    <span class="highlight"># Lesson 2.2 data</span>
+├── buenos-aires--3.csv    <span class="highlight"># Lesson 2.3 data</span>
+├── buenos-aires--4.csv    <span class="highlight"># Lesson 2.4 data</span>
+├── buenos-aires--5.csv    <span class="highlight"># Lesson 2.5 assignment</span>
+├── buenos-aires--test.csv <span class="highlight"># Test data</span>
+├── mexico-city--*.csv     <span class="highlight"># Parallel datasets</span>
+└── cache/                 <span class="highlight"># Parquet cache</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Available Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>load_proj2_data</code></td>
+                    <td>Load Buenos Aires or Mexico City dataset</td>
+                </tr>
+                <tr>
+                    <td><code>analyze_real_estate</code></td>
+                    <td>Exploratory analysis with statistics</td>
+                </tr>
+                <tr>
+                    <td><code>predict_price</code></td>
+                    <td>Run price prediction pipeline</td>
+                </tr>
+                <tr>
+                    <td><code>wrangle_data</code></td>
+                    <td>Apply lesson-specific wrangling</td>
+                </tr>
+                <tr>
+                    <td><code>create_mapbox</code></td>
+                    <td>Visualize locations on interactive map</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Quick Start</h2>
+            <div class="code">
+<span class="highlight-secondary"># Load Buenos Aires data</span>
+"load buenos aires data version 1"
+
+<span class="highlight-secondary"># Run complete lesson</span>
+"run lesson 2.1"
+
+<span class="highlight-secondary"># Analyze with specific city</span>
+"analyze real estate in mexico city"
+
+<span class="highlight-secondary"># Compare cities</span>
+"compare buenos aires and mexico city prices"
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>WQ - WorldQuant University Applied Data Science Lab</p>
+            <a href="projects.html" class="back-link">Back to Projects</a>
+        </footer>
+    </div>
+</body>
+</html>

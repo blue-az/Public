@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proj3: Air Quality | WQ</title>
+    <meta name="description" content="Nairobi air quality time series forecasting with AR and ARMA models.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Proj3</span>
+            <h1>Air Quality Forecasting</h1>
+            <p class="subtitle">Nairobi PM2.5 Time Series Analysis</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="textbook.html">Textbook</a>
+            <a href="variations.html">Variations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>Proj3 analyzes air quality sensor data from Nairobi using time series techniques. The project progresses from data wrangling with MongoDB-style queries to autoregressive modeling.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Data Source</h3>
+                    <p>JSON sensor data with timestamps and PM2.5 readings.</p>
+                </div>
+                <div class="card">
+                    <h3>Techniques</h3>
+                    <p>AR, ARMA, Linear Regression on lagged features</p>
+                </div>
+                <div class="card">
+                    <h3>Evaluation</h3>
+                    <p>MAE, walk-forward validation, residual analysis</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Lesson Workflows</h2>
+            <table class="table">
+                <tr>
+                    <th>Lesson</th>
+                    <th>Topic</th>
+                    <th>Technique</th>
+                    <th>Query</th>
+                </tr>
+                <tr>
+                    <td>3.1</td>
+                    <td>Data Wrangling with MongoDB</td>
+                    <td>Query, aggregate, reshape</td>
+                    <td><code>"run lesson 3.1"</code></td>
+                </tr>
+                <tr>
+                    <td>3.2</td>
+                    <td>Linear Regression on Time Series</td>
+                    <td>Lagged features + LinearRegression</td>
+                    <td><code>"run lesson 3.2"</code></td>
+                </tr>
+                <tr>
+                    <td>3.3</td>
+                    <td>Autoregressive Models</td>
+                    <td>AR(p) model fitting</td>
+                    <td><code>"run lesson 3.3"</code></td>
+                </tr>
+                <tr>
+                    <td>3.4</td>
+                    <td>ARMA and Hyperparameter Tuning</td>
+                    <td>ARMA(p,q) with grid search</td>
+                    <td><code>"run lesson 3.4"</code></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Data Structure</h2>
+            <div class="code">
+Proj3/data/
+├── nairobi.json           <span class="highlight"># Raw sensor data</span>
+└── cache/
+    ├── site_29_P2_wrangled.parquet
+    ├── site_29_P2_wrangled_lagged.parquet
+    ├── linear_regression_model_predictions.parquet
+    └── autoreg_p1_model_predictions.parquet
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Available Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>load_proj3_data</code></td>
+                    <td>Load Nairobi air quality dataset</td>
+                </tr>
+                <tr>
+                    <td><code>analyze_air_quality</code></td>
+                    <td>Time series exploratory analysis</td>
+                </tr>
+                <tr>
+                    <td><code>forecast_pm25</code></td>
+                    <td>Generate PM2.5 forecasts</td>
+                </tr>
+                <tr>
+                    <td><code>fit_ar_model</code></td>
+                    <td>Fit autoregressive model</td>
+                </tr>
+                <tr>
+                    <td><code>fit_arma_model</code></td>
+                    <td>Fit ARMA model with tuning</td>
+                </tr>
+                <tr>
+                    <td><code>create_acf_plot</code></td>
+                    <td>Autocorrelation visualization</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Quick Start</h2>
+            <div class="code">
+<span class="highlight-secondary"># Load and analyze</span>
+"load nairobi air quality data"
+"analyze air quality time series"
+
+<span class="highlight-secondary"># Run specific lesson</span>
+"run lesson 3.3 on AR models"
+
+<span class="highlight-secondary"># Forecast</span>
+"forecast PM2.5 for next 24 hours"
+
+<span class="highlight-secondary"># Cross-project</span>
+"apply GARCH from project 8 to air quality data"
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>WQ - WorldQuant University Applied Data Science Lab</p>
+            <a href="projects.html" class="back-link">Back to Projects</a>
+        </footer>
+    </div>
+</body>
+</html>

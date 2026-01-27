@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture | WQ</title>
+    <meta name="description" content="Unified agent architecture spanning 7 WQU projects with 3-tier caching.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge primary">Architecture</span>
+            <h1>Unified Agent</h1>
+            <p class="subtitle">Cross-Project Agentic Interface with 3-Tier Caching</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html" class="active">Architecture</a>
+            <a href="textbook.html">Textbook</a>
+            <a href="variations.html">Variations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Vision</h2>
+            <p>A single agentic interface that spans ALL 7 WQU Data Science projects, enabling:</p>
+            <ul>
+                <li>Cross-project analysis ("Apply GARCH to air quality data")</li>
+                <li>Technique comparison ("Which model works best for classification?")</li>
+                <li>Educational integration (Textbook reference on demand)</li>
+                <li>Unified data exploration across all domains</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>System Architecture</h2>
+            <div class="flow-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│                    <span class="highlight-primary">WQ Unified Cockpit</span>                           │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────┐│
+│  │  Blueprint  │  │  Execution  │  │  Inspector  │  │Artifacts││
+│  │   Panel     │  │    Trace    │  │    Panel    │  │Workspace││
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────┘│
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      <span class="highlight">PlanBuilder</span>                                │
+│  Query Pattern Matching (NLI) → Execution Plan Generation       │
+│  _plan_proj2_*  _plan_proj3_*  _plan_cross_project_*            │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     <span class="highlight">AgenticEngine</span>                               │
+│  State Machine: IDLE → PLANNING → AWAITING_APPROVAL → RUNNING   │
+│  Parameter Resolution: $step_N_result.field                     │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    <span class="highlight">ToolRegistry</span> (41 tools)                      │
+│  PROJECT TOOLS  │  CROSS-PROJECT  │  TEXTBOOK  │  UTILITY      │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                 <span class="highlight-secondary">ExecutionContext</span> (3-Tier Cache)                 │
+│  step_results │ data_cache │ query_cache                       │
+└─────────────────────────────────────────────────────────────────┘
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Per-Project Cockpit Structure</h2>
+            <table class="table">
+                <tr>
+                    <th>File</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td><code>agentic_engine.py</code></td>
+                    <td>Plan execution orchestrator with state machine</td>
+                </tr>
+                <tr>
+                    <td><code>plan_builder.py</code></td>
+                    <td>NLI parser converting queries to ExecutionPlans</td>
+                </tr>
+                <tr>
+                    <td><code>data_client.py</code></td>
+                    <td>Project-specific data access with 3-tier caching</td>
+                </tr>
+                <tr>
+                    <td><code>tool_registry.py</code></td>
+                    <td>Tool catalog (data, model, visualization, utility)</td>
+                </tr>
+                <tr>
+                    <td><code>execution_context.py</code></td>
+                    <td>Session state and cache management</td>
+                </tr>
+                <tr>
+                    <td><code>ui_components/</code></td>
+                    <td>tkinter UI panels (blueprint, trace, inspector)</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>State Machine</h2>
+            <div class="code">
+IDLE
+  │
+  ▼
+PLANNING  ──────────────────────────────┐
+  │                                     │
+  ▼                                     │
+AWAITING_APPROVAL ──[cancel]────────────┤
+  │                                     │
+  [approve]                             │
+  │                                     │
+  ▼                                     │
+RUNNING ──[pause]──► PAUSED ──[resume]──┤
+  │                    │                │
+  [complete]       [cancel]             │
+  │                    │                │
+  ▼                    ▼                │
+COMPLETED              IDLE ◄───────────┘
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Three-Tier Caching</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>1. Memory Cache</h3>
+                    <p>In-memory dictionary for current session data. Fastest access, cleared on restart.</p>
+                </div>
+                <div class="card">
+                    <h3>2. Disk Cache</h3>
+                    <p>Parquet files in <code>data/cache/</code>. Persists across sessions.</p>
+                </div>
+                <div class="card">
+                    <h3>3. URL Fetch</h3>
+                    <p>Fallback to sample data URLs if local files unavailable.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Pattern Matching Hierarchy</h2>
+            <p>PlanBuilder matches queries from most-specific to least-specific:</p>
+            <ol>
+                <li><strong>Exact lesson references</strong>: "lesson 3.3", "run lesson 2.1"</li>
+                <li><strong>Cross-project patterns</strong>: "apply X from projA to projB"</li>
+                <li><strong>Technique patterns</strong>: "cluster", "classify", "forecast"</li>
+                <li><strong>Domain patterns</strong>: "real estate", "air quality", "earthquake"</li>
+                <li><strong>General fallbacks</strong>: "help", "show capabilities"</li>
+            </ol>
+        </section>
+
+        <section class="section">
+            <h2>File Structure</h2>
+            <div class="code">
+domains/WQ/
+├── unified_agent/
+│   ├── data_client.py      <span class="highlight"># UnifiedDataClient</span>
+│   ├── tool_registry.py    <span class="highlight"># 41 tools</span>
+│   ├── plan_builder.py     <span class="highlight"># Query patterns</span>
+│   ├── agentic_engine.py   <span class="highlight"># Orchestration</span>
+│   └── wq_cockpit.py       <span class="highlight"># Unified GUI</span>
+├── Proj2-8/                <span class="highlight"># Project data sources</span>
+├── textbook_client.py      <span class="highlight"># PDF parsing</span>
+├── textbook_tools.py       <span class="highlight"># Reference tools</span>
+└── Textbook/               <span class="highlight"># 22 markdown chapters</span>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>WQ - WorldQuant University Applied Data Science Lab</p>
+            <p>Built on Project Phoenix / tau-bench (MIT)</p>
+        </footer>
+    </div>
+</body>
+</html>

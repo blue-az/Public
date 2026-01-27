@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools | WQ</title>
+    <meta name="description" content="41 tools across 4 variations for the WQ unified agent.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">41 Tools</span>
+            <h1>Tool Registry</h1>
+            <p class="subtitle">Progressive Tool Sets for Data Science Automation</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html" class="active">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="textbook.html">Textbook</a>
+            <a href="variations.html">Variations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Tool Categories</h2>
+            <div class="grid grid-4">
+                <div class="card">
+                    <h3>Data Tools</h3>
+                    <p>load_csv, wrangle_data, show_info, describe_stats</p>
+                </div>
+                <div class="card">
+                    <h3>Model Tools</h3>
+                    <p>split_features, fit_model, predict, calculate_mae</p>
+                </div>
+                <div class="card">
+                    <h3>Viz Tools</h3>
+                    <p>create_histogram, scatter, mapbox, heatmap</p>
+                </div>
+                <div class="card">
+                    <h3>Utility Tools</h3>
+                    <p>show_capabilities, run_lesson, export_data</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Project Tools (2-3 per project)</h2>
+            <table class="table">
+                <tr>
+                    <th>Project</th>
+                    <th>Tools</th>
+                </tr>
+                <tr>
+                    <td>Proj2</td>
+                    <td><code>load_proj2_data</code>, <code>analyze_real_estate</code>, <code>predict_price</code></td>
+                </tr>
+                <tr>
+                    <td>Proj3</td>
+                    <td><code>load_proj3_data</code>, <code>analyze_air_quality</code>, <code>forecast_pm25</code></td>
+                </tr>
+                <tr>
+                    <td>Proj4</td>
+                    <td><code>load_proj4_data</code>, <code>classify_damage</code>, <code>evaluate_classifier</code></td>
+                </tr>
+                <tr>
+                    <td>Proj5</td>
+                    <td><code>load_proj5_data</code>, <code>detect_bankruptcy</code>, <code>handle_imbalance</code></td>
+                </tr>
+                <tr>
+                    <td>Proj6</td>
+                    <td><code>load_proj6_data</code>, <code>cluster_consumers</code>, <code>visualize_clusters</code></td>
+                </tr>
+                <tr>
+                    <td>Proj7</td>
+                    <td><code>load_proj7_data</code>, <code>run_chi_square</code>, <code>run_ab_test</code></td>
+                </tr>
+                <tr>
+                    <td>Proj8</td>
+                    <td><code>load_proj8_data</code>, <code>fit_garch</code>, <code>forecast_volatility</code></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Cross-Project Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>compare_techniques</code></td>
+                    <td>Compare model performance across different techniques</td>
+                </tr>
+                <tr>
+                    <td><code>apply_model_to_data</code></td>
+                    <td>Apply a model from one project to data from another</td>
+                </tr>
+                <tr>
+                    <td><code>find_similar_datasets</code></td>
+                    <td>Find datasets with similar characteristics</td>
+                </tr>
+                <tr>
+                    <td><code>suggest_technique</code></td>
+                    <td>Get technique recommendations based on data type</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Textbook Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>textbook_search</code></td>
+                    <td>Search across 22 textbook chapters</td>
+                </tr>
+                <tr>
+                    <td><code>textbook_explain</code></td>
+                    <td>Get explanation of a concept with examples</td>
+                </tr>
+                <tr>
+                    <td><code>textbook_chapters</code></td>
+                    <td>List all available textbook chapters</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Utility Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>show_capabilities</code></td>
+                    <td>List all available tools with descriptions</td>
+                </tr>
+                <tr>
+                    <td><code>get_project_info</code></td>
+                    <td>Get metadata for any project</td>
+                </tr>
+                <tr>
+                    <td><code>export_data</code></td>
+                    <td>Export results to CSV/JSON format</td>
+                </tr>
+                <tr>
+                    <td><code>visualize_result</code></td>
+                    <td>Create visualization from model output</td>
+                </tr>
+                <tr>
+                    <td><code>run_lesson</code></td>
+                    <td>Execute a complete lesson workflow</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Usage Example</h2>
+            <div class="code">
+<span class="highlight-primary">from</span> unified_agent <span class="highlight-primary">import</span> UnifiedDataClient, ToolRegistry
+
+<span class="highlight-secondary"># Initialize</span>
+client = UnifiedDataClient()
+tools = ToolRegistry(client)
+
+<span class="highlight-secondary"># Load project data</span>
+data = tools.get_tool(<span class="highlight">'load_proj2_data'</span>)({<span class="highlight">'city'</span>: <span class="highlight">'buenos_aires'</span>})
+
+<span class="highlight-secondary"># Run analysis</span>
+result = tools.get_tool(<span class="highlight">'analyze_real_estate'</span>)({<span class="highlight">'version'</span>: 1})
+
+<span class="highlight-secondary"># Cross-project comparison</span>
+comparison = tools.get_tool(<span class="highlight">'compare_techniques'</span>)({
+    <span class="highlight">'techniques'</span>: [<span class="highlight">'random_forest'</span>, <span class="highlight">'gradient_boosting'</span>],
+    <span class="highlight">'project'</span>: <span class="highlight">'proj5'</span>
+})
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>WQ - WorldQuant University Applied Data Science Lab</p>
+            <p>Built on Project Phoenix / tau-bench (MIT)</p>
+        </footer>
+    </div>
+</body>
+</html>

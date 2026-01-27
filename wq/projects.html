@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | WQ</title>
+    <meta name="description" content="All 7 WQU Applied Data Science Lab projects with techniques and data sources.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">WQ v1.1</span>
+            <h1>Project Catalog</h1>
+            <p class="subtitle">7 Data Science Projects Spanning the Full ML Lifecycle</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html" class="active">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="textbook.html">Textbook</a>
+            <a href="variations.html">Variations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Project Overview</h2>
+            <table class="table">
+                <tr>
+                    <th>Project</th>
+                    <th>Domain</th>
+                    <th>Key Techniques</th>
+                    <th>Data Type</th>
+                </tr>
+                <tr>
+                    <td><a href="proj2.html" class="highlight">Proj2</a></td>
+                    <td>Real Estate (Buenos Aires)</td>
+                    <td>Linear Regression, Feature Engineering</td>
+                    <td>Tabular/CSV</td>
+                </tr>
+                <tr>
+                    <td><a href="proj3.html" class="highlight">Proj3</a></td>
+                    <td>Air Quality (Nairobi)</td>
+                    <td>Time Series, AR/ARMA Models</td>
+                    <td>Time Series</td>
+                </tr>
+                <tr>
+                    <td><a href="proj4.html" class="highlight">Proj4</a></td>
+                    <td>Earthquake Damage (Nepal)</td>
+                    <td>Logistic Regression, Decision Trees</td>
+                    <td>Classification</td>
+                </tr>
+                <tr>
+                    <td><a href="proj5.html" class="highlight">Proj5</a></td>
+                    <td>Bankruptcy (Taiwan)</td>
+                    <td>Random Forest, Gradient Boosting</td>
+                    <td>Imbalanced Classification</td>
+                </tr>
+                <tr>
+                    <td><a href="proj6.html" class="highlight">Proj6</a></td>
+                    <td>Consumer Finance (SCF)</td>
+                    <td>K-Means Clustering, PCA</td>
+                    <td>Clustering</td>
+                </tr>
+                <tr>
+                    <td><a href="proj7.html" class="highlight">Proj7</a></td>
+                    <td>DS Lab Applicants</td>
+                    <td>Chi-Square, A/B Testing, ETL</td>
+                    <td>Hypothesis Testing</td>
+                </tr>
+                <tr>
+                    <td><a href="proj8.html" class="highlight">Proj8</a></td>
+                    <td>Stock Volatility (MTN)</td>
+                    <td>GARCH, API Integration, TDD</td>
+                    <td>Time Series Forecasting</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Lesson Workflows</h2>
+            <p>Each project contains 4-5 lessons with predefined workflows. Example from Proj2:</p>
+            <table class="table">
+                <tr>
+                    <th>Lesson</th>
+                    <th>Topic</th>
+                    <th>Model Pipeline</th>
+                </tr>
+                <tr>
+                    <td>2.1</td>
+                    <td>Price and Size</td>
+                    <td>Size -> LinearRegression -> Price</td>
+                </tr>
+                <tr>
+                    <td>2.2</td>
+                    <td>Price and Location</td>
+                    <td>Location -> Imputer + LinearRegression -> Price</td>
+                </tr>
+                <tr>
+                    <td>2.3</td>
+                    <td>Price and Neighborhood</td>
+                    <td>Neighborhood -> OneHotEncoder + Ridge -> Price</td>
+                </tr>
+                <tr>
+                    <td>2.4</td>
+                    <td>Price and Everything</td>
+                    <td>All Features Combined -> Full Pipeline -> Price</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Data Sources</h2>
+            <div class="code">
+WQ/
+├── Proj2/data/         <span class="highlight"># Buenos Aires & Mexico City CSVs</span>
+│   ├── buenos-aires--*.csv
+│   └── mexico-city--*.csv
+├── Proj3/data/         <span class="highlight"># Nairobi air quality JSON</span>
+│   └── nairobi.json
+├── Proj4/data/         <span class="highlight"># Nepal earthquake SQLite</span>
+├── Proj5/data/         <span class="highlight"># Taiwan bankruptcy JSON</span>
+├── Proj6/data/         <span class="highlight"># SCF consumer finance CSV</span>
+├── Proj7/data/         <span class="highlight"># DS Lab applicants CSV</span>
+└── Proj8/data/         <span class="highlight"># Stock data via API simulation</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Cross-Project Analysis</h2>
+            <p>The unified agent enables powerful cross-project queries:</p>
+            <div class="code">
+<span class="highlight-primary"># Apply technique from one project to another</span>
+"Apply GARCH from project 8 to air quality data from project 3"
+
+<span class="highlight-primary"># Compare models across domains</span>
+"Which model works best for classification: Proj4 or Proj5?"
+
+<span class="highlight-primary"># Educational integration</span>
+"Explain how logistic regression works and show example from Proj4"
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>WQ - WorldQuant University Applied Data Science Lab</p>
+            <p>Built on Project Phoenix / tau-bench (MIT)</p>
+        </footer>
+    </div>
+</body>
+</html>

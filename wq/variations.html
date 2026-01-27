@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variations | WQ</title>
+    <meta name="description" content="Progressive tool sets from 23 to 41 tools across 4 variations.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge primary">Variations</span>
+            <h1>Progressive Tool Sets</h1>
+            <p class="subtitle">From Core Utilities to Advanced Diagnostics</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="tools.html">Tools</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="textbook.html">Textbook</a>
+            <a href="variations.html" class="active">Variations</a>
+        </nav>
+
+        <section class="section">
+            <h2>Variation Progression</h2>
+            <p>Each variation builds on the previous, adding capability layers for more sophisticated analysis.</p>
+
+            <div class="variation-grid">
+                <div class="variation-card">
+                    <span class="num">23</span>
+                    <h4>Variation 1</h4>
+                    <p>Project Tools + Core Utilities</p>
+                </div>
+                <div class="variation-card">
+                    <span class="num">28</span>
+                    <h4>Variation 2</h4>
+                    <p>+ Cross-Project & Export</p>
+                </div>
+                <div class="variation-card">
+                    <span class="num">34</span>
+                    <h4>Variation 3</h4>
+                    <p>+ Textbook Reference</p>
+                </div>
+                <div class="variation-card">
+                    <span class="num">41</span>
+                    <h4>Variation 4</h4>
+                    <p>+ Advanced Modeling</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Variation 1: Core (23 tools)</h2>
+            <p>Project-specific load/analyze/forecast tools plus basic utilities.</p>
+            <h3>Included Tools</h3>
+            <ul>
+                <li>Per-project data loading: <code>load_proj{2-8}_data</code></li>
+                <li>Per-project analysis: <code>analyze_*</code>, <code>predict_*</code>, <code>forecast_*</code></li>
+                <li>Core utilities: <code>show_capabilities</code>, <code>get_project_info</code></li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Variation 2: Cross-Project (28 tools)</h2>
+            <p>Adds dataset comparison, model transfer, and export helpers.</p>
+            <h3>Additional Tools (+5)</h3>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>compare_datasets</code></td>
+                    <td>Compare characteristics across project datasets</td>
+                </tr>
+                <tr>
+                    <td><code>apply_model_to_data</code></td>
+                    <td>Transfer model from one project to another</td>
+                </tr>
+                <tr>
+                    <td><code>find_similar_datasets</code></td>
+                    <td>Find datasets with similar structure</td>
+                </tr>
+                <tr>
+                    <td><code>export_to_csv</code></td>
+                    <td>Export results to CSV format</td>
+                </tr>
+                <tr>
+                    <td><code>export_to_json</code></td>
+                    <td>Export results to JSON format</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Variation 3: Textbook (34 tools)</h2>
+            <p>Adds textbook search/explain and chapter access for educational integration.</p>
+            <h3>Additional Tools (+6)</h3>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>textbook_search</code></td>
+                    <td>Full-text search across 22 chapters</td>
+                </tr>
+                <tr>
+                    <td><code>textbook_explain</code></td>
+                    <td>Get detailed explanation of a concept</td>
+                </tr>
+                <tr>
+                    <td><code>textbook_chapters</code></td>
+                    <td>List all available chapters</td>
+                </tr>
+                <tr>
+                    <td><code>textbook_get_chapter</code></td>
+                    <td>Retrieve specific chapter content</td>
+                </tr>
+                <tr>
+                    <td><code>textbook_get_section</code></td>
+                    <td>Retrieve specific section from chapter</td>
+                </tr>
+                <tr>
+                    <td><code>demonstrate_concept</code></td>
+                    <td>Show concept with project example</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Variation 4: Advanced (41 tools)</h2>
+            <p>Adds model comparison and advanced diagnostics.</p>
+            <h3>Additional Tools (+7)</h3>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>compare_models</code></td>
+                    <td>Head-to-head model comparison with metrics</td>
+                </tr>
+                <tr>
+                    <td><code>run_cross_validation</code></td>
+                    <td>K-fold cross-validation with scoring</td>
+                </tr>
+                <tr>
+                    <td><code>tune_hyperparameters</code></td>
+                    <td>Grid/random search for optimal params</td>
+                </tr>
+                <tr>
+                    <td><code>analyze_residuals</code></td>
+                    <td>Residual plots and diagnostics</td>
+                </tr>
+                <tr>
+                    <td><code>feature_importance</code></td>
+                    <td>Calculate and visualize feature importance</td>
+                </tr>
+                <tr>
+                    <td><code>learning_curves</code></td>
+                    <td>Plot learning curves for bias/variance</td>
+                </tr>
+                <tr>
+                    <td><code>model_diagnostics</code></td>
+                    <td>Comprehensive model health check</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Validation</h2>
+            <div class="code">
+<span class="highlight-secondary"># Validate tool sets</span>
+cd domains/WQ
+python scripts/validate.py --variation v1
+python scripts/validate.py --variation v2
+python scripts/validate.py --variation v3
+python scripts/validate.py --variation v4
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>WQ - WorldQuant University Applied Data Science Lab</p>
+            <p>Built on Project Phoenix / tau-bench (MIT)</p>
+        </footer>
+    </div>
+</body>
+</html>
