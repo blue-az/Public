@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | Machine Learning (19 tools)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="usecases.html" class="nav-item">use cases</a>
+            <a href="ml.html" class="nav-item active">ML</a>
+            <a href="vision.html" class="nav-item">vision</a>
+            <a href="smart.html" class="nav-item">smart</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>Machine Learning Tools</h2>
+                <p class="page-subtitle">19 tools for stroke classification, validation, and explainability</p>
+            </div>
+
+            <div class="intro-box">
+                <h4>ML Capabilities</h4>
+                <p>Classification: Random Forest, LDA, QDA, KNN, SVM | Validation: Temporal CV, Walk-Forward, K-Fold | Explainability: SHAP values, feature importance, decision boundaries</p>
+            </div>
+
+            <div class="tools-grid">
+                <div class="tool-category">
+                    <h3>Classification (7 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">train_swing_classifier</span>
+                            <p>Train RF/DT/SVM/logistic model for FH/BH/Serve classification using Zepp sensor data</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">train_stroke_classifier</span>
+                            <p>Train model using linked Apple Watch sessions with Zepp as ground truth</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">train_discriminant_classifier</span>
+                            <p>Linear or Quadratic Discriminant Analysis with boundary visualization</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">train_knn_classifier</span>
+                            <p>K-Nearest Neighbors with optimal k selection via cross-validation</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">predict_stroke_type</span>
+                            <p>Predict stroke types for Apple Watch session using trained model</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">compare_classifiers</span>
+                            <p>Benchmark KNN, LDA, QDA, RF, DT and rank by performance</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">suggest_classifier</span>
+                            <p>Recommend best classifier based on problem characteristics</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Validation (5 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">train_swing_classifier_cv</span>
+                            <p>Proper temporal cross-validation preventing future data leakage</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">run_cross_validation</span>
+                            <p>Systematic CV with stratified/kfold/loo and multiple metrics</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">run_walk_forward_validation</span>
+                            <p>Sliding window validation mimicking production deployment</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">create_temporal_cv_splits</span>
+                            <p>Time-aware folds with purge gap to prevent temporal leakage</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">evaluate_temporal_stability</span>
+                            <p>Test if classifier degrades over time (monthly accuracy trend)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Explainability (4 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">compute_swing_shap_values</span>
+                            <p>SHAP values using TreeExplainer for feature contributions</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">explain_swing_prediction</span>
+                            <p>SHAP waterfall for single swing showing push toward each class</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_swing_feature_importance</span>
+                            <p>Compare SHAP importance vs gain importance</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_feature_interaction</span>
+                            <p>SHAP interaction values between two sensor features</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Tuning & Diagnostics (3 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">tune_hyperparameters</span>
+                            <p>Grid search for optimal k, regularization, tree depth, etc.</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">generate_learning_curves</span>
+                            <p>Learning curves for bias/variance diagnosis</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">get_ml_capabilities</span>
+                            <p>List all available ML tools and techniques by category</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h3>Example Workflow: Train and Explain Classifier</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Step</th>
+                            <th>Query</th>
+                            <th>Tool</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>"train stroke classifier with random forest"</td>
+                            <td>train_swing_classifier</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>"compare classifiers performance"</td>
+                            <td>compare_classifiers</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>"train with temporal cross validation"</td>
+                            <td>train_swing_classifier_cv</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>"compute SHAP values"</td>
+                            <td>compute_swing_shap_values</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>"explain prediction for swing 0"</td>
+                            <td>explain_swing_prediction</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>"flag ambiguous swings for review"</td>
+                            <td>flag_ambiguous_swings</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-banner">
+                <h4>Audio-Based Training</h4>
+                <p>Use voice labels as ground truth for higher accuracy than sensor-inferred labels.</p>
+                <p style="margin-top: 10px;"><code>train_with_audio_labels</code> - Train classifier using spoken shot labels aligned to motion peaks.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">19 ML tools for stroke classification.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="vision.html">vision</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Project Phoenix Domain</p>
+        </footer>
+    </div>
+</body>
+</html>

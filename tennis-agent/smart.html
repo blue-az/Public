@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | Smart Tools (5 tools)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="usecases.html" class="nav-item">use cases</a>
+            <a href="ml.html" class="nav-item">ML</a>
+            <a href="vision.html" class="nav-item">vision</a>
+            <a href="smart.html" class="nav-item active">smart</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>Smart Tools</h2>
+                <p class="page-subtitle">5 context-aware tools that auto-select data sources and analysis type</p>
+            </div>
+
+            <div class="intro-box">
+                <h4>Context Detection</h4>
+                <p>Smart tools detect context from the query and auto-select appropriate data sources and analysis methods. Three contexts: <strong>MATCH</strong> (Babolat + Zepp2), <strong>PRACTICE</strong> (Zepp Universal), <strong>LAB</strong> (Apple Watch + Zepp linked).</p>
+            </div>
+
+            <div class="tools-grid" style="grid-template-columns: 1fr;">
+                <div class="tool-category">
+                    <h3>smart_analyze</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <p><strong>Purpose:</strong> Context-aware analysis that adapts to match, practice, or lab context.</p>
+                            <p style="margin-top: 8px;"><strong>MATCH context:</strong> Fatigue by quarter, HR by outcome, PIQ trends</p>
+                            <p><strong>PRACTICE context:</strong> Session fatigue, patterns, drill detection</p>
+                            <p><strong>LAB context:</strong> Classification accuracy, sensor comparison</p>
+                            <p style="margin-top: 8px;"><strong>Parameters:</strong> analysis_type (fatigue, classification, patterns, hr, training, quality), shot_type, year, date</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>smart_compare</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <p><strong>Purpose:</strong> Context-aware cross-sensor comparisons.</p>
+                            <p style="margin-top: 8px;"><strong>MATCH context:</strong> Zepp2 vs Babolat accuracy</p>
+                            <p><strong>LAB context:</strong> Apple Watch vs Zepp detection accuracy</p>
+                            <p style="margin-top: 8px;"><strong>Parameters:</strong> compare_type (sensors, sessions, practice_match, detection, fusion), primary sensor, secondary sensor, date</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>smart_query</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <p><strong>Purpose:</strong> Context-aware session and count queries that auto-select data source.</p>
+                            <p style="margin-top: 8px;"><strong>MATCH context:</strong> Uses Babolat + Zepp2 data</p>
+                            <p><strong>PRACTICE context:</strong> Uses Zepp Universal data</p>
+                            <p><strong>LAB context:</strong> Uses Apple Watch + Zepp linked sessions</p>
+                            <p style="margin-top: 8px;"><strong>Parameters:</strong> query_type (count, latest, inventory, linked, sessions), sensor, year, month, date_range</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>smart_visualize</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <p><strong>Purpose:</strong> Context-aware visualizations adapted to context.</p>
+                            <p style="margin-top: 8px;"><strong>MATCH context:</strong> PIQ trends, match timeline, HR overlay</p>
+                            <p><strong>PRACTICE context:</strong> Power trends, training dashboard, impact zones</p>
+                            <p><strong>LAB context:</strong> Waveforms, 3D trajectory, sensor comparison</p>
+                            <p style="margin-top: 8px;"><strong>Parameters:</strong> viz_type (trend, timeline, dashboard, impact, waveform, 3d, heatmap), data_source, date, shot_type</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>smart_practice</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <p><strong>Purpose:</strong> Practice planning and DOE experiments. Only for PRACTICE/LAB contexts.</p>
+                            <p style="margin-top: 8px;"><strong>Actions:</strong> create_plan, create_doe, track, analyze, visualize</p>
+                            <p><strong>Focus types:</strong> max_topspin, max_power, speed_ladder, sweet_spot</p>
+                            <p style="margin-top: 8px;"><strong>Parameters:</strong> action, plan_type (practice, doe, focused), focus, session_date, sequence</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h3>Context Detection Logic</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Context</th>
+                            <th>Trigger Keywords</th>
+                            <th>Data Sources</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>MATCH</td>
+                            <td>match, tournament, opponent, win, loss, PIQ</td>
+                            <td>Babolat PIQ, Zepp2, Garmin HR</td>
+                        </tr>
+                        <tr>
+                            <td>PRACTICE</td>
+                            <td>practice, session, drill, training, swings</td>
+                            <td>Zepp Universal, Garmin HR</td>
+                        </tr>
+                        <tr>
+                            <td>LAB</td>
+                            <td>linked, Apple Watch, wrist, trajectory, calibrate</td>
+                            <td>Apple Watch, Zepp Universal, linked sessions</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="data-section">
+                <h3>Example Queries</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Query</th>
+                            <th>Detected Context</th>
+                            <th>Smart Tool</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>"analyze fatigue in my latest match"</td>
+                            <td>MATCH</td>
+                            <td>smart_analyze (fatigue)</td>
+                        </tr>
+                        <tr>
+                            <td>"compare Zepp vs Babolat accuracy"</td>
+                            <td>MATCH</td>
+                            <td>smart_compare (sensors)</td>
+                        </tr>
+                        <tr>
+                            <td>"show power trend for practice"</td>
+                            <td>PRACTICE</td>
+                            <td>smart_visualize (trend)</td>
+                        </tr>
+                        <tr>
+                            <td>"how many linked sessions in 2024"</td>
+                            <td>LAB</td>
+                            <td>smart_query (count)</td>
+                        </tr>
+                        <tr>
+                            <td>"create serve DOE experiment"</td>
+                            <td>PRACTICE</td>
+                            <td>smart_practice (create_doe)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-banner">
+                <h4>Fallback Behavior</h4>
+                <p>When context cannot be detected from the query, smart tools prompt for clarification or default to the most likely context based on available data. The <code>original_query</code> parameter preserves the natural language query for context detection.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">5 smart tools for context-aware analysis.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="usecases.html">use cases</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Project Phoenix Domain</p>
+        </footer>
+    </div>
+</body>
+</html>

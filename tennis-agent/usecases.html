@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | Use Cases</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="usecases.html" class="nav-item active">use cases</a>
+            <a href="ml.html" class="nav-item">ML</a>
+            <a href="vision.html" class="nav-item">vision</a>
+            <a href="smart.html" class="nav-item">smart</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>Use Cases</h2>
+                <p class="page-subtitle">Major workflows and analysis patterns</p>
+            </div>
+
+            <div class="tasks-container">
+                <div class="task-category">
+                    <h3>Shot-Level Match Analysis (Babolat)</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">Fatigue Detection</span>
+                            <p>Compare first vs last quarter performance to detect fatigue patterns. Shows PIQ decline, speed drop, and consistency degradation over match duration.</p>
+                            <span class="task-example">"detect fatigue in my latest match"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Consistency Analysis</span>
+                            <p>Measure shot consistency by type (forehand, backhand, serve) with standard deviation and coefficient of variation for PIQ and speed.</p>
+                            <span class="task-example">"analyze consistency for match 657"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Rally Pattern Analysis</span>
+                            <p>Analyze rally length distribution, average shots per rally, and shot type patterns within rallies.</p>
+                            <span class="task-example">"show rally patterns for my last match"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Coaching Insights</span>
+                            <p>Generate Babolat-app-style narrative insights with actionable recommendations based on match data.</p>
+                            <span class="task-example">"generate coaching insights"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-category">
+                    <h3>Linked Session Analysis (Apple Watch + Zepp)</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">Auto-Detect Linked Sessions</span>
+                            <p>Automatically find Apple Watch + Zepp session pairs by matching timestamps within 5-minute tolerance.</p>
+                            <span class="task-example">"detect linked sessions"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Per-Swing Correlation</span>
+                            <p>Correlate Apple Watch wrist motion (100Hz) with Zepp racquet metrics (333Hz) for each swing.</p>
+                            <span class="task-example">"analyze linked session 2024-12-15"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Cross-Sensor Validation</span>
+                            <p>Compare swing detection accuracy between Apple Watch rotation threshold and Zepp swing events.</p>
+                            <span class="task-example">"compare AW vs Zepp accuracy"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">3D Trajectory Visualization</span>
+                            <p>Visualize 3D swing paths comparing wrist (Apple Watch) and racquet (Zepp) motion.</p>
+                            <span class="task-example">"show 3D trajectory for swing 5"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-category">
+                    <h3>ML Stroke Classification</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">Train Stroke Classifier</span>
+                            <p>Train Random Forest, LDA, KNN, or SVM to classify FH/BH/Serve from Zepp sensor data.</p>
+                            <span class="task-example">"train stroke classifier with random forest"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">SHAP Explainability</span>
+                            <p>Explain predictions with SHAP values showing which sensor features contribute to classification.</p>
+                            <span class="task-example">"explain swing prediction for swing 0"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Temporal Cross-Validation</span>
+                            <p>Proper time-aware CV that prevents future data leakage with purge gap between train/val.</p>
+                            <span class="task-example">"train with temporal cross validation"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Flag Ambiguous Swings</span>
+                            <p>Identify low-confidence swings near decision boundaries for manual review.</p>
+                            <span class="task-example">"flag ambiguous swings for review"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-category">
+                    <h3>Heart Rate Analysis (Garmin)</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">HR by Match Outcome</span>
+                            <p>Compare heart rate statistics in wins vs losses across match history.</p>
+                            <span class="task-example">"compare heart rate wins vs losses"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">HR Zone Visualization</span>
+                            <p>5-zone HR chart with time in each zone during matches or practice.</p>
+                            <span class="task-example">"visualize HR for latest match"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Shot Quality by HR Zone</span>
+                            <p>Analyze how shot quality (power, spin, speed) degrades in higher HR zones.</p>
+                            <span class="task-example">"show shot quality by HR zone"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">HR Sensor Drift Detection</span>
+                            <p>Detect HRM sensor degradation over time using Mann-Kendall trend test.</p>
+                            <span class="task-example">"analyze HR drift over time"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-category">
+                    <h3>Practice Planning & DOE</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">Create Practice Plan</span>
+                            <p>Define structured drill sequence: '10 FH cross, 10 BH dtl, 5 Serve flat'.</p>
+                            <span class="task-example">"create plan: 10 FH cross, 10 BH slice"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Track Practice Progress</span>
+                            <p>Match recorded swings to plan sequence with completion percentage.</p>
+                            <span class="task-example">"track practice progress for today"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Serve DOE Experiment</span>
+                            <p>3-factor Design of Experiments: Type x Placement x Effort (27 combinations).</p>
+                            <span class="task-example">"create serve DOE with 5 reps per combo"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Analyze DOE Results</span>
+                            <p>Main effects, interactions, and optimal combination for speed/spin.</p>
+                            <span class="task-example">"analyze DOE results for speed"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-category">
+                    <h3>Vision & Video Analysis</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">Pose Estimation</span>
+                            <p>Analyze player form using MediaPipe, OpenPose, or MoveNet keypoint detection.</p>
+                            <span class="task-example">"analyze pose for stroke video"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Ball Detection</span>
+                            <p>Track ball trajectory using YOLOv8 or Faster R-CNN object detection.</p>
+                            <span class="task-example">"detect ball in match video"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Extract Video Frames</span>
+                            <p>Extract PNG frames at swing contact points using ffmpeg.</p>
+                            <span class="task-example">"extract frames at -400ms, 0ms, 200ms"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Generate Stroke Report</span>
+                            <p>PDF/HTML report with video frames, sensor data, and metrics overlay.</p>
+                            <span class="task-example">"generate stroke report for swing 3"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-category">
+                    <h3>Multi-Sensor Comparison</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">Zepp vs Zepp2 Trends</span>
+                            <p>Compare new Zepp Universal vs legacy Zepp2 metrics over time.</p>
+                            <span class="task-example">"compare Zepp vs Zepp2 speed trends"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Practice vs Match Performance</span>
+                            <p>Compare serve, forehand, backhand PIQ and speed between practice and matches.</p>
+                            <span class="task-example">"compare practice vs match performance"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Unified Session View</span>
+                            <p>Merge Zepp, Babolat, and Garmin data into synchronized timeline.</p>
+                            <span class="task-example">"build unified session for 2024-12-15"</span>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-name">Consensus Classification</span>
+                            <p>Combine Zepp and Babolat classifications with weighted voting.</p>
+                            <span class="task-example">"get consensus classification for session"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">189 tools for personal tennis analytics.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="ml.html">ML</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Project Phoenix Domain</p>
+        </footer>
+    </div>
+</body>
+</html>

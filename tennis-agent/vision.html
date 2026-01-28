@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TennisAgent | Vision Tools (15 tools)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">TA</span>
+                    <div>
+                        <p class="site-tag">personal tennis analytics</p>
+                        <h1 class="site-title">TennisAgent</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="principles.html">tau-bench</a>
+                    <a href="sensors.html">sensors</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="sensors.html" class="nav-item">sensors</a>
+            <a href="tools.html" class="nav-item">tools</a>
+            <a href="usecases.html" class="nav-item">use cases</a>
+            <a href="ml.html" class="nav-item">ML</a>
+            <a href="vision.html" class="nav-item active">vision</a>
+            <a href="smart.html" class="nav-item">smart</a>
+        </section>
+
+        <main class="subpage-content">
+            <div class="page-header">
+                <h2>Vision Tools</h2>
+                <p class="page-subtitle">15 tools for video analysis and computer vision</p>
+            </div>
+
+            <div class="intro-box">
+                <h4>Vision Capabilities</h4>
+                <p>Pose Estimation: MediaPipe, OpenPose, MoveNet | Object Detection: YOLOv8, Faster R-CNN | Stroke Classification: CNN architectures (ResNet, EfficientNet, MobileNet)</p>
+            </div>
+
+            <div class="tools-grid">
+                <div class="tool-category">
+                    <h3>Training & Validation (4 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_vision_training</span>
+                            <p>Analyze training history from vision model logs (loss, accuracy curves)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">run_vision_cross_validation</span>
+                            <p>K-fold cross-validation for tennis vision models</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">generate_vision_learning_curves</span>
+                            <p>Learning curves showing performance vs training data size</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">tune_vision_hyperparameters</span>
+                            <p>Tune learning rate, batch size, optimizer, scheduler</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Model Analysis (3 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">compare_vision_architectures</span>
+                            <p>Benchmark ResNet, EfficientNet, MobileNet for stroke classification</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_vision_model_complexity</span>
+                            <p>Model parameters, FLOPs, memory footprint analysis</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">visualize_stroke_features</span>
+                            <p>PCA/t-SNE/UMAP visualization of model embeddings</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Detection & Pose (3 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_tennis_detection_metrics</span>
+                            <p>Ball/player/court/racket detection metrics (IoU, precision, recall)</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_tennis_pose_metrics</span>
+                            <p>Pose estimation metrics: PCK, OKS, MPJPE for form analysis</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_tennis_image_stats</span>
+                            <p>Image statistics: mean, std, size distribution for video frames</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Stroke Classification (3 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">compute_stroke_metrics</span>
+                            <p>Precision, recall, F1 with micro/macro/weighted averaging</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_stroke_confusion</span>
+                            <p>Confusion matrix analysis showing top confusions</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_stroke_imbalance</span>
+                            <p>Class imbalance analysis with mitigation strategies</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Data & Utilities (2 tools)</h3>
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <span class="tool-name">analyze_vision_data_distribution</span>
+                            <p>Frame/image distribution across stroke types and sessions</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">suggest_tennis_augmentation</span>
+                            <p>Data augmentation strategies for tennis video/image data</p>
+                        </div>
+                        <div class="tool-item">
+                            <span class="tool-name">list_vision_tools</span>
+                            <p>List all available tennis vision tools by category</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h3>Supported Architectures</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Type</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ResNet-18/50</td>
+                            <td>CNN</td>
+                            <td>Stroke classification, feature extraction</td>
+                        </tr>
+                        <tr>
+                            <td>EfficientNet-B0</td>
+                            <td>CNN</td>
+                            <td>Efficient stroke classification</td>
+                        </tr>
+                        <tr>
+                            <td>MobileNet-V2</td>
+                            <td>CNN</td>
+                            <td>Mobile/edge deployment</td>
+                        </tr>
+                        <tr>
+                            <td>YOLOv8</td>
+                            <td>Detection</td>
+                            <td>Ball/racket detection</td>
+                        </tr>
+                        <tr>
+                            <td>Faster R-CNN</td>
+                            <td>Detection</td>
+                            <td>High-accuracy object detection</td>
+                        </tr>
+                        <tr>
+                            <td>MediaPipe</td>
+                            <td>Pose</td>
+                            <td>Real-time pose estimation</td>
+                        </tr>
+                        <tr>
+                            <td>OpenPose</td>
+                            <td>Pose</td>
+                            <td>Multi-person pose estimation</td>
+                        </tr>
+                        <tr>
+                            <td>MoveNet</td>
+                            <td>Pose</td>
+                            <td>Fast pose estimation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-banner">
+                <h4>Integration with Sensor Data</h4>
+                <p>Vision tools work with sensor data for multi-modal analysis:</p>
+                <ul style="margin-top: 10px; font-size: 13px;">
+                    <li>Align video frames with Apple Watch motion peaks</li>
+                    <li>Correlate pose angles with Zepp impact metrics</li>
+                    <li>Generate reports combining video frames + sensor visualizations</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">TennisAgent</p>
+                <p class="footer-note">15 vision tools for video analysis.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">home</a>
+                <a href="tools.html">tools</a>
+                <a href="ml.html">ML</a>
+            </div>
+            <p class="footer-copy">TennisAgent - Project Phoenix Domain</p>
+        </footer>
+    </div>
+</body>
+</html>
