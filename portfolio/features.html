@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | Portfolio Agent</title>
+    <meta name="description" content="Tax optimization, options trading, risk assessment, and model portfolios.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>Portfolio Features</h1>
+            <p class="subtitle">Major Capabilities</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="features.html" class="active">Features</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Tax Optimization (V7)</h2>
+            <div class="badge primary">5 Tools</div>
+            <p>Comprehensive tax-aware portfolio management with federal and state tax calculations.</p>
+            <h3>Tax Features</h3>
+            <ul>
+                <li>Federal LTCG rates (0%, 15%, 20%) by income bracket</li>
+                <li>Ordinary income rates for short-term gains (10%-37%)</li>
+                <li>All 50 state tax rates (including 0% states: TX, FL, WA, NV)</li>
+                <li>NIIT (3.8% surtax) for high earners</li>
+                <li>Wash sale rule awareness (30-day window)</li>
+                <li>Replacement security mapping (AAPL → VGT, MRVL → SMH)</li>
+            </ul>
+            <h3>Tax Profile Storage</h3>
+            <table class="table">
+                <tr><td>Filing Status</td><td>single, married_joint, married_sep, head_household</td></tr>
+                <tr><td>State</td><td>2-letter code (CA, TX, NY, etc.)</td></tr>
+                <tr><td>Taxable Income</td><td>For bracket determination</td></tr>
+                <tr><td>Loss Carryforward</td><td>Prior year losses available</td></tr>
+            </table>
+            <h3>Example Queries</h3>
+            <div class="code">set my tax profile to single california
+find tax loss harvesting opportunities
+what's the tax if I sell AAPL
+give me tax efficient recommendations</div>
+        </section>
+
+        <section class="section">
+            <h2>Options Trading (V8-V9)</h2>
+            <div class="badge primary">10 Tools</div>
+            <p>Full options workflow from approval levels to strategy building with Greeks visualization.</p>
+            <h3>Options Approval Levels</h3>
+            <table class="table">
+                <thead>
+                    <tr><th>Level</th><th>Name</th><th>Strategies</th><th>Requirements</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>0</td><td>Not Approved</td><td>None</td><td>Default</td></tr>
+                    <tr><td>1</td><td>Basic</td><td>Covered calls, cash-secured puts</td><td>$25k+, 1+ years</td></tr>
+                    <tr><td>2</td><td>Standard</td><td>+ Long calls/puts, married puts</td><td>$50k+, 2+ years</td></tr>
+                    <tr><td>3</td><td>Advanced</td><td>+ Spreads, butterflies, condors</td><td>$100k+, 3+ years</td></tr>
+                    <tr><td>4</td><td>Full</td><td>+ Naked puts/calls</td><td>$250k+, 5+ years</td></tr>
+                </tbody>
+            </table>
+            <h3>Options Tutorial Topics</h3>
+            <table class="table">
+                <thead>
+                    <tr><th>Topic</th><th>Content</th><th>Visualization</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>basics</td><td>What options are, key terms</td><td>Call vs Put comparison</td></tr>
+                    <tr><td>covered_call</td><td>Income strategy for shareholders</td><td>Stock + short call overlay</td></tr>
+                    <tr><td>cash_secured_put</td><td>Buy stocks at discount</td><td>Short put payoff</td></tr>
+                    <tr><td>spreads</td><td>Vertical spreads, bull/bear</td><td>Bull call spread</td></tr>
+                    <tr><td>straddle</td><td>Betting on big moves</td><td>V-shaped payoff</td></tr>
+                    <tr><td>iron_condor</td><td>Range-bound income</td><td>Profit zone with wings</td></tr>
+                    <tr><td>greeks</td><td>Delta, gamma, theta, vega</td><td>Delta curves + gamma</td></tr>
+                </tbody>
+            </table>
+            <h3>Greeks Visualization</h3>
+            <ul>
+                <li><strong>Delta (Δ)</strong>: Call (green, 0→1) and put (red, 0→-1) price sensitivity</li>
+                <li><strong>Gamma (Γ)</strong>: Yellow dashed - rate of delta change, highest ATM</li>
+                <li><strong>Theta (Θ)</strong>: Coral dotted - time decay (negative), highest ATM</li>
+                <li><strong>Vega (ν)</strong>: Purple dash-dot - volatility sensitivity, highest ATM</li>
+            </ul>
+            <h3>Example Queries</h3>
+            <div class="code">find covered call opportunities
+build me an options strategy for $500/month
+visualize covered call payoff
+explain the greeks
+what strike for AAPL covered call</div>
+        </section>
+
+        <section class="section">
+            <h2>Risk Assessment (V6)</h2>
+            <div class="badge primary">4 Tools</div>
+            <p>Comprehensive risk scoring with goal-based optimization and actionable recommendations.</p>
+            <h3>Risk Scoring (0-100)</h3>
+            <table class="table">
+                <tr><td>Sector Concentration</td><td>25%</td><td>Tech exposure</td></tr>
+                <tr><td>Position Concentration</td><td>25%</td><td>Top position weight</td></tr>
+                <tr><td>Asset Class Mix</td><td>20%</td><td>Equity vs fixed income</td></tr>
+                <tr><td>Dividend Yield</td><td>15%</td><td>Income generation</td></tr>
+                <tr><td>Diversification</td><td>15%</td><td>HHI concentration index</td></tr>
+            </table>
+            <h3>Suggested ETFs</h3>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <span class="tech-tag">BND (Bonds)</span>
+                <span class="tech-tag">AGG (Bonds)</span>
+                <span class="tech-tag">VYM (Dividend)</span>
+                <span class="tech-tag">SCHD (Dividend)</span>
+                <span class="tech-tag">QQQ (Growth)</span>
+                <span class="tech-tag">VGT (Growth)</span>
+                <span class="tech-tag">VNQ (REIT)</span>
+            </div>
+            <h3>Example Queries</h3>
+            <div class="code">what's my risk level
+make my portfolio more conservative
+optimize for income
+why should I sell AAPL</div>
+        </section>
+
+        <section class="section">
+            <h2>Model Portfolios (V4)</h2>
+            <div class="badge primary">6 Tools</div>
+            <p>Predefined allocation templates with stress testing and rebalancing scenarios.</p>
+            <h3>Available Models</h3>
+            <table class="table">
+                <thead>
+                    <tr><th>Model</th><th>Equity</th><th>Bonds</th><th>Focus</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Conservative</td><td>30%</td><td>70%</td><td>Capital preservation</td></tr>
+                    <tr><td>Moderate</td><td>60%</td><td>40%</td><td>Balanced growth</td></tr>
+                    <tr><td>Aggressive</td><td>90%</td><td>10%</td><td>Maximum growth</td></tr>
+                    <tr><td>Income</td><td>50%</td><td>50%</td><td>Dividend focus</td></tr>
+                </tbody>
+            </table>
+            <h3>Stress Test Scenarios</h3>
+            <ul>
+                <li>Tech crash impact</li>
+                <li>Market correction (-20%)</li>
+                <li>Inflation impact</li>
+            </ul>
+            <h3>Example Queries</h3>
+            <div class="code">show model portfolios
+compare my portfolio to conservative model
+what moves to match income model
+move 10% from tech to healthcare
+stress test my portfolio</div>
+        </section>
+
+        <section class="section">
+            <h2>Historical Tracking (V5)</h2>
+            <div class="badge primary">6 Tools</div>
+            <p>Multi-snapshot support for tracking portfolio changes over time.</p>
+            <h3>Available Snapshots</h3>
+            <table class="table">
+                <thead>
+                    <tr><th>Date</th><th>Positions</th><th>Market Value</th><th>Total Gain</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>2025-11-30</td><td>7</td><td>$180,172.30</td><td>$94,989.36</td></tr>
+                    <tr><td>2025-12-30</td><td>7</td><td>$193,936.80</td><td>$108,753.86</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Change (Nov → Dec):</strong> +$13,764.50 (+7.6%)</p>
+            <h3>Example Queries</h3>
+            <div class="code">show available snapshots
+portfolio value over time
+show AAPL history
+compare november to december
+what positions changed</div>
+        </section>
+
+        <section class="section">
+            <h2>Cross-Pollination (V10)</h2>
+            <div class="badge primary">2 Tools</div>
+            <p>Tools adapted from other Project Phoenix domains.</p>
+            <h3>Cross-Pollinated Tools</h3>
+            <table class="table">
+                <thead>
+                    <tr><th>Tool</th><th>Source</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>detect_unusual_returns</code></td>
+                        <td>YieldModel <code>find_outliers</code></td>
+                        <td>Find positions with statistically unusual returns using z-score analysis</td>
+                    </tr>
+                    <tr>
+                        <td><code>calculate_sector_concentration</code></td>
+                        <td>PPR_Agent <code>get_market_concentration</code></td>
+                        <td>Calculate Herfindahl-Hirschman Index (HHI) for concentration risk</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>HHI Interpretation</h3>
+            <ul>
+                <li><strong>Low (&lt;1500)</strong>: Well diversified</li>
+                <li><strong>Moderate (1500-2500)</strong>: Some concentration</li>
+                <li><strong>High (&gt;2500)</strong>: Concentrated portfolio</li>
+            </ul>
+            <h3>Example Queries</h3>
+            <div class="code">find unusual returns
+detect outliers in my portfolio
+show concentration risk
+calculate sector concentration
+what's my HHI</div>
+        </section>
+
+        <footer class="footer">
+            <p>Portfolio Domain - Project Phoenix | Investment Analysis Agent</p>
+            <a href="index.html" class="back-link">Back to Portfolio Home</a>
+        </footer>
+    </div>
+</body>
+</html>
