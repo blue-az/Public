@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShowcaseAgent | Meta-Domain Router</title>
+    <meta name="description" content="Meta-agent orchestrating 10 production domains with 475+ tools via intelligent routing.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Meta-Domain</div>
+            <h1>ShowcaseAgent</h1>
+            <p class="subtitle">Intelligent Domain Router & Orchestrator</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="domains.html">Domains</a>
+            <a href="routing.html">Routing</a>
+            <a href="modes.html">Modes</a>
+            <a href="benchmark.html">Benchmark</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="number">10</div>
+                <div class="label">Domains</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">475+</div>
+                <div class="label">Tools</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">80.6%</div>
+                <div class="label">Routing Accuracy</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">3</div>
+                <div class="label">Variations</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>What is a Meta-Domain?</h2>
+            <p>ShowcaseAgent is fundamentally different from typical Project Phoenix domains. Instead of performing domain-specific work, it <strong>orchestrates and routes queries</strong> to 10 production domains through a unified interface.</p>
+            <div class="card" style="margin-top: 1rem; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+                <h3 style="color: #00b894;">The Meta-Domain Pattern</h3>
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong>Doesn't execute domain work</strong> - pure orchestration layer</li>
+                    <li><strong>Cross-domain aggregation</strong> - unified interface to 475+ tools</li>
+                    <li><strong>Intelligent routing</strong> - rule-based + LLM hybrid</li>
+                    <li><strong>Hypothesis testing</strong> - benchmarks meta-tools vs direct access</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Core Capabilities</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3>GUI Browser</h3>
+                    <p>Interactive tkinter interface to browse all 10 domains, view tools, and route queries in real-time.</p>
+                    <div class="meta">showcase_agent.py</div>
+                </div>
+                <div class="card">
+                    <h3>Meta-Router</h3>
+                    <p>Hybrid routing: regex patterns for speed, LLM fallback for ambiguous queries.</p>
+                    <div class="meta">router/domain_router.py</div>
+                </div>
+                <div class="card">
+                    <h3>Domain Adapters</h3>
+                    <p>10 uniform adapters providing consistent interface to varied domain implementations.</p>
+                    <div class="meta">router/domain_adapters/</div>
+                </div>
+                <div class="card">
+                    <h3>Benchmark Platform</h3>
+                    <p>Test hypothesis across 5 LLM providers with 150+ validation queries.</p>
+                    <div class="meta">benchmark/</div>
+                </div>
+                <div class="card">
+                    <h3>Dual Modes</h3>
+                    <p>Meta-tool mode (10 tools) vs Direct mode (475+ tools) for different LLM contexts.</p>
+                    <div class="meta">unified_agent.py</div>
+                </div>
+                <div class="card">
+                    <h3>Variations</h3>
+                    <p>3 experimental configurations for comparative tool abstraction studies.</p>
+                    <div class="meta">variations/</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>The Core Hypothesis</h2>
+            <div class="card" style="border-left: 4px solid #6c5ce7;">
+                <p style="font-style: italic; font-size: 1.1rem;">"Local LLMs perform better with abstracted meta-tools (10 domain tools) than direct access to 475+ individual tools."</p>
+                <p style="margin-top: 1rem;">This hypothesis drives the entire ShowcaseAgent architecture. By presenting 10 meta-tools instead of 475+ direct tools:</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li>LLM makes one decision: "which domain?"</li>
+                    <li>Reduces context window pressure</li>
+                    <li>Better suited for local models with limited context</li>
+                    <li>Routing accuracy: <strong>80.6%</strong> on cross-domain queries</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Architecture Overview</h2>
+            <div class="code"><span class="highlight-secondary"># Query Flow</span>
+User Query
+    |
+    v
++-------------------+
+|  ShowcaseAgent    |  <-- Meta-Domain (this)
+|  (Router Layer)   |
++-------------------+
+    |
+    v
++-------------------+
+|  Domain Router    |  <-- Rule-based + LLM hybrid
+|  (Hybrid)         |
++-------------------+
+    |
+    +---> TennisAgent (171 tools)
+    +---> Optiver (84 tools)
+    +---> Portfolio (70 tools)
+    +---> WQ (38 tools)
+    +---> ... 6 more domains</div>
+        </section>
+
+        <section class="section">
+            <h2>Showcased Domains</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Tools</th>
+                        <th>Category</th>
+                        <th>Routing Accuracy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TennisAgent</td>
+                        <td>171</td>
+                        <td>Sports/Analytics</td>
+                        <td><span class="highlight">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Optiver</td>
+                        <td>84</td>
+                        <td>Finance/ML</td>
+                        <td>80%</td>
+                    </tr>
+                    <tr>
+                        <td>Portfolio</td>
+                        <td>70</td>
+                        <td>Finance/Analytics</td>
+                        <td>90%</td>
+                    </tr>
+                    <tr>
+                        <td>WQ</td>
+                        <td>38</td>
+                        <td>Education/DataScience</td>
+                        <td>25%</td>
+                    </tr>
+                    <tr>
+                        <td>QCiAgent</td>
+                        <td>21</td>
+                        <td>Tech/Sales</td>
+                        <td><span class="highlight">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>ParableAgent</td>
+                        <td>21</td>
+                        <td>Education/Religion</td>
+                        <td>80%</td>
+                    </tr>
+                    <tr>
+                        <td>Stan</td>
+                        <td>19</td>
+                        <td>Education/Statistics</td>
+                        <td>40%</td>
+                    </tr>
+                    <tr>
+                        <td>YieldModel</td>
+                        <td>18</td>
+                        <td>Manufacturing/ML</td>
+                        <td><span class="highlight">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>AI_WQ</td>
+                        <td>18</td>
+                        <td>Education/DeepLearning</td>
+                        <td>75%</td>
+                    </tr>
+                    <tr>
+                        <td>PPR_Agent</td>
+                        <td>15</td>
+                        <td>Healthcare/Data</td>
+                        <td><span class="highlight">100%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="meta" style="margin-top: 0.5rem;">Overall routing accuracy: 80.6% (83/103 queries correctly routed)</p>
+        </section>
+
+        <section class="section">
+            <h2>Development Sprints</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sprint</th>
+                        <th>Focus</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Foundation (router, TennisAgent adapter)</td>
+                        <td><span class="highlight">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>10 domain adapters with uniform interface</td>
+                        <td><span class="highlight">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Benchmark platform (5 providers, 150+ queries)</td>
+                        <td><span class="highlight">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>LLM routing + direct mode + routing tracking</td>
+                        <td><span class="highlight">Complete</span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>GUI integration with live query routing</td>
+                        <td><span class="highlight">Complete</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>ShowcaseAgent v2.5.0 - Project Phoenix Meta-Domain</p>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="back-link">Back to Project Phoenix</a>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modes | ShowcaseAgent</title>
+    <meta name="description" content="Meta-Tool Mode vs Direct Mode for different LLM contexts.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Meta-Domain</div>
+            <h1>Operational Modes</h1>
+            <p class="subtitle">Meta-Tool (10) vs Direct (475+)</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="domains.html">Domains</a>
+            <a href="routing.html">Routing</a>
+            <a href="modes.html" class="active">Modes</a>
+            <a href="benchmark.html">Benchmark</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Two Operational Modes</h2>
+            <p>ShowcaseAgent supports two modes optimized for different LLM capabilities.</p>
+            <div class="grid grid-2">
+                <div class="card" style="border-left: 4px solid #00b894;">
+                    <div class="badge primary">Recommended for Local LLMs</div>
+                    <h3>Meta-Tool Mode</h3>
+                    <p style="font-size: 2rem; font-weight: bold; color: #00b894;">10 Tools</p>
+                    <p>One meta-tool per domain. LLM makes one decision: "which domain?"</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Reduced context window pressure</li>
+                        <li>Simpler tool selection</li>
+                        <li>Natural language queries per domain</li>
+                        <li>Better for Ollama, small models</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-left: 4px solid #6c5ce7;">
+                    <div class="badge">For Cloud LLMs</div>
+                    <h3>Direct Mode</h3>
+                    <p style="font-size: 2rem; font-weight: bold; color: #6c5ce7;">475+ Tools</p>
+                    <p>All individual tools flattened. LLM sees every tool and selects directly.</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Full tool granularity</li>
+                        <li>Precise tool selection</li>
+                        <li>Requires large context window</li>
+                        <li>Better for Claude, GPT-4</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Meta-Tool Mode Example</h2>
+            <div class="code"><span class="highlight-secondary"># 10 Meta-Tools Available to LLM</span>
+
+query_tennisagent_data(query: str)
+    "Natural language query for tennis sensor analysis"
+
+query_portfolio_data(query: str)
+    "Natural language query for investment portfolio"
+
+query_optiver_data(query: str)
+    "Natural language query for trading ML"
+
+query_wq_data(query: str)
+    "Natural language query for WQ data science"
+
+query_stan_data(query: str)
+    "Natural language query for Stats 315A"
+
+... 5 more meta-tools
+
+<span class="highlight-secondary"># User Query Flow</span>
+User: "show my forehand consistency analysis"
+    |
+    v
+LLM selects: query_tennisagent_data("show my forehand consistency analysis")
+    |
+    v
+TennisAgent processes query internally
+    |
+    v
+Result returned to user</div>
+        </section>
+
+        <section class="section">
+            <h2>Direct Mode Example</h2>
+            <div class="code"><span class="highlight-secondary"># 475+ Individual Tools Available to LLM</span>
+
+<span class="highlight-secondary"># TennisAgent tools (171)</span>
+analyze_match_consistency(activity_id: str, shot_type: str)
+detect_fatigue_patterns(activity_id: str)
+visualize_zepp_impact(start_date: str, end_date: str)
+train_stroke_classifier(model_type: str)
+...
+
+<span class="highlight-secondary"># Portfolio tools (70)</span>
+list_holdings()
+get_tax_summary()
+find_harvest_opportunities()
+calculate_options_income()
+...
+
+<span class="highlight-secondary"># ... 234 more tools from other domains</span>
+
+<span class="highlight-secondary"># User Query Flow</span>
+User: "show my forehand consistency analysis"
+    |
+    v
+LLM selects: analyze_match_consistency(activity_id="latest", shot_type="forehand")
+    |
+    v
+Tool executes directly
+    |
+    v
+Result returned to user</div>
+        </section>
+
+        <section class="section">
+            <h2>Mode Comparison</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Meta-Tool Mode</th>
+                        <th>Direct Mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tool Count</td>
+                        <td><span class="highlight">10 tools</span></td>
+                        <td>475+ tools</td>
+                    </tr>
+                    <tr>
+                        <td>Context Usage</td>
+                        <td><span class="highlight">Low (~2K tokens)</span></td>
+                        <td>High (~50K tokens)</td>
+                    </tr>
+                    <tr>
+                        <td>LLM Decision</td>
+                        <td>"Which domain?"</td>
+                        <td>"Which specific tool?"</td>
+                    </tr>
+                    <tr>
+                        <td>Query Interface</td>
+                        <td>Natural language</td>
+                        <td>Structured parameters</td>
+                    </tr>
+                    <tr>
+                        <td>Best For</td>
+                        <td>Local LLMs (Ollama, llama.cpp)</td>
+                        <td>Cloud LLMs (Claude, GPT-4)</td>
+                    </tr>
+                    <tr>
+                        <td>Routing</td>
+                        <td>ShowcaseAgent routes</td>
+                        <td>LLM routes directly</td>
+                    </tr>
+                    <tr>
+                        <td>Granularity</td>
+                        <td>Domain-level</td>
+                        <td>Tool-level</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Experimental Variations</h2>
+            <p>ShowcaseAgent includes 3 variations for comparative studies.</p>
+            <div class="variation-grid">
+                <div class="variation-card">
+                    <div class="num">6</div>
+                    <h4>V1: Browse</h4>
+                    <p>Read-only catalog exploration</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">10</div>
+                    <h4>V2: Meta-Tool</h4>
+                    <p>Aggregated domain interfaces</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">475+</div>
+                    <h4>V3: Direct</h4>
+                    <p>All individual tools</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Variation 1: Browse Mode (6 tools)</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>list_domains</code></td>
+                        <td>List all 10 available domains</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_domain_info</code></td>
+                        <td>Get detailed info for a specific domain</td>
+                    </tr>
+                    <tr>
+                        <td><code>list_domain_tools</code></td>
+                        <td>List tools available in a domain</td>
+                    </tr>
+                    <tr>
+                        <td><code>search_tools</code></td>
+                        <td>Search for tools by keyword</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_tool_details</code></td>
+                        <td>Get detailed tool documentation</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_domain_stats</code></td>
+                        <td>Get aggregate statistics</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Variation 2: Meta-Tool Mode (10 tools)</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Domain</th>
+                        <th>Tools Exposed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>query_tennisagent_data</code></td>
+                        <td>TennisAgent</td>
+                        <td>171</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_optiver_data</code></td>
+                        <td>Optiver</td>
+                        <td>84</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_portfolio_data</code></td>
+                        <td>Portfolio</td>
+                        <td>70</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_wq_data</code></td>
+                        <td>WQ</td>
+                        <td>38</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_qci_data</code></td>
+                        <td>QCiAgent</td>
+                        <td>21</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_parable_data</code></td>
+                        <td>ParableAgent</td>
+                        <td>21</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_stan_data</code></td>
+                        <td>Stan</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_yieldmodel_data</code></td>
+                        <td>YieldModel</td>
+                        <td>18</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_aiwq_data</code></td>
+                        <td>AI_WQ</td>
+                        <td>18</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_ppr_data</code></td>
+                        <td>PPR_Agent</td>
+                        <td>15</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <p>ShowcaseAgent v2.5.0 - Project Phoenix Meta-Domain</p>
+            <a href="index.html" class="back-link">Back to ShowcaseAgent</a>
+        </footer>
+    </div>
+</body>
+</html>

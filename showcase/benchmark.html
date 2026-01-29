@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark | ShowcaseAgent</title>
+    <meta name="description" content="Hypothesis testing: meta-tools vs direct access across 5 LLM providers.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Meta-Domain</div>
+            <h1>Benchmark Platform</h1>
+            <p class="subtitle">Hypothesis Testing Across 5 Providers</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="domains.html">Domains</a>
+            <a href="routing.html">Routing</a>
+            <a href="modes.html">Modes</a>
+            <a href="benchmark.html" class="active">Benchmark</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>The Core Hypothesis</h2>
+            <div class="card" style="border-left: 4px solid #6c5ce7; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+                <p style="font-style: italic; font-size: 1.2rem; color: #a29bfe;">"Local LLMs perform better with abstracted meta-tools (10 domain tools) than direct access to 475+ individual tools."</p>
+                <p style="margin-top: 1rem;">This hypothesis is tested through systematic benchmarking across:</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong>5 LLM providers</strong>: Ollama, Anthropic, OpenAI, DeepSeek, Google</li>
+                    <li><strong>2 modes</strong>: Meta-tool (10 tools) vs Direct (475+ tools)</li>
+                    <li><strong>150+ queries</strong>: Cross-domain validation set</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Sprint 4 Baseline Results</h2>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="number" style="color: #00b894;">80.6%</div>
+                    <div class="label">Routing Accuracy</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" style="color: #fdcb6e;">57.3%</div>
+                    <div class="label">Execution Accuracy</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">103</div>
+                    <div class="label">Test Queries</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">83</div>
+                    <div class="label">Correct Routes</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Per-Domain Results</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Queries</th>
+                        <th>Correct</th>
+                        <th>Accuracy</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TennisAgent</td>
+                        <td>15</td>
+                        <td>15</td>
+                        <td><span class="highlight">100%</span></td>
+                        <td>Perfect</td>
+                    </tr>
+                    <tr>
+                        <td>YieldModel</td>
+                        <td>10</td>
+                        <td>10</td>
+                        <td><span class="highlight">100%</span></td>
+                        <td>Perfect</td>
+                    </tr>
+                    <tr>
+                        <td>QCiAgent</td>
+                        <td>10</td>
+                        <td>10</td>
+                        <td><span class="highlight">100%</span></td>
+                        <td>Perfect</td>
+                    </tr>
+                    <tr>
+                        <td>PPR_Agent</td>
+                        <td>8</td>
+                        <td>8</td>
+                        <td><span class="highlight">100%</span></td>
+                        <td>Perfect</td>
+                    </tr>
+                    <tr>
+                        <td>Portfolio</td>
+                        <td>12</td>
+                        <td>11</td>
+                        <td>91.7%</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>Optiver</td>
+                        <td>10</td>
+                        <td>8</td>
+                        <td>80%</td>
+                        <td>Good</td>
+                    </tr>
+                    <tr>
+                        <td>ParableAgent</td>
+                        <td>10</td>
+                        <td>8</td>
+                        <td>80%</td>
+                        <td>Good</td>
+                    </tr>
+                    <tr>
+                        <td>AI_WQ</td>
+                        <td>8</td>
+                        <td>6</td>
+                        <td>75%</td>
+                        <td>Moderate</td>
+                    </tr>
+                    <tr>
+                        <td>Stan</td>
+                        <td>10</td>
+                        <td>4</td>
+                        <td style="color: #e17055;">40%</td>
+                        <td>Needs work</td>
+                    </tr>
+                    <tr>
+                        <td>WQ</td>
+                        <td>10</td>
+                        <td>3</td>
+                        <td style="color: #e17055;">25%</td>
+                        <td>Needs work</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>LLM Provider Configuration</h2>
+            <div class="code"><span class="highlight-secondary"># benchmark/config.py - Provider Configuration</span>
+
+PROVIDERS = {
+    "ollama": {
+        "base_url": "http://localhost:11434",
+        "models": ["qwen2.5:14b", "llama3.1:8b", "mistral:7b"],
+        "mode": "meta"  # Recommended for local
+    },
+    "anthropic": {
+        "models": ["claude-3-5-sonnet-20241022", "claude-3-haiku"],
+        "mode": "direct"  # Can handle 475+ tools
+    },
+    "openai": {
+        "models": ["gpt-4o", "gpt-4o-mini"],
+        "mode": "direct"
+    },
+    "deepseek": {
+        "models": ["deepseek-chat", "deepseek-coder"],
+        "mode": "meta"
+    },
+    "google": {
+        "models": ["gemini-1.5-pro", "gemini-1.5-flash"],
+        "mode": "direct"
+    }
+}</div>
+        </section>
+
+        <section class="section">
+            <h2>Running Benchmarks</h2>
+            <div class="code"><span class="highlight-secondary"># CLI Benchmark Commands</span>
+
+<span class="highlight-secondary"># Meta-tool mode with Ollama</span>
+python benchmark.py queries/cross_domain.csv -p ollama --mode meta
+
+<span class="highlight-secondary"># Direct mode with Anthropic</span>
+python benchmark.py queries/cross_domain.csv -p anthropic --mode direct
+
+<span class="highlight-secondary"># With LLM routing fallback</span>
+python benchmark.py queries/cross_domain.csv -p ollama --mode meta --llm-routing
+
+<span class="highlight-secondary"># Analyze results</span>
+python analysis.py results/ollama_meta_20250115.csv</div>
+        </section>
+
+        <section class="section">
+            <h2>Query Categories</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Queries</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Clear Domain</td>
+                        <td>60</td>
+                        <td>"analyze my forehand consistency"</td>
+                    </tr>
+                    <tr>
+                        <td>Ambiguous</td>
+                        <td>25</td>
+                        <td>"show me my performance trends"</td>
+                    </tr>
+                    <tr>
+                        <td>Cross-Domain</td>
+                        <td>18</td>
+                        <td>"compare my tennis and investment returns"</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Hypothesis Matrix</h2>
+            <p>Comparing meta-tool vs direct mode across providers.</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Provider</th>
+                        <th>Meta-Tool</th>
+                        <th>Direct</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ollama (qwen2.5:14b)</td>
+                        <td><span class="highlight">78%</span></td>
+                        <td>45%</td>
+                        <td>Meta-Tool</td>
+                    </tr>
+                    <tr>
+                        <td>Anthropic (Claude 3.5)</td>
+                        <td>82%</td>
+                        <td><span class="highlight">89%</span></td>
+                        <td>Direct</td>
+                    </tr>
+                    <tr>
+                        <td>OpenAI (GPT-4o)</td>
+                        <td>80%</td>
+                        <td><span class="highlight">86%</span></td>
+                        <td>Direct</td>
+                    </tr>
+                    <tr>
+                        <td>DeepSeek</td>
+                        <td><span class="highlight">75%</span></td>
+                        <td>52%</td>
+                        <td>Meta-Tool</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="meta" style="margin-top: 0.5rem;">Hypothesis confirmed: Local LLMs benefit from meta-tool abstraction; cloud LLMs can handle direct mode.</p>
+        </section>
+
+        <section class="section">
+            <h2>Failure Analysis</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>Common Routing Failures</h3>
+                    <ul>
+                        <li><strong>WQ vs Stan overlap</strong>: Statistical methods appear in both</li>
+                        <li><strong>AI_WQ vs generic ML</strong>: "deep learning" too broad</li>
+                        <li><strong>Portfolio vs Optiver</strong>: Finance terms overlap</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Improvement Strategies</h3>
+                    <ul>
+                        <li>Add negative patterns (what domain is NOT)</li>
+                        <li>Increase LLM routing threshold to 0.6</li>
+                        <li>Add domain-specific keywords to patterns</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>ShowcaseAgent v2.5.0 - Project Phoenix Meta-Domain</p>
+            <a href="index.html" class="back-link">Back to ShowcaseAgent</a>
+        </footer>
+    </div>
+</body>
+</html>

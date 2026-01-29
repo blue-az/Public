@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Routing | ShowcaseAgent</title>
+    <meta name="description" content="Hybrid routing architecture: rule-based + LLM fallback.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Meta-Domain</div>
+            <h1>Routing Architecture</h1>
+            <p class="subtitle">Rule-Based + LLM Hybrid Routing</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="domains.html">Domains</a>
+            <a href="routing.html" class="active">Routing</a>
+            <a href="modes.html">Modes</a>
+            <a href="benchmark.html">Benchmark</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Three Routing Strategies</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3>DomainRouter</h3>
+                    <div class="badge">Rule-Based</div>
+                    <p>Regex pattern matching for fast, deterministic routing. Each domain has 4-8 distinctive patterns.</p>
+                    <ul style="margin-top: 0.5rem; font-size: 0.9rem;">
+                        <li>Deterministic & reproducible</li>
+                        <li>Sub-millisecond latency</li>
+                        <li>Confidence: 0.0-1.0</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>LLMDomainRouter</h3>
+                    <div class="badge">LLM-Based</div>
+                    <p>LLM-powered routing for ambiguous queries. Fallback when rule confidence &lt; 0.5.</p>
+                    <ul style="margin-top: 0.5rem; font-size: 0.9rem;">
+                        <li>Handles ambiguity</li>
+                        <li>Context-aware</li>
+                        <li>Claude/OpenAI/Ollama</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>HybridDomainRouter</h3>
+                    <div class="badge primary">Recommended</div>
+                    <p>Rule-based first, LLM fallback. Best of both: speed + intelligence.</p>
+                    <ul style="margin-top: 0.5rem; font-size: 0.9rem;">
+                        <li>Fast for clear queries</li>
+                        <li>Smart for edge cases</li>
+                        <li>Production default</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Routing Flow</h2>
+            <div class="code"><span class="highlight-secondary"># Hybrid Routing Decision Flow</span>
+
+User Query: "analyze my forehand consistency"
+    |
+    v
++---------------------------+
+|   Rule-Based Router       |
+|   Pattern: "forehand"     |
+|   Match: TennisAgent      |
+|   Confidence: 0.85        |
++---------------------------+
+    |
+    | confidence >= 0.5?
+    |
+    +---> YES: Route to TennisAgent
+    |
+    +---> NO: LLM Fallback
+              |
+              v
+         +------------------+
+         |   LLM Router     |
+         |   "Which domain  |
+         |   handles this?" |
+         +------------------+
+              |
+              v
+         Route to selected domain</div>
+        </section>
+
+        <section class="section">
+            <h2>Domain Patterns</h2>
+            <p>Each domain has distinctive regex patterns for rule-based routing.</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Primary Patterns</th>
+                        <th>Confidence Boost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TennisAgent</td>
+                        <td><code>zepp|babolat|serve|forehand|backhand|tennis|racquet</code></td>
+                        <td>+0.3 per match</td>
+                    </tr>
+                    <tr>
+                        <td>Portfolio</td>
+                        <td><code>portfolio|holdings|tax|options|dividend|allocation|stock</code></td>
+                        <td>+0.3 per match</td>
+                    </tr>
+                    <tr>
+                        <td>Optiver</td>
+                        <td><code>optiver|trading|kaggle|feature|ensemble|backtest|wap</code></td>
+                        <td>+0.3 per match</td>
+                    </tr>
+                    <tr>
+                        <td>WQ</td>
+                        <td><code>worldquant|wqu|housing|air quality|bankruptcy|volatility</code></td>
+                        <td>+0.25 per match</td>
+                    </tr>
+                    <tr>
+                        <td>Stan</td>
+                        <td><code>stats 315|eslii|ridge|lasso|spline|boosting|statistical</code></td>
+                        <td>+0.25 per match</td>
+                    </tr>
+                    <tr>
+                        <td>AI_WQ</td>
+                        <td><code>computer vision|cnn|resnet|yolo|image|deep learning</code></td>
+                        <td>+0.25 per match</td>
+                    </tr>
+                    <tr>
+                        <td>QCiAgent</td>
+                        <td><code>quantum|qubit|dirac|qatalyst|qci|optimization|eqc</code></td>
+                        <td>+0.35 per match</td>
+                    </tr>
+                    <tr>
+                        <td>YieldModel</td>
+                        <td><code>yield|wafer|defect|semiconductor|manufacturing|ic</code></td>
+                        <td>+0.35 per match</td>
+                    </tr>
+                    <tr>
+                        <td>ParableAgent</td>
+                        <td><code>parable|jesus|gospel|matthew|luke|biblical|kingdom</code></td>
+                        <td>+0.35 per match</td>
+                    </tr>
+                    <tr>
+                        <td>PPR_Agent</td>
+                        <td><code>ppr|pacemaker|implant|device|cardiac|medical</code></td>
+                        <td>+0.35 per match</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Routing Result Structure</h2>
+            <div class="code"><span class="highlight-secondary"># RoutingResult dataclass</span>
+@dataclass
+class RoutingResult:
+    domain: str           # "TennisAgent"
+    confidence: float     # 0.85
+    method: str           # "rule" | "llm" | "hybrid"
+    matched_patterns: List[str]  # ["forehand", "tennis"]
+    reasoning: Optional[str]     # LLM explanation (if used)
+
+<span class="highlight-secondary"># Example Result</span>
+RoutingResult(
+    domain="TennisAgent",
+    confidence=0.85,
+    method="rule",
+    matched_patterns=["forehand", "consistency"],
+    reasoning=None
+)</div>
+        </section>
+
+        <section class="section">
+            <h2>LLM Routing Prompt</h2>
+            <p>When rule-based confidence is low, the LLM router uses this structured prompt:</p>
+            <div class="code"><span class="highlight-secondary"># LLM Router System Prompt</span>
+
+You are a query router for Project Phoenix domains.
+Given a user query, determine which domain should handle it.
+
+Available domains:
+- TennisAgent: Tennis sensor analysis, match/practice data
+- Portfolio: Investment portfolio, tax, options
+- Optiver: Trading ML, Kaggle competition
+- WQ: WorldQuant data science projects
+- Stan: Stanford Stats 315A coursework
+- AI_WQ: Computer vision, deep learning
+- QCiAgent: Quantum computing products
+- YieldModel: Semiconductor manufacturing
+- ParableAgent: Biblical parables analysis
+- PPR_Agent: Medical device reports
+
+Respond with JSON: {"domain": "...", "confidence": 0.X, "reasoning": "..."}</div>
+        </section>
+
+        <section class="section">
+            <h2>Routing Accuracy by Domain</h2>
+            <div class="variation-grid">
+                <div class="variation-card">
+                    <div class="num" style="color: #00b894;">100%</div>
+                    <h4>TennisAgent</h4>
+                    <p>Perfect routing</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num" style="color: #00b894;">100%</div>
+                    <h4>YieldModel</h4>
+                    <p>Perfect routing</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num" style="color: #00b894;">100%</div>
+                    <h4>QCiAgent</h4>
+                    <p>Perfect routing</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num" style="color: #00b894;">100%</div>
+                    <h4>PPR_Agent</h4>
+                    <p>Perfect routing</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num" style="color: #fdcb6e;">90%</div>
+                    <h4>Portfolio</h4>
+                    <p>High accuracy</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num" style="color: #fdcb6e;">80%</div>
+                    <h4>Optiver</h4>
+                    <p>Good accuracy</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num" style="color: #fdcb6e;">80%</div>
+                    <h4>ParableAgent</h4>
+                    <p>Good accuracy</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num" style="color: #e17055;">40%</div>
+                    <h4>Stan</h4>
+                    <p>Needs improvement</p>
+                </div>
+            </div>
+            <p class="meta" style="margin-top: 1rem;">Overall: 80.6% routing accuracy (83/103 queries)</p>
+        </section>
+
+        <footer class="footer">
+            <p>ShowcaseAgent v2.5.0 - Project Phoenix Meta-Domain</p>
+            <a href="index.html" class="back-link">Back to ShowcaseAgent</a>
+        </footer>
+    </div>
+</body>
+</html>
