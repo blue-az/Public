@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GolfAgent | Swing Analysis & Performance</title>
+    <meta name="description" content="Golf swing analysis using Zepp Universal sensor. 31 tools across 4 variations with performance profiling and recommendations.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>GolfAgent</h1>
+            <p class="subtitle">Golf Swing Analysis &middot; Zepp Universal Sensor</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="https://proto.efehnconsulting.com/tennis-agent/">TennisAgent</a>
+            <a href="https://proto.efehnconsulting.com/garmin-agent/">GarminAgent</a>
+            <a href="https://proto.efehnconsulting.com/showcase/">Showcase</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="number">31</div>
+                <div class="label">Tools</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">4</div>
+                <div class="label">Variations</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">438</div>
+                <div class="label">Swings</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">104</div>
+                <div class="label">Tasks</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>GolfAgent analyzes golf swing data captured by the Zepp Universal sensor in golf mode. The same hardware used by TennisAgent captures detailed swing mechanics including club head speed, face angle, swing plane, and tempo for every swing.</p>
+            <div class="card" style="margin-top: 1rem; background: linear-gradient(135deg, #0d1210 0%, #1a2b22 100%);">
+                <h3 style="color: #2ecc71;">Sensor Pipeline</h3>
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong>Hardware:</strong> Zepp Universal sensor (golf mode)</li>
+                    <li><strong>Storage:</strong> SQLite database (Golf3.db)</li>
+                    <li><strong>Metrics:</strong> Score, Impact Speed, Hand Speed, Club Plane, Face Angle</li>
+                    <li><strong>Shared Hardware:</strong> Same sensor as TennisAgent (different mode)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Variations</h2>
+            <div class="variation-grid">
+                <div class="variation-card">
+                    <div class="num">7</div>
+                    <h4>Basic Swing Queries</h4>
+                    <p>Retrieve, count, filter, rank swings</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">8</div>
+                    <h4>Advanced Analysis</h4>
+                    <p>Tempo, consistency, trends, sessions</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">8</div>
+                    <h4>Performance Profiling</h4>
+                    <p>Grades, percentiles, correlations</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">8</div>
+                    <h4>Extended Analysis</h4>
+                    <p>Additional metrics and reporting</p>
+                </div>
+            </div>
+            <p class="meta" style="text-align: center; margin-top: 0.5rem;">31 tools &middot; 104 tasks &middot; 4 variations</p>
+        </section>
+
+        <section class="section">
+            <h2>Key Metrics</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Unit</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Impact Speed</td>
+                        <td>mph</td>
+                        <td>Club head speed at moment of impact</td>
+                    </tr>
+                    <tr>
+                        <td>Hand Speed</td>
+                        <td>mph</td>
+                        <td>Hand speed during the swing</td>
+                    </tr>
+                    <tr>
+                        <td>Score</td>
+                        <td>0-100</td>
+                        <td>Zepp overall swing quality score</td>
+                    </tr>
+                    <tr>
+                        <td>Face Angle</td>
+                        <td>degrees</td>
+                        <td>Club face angle at impact (+open / -closed)</td>
+                    </tr>
+                    <tr>
+                        <td>Club Plane</td>
+                        <td>degrees</td>
+                        <td>Swing plane deviation from ideal</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Club Type Distribution</h2>
+            <div class="grid grid-4">
+                <div class="card">
+                    <h3>Iron</h3>
+                    <p><span class="highlight" style="font-size: 1.4rem;">240</span></p>
+                    <p class="meta">55% of swings</p>
+                </div>
+                <div class="card">
+                    <h3>Unknown</h3>
+                    <p><span class="highlight" style="font-size: 1.4rem;">119</span></p>
+                    <p class="meta">27% of swings</p>
+                </div>
+                <div class="card">
+                    <h3>Fairway Wood</h3>
+                    <p><span class="highlight" style="font-size: 1.4rem;">41</span></p>
+                    <p class="meta">9% of swings</p>
+                </div>
+                <div class="card">
+                    <h3>Driver</h3>
+                    <p><span class="highlight" style="font-size: 1.4rem;">38</span></p>
+                    <p class="meta">9% of swings</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Variation 1: Basic Swing Queries</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>get_swing_data</h3>
+                    <p>Retrieve swing(s) by ID or recent</p>
+                </div>
+                <div class="card">
+                    <h3>get_swing_count</h3>
+                    <p>Count swings with optional filters</p>
+                </div>
+                <div class="card">
+                    <h3>get_swing_statistics</h3>
+                    <p>Mean, median, std, min, max stats</p>
+                </div>
+                <div class="card">
+                    <h3>filter_by_club_type</h3>
+                    <p>Filter swings by club type</p>
+                </div>
+                <div class="card">
+                    <h3>get_daily_summary</h3>
+                    <p>Aggregate practice by day</p>
+                </div>
+                <div class="card">
+                    <h3>get_club_breakdown</h3>
+                    <p>Statistics grouped by club type</p>
+                </div>
+                <div class="card">
+                    <h3>find_top_swings</h3>
+                    <p>Rank by score or speed</p>
+                </div>
+            </div>
+            <p class="meta" style="margin-top: 0.5rem;">7 tools &middot; 20 tasks (8 single-tool, 6 two-tool, 4 three-tool, 2 four-tool)</p>
+        </section>
+
+        <section class="section">
+            <h2>Variation 2: Advanced Analysis</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>get_tempo_analysis</h3>
+                    <p>Backswing/downswing ratio (ideal ~3:1)</p>
+                </div>
+                <div class="card">
+                    <h3>get_consistency_analysis</h3>
+                    <p>Coefficient of variation (CV) metrics</p>
+                </div>
+                <div class="card">
+                    <h3>compare_swings</h3>
+                    <p>Compare two specific swings side-by-side</p>
+                </div>
+                <div class="card">
+                    <h3>compare_club_types</h3>
+                    <p>Statistics comparison between club types</p>
+                </div>
+                <div class="card">
+                    <h3>get_trend_analysis</h3>
+                    <p>Linear regression trends over time</p>
+                </div>
+                <div class="card">
+                    <h3>get_session_analysis</h3>
+                    <p>Analyze practice sessions by date</p>
+                </div>
+                <div class="card">
+                    <h3>get_timing_breakdown</h3>
+                    <p>Detailed swing phase timing</p>
+                </div>
+                <div class="card">
+                    <h3>get_improvement_report</h3>
+                    <p>Compare recent vs older swings</p>
+                </div>
+            </div>
+            <p class="meta" style="margin-top: 0.5rem;">8 tools &middot; 28 tasks</p>
+        </section>
+
+        <section class="section">
+            <h2>Variation 3: Performance Profiling</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>get_performance_profile</h3>
+                    <p>Overall A-F grades for score, speed, consistency</p>
+                </div>
+                <div class="card">
+                    <h3>identify_strengths_weaknesses</h3>
+                    <p>Metrics above/below percentile thresholds</p>
+                </div>
+                <div class="card">
+                    <h3>get_swing_quality_distribution</h3>
+                    <p>Bucket swings: Excellent/Good/Average/Below/Poor</p>
+                </div>
+                <div class="card">
+                    <h3>get_speed_zones</h3>
+                    <p>Categorize: Elite/Fast/Average/Slow</p>
+                </div>
+                <div class="card">
+                    <h3>get_score_percentiles</h3>
+                    <p>Percentile rankings (10th-90th)</p>
+                </div>
+                <div class="card">
+                    <h3>get_metric_correlations</h3>
+                    <p>Correlation analysis between metrics</p>
+                </div>
+                <div class="card">
+                    <h3>get_club_recommendations</h3>
+                    <p>Club-specific practice priorities</p>
+                </div>
+                <div class="card">
+                    <h3>get_practice_recommendations</h3>
+                    <p>Actionable improvement suggestions</p>
+                </div>
+            </div>
+            <p class="meta" style="margin-top: 0.5rem;">8 tools &middot; 28 tasks</p>
+        </section>
+
+        <section class="section">
+            <h2>Grading System</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th>Percentile</th>
+                        <th>Quality Bucket</th>
+                        <th>Score Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="highlight">A</span></td>
+                        <td>80th+</td>
+                        <td>Excellent</td>
+                        <td>90-100</td>
+                    </tr>
+                    <tr>
+                        <td><span class="highlight">B</span></td>
+                        <td>60-80th</td>
+                        <td>Good</td>
+                        <td>80-89</td>
+                    </tr>
+                    <tr>
+                        <td>C</td>
+                        <td>40-60th</td>
+                        <td>Average</td>
+                        <td>70-79</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td>20-40th</td>
+                        <td>Below Average</td>
+                        <td>60-69</td>
+                    </tr>
+                    <tr>
+                        <td>F</td>
+                        <td>&lt;20th</td>
+                        <td>Poor</td>
+                        <td>&lt;60</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>CLI Quick Start</h2>
+            <div class="code"><span class="highlight-secondary"># Run CLI</span>
+cd domains/GolfAgent/cli
+python main.py
+
+<span class="highlight-secondary"># Test variations</span>
+python -c "from domains.GolfAgent.variations.variation_1 import TOOLS, RULES, TASKS; print(len(TOOLS), 'tools')"</div>
+        </section>
+
+        <section class="section">
+            <h2>Architecture</h2>
+            <div class="code"><span class="highlight-secondary"># GolfAgent Domain Structure</span>
+domains/GolfAgent/
+  service.py              <span class="highlight-secondary"># BaseDomain (SQLite loader)</span>
+  cli/
+    main.py               <span class="highlight-secondary"># CLI entry point</span>
+    config.py             <span class="highlight-secondary"># Paths, club type mappings</span>
+    data_client.py        <span class="highlight-secondary"># Database abstraction</span>
+    nli_parser.py         <span class="highlight-secondary"># NLI patterns (most specific first)</span>
+    agent_service.py      <span class="highlight-secondary"># Query handlers (Fast Path)</span>
+  variations/
+    variation_1/          <span class="highlight-secondary"># 7 tools, 20 tasks - Basic Swing</span>
+    variation_2/          <span class="highlight-secondary"># 8 tools, 28 tasks - Advanced</span>
+    variation_3/          <span class="highlight-secondary"># 8 tools, 28 tasks - Profiling</span>
+    variation_4/          <span class="highlight-secondary"># 8 tools, 28 tasks - Extended</span></div>
+        </section>
+
+        <section class="section">
+            <h2>Technology</h2>
+            <p>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">SQLite</span>
+                <span class="tech-tag">Pandas</span>
+                <span class="tech-tag">CLI</span>
+                <span class="tech-tag">NLI Parser</span>
+                <span class="tech-tag data">Zepp Universal</span>
+                <span class="tech-tag data">Golf Mode</span>
+                <span class="tech-tag blue">TennisAgent Pattern</span>
+            </p>
+        </section>
+
+        <footer class="footer">
+            <p>GolfAgent - Project Phoenix Domain</p>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="back-link">Back to Project Phoenix</a>
+        </footer>
+    </div>
+</body>
+</html>

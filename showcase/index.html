@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShowcaseAgent | Meta-Domain Router</title>
-    <meta name="description" content="Meta-agent orchestrating 10 production domains with 475+ tools via intelligent routing.">
+    <meta name="description" content="Meta-agent orchestrating 12 production domains with 538+ tools via intelligent routing.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,11 +26,11 @@
 
         <div class="stats-row">
             <div class="stat-box">
-                <div class="number">10</div>
+                <div class="number">12</div>
                 <div class="label">Domains</div>
             </div>
             <div class="stat-box">
-                <div class="number">475+</div>
+                <div class="number">538+</div>
                 <div class="label">Tools</div>
             </div>
             <div class="stat-box">
@@ -45,12 +45,12 @@
 
         <section class="section">
             <h2>What is a Meta-Domain?</h2>
-            <p>ShowcaseAgent is fundamentally different from typical Project Phoenix domains. Instead of performing domain-specific work, it <strong>orchestrates and routes queries</strong> to 10 production domains through a unified interface.</p>
+            <p>ShowcaseAgent is fundamentally different from typical Project Phoenix domains. Instead of performing domain-specific work, it <strong>orchestrates and routes queries</strong> to 12 production domains through a unified interface.</p>
             <div class="card" style="margin-top: 1rem; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
                 <h3 style="color: #00b894;">The Meta-Domain Pattern</h3>
                 <ul style="margin-top: 0.5rem;">
                     <li><strong>Doesn't execute domain work</strong> - pure orchestration layer</li>
-                    <li><strong>Cross-domain aggregation</strong> - unified interface to 475+ tools</li>
+                    <li><strong>Cross-domain aggregation</strong> - unified interface to 538+ tools</li>
                     <li><strong>Intelligent routing</strong> - rule-based + LLM hybrid</li>
                     <li><strong>Hypothesis testing</strong> - benchmarks meta-tools vs direct access</li>
                 </ul>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="card">
                     <h3>Domain Adapters</h3>
-                    <p>10 uniform adapters providing consistent interface to varied domain implementations.</p>
+                    <p>12 uniform adapters providing consistent interface to varied domain implementations.</p>
                     <div class="meta">router/domain_adapters/</div>
                 </div>
                 <div class="card">
@@ -82,7 +82,7 @@
                 </div>
                 <div class="card">
                     <h3>Dual Modes</h3>
-                    <p>Meta-tool mode (10 tools) vs Direct mode (475+ tools) for different LLM contexts.</p>
+                    <p>Meta-tool mode (12 tools) vs Direct mode (538+ tools) for different LLM contexts.</p>
                     <div class="meta">unified_agent.py</div>
                 </div>
                 <div class="card">
@@ -97,7 +97,7 @@
             <h2>The Core Hypothesis</h2>
             <div class="card" style="border-left: 4px solid #6c5ce7;">
                 <p style="font-style: italic; font-size: 1.1rem;">"Local LLMs perform better with abstracted meta-tools (10 domain tools) than direct access to 475+ individual tools."</p>
-                <p style="margin-top: 1rem;">This hypothesis drives the entire ShowcaseAgent architecture. By presenting 10 meta-tools instead of 475+ direct tools:</p>
+                <p style="margin-top: 1rem;">This hypothesis drives the entire ShowcaseAgent architecture. By presenting 12 meta-tools instead of 538+ direct tools:</p>
                 <ul style="margin-top: 0.5rem;">
                     <li>LLM makes one decision: "which domain?"</li>
                     <li>Reduces context window pressure</li>
@@ -128,6 +128,8 @@ User Query
     +---> Optiver (84 tools)
     +---> Portfolio (70 tools)
     +---> WQ (38 tools)
+    +---> GarminAgent (32 tools)
+    +---> GolfAgent (31 tools)
     +---> ... 6 more domains</div>
         </section>
 
@@ -166,6 +168,18 @@ User Query
                         <td>38</td>
                         <td>Education/DataScience</td>
                         <td>25%</td>
+                    </tr>
+                    <tr>
+                        <td>GarminAgent</td>
+                        <td>32</td>
+                        <td>Fitness/Analytics</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>GolfAgent</td>
+                        <td>31</td>
+                        <td>Sports/Analytics</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>QCiAgent</td>

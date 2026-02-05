@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GarminAgent | Fitness & Wellness Analytics</title>
+    <meta name="description" content="Garmin activity and wellness analysis from GDPR export data. 32 tools across 4 variations with TennisAgent integration.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>GarminAgent</h1>
+            <p class="subtitle">Garmin Activity & Wellness Analytics</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="https://proto.efehnconsulting.com/tennis-agent/">TennisAgent</a>
+            <a href="https://proto.efehnconsulting.com/golf-agent/">GolfAgent</a>
+            <a href="https://proto.efehnconsulting.com/showcase/">Showcase</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="number">32</div>
+                <div class="label">Tools</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">4</div>
+                <div class="label">Variations</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">358</div>
+                <div class="label">Activities</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">334</div>
+                <div class="label">Daily Summaries</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>GarminAgent analyzes personal fitness and wellness data exported from Garmin Connect via GDPR data request. It transforms raw activity logs, daily wellness metrics, and heart rate data into actionable insights through 32 deterministic tools.</p>
+            <div class="card" style="margin-top: 1rem; background: linear-gradient(135deg, #0d1117 0%, #1c2330 100%);">
+                <h3 style="color: #00b4d8;">Data Pipeline</h3>
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong>Source:</strong> Garmin Connect GDPR export (ZIP)</li>
+                    <li><strong>Storage:</strong> SQLite database (garmin.db)</li>
+                    <li><strong>Period:</strong> Oct 2023 - Jan 2026</li>
+                    <li><strong>Integration:</strong> Exports CSV for TennisAgent cross-domain sync</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Variations</h2>
+            <div class="variation-grid">
+                <div class="variation-card">
+                    <div class="num">8</div>
+                    <h4>Basic Activity Analysis</h4>
+                    <p>Counts, types, stats, HR zones</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">8</div>
+                    <h4>Trend Analysis</h4>
+                    <p>Week/month comparisons, progress, streaks</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">8</div>
+                    <h4>Wellness & Recovery</h4>
+                    <p>Sleep, stress, resting HR, recovery</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">8</div>
+                    <h4>Training Load</h4>
+                    <p>Session HR, zones, volume, intensity</p>
+                </div>
+            </div>
+            <p class="meta" style="text-align: center; margin-top: 0.5rem;">32 tools &middot; 80 tasks &middot; 4 variations</p>
+        </section>
+
+        <section class="section">
+            <h2>Data Model</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Records</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>activities</td>
+                        <td>358</td>
+                        <td>Individual activity records with HR, duration, calories, speed</td>
+                    </tr>
+                    <tr>
+                        <td>daily_summary</td>
+                        <td>334</td>
+                        <td>Daily steps, sleep, stress, resting HR, intensity minutes</td>
+                    </tr>
+                    <tr>
+                        <td>user_profile</td>
+                        <td>1</td>
+                        <td>User biometrics (weight, height, max HR, VO2 max)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Activity Breakdown</h2>
+            <div class="grid grid-4">
+                <div class="card">
+                    <h3>Indoor Cardio</h3>
+                    <p><span class="highlight" style="font-size: 1.4rem;">85%</span></p>
+                    <p class="meta">Primary activity type</p>
+                </div>
+                <div class="card">
+                    <h3>Other</h3>
+                    <p><span class="highlight" style="font-size: 1.4rem;">13%</span></p>
+                    <p class="meta">Mixed activities</p>
+                </div>
+                <div class="card">
+                    <h3>Cycling</h3>
+                    <p><span class="highlight" style="font-size: 1.4rem;">1%</span></p>
+                    <p class="meta">Outdoor rides</p>
+                </div>
+                <div class="card">
+                    <h3>Total Time</h3>
+                    <p><span class="highlight" style="font-size: 1.4rem;">227h</span></p>
+                    <p class="meta">Cumulative workout hours</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Key Fields</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Heart Rate</h3>
+                    <p>Average, max, min HR per activity. Six HR zones (zone 0-5) tracked in milliseconds.</p>
+                    <div class="meta">avg_hr, max_hr, min_hr, hr_zone_0..5</div>
+                </div>
+                <div class="card">
+                    <h3>Activity Metrics</h3>
+                    <p>Duration, distance, calories, speed, cadence, steps, and lap count per session.</p>
+                    <div class="meta">duration_seconds, calories, avg_speed</div>
+                </div>
+                <div class="card">
+                    <h3>Daily Wellness</h3>
+                    <p>Steps, stress levels, resting heart rate, sleep quality, intensity minutes.</p>
+                    <div class="meta">steps, avg_stress, resting_hr, sleep_seconds</div>
+                </div>
+                <div class="card">
+                    <h3>Sleep Analysis</h3>
+                    <p>Deep, light, and REM sleep durations plus awake time from daily summaries.</p>
+                    <div class="meta">deep_sleep, light_sleep, rem_sleep</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>TennisAgent Integration</h2>
+            <div class="card" style="border-left: 4px solid #00b894;">
+                <p>GarminAgent exports activity data as CSV for cross-domain analysis with TennisAgent. This enables correlating tennis match performance with fitness metrics like resting HR, sleep quality, and training load.</p>
+                <div class="code" style="margin-top: 0.8rem;"><span class="highlight-secondary"># Export for TennisAgent</span>
+python main.py "export"
+<span class="highlight-secondary"># Creates: garmin_for_tennis.csv</span></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>CLI Quick Start</h2>
+            <div class="code"><span class="highlight-secondary"># Run CLI</span>
+cd domains/GarminAgent/cli
+python main.py
+
+<span class="highlight-secondary"># Single queries</span>
+python main.py "how many activities"
+python main.py "weekly stats"
+python main.py "hr zones"
+python main.py "daily summary"
+python main.py "profile"</div>
+        </section>
+
+        <section class="section">
+            <h2>Architecture</h2>
+            <div class="code"><span class="highlight-secondary"># GarminAgent Domain Structure</span>
+domains/GarminAgent/
+  service.py          <span class="highlight-secondary"># BaseDomain (SQLite loader)</span>
+  cli/
+    main.py           <span class="highlight-secondary"># CLI entry point</span>
+    config.py         <span class="highlight-secondary"># Configuration</span>
+    data_client.py    <span class="highlight-secondary"># Database queries</span>
+    nli_parser.py     <span class="highlight-secondary"># Intent parsing</span>
+    agent_service.py  <span class="highlight-secondary"># Query handlers</span>
+  data/
+    garmin.db         <span class="highlight-secondary"># SQLite database</span>
+    import_export.py  <span class="highlight-secondary"># Import from ZIP</span>
+  variations/
+    variation_1/      <span class="highlight-secondary"># 8 tools, 20 tasks</span>
+    variation_2/      <span class="highlight-secondary"># 8 tools, 20 tasks</span>
+    variation_3/      <span class="highlight-secondary"># 8 tools, 20 tasks</span>
+    variation_4/      <span class="highlight-secondary"># 8 tools, 20 tasks</span></div>
+        </section>
+
+        <section class="section">
+            <h2>Technology</h2>
+            <p>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">SQLite</span>
+                <span class="tech-tag">Pandas</span>
+                <span class="tech-tag green">CLI</span>
+                <span class="tech-tag green">NLI Parser</span>
+                <span class="tech-tag data">GDPR Export</span>
+                <span class="tech-tag data">Garmin Connect</span>
+            </p>
+        </section>
+
+        <footer class="footer">
+            <p>GarminAgent - Project Phoenix Domain</p>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="back-link">Back to Project Phoenix</a>
+        </footer>
+    </div>
+</body>
+</html>
