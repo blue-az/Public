@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Sources | GlobalTemperature</title>
+    <meta name="description" content="Data sources for GlobalTemperature domain including NASA GISTEMP, NOAA CO2, NSIDC Arctic ice, and more.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">GT</span>
+                    <div>
+                        <p class="site-tag">climate data analysis</p>
+                        <h1 class="site-title">GlobalTemperature</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="data.html">data sources</a>
+                    <a href="charts.html">visualizations</a>
+                    <a href="https://proto.efehnconsulting.com/project-phoenix/">phoenix</a>
+                </div>
+                <div class="cart">
+                    <span>project phoenix domain</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="index.html" class="nav-item">overview</a>
+            <a href="data.html" class="nav-item">data</a>
+            <a href="charts.html" class="nav-item">charts</a>
+            <a href="charts.html#stripes" class="nav-item">stripes</a>
+            <a href="charts.html#dashboard" class="nav-item">dashboard</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="nav-item">phoenix</a>
+        </section>
+
+        <article class="article">
+            <h2>Data Sources</h2>
+            <p>GlobalTemperature integrates 12 datasets from authoritative scientific sources. All data is publicly available and regularly updated.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Dataset</th>
+                        <th>Source</th>
+                        <th>Range</th>
+                        <th>Resolution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Global Temperature</td>
+                        <td>NASA GISTEMP v4</td>
+                        <td>1880-2025</td>
+                        <td>Annual</td>
+                    </tr>
+                    <tr>
+                        <td>Zonal Temperature</td>
+                        <td>NASA GISTEMP</td>
+                        <td>1880-2025</td>
+                        <td>Annual, by latitude</td>
+                    </tr>
+                    <tr>
+                        <td>CO2 (Annual)</td>
+                        <td>NOAA Mauna Loa</td>
+                        <td>1959-2025</td>
+                        <td>Annual mean</td>
+                    </tr>
+                    <tr>
+                        <td>CO2 (Monthly)</td>
+                        <td>NOAA Mauna Loa</td>
+                        <td>1958-2025</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td>Methane (Annual)</td>
+                        <td>NOAA GML</td>
+                        <td>1984-2024</td>
+                        <td>Annual mean</td>
+                    </tr>
+                    <tr>
+                        <td>Methane (Monthly)</td>
+                        <td>NOAA GML</td>
+                        <td>1983-2025</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td>Arctic Sea Ice</td>
+                        <td>NSIDC Sea Ice Index</td>
+                        <td>1979-2025</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td>Ocean Heat (0-700m)</td>
+                        <td>NOAA NCEI</td>
+                        <td>1955-2025</td>
+                        <td>Annual</td>
+                    </tr>
+                    <tr>
+                        <td>Ocean Heat (0-2000m)</td>
+                        <td>NOAA NCEI</td>
+                        <td>2005-2025</td>
+                        <td>Annual</td>
+                    </tr>
+                    <tr>
+                        <td>Sea Level</td>
+                        <td>NOAA LSA</td>
+                        <td>1992-2025</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td>CO2 Emissions</td>
+                        <td>OWID / GCP</td>
+                        <td>1750-2024</td>
+                        <td>Annual, by country</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Temperature Baseline</h2>
+            <p>All temperature anomalies in this domain are expressed relative to the <strong>1850-1900 pre-industrial baseline</strong>, as recommended by IPCC AR6. The raw NASA GISTEMP data uses a 1951-1980 baseline, which we convert using an offset of +0.10°C.</p>
+
+            <div class="highlight-box">
+                <p><strong>Conversion:</strong> Pre-industrial anomaly = GISTEMP anomaly + 0.10°C</p>
+            </div>
+
+            <h2>Source Details</h2>
+
+            <h3>NASA GISTEMP v4</h3>
+            <p>The Goddard Institute for Space Studies Surface Temperature Analysis (GISTEMP) combines land-surface air temperatures from NOAA GHCN with sea surface temperatures from ERSST. It is one of three primary global temperature records (alongside NOAA GlobalTemp and HadCRUT).</p>
+            <ul>
+                <li><strong>URL:</strong> <a href="https://data.giss.nasa.gov/gistemp/">data.giss.nasa.gov/gistemp</a></li>
+                <li><strong>Update frequency:</strong> Monthly</li>
+                <li><strong>Uncertainty:</strong> ~0.05°C for recent decades</li>
+            </ul>
+
+            <h3>NOAA Mauna Loa CO2</h3>
+            <p>The longest continuous record of atmospheric CO2, started by Charles David Keeling in 1958. Known as the "Keeling Curve," it shows both the seasonal cycle and long-term trend of CO2.</p>
+            <ul>
+                <li><strong>URL:</strong> <a href="https://gml.noaa.gov/ccgg/trends/">gml.noaa.gov/ccgg/trends</a></li>
+                <li><strong>Update frequency:</strong> Monthly</li>
+                <li><strong>Pre-industrial reference:</strong> 280 ppm (from ice cores)</li>
+            </ul>
+
+            <h3>NOAA Global Monitoring Laboratory - Methane</h3>
+            <p>Global average methane (CH4) concentration from a network of measurement stations. Methane is the second most important greenhouse gas, with a warming potential ~80x CO2 over 20 years.</p>
+            <ul>
+                <li><strong>URL:</strong> <a href="https://gml.noaa.gov/ccgg/trends_ch4/">gml.noaa.gov/ccgg/trends_ch4</a></li>
+                <li><strong>Pre-industrial reference:</strong> ~722 ppb</li>
+                <li><strong>Current level:</strong> ~1920 ppb (+166% above pre-industrial)</li>
+            </ul>
+
+            <h3>NSIDC Sea Ice Index</h3>
+            <p>Arctic sea ice extent from passive microwave satellite sensors. September extent (annual minimum) has declined by approximately 13% per decade since 1979.</p>
+            <ul>
+                <li><strong>URL:</strong> <a href="https://nsidc.org/data/seaice_index">nsidc.org/data/seaice_index</a></li>
+                <li><strong>Satellite era:</strong> 1979-present</li>
+                <li><strong>Key metric:</strong> September minimum extent</li>
+            </ul>
+
+            <h3>NOAA NCEI Ocean Heat Content</h3>
+            <p>Ocean heat content from in-situ measurements (ships, buoys, Argo floats). The ocean has absorbed over 90% of the excess heat from global warming.</p>
+            <ul>
+                <li><strong>URL:</strong> <a href="https://www.ncei.noaa.gov/access/global-ocean-heat-content/">ncei.noaa.gov/access/global-ocean-heat-content</a></li>
+                <li><strong>Depths:</strong> 0-700m (1955-) and 0-2000m (2005-)</li>
+                <li><strong>Units:</strong> 10²² Joules anomaly</li>
+            </ul>
+
+            <h3>NOAA Laboratory for Satellite Altimetry - Sea Level</h3>
+            <p>Global mean sea level from satellite radar altimeters (TOPEX/Poseidon, Jason series). Current rate of rise is approximately 3.4 mm/year.</p>
+            <ul>
+                <li><strong>URL:</strong> <a href="https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/">star.nesdis.noaa.gov/socd/lsa/SeaLevelRise</a></li>
+                <li><strong>Satellite era:</strong> 1992-present</li>
+                <li><strong>Reference:</strong> 1993 baseline</li>
+            </ul>
+
+            <h3>Our World in Data / Global Carbon Project</h3>
+            <p>CO2 emissions by country from fossil fuels and cement production. Data compiled by the Global Carbon Project and curated by Our World in Data.</p>
+            <ul>
+                <li><strong>URL:</strong> <a href="https://github.com/owid/co2-data">github.com/owid/co2-data</a></li>
+                <li><strong>Coverage:</strong> 200+ countries, 1750-present</li>
+                <li><strong>Units:</strong> Million tonnes CO2/year</li>
+            </ul>
+
+            <h2>Domain Variations</h2>
+            <p>GlobalTemperature provides 93 tools across 8 variations, each with a specific focus:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Variation</th>
+                        <th>Tools</th>
+                        <th>Focus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>variation_1</td>
+                        <td>19</td>
+                        <td>Core climate queries (temp, CO2 fundamentals)</td>
+                    </tr>
+                    <tr>
+                        <td>variation_2</td>
+                        <td>12</td>
+                        <td>Advanced analysis (moving averages, acceleration)</td>
+                    </tr>
+                    <tr>
+                        <td>variation_3</td>
+                        <td>10</td>
+                        <td>Projections, scenarios, diagnostics</td>
+                    </tr>
+                    <tr>
+                        <td>variation_4</td>
+                        <td>10</td>
+                        <td>Comparative context, Paris tracking</td>
+                    </tr>
+                    <tr>
+                        <td>variation_5</td>
+                        <td>11</td>
+                        <td>Multi-gas (CH4) & cryosphere (Arctic ice)</td>
+                    </tr>
+                    <tr>
+                        <td>variation_6</td>
+                        <td>11</td>
+                        <td>Ocean heat content & sea level rise</td>
+                    </tr>
+                    <tr>
+                        <td>variation_7</td>
+                        <td>11</td>
+                        <td>Regional temperature & emissions by country</td>
+                    </tr>
+                    <tr>
+                        <td>variation_8</td>
+                        <td>9</td>
+                        <td>Visualization tools (matplotlib charts)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">GlobalTemperature</p>
+                <p class="footer-note">93 tools for climate data analysis.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">overview</a>
+                <a href="charts.html">charts</a>
+                <a href="https://proto.efehnconsulting.com/project-phoenix/">phoenix</a>
+            </div>
+            <p class="footer-copy">GlobalTemperature - Project Phoenix Domain</p>
+        </footer>
+    </div>
+</body>
+</html>
