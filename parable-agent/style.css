@@ -635,6 +635,31 @@ body {
     margin-bottom: 10px;
 }
 
+.principle-quote {
+    background: #000033;
+    border-left: 4px solid #FFD700;
+    padding: 10px 12px;
+    color: #FFFFFF;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.principle-source {
+    color: #C0C0C0;
+    font-size: 0.85em;
+    font-style: normal;
+    margin-top: 8px;
+}
+
+.principle-example {
+    background: #001a1a;
+    border: 1px solid #00FFFF;
+    padding: 10px;
+    color: #CCFFFF;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
 .principle-icon {
     font-size: 2.5em;
     text-align: center;
