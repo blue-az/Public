@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "generated_at_utc": "2026-02-11T02:52:53.617501+00:00",
+  "company": "HONEYWELL",
+  "ticker": "HON",
+  "output_dir": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z",
+  "charts": [
+    {
+      "chart_id": "price_trend",
+      "title": "HON Price Trend",
+      "file_name": "price_trend.png",
+      "file_path": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z/price_trend.png",
+      "status": "ok",
+      "record_count": 14143
+    },
+    {
+      "chart_id": "fundamentals_fy",
+      "title": "FY Fundamentals",
+      "file_name": "fundamentals_fy.png",
+      "file_path": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z/fundamentals_fy.png",
+      "status": "ok",
+      "record_count": 78
+    },
+    {
+      "chart_id": "hiring_trend",
+      "title": "Monthly Hiring Trend",
+      "file_name": "hiring_trend.png",
+      "file_path": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z/hiring_trend.png",
+      "status": "ok",
+      "record_count": 2
+    },
+    {
+      "chart_id": "top_roles",
+      "title": "Top Hiring Roles",
+      "file_name": "top_roles.png",
+      "file_path": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z/top_roles.png",
+      "status": "ok",
+      "record_count": 12
+    },
+    {
+      "chart_id": "filings_mix",
+      "title": "SEC Filing Mix",
+      "file_name": "filings_mix.png",
+      "file_path": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z/filings_mix.png",
+      "status": "ok",
+      "record_count": 141
+    },
+    {
+      "chart_id": "news_trend",
+      "title": "Monthly News Volume",
+      "file_name": "news_trend.png",
+      "file_path": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z/news_trend.png",
+      "status": "ok",
+      "record_count": 26
+    },
+    {
+      "chart_id": "dashboard_summary",
+      "title": "Dashboard Summary",
+      "file_name": "dashboard_summary.png",
+      "file_path": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z/dashboard_summary.png",
+      "status": "ok",
+      "record_count": 6
+    }
+  ],
+  "summary": {
+    "price_rows": 14143,
+    "fundamentals_rows": 78,
+    "hiring_rows": 2,
+    "top_roles_rows": 12,
+    "filings_rows": 141,
+    "jobs_rows": 95,
+    "news_rows": 100,
+    "generated_at_utc": "2026-02-11T02:52:53.617501+00:00"
+  },
+  "index_html_path": "/home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z/index.html"
+}

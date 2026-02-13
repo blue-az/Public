@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Honeywell Prototype Roadmap</title>
+  <style>
+    :root {
+      --bg: #091321;
+      --panel: #122033;
+      --ink: #e8eef5;
+      --muted: #9db0c3;
+      --line: #28435c;
+      --accent: #36c2b4;
+      --warn: #ff9f43;
+      --ok: #7aa2ff;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(1000px 500px at 10% -20%, #1a2f48 0%, var(--bg) 60%); color: var(--ink); font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 20px 40px; }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    .sub { color: var(--muted); margin-bottom: 18px; }
+    .toplinks { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    .btn { display: inline-block; text-decoration: none; border: 1px solid var(--line); color: var(--ink); border-radius: 10px; padding: 8px 12px; font-weight: 600; }
+    .btn.primary { background: rgba(54,194,180,0.16); border-color: rgba(54,194,180,0.45); }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+    .card h2 { margin: 0 0 8px; font-size: 21px; }
+    .badge { display: inline-block; margin-bottom: 8px; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 700; }
+    .done { background: rgba(122,162,255,0.2); color: #b8cdff; border: 1px solid rgba(122,162,255,0.45); }
+    .proposed { background: rgba(255,159,67,0.15); color: #ffd0a0; border: 1px solid rgba(255,159,67,0.45); }
+    .optional { background: rgba(157,176,195,0.12); color: #d0d8e2; border: 1px solid rgba(157,176,195,0.35); }
+    ul { margin: 8px 0 0 20px; }
+    li { margin: 6px 0; color: #d8e2ee; }
+    .pitch { border-left: 4px solid var(--accent); }
+    .pitch p { margin: 6px 0; color: #d8e2ee; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Honeywell AI Strategy Intelligence Roadmap</h1>
+    <div class="sub">Prototype-to-engagement plan: demonstrated capability now, scoped value next.</div>
+
+    <div class="toplinks">
+      <a class="btn" href="index.html">Back to Capabilities</a>
+      <a class="btn" href="executive_dashboard.html">Open Executive Dashboard</a>
+      <a class="btn primary" href="../ROADMAP.md">Open Roadmap Doc</a>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <span class="badge done">Phase 1 - Complete</span>
+        <h2>Capability Demonstrated</h2>
+        <ul>
+          <li>Deterministic intelligence layer: SEC, prices, filings, hiring, news</li>
+          <li>Interactive CEO view: revenue, volume, and competitive benchmarks</li>
+          <li>Interactive Director AI view: readiness, orchestration, and scoring</li>
+          <li>Hypothesis tutor loop with evidence-for/evidence-against framing</li>
+          <li>Live prototype deployment for executive review</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <span class="badge proposed">Phase 2 - Proposed Consulting Engagement</span>
+        <h2>Strategic Expansion</h2>
+        <ul>
+          <li>Segment revenue ingestion (Aerospace, Building, IA, ESS)</li>
+          <li>Earnings-call intelligence (guidance, risk language, follow-through)</li>
+          <li>AI initiative portfolio tracker (value, owner, stage, timeline)</li>
+          <li>Governance controls (model inventory, evals, security/compliance)</li>
+          <li>Leadership alerting/watchlist automation</li>
+          <li>Confidence and data-freshness overlays on strategic claims</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <span class="badge optional">Phase 3 - Optional Enterprise Integration</span>
+        <h2>Production Integration</h2>
+        <ul>
+          <li>Internal system connectors (program, ERP, cost, quality)</li>
+          <li>Role-based access control and auditable decision logs</li>
+          <li>Operational refresh cadence and production hardening</li>
+        </ul>
+      </section>
+
+      <section class="card pitch">
+        <h2>Commercial Boundary</h2>
+        <p>This prototype proves capability and fit. Phase 2 is where enterprise-specific operating value is built with stakeholder alignment and internal data access.</p>
+        <p><b>Recommended next step:</b> 60-minute leadership review to approve a scoped Phase 2 statement of work.</p>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

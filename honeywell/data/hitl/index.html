@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Honeywell Capabilities Index</title>
+  <style>
+    :root {
+      --bg: #0b1320;
+      --panel: #111a2b;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --grid: #2a3852;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    .wrap { max-width: 1400px; margin: 0 auto; padding: 20px; }
+    h1 { margin: 0 0 8px 0; font-size: 26px; }
+    .meta { color: var(--muted); margin: 0 0 16px 0; }
+    .toolbar { margin: 14px 0 20px 0; }
+    .toolbar input { width: 100%; max-width: 520px; background: var(--panel); color: var(--text); border: 1px solid var(--grid); border-radius: 8px; padding: 10px 12px; }
+    h2 { margin-top: 28px; border-top: 1px solid var(--grid); padding-top: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+    .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 12px; padding: 12px; }
+    .card h3 { margin: 0 0 6px 0; font-size: 16px; line-break: anywhere; }
+    .card .meta { font-size: 12px; margin: 0 0 10px 0; line-break: anywhere; }
+    .card .desc { margin: 0 0 10px 0; color: var(--text); opacity: 0.93; font-size: 14px; line-height: 1.35; }
+    .btn { display: inline-block; color: #041014; background: var(--accent); border-radius: 8px; padding: 6px 10px; text-decoration: none; font-weight: 600; }
+    img { width: 100%; height: auto; border: 1px solid var(--grid); border-radius: 8px; margin-top: 10px; background: #0a0f1a; }
+    iframe { width: 100%; height: 340px; border: 1px solid var(--grid); border-radius: 8px; margin-top: 8px; background: #fff; }
+    .empty { color: var(--muted); }
+    code { background: #0f1b30; border: 1px solid var(--grid); border-radius: 6px; padding: 1px 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Honeywell Capabilities Index</h1>
+    <p class="meta">Generated: 2026-02-12 08:12:04 UTC | Visualization runs indexed: 1</p>
+    <div class="toolbar">
+      <input id="filter" type="search" placeholder="Filter by title or path..." />
+    </div>
+
+    <h2>Core Capabilities</h2>
+    <section class="grid" id="capabilities"><article class='card'><h3>Deterministic Data Core</h3><p class='meta'>SQLite-backed | verifiable outputs</p><p class='desc'>Query jobs, filings, prices, financial metrics, and news from honeywell.db with reproducible outputs.</p><p><a class='btn' href='../../README.md' target='_blank' rel='noopener'>Open</a></p></article><article class='card'><h3>Variation 4 Readiness Gate</h3><p class='meta'>Tool: evaluate_variation4_readiness</p><p class='desc'>Checks factual coverage from variations 1-3 before allowing variation_4 synthesis.</p><p><a class='btn' href='../../README.md' target='_blank' rel='noopener'>Open</a></p></article><article class='card'><h3>Visualization Pack Builder</h3><p class='meta'>Tool: build_visualization_pack</p><p class='desc'>Generates PNG chart pack + HTML report + JSON manifest for human review.</p><p><a class='btn' href='../../README.md' target='_blank' rel='noopener'>Open</a></p></article><article class='card'><h3>Roadmap and Engagement Plan</h3><p class='meta'>Prototype-to-engagement scope boundary</p><p class='desc'>Phase 1 complete, Phase 2 proposed consulting scope, and Phase 3 enterprise options.</p><p><a class='btn' href='roadmap.html' target='_blank' rel='noopener'>Open</a></p></article></section>
+
+    <h2>Visualization Packs (HTML)</h2>
+    <section class="grid" id="packs"><article class='card'><h3>Roadmap (Phases 1-3)</h3><p class='meta'>roadmap.html | packaging and engagement path</p><p class='desc'>Scope and engagement framing for moving from prototype to consulting delivery.</p><p><a class='btn' href='roadmap.html' target='_blank' rel='noopener'>Open</a></p><iframe loading='lazy' src='roadmap.html' title='Roadmap (Phases 1-3)'></iframe></article><article class='card'><h3>Executive Dashboard (Interactive)</h3><p class='meta'>executive_dashboard.html | CEO + products/revenue + director views</p><p class='desc'>Interactive dashboard with financial drill-down, product-family revenue estimates, and AI execution signals.</p><p><a class='btn' href='executive_dashboard.html' target='_blank' rel='noopener'>Open</a></p><iframe loading='lazy' src='executive_dashboard.html' title='Executive Dashboard (Interactive)'></iframe></article><article class='card'><h3>Honeywell Visualization Pack</h3><p class='meta'>../generated/visualizations/hon_20260211T025252Z/index.html | 2026-02-11T02:52:53.617501+00:00</p><p class='desc'>Landing page for the full generated chart pack and metadata.</p><p><a class='btn' href='../generated/visualizations/hon_20260211T025252Z/index.html' target='_blank' rel='noopener'>Open</a></p><iframe loading='lazy' src='../generated/visualizations/hon_20260211T025252Z/index.html' title='Honeywell Visualization Pack'></iframe></article></section>
+
+    <h2>Static Charts (PNG)</h2>
+    <section class="grid" id="png"><article class='card'><h3>HON Price Trend</h3><p class='meta'>../generated/visualizations/hon_20260211T025252Z/price_trend.png | status=ok | rows=14143</p><p class='desc'>Chart id: price_trend</p><p><a class='btn' href='../generated/visualizations/hon_20260211T025252Z/price_trend.png' target='_blank' rel='noopener'>Open</a></p><img loading='lazy' src='../generated/visualizations/hon_20260211T025252Z/price_trend.png' alt='HON Price Trend' /></article><article class='card'><h3>FY Fundamentals</h3><p class='meta'>../generated/visualizations/hon_20260211T025252Z/fundamentals_fy.png | status=ok | rows=78</p><p class='desc'>Chart id: fundamentals_fy</p><p><a class='btn' href='../generated/visualizations/hon_20260211T025252Z/fundamentals_fy.png' target='_blank' rel='noopener'>Open</a></p><img loading='lazy' src='../generated/visualizations/hon_20260211T025252Z/fundamentals_fy.png' alt='FY Fundamentals' /></article><article class='card'><h3>Monthly Hiring Trend</h3><p class='meta'>../generated/visualizations/hon_20260211T025252Z/hiring_trend.png | status=ok | rows=2</p><p class='desc'>Chart id: hiring_trend</p><p><a class='btn' href='../generated/visualizations/hon_20260211T025252Z/hiring_trend.png' target='_blank' rel='noopener'>Open</a></p><img loading='lazy' src='../generated/visualizations/hon_20260211T025252Z/hiring_trend.png' alt='Monthly Hiring Trend' /></article><article class='card'><h3>Top Hiring Roles</h3><p class='meta'>../generated/visualizations/hon_20260211T025252Z/top_roles.png | status=ok | rows=12</p><p class='desc'>Chart id: top_roles</p><p><a class='btn' href='../generated/visualizations/hon_20260211T025252Z/top_roles.png' target='_blank' rel='noopener'>Open</a></p><img loading='lazy' src='../generated/visualizations/hon_20260211T025252Z/top_roles.png' alt='Top Hiring Roles' /></article><article class='card'><h3>SEC Filing Mix</h3><p class='meta'>../generated/visualizations/hon_20260211T025252Z/filings_mix.png | status=ok | rows=141</p><p class='desc'>Chart id: filings_mix</p><p><a class='btn' href='../generated/visualizations/hon_20260211T025252Z/filings_mix.png' target='_blank' rel='noopener'>Open</a></p><img loading='lazy' src='../generated/visualizations/hon_20260211T025252Z/filings_mix.png' alt='SEC Filing Mix' /></article><article class='card'><h3>Monthly News Volume</h3><p class='meta'>../generated/visualizations/hon_20260211T025252Z/news_trend.png | status=ok | rows=26</p><p class='desc'>Chart id: news_trend</p><p><a class='btn' href='../generated/visualizations/hon_20260211T025252Z/news_trend.png' target='_blank' rel='noopener'>Open</a></p><img loading='lazy' src='../generated/visualizations/hon_20260211T025252Z/news_trend.png' alt='Monthly News Volume' /></article><article class='card'><h3>Dashboard Summary</h3><p class='meta'>../generated/visualizations/hon_20260211T025252Z/dashboard_summary.png | status=ok | rows=6</p><p class='desc'>Chart id: dashboard_summary</p><p><a class='btn' href='../generated/visualizations/hon_20260211T025252Z/dashboard_summary.png' target='_blank' rel='noopener'>Open</a></p><img loading='lazy' src='../generated/visualizations/hon_20260211T025252Z/dashboard_summary.png' alt='Dashboard Summary' /></article></section>
+  </div>
+
+  <script>
+    const input = document.getElementById('filter');
+    const cards = Array.from(document.querySelectorAll('.card'));
+    input.addEventListener('input', () => {
+      const q = input.value.toLowerCase().trim();
+      for (const card of cards) {
+        const text = card.textContent.toLowerCase();
+        card.style.display = (!q || text.includes(q)) ? '' : 'none';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Honeywell Visualization Pack</title>
+  <style>
+    :root {
+      --bg: #f3f6f8;
+      --panel: #ffffff;
+      --ink: #17212b;
+      --muted: #5f6b76;
+      --line: #d6dde5;
+      --accent: #005f73;
+    }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    h1 { margin: 0 0 6px; font-size: 30px; }
+    p { color: var(--muted); }
+    .meta { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 16px 0 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+    .card h3 { margin: 0 0 6px; font-size: 18px; }
+    .card img { width: 100%; border-radius: 6px; border: 1px solid var(--line); background: #fff; }
+    code { background: #eaf0f5; padding: 2px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Honeywell Visualization Pack</h1>
+    <p>Deterministic charts generated from <code>honeywell.db</code>.</p>
+    <div class="meta">
+      <div><b>Generated:</b> 2026-02-11T02:52:53.617501+00:00</div>
+      <div><b>Company:</b> HONEYWELL | <b>Ticker:</b> HON</div>
+      <div><b>Output Dir:</b> /home/blueaz/Python/project-phoenix/domains/Honeywell/data/generated/visualizations/hon_20260211T025252Z</div>
+    </div>
+    <div class="grid"><section class='card'><h3>HON Price Trend</h3><p>Status: <b>ok</b> | Rows: 14143</p><img src='price_trend.png' alt='HON Price Trend' /></section>
+<section class='card'><h3>FY Fundamentals</h3><p>Status: <b>ok</b> | Rows: 78</p><img src='fundamentals_fy.png' alt='FY Fundamentals' /></section>
+<section class='card'><h3>Monthly Hiring Trend</h3><p>Status: <b>ok</b> | Rows: 2</p><img src='hiring_trend.png' alt='Monthly Hiring Trend' /></section>
+<section class='card'><h3>Top Hiring Roles</h3><p>Status: <b>ok</b> | Rows: 12</p><img src='top_roles.png' alt='Top Hiring Roles' /></section>
+<section class='card'><h3>SEC Filing Mix</h3><p>Status: <b>ok</b> | Rows: 141</p><img src='filings_mix.png' alt='SEC Filing Mix' /></section>
+<section class='card'><h3>Monthly News Volume</h3><p>Status: <b>ok</b> | Rows: 26</p><img src='news_trend.png' alt='Monthly News Volume' /></section>
+<section class='card'><h3>Dashboard Summary</h3><p>Status: <b>ok</b> | Rows: 6</p><img src='dashboard_summary.png' alt='Dashboard Summary' /></section></div>
+  </div>
+</body>
+</html>
