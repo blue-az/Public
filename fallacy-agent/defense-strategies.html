@@ -370,7 +370,7 @@
                     </tr>
                 </table>
 
-                <p style="color: #CCC; margin-top: 10px;"><strong>Sampling protocol:</strong> score first 10, middle 10, and late 10 visible comments to reduce timing bias; report percentages by class.</p>
+                <p style="color: #CCC; margin-top: 10px;"><strong>Sampling protocol:</strong> score first 33 comments as fixed context, then sample 67 from the remainder (stratified by top-level vs replies) using random seed 42; report percentages by class.</p>
             </div>
         </div>
 
