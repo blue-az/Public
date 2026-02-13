@@ -445,6 +445,18 @@ body {
     padding: 20px;
 }
 
+.info-box {
+    background: linear-gradient(to bottom, #1a1a00, #0d0d00);
+    border: 3px outset #FFFF00;
+    padding: 15px;
+    color: #CCCCCC;
+}
+
+.info-box h3 {
+    color: #FFFF00;
+    margin-bottom: 8px;
+}
+
 /* Fallacy cards */
 .fallacy-grid {
     display: grid;

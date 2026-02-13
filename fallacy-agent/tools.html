@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>~*~FallacyAgent~*~ Cool Tools!!!</title>
+    <title>~*~FallacyAgent~*~ Expert Tools!!!</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="sub-header">
-            <h1 class="rainbow-text">~*~ 24 Expert System Tools ~*~</h1>
+            <h1 class="rainbow-text">~*~ 29 Expert System Tools ~*~</h1>
             <p class="subtitle">Deterministic fallacy detection | <a href="index.html">[Back to Home]</a></p>
         </div>
 
@@ -51,22 +51,27 @@
                 </div>
 
                 <div class="tool-category">
-                    <h3 style="color: #FFD700;">Variation 3 (+4 tools)</h3>
-                    <p style="color: #888; margin-bottom: 10px;">Defense strategies & statistics</p>
+                    <h3 style="color: #FFD700;">Variation 3 (+8 tools)</h3>
+                    <p style="color: #888; margin-bottom: 10px;">Defense, consistency tests, causes & statistics</p>
                     <ul class="tool-list">
                         <li>GetDefenseStrategy</li>
                         <li>ListDefenseStrategies</li>
-                        <li>GetRelatedFallacies</li>
-                        <li>GetFallacyChain</li>
+                        <li>GetConsistencyTest</li>
+                        <li>ListConsistencyTests</li>
+                        <li>GetCausalDriver</li>
+                        <li>ListCausalDrivers</li>
+                        <li>GetFallacyStatistics</li>
+                        <li>FindRelatedFallacies</li>
                     </ul>
                 </div>
 
                 <div class="tool-category">
-                    <h3 style="color: #FFD700;">Variation 4 (+6 tools)</h3>
+                    <h3 style="color: #FFD700;">Variation 4 (+7 tools)</h3>
                     <p style="color: #888; margin-bottom: 10px;">Pattern analysis & ParableAgent integration</p>
                     <ul class="tool-list">
                         <li>IdentifyFallacyPattern</li>
-                        <li>GenerateCounter</li>
+                        <li>GenerateCounterArgument</li>
+                        <li>ApplyConsistencyTest</li>
                         <li>AnalyzeFallacyDensity</li>
                         <li>GetParableDefense</li>
                         <li>ListParableTactics</li>
@@ -96,13 +101,13 @@
                 </tr>
                 <tr>
                     <td style="color: #FF4444;">v3</td>
-                    <td>18</td>
-                    <td>+ Defense strategies, statistics, related fallacies</td>
+                    <td>22</td>
+                    <td>+ Defense strategies, consistency tests, causal drivers, statistics</td>
                 </tr>
                 <tr>
                     <td style="color: #FF4444;">v4</td>
-                    <td>24</td>
-                    <td>+ Pattern detection, density analysis, ParableAgent integration</td>
+                    <td>29</td>
+                    <td>+ Pattern detection, consistency application, density analysis, ParableAgent integration</td>
                 </tr>
             </table>
 
@@ -111,9 +116,12 @@
             <h3 class="section-title">~*~ EXAMPLE QUERIES ~*~</h3>
             <div class="code-box">
                 <p class="code-line">&gt; SearchFallacy("straw man")</p>
-                <p class="code-line">&gt; GetCaseStudy("Cruz")</p>
-                <p class="code-line">&gt; GetMetaPrinciple("Sinclair")</p>
+                <p class="code-line">&gt; GetCaseStudy("Case C")</p>
+                <p class="code-line">&gt; GetMetaPrinciple("Incentive Blindness")</p>
+                <p class="code-line">&gt; GetCausalDriver("Tragedy of the Commons")</p>
+                <p class="code-line">&gt; ListCausalDrivers()</p>
                 <p class="code-line">&gt; IdentifyFallacyPattern("I'm not saying he's corrupt, but...")</p>
+                <p class="code-line">&gt; ApplyConsistencyTest("Any one person lowering CO2 is a fool.")</p>
                 <p class="code-line">&gt; GetParableDefense("ad hominem")</p>
                 <p class="code-line">&gt; AnalyzeFallacyDensity()</p>
             </div>
@@ -144,7 +152,7 @@
                     <tr>
                         <td style="color: #FF4444;">Sword</td>
                         <td>Aggressive</td>
-                        <td>"Do you disagree with Jesus here?"</td>
+                        <td>"Do you reject this principle in your own tradition?"</td>
                     </tr>
                     <tr>
                         <td style="color: #00CCFF;">Bridge</td>
@@ -163,8 +171,8 @@
         <hr class="fancy-hr">
 
         <footer>
-            <p class="copyright"><a href="index.html">[Back to Home]</a> | <a href="fallacies.html">[43 Fallacies]</a> | <a href="defense-strategies.html">[Defenses]</a></p>
-            <p class="last-updated">24 Tools | Last updated: February 6, 1997</p>
+            <p class="copyright"><a href="index.html">[Back to Home]</a> | <a href="fallacies.html">[46 Fallacies]</a> | <a href="causal-drivers.html">[Causal Drivers]</a> | <a href="defense-strategies.html">[Defenses]</a> | <a href="refs/index.html">[Reference Notes]</a></p>
+            <p class="last-updated">29 Tools | Last updated: February 13, 1997</p>
         </footer>
     </div>
 </body>
