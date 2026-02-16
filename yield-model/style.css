@@ -186,3 +186,39 @@ body {
         padding: 1.6rem;
     }
 }
+
+.nav a.active {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.mode-switch {
+    margin-top: 1rem;
+    display: inline-flex;
+    border: 1px solid var(--border);
+    background: var(--panel-soft);
+    overflow: hidden;
+}
+
+.mode-tab {
+    text-decoration: none;
+    color: var(--muted);
+    padding: 0.45rem 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+    border-right: 1px solid var(--border);
+}
+
+.mode-tab:last-child {
+    border-right: none;
+}
+
+.mode-tab.active {
+    background: rgba(255, 102, 0, 0.15);
+    color: var(--accent);
+}
+
+.mode-tab:hover {
+    color: var(--text);
+}

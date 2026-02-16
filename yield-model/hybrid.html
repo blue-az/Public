@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YieldModel | Hybrid Manufacturing Yield Analysis</title>
+    <meta name="description" content="YieldModel hybrid line analysis calibrated from PPR company/category implant data for ABT, BSX, and MDT.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">YieldModel Hybrid</span>
+            <h1>Hybrid Manufacturing Yield Analysis</h1>
+            <p class="subtitle">Calibrated company-line yield modeling for ABT, BSX, and MDT.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="physics.html">Physics</a>
+            <a href="data.html">Data</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="rules.html">Rules</a>
+            <a href="hybrid.html" class="active">Hybrid</a>
+            <a href="principles.html">Tau-Bench</a>
+        </nav>
+
+        <section class="section">
+            <h2>Hybrid Overview</h2>
+            <p>The Hybrid mode estimates line yield from category complexity, annual implant volume, and manufacturer portfolio mix. It is anchored for realistic CRM ranges: ICD around 90% and top pacemaker lines near 98%.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Companies</h3>
+                    <p>ABT, BSX, MDT</p>
+                </div>
+                <div class="card">
+                    <h3>Line Categories</h3>
+                    <p>Pacemaker, ICD, CRT-D, CRT-P, TPS</p>
+                </div>
+                <div class="card">
+                    <h3>Model</h3>
+                    <p>Deterministic calibrated hybrid scoring</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Hybrid Tools</h2>
+            <table class="table">
+                <tr>
+                    <th>Tool</th>
+                    <th>Description</th>
+                    <th>Parameters</th>
+                </tr>
+                <tr>
+                    <td>predict_hybrid_yield_by_company_line</td>
+                    <td>Predict yield for a single company + category line.</td>
+                    <td>company, device_category, year, maturity_bonus</td>
+                </tr>
+                <tr>
+                    <td>rank_hybrid_lines</td>
+                    <td>Rank company-category lines by estimated yield.</td>
+                    <td>year, top_n, company, maturity_bonus</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Model Equation</h2>
+            <div class="code">Yield = Base(category)
+      + VolumeGain(category) * ln(annual_implants / 200k + 1)
+      - 2.0 * (manufacturer_complexity_index - 1.10)
+      + maturity_bonus</div>
+            <p>Outputs are clipped to realistic manufacturing bounds for this domain.</p>
+        </section>
+
+        <section class="section">
+            <h2>Quick Start Queries</h2>
+            <div class="code">
+"predict hybrid yield for MDT ICD year 2024"
+"predict hybrid yield for ABT pacemaker year 2024 bonus 0.8"
+"rank hybrid lines year 2024 top 5"
+"rank hybrid lines for BSX year 2024 top 3"
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>YieldModel - Hybrid Manufacturing Yield Analysis</p>
+            <p>Source: <a class="back-link" href="F_Helo_PCB_Yield_Model.pdf" target="_blank" rel="noopener">F. Helo, Decision Support System to Predict the Manufacturing Yield of Printed Circuit Board Assembly Lines (2000)</a></p>
+            <div class="mode-switch" aria-label="Model mode switch">
+                <a class="mode-tab" href="index.html">IC</a>
+                <a class="mode-tab active" href="hybrid.html">Hybrid</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
