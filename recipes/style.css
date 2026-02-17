@@ -543,3 +543,35 @@ body {
         justify-content: center;
     }
 }
+
+
+/* Clickable Stat Cards */
+.stat-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.stat-card-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px var(--shadow-hover);
+    border-color: var(--cyan);
+}
+
+/* Category jump-link affordance */
+.jump-pill {
+    border-style: dashed;
+}
+
+.jump-pill::before {
+    content: "↳ ";
+    color: var(--burgundy);
+    font-weight: 700;
+}
+
+.jump-link-note {
+    margin: -0.75rem 0 1.5rem;
+    color: var(--gray-dark);
+    font-size: 0.9rem;
+}

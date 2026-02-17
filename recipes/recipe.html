@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe | Recipes</title>
+    <meta name="description" content="Recipe details with ingredients and method steps.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .recipe-wrap { max-width: 980px; margin: 2rem auto; }
+        .meta-row { display: flex; gap: 1rem; flex-wrap: wrap; margin: 0.75rem 0 1.25rem; }
+        .meta-chip { background: var(--cream); border: 1px solid var(--border); border-radius: 999px; padding: 0.35rem 0.75rem; font-size: 0.9rem; }
+        .detail-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.25rem; }
+        .panel { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+        .panel h3 { margin-top: 0; }
+        .ingredient-list, .step-list { margin: 0; padding-left: 1.1rem; }
+        .ingredient-list li, .step-list li { margin: 0.45rem 0; }
+        .missing { color: var(--muted); }
+        @media (max-width: 900px) { .detail-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Part of Project Phoenix - tau-bench Domain</a>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">&#127869;</span>
+                <span class="logo-text">Recipes</span>
+            </a>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="categories.html" class="active">Categories</a>
+                <a href="tools.html">Tools</a>
+                <a href="meal-planning.html">Meal Planning</a>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container recipe-wrap">
+        <p><a href="categories.html">&larr; Back to categories</a></p>
+        <section id="recipe-root" class="section"></section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>Recipes Domain</h4>
+                <a href="index.html">Home</a>
+                <a href="categories.html">Browse Recipes</a>
+                <a href="tools.html">Tool Registry</a>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Recipes Domain - Project Phoenix | Built on tau-bench (MIT License)</p>
+        </div>
+    </footer>
+
+    <script>
+    function norm(s) {
+        return (s || "").toLowerCase().replace(/\"/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+    }
+
+    function parseParams() {
+        const p = new URLSearchParams(window.location.search);
+        return { title: p.get("title") || "", id: p.get("id") || "" };
+    }
+
+    function ingredientText(ing) {
+        if (ing.quantity_primary == null || ing.quantity_primary === "") return ing.ingredient_name;
+        return `${ing.quantity_primary}${ing.unit_primary ? ` ${ing.unit_primary}` : ""} ${ing.ingredient_name}`;
+    }
+
+    fetch("recipes-data.json")
+      .then(r => r.json())
+      .then(rows => {
+        const { title, id } = parseParams();
+        let recipe = null;
+        if (id) recipe = rows.find(r => String(r.recipe_id) === String(id));
+        if (!recipe && title) {
+          const q = norm(title);
+          recipe = rows.find(r => {
+            const rt = norm(r.recipe_title);
+            return rt === q || rt.includes(q) || q.includes(rt);
+          });
+        }
+        if (!recipe) {
+          document.getElementById("recipe-root").innerHTML = `
+            <h1>Recipe Not Found</h1>
+            <p class="missing">No recipe matched your link. Try browsing from <a href="categories.html">Categories</a>.</p>
+          `;
+          return;
+        }
+
+        document.title = `${recipe.recipe_title} | Recipes`;
+        const ingredients = (recipe.ingredients || []).map(i => `<li>${ingredientText(i)}</li>`).join("") || "<li class='missing'>No ingredients listed.</li>";
+        const steps = (recipe.method_steps || []).map(s => `<li>${s}</li>`).join("") || "<li class='missing'>No method steps listed.</li>";
+
+        document.getElementById("recipe-root").innerHTML = `
+          <h1>${recipe.recipe_title}</h1>
+          <p>${recipe.description || ""}</p>
+          <div class="meta-row">
+            <span class="meta-chip">Recipe ID: ${recipe.recipe_id}</span>
+            <span class="meta-chip">Cuisine: ${recipe.cuisine || "N/A"}</span>
+            <span class="meta-chip">Category: ${recipe.category_name || "N/A"}</span>
+            <span class="meta-chip">Yield: ${recipe.yield_text || "N/A"}</span>
+          </div>
+          <div class="detail-grid">
+            <article class="panel">
+              <h3>Ingredients</h3>
+              <ul class="ingredient-list">${ingredients}</ul>
+            </article>
+            <article class="panel">
+              <h3>Method</h3>
+              <ol class="step-list">${steps}</ol>
+            </article>
+          </div>
+          ${recipe.notes ? `<section class="section"><h2>Notes</h2><p>${recipe.notes}</p></section>` : ""}
+        `;
+      })
+      .catch(() => {
+        document.getElementById("recipe-root").innerHTML = `<h1>Error</h1><p class="missing">Could not load recipe data.</p>`;
+      });
+    </script>
+</body>
+</html>

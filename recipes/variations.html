@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Variations | Recipes</title>
-    <meta name="description" content="Progressive tool variations from recipe lookup to full personalization.">
+    <meta name="description" content="Progressive plant-based tool variations from lookup to workflow support.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -30,179 +30,60 @@
 
     <div class="hero">
         <h1>Variations</h1>
-        <p class="subtitle">Progressive Tool Sets for Recipe Management</p>
+        <p class="subtitle">Plant-Based Stack (Canonical)</p>
     </div>
 
     <main class="main-container">
         <section class="section">
-            <h2>Plant-Based Variations</h2>
-            <p>Progressive capabilities for the plant-based cookbook domain.</p>
+            <h2>Progressive Tool Sets</h2>
+            <p>The domain now uses a single canonical variation family: <code>plant_based_v1..v5</code>.</p>
 
             <div class="variation-grid">
                 <div class="variation-card">
                     <span class="num">10</span>
                     <h4>V1: Lookup</h4>
-                    <p>Read-only recipe search and browsing</p>
+                    <p>Read-only recipe and ingredient search</p>
                 </div>
                 <div class="variation-card">
                     <span class="num">14</span>
                     <h4>V2: Planning</h4>
-                    <p>+ Meal plans and shopping lists</p>
+                    <p>Meal plans and shopping list aggregation</p>
                 </div>
                 <div class="variation-card">
                     <span class="num">18</span>
                     <h4>V3: Discovery</h4>
-                    <p>+ Pantry matching and substitutions</p>
+                    <p>Pantry matching and substitutions</p>
                 </div>
                 <div class="variation-card">
                     <span class="num">26</span>
                     <h4>V4: Personal</h4>
-                    <p>+ Favorites, history, notes, ratings</p>
+                    <p>Favorites, history, notes, ratings</p>
+                </div>
+                <div class="variation-card">
+                    <span class="num">30</span>
+                    <h4>V5: Workflow</h4>
+                    <p>Equipment, prep checklist, timing, make-ahead</p>
                 </div>
             </div>
         </section>
 
         <section class="section">
-            <h2>V1: Recipe Lookup (10 tools)</h2>
-            <p>Read-only tools for searching and browsing recipes. No data modification.</p>
-            <ul>
-                <li>List categories and recipes</li>
-                <li>Search by title, cuisine, or ingredient</li>
-                <li>Get recipe details and ingredients</li>
-                <li>Access cooking technique references</li>
-            </ul>
-            <p><strong>Key constraint:</strong> V1 is completely read-only.</p>
-        </section>
-
-        <section class="section">
-            <h2>V2: Meal Planning (+4 = 14 tools)</h2>
-            <p>Add meal planning and shopping list generation.</p>
-            <ul>
-                <li><code>scale_recipe_servings</code> - Adjust ingredient quantities</li>
-                <li><code>create_meal_plan</code> - Create weekly plans</li>
-                <li><code>get_meal_plan</code> - Retrieve plan details</li>
-                <li><code>generate_shopping_list</code> - Aggregate ingredients</li>
-            </ul>
-        </section>
-
-        <section class="section">
-            <h2>V3: Pantry & Discovery (+4 = 18 tools)</h2>
-            <p>Find recipes based on available ingredients and get substitution suggestions.</p>
-            <ul>
-                <li><code>find_recipes_by_pantry</code> - What can I make?</li>
-                <li><code>suggest_substitution</code> - Ingredient alternatives</li>
-                <li><code>list_common_ingredients</code> - Popular ingredients</li>
-                <li><code>find_similar_recipes</code> - Related dishes</li>
-            </ul>
-        </section>
-
-        <section class="section">
-            <h2>V4: Personalization (+8 = 26 tools)</h2>
-            <p>Track cooking journey and personalize the experience.</p>
-            <ul>
-                <li><code>add_favorite</code> / <code>list_favorites</code> - Save preferred recipes</li>
-                <li><code>log_cook_event</code> / <code>get_cook_history</code> - Cooking log</li>
-                <li><code>add_recipe_note</code> / <code>get_recipe_notes</code> - Personal notes</li>
-                <li><code>rate_recipe</code> / <code>list_top_rated</code> - 5-star ratings</li>
-            </ul>
-        </section>
-
-        <section class="section">
-            <h2>Household Variations (1-5)</h2>
-            <p>The domain also includes 5 variations for household meal management with 34 tools.</p>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Variation</th>
-                        <th>Focus</th>
-                        <th>Key Tools</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Recipe Management</td>
-                        <td>get_recipe_by_id, list_recipe_ingredients, build_recipe_filters</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Meal Planning</td>
-                        <td>create_meal_plan, bulk_add_meal_plan_entries</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Shopping Lists</td>
-                        <td>create_grocery_list, categorize_sections, flag_pantry_staples</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Inventory</td>
-                        <td>list_inventory_by_household, check_store_inventory</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Store Orders</td>
-                        <td>create_order_from_list, add_order_items, update_order_status</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="section">
-            <h2>Test Results</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Variation</th>
-                        <th>Tests</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>V1 (Lookup)</td>
-                        <td>15/15</td>
-                        <td><span class="tag green">Pass</span></td>
-                    </tr>
-                    <tr>
-                        <td>V2 (Planning)</td>
-                        <td>10/10</td>
-                        <td><span class="tag green">Pass</span></td>
-                    </tr>
-                    <tr>
-                        <td>V3 (Discovery)</td>
-                        <td>10/10</td>
-                        <td><span class="tag green">Pass</span></td>
-                    </tr>
-                    <tr>
-                        <td>V4 (Personal)</td>
-                        <td>12/12</td>
-                        <td><span class="tag green">Pass</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total</strong></td>
-                        <td><strong>47/47</strong></td>
-                        <td><span class="tag green">All Pass</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="section">
-            <h2>Validation</h2>
+            <h2>Validation Commands</h2>
             <div class="code-block">
-<span class="comment"># Validate each variation</span>
-python scripts/validate.py                    <span class="comment"># V1 (default)</span>
-python scripts/validate.py --variation v2     <span class="comment"># V2</span>
-python scripts/validate.py --variation v3     <span class="comment"># V3</span>
-python scripts/validate.py --variation v4     <span class="comment"># V4</span>
+python scripts/validate.py --variation v1
+python scripts/validate.py --variation v2
+python scripts/validate.py --variation v3
+python scripts/validate.py --variation v4
+python scripts/validate.py --variation v5
 
 <span class="comment"># Pilot run (first 3 tasks)</span>
-python scripts/validate.py --pilot
-
-<span class="comment"># Single task</span>
-python scripts/validate.py --task-id task_001
+python scripts/validate.py --variation v5 --pilot
             </div>
+        </section>
+
+        <section class="section">
+            <h2>Current Status</h2>
+            <p>Legacy non-plant-based variation folders were removed to avoid confusion and keep the site aligned with the active domain architecture.</p>
         </section>
     </main>
 

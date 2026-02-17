@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizations | AmericanEconomy</title>
+    <meta name="description" content="AmericanEconomy visualization gallery: fiscal, growth, matrix, and interactive macro dashboards.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">AE</span>
+                    <div>
+                        <p class="site-tag">macro and world linkages</p>
+                        <h1 class="site-title">AmericanEconomy</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="data.html">data sources</a>
+                    <a href="charts.html">visualizations</a>
+                    <a href="https://proto.efehnconsulting.com/project-phoenix/">project-phoenix</a>
+                </div>
+                <div class="cart">
+                    <span>project phoenix domain</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="index.html" class="nav-item">overview</a>
+            <a href="data.html" class="nav-item">data</a>
+            <a href="charts.html" class="nav-item">charts</a>
+            <a href="#fiscal" class="nav-item">fiscal</a>
+            <a href="#us-world" class="nav-item">u.s. vs world</a>
+            <a href="#interactive" class="nav-item">interactive</a>
+        </section>
+
+        <article class="article">
+            <h2>Visualization Gallery</h2>
+            <p>These charts come from the latest AmericanEconomy run artifacts and emphasize fiscal readability, world comparison, and executive review layouts.</p>
+        </article>
+
+        <section class="chart-gallery" id="fiscal">
+            <div class="chart-card featured">
+                <img src="charts/macro_dashboard.png" alt="Macro dashboard">
+                <div class="chart-info">
+                    <h3>Macro Dashboard (Fiscal Included)</h3>
+                    <p>Executive 2x2 dashboard with growth, labor/inflation, GDP scale context, and fiscal stance snapshot.</p>
+                    <span class="range">Latest run</span>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <img src="charts/debt_trend.png" alt="U.S. debt trend">
+                <div class="chart-info">
+                    <h3>U.S. Debt-to-GDP Trend</h3>
+                    <p>Time series of U.S. government debt as a percent of GDP.</p>
+                    <span class="range">1989-2024</span>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <img src="charts/deficit_trend.png" alt="U.S. deficit trend">
+                <div class="chart-info">
+                    <h3>U.S. Deficit-to-GDP Trend</h3>
+                    <p>Federal surplus/deficit as a percent of GDP. Negative values indicate deficit.</p>
+                    <span class="range">1929-2024</span>
+                </div>
+            </div>
+
+            <div class="chart-card" id="us-world">
+                <img src="charts/us_vs_world_gdp.png" alt="U.S. vs world GDP">
+                <div class="chart-info">
+                    <h3>U.S. vs World GDP (Level + Spread)</h3>
+                    <p>Comparison view with spread panel to make relative divergence easier to interpret.</p>
+                    <span class="range">World Bank annual series</span>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <img src="charts/macro_matrix.png" alt="Macro matrix">
+                <div class="chart-info">
+                    <h3>Macro Matrix Snapshot</h3>
+                    <p>Cross-country matrix for fast scan of key indicators across major geographies.</p>
+                    <span class="range">Latest snapshot</span>
+                </div>
+            </div>
+        </section>
+
+        <article class="article" id="interactive">
+            <h2>Interactive Artifacts</h2>
+            <p>Use these local HTML outputs for drill-down. They are copied from the latest agent runs.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Artifact</th>
+                        <th>Description</th>
+                        <th>Open</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Interactive Macro Briefing</td>
+                        <td>Plotly dashboard with fiscal panel and regime context.</td>
+                        <td><a href="charts/interactive_macro_briefing.html" target="_blank" rel="noopener">open</a></td>
+                    </tr>
+                    <tr>
+                        <td>Interactive Macro Matrix</td>
+                        <td>Interactive heatmap matrix for cross-country indicator comparison.</td>
+                        <td><a href="charts/interactive_macro_matrix.html" target="_blank" rel="noopener">open</a></td>
+                    </tr>
+                    <tr>
+                        <td>Research Pack Index</td>
+                        <td>Pack landing page with linked interactive views.</td>
+                        <td><a href="charts/research_pack_index.html" target="_blank" rel="noopener">open</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">AmericanEconomy</p>
+                <p class="footer-note">Visualization-first macro domain.</p>
+            </div>
+            <div class="footer-links">
+                <a href="data.html">data</a>
+                <a href="index.html">overview</a>
+                <a href="https://proto.efehnconsulting.com/project-phoenix/">phoenix</a>
+            </div>
+            <p class="footer-copy">AmericanEconomy - Project Phoenix Domain</p>
+        </footer>
+    </div>
+</body>
+</html>

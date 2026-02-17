@@ -1,0 +1,225 @@
+:root {
+    --bg: #0f1419;
+    --panel: #1a2128;
+    --panel-soft: #242d36;
+    --text: #d9e2ec;
+    --muted: #98a6b5;
+    --accent: #3ddc97;
+    --primary: #6ea8fe;
+    --border: #33404d;
+    --shadow: rgba(0, 0, 0, 0.35);
+    --display-font: "Oswald", "Franklin Gothic Medium", "Arial Narrow", "Impact", sans-serif;
+    --body-font: "IBM Plex Sans", "Source Sans Pro", "Segoe UI", Arial, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--body-font);
+    color: var(--text);
+    background-color: var(--bg);
+    background-image:
+        radial-gradient(circle at 20% 0%, rgba(61, 220, 151, 0.12), transparent 45%),
+        radial-gradient(circle at 85% 10%, rgba(110, 168, 254, 0.12), transparent 42%);
+    min-height: 100vh;
+}
+
+.page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 3rem;
+}
+
+.header {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 24px var(--shadow);
+    text-align: center;
+    padding: 2rem;
+}
+
+.header h1 {
+    font-family: var(--display-font);
+    font-size: clamp(2.3rem, 4vw, 3.4rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+}
+
+.header .subtitle {
+    color: var(--muted);
+}
+
+.badge {
+    display: inline-block;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.72rem;
+    padding: 0.22rem 0.66rem;
+    margin-bottom: 0.7rem;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    margin: 1.8rem 0 2rem;
+}
+
+.nav a {
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid var(--border);
+    background: var(--panel-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    font-size: 0.75rem;
+    padding: 0.45rem 0.8rem;
+}
+
+.nav a.active,
+.nav a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.7rem;
+}
+
+.stat-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    text-align: center;
+    padding: 0.95rem;
+}
+
+.stat-box .number {
+    font-family: var(--display-font);
+    font-size: 1.7rem;
+    color: var(--accent);
+}
+
+.stat-box .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 1px;
+}
+
+.section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 20px var(--shadow);
+    padding: 1.6rem;
+    margin-bottom: 1.6rem;
+}
+
+.section h2 {
+    font-family: var(--display-font);
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.9rem;
+}
+
+.section p {
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.grid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.card {
+    background: var(--panel-soft);
+    border: 1px solid var(--border);
+    padding: 1rem;
+}
+
+.card h3 {
+    font-family: var(--display-font);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.card .meta {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 0.5rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+    border: 1px solid var(--border);
+    text-align: left;
+    padding: 0.6rem;
+    vertical-align: top;
+}
+
+.table th {
+    background: rgba(110, 168, 254, 0.14);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+}
+
+.code {
+    background: #0b1015;
+    border: 1px dashed var(--accent);
+    color: #d1f6e4;
+    padding: 0.9rem;
+    white-space: pre-wrap;
+    font-family: "IBM Plex Mono", "Consolas", "Monaco", monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 1rem 0 0.3rem;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 0.6rem;
+    text-decoration: none;
+    color: var(--accent);
+}
+
+@media (max-width: 680px) {
+    .page {
+        padding: 1.3rem 0.9rem 2rem;
+    }
+
+    .section {
+        padding: 1.2rem;
+    }
+}

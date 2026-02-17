@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meal Planning | Recipes</title>
-    <meta name="description" content="Create meal plans, generate shopping lists, and track inventory.">
+    <meta name="description" content="Create meal plans, scale servings, and generate shopping lists from recipe ingredients.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -30,138 +30,31 @@
 
     <div class="hero">
         <h1>Meal Planning</h1>
-        <p class="subtitle">Plan Meals, Generate Shopping Lists, Track Inventory</p>
+        <p class="subtitle">Plan Meals and Generate Shopping Lists</p>
     </div>
 
     <main class="main-container">
         <section class="section">
-            <h2>Planning Workflow</h2>
-            <p>The Recipes domain supports a complete meal planning workflow from recipe selection to grocery ordering.</p>
-
-            <div class="recipes-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <div class="stat-card">
-                    <div class="number">1</div>
-                    <div class="label">Select Recipes</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number">2</div>
-                    <div class="label">Create Plan</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number">3</div>
-                    <div class="label">Generate List</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number">4</div>
-                    <div class="label">Check Inventory</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number">5</div>
-                    <div class="label">Place Order</div>
-                </div>
+            <h2>Planning Workflow (Plant-Based V2)</h2>
+            <div class="recipes-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                <div class="stat-card"><div class="number">1</div><div class="label">Select Recipes</div></div>
+                <div class="stat-card"><div class="number">2</div><div class="label">Scale Servings</div></div>
+                <div class="stat-card"><div class="number">3</div><div class="label">Create Plan</div></div>
+                <div class="stat-card"><div class="number">4</div><div class="label">Generate List</div></div>
             </div>
         </section>
 
         <section class="section">
-            <h2>Household Management</h2>
-            <p>The domain supports multi-household management with individual member profiles.</p>
+            <h2>Key Planning Tools</h2>
             <table class="data-table">
                 <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Description</th>
-                    </tr>
+                    <tr><th>Tool</th><th>Description</th></tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Households</td>
-                        <td>Group users into households for shared meal planning</td>
-                    </tr>
-                    <tr>
-                        <td>Members</td>
-                        <td>Individual profiles with nutrition targets and dietary restrictions</td>
-                    </tr>
-                    <tr>
-                        <td>Nutrition Targets</td>
-                        <td>Track calories, protein, and activity levels per member</td>
-                    </tr>
-                    <tr>
-                        <td>Allergies</td>
-                        <td>Flag members with allergies (e.g., peanut-free requirements)</td>
-                    </tr>
-                    <tr>
-                        <td>Child Modifications</td>
-                        <td>Automatic suggestions for child-friendly recipe adjustments</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="section">
-            <h2>Grocery List Features</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Auto-Generation</td>
-                        <td>Generate shopping list from meal plan recipes</td>
-                    </tr>
-                    <tr>
-                        <td>Ingredient Aggregation</td>
-                        <td>Combine quantities across recipes</td>
-                    </tr>
-                    <tr>
-                        <td>Section Categorization</td>
-                        <td>Organize by grocery store section (Produce, Dairy, etc.)</td>
-                    </tr>
-                    <tr>
-                        <td>Pantry Staples</td>
-                        <td>Flag common staples you may already have</td>
-                    </tr>
-                    <tr>
-                        <td>Overlap Detection</td>
-                        <td>Highlight items used in recent meal plans</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="section">
-            <h2>Store Integration</h2>
-            <p>Check availability and place orders at configured stores.</p>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Inventory Check</td>
-                        <td>Verify item availability at store</td>
-                    </tr>
-                    <tr>
-                        <td>Price Comparison</td>
-                        <td>Find lowest-price products for each ingredient</td>
-                    </tr>
-                    <tr>
-                        <td>Substitutions</td>
-                        <td>Propose in-stock alternatives for unavailable items</td>
-                    </tr>
-                    <tr>
-                        <td>Order Creation</td>
-                        <td>Create orders with scheduled delivery slots</td>
-                    </tr>
-                    <tr>
-                        <td>Order Tracking</td>
-                        <td>Track order status (placed, delivered)</td>
-                    </tr>
+                    <tr><td><code>scale_recipe_servings</code></td><td>Scale a recipe to target servings</td></tr>
+                    <tr><td><code>create_meal_plan</code></td><td>Create a plan with day/meal/recipe entries</td></tr>
+                    <tr><td><code>get_meal_plan</code></td><td>Retrieve a plan with recipe titles</td></tr>
+                    <tr><td><code>generate_shopping_list</code></td><td>Aggregate ingredients across plan entries</td></tr>
                 </tbody>
             </table>
         </section>
@@ -169,37 +62,29 @@
         <section class="section">
             <h2>Example Workflow</h2>
             <div class="code-block">
-<span class="comment"># 1. Get member nutrition targets</span>
-targets = get_member_targets(member_id=<span class="string">1</span>)
+<span class="comment"># 1) Scale a recipe</span>
+scaled = scale_recipe_servings(<span class="string">11</span>, <span class="string">8</span>)
 
-<span class="comment"># 2. Build recipe filters</span>
-filters = build_recipe_filters(
-    meal_type=<span class="string">"Dinner"</span>,
-    min_protein_g=<span class="string">20</span>,
-    peanut_free=<span class="string">True</span>
+<span class="comment"># 2) Create a weekly plan</span>
+plan = create_meal_plan(
+    <span class="string">"Week of 2026-02-16"</span>,
+    [
+        {<span class="string">"day"</span>: <span class="string">"Mon"</span>, <span class="string">"meal"</span>: <span class="string">"Dinner"</span>, <span class="string">"recipe_id"</span>: <span class="string">11</span>, <span class="string">"servings"</span>: <span class="string">4</span>},
+        {<span class="string">"day"</span>: <span class="string">"Tue"</span>, <span class="string">"meal"</span>: <span class="string">"Dinner"</span>, <span class="string">"recipe_id"</span>: <span class="string">15</span>, <span class="string">"servings"</span>: <span class="string">4</span>}
+    ]
 )
 
-<span class="comment"># 3. Get matching recipes</span>
-candidates = list_recipes_by_filters(filters)
+<span class="comment"># 3) Build shopping list</span>
+shopping = generate_shopping_list(plan[<span class="string">"meal_plan_id"</span>])
+            </div>
+        </section>
 
-<span class="comment"># 4. Exclude recently cooked</span>
-recent = list_recent_meal_history(household_id=<span class="string">1</span>, days_back=<span class="string">14</span>)
-filtered = exclude_recipe_ids(candidates, recent)
-
-<span class="comment"># 5. Rank by nutrition targets</span>
-selected = rank_recipes_for_targets(filtered, needed_count=<span class="string">7</span>, ...)
-
-<span class="comment"># 6. Create meal plan</span>
-plan_id = create_meal_plan(household_id=<span class="string">1</span>, week_start_date=<span class="string">"2025-01-13"</span>)
-bulk_add_meal_plan_entries(plan_id, selected)
-
-<span class="comment"># 7. Generate grocery list</span>
-list_id = create_empty_grocery_list(household_id=<span class="string">1</span>)
-upsert_grocery_list_items_from_recipes(list_id, selected)
-
-<span class="comment"># 8. Check store and order</span>
-check_store_inventory_for_list(list_id, store_id=<span class="string">1</span>)
-order_id = create_order_from_list(...)
+        <section class="section">
+            <h2>CLI Shortcuts</h2>
+            <div class="code-block">
+./scripts/recipes plan-dinners --count 5 --week-start 2026-02-16 --write
+./scripts/recipes grocery-from-plan --meal-plan-id 1 --household-id 1
+./scripts/recipes chat "plan 5 dinners for next week" --week-start 2026-02-16
             </div>
         </section>
     </main>

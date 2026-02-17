@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISO_13485 | Medical Device QMS Compliance</title>
+    <meta name="description" content="ISO_13485 domain for deterministic medical device QMS compliance workflows. 23 tools across 4 variations.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>ISO_13485</h1>
+            <p class="subtitle">Medical Device QMS Compliance</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/domains.html">Phoenix Domains</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Project Phoenix</a>
+        </nav>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="number">23</div>
+                <div class="label">Tools</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">4</div>
+                <div class="label">Variations</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">24</div>
+                <div class="label">Pages</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">30</div>
+                <div class="label">Chunks</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Overview</h2>
+            <p>ISO_13485 is a deterministic compliance domain for medical device quality management systems based on ISO 13485:2003(E).</p>
+            <p>It is clause-anchored, reproducible, and designed for audit readiness, CAPA workflows, implementation planning, and governance reporting.</p>
+        </section>
+
+        <section class="section">
+            <h2>Variation Coverage</h2>
+            <div class="grid grid-4">
+                <div class="card">
+                    <h3>Variation 1</h3>
+                    <p>Basic Retrieval</p>
+                    <div class="meta">7 tools</div>
+                </div>
+                <div class="card">
+                    <h3>Variation 2</h3>
+                    <p>Audit &amp; CAPA</p>
+                    <div class="meta">6 tools</div>
+                </div>
+                <div class="card">
+                    <h3>Variation 3</h3>
+                    <p>Implementation Playbooks</p>
+                    <div class="meta">5 tools</div>
+                </div>
+                <div class="card">
+                    <h3>Variation 4</h3>
+                    <p>Governance</p>
+                    <div class="meta">5 tools</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Canonical Dataset</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Artifact</th>
+                        <th>Location</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Source</td>
+                        <td><code>data/ISO13485_gemini.md</code></td>
+                        <td>Canonical text source for domain generation</td>
+                    </tr>
+                    <tr>
+                        <td>Chunk Index</td>
+                        <td><code>data/iso13485_source_gemini/chunks.jsonl</code></td>
+                        <td>220-word windows with 40-word overlap</td>
+                    </tr>
+                    <tr>
+                        <td>Page Records</td>
+                        <td><code>data/iso13485_source_gemini/ocr_pages.jsonl</code></td>
+                        <td>Structured section and page retrieval</td>
+                    </tr>
+                    <tr>
+                        <td>FTS Store</td>
+                        <td><code>data/iso13485_source_gemini/fts_store.sqlite</code></td>
+                        <td>Offline full-text retrieval (no API required)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Representative Tools</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>GetClauseText</h3>
+                    <p>Fetch exact ISO clause text by number (for example 7.3 or 8.5).</p>
+                </div>
+                <div class="card">
+                    <h3>BuildAuditChecklist</h3>
+                    <p>Generate clause-focused internal audit checklists and evidence prompts.</p>
+                </div>
+                <div class="card">
+                    <h3>BuildRolePlaybook</h3>
+                    <p>Create role-based implementation playbooks for QA, RA, Ops, and Design teams.</p>
+                </div>
+                <div class="card">
+                    <h3>GenerateComplianceMatrix</h3>
+                    <p>Build cross-clause obligation matrices from "shall" statements.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>CLI Quick Start</h2>
+            <div class="code"># From project-phoenix/domains/ISO_13485
+python3 test_agent.py
+
+# Rebuild canonical artifacts
+python3 scripts/build_gemini_domain_dataset.py --source data/ISO13485_gemini.md --out-dir data/iso13485_source_gemini
+python3 scripts/build_fts_index.py --input data/iso13485_source_gemini/chunks.jsonl --db-path data/iso13485_source_gemini/fts_store.sqlite --replace
+
+# Query local full-text index
+python3 scripts/query_fts.py "risk management" -k 5</div>
+        </section>
+
+        <footer class="footer">
+            <p>ISO_13485 Domain - Project Phoenix | Medical Device QMS Compliance</p>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/domains.html" class="back-link">Back to Phoenix Domains</a>
+        </footer>
+    </div>
+</body>
+</html>

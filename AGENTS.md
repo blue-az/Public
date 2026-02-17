@@ -12,6 +12,7 @@ Use `template/` as the baseline for new sites. The root also contains `deploy.sh
 There is no build step; edits are direct to HTML and CSS.
 
 - `mkdir -p <slug>`: create a new site folder (use lowercase, hyphenated slugs like `zen-flow-yoga`).
+- `showcase/check-consistency.sh`: validates shared domain/tool count copy across `project-phoenix` and `showcase` pages.
 - `./deploy.sh <folder>`: rsyncs the site to the remote host and prints the live URL.
 
 ## Coding Style & Naming Conventions
@@ -23,6 +24,7 @@ There is no build step; edits are direct to HTML and CSS.
 ## Testing Guidelines
 No automated tests are set up. Validate changes by:
 - Opening `index.html` in a browser for layout checks.
+- Running `showcase/check-consistency.sh` when editing `project-phoenix` or `showcase` domain/tool counts.
 - Deploying with `./deploy.sh <folder>` and verifying the live URL.
 
 ## Commit & Pull Request Guidelines

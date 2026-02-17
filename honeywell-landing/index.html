@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Honeywell Intelligence Hub</title>
+  <meta name="description" content="Standalone Honeywell landing page for product visibility, revenue context, and executive dashboards." />
+  <style>
+    :root {
+      --bg: #08131f;
+      --bg2: #0f2235;
+      --card: #10273d;
+      --ink: #e7f0f8;
+      --muted: #9fb3c7;
+      --line: #284963;
+      --accent: #25c9ad;
+      --accent2: #6fb4ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(1100px 500px at 85% -10%, #1a3856 0%, transparent 65%),
+        radial-gradient(900px 450px at -10% 15%, #13324a 0%, transparent 70%),
+        linear-gradient(170deg, var(--bg) 10%, var(--bg2) 70%);
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 18px 40px; }
+    h1 { margin: 0; font-size: clamp(30px, 5vw, 48px); line-height: 1.04; }
+    .sub { margin: 12px 0 0; max-width: 860px; color: var(--muted); font-size: 17px; }
+    .pill {
+      display: inline-block;
+      margin: 0 0 12px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #cde9ff;
+      font-size: 12px;
+      letter-spacing: .2px;
+      background: rgba(111,180,255,.1);
+    }
+    .grid {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .card h2 { margin: 0 0 8px; font-size: 18px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .actions { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+    a.btn {
+      text-decoration: none;
+      color: #052b25;
+      background: var(--accent);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    a.btn.secondary {
+      color: #d6e9ff;
+      background: transparent;
+      border: 1px solid var(--line);
+      font-weight: 600;
+    }
+    .kpis {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .kpi {
+      background: rgba(0,0,0,.16);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .kpi .label { color: var(--muted); font-size: 12px; }
+    .kpi .value { margin-top: 4px; font-size: 20px; font-weight: 700; }
+    .foot {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="pill">Standalone Entry Point</div>
+    <h1>Honeywell Intelligence Hub</h1>
+    <p class="sub">
+      Dedicated landing site for quick access to what Honeywell sells, estimated revenue distribution,
+      and executive intelligence views.
+    </p>
+
+    <div class="kpis">
+      <div class="kpi"><div class="label">Latest FY Revenue</div><div class="value">$38.50B</div></div>
+      <div class="kpi"><div class="label">Operating Income</div><div class="value">$8.70B</div></div>
+      <div class="kpi"><div class="label">Net Income</div><div class="value">$5.71B</div></div>
+      <div class="kpi"><div class="label">Views Available</div><div class="value">3</div></div>
+    </div>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Products & Revenue</h2>
+        <p>Open the dedicated Products & Revenue view with product families, inferred revenue split, and role-share backing.</p>
+      </article>
+      <article class="card">
+        <h2>Executive Dashboard</h2>
+        <p>CEO, Products & Revenue, and Director AI views in one interactive dashboard.</p>
+      </article>
+      <article class="card">
+        <h2>Roadmap</h2>
+        <p>Review engagement phases from prototype to consulting delivery and enterprise hardening.</p>
+      </article>
+    </section>
+
+    <div class="actions">
+      <a class="btn" href="https://proto.efehnconsulting.com/honeywell/data/hitl/executive_dashboard.html" target="_blank" rel="noopener">Open Executive Dashboard</a>
+      <a class="btn secondary" href="https://proto.efehnconsulting.com/honeywell/data/hitl/" target="_blank" rel="noopener">Open HITL Index</a>
+      <a class="btn secondary" href="https://proto.efehnconsulting.com/honeywell/data/hitl/roadmap.html" target="_blank" rel="noopener">Open Roadmap</a>
+    </div>
+
+    <p class="foot">Note: product family revenue is an inferred estimate based on current hiring-demand mix, not reported segment revenue.</p>
+  </div>
+</body>
+</html>

@@ -12,7 +12,7 @@
         <header class="header">
             <div class="badge">Project Phoenix Meta-Domain</div>
             <h1>Operational Modes</h1>
-            <p class="subtitle">Meta-Tool (10) vs Direct (475+)</p>
+            <p class="subtitle">Meta-Tool (14) vs Direct (649+)</p>
         </header>
 
         <nav class="nav">
@@ -31,7 +31,7 @@
                 <div class="card" style="border-left: 4px solid #00b894;">
                     <div class="badge primary">Recommended for Local LLMs</div>
                     <h3>Meta-Tool Mode</h3>
-                    <p style="font-size: 2rem; font-weight: bold; color: #00b894;">10 Tools</p>
+                    <p style="font-size: 2rem; font-weight: bold; color: #00b894;">14 Tools</p>
                     <p>One meta-tool per domain. LLM makes one decision: "which domain?"</p>
                     <ul style="margin-top: 0.5rem;">
                         <li>Reduced context window pressure</li>
@@ -43,7 +43,7 @@
                 <div class="card" style="border-left: 4px solid #6c5ce7;">
                     <div class="badge">For Cloud LLMs</div>
                     <h3>Direct Mode</h3>
-                    <p style="font-size: 2rem; font-weight: bold; color: #6c5ce7;">475+ Tools</p>
+                    <p style="font-size: 2rem; font-weight: bold; color: #6c5ce7;">649+ Tools</p>
                     <p>All individual tools flattened. LLM sees every tool and selects directly.</p>
                     <ul style="margin-top: 0.5rem;">
                         <li>Full tool granularity</li>
@@ -57,7 +57,7 @@
 
         <section class="section">
             <h2>Meta-Tool Mode Example</h2>
-            <div class="code"><span class="highlight-secondary"># 10 Meta-Tools Available to LLM</span>
+            <div class="code"><span class="highlight-secondary"># 14 Meta-Tools Available to LLM</span>
 
 query_tennisagent_data(query: str)
     "Natural language query for tennis sensor analysis"
@@ -74,7 +74,13 @@ query_wq_data(query: str)
 query_stan_data(query: str)
     "Natural language query for Stats 315A"
 
-... 5 more meta-tools
+query_americaneconomy_data(query: str)
+    "Natural language query for U.S. macro and fiscal analysis"
+
+query_globaltemperature_data(query: str)
+    "Natural language query for climate and emissions analysis"
+
+... 7 more meta-tools
 
 <span class="highlight-secondary"># User Query Flow</span>
 User: "show my forehand consistency analysis"
@@ -91,7 +97,7 @@ Result returned to user</div>
 
         <section class="section">
             <h2>Direct Mode Example</h2>
-            <div class="code"><span class="highlight-secondary"># 475+ Individual Tools Available to LLM</span>
+            <div class="code"><span class="highlight-secondary"># 649+ Individual Tools Available to LLM</span>
 
 <span class="highlight-secondary"># TennisAgent tools (171)</span>
 analyze_match_consistency(activity_id: str, shot_type: str)
@@ -107,7 +113,7 @@ find_harvest_opportunities()
 calculate_options_income()
 ...
 
-<span class="highlight-secondary"># ... 234 more tools from other domains</span>
+<span class="highlight-secondary"># ... 394 more tools from other domains</span>
 
 <span class="highlight-secondary"># User Query Flow</span>
 User: "show my forehand consistency analysis"
@@ -135,8 +141,8 @@ Result returned to user</div>
                 <tbody>
                     <tr>
                         <td>Tool Count</td>
-                        <td><span class="highlight">10 tools</span></td>
-                        <td>475+ tools</td>
+                        <td><span class="highlight">14 tools</span></td>
+                        <td>649+ tools</td>
                     </tr>
                     <tr>
                         <td>Context Usage</td>
@@ -182,12 +188,12 @@ Result returned to user</div>
                     <p>Read-only catalog exploration</p>
                 </div>
                 <div class="variation-card">
-                    <div class="num">10</div>
+                    <div class="num">14</div>
                     <h4>V2: Meta-Tool</h4>
                     <p>Aggregated domain interfaces</p>
                 </div>
                 <div class="variation-card">
-                    <div class="num">475+</div>
+                    <div class="num">649+</div>
                     <h4>V3: Direct</h4>
                     <p>All individual tools</p>
                 </div>
@@ -206,7 +212,7 @@ Result returned to user</div>
                 <tbody>
                     <tr>
                         <td><code>list_domains</code></td>
-                        <td>List all 10 available domains</td>
+                        <td>List all 14 available domains</td>
                     </tr>
                     <tr>
                         <td><code>get_domain_info</code></td>
@@ -233,7 +239,7 @@ Result returned to user</div>
         </section>
 
         <section class="section">
-            <h2>Variation 2: Meta-Tool Mode (10 tools)</h2>
+            <h2>Variation 2: Meta-Tool Mode (14 tools)</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -292,6 +298,26 @@ Result returned to user</div>
                         <td><code>query_ppr_data</code></td>
                         <td>PPR_Agent</td>
                         <td>15</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_garmin_data</code></td>
+                        <td>GarminAgent</td>
+                        <td>32</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_golf_data</code></td>
+                        <td>GolfAgent</td>
+                        <td>31</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_americaneconomy_data</code></td>
+                        <td>AmericanEconomy</td>
+                        <td>18</td>
+                    </tr>
+                    <tr>
+                        <td><code>query_globaltemperature_data</code></td>
+                        <td>GlobalTemperature</td>
+                        <td>93</td>
                     </tr>
                 </tbody>
             </table>

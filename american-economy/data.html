@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Sources | AmericanEconomy</title>
+    <meta name="description" content="Data sources for the AmericanEconomy Project Phoenix domain.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-bar">
+            <div class="top-left">
+                <a href="index.html" class="logo-link">
+                    <span class="site-badge">AE</span>
+                    <div>
+                        <p class="site-tag">macro and world linkages</p>
+                        <h1 class="site-title">AmericanEconomy</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="top-right">
+                <div class="micro-links">
+                    <a href="data.html">data sources</a>
+                    <a href="charts.html">visualizations</a>
+                    <a href="https://proto.efehnconsulting.com/project-phoenix/">project-phoenix</a>
+                </div>
+                <div class="cart">
+                    <span>project phoenix domain</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="nav-grid">
+            <a href="index.html" class="nav-item">overview</a>
+            <a href="data.html" class="nav-item">data</a>
+            <a href="charts.html" class="nav-item">charts</a>
+            <a href="charts.html#fiscal" class="nav-item">fiscal</a>
+            <a href="charts.html#interactive" class="nav-item">interactive</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="nav-item">phoenix</a>
+        </section>
+
+        <article class="article">
+            <h2>Data Sources</h2>
+            <p>
+                AmericanEconomy combines U.S. and global macro indicators with market proxies.
+                Data is pulled by local scripts and loaded into <code>american_economy.db</code>.
+            </p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Dataset Group</th>
+                        <th>Source</th>
+                        <th>Coverage</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>U.S. Macro Time Series</td>
+                        <td>FRED (St. Louis Fed)</td>
+                        <td>14 configured series</td>
+                        <td>Growth, labor, inflation, rates, production, trade, credit, fiscal deficit.</td>
+                    </tr>
+                    <tr>
+                        <td>Global Macro Indicators</td>
+                        <td>World Bank API</td>
+                        <td>Cross-country annual indicators</td>
+                        <td>GDP level/growth, inflation, trade openness, debt, external balance.</td>
+                    </tr>
+                    <tr>
+                        <td>Market Proxy Prices</td>
+                        <td>Stooq</td>
+                        <td>7 symbols</td>
+                        <td>SPY, QQQ, DIA, TLT, GLD, USO, UUP.</td>
+                    </tr>
+                    <tr>
+                        <td>Manual Context</td>
+                        <td>Local CSV</td>
+                        <td>Regimes + metadata</td>
+                        <td>Macro regime windows and transform preferences.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Current Database Snapshot</h2>
+            <ul>
+                <li><strong>macro_indicators:</strong> 27,539 rows</li>
+                <li><strong>prices:</strong> 37,624 rows</li>
+                <li><strong>macro_regimes:</strong> 5 rows</li>
+                <li><strong>indicator_metadata:</strong> 12 rows</li>
+            </ul>
+
+            <h2>Fiscal Coverage</h2>
+            <div class="highlight-box">
+                <p><strong>Verified rows:</strong> <code>GOV_DEBT_GDP_PCT</code> (USA, 1989-2024) and <code>GOV_DEFICIT_GDP_PCT</code> (USA, 1929-2024).</p>
+            </div>
+
+            <h3>Operational Pull Commands</h3>
+            <p>From the domain root:</p>
+            <ul>
+                <li><code>./scripts/bootstrap_data.sh</code></li>
+                <li><code>python scripts/init_db.py</code></li>
+                <li><code>python scripts/pull_world_bank_indicators.py</code></li>
+            </ul>
+
+            <p>
+                The World Bank pull now includes retries/backoff and per-indicator fail-open behavior so transient timeouts do not kill the full pull.
+            </p>
+        </article>
+
+        <footer class="footer">
+            <div>
+                <p class="footer-title">AmericanEconomy</p>
+                <p class="footer-note">Source transparency and reproducibility.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">overview</a>
+                <a href="charts.html">charts</a>
+                <a href="https://proto.efehnconsulting.com/project-phoenix/">phoenix</a>
+            </div>
+            <p class="footer-copy">AmericanEconomy - Project Phoenix Domain</p>
+        </footer>
+    </div>
+</body>
+</html>

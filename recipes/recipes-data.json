@@ -1,0 +1,1251 @@
+[
+  {
+    "recipe_id": 1,
+    "recipe_title": "Eggless Fettuccine",
+    "description": "A simple semolina-blend pasta perfect for the pasta machine.",
+    "notes": "Eggless dough is firmer than egg pasta—don't roll as thin. For the CucinaPro Imperia, settings 4-5 work well. Avoid the spaghetti cutter (it never works properly).",
+    "cuisine": "Italian",
+    "yield_text": "",
+    "category_id": 1,
+    "category_name": "Pasta & Noodles",
+    "ingredients": [
+      {
+        "ingredient_id": 1001,
+        "ingredient_name": "00 flour",
+        "quantity_primary": 200.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1002,
+        "ingredient_name": "semolina flour",
+        "quantity_primary": 100.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1003,
+        "ingredient_name": "warm water",
+        "quantity_primary": 142.5,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1004,
+        "ingredient_name": "olive oil",
+        "quantity_primary": 1.0,
+        "unit_primary": "tbsp"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": 1,
+        "unit_primary": "pinch"
+      }
+    ],
+    "method_steps": [
+      "1. Combine flours and salt in a mound on your work surface or in a stand mixer",
+      "2. Create a well, add water and olive oil",
+      "3. Mix until a shaggy dough forms, then knead 8-10 minutes until smooth",
+      "4. Rest dough covered for 30 minutes",
+      "5. Roll through pasta machine, starting at widest setting, working to setting 4-5",
+      "6. Cut into fettuccine strips"
+    ]
+  },
+  {
+    "recipe_id": 2,
+    "recipe_title": "Large Batch Fresh Pasta",
+    "description": "For making pasta rags and fettuccine in quantity.",
+    "notes": "",
+    "cuisine": "Italian",
+    "yield_text": "** A very large batch suitable for multiple dishes",
+    "category_id": 1,
+    "category_name": "Pasta & Noodles",
+    "ingredients": [
+      {
+        "ingredient_id": 1001,
+        "ingredient_name": "00 flour",
+        "quantity_primary": 350.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1002,
+        "ingredient_name": "semolina flour",
+        "quantity_primary": 350.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1006,
+        "ingredient_name": "water",
+        "quantity_primary": 322.5,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Combine in stand mixer, knead until smooth",
+      "2. Rest 30 minutes",
+      "3. For rags: roll to setting 4, tear into irregular pieces",
+      "4. For fettuccine: roll to setting 5, cut with cutter attachment"
+    ]
+  },
+  {
+    "recipe_id": 3,
+    "recipe_title": "Spaetzle (German Egg Noodles)",
+    "description": "Traditional German pasta-dumplings.",
+    "notes": "",
+    "cuisine": "German",
+    "yield_text": "",
+    "category_id": 1,
+    "category_name": "Pasta & Noodles",
+    "ingredients": [
+      {
+        "ingredient_id": 1007,
+        "ingredient_name": "all-purpose flour",
+        "quantity_primary": 2.0,
+        "unit_primary": "cups"
+      },
+      {
+        "ingredient_id": 1008,
+        "ingredient_name": "eggs",
+        "quantity_primary": 3.0,
+        "unit_primary": "count"
+      },
+      {
+        "ingredient_id": 1009,
+        "ingredient_name": "milk",
+        "quantity_primary": 0.5,
+        "unit_primary": "cup"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": 1.0,
+        "unit_primary": "tsp"
+      },
+      {
+        "ingredient_id": 1010,
+        "ingredient_name": "nutmeg",
+        "quantity_primary": 1,
+        "unit_primary": "pinch"
+      }
+    ],
+    "method_steps": [
+      "1. Whisk flour, salt, and nutmeg",
+      "2. Beat eggs and milk together, add to flour",
+      "3. Mix until smooth batter forms with a consistency thicker than pancake batter",
+      "4. Let rest 15-30 minutes",
+      "5. Press through spaetzle maker (or colander) into boiling salted water",
+      "6. Cook 2-3 minutes until they float",
+      "7. Remove with slotted spoon, optionally pan-fry in butter"
+    ]
+  },
+  {
+    "recipe_id": 4,
+    "recipe_title": "Pasta Machine Cleaning Dough",
+    "description": "Run this through first to clean dust and debris before making your real pasta.",
+    "notes": "",
+    "cuisine": "Italian",
+    "yield_text": "",
+    "category_id": 1,
+    "category_name": "Pasta & Noodles",
+    "ingredients": [
+      {
+        "ingredient_id": 1007,
+        "ingredient_name": "all-purpose flour",
+        "quantity_primary": 100.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1006,
+        "ingredient_name": "water",
+        "quantity_primary": 47.5,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": 1,
+        "unit_primary": "pinch"
+      },
+      {
+        "ingredient_id": 1004,
+        "ingredient_name": "olive oil",
+        "quantity_primary": 0.5,
+        "unit_primary": "tsp"
+      }
+    ],
+    "method_steps": [
+      "1. Mix into a quick dough, briefly knead",
+      "2. Run through all pasta machine settings",
+      "3. Discard—this is just for cleaning"
+    ]
+  },
+  {
+    "recipe_id": 5,
+    "recipe_title": "Masa Harina Tortillas",
+    "description": "",
+    "notes": "",
+    "cuisine": "Mexican",
+    "yield_text": "",
+    "category_id": 2,
+    "category_name": "Breads & Flatbreads",
+    "ingredients": [
+      {
+        "ingredient_id": 1011,
+        "ingredient_name": "masa harina",
+        "quantity_primary": 150.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1003,
+        "ingredient_name": "warm water",
+        "quantity_primary": 175.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": 2.0,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Mix masa, salt, and water until smooth dough forms",
+      "2. Rest 5-10 minutes covered",
+      "3. Divide into 8 balls of 40g each",
+      "4. Press between plastic sheets in tortilla press",
+      "5. Cook on dry hot skillet/comal 1-2 minutes per side"
+    ]
+  },
+  {
+    "recipe_id": 6,
+    "recipe_title": "No-Knead Chickpea Bread",
+    "description": "A high-hydration bread with added nutrition.",
+    "notes": "This is an 80% hydration dough. Keep chickpea flour to 15-20% of total flour to preserve gluten structure. Start with 75g chickpea flour for testing—expect nuttier flavor and golden color.",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 2,
+    "category_name": "Breads & Flatbreads",
+    "ingredients": [
+      {
+        "ingredient_id": 1007,
+        "ingredient_name": "all-purpose flour",
+        "quantity_primary": 412.5,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1012,
+        "ingredient_name": "chickpea flour",
+        "quantity_primary": 87.5,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1006,
+        "ingredient_name": "water",
+        "quantity_primary": 400.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": 7.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1013,
+        "ingredient_name": "yeast",
+        "quantity_primary": 7.0,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Mix all ingredients until combined",
+      "2. Cover and fold with olive oil every 15 minutes for 90 minutes",
+      "3. Shape and transfer to baking vessel",
+      "4. Bake at 350°F for 25 minutes"
+    ]
+  },
+  {
+    "recipe_id": 7,
+    "recipe_title": "Karantika (Algerian Chickpea Custard)",
+    "description": "Traditional street food, served in bread with harissa and cumin.",
+    "notes": " **Texture:** Firm and custard-like, sliceable—holds up well in sandwiches. Traditional serving is in mafalde (sesame seed rolls) with lemon juice. Works well with marinara and mayo too.",
+    "cuisine": "North African",
+    "yield_text": "",
+    "category_id": 3,
+    "category_name": "Fritters & Fried Foods",
+    "ingredients": [
+      {
+        "ingredient_id": 1012,
+        "ingredient_name": "chickpea flour",
+        "quantity_primary": 250.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1006,
+        "ingredient_name": "water",
+        "quantity_primary": 750.0,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1004,
+        "ingredient_name": "olive oil",
+        "quantity_primary": 60.0,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": 6.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1014,
+        "ingredient_name": "cumin",
+        "quantity_primary": 5.0,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Whisk chickpea flour and water until smooth",
+      "2. Add oil, salt, and cumin",
+      "3. Pour into oiled baking dish",
+      "4. Bake at 400°F until set and golden on top, about 40-50 minutes",
+      "5. Cut into portions, serve hot"
+    ]
+  },
+  {
+    "recipe_id": 8,
+    "recipe_title": "Panelle (Sicilian Chickpea Fritters)",
+    "description": "",
+    "notes": " **Key Lesson:** The batter must be thick enough to pour in a controlled stream and hold its shape when hitting oil. Too much water = wrinkled, formless fritters. For pan-frying like pancakes, use less oil than you'd expect.",
+    "cuisine": "Italian",
+    "yield_text": "",
+    "category_id": 3,
+    "category_name": "Fritters & Fried Foods",
+    "ingredients": [
+      {
+        "ingredient_id": 1012,
+        "ingredient_name": "chickpea flour",
+        "quantity_primary": 250.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1006,
+        "ingredient_name": "water",
+        "quantity_primary": 425.0,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1015,
+        "ingredient_name": "Salt to taste",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1016,
+        "ingredient_name": "Oil for frying",
+        "quantity_primary": null,
+        "unit_primary": null
+      }
+    ],
+    "method_steps": [
+      "1. Whisk flour into cold water gradually",
+      "2. Cook over medium heat, stirring constantly, until very thick (heavy cream consistency that holds shape)",
+      "3. Spread onto oiled surface, let cool completely",
+      "4. Cut into shapes",
+      "5. Deep fry until golden and crispy"
+    ]
+  },
+  {
+    "recipe_id": 9,
+    "recipe_title": "Split Pea Fritters",
+    "description": "A middle-ground approach between traditional falafel and fully-cooked fritters.",
+    "notes": "Fully cooked peas have too much moisture. The short soak + brief simmer achieves the right texture without excess water.",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 3,
+    "category_name": "Fritters & Fried Foods",
+    "ingredients": [
+      {
+        "ingredient_id": 1052,
+        "ingredient_name": "split peas",
+        "quantity_primary": null,
+        "unit_primary": "count"
+      },
+      {
+        "ingredient_id": 1004,
+        "ingredient_name": "olive oil",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1014,
+        "ingredient_name": "cumin",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Soak split peas 3-4 hours (shorter than overnight falafel)",
+      "2. Briefly simmer until just tender but not mushy",
+      "3. Drain well and let dry",
+      "4. Blend with immersion blender with oil and spices",
+      "5. Shape and deep fry"
+    ]
+  },
+  {
+    "recipe_id": 10,
+    "recipe_title": "Buffalo Cauliflower Fritters",
+    "description": "- Chickpea flour",
+    "notes": " **Troubleshooting Sticking:** Pre-coat basket by brushing with oil (not spraying or dunking—brushing wastes least oil). Don't overcrowd. Ensure adequate oil depth.",
+    "cuisine": "American",
+    "yield_text": "",
+    "category_id": 3,
+    "category_name": "Fritters & Fried Foods",
+    "ingredients": [
+      {
+        "ingredient_id": 1053,
+        "ingredient_name": "cauliflower",
+        "quantity_primary": null,
+        "unit_primary": "count"
+      },
+      {
+        "ingredient_id": 1012,
+        "ingredient_name": "chickpea flour",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1006,
+        "ingredient_name": "water",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1016,
+        "ingredient_name": "Oil for frying",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      }
+    ],
+    "method_steps": [
+      "1. Cut cauliflower into florets",
+      "2. Dip in batter, letting excess drip off",
+      "3. Deep fry at 350-375°F"
+    ]
+  },
+  {
+    "recipe_id": 11,
+    "recipe_title": "Tempeh Katsu / Tempeh Tenders",
+    "description": "The best plant-based chicken substitute discovered in this project.",
+    "notes": " **Verdict:** Tempeh produces texture \"almost too close\" to chicken. Extra-firm tofu also works well for deep frying; soft tofu is too delicate for this application.",
+    "cuisine": "Japanese",
+    "yield_text": "",
+    "category_id": 3,
+    "category_name": "Fritters & Fried Foods",
+    "ingredients": [
+      {
+        "ingredient_id": 1054,
+        "ingredient_name": "tempeh",
+        "quantity_primary": null,
+        "unit_primary": "count"
+      },
+      {
+        "ingredient_id": 1041,
+        "ingredient_name": "Pickle juice",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1007,
+        "ingredient_name": "all-purpose flour",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Marinate tempeh (pickle juice works excellently)",
+      "2. Dredge in flour",
+      "3. Dip in egg wash (or aquafaba/egg powder mixture)",
+      "4. Coat in seasoned panko",
+      "5. Deep fry until golden"
+    ]
+  },
+  {
+    "recipe_id": 12,
+    "recipe_title": "Kinako-Breaded Palmitos",
+    "description": "Using roasted soy powder (kinako) in a three-stage breading system.",
+    "notes": "",
+    "cuisine": "Japanese",
+    "yield_text": "",
+    "category_id": 3,
+    "category_name": "Fritters & Fried Foods",
+    "ingredients": [
+      {
+        "ingredient_id": 1055,
+        "ingredient_name": "hearts of palm",
+        "quantity_primary": null,
+        "unit_primary": "count"
+      },
+      {
+        "ingredient_id": 1007,
+        "ingredient_name": "all-purpose flour",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1056,
+        "ingredient_name": "aquafaba",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1057,
+        "ingredient_name": "soy milk powder",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1042,
+        "ingredient_name": "Soy sauce",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1048,
+        "ingredient_name": "Rice vinegar",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      }
+    ],
+    "method_steps": [
+      "1. Drain palmitos, pat dry",
+      "2. Dredge → batter → breadcrumbs",
+      "3. Deep fry until golden"
+    ]
+  },
+  {
+    "recipe_id": 13,
+    "recipe_title": "Slow Cooker Mushroom Confit",
+    "description": "",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "** Approximately 3.5-4 pounds finished confit (dried mushrooms rehydrate to 6-8x their weight)",
+    "category_id": 4,
+    "category_name": "Main Dishes & Fillings",
+    "ingredients": [
+      {
+        "ingredient_id": 1017,
+        "ingredient_name": "dried shiitake mushrooms",
+        "quantity_primary": 3.0,
+        "unit_primary": "oz"
+      },
+      {
+        "ingredient_id": 1018,
+        "ingredient_name": "dried wood ear mushrooms",
+        "quantity_primary": 3.0,
+        "unit_primary": "oz"
+      },
+      {
+        "ingredient_id": 1019,
+        "ingredient_name": "canned shimeji mushrooms",
+        "quantity_primary": 4.0,
+        "unit_primary": "oz"
+      },
+      {
+        "ingredient_id": 1004,
+        "ingredient_name": "olive oil",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1020,
+        "ingredient_name": "Garlic and shallots",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1021,
+        "ingredient_name": "Fresh basil (added at serving, not cooking)",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1022,
+        "ingredient_name": "Shiitakes: overnight cold soak in refrigerator (best method)",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1023,
+        "ingredient_name": "Wood ears: hot soak for shorter time",
+        "quantity_primary": null,
+        "unit_primary": null
+      }
+    ],
+    "method_steps": [
+      "1. Rehydrate mushrooms, drain",
+      "2. Combine in slow cooker with oil, garlic, and shallots",
+      "3. Cook on low 3-4 hours",
+      "4. Add salt at end, not during cooking",
+      "5. Finish with fresh basil when serving"
+    ]
+  },
+  {
+    "recipe_id": 14,
+    "recipe_title": "Shiitake-Walnut Chorizo Taco Filling",
+    "description": "A complex vegan filling developed through confit techniques.",
+    "notes": "",
+    "cuisine": "Mexican",
+    "yield_text": "",
+    "category_id": 4,
+    "category_name": "Main Dishes & Fillings",
+    "ingredients": [
+      {
+        "ingredient_id": 1024,
+        "ingredient_name": "Shiitake mushrooms",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1025,
+        "ingredient_name": "Palm oil shortening",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1026,
+        "ingredient_name": "Ground walnuts",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1027,
+        "ingredient_name": "Cooked wheat berries",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1028,
+        "ingredient_name": "Paprika",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1014,
+        "ingredient_name": "cumin",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1029,
+        "ingredient_name": "Oregano",
+        "quantity_primary": null,
+        "unit_primary": null
+      }
+    ],
+    "method_steps": [
+      "1. Prepare mushroom confit with palm oil shortening at low temperature",
+      "2. Add ground walnuts and wheat berries",
+      "3. Season with paprika, cumin, oregano",
+      "4. Cook until flavors meld"
+    ]
+  },
+  {
+    "recipe_id": 15,
+    "recipe_title": "Coconut Milk Mushroom Sauce",
+    "description": "Pairs excellently with spaetzle.",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 4,
+    "category_name": "Main Dishes & Fillings",
+    "ingredients": [
+      {
+        "ingredient_id": 1030,
+        "ingredient_name": "Mixed mushrooms, sliced",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1031,
+        "ingredient_name": "full-fat coconut milk",
+        "quantity_primary": 1.0,
+        "unit_primary": "can"
+      },
+      {
+        "ingredient_id": 1032,
+        "ingredient_name": "Shallots or onion",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1033,
+        "ingredient_name": "Garlic",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1034,
+        "ingredient_name": "Fresh thyme",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1035,
+        "ingredient_name": "Salt and pepper",
+        "quantity_primary": null,
+        "unit_primary": null
+      }
+    ],
+    "method_steps": [
+      "1. Sauté mushrooms in batches until well-browned (don't crowd!)",
+      "2. Remove mushrooms, sauté aromatics",
+      "3. Deglaze pan",
+      "4. Add coconut milk and thyme",
+      "5. Simmer until slightly thickened",
+      "6. Return mushrooms, season to taste"
+    ]
+  },
+  {
+    "recipe_id": 16,
+    "recipe_title": "Lentil Sandwich Preparations",
+    "description": "1. **Lentil Patties/Burgers** - Cooked lentils formed into patties, pan-fried or baked",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 4,
+    "category_name": "Main Dishes & Fillings",
+    "ingredients": [
+      {
+        "ingredient_id": 1058,
+        "ingredient_name": "lentils",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1031,
+        "ingredient_name": "full-fat coconut milk",
+        "quantity_primary": null,
+        "unit_primary": "can"
+      }
+    ],
+    "method_steps": [
+      "1. Choose one lentil sandwich approach from the notes.",
+      "2. Prepare the lentil base and season to taste.",
+      "3. Assemble and serve warm or chilled."
+    ]
+  },
+  {
+    "recipe_id": 17,
+    "recipe_title": "Hearts of Palm Preparations",
+    "description": "- Salads with avocado, tomatoes, citrus",
+    "notes": "Mild flavor absorbs seasonings well. Drain and rinse before use.",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 4,
+    "category_name": "Main Dishes & Fillings",
+    "ingredients": [
+      {
+        "ingredient_id": 1055,
+        "ingredient_name": "hearts of palm",
+        "quantity_primary": null,
+        "unit_primary": "count"
+      }
+    ],
+    "method_steps": [
+      "1. Drain and rinse canned hearts of palm.",
+      "2. Choose a preparation style from the notes and season accordingly.",
+      "3. Serve immediately or chill before serving."
+    ]
+  },
+  {
+    "recipe_id": 18,
+    "recipe_title": "Pickle Juice Mayo Sauce (Base for Dipping Sauces)",
+    "description": "- Mayo (starting point: ~6 oz ketchup + 40g = makes ~25 oz sauce)",
+    "notes": "Pickle juice works as both marinade and batter ingredient. It's an excellent plant-based substitute for Worcestershire sauce.",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 5,
+    "category_name": "Sauces & Condiments",
+    "ingredients": [
+      {
+        "ingredient_id": 1039,
+        "ingredient_name": "Mayonnaise",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1041,
+        "ingredient_name": "Pickle juice",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Whisk mayo with pickle juice and seasonings until smooth.",
+      "2. Taste and adjust acidity or salt.",
+      "3. Use as a base for dipping sauce variations."
+    ]
+  },
+  {
+    "recipe_id": 19,
+    "recipe_title": "Mast-o-Musir (Persian Yogurt with Shallots)",
+    "description": "",
+    "notes": "",
+    "cuisine": "Persian",
+    "yield_text": "",
+    "category_id": 5,
+    "category_name": "Sauces & Condiments",
+    "ingredients": [
+      {
+        "ingredient_id": 1036,
+        "ingredient_name": "dairy-free yogurt (thick enough to hold together)",
+        "quantity_primary": 2.0,
+        "unit_primary": "cups"
+      },
+      {
+        "ingredient_id": 1037,
+        "ingredient_name": "fresh shallots → dehydrate to 8-15g dried",
+        "quantity_primary": 90.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1038,
+        "ingredient_name": "OR 8-12g store-bought dried shallots",
+        "quantity_primary": null,
+        "unit_primary": null
+      },
+      {
+        "ingredient_id": 1015,
+        "ingredient_name": "Salt to taste",
+        "quantity_primary": null,
+        "unit_primary": null
+      }
+    ],
+    "method_steps": [
+      "1. Dehydrate fresh shallots (or use purchased dried)",
+      "2. Mix directly into yogurt (rehydration overnight optional)",
+      "3. Season with salt",
+      "4. Serve as side dish with Persian flatbread"
+    ]
+  },
+  {
+    "recipe_id": 20,
+    "recipe_title": "Plant-Based Ice Cream & Yogurt Base",
+    "description": "A shared base that splits into two preparations.",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 6,
+    "category_name": "Dairy-Free Basics",
+    "ingredients": [
+      {
+        "ingredient_id": 1057,
+        "ingredient_name": "soy milk powder",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1059,
+        "ingredient_name": "cashew milk powder",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1060,
+        "ingredient_name": "coconut milk powder",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1006,
+        "ingredient_name": "water",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1049,
+        "ingredient_name": "Sugar",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1061,
+        "ingredient_name": "cornstarch",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Combine plant milk powders with water until smooth.",
+      "2. Split base for ice cream and yogurt paths.",
+      "3. Apply thickening and sweetening based on target preparation."
+    ]
+  },
+  {
+    "recipe_id": 21,
+    "recipe_title": "Dairy-Free Yogurt Base",
+    "description": "",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 6,
+    "category_name": "Dairy-Free Basics",
+    "ingredients": [
+      {
+        "ingredient_id": 1057,
+        "ingredient_name": "soy milk powder",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1059,
+        "ingredient_name": "cashew milk powder",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1060,
+        "ingredient_name": "coconut milk powder",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1006,
+        "ingredient_name": "water",
+        "quantity_primary": null,
+        "unit_primary": "ml"
+      },
+      {
+        "ingredient_id": 1061,
+        "ingredient_name": "cornstarch",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Combine plant milk powders with water.",
+      "2. Heat with cornstarch to fully activate thickening.",
+      "3. Cool and ferment/set as needed for yogurt texture."
+    ]
+  },
+  {
+    "recipe_id": 22,
+    "recipe_title": "Banana \"Ice Cream\"",
+    "description": "- Slice very ripe bananas",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 7,
+    "category_name": "Frozen Desserts",
+    "ingredients": [
+      {
+        "ingredient_id": 1062,
+        "ingredient_name": "bananas",
+        "quantity_primary": null,
+        "unit_primary": "count"
+      },
+      {
+        "ingredient_id": 1031,
+        "ingredient_name": "full-fat coconut milk",
+        "quantity_primary": null,
+        "unit_primary": "can"
+      },
+      {
+        "ingredient_id": 1049,
+        "ingredient_name": "Sugar",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": null,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Freeze ripe banana slices until solid.",
+      "2. Blend until creamy.",
+      "3. Serve soft or freeze briefly for a firmer texture."
+    ]
+  },
+  {
+    "recipe_id": 23,
+    "recipe_title": "Chickpea Flour",
+    "description": "- Karantika",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 8,
+    "category_name": "Index by Main Ingredient",
+    "ingredients": [],
+    "method_steps": [
+      "1. Reference index entries under Chickpea Flour for related recipes."
+    ]
+  },
+  {
+    "recipe_id": 24,
+    "recipe_title": "Mushrooms",
+    "description": "- Slow Cooker Mushroom Confit",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 8,
+    "category_name": "Index by Main Ingredient",
+    "ingredients": [],
+    "method_steps": [
+      "1. Reference index entries under Mushrooms for related recipes."
+    ]
+  },
+  {
+    "recipe_id": 25,
+    "recipe_title": "Tempeh/Tofu",
+    "description": "- Tempeh Katsu",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 8,
+    "category_name": "Index by Main Ingredient",
+    "ingredients": [],
+    "method_steps": [
+      "1. Reference index entries under Tempeh/Tofu for related recipes."
+    ]
+  },
+  {
+    "recipe_id": 26,
+    "recipe_title": "Lentils/Split Peas",
+    "description": "- Split Pea Fritters",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 8,
+    "category_name": "Index by Main Ingredient",
+    "ingredients": [],
+    "method_steps": [
+      "1. Reference index entries under Lentils/Split Peas for related recipes."
+    ]
+  },
+  {
+    "recipe_id": 27,
+    "recipe_title": "Pasta/Flour",
+    "description": "- Eggless Fettuccine",
+    "notes": "",
+    "cuisine": "Italian",
+    "yield_text": "",
+    "category_id": 8,
+    "category_name": "Index by Main Ingredient",
+    "ingredients": [],
+    "method_steps": [
+      "1. Reference index entries under Pasta/Flour for related recipes."
+    ]
+  },
+  {
+    "recipe_id": 28,
+    "recipe_title": "Plant Milk Powders",
+    "description": "- Ice Cream Base",
+    "notes": "",
+    "cuisine": "International",
+    "yield_text": "",
+    "category_id": 8,
+    "category_name": "Index by Main Ingredient",
+    "ingredients": [],
+    "method_steps": [
+      "1. Reference index entries under Plant Milk Powders for related recipes."
+    ]
+  },
+  {
+    "recipe_id": 29,
+    "recipe_title": "Chicken Tender Sauce",
+    "description": "Sauce recipe imported from more_reciples conversation notes.",
+    "notes": "Notes: This uses essentially all your ketchup (you have ~210g) I reduced the salt from the scaled original since soy sauce adds sodium Taste and adjust salt at the end — the soy/MSG combo should give you plenty of savory depth If you want more pickle punch, you can push the pickle juice to 50g Perfect dipping sauce for crispy tenders. Enjoy! I don't have pickle juice and ketchup. I want to make a similar sauce. I have white/rice vinegar. I want to fill a bottle that contains about 450 g water.",
+    "cuisine": "American",
+    "yield_text": "",
+    "category_id": 5,
+    "category_name": "Sauces & Condiments",
+    "ingredients": [
+      {
+        "ingredient_id": 1039,
+        "ingredient_name": "Mayonnaise",
+        "quantity_primary": 430.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1040,
+        "ingredient_name": "Ketchup",
+        "quantity_primary": 210.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1041,
+        "ingredient_name": "Pickle juice",
+        "quantity_primary": 40.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1042,
+        "ingredient_name": "Soy sauce",
+        "quantity_primary": 12.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1043,
+        "ingredient_name": "Kosher salt",
+        "quantity_primary": 5.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1044,
+        "ingredient_name": "Garlic powder",
+        "quantity_primary": 4.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1045,
+        "ingredient_name": "Black pepper",
+        "quantity_primary": 2.5,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1046,
+        "ingredient_name": "MSG",
+        "quantity_primary": 2.0,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Combine all ingredients in a bowl.",
+      "2. Whisk until smooth and fully emulsified.",
+      "3. Taste and adjust seasoning before chilling and serving."
+    ]
+  },
+  {
+    "recipe_id": 30,
+    "recipe_title": "Tangy Umami Mayo Sauce",
+    "description": "Sauce recipe imported from more_reciples conversation notes.",
+    "notes": "Notes: Thaw the tomato paste and whisk it into the mayo first to avoid lumps Bumped the sugar slightly since tomato paste is less sweet than ketchup This will have a nice pale orange-pink color, similar to the original You're basically back to the original sauce profile now, just built from scratch. Taste as you go — you might want a touch more vinegar or sugar depending on your preference.",
+    "cuisine": "American",
+    "yield_text": "",
+    "category_id": 5,
+    "category_name": "Sauces & Condiments",
+    "ingredients": [
+      {
+        "ingredient_id": 1039,
+        "ingredient_name": "Mayonnaise",
+        "quantity_primary": 365.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1047,
+        "ingredient_name": "Tomato paste",
+        "quantity_primary": 25.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1048,
+        "ingredient_name": "Rice vinegar",
+        "quantity_primary": 28.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1042,
+        "ingredient_name": "Soy sauce",
+        "quantity_primary": 16.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1049,
+        "ingredient_name": "Sugar",
+        "quantity_primary": 10.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1044,
+        "ingredient_name": "Garlic powder",
+        "quantity_primary": 4.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1046,
+        "ingredient_name": "MSG",
+        "quantity_primary": 2.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1045,
+        "ingredient_name": "Black pepper",
+        "quantity_primary": 2.0,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Combine all ingredients in a bowl.",
+      "2. Whisk until smooth and fully emulsified.",
+      "3. Taste and adjust seasoning before chilling and serving."
+    ]
+  },
+  {
+    "recipe_id": 31,
+    "recipe_title": "Ranch-ish Sauce",
+    "description": "Sauce recipe imported from more_reciples conversation notes.",
+    "notes": "On the oregano and basil: I'd leave them out for classic ranch — they push it into Italian dressing territory. But if you want that direction, add 1g of each and you've got a creamy Italian-style dip that's also excellent with tenders. If you have dill hiding somewhere, even 2g would make this taste much more authentically ranch. how much parsley is 3g? I feel like it was a lot. Same with dill. I also needed more liquid. I probably put 10g extra in. That made it into a paste which I could mix with the mayo. Feel like it will be a thicker sauce",
+    "cuisine": "American",
+    "yield_text": "",
+    "category_id": 5,
+    "category_name": "Sauces & Condiments",
+    "ingredients": [
+      {
+        "ingredient_id": 1039,
+        "ingredient_name": "Mayonnaise",
+        "quantity_primary": 410.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1048,
+        "ingredient_name": "Rice vinegar",
+        "quantity_primary": 25.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1044,
+        "ingredient_name": "Garlic powder",
+        "quantity_primary": 4.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1050,
+        "ingredient_name": "Onion powder",
+        "quantity_primary": 4.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1051,
+        "ingredient_name": "Dried parsley",
+        "quantity_primary": 3.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1005,
+        "ingredient_name": "salt",
+        "quantity_primary": 3.0,
+        "unit_primary": "g"
+      },
+      {
+        "ingredient_id": 1045,
+        "ingredient_name": "Black pepper",
+        "quantity_primary": 2.0,
+        "unit_primary": "g"
+      }
+    ],
+    "method_steps": [
+      "1. Combine all ingredients in a bowl.",
+      "2. Whisk until smooth and fully emulsified.",
+      "3. Taste and adjust seasoning before chilling and serving."
+    ]
+  }
+]

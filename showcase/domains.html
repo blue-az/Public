@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Domains | ShowcaseAgent</title>
-    <meta name="description" content="10 production domains orchestrated by ShowcaseAgent.">
+    <meta name="description" content="14 production domains orchestrated by ShowcaseAgent.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
         <header class="header">
             <div class="badge">Project Phoenix Meta-Domain</div>
             <h1>Showcased Domains</h1>
-            <p class="subtitle">10 Production Domains | 475+ Tools</p>
+            <p class="subtitle">14 Production Domains | 649+ Tools</p>
         </header>
 
         <nav class="nav">
@@ -26,7 +26,7 @@
 
         <section class="section">
             <h2>Domain Catalog</h2>
-            <p>ShowcaseAgent provides unified access to 10 production domains through domain adapters that handle varied implementation patterns.</p>
+            <p>ShowcaseAgent provides unified access to 14 production domains through domain adapters that handle varied implementation patterns.</p>
         </section>
 
         <section class="section">
@@ -69,6 +69,34 @@
                         <span class="tech-tag">Model Portfolios</span>
                     </div>
                     <p class="meta">Version 10.0.0 | Routing: 90%</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Macro & Climate</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="badge primary">18 Tools</div>
+                    <h3>AmericanEconomy</h3>
+                    <p>U.S. macro and fiscal analysis with world-linkage dashboards across growth, inflation, labor, debt, and deficit dynamics.</p>
+                    <div class="techniques" style="margin-top: 0.5rem;">
+                        <span class="tech-tag">Macro Dashboard</span>
+                        <span class="tech-tag">Fiscal Trends</span>
+                        <span class="tech-tag">World Comparison</span>
+                    </div>
+                    <p class="meta">Version 1.0 | Routing: -</p>
+                </div>
+                <div class="card">
+                    <div class="badge primary">93 Tools</div>
+                    <h3>GlobalTemperature</h3>
+                    <p>Climate data analysis for temperature, CO2, methane, sea level, Arctic ice, and emissions using scientific source integrations.</p>
+                    <div class="techniques" style="margin-top: 0.5rem;">
+                        <span class="tech-tag">NASA GISTEMP</span>
+                        <span class="tech-tag">NOAA CO2</span>
+                        <span class="tech-tag">Sea Level</span>
+                    </div>
+                    <p class="meta">Version 1.0 | Routing: -</p>
                 </div>
             </div>
         </section>
@@ -168,10 +196,10 @@ class BaseDomainAdapter(ABC):
         """Lazy load domain components"""
 
     def get_tools(self) -> List[StructuredTool]:
-        """LangChain tools for direct mode (475+ tools)"""
+        """LangChain tools for direct mode (649+ tools)"""
 
     def get_meta_tool(self) -> StructuredTool:
-        """Single aggregated tool for meta mode (10 tools)"""
+        """Single aggregated tool for meta mode (14 tools)"""
 
     def execute(self, query: str) -> str:
         """Execute natural language query"""
@@ -218,6 +246,14 @@ class BaseDomainAdapter(ABC):
                     <tr>
                         <td>ParableAgent</td>
                         <td><code>parable|jesus|gospel|matthew|luke|biblical</code></td>
+                    </tr>
+                    <tr>
+                        <td>AmericanEconomy</td>
+                        <td><code>gdp|inflation|debt|deficit|macro|fiscal</code></td>
+                    </tr>
+                    <tr>
+                        <td>GlobalTemperature</td>
+                        <td><code>climate|temperature|co2|methane|sea level|arctic</code></td>
                     </tr>
                 </tbody>
             </table>

@@ -35,6 +35,11 @@ Write to `<slug>/style.css` with:
 - System fonts (no external dependencies)
 
 ### Step 5: Deploy
+If your change touches shared `project-phoenix`/`showcase` domain or tool counts, run:
+```bash
+showcase/check-consistency.sh
+```
+
 ```bash
 cd /home/blueaz/Public/Proto
 ./deploy.sh <slug>
@@ -132,6 +137,11 @@ Common mistakes to avoid:
 - Omitting key domain context
 
 ### Phase 5: Deploy
+If your change touches shared `project-phoenix`/`showcase` domain or tool counts, run:
+```bash
+showcase/check-consistency.sh
+```
+
 ```bash
 ./deploy.sh <agent-slug>
 # Site live at: https://proto.efehnconsulting.com/<agent-slug>/

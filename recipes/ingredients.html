@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredients | Recipes</title>
+    <meta name="description" content="Browse the complete ingredient list for the Recipes domain.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .ing-wrap { max-width: 1100px; margin: 0 auto; }
+        .ing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+        .ing-card { background: #fff; border: 2px solid var(--gray-light); border-radius: 8px; padding: 1rem; }
+        .ing-card h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--burgundy); }
+        .ing-list { margin: 0; padding-left: 1.1rem; }
+        .ing-list li { margin: 0.25rem 0; }
+        .toolbar { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
+        .toolbar input { flex: 1; border: 2px solid var(--gray-light); border-radius: 999px; padding: 0.5rem 0.9rem; }
+        .muted { color: var(--gray-dark); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Part of Project Phoenix - tau-bench Domain</a>
+        </div>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">&#127869;</span>
+                <span class="logo-text">Recipes</span>
+            </a>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="categories.html">Categories</a>
+                <a href="tools.html">Tools</a>
+                <a href="meal-planning.html">Meal Planning</a>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Ingredients</h1>
+        <p class="subtitle">Complete ingredient list from recipes-data.json</p>
+    </div>
+
+    <main class="main-container ing-wrap">
+        <section class="section">
+            <div class="toolbar">
+                <input id="q" type="text" placeholder="Filter ingredients (e.g., mayo, mushroom, flour)...">
+                <strong id="count">0</strong>
+            </div>
+            <p class="muted">Click any recipe card from Home or Categories to open full details.</p>
+            <div id="ingredient-groups" class="ing-grid"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>Recipes Domain</h4>
+                <a href="index.html">Home</a>
+                <a href="categories.html">Browse Recipes</a>
+                <a href="tools.html">Tool Registry</a>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <a href="data.html">Data Model</a>
+                <a href="variations.html">Variations</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Recipes Domain - Project Phoenix | Built on tau-bench (MIT License)</p>
+        </div>
+    </footer>
+
+    <script>
+    function norm(s){ return (s||'').toLowerCase().trim(); }
+
+    function render(grouped, filter){
+      const container = document.getElementById('ingredient-groups');
+      const q = norm(filter);
+      container.innerHTML = '';
+      let totalShown = 0;
+
+      Object.keys(grouped).sort().forEach(letter => {
+        const items = grouped[letter].filter(x => !q || norm(x).includes(q));
+        if (!items.length) return;
+        totalShown += items.length;
+
+        const card = document.createElement('article');
+        card.className = 'ing-card';
+        card.innerHTML = `<h3>${letter}</h3><ul class="ing-list">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+        container.appendChild(card);
+      });
+
+      document.getElementById('count').textContent = `${totalShown} shown`;
+    }
+
+    fetch('recipes-data.json').then(r => r.json()).then(rows => {
+      // Build a unique ingredient set across all recipes.
+      const unique = new Set();
+      for (const r of rows){
+        for (const ing of (r.ingredients || [])){
+          const name = (ing.ingredient_name || '').trim();
+          if (!name) continue;
+          unique.add(name);
+        }
+      }
+
+      // Group unique ingredient names by first letter for browsing.
+      const grouped = {};
+      Array.from(unique).sort((a,b)=>a.localeCompare(b)).forEach(name => {
+        const first = name[0] ? name[0].toUpperCase() : '#';
+        const key = /[A-Z]/.test(first) ? first : '#';
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(name);
+      });
+
+      const input = document.getElementById('q');
+      render(grouped, '');
+      input.addEventListener('input', () => render(grouped, input.value));
+    }).catch(() => {
+      document.getElementById('ingredient-groups').innerHTML = '<p class="muted">Unable to load ingredient data.</p>';
+      document.getElementById('count').textContent = '0 shown';
+    });
+    </script>
+</body>
+</html>

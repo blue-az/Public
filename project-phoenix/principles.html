@@ -11,11 +11,11 @@
         <header class="header">
             <span class="badge">Principles</span>
             <h1>Phoenix Principles</h1>
-            <p class="subtitle">Five engineering rules for reliable agent systems.</p>
+            <p class="subtitle">Six engineering rules for reliable agent systems.</p>
             <a class="back-link" href="index.html">Back to Overview</a>
         </header>
 
-        <nav class="nav">
+                <nav class="nav">
             <a href="index.html">Home</a>
             <a href="philosophy.html">Philosophy</a>
             <a href="four-phases.html">Four Phases</a>
@@ -23,11 +23,11 @@
             <a href="tau-bench.html">Tau-Bench</a>
             <a href="domains.html">Domains</a>
             <a href="architecture.html">Architecture</a>
-            <a href="operations.html">Operations</a>
+            <a href="PROJECT_PHOENIX_WHITE_PAPER.pdf" target="_blank" rel="noopener">White Paper</a>
         </nav>
 
         <section class="section">
-            <h2>Five Principles</h2>
+            <h2>Six Principles</h2>
             <div class="grid">
                 <div class="card">
                     <h3>1) Write-Then-Verify</h3>
@@ -49,17 +49,18 @@
                     <h3>5) Test-and-Prove Cycle</h3>
                     <p>Golden files, unit tests, and validation suites prove correctness before release.</p>
                 </div>
+                <div class="card">
+                    <h3>6) Human-in-the-Loop Gate (Post-V4)</h3>
+                    <p>After natural-key capability, a human reviewer issues binding GO/NO-GO with audit trail before progression.</p>
+                </div>
             </div>
         </section>
 
         <section class="section">
             <h2>Implementation Detail</h2>
             <p>These principles emerged from high-stakes deployments where deterministic, auditable behavior mattered more than model size.</p>
+            <p>HITL is intentionally a late-stage gate: meaningful review requires outputs that humans can ground-truth against source data.</p>
         </section>
-
-        <footer class="footer">
-            <p>Source: project_phoenix_principles.txt</p>
-        </footer>
     </div>
 </body>
 </html>
