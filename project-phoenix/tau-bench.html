@@ -15,7 +15,7 @@
             <a class="back-link" href="index.html">Back to Overview</a>
         </header>
 
-        <nav class="nav">
+                <nav class="nav">
             <a href="index.html">Home</a>
             <a href="philosophy.html">Philosophy</a>
             <a href="four-phases.html">Four Phases</a>
@@ -23,13 +23,24 @@
             <a href="tau-bench.html">Tau-Bench</a>
             <a href="domains.html">Domains</a>
             <a href="architecture.html">Architecture</a>
-            <a href="operations.html">Operations</a>
+            <a href="PROJECT_PHOENIX_WHITE_PAPER.pdf" target="_blank" rel="noopener">White Paper</a>
         </nav>
 
         <section class="section">
             <h2>The Problem</h2>
-            <p>"Even state-of-the-art function calling agents (like gpt-4o) succeed on &lt; 50% of tasks."</p>
-            <p>Agents are inconsistent without deterministic policies and validation.</p>
+            <p>State-of-the-art function-calling agents still fail a large share of realistic tool-use tasks when measured end-to-end.</p>
+            <p>Tau-Bench highlights that reliability and policy adherence are system design problems, not just model-size problems.</p>
+            <p><strong>Reference:</strong> <a href="https://taubench.com/#home" target="_blank" rel="noopener">taubench.com/#home</a></p>
+        </section>
+
+        <section class="section">
+            <h2>Tau-Bench Core Principles</h2>
+            <ul>
+                <li><strong>SOP-grounded planning:</strong> break complex tasks into explicit, reproducible procedures.</li>
+                <li><strong>Policy-first execution:</strong> enforce business or domain rules as explicit constraints.</li>
+                <li><strong>Stateful evaluation:</strong> assess multi-turn tool workflows, not isolated prompts.</li>
+                <li><strong>Consistency over retries:</strong> track repeatability (pass^k), not one lucky run.</li>
+            </ul>
         </section>
 
         <section class="section">
@@ -41,15 +52,15 @@
                 </tr>
                 <tr>
                     <td>Long-context reasoning and planning</td>
-                    <td>SOP-driven architecture, Hypothesize -> Plan -> Execute</td>
+                    <td>SOP-driven architecture, Hypothesize -> Plan -> Execute with preview and checkpoints</td>
                 </tr>
                 <tr>
                     <td>Accurately adhere to complex policies</td>
-                    <td>rules.py system, conditional logic, capstone synthesis</td>
+                    <td><code>rules.py</code> constraints, deterministic tool contracts, and explicit refusal conditions</td>
                 </tr>
                 <tr>
                     <td>Maintain consistency at scale (pass^k)</td>
-                    <td>Write-Then-Verify mandate, Operation Crucible regression suite</td>
+                    <td>Write-Then-Verify mandate, golden-file baselines, and regression validation suites</td>
                 </tr>
             </table>
         </section>
@@ -62,10 +73,6 @@
                 <li>Stage III: Manual task annotation -> conversational probing and Q/A sets.</li>
             </ul>
         </section>
-
-        <footer class="footer">
-            <p>Source: PROJECT_PHOENIX_OVERVIEW.md</p>
-        </footer>
     </div>
 </body>
 </html>
