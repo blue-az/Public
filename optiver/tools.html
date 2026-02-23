@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools | Semiconductors</title>
+    <meta name="description" content="Semiconductors domain tools across core, catalyst, SOP, and visualization workflows.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>Semiconductors Tools</h1>
+            <p class="subtitle">25 Specialized Tools Across 8 Variations</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html" class="active">Tools</a>
+            <a href="data.html">Database</a>
+            <a href="companies.html">Companies</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Tool Family Overview</h2>
+            <p>Tooling follows Phoenix principles: atomic operations, explicit parameters, and verifiable outputs.</p>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="number">6</div>
+                    <div class="label">Core Tools</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">5</div>
+                    <div class="label">Catalyst Tools</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">3</div>
+                    <div class="label">SOP Tools</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">10</div>
+                    <div class="label">Visualization Tools</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Core Market Intelligence (V1-V4)</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Purpose</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>GetTopMarketShareLeaders</code></td>
+                        <td>Rank companies by share in a market/segment snapshot.</td>
+                        <td><code>market="GPU", segment="Discrete"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>GetMarketShareTrend</code></td>
+                        <td>Return time-series share movements by company.</td>
+                        <td><code>market="CPU", segment="Client"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>CompareCompanies</code></td>
+                        <td>Head-to-head comparisons across selected years.</td>
+                        <td><code>companies=["NVDA", "AMD"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>GetVendorMetricTrend</code></td>
+                        <td>Financial metric trend from SEC company facts.</td>
+                        <td><code>company="NVDA", metric_name="Revenue"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>GetPricePerformance</code></td>
+                        <td>Price performance and relative comparisons by ticker.</td>
+                        <td><code>ticker="AVGO"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>SearchCompanies</code></td>
+                        <td>Alias-aware lookup across company and ticker names.</td>
+                        <td><code>search_term="INTEL"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>GetMarketConcentration</code></td>
+                        <td>Compute concentration (HHI-style) for competition framing.</td>
+                        <td><code>market="GPU", segment="Discrete"</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Catalyst + Write-Then-Verify (V5-V6)</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>SearchEvents</code></td>
+                        <td>Query catalyst timeline by company, type, and date.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GetEventImpactOnPrice</code></td>
+                        <td>Windowed price analysis around catalyst dates.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GetEventImpactOnShare</code></td>
+                        <td>Relate catalyst timing to market-share shifts.</td>
+                    </tr>
+                    <tr>
+                        <td><code>WriteCatalystNote</code></td>
+                        <td>Persist structured research note tied to event metadata.</td>
+                    </tr>
+                    <tr>
+                        <td><code>VerifyCatalystNote</code></td>
+                        <td>Read-back verification for persisted note integrity.</td>
+                    </tr>
+                    <tr>
+                        <td><code>RunCatalystSOP</code></td>
+                        <td>Orchestrate standard catalyst research steps end-to-end.</td>
+                    </tr>
+                    <tr>
+                        <td><code>VerifyCatalystSOP</code></td>
+                        <td>Audit SOP output artifacts for completeness.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ListCatalystSOPRuns</code></td>
+                        <td>Track and retrieve prior SOP executions.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Visualization Suite (V7-V8)</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Static PNG Tools</h3>
+                    <p><code>PlotMarketShareSnapshot</code>, <code>PlotMarketShareTrend</code>, <code>PlotPriceRelativePerformance</code>, <code>PlotEventImpactWindow</code>, <code>PlotSemiconductorDashboard</code></p>
+                </div>
+                <div class="card">
+                    <h3>Interactive HTML Tools</h3>
+                    <p><code>BuildInteractiveShareSnapshot</code>, <code>BuildInteractiveRelativePerformance</code>, <code>BuildInteractiveEventStudy</code>, <code>BuildInteractiveSemiconductorBriefing</code>, <code>BuildInteractiveResearchPack</code></p>
+                </div>
+                <div class="card">
+                    <h3>Output Paths</h3>
+                    <p>PNG outputs are written to <code>data/visualizations/</code>; interactive outputs are written to <code>data/visualizations_html/</code>.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Representative Calls</h2>
+            <div class="code"><span class="highlight-secondary"># Share leaderboard</span>
+get_top_market_share_leaders(market="GPU", segment="Discrete", limit=3)
+
+<span class="highlight-secondary"># Revenue trend for NVIDIA</span>
+get_vendor_metric_trend(company="NVDA", metric_name="Revenue")
+
+<span class="highlight-secondary"># Concentration in foundry wafer market</span>
+get_market_concentration(market="Foundry", segment="Wafer")
+
+<span class="highlight-secondary"># Build interactive research pack</span>
+build_interactive_research_pack(
+    ticker="NVDA",
+    benchmark_ticker="SOXX",
+    market="GPU",
+    segment="Discrete",
+    event_date="2025-02-21",
+    window_days=5
+)</div>
+        </section>
+
+        <footer class="footer">
+            <p>Semiconductors Domain - Project Phoenix | Tools</p>
+            <a href="index.html" class="back-link">Back to Semiconductors Home</a>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optiver :: Task Patterns</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="rain"></div>
+
+    <header class="site-header">
+        <h1>Task Patterns</h1>
+        <p class="subtitle">PlanBuilder maps natural language into deterministic tool sequences.</p>
+        <a class="back-link" href="index.html">Return to Geo-Matrix Hub</a>
+    </header>
+
+    <main class="wrap">
+        <section class="panel">
+            <h2>Navigation</h2>
+            <section class="nav-grid">
+                <a href="tools.html" class="nav-item">tools</a>
+                <a href="tasks.html" class="nav-item">tasks</a>
+                <a href="rules.html" class="nav-item">rules</a>
+                <a href="principles.html" class="nav-item">principles</a>
+                <a href="architecture.html" class="nav-item">architecture</a>
+            </section>
+        </section>
+
+        <section class="panel">
+            <h2>Pattern Priority</h2>
+            <p>The planner evaluates more specific patterns first, then falls back to general patterns.</p>
+            <div class="code-block">
+                1) Feature-specific (imbalance, price, temporal)
+                2) Analysis (analyze stock, correlation, compare)
+                3) Model (train, evaluate, feature importance)
+                4) Data (load, summary, filter)
+                5) Utility (show capabilities, suggest)
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Example Query -> Plan Sketch</h2>
+            <div class="list-grid">
+                <div class="list-card">
+                    <h3>"calculate imbalance features for stock 5"</h3>
+                    <p>Load data, then run imbalance feature pipeline.</p>
+                    <div class="code-block">load_data -> calculate_imbalance_features(stock_id=5)</div>
+                </div>
+                <div class="list-card">
+                    <h3>"triplet imbalance"</h3>
+                    <p>Numba-accelerated V2 feature pack.</p>
+                    <div class="code-block">load_data -> calculate_triplet_imbalance</div>
+                </div>
+                <div class="list-card">
+                    <h3>"analyze stock 10"</h3>
+                    <p>Standard stock analysis with target summary.</p>
+                    <div class="code-block">load_data -> analyze_stock(stock_id=10)</div>
+                </div>
+                <div class="list-card">
+                    <h3>"train model"</h3>
+                    <p>Prepare split, train baseline, evaluate.</p>
+                    <div class="code-block">load_data -> prepare_train_test -> train_baseline -> evaluate_model</div>
+                </div>
+                <div class="list-card">
+                    <h3>"feature importance"</h3>
+                    <p>Requires a trained model first.</p>
+                    <div class="code-block">train_lightgbm_cv -> get_feature_importance</div>
+                </div>
+                <div class="list-card">
+                    <h3>"run synthesis workflow"</h3>
+                    <p>Capstone pipeline with profile-driven depth.</p>
+                    <div class="code-block">run_synthesis_workflow(profile="standard")</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>CLI Entry Points</h2>
+            <table class="cmd-table">
+                <tr>
+                    <th>Action</th>
+                    <th>Command</th>
+                </tr>
+                <tr>
+                    <td>Interactive REPL</td>
+                    <td><code>cd domains/Optiver/cli && python main.py</code></td>
+                </tr>
+                <tr>
+                    <td>Run a query</td>
+                    <td><code>cd domains/Optiver/cli && python main.py "analyze stock 5"</code></td>
+                </tr>
+                <tr>
+                    <td>Domain tests</td>
+                    <td><code>cd domains/Optiver && python test_domain.py</code></td>
+                </tr>
+            </table>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Patterns sourced from unified_agent/plan_builder.py</p>
+    </footer>
+</body>
+</html>

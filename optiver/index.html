@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optiver | Project Phoenix Domain</title>
+    <meta name="description" content="Trading at the Close ML pipeline with deterministic feature engineering, model CV, and drift monitoring.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>Optiver</h1>
+            <p class="subtitle">Trading at the Close · ML Pipeline + Drift Monitoring</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="data.html">Data</a>
+            <a href="companies.html">Modules</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="number">84</div>
+                <div class="label">Tools</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">6</div>
+                <div class="label">Variations</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">5.9M</div>
+                <div class="label">Price Rows</div>
+            </div>
+            <div class="stat-box">
+                <div class="number">200</div>
+                <div class="label">Stocks</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Domain Overview</h2>
+            <p>Optiver is a deterministic ML pipeline domain built for the Kaggle Trading at the Close competition. It orchestrates data ingestion, feature engineering, model training, and drift monitoring through a structured tool registry.</p>
+            <p>Each stage is a narrow, verifiable tool. Load data, engineer features, train LightGBM with walk-forward CV, then gate deployment on drift thresholds.</p>
+        </section>
+
+        <section class="section">
+            <h2>Phoenix Principles Applied</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Write-Then-Verify</h3>
+                    <p>Model artifacts and drift reports are written to disk, then explicitly verified before the deployment gate clears.</p>
+                </div>
+                <div class="card">
+                    <h3>Abstraction Ladder</h3>
+                    <p>Variations progress from raw data loading through feature engineering, model CV, drift detection, and full synthesis.</p>
+                </div>
+                <div class="card">
+                    <h3>Domain Doctor Tools</h3>
+                    <p>Each tool owns one operation: load, engineer, train, or monitor. No tool crosses pipeline stages.</p>
+                </div>
+                <div class="card">
+                    <h3>Anti-Hallucination Templates</h3>
+                    <p>Feature drift reports and model summaries use structured templates with stable fields and sourced values.</p>
+                </div>
+                <div class="card">
+                    <h3>Test-and-Prove</h3>
+                    <p>Smoke tests cover all 6 variations. Deployment gate requires PSI below threshold before promotion.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Pipeline Coverage</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Module</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Data Ingestion</td>
+                        <td><code>data_client.py</code></td>
+                        <td><span class="tech-tag green">Online</span></td>
+                    </tr>
+                    <tr>
+                        <td>Feature Engineering</td>
+                        <td><code>feature_engineering.py</code></td>
+                        <td><span class="tech-tag green">Online</span></td>
+                    </tr>
+                    <tr>
+                        <td>Model CV</td>
+                        <td><code>model_pipeline.py</code></td>
+                        <td><span class="tech-tag green">Ready</span></td>
+                    </tr>
+                    <tr>
+                        <td>Drift Monitoring</td>
+                        <td><code>feature_drift.py</code></td>
+                        <td><span class="tech-tag green">Watching</span></td>
+                    </tr>
+                    <tr>
+                        <td>Deployment Gate</td>
+                        <td><code>deployment_gate.py</code></td>
+                        <td><span class="tech-tag green">Armed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Module Breakdown</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3>Data Client</h3>
+                    <p>Fast access to price, imbalance, and temporal signals from the Kaggle dataset.</p>
+                    <div class="meta">5.9M rows · 200 stocks</div>
+                </div>
+                <div class="card">
+                    <h3>Feature Forge</h3>
+                    <p>V2 microstructure features: WAP, bid-ask spread, order imbalance, temporal lags.</p>
+                    <div class="meta">Walk-forward safe</div>
+                </div>
+                <div class="card">
+                    <h3>Model Lab</h3>
+                    <p>LightGBM with Optuna hyperparameter tuning and time-series cross-validation.</p>
+                    <div class="meta">MAE-optimized</div>
+                </div>
+                <div class="card">
+                    <h3>Drift Radar</h3>
+                    <p>PSI, KS test, JS divergence across feature distributions. Dashboard output.</p>
+                    <div class="meta">Gates deployment</div>
+                </div>
+                <div class="card">
+                    <h3>Synthesis</h3>
+                    <p>Full pipeline run: load → engineer → train → monitor → gate. Single command.</p>
+                    <div class="meta">Variation 6</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Sample Queries</h2>
+            <div class="code"><span class="highlight-secondary"># Load competition data</span>
+load_trading_data(source="kaggle", split="train")
+
+<span class="highlight-secondary"># Engineer V2 microstructure features</span>
+engineer_features(version=2, include_temporal=True)
+
+<span class="highlight-secondary"># Run walk-forward CV with LightGBM</span>
+run_model_cv(model="lgbm", folds=5, metric="mae")
+
+<span class="highlight-secondary"># Check feature drift before deployment</span>
+run_drift_monitor(method="psi", threshold=0.2)
+
+<span class="highlight-secondary"># Full synthesis workflow</span>
+run_synthesis_workflow(profile="standard")</div>
+        </section>
+
+        <footer class="footer">
+            <p>Optiver Domain - Project Phoenix | Deterministic ML Pipeline</p>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="back-link">Back to Project Phoenix</a>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optiver :: Architecture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="rain"></div>
+
+    <header class="site-header">
+        <h1>System Architecture</h1>
+        <p class="subtitle">Unified agent stack for Trading at the Close workflows.</p>
+        <a class="back-link" href="index.html">Return to Geo-Matrix Hub</a>
+    </header>
+
+    <main class="wrap">
+        <section class="panel">
+            <h2>Navigation</h2>
+            <section class="nav-grid">
+                <a href="tools.html" class="nav-item">tools</a>
+                <a href="tasks.html" class="nav-item">tasks</a>
+                <a href="rules.html" class="nav-item">rules</a>
+                <a href="principles.html" class="nav-item">principles</a>
+                <a href="architecture.html" class="nav-item">architecture</a>
+            </section>
+        </section>
+
+        <section class="panel">
+            <h2>Unified Agent Layout</h2>
+            <div class="code-block">
+                unified_agent/
+                |-- data_client.py         # OptiverDataClient: data access layer
+                |-- tool_registry.py       # ToolRegistry: 84 tools organized by category
+                |-- execution_context.py   # ExecutionContext: shared state
+                |-- plan_builder.py        # PlanBuilder: regex -> execution plan
+                |-- agentic_engine.py      # State machine orchestrator
+                |-- feature_engineering.py # V2 feature generation
+                |-- model_pipeline.py      # LightGBM training with time-series CV
+                |-- optuna_tuner.py        # Hyperparameter optimization
+                |-- walk_forward.py        # Walk-forward backtesting
+                |-- feature_drift.py       # Feature drift detection
+                |-- target_drift.py        # Target/concept drift detection
+                |-- data_quality.py        # Data quality monitoring
+                |-- monitoring_alerts.py   # Alert routing
+                |-- smart_tools.py         # Meta-tools (SmartAnalyze, SmartMonitor)
+                `-- report_templates.py    # Structured report outputs
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Execution Flow</h2>
+            <div class="list-grid">
+                <div class="list-card">
+                    <h3>CLI + REPL</h3>
+                    <p>cli/main.py provides interactive commands and one-shot queries.</p>
+                </div>
+                <div class="list-card">
+                    <h3>Planner</h3>
+                    <p>PlanBuilder compiles regex patterns into ordered execution steps.</p>
+                </div>
+                <div class="list-card">
+                    <h3>Engine</h3>
+                    <p>AgenticEngine executes plan steps and updates ExecutionContext.</p>
+                </div>
+                <div class="list-card">
+                    <h3>Reports</h3>
+                    <p>report_templates generate analysis, model, and monitoring summaries.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Data Source</h2>
+            <p>Trading at the Close data is loaded from <code>~/Python/Optiver/OptFeatureViz/train.csv</code>.</p>
+            <div class="chip-row">
+                <span class="chip">~480k rows</span>
+                <span class="chip">200 stocks</span>
+                <span class="chip">481 dates</span>
+                <span class="chip">17 columns</span>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Architecture sourced from domains/Optiver/CLAUDE.md</p>
+    </footer>
+</body>
+</html>

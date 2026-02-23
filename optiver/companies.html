@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companies | Semiconductors</title>
+    <meta name="description" content="Semiconductors company coverage: leaders, segments, and catalyst activity.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>Company Coverage</h1>
+            <p class="subtitle">Vendors, Segment Leadership, and Catalyst Context</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="data.html">Database</a>
+            <a href="companies.html" class="active">Companies</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Primary Leaders (Latest Snapshot: 2025-12-31)</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3>NVIDIA</h3>
+                    <p>GPU Discrete: 84% | GPU DataCenter: 90%</p>
+                    <div class="meta">Dominant in accelerated compute segments</div>
+                </div>
+                <div class="card">
+                    <h3>AMD</h3>
+                    <p>GPU Discrete: 14% | CPU Client: 35% | CPU DataCenter: 38%</p>
+                    <div class="meta">Strong #2 positioning across CPU and GPU</div>
+                </div>
+                <div class="card">
+                    <h3>INTEL</h3>
+                    <p>CPU Client: 62% | CPU DataCenter: 60% | GPU Discrete: 2%</p>
+                    <div class="meta">Scale leader in CPU with smaller GPU footprint</div>
+                </div>
+                <div class="card">
+                    <h3>TSMC</h3>
+                    <p>Foundry Wafer: 61%</p>
+                    <div class="meta">Largest foundry participant in current snapshot</div>
+                </div>
+                <div class="card">
+                    <h3>SAMSUNG</h3>
+                    <p>Foundry Wafer: 13%</p>
+                    <div class="meta">Major integrated competitor in foundry market</div>
+                </div>
+                <div class="card">
+                    <h3>Other Foundry Players</h3>
+                    <p>SMIC 6% | UMC 6% | GLOBALFOUNDRIES 5% | OTHER 9%</p>
+                    <div class="meta">Long-tail structure used for concentration analysis</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Event Timeline Coverage</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Event Count</th>
+                        <th>Use in Domain</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>NVIDIA</td><td>3</td><td>Earnings and AI-cycle catalyst windows</td></tr>
+                    <tr><td>AMD</td><td>2</td><td>Competitive response and datacenter trajectory</td></tr>
+                    <tr><td>INTEL</td><td>2</td><td>Node roadmap and CPU-share context</td></tr>
+                    <tr><td>TSMC</td><td>1</td><td>Foundry macro and capex context</td></tr>
+                    <tr><td>QUALCOMM</td><td>1</td><td>Edge/mobile demand read-through</td></tr>
+                    <tr><td>ASML</td><td>1</td><td>Equipment and leading-edge process signal</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Tracked Price Universe (14 Tickers)</h2>
+            <p>Coverage includes vendor equities and benchmark ETFs for relative-performance analysis.</p>
+            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <span class="tech-tag">NVDA</span>
+                <span class="tech-tag">AMD</span>
+                <span class="tech-tag">INTC</span>
+                <span class="tech-tag">TSM</span>
+                <span class="tech-tag">AVGO</span>
+                <span class="tech-tag">QCOM</span>
+                <span class="tech-tag">MU</span>
+                <span class="tech-tag">TXN</span>
+                <span class="tech-tag">ADI</span>
+                <span class="tech-tag">ASML</span>
+                <span class="tech-tag">ON</span>
+                <span class="tech-tag">SOXX</span>
+                <span class="tech-tag">SMH</span>
+                <span class="tech-tag">SPY</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Example Competitive Query</h2>
+            <div class="code"><span class="highlight-secondary"># Compare NVDA and AMD (alias-aware) over 2024-2025</span>
+compare_companies(companies=["NVDA", "AMD"], start_year=2024, end_year=2025)
+
+<span class="highlight-secondary"># Check concentration in discrete GPUs</span>
+get_market_concentration(market="GPU", segment="Discrete")</div>
+        </section>
+
+        <footer class="footer">
+            <p>Semiconductors Domain - Project Phoenix | Companies</p>
+            <a href="index.html" class="back-link">Back to Semiconductors Home</a>
+        </footer>
+    </div>
+</body>
+</html>

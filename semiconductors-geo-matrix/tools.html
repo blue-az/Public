@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optiver :: Tool Registry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="rain"></div>
+
+    <header class="site-header">
+        <h1>Tool Registry</h1>
+        <p class="subtitle">84 tools mapped to the Optiver unified agent: data, features, modeling, monitoring.</p>
+        <a class="back-link" href="index.html">Return to Geo-Matrix Hub</a>
+    </header>
+
+    <main class="wrap">
+        <section class="panel">
+            <h2>Navigation</h2>
+            <section class="nav-grid">
+                <a href="tools.html" class="nav-item">tools</a>
+                <a href="tasks.html" class="nav-item">tasks</a>
+                <a href="rules.html" class="nav-item">rules</a>
+                <a href="principles.html" class="nav-item">principles</a>
+                <a href="architecture.html" class="nav-item">architecture</a>
+            </section>
+        </section>
+
+        <section class="panel">
+            <h2>Data + Feature Core</h2>
+            <div class="split-grid">
+                <div class="list-card">
+                    <h3>Data Tools</h3>
+                    <p>Load and slice Trading at the Close data before analysis.</p>
+                    <div class="chip-row">
+                        <span class="chip">load_data</span>
+                        <span class="chip">get_stock_info</span>
+                        <span class="chip">get_date_range</span>
+                        <span class="chip">get_data_summary</span>
+                        <span class="chip">filter_data</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>Feature Tools V1</h3>
+                    <p>Baseline imbalance, price, and temporal features.</p>
+                    <div class="chip-row">
+                        <span class="chip">calculate_imbalance_features</span>
+                        <span class="chip">calculate_price_features</span>
+                        <span class="chip">calculate_temporal_features</span>
+                        <span class="chip">calculate_all_features</span>
+                        <span class="chip">get_feature_info</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Feature Tools V2</h2>
+            <div class="list-grid">
+                <div class="list-card">
+                    <h3>Microstructure + Imbalance</h3>
+                    <div class="chip-row">
+                        <span class="chip">calculate_triplet_imbalance</span>
+                        <span class="chip">calculate_pairwise_imbalance</span>
+                        <span class="chip">calculate_microstructure_features</span>
+                        <span class="chip">calculate_global_stock_features</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>Temporal Windows</h3>
+                    <div class="chip-row">
+                        <span class="chip">calculate_temporal_shift</span>
+                        <span class="chip">calculate_temporal_return</span>
+                        <span class="chip">calculate_temporal_diff</span>
+                        <span class="chip">generate_all_v2_features</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>Exports + Adjustments</h3>
+                    <div class="chip-row">
+                        <span class="chip">apply_zero_sum_adjustment</span>
+                        <span class="chip">export_features</span>
+                        <span class="chip">verify_export</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Analysis + Modeling</h2>
+            <div class="split-grid">
+                <div class="list-card">
+                    <h3>Analysis Tools</h3>
+                    <div class="chip-row">
+                        <span class="chip">analyze_stock</span>
+                        <span class="chip">analyze_target</span>
+                        <span class="chip">calculate_correlation</span>
+                        <span class="chip">compare_stocks</span>
+                        <span class="chip">analyze_temporal_patterns</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>Model Tools</h3>
+                    <div class="chip-row">
+                        <span class="chip">prepare_train_test</span>
+                        <span class="chip">train_baseline</span>
+                        <span class="chip">evaluate_model</span>
+                        <span class="chip">get_feature_importance</span>
+                        <span class="chip">create_cv_splits</span>
+                        <span class="chip">train_lightgbm_fold</span>
+                        <span class="chip">train_lightgbm_cv</span>
+                        <span class="chip">predict_ensemble</span>
+                        <span class="chip">apply_zero_sum_prediction</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Advanced ML + Monitoring</h2>
+            <div class="split-grid">
+                <div class="list-card">
+                    <h3>SHAP + Optuna + Ensembles</h3>
+                    <div class="chip-row">
+                        <span class="chip">compute_shap_values</span>
+                        <span class="chip">get_shap_importance</span>
+                        <span class="chip">explain_single_prediction</span>
+                        <span class="chip">tune_hyperparameters</span>
+                        <span class="chip">get_best_params</span>
+                        <span class="chip">visualize_optimization</span>
+                        <span class="chip">create_stacking_ensemble</span>
+                        <span class="chip">train_stacking_meta</span>
+                        <span class="chip">run_walk_forward</span>
+                        <span class="chip">analyze_regime</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>Drift + Quality + Alerts</h3>
+                    <div class="chip-row">
+                        <span class="chip">detect_ks_drift</span>
+                        <span class="chip">calculate_psi</span>
+                        <span class="chip">calculate_js_divergence</span>
+                        <span class="chip">track_feature_drift</span>
+                        <span class="chip">detect_multivariate_drift</span>
+                        <span class="chip">detect_target_drift</span>
+                        <span class="chip">detect_concept_drift</span>
+                        <span class="chip">detect_covariate_shift</span>
+                        <span class="chip">analyze_prediction_drift</span>
+                        <span class="chip">track_missing_values</span>
+                        <span class="chip">track_outlier_frequency</span>
+                        <span class="chip">detect_structural_breaks_cusum</span>
+                        <span class="chip">detect_structural_breaks_chow</span>
+                        <span class="chip">fit_regime_hmm</span>
+                        <span class="chip">generate_drift_alerts</span>
+                        <span class="chip">get_monitoring_dashboard_data</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Parallel + Synthesis</h2>
+            <div class="split-grid">
+                <div class="list-card">
+                    <h3>Parallel Execution</h3>
+                    <div class="chip-row">
+                        <span class="chip">generate_all_v2_features_parallel</span>
+                        <span class="chip">train_lightgbm_cv_parallel</span>
+                        <span class="chip">tune_hyperparameters_parallel</span>
+                        <span class="chip">run_walk_forward_parallel</span>
+                        <span class="chip">track_feature_drift_parallel</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>Synthesis Capstone</h3>
+                    <div class="chip-row">
+                        <span class="chip">run_synthesis_workflow</span>
+                        <span class="chip">check_deployment_readiness</span>
+                        <span class="chip">create_analysis_report</span>
+                        <span class="chip">create_model_report</span>
+                        <span class="chip">create_monitoring_report</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Optiver // Tool Registry mapped from unified_agent/tool_registry.py</p>
+        <p class="blink">No ghost tools. No fabricated capabilities.</p>
+    </footer>
+</body>
+</html>

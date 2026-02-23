@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database | Semiconductors</title>
+    <meta name="description" content="Semiconductors SQLite schema, row coverage, and source-to-table mapping.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="badge">Project Phoenix Domain</div>
+            <h1>Semiconductors Database</h1>
+            <p class="subtitle">SQLite Coverage Across Share, Financial, Price, and Event Data</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="tools.html">Tools</a>
+            <a href="data.html" class="active">Database</a>
+            <a href="companies.html">Companies</a>
+            <a href="variations.html">Variations</a>
+            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
+        </nav>
+
+        <section class="section">
+            <h2>Table Coverage</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Rows</th>
+                        <th>Distinct Entities</th>
+                        <th>Date Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>market_share</code></td>
+                        <td>36</td>
+                        <td>9 companies, 3 markets, 4 segments</td>
+                        <td>2024-12-31 to 2025-12-31</td>
+                    </tr>
+                    <tr>
+                        <td><code>vendor_metrics</code></td>
+                        <td>2,869</td>
+                        <td>Vendor-period-metric observations</td>
+                        <td>SEC-driven fundamentals timeline</td>
+                    </tr>
+                    <tr>
+                        <td><code>prices</code></td>
+                        <td>106,413</td>
+                        <td>14 tickers</td>
+                        <td>1972-01-07 to 2026-02-05</td>
+                    </tr>
+                    <tr>
+                        <td><code>events</code></td>
+                        <td>10</td>
+                        <td>6 companies</td>
+                        <td>2024-01-25 to 2025-05-02</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Schema Reference</h2>
+            <h3>market_share</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>metric_date</code></td><td>TEXT</td><td>Snapshot date (e.g., 2025-12-31)</td></tr>
+                    <tr><td><code>market</code></td><td>TEXT</td><td>CPU, GPU, Foundry</td></tr>
+                    <tr><td><code>segment</code></td><td>TEXT</td><td>Client, DataCenter, Discrete, Wafer</td></tr>
+                    <tr><td><code>company</code></td><td>TEXT</td><td>Vendor label (e.g., NVIDIA, AMD)</td></tr>
+                    <tr><td><code>share_pct</code></td><td>REAL</td><td>Market share percentage</td></tr>
+                    <tr><td><code>source</code></td><td>TEXT</td><td>Source family for the observation</td></tr>
+                </tbody>
+            </table>
+
+            <h3>vendor_metrics</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>metric_date</code></td><td>TEXT</td><td>Period end date</td></tr>
+                    <tr><td><code>period</code></td><td>TEXT</td><td>Reporting period (quarter/annual)</td></tr>
+                    <tr><td><code>company</code></td><td>TEXT</td><td>Vendor name</td></tr>
+                    <tr><td><code>ticker</code></td><td>TEXT</td><td>Trading symbol</td></tr>
+                    <tr><td><code>metric_name</code></td><td>TEXT</td><td>Revenue, GrossProfit, OperatingIncomeLoss, NetIncomeLoss</td></tr>
+                    <tr><td><code>metric_value</code></td><td>REAL</td><td>Reported numeric metric value</td></tr>
+                </tbody>
+            </table>
+
+            <h3>prices + events</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Key Fields</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>prices</code></td>
+                        <td><code>trade_date</code>, <code>ticker</code>, OHLCV</td>
+                        <td>Price trend, relative performance, event windows</td>
+                    </tr>
+                    <tr>
+                        <td><code>events</code></td>
+                        <td><code>event_date</code>, <code>company</code>, <code>event_type</code>, <code>title</code></td>
+                        <td>Catalyst-aware analysis and SOP note generation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Ingestion Pipeline</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>SEC Fundamentals</h3>
+                    <p><code>scripts/pull_sec_companyfacts.py</code> pulls company facts and normalizes vendor metrics.</p>
+                </div>
+                <div class="card">
+                    <h3>Price History</h3>
+                    <p><code>scripts/pull_stooq_prices.py</code> loads daily price history for benchmark and vendor tickers.</p>
+                </div>
+                <div class="card">
+                    <h3>Authoritative Share Inputs</h3>
+                    <p><code>scripts/sources/normalize_authoritative_sources.sh</code> maps source snapshots into <code>data/manual/*_market_share.csv</code>.</p>
+                </div>
+                <div class="card">
+                    <h3>Database Build</h3>
+                    <p><code>scripts/init_db.py</code> creates and refreshes SQLite tables via idempotent inserts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Quick Commands</h2>
+            <div class="code">cd domains/Semiconductors
+pip install -r requirements.txt
+./scripts/bootstrap_data.sh
+python cockpit_poc/agent/tests/test_agent.py --test</div>
+        </section>
+
+        <footer class="footer">
+            <p>Semiconductors Domain - Project Phoenix | Database</p>
+            <a href="index.html" class="back-link">Back to Semiconductors Home</a>
+        </footer>
+    </div>
+</body>
+</html>
