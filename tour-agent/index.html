@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~*~ TourAgent ~*~ Repeatable Tennis Answers!!!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="marquee-container">
+            <div class="marquee">
+                <span>*** TOURAGENT *** 10 VALIDATION QUESTIONS *** REPEATABLE TENNIS ANSWERS *** HISTORICAL BASE + CURRENT OVERLAY *** COMPARE AGAINST ANY LLM YOU WANT ***</span>
+            </div>
+        </div>
+
+        <header>
+            <h1 class="rainbow-text">~*~ TourAgent ~*~</h1>
+            <div class="book-icon">🎾</div>
+            <h2 class="blink">Repeatable Tennis Answers!!!</h2>
+            <p class="subtitle">.:*:. A grounded agent demo for honest, inspectable tennis QA .:*:.</p>
+        </header>
+
+        <hr class="fancy-hr">
+
+        <div class="welcome-box">
+            <div class="welcome-sign">~ TRY THE CORE 10 ~</div>
+            <p>TourAgent answers a fixed validation set from a deterministic tennis substrate. Some answers are historical-base, some use a current overlay, and all of them are meant to be repeatable instead of conversationally lucky.</p>
+        </div>
+
+        <hr class="fancy-hr">
+
+        <table class="main-table" cellpadding="10" cellspacing="5">
+            <tr>
+                <td class="nav-cell">
+                    <h3 class="sparkle">Navigation</h3>
+                    <ul class="nav-list">
+                        <li><a href="#demo">10 Questions</a></li>
+                        <li><a href="#how">How It Works</a></li>
+                        <li><a href="#compare">Compare It</a></li>
+                        <li><a href="#notes">Honest Notes</a></li>
+                        <li><a href="../project-phoenix/">Project Phoenix</a></li>
+                    </ul>
+
+                    <div class="webring">
+                        <p>Member of the</p>
+                        <p class="webring-title">Grounded Agent WebRing</p>
+                        <p><a href="../project-phoenix/current-paper.html">[Current Paper]</a> <a href="../project-phoenix/ski-chalet-paper.html">[Ski Chalet]</a> <a href="../project-phoenix/">[Phoenix Home]</a></p>
+                    </div>
+
+                    <div class="score-box">
+                        <h4>Demo Mode</h4>
+                        <p>Fixed question bank</p>
+                        <p>Repeatable answers</p>
+                        <p>Historical base with selective current overlay</p>
+                    </div>
+                </td>
+                <td class="content-cell">
+                    <section id="demo">
+                        <h3 class="section-title">~*~ VALIDATION QUESTIONS ~*~</h3>
+                        <div class="control-panel">
+                            <button id="fillButton" class="fill-button">Fill In TourAgent Answers</button>
+                            <button id="resetButton" class="fill-button secondary">Reset Questions</button>
+                        </div>
+
+                        <div id="questions" class="tasks-container"></div>
+                    </section>
+
+                    <hr class="fancy-hr">
+
+                    <section id="how">
+                        <h3 class="section-title">~*~ WHY THIS LOOKS DIFFERENT ~*~</h3>
+                        <div class="info-box">
+                            <p>TourAgent is not trying to win with perfect vibes. It wins by using a fixed question surface, a deterministic tennis substrate, and stable presented answers. Some questions are historical-base only. Some have a current overlay. The point is that the answer path is inspectable.</p>
+                        </div>
+                        <div class="themes-box">
+                            <span class="theme-tag">repeatable</span>
+                            <span class="theme-tag">grounded</span>
+                            <span class="theme-tag">inspectable</span>
+                            <span class="theme-tag">not purely conversational</span>
+                        </div>
+                    </section>
+
+                    <hr class="fancy-hr">
+
+                    <section id="compare">
+                        <h3 class="section-title">~*~ TRY THE PEPSI CHALLENGE ~*~</h3>
+                        <div class="code-box">
+                            <p class="code-line">&gt; Ask your favorite LLM the same 10 questions.</p>
+                            <p class="code-line">&gt; See which answers vary run to run.</p>
+                            <p class="code-line">&gt; See which answers stay crisp under repetition.</p>
+                        </div>
+                        <div class="info-box">
+                            <p>Different LLMs may give smart-looking answers. That is not the same thing as giving the same inspectable answer on demand. TourAgent is built for the second problem.</p>
+                        </div>
+                    </section>
+
+                    <hr class="fancy-hr">
+
+                    <section id="notes">
+                        <h3 class="section-title">~*~ HONEST NOTES ~*~</h3>
+                        <div class="task-list">
+                            <div class="task-item">
+                                <span class="task-name">Currentness</span>
+                                <span class="task-desc">This demo mixes a frozen historical base with selective validated overlays where they materially improve the answer set.</span>
+                            </div>
+                            <div class="task-item">
+                                <span class="task-name">What It Shows</span>
+                                <span class="task-desc">A grounded agent can feel narrower than a general LLM while still being more useful when repeatability matters.</span>
+                            </div>
+                            <div class="task-item">
+                                <span class="task-name">What It Does Not Claim</span>
+                                <span class="task-desc">This is not a claim to universal tennis omniscience. It is a claim to a repeatable, inspectable validation surface.</span>
+                            </div>
+                        </div>
+                    </section>
+                </td>
+            </tr>
+        </table>
+
+        <hr class="fancy-hr">
+
+        <footer>
+            <div class="counter">
+                <p>You are visitor #</p>
+                <div class="counter-display">000010</div>
+            </div>
+            <p class="email">Email me at: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+            <p class="copyright">&copy; 1997-2026 TourAgent | grounded tennis answers for repeatable comparison</p>
+            <p class="badges">
+                <span class="badge">Best viewed with curiosity</span>
+                <span class="badge">LLM challenge ready</span>
+                <span class="badge">Repeatability matters</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const qa = [
+            {
+                id: "MPQ_001",
+                question: "Was Diego Schwartzman better on clay or on hard courts over his career?",
+                answer: "Diego Schwartzman is better on clay: 120-96 (55.6%) on clay vs 120-114 (51.3%) on hard.",
+                status: "Historical Base"
+            },
+            {
+                id: "MPQ_002",
+                question: "What was Simona Halep's best season by win rate?",
+                answer: "Simona Halep's peak full season by win rate was 2018 at 79.7%.",
+                status: "Historical Base"
+            },
+            {
+                id: "MPQ_003",
+                question: "Which WTA player looks the most surface-dependent when you compare clay and hard-court performance?",
+                answer: "Within the official candidate set, Ons Jabeur is the most surface-dependent lately on WTA: 71.3% on clay vs 53.5% on hard (17.8 point spread).",
+                status: "Historical Base"
+            },
+            {
+                id: "MPQ_004",
+                question: "What percentage of ATP players are left-handed, and what percentage of WTA players are left-handed?",
+                answer: "Lefty share is 8.6% on ATP and 9.6% on WTA.",
+                status: "Historical Base"
+            },
+            {
+                id: "MPQ_005",
+                question: "What court surfaces were used on the ATP and WTA tours in 1967?",
+                answer: "In 1967, ATP shows Clay; WTA shows Clay, Hard.",
+                status: "Historical Base"
+            },
+            {
+                id: "MPQ_006",
+                question: "Since 2010, which American women have won Grand Slam singles titles, and how many titles has each won?",
+                answer: "Since 2010, the American women to win Grand Slam singles titles are Serena Williams (12), Sloane Stephens (1), Sofia Kenin (1), Coco Gauff (2), and Madison Keys (1), for 17 titles total.",
+                status: "Validated Current Overlay"
+            },
+            {
+                id: "MPQ_007",
+                question: "How many Grand Slam singles titles did Marin Cilic win, and which major was it?",
+                answer: "Marin Cilic won 1 slam title: US Open.",
+                status: "Historical Base"
+            },
+            {
+                id: "MPQ_008",
+                question: "What are Novak Djokovic's and Rafael Nadal's Wimbledon records, including titles won?",
+                answer: "Novak Djokovic is 102-13 at Wimbledon with 7 titles; Rafael Nadal is 58-12 with 2 titles.",
+                status: "Validated Current Overlay"
+            },
+            {
+                id: "MPQ_009",
+                question: "Since 2010, which countries have produced the most Grand Slam singles champions on the ATP and WTA tours?",
+                answer: "Since 2010, ATP title leadership is now tied between Serbia and Spain at 23 men's singles majors each; Spain still leads the top countries in unique champions with Rafael Nadal and Carlos Alcaraz, while Serbia's 23 come from Novak Djokovic alone. On the WTA side, the USA leads with 17 women's singles majors from 5 champions.",
+                status: "Validated Current Overlay"
+            },
+            {
+                id: "MPQ_010",
+                question: "Which ATP players have winning records against top-10 opponents?",
+                answer: "ATP players with winning records against top-10 opponents in the current candidate set are Novak Djokovic (265 wins, 386 top-10 matches played), Roger Federer (224-123), Rafael Nadal (186-105), Carlos Alcaraz (55-24), and Jannik Sinner (60-37).",
+                status: "Validated Current Overlay"
+            }
+        ];
+
+        const questionsEl = document.getElementById("questions");
+
+        function render(showAnswers) {
+            questionsEl.innerHTML = qa.map(item => `
+                <div class="task-section">
+                    <h3 class="sparkle">${item.id}</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-name">${item.question}</span>
+                            <span class="task-desc">${showAnswers ? item.answer : "Click the button above to fill in TourAgent's repeatable answer."}</span>
+                            <div class="task-example">${showAnswers ? item.status : "Question Only"}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        document.getElementById("fillButton").addEventListener("click", () => render(true));
+        document.getElementById("resetButton").addEventListener("click", () => render(false));
+        render(false);
+    </script>
+</body>
+</html>
