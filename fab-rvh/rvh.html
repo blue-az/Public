@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVH Analysis | Fab Simulation & RVH</title>
+    <meta name="description" content="Six RVH fab simulation scenarios — from idealized static baseline through excursion-prone instability. Yield, test load, and defectivity path charts.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="rain"></div>
+
+<header class="site-header">
+    <div class="badge-row">
+        <span class="badge">RVH Analysis</span>
+        <span class="badge">6 Scenarios</span>
+    </div>
+    <h1>RVH ANALYSIS</h1>
+    <p class="subtitle">Six scenarios stress-test fab yield under the Rough Volatility Hypothesis. Each shows what the path looks like — not just the average.</p>
+</header>
+
+<nav class="nav">
+    <a href="index.html">Overview</a>
+    <a href="evolution.html">Wafer Evolution</a>
+    <a href="rvh.html" class="active">RVH Analysis</a>
+</nav>
+
+<div class="stats-row">
+    <div class="stat-box">
+        <div class="number">~0%</div>
+        <div class="label">Ideal → Stable Loss</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">7.1%</div>
+        <div class="label">Stable → Unstable Loss</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">63.7%</div>
+        <div class="label">Big-Chip Yield (Cust. N)</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">59.6%</div>
+        <div class="label">Unstable Yield (Cust. N)</div>
+    </div>
+</div>
+
+<div class="wrap">
+
+    <!-- How to read -->
+    <div class="panel">
+        <h2>How to Read These Charts</h2>
+        <p>
+            Each scenario shows three charts side by side:
+        </p>
+        <div class="grid-3" style="margin-top:0.75rem;">
+            <div class="card">
+                <h3>Yield Chart</h3>
+                <p>Average wafer yield per customer. Bars colored by die area.
+                The yield penalty for large-die products is directly visible here.</p>
+            </div>
+            <div class="card">
+                <h3>Test Floor Load</h3>
+                <p>Test equipment utilization per customer line. Red dashed line = 100% capacity.
+                Bars above this line indicate a test bottleneck that delays shipments.</p>
+            </div>
+            <div class="card">
+                <h3>D₀ Path</h3>
+                <p>The simulated defect density over every wafer processed that month.
+                The RVH fingerprint — roughness, memory, and excursion spikes — is visible
+                in the shape of this path. Dashed line = baseline mean D₀.</p>
+            </div>
+        </div>
+        <p style="margin-top:1rem; font-size:0.88rem; color:var(--neon-cyan);">
+            Customers: <strong>A</strong> = 40% capacity, 125 mm² die &nbsp;·&nbsp;
+            <strong>N</strong> = 30%, 650 mm² die (or 850 mm² in Big-Chip) &nbsp;·&nbsp;
+            <strong>DMA</strong> = 20%, 150 mm² die &nbsp;·&nbsp;
+            <strong>Q</strong> = 10%, 130 mm² die
+        </p>
+    </div>
+
+    <!-- ===== Scenario 1: Idealized Static ===== -->
+    <div class="scenario">
+        <h2>01 — Idealized Static Fab</h2>
+        <p class="desc">
+            Unrealistic best-case benchmark: defect density is perfectly flat, no process variation,
+            no excursions. This scenario exists to establish a theoretical ceiling.
+            In practice, no fab achieves a flat D₀ path — but the idealized result shows
+            what the physics of yield allow at baseline D₀ = 0.12.
+        </p>
+        <div class="chart-row">
+            <div class="chart-box">
+                <img src="assets/Idealized_Static_Fab_yield.png" alt="Idealized Static Fab — yield chart">
+                <div class="cap">Yield by Customer</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Idealized_Static_Fab_load.png" alt="Idealized Static Fab — test load">
+                <div class="cap">Test Floor Load</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Idealized_Static_Fab_d0_path.png" alt="Idealized Static Fab — D₀ path">
+                <div class="cap">D₀ Path</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Scenario 2: Static Baseline ===== -->
+    <div class="scenario">
+        <h2>02 — Static Baseline</h2>
+        <p class="desc">
+            A standard static model with light random noise but no RVH structure — the kind of
+            model most yield engineers actually run. D₀ fluctuates mildly around the mean.
+            This is the straw-man that RVH is designed to outperform when process instability is present.
+        </p>
+        <div class="chart-row">
+            <div class="chart-box">
+                <img src="assets/Static_Baseline_yield.png" alt="Static Baseline — yield chart">
+                <div class="cap">Yield by Customer</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Static_Baseline_load.png" alt="Static Baseline — test load">
+                <div class="cap">Test Floor Load</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Static_Baseline_d0_path.png" alt="Static Baseline — D₀ path">
+                <div class="cap">D₀ Path</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Scenario 3: Baseline Operation ===== -->
+    <div class="scenario">
+        <h2>03 — Baseline Operation</h2>
+        <p class="desc">
+            A well-run real fab: low Hurst exponent, low process volatility, rare and mild excursions.
+            This is the practical operating target. Yields are high for smaller chips.
+            The D₀ path is rough but contained — the signature of a controlled process
+            with normal tool-to-tool variation and occasional minor upsets.
+        </p>
+        <div class="chart-row">
+            <div class="chart-box">
+                <img src="assets/Baseline_Operation_yield.png" alt="Baseline Operation — yield chart">
+                <div class="cap">Yield by Customer</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Baseline_Operation_load.png" alt="Baseline Operation — test load">
+                <div class="cap">Test Floor Load</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Baseline_Operation_d0_path.png" alt="Baseline Operation — D₀ path">
+                <div class="cap">D₀ Path</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key result between 3 and 4 -->
+    <div class="callout">
+        <div class="big">~0%</div>
+        <div class="label">Output loss: Idealized → Stable baseline</div>
+        <div class="note">
+            Customer A ideal: 95.0% yield, 4,824,394 dies &nbsp;·&nbsp; stable: 95.0%, 4,824,417 dies.
+            Normal low-level process variation is not the economic threat.
+            The real threat is excursion-prone instability — see below.
+        </div>
+    </div>
+
+    <!-- ===== Scenario 4: Stable Fab with Low Volatility ===== -->
+    <div class="scenario">
+        <h2>04 — Stable Fab with Low Volatility</h2>
+        <p class="desc">
+            Full RVH model, calm regime: Hurst exponent near 0.45, very low process volatility,
+            no excursions. The D₀ path has slight roughness and memory but no major deviations.
+            This is the RVH equivalent of a well-controlled fab — and the reference point
+            for measuring the true cost of instability in Scenario 06.
+        </p>
+        <div class="chart-row">
+            <div class="chart-box">
+                <img src="assets/Stable_Fab_with_Low_Volatility_yield.png" alt="Stable Fab — yield chart">
+                <div class="cap">Yield by Customer</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Stable_Fab_with_Low_Volatility_load.png" alt="Stable Fab — test load">
+                <div class="cap">Test Floor Load</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Stable_Fab_with_Low_Volatility_d0_path.png" alt="Stable Fab — D₀ path">
+                <div class="cap">D₀ Path</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Scenario 5: Big Chip Yield Challenge ===== -->
+    <div class="scenario">
+        <h2>05 — Big Chip Yield Challenge</h2>
+        <p class="desc">
+            Stable fab, standard product mix except customer N's die grows from 650 mm² to 850 mm².
+            Fab stability is excellent — process volatility is unchanged. What changes is physics:
+            a larger die is a larger target for random defects.
+            This scenario isolates product complexity as a cause of yield loss,
+            independent of process instability.
+        </p>
+        <div class="chart-row">
+            <div class="chart-box">
+                <img src="assets/Big_Chip_Yield_Challenge_yield.png" alt="Big Chip — yield chart">
+                <div class="cap">Yield by Customer</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Big_Chip_Yield_Challenge_load.png" alt="Big Chip — test load">
+                <div class="cap">Test Floor Load</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Big_Chip_Yield_Challenge_d0_path.png" alt="Big Chip — D₀ path">
+                <div class="cap">D₀ Path</div>
+            </div>
+        </div>
+        <p style="margin-top:0.75rem; font-size:0.88rem; color:var(--hot-pink);">
+            Result: Customer N yield falls to 63.7%. Shippable dies drop to 353,511.
+            The D₀ path is unchanged — the process is clean. Only the die area changed.
+        </p>
+    </div>
+
+    <!-- ===== Scenario 6: Unstable Fab Risk ===== -->
+    <div class="scenario" style="border-color: var(--hot-pink); box-shadow: 0 0 18px rgba(255,46,161,0.25);">
+        <h2 style="color: var(--hot-pink);">06 — Unstable Fab Risk</h2>
+        <p class="desc">
+            Full RVH storm regime: low Hurst exponent (H = 0.10), high process volatility (ν = 1.0),
+            frequent excursions (30% daily probability, 10× impact multiplier).
+            The D₀ path is chaotic — large persistent swings with sudden spikes.
+            This is the scenario that makes the RVH framing matter:
+            no static model can reproduce or predict this output from the mean alone.
+        </p>
+        <div class="chart-row">
+            <div class="chart-box">
+                <img src="assets/Unstable_Fab_Risk_yield.png" alt="Unstable Fab — yield chart">
+                <div class="cap">Yield by Customer</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Unstable_Fab_Risk_load.png" alt="Unstable Fab — test load">
+                <div class="cap">Test Floor Load</div>
+            </div>
+            <div class="chart-box">
+                <img src="assets/Unstable_Fab_Risk_d0_path.png" alt="Unstable Fab — D₀ path">
+                <div class="cap">D₀ Path</div>
+            </div>
+        </div>
+        <p style="margin-top:0.75rem; font-size:0.88rem; color:var(--hot-pink);">
+            Result: A → 90.0% · N → 59.6% · DMA → 75.0% · Q → 88.0%.
+            Instability damages all customers simultaneously. It is not a localized nuisance —
+            it is a plant-wide operational risk.
+        </p>
+    </div>
+
+    <!-- Key result -->
+    <div class="callout">
+        <div class="big">−7.1%</div>
+        <div class="label">Shippable output lost — stable fab to unstable fab</div>
+        <div class="note">
+            This is the central quantitative result. It emerges from the path of defectivity,
+            not from any change in mean D₀. Static models, seeing the same average,
+            would not predict or explain this loss.
+        </div>
+    </div>
+
+    <!-- Summary Impact Chart -->
+    <div class="panel">
+        <h2>Summary Impact Chart</h2>
+        <p style="margin-bottom:1rem; font-size:0.9rem;">
+            Scenario-by-scenario yield and output comparison across all customers.
+            The step from stable to unstable is the dominant economic event — larger than
+            any individual product or process parameter change.
+        </p>
+        <div class="img-full">
+            <img src="assets/summary_impact_chart.png" alt="Summary impact chart — yield across all scenarios">
+            <div class="cap">Yield and shippable die output across all six scenarios</div>
+        </div>
+    </div>
+
+    <!-- Why this matters -->
+    <div class="panel panel-cyan">
+        <h2>Why the Path-Based Model Matters</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Static Models Are Blind to Excursions</h3>
+                <p>A static model with D₀ = 0.12 predicts the same yield whether
+                the fab holds steady or swings between 0.04 and 1.20.
+                The average is the same. The output is not.</p>
+            </div>
+            <div class="card">
+                <h3>Instability Has a Legible Dollar Cost</h3>
+                <p>RVH makes the 7.1% loss calculable and attributable.
+                A fab running 25,000 wafers/month with 1,500 dies/wafer
+                loses ~2.7 million good dies per month in the unstable regime.</p>
+            </div>
+            <div class="card">
+                <h3>Cause Attribution Becomes Possible</h3>
+                <p>Die area (Scenario 05) and process instability (Scenario 06)
+                produce different yield signatures. They are separable — and
+                require different remediation strategies.</p>
+            </div>
+            <div class="card">
+                <h3>The Hurst Exponent Is the Key Diagnostic</h3>
+                <p>H controls memory. A rough, low-H process stays bad longer
+                after an excursion. Monitoring H in real fab data gives early
+                warning that the process has entered a persistent bad state.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="site-footer">
+    <p>Fab Simulation &amp; RVH — RVH Analysis</p>
+    <p style="margin-top:0.5rem;">
+        <a href="index.html">Overview</a> &nbsp;·&nbsp;
+        <a href="evolution.html">← Wafer Evolution</a>
+    </p>
+</footer>
+</body>
+</html>

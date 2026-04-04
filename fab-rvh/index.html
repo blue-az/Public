@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fab Simulation & RVH | IC Yield as a Path</title>
+    <meta name="description" content="Semiconductor fab yield simulation using Rough Volatility Hypothesis — modeling defectivity as a dynamic path, not a static mean.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="rain"></div>
+
+<header class="site-header">
+    <div class="badge-row">
+        <span class="badge">Fab Simulation</span>
+        <span class="badge">RVH Model</span>
+        <span class="badge blink">Live</span>
+    </div>
+    <h1>FAB SIMULATION &amp; RVH</h1>
+    <p class="subtitle">Modeling IC yield as a path-dependent rough process — not a static average.</p>
+</header>
+
+<nav class="nav">
+    <a href="index.html" class="active">Overview</a>
+    <a href="evolution.html">Wafer Evolution</a>
+    <a href="rvh.html">RVH Analysis</a>
+</nav>
+
+<div class="stats-row">
+    <div class="stat-box">
+        <div class="number">4</div>
+        <div class="label">Fab Eras</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">6</div>
+        <div class="label">Scenarios</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">7.1%</div>
+        <div class="label">Yield Loss (Unstable)</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">1987–Now</div>
+        <div class="label">Era Coverage</div>
+    </div>
+</div>
+
+<div class="wrap">
+
+    <!-- Core Thesis -->
+    <div class="panel">
+        <h2>The Central Argument</h2>
+        <p>
+            Simple yield models collapse a month of production into one number: the average defect density D₀.
+            That is fast to compute and easy to report — but it hides the most dangerous reality in manufacturing.
+        </p>
+        <p>
+            A fab that averages D₀ = 0.12 by spending half the month at 0.06 and half at 0.18 is not the same as one that
+            holds steady at 0.12. The path matters. Excursions cluster. Bad states persist.
+            Yield is destroyed during the spikes and never fully recovered in the calm.
+        </p>
+        <p>
+            The <strong style="color:var(--neon-green)">Rough Volatility Hypothesis (RVH)</strong> borrows from
+            financial modeling of rough stochastic processes to give defectivity a memory, a roughness parameter,
+            and a realistic excursion structure. The result: a simulation that separates three distinct realities
+            a static model cannot distinguish.
+        </p>
+        <div class="formula">Y = ( 1 + D₀ · A / α ) <sup>−α</sup></div>
+        <p style="font-size:0.85rem; color:var(--neon-cyan);">
+            Murphy–Poisson yield equation. D₀ = defect density (defects/cm²), A = die area (cm²), α = clustering.
+            RVH makes D₀ a dynamic rough path rather than a constant.
+        </p>
+    </div>
+
+    <!-- Two navigation cards -->
+    <div class="grid-2">
+        <a class="nav-card" href="evolution.html">
+            <span class="arrow">→</span>
+            <div class="nav-label">Wafer Evolution</div>
+            <div class="nav-desc">
+                Four manufacturing eras from 1987 to modern. Watch die grids shrink,
+                wafer diameters grow, and particle regimes shift from average to heavy-mist.
+                Each wafer carries its real geometry: diameter, die size, tech node, and live yield estimate.
+            </div>
+        </a>
+        <a class="nav-card" href="rvh.html">
+            <span class="arrow">→</span>
+            <div class="nav-label">RVH Analysis</div>
+            <div class="nav-desc">
+                Six scenarios stress-tested against the RVH simulation engine.
+                Idealized static fab through full excursion-prone instability.
+                Yield charts, test-floor load, and the live defectivity path — scenario by scenario.
+            </div>
+        </a>
+    </div>
+
+    <!-- Key result callout -->
+    <div class="callout">
+        <div class="big">−7.1%</div>
+        <div class="label">Shippable output loss — stable fab to unstable fab</div>
+        <div class="note">
+            Moving from a stable low-volatility process to an excursion-prone unstable one costs
+            7.1% of total shippable dies across all customers. This is the central quantitative
+            result of the RVH simulation. It is not a modeled average — it emerges from the path.
+        </div>
+    </div>
+
+    <!-- Three-column concept cards -->
+    <div class="panel panel-cyan">
+        <h2>Three Things RVH Separates That Static Models Cannot</h2>
+        <div class="grid-3" style="margin-top:1rem;">
+            <div class="card">
+                <h3>Ideal vs. Stable</h3>
+                <p>A perfectly flat defect path and a low-volatility real fab produce nearly identical output.
+                Normal process variation is not the economic threat.</p>
+            </div>
+            <div class="card">
+                <h3>Product vs. Process</h3>
+                <p>Die area drives yield independently of fab stability.
+                A large chip in a perfect fab still yields poorly — product complexity
+                and process instability are separable causes.</p>
+            </div>
+            <div class="card">
+                <h3>Noise vs. Excursion</h3>
+                <p>Random daily fluctuations are tolerable. Persistent bad states with
+                long memory — rough volatility — are not. The Hurst exponent captures which regime you are in.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- RVH Parameters table -->
+    <div class="panel">
+        <h2>RVH Parameters</h2>
+        <table class="tbl">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Symbol</th>
+                    <th>Effect</th>
+                    <th>Stable Fab</th>
+                    <th>Unstable Fab</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hurst Exponent</td>
+                    <td style="color:var(--neon-yellow)">H</td>
+                    <td>Memory &amp; roughness of D₀ path. Lower = rougher.</td>
+                    <td>0.45</td>
+                    <td>0.10</td>
+                </tr>
+                <tr>
+                    <td>Process Volatility</td>
+                    <td style="color:var(--neon-yellow)">ν</td>
+                    <td>Magnitude of day-to-day swings in D₀.</td>
+                    <td>0.05</td>
+                    <td>1.00</td>
+                </tr>
+                <tr>
+                    <td>Excursion Probability</td>
+                    <td style="color:var(--neon-yellow)">p<sub>exc</sub></td>
+                    <td>Daily probability of a major tool failure or process shock.</td>
+                    <td>0.0</td>
+                    <td>0.30</td>
+                </tr>
+                <tr>
+                    <td>Excursion Impact</td>
+                    <td style="color:var(--neon-yellow)">k<sub>exc</sub></td>
+                    <td>Multiplier applied to D₀ during an excursion event.</td>
+                    <td>1.0×</td>
+                    <td>10.0×</td>
+                </tr>
+                <tr>
+                    <td>Defect Clustering</td>
+                    <td style="color:var(--neon-yellow)">α</td>
+                    <td>Spatial clustering of defects. Lower = more spread (worse yield).</td>
+                    <td colspan="2">2.5 (baseline)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Analogy -->
+    <div class="panel">
+        <h2>The Rain Analogy</h2>
+        <div class="code-block">Your chips are buckets.
+Die Area (A)       = the opening of each bucket.
+Defect Density (D₀) = how hard it is raining.
+Clustering (α)     = whether rain falls as an even drizzle (bad)
+                     or in localized downpours (better for overall yield).
+Yield              = percentage of buckets that stay perfectly dry.
+
+RVH = the storm does not rain at a constant rate.
+      It has memory, roughness, and sudden excursion spikes.
+      Buckets near the excursion get destroyed. Others survive.
+      A static model cannot see this — it only sees the average rainfall.</div>
+    </div>
+
+</div>
+
+<footer class="site-footer">
+    <p>Fab Simulation &amp; RVH — IC Yield as a Dynamic Path</p>
+    <p style="margin-top:0.5rem;">
+        <a href="evolution.html">Wafer Evolution</a> &nbsp;·&nbsp;
+        <a href="rvh.html">RVH Analysis</a>
+    </p>
+</footer>
+</body>
+</html>

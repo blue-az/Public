@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wafer Evolution | Fab Simulation & RVH</title>
+    <meta name="description" content="IC wafer evolution from 1987 to modern — four manufacturing eras shown as die-level survival maps under average and heavy-mist particulate regimes.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="rain"></div>
+
+<header class="site-header">
+    <div class="badge-row">
+        <span class="badge">Wafer Evolution</span>
+        <span class="badge">1987 → Modern</span>
+    </div>
+    <h1>WAFER EVOLUTION</h1>
+    <p class="subtitle">Four manufacturing eras. Each wafer shows die-level survival under average vs. heavy-mist particulate regimes.</p>
+</header>
+
+<nav class="nav">
+    <a href="index.html">Overview</a>
+    <a href="evolution.html" class="active">Wafer Evolution</a>
+    <a href="rvh.html">RVH Analysis</a>
+</nav>
+
+<div class="stats-row">
+    <div class="stat-box">
+        <div class="number">150 mm</div>
+        <div class="label">1987 Wafer</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">200 mm</div>
+        <div class="label">1995 Wafer</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">300 mm</div>
+        <div class="label">2005 Wafer</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">300 mm</div>
+        <div class="label">Modern Wafer</div>
+    </div>
+</div>
+
+<div class="stats-row" style="padding-top:0.5rem;">
+    <div class="stat-box" style="border-color:var(--neon-yellow);">
+        <div class="number" style="font-size:1.5rem; color:var(--neon-yellow);">1.5 µm</div>
+        <div class="label">1987 Node</div>
+    </div>
+    <div class="stat-box" style="border-color:var(--neon-yellow);">
+        <div class="number" style="font-size:1.5rem; color:var(--neon-yellow);">350 nm</div>
+        <div class="label">1995 Node</div>
+    </div>
+    <div class="stat-box" style="border-color:var(--neon-yellow);">
+        <div class="number" style="font-size:1.5rem; color:var(--neon-yellow);">90 nm</div>
+        <div class="label">2005 Node</div>
+    </div>
+    <div class="stat-box" style="border-color:var(--neon-yellow);">
+        <div class="number" style="font-size:1.5rem; color:var(--neon-yellow);">5 nm</div>
+        <div class="label">Modern Node</div>
+    </div>
+</div>
+
+<div class="wrap">
+
+    <!-- Intro -->
+    <div class="panel">
+        <h2>How to Read These Maps</h2>
+        <p>
+            Each wafer is rendered as a grid of die cells. <strong style="color:#fff">White = surviving die.</strong>
+            <strong style="color:#888">Black = defect-killed die.</strong>
+            The wafer flat at the bottom reflects the real orientation of pre-300mm wafers.
+            Each map carries its actual geometry: wafer diameter, estimated die area, technology node, and a live yield estimate.
+        </p>
+        <p>
+            Two particulate regimes are shown side by side for every era: <strong style="color:var(--neon-cyan)">Average</strong>
+            (normal operating conditions, defects seeded from a calm RVH state) and
+            <strong style="color:var(--hot-pink)">Heavy-Mist</strong>
+            (elevated particulate fallout, defects seeded from a storm RVH state with clustering).
+        </p>
+        <p>
+            The progression from left to right shows what 40 years of Moore's Law looks like on a wafer:
+            more dies, smaller pitch, higher die count — and a shifting relationship between defect density and yield.
+        </p>
+    </div>
+
+    <!-- Era Series (full panel) -->
+    <div class="img-full">
+        <img src="assets/wafer_era_series.png" alt="RVH Wafer Era Series — all four eras, average and heavy-mist">
+        <div class="cap">Full era series — top row: average regime / bottom row: heavy-mist regime</div>
+    </div>
+
+    <!-- Die Survival Comparison (modern, side by side) -->
+    <div class="panel panel-cyan">
+        <h2>Modern Era: Survival Comparison</h2>
+        <p style="margin-bottom:1rem; font-size:0.9rem;">
+            The modern 300 mm wafer under both regimes — a direct visual of how elevated particulate
+            fallout shifts the failure pattern from isolated defects to spatially correlated clusters.
+        </p>
+        <div class="img-full">
+            <img src="assets/die_survival_comparison.png" alt="Modern era die survival comparison — average vs heavy-mist">
+            <div class="cap">Left: average regime &nbsp;·&nbsp; Right: heavy-mist regime</div>
+        </div>
+    </div>
+
+    <!-- 1987 Era -->
+    <div class="era-panel">
+        <h2>1987 Era — 6" / 150 mm Wafer</h2>
+        <div class="era-meta">
+            <span>Technology: ~1.5 µm</span>
+            <span>Die: ~104 mm²</span>
+            <span>Wafer: 150 mm (6")</span>
+        </div>
+        <div class="wafer-pair">
+            <div>
+                <img src="assets/1987_average_wafer.png" alt="1987 era average wafer">
+                <div class="cap">Average Regime</div>
+            </div>
+            <div>
+                <img src="assets/1987_heavy_mist_wafer.png" alt="1987 era heavy-mist wafer">
+                <div class="cap">Heavy-Mist Regime</div>
+            </div>
+        </div>
+        <p style="margin-top:1rem; font-size:0.88rem; color:var(--neon-cyan);">
+            The 1987 wafer carries relatively few, large dies on a small substrate.
+            Each die is a large target — the Murphy–Poisson penalty for die area is severe.
+            Particle defects from early photolithography tools are clustered spatially,
+            which actually helps: a single contamination event tends to kill one region
+            rather than spreading losses uniformly across the wafer.
+        </p>
+    </div>
+
+    <!-- 1995 Era -->
+    <div class="era-panel">
+        <h2>1995 Era — 8" / 200 mm Wafer</h2>
+        <div class="era-meta">
+            <span>Technology: ~350 nm</span>
+            <span>Die: ~52 mm²</span>
+            <span>Wafer: 200 mm (8")</span>
+        </div>
+        <div class="wafer-pair">
+            <div>
+                <img src="assets/1995_average_wafer.png" alt="1995 era average wafer">
+                <div class="cap">Average Regime</div>
+            </div>
+            <div>
+                <img src="assets/1995_heavy_mist_wafer.png" alt="1995 era heavy-mist wafer">
+                <div class="cap">Heavy-Mist Regime</div>
+            </div>
+        </div>
+        <p style="margin-top:1rem; font-size:0.88rem; color:var(--neon-cyan);">
+            By 1995 the industry has moved to 200 mm substrates and sub-micron geometries.
+            Die area is roughly halved versus 1987, which dramatically improves yield per die —
+            but the wafer now holds far more dies, making total throughput sensitive to
+            any spatially correlated defect event. Heavy-mist conditions show the first clear
+            clustering signature across adjacent die rows.
+        </p>
+    </div>
+
+    <!-- 2005 Era -->
+    <div class="era-panel">
+        <h2>2005 Era — 12" / 300 mm Wafer</h2>
+        <div class="era-meta">
+            <span>Technology: ~90 nm</span>
+            <span>Die: ~82 mm²</span>
+            <span>Wafer: 300 mm (12")</span>
+        </div>
+        <div class="wafer-pair">
+            <div>
+                <img src="assets/2005_average_wafer.png" alt="2005 era average wafer">
+                <div class="cap">Average Regime</div>
+            </div>
+            <div>
+                <img src="assets/2005_heavy_mist_wafer.png" alt="2005 era heavy-mist wafer">
+                <div class="cap">Heavy-Mist Regime</div>
+            </div>
+        </div>
+        <p style="margin-top:1rem; font-size:0.88rem; color:var(--neon-cyan);">
+            The jump to 300 mm in the mid-2000s is the single largest step-change in wafer
+            economics. Die count per wafer roughly doubles at equivalent die size.
+            At 90 nm geometries, random particle sizes now approach critical feature dimensions —
+            defect sensitivity rises sharply, and the heavy-mist scenario begins to look
+            qualitatively different from the average case.
+        </p>
+    </div>
+
+    <!-- Modern Era -->
+    <div class="era-panel">
+        <h2>Modern Era — 12" / 300 mm Wafer</h2>
+        <div class="era-meta">
+            <span>Technology: ~5 nm</span>
+            <span>Die: ~46 mm²</span>
+            <span>Wafer: 300 mm (12")</span>
+        </div>
+        <div class="wafer-pair">
+            <div>
+                <img src="assets/modern_average_wafer.png" alt="Modern era average wafer">
+                <div class="cap">Average Regime</div>
+            </div>
+            <div>
+                <img src="assets/modern_heavy_mist_wafer.png" alt="Modern era heavy-mist wafer">
+                <div class="cap">Heavy-Mist Regime</div>
+            </div>
+        </div>
+        <p style="margin-top:1rem; font-size:0.88rem; color:var(--neon-cyan);">
+            The modern node packs the highest die count of any era shown.
+            At 5 nm, yield is dominated not by random particle contamination but by
+            systematic defects, lithography overlay, and EUV stochastic effects —
+            none of which are modeled here. What is modeled is the aggregate
+            defectivity envelope under RVH dynamics. The average regime achieves high yield;
+            heavy-mist conditions produce spatially clustered failure bands that are
+            the visual signature of an excursion event in a rough-volatility process.
+        </p>
+    </div>
+
+    <!-- Summary -->
+    <div class="panel">
+        <h2>Reading the Trend</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h3>Die Count</h3>
+                <p>Rises dramatically across eras. 1987: ~180 die. Modern: ~1,500+ die.
+                More dies per wafer amplifies both the benefit of high yield and the
+                cost of a bad excursion.</p>
+            </div>
+            <div class="card">
+                <h3>Yield Sensitivity</h3>
+                <p>Die area shrinks but complexity grows. Yield per die in the
+                average regime stays high. The gap between average and heavy-mist
+                regimes widens in absolute die-count terms as wafers get larger.</p>
+            </div>
+            <div class="card">
+                <h3>Clustering Signature</h3>
+                <p>Heavy-mist patterns shift from scattered point defects in 1987
+                to spatially correlated cluster bands in modern nodes —
+                the visual fingerprint of memory and roughness in the defectivity path.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="site-footer">
+    <p>Fab Simulation &amp; RVH — Wafer Evolution</p>
+    <p style="margin-top:0.5rem;">
+        <a href="index.html">Overview</a> &nbsp;·&nbsp;
+        <a href="rvh.html">RVH Analysis →</a>
+    </p>
+</footer>
+</body>
+</html>
