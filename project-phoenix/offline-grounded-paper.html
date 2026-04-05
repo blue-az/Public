@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Phoenix | Offline Grounded Domain Agent Paper</title>
+    <meta name="description" content="The real unit of local usefulness is the harnessed domain system, not the naked local model.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">White Paper</span>
+            <h1>Offline Grounded Domain Agents</h1>
+            <p class="subtitle">The real unit of local usefulness is the harnessed domain system.</p>
+            <a class="back-link" href="current-paper.html">Back to Current Paper</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="principles.html">Principles</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="current-paper.html">Current Paper</a>
+            <a href="ski-chalet-paper.html">Ski Chalet Paper</a>
+            <a href="offline-grounded-paper.html">Offline Grounded Paper</a>
+            <a href="../papers/">Research Papers</a>
+        </nav>
+
+        <section class="section">
+            <h2>Executive Summary</h2>
+            <p>The strongest recent Project Phoenix result is not that a raw local model can replace a strong hosted model. It is that a local model becomes operationally useful when it is paired with a deterministic domain substrate, a grounding layer, explicit provenance, and a controlled escalation path.</p>
+            <p>This is also the deeper reason strong models can feel radically different in practice across coding environments. A very capable model inside a weak harness can feel unreliable. A comparable model inside a strong harness can feel like a real working system.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Wrong Question</h2>
+            <p>The common question in local-model discussions is too vague:</p>
+            <div class="code">
+can a local model do useful work?
+            </div>
+            <p>That hides the actual issue. What matters is not whether a naked model can answer plausibly from its own weights. What matters is whether a local system can remain useful when cloud support is absent or degraded.</p>
+            <p>The better question is:</p>
+            <div class="code">
+what makes a local domain-answering system operationally useful offline?
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Three Different Things People Call "Local LLM"</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Raw Local Mode</h3>
+                    <p>The model sees the user request only. This is the weakest serious local mode in the current tennis comparison set.</p>
+                </div>
+                <div class="card">
+                    <h3>Grounded Local Mode</h3>
+                    <p>The model sees the user request plus verified local evidence or a stable answer seed. This is materially stronger.</p>
+                </div>
+                <div class="card">
+                    <h3>Implementation-Agent Mode</h3>
+                    <p>The model works inside a deterministic workflow with tools, validation, artifact logging, and explicit trust boundaries.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>The Harness</h2>
+            <p>The reusable offline-grounded pattern has six layers:</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Stable Entrypoint</h3>
+                    <p>One domain-facing surface rather than visible tool chaos.</p>
+                </div>
+                <div class="card">
+                    <h3>Deterministic Substrate</h3>
+                    <p>Local databases, files, services, and repeatable queries.</p>
+                </div>
+                <div class="card">
+                    <h3>Grounding</h3>
+                    <p>Verified evidence bundles, answer seeds, and local context injection.</p>
+                </div>
+                <div class="card">
+                    <h3>Implementation Layer</h3>
+                    <p>Controlled workflow execution through tools, validation, and saved artifacts.</p>
+                </div>
+                <div class="card">
+                    <h3>Provenance</h3>
+                    <p>Mode, source class, snapshot boundary, and tool path where applicable.</p>
+                </div>
+                <div class="card">
+                    <h3>Validation</h3>
+                    <p>A fixed request surface, repeatability policy, and saved answer artifact.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Why Great Models Can Feel Weak</h2>
+            <p>Project-scale agent quality is often determined less by raw model intelligence than by runtime engineering.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Reliable Tool Loops</h3>
+                    <p>Plan, call tool, verify result, update state, continue. Silent failure destroys trust.</p>
+                </div>
+                <div class="card">
+                    <h3>Persistent Working Memory</h3>
+                    <p>Plans, prior edits, tool outputs, process logs, and saved artifacts matter more than chat history alone.</p>
+                </div>
+                <div class="card">
+                    <h3>File And Tool Awareness</h3>
+                    <p>A serious agent needs real contact with files and tools, not a text simulation of a project.</p>
+                </div>
+                <div class="card">
+                    <h3>Error Visibility</h3>
+                    <p>If the model is not forced to react to failure, it can narrate progress it did not actually earn.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Key Result</h2>
+            <p>The biggest difference between agent systems is often not raw model quality, but the quality of the runtime harness around the model.</p>
+            <div class="code">
+raw local model -> weak
+grounded local system -> materially better
+implementation-agent workflow -> strongest
+            </div>
+            <p>The right product framing is therefore not "offline chatbot." It is an offline grounded domain agent.</p>
+        </section>
+
+        <section class="section">
+            <h2>Why It Matters</h2>
+            <p>This paper is the current flagship local-LLM result for Project Phoenix because it reframes the whole discussion. The useful unit is not the naked model. It is the harnessed domain system.</p>
+            <p>That is a better way to think about local usefulness, coding-agent quality, offline continuity, and why strong models can feel so different depending on the environment wrapped around them.</p>
+        </section>
+
+        <section class="section">
+            <h2>Appendix: Why Gemini CLI Can Feel Much Weaker Than Gemini</h2>
+            <p>One useful external explanation of the coding-agent gap came from Gemini itself when asked why Gemini CLI could feel much worse than Gemini used through richer interfaces.</p>
+            <p>The answer was directionally correct and supports the main claim of this paper: the difference is often not just model quality, but harness quality.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Scaffolding vs Project Building</h3>
+                    <p>A thin CLI can generate plausible pieces. That is not the same thing as maintaining coherent multi-file project state.</p>
+                </div>
+                <div class="card">
+                    <h3>State Matters</h3>
+                    <p>Persistent working memory, prior edits, tool outputs, and process state matter more than chat history alone.</p>
+                </div>
+                <div class="card">
+                    <h3>First-Class Tooling</h3>
+                    <p>A serious agent needs real file and tool awareness. Otherwise it is only simulating a project in text.</p>
+                </div>
+                <div class="card">
+                    <h3>Visible Failure</h3>
+                    <p>If the harness swallows tool errors, the model can narrate progress it did not actually earn.</p>
+                </div>
+            </div>
+            <p>That is why the right unit of evaluation is not the naked local model. It is the harnessed domain system around the model.</p>
+        </section>
+
+        <footer class="footer">
+            <p>Project Phoenix - Open-core standards for grounded domain systems</p>
+            <p>Built on ideas and patterns from tau-bench (Sierra Research, MIT License)</p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+            <p><a href="../papers/">Research Papers →</a></p>
+        </footer>
+    </div>
+</body>
+</html>

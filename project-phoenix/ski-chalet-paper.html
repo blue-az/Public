@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Phoenix | Ski Chalet Paper</title>
+    <meta name="description" content="Ski Chalet Harness Boundary: what a prepared local 3090 setup can still do offline.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">White Paper</span>
+            <h1>Ski Chalet Harness Boundary</h1>
+            <p class="subtitle">What a prepared local 3090 setup can still do offline.</p>
+            <a class="back-link" href="current-paper.html">Back to Current Paper</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="principles.html">Principles</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="current-paper.html">Current Paper</a>
+            <a href="ski-chalet-paper.html">Ski Chalet Paper</a>
+            <a href="../papers/">Research Papers</a>
+        </nav>
+
+        <section class="section">
+            <h2>Core Claim</h2>
+            <p>The ski-chalet result is not that a raw local model is enough. It is that a prepared local system can remain useful when the model is supported by a deterministic harness.</p>
+            <p>The practical claim is narrower and more honest:</p>
+            <ul>
+                <li>a 3090-class enthusiast machine with Ollama and a local model already installed</li>
+                <li>plus a portable local bundle carrying the repo, harness, data, and artifacts</li>
+                <li>can support grounded offline domain answering</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>What The Paper Rejects</h2>
+            <p>The strictest version of the thought experiment still mostly yields a useful "no."</p>
+            <ul>
+                <li>blank machine</li>
+                <li>raw local model only</li>
+                <li>no cloud</li>
+                <li>no prepared harness</li>
+            </ul>
+            <p>That version is interesting, but it is not the strongest or most realistic interpretation of the actual evidence.</p>
+        </section>
+
+        <section class="section">
+            <h2>What Changed The Outcome</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Deterministic Substrate</h3>
+                    <p>Local data, files, databases, and repeatable domain logic.</p>
+                </div>
+                <div class="card">
+                    <h3>Grounding</h3>
+                    <p>Verified answer seeds, evidence bundles, and local artifacts.</p>
+                </div>
+                <div class="card">
+                    <h3>Control</h3>
+                    <p>Stable entrypoints, bounded task surfaces, and clearer execution posture.</p>
+                </div>
+                <div class="card">
+                    <h3>Auditability</h3>
+                    <p>Validation, provenance, and artifact preservation rather than vibes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Best Reading</h2>
+            <p>The ski-chalet scenario is intentionally a little absurd, but not impossible. The right realism standard is not “average life.” It is “plausible offline continuity under prepared local conditions.”</p>
+            <p>That makes the key lesson simple:</p>
+            <div class="code">
+raw local model -> not enough
+prepared local harness -> useful
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Why It Matters</h2>
+            <p>This paper matters because it reframes the local-LLM question. The useful unit is not the naked local model. It is the harnessed local system.</p>
+            <p>That is a better way to think about offline continuity, local usefulness, and what a serious enthusiast setup can actually preserve when the network disappears.</p>
+        </section>
+
+        <footer class="footer">
+            <p>Project Phoenix - Open-core standards for grounded domain systems</p>
+            <p>Built on ideas and patterns from tau-bench (Sierra Research, MIT License)</p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+            <p><a href="../papers/">Research Papers →</a></p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -174,7 +174,6 @@ body {
     align-items: center;
     margin: 0 0 2rem;
     min-height: 86px;
-    max-width: 760px;
     padding: 0;
     text-decoration: none;
     color: #2e1400;
@@ -260,6 +259,8 @@ body {
     display: grid;
     gap: 0.1rem;
     align-content: center;
+    justify-items: center;
+    text-align: center;
     padding: 0.4rem 1rem;
     z-index: 1;
 }
@@ -322,6 +323,24 @@ body {
 
 @keyframes cta-blink {
     50% { filter: brightness(1.25); }
+}
+
+.pullquote {
+    text-align: center;
+    padding: 1.8rem 2.5rem;
+    margin-bottom: 2rem;
+    border-top: 2px solid var(--border);
+    border-bottom: 2px solid var(--border);
+    background: var(--highlight);
+}
+
+.pullquote p {
+    font-family: var(--display-font);
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.5;
+    letter-spacing: 0.2px;
 }
 
 .back-link {

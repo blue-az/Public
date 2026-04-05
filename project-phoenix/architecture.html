@@ -11,7 +11,7 @@
         <header class="header">
             <span class="badge">Architecture</span>
             <h1>Technical Architecture</h1>
-            <p class="subtitle">Project structure, execution modes, and planning engine.</p>
+            <p class="subtitle">Open-core architecture for deterministic domains and grounded agent layers.</p>
             <a class="back-link" href="index.html">Back to Overview</a>
         </header>
 
@@ -23,50 +23,61 @@
             <a href="tau-bench.html">Tau-Bench</a>
             <a href="domains.html">Domains</a>
             <a href="architecture.html">Architecture</a>
-            <a href="PROJECT_PHOENIX_WHITE_PAPER.pdf" target="_blank" rel="noopener">White Paper</a>
+            <a href="current-paper.html">Current Paper</a>
+            <a href="../papers/">Research Papers</a>
         </nav>
 
         <section class="section">
-            <h2>Project Structure</h2>
+            <h2>Current Open-Core Shape</h2>
             <div class="code">
-project-phoenix/
-|-- domains/TennisAgent/cli/     # CLI: main.py, chat.py, nli_parser.py
-|-- cockpit_poc/                 # Analyst's Cockpit GUI
-|   |-- tkinter_cockpit.py       # Multi-device visualization
-|   |-- agent/                   # Agentic Cockpit (deterministic, phased UI)
-|   `-- chatkit/                 # ChatKit Mode (LLM-driven, LangGraph)
-|-- PyAI/                        # Documentation
-|-- ORIGINAL_DOCUMENTATION/      # Tau-bench reference docs
-`-- validate/                    # Ground truth validation tools
+Open core:
+|-- principles
+|-- validation standards
+|-- deterministic domain substrates
+|-- generic architecture docs
+|-- public white papers
+
+Private consulting layer:
+|-- client pairing logic
+|-- adaptation heuristics
+|-- live operating playbooks
             </div>
         </section>
 
         <section class="section">
-            <h2>Execution Modes</h2>
+            <h2>Execution Layers</h2>
             <div class="grid">
                 <div class="card">
-                    <h3>CLI</h3>
-                    <p>Direct tool execution and natural language queries.</p>
+                    <h3>Deterministic Domain Layer</h3>
+                    <p>Databases, files, rules, and repeatable domain tools provide the substrate.</p>
                 </div>
                 <div class="card">
-                    <h3>Analyst's Cockpit</h3>
-                    <p>GUI visualization for multi-device and multi-modal analysis.</p>
+                    <h3>Validation Layer</h3>
+                    <p>Artifacts, audits, and explicit checks determine what can be trusted.</p>
                 </div>
                 <div class="card">
-                    <h3>Agentic Cockpit</h3>
-                    <p>Four-phase deterministic execution with plan previews and controls.</p>
+                    <h3>Grounded Agent Layer</h3>
+                    <p>Models become useful when they answer against verified local context rather than raw prompt state alone.</p>
                 </div>
                 <div class="card">
-                    <h3>ChatKit Mode</h3>
-                    <p>LLM-driven mode used for development experimentation.</p>
+                    <h3>Human Control Layer</h3>
+                    <p>Supervision, review, and stop conditions remain part of trustworthy operation.</p>
                 </div>
             </div>
         </section>
 
         <section class="section">
-            <h2>Planning Engine</h2>
-            <p>PlanBuilder converts natural language into deterministic tool sequences using regex pattern matching. Execution is orchestrated by a state machine in the Agentic Engine.</p>
+            <h2>Why This Matters</h2>
+            <p>The main architectural lesson is that reliability comes less from model size alone and more from deterministic substrates, explicit validation, and clear trust boundaries.</p>
+            <p>That is why the open core emphasizes standards and grounded execution surfaces rather than generic “agent” branding.</p>
         </section>
+
+        <footer class="footer">
+            <p>Project Phoenix - Open-core standards for grounded domain systems</p>
+            <p>Built on ideas and patterns from tau-bench (Sierra Research, MIT License)</p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+            <p><a href="../papers/">Research Papers →</a></p>
+        </footer>
     </div>
 </body>
 </html>
