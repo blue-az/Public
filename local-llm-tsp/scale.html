@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalLLMTSP | Geographic Scale Ladder</title>
+    <meta name="description" content="From Arizona to the world: 20-city Southwest, 50-city U.S., 100-city World. Local model collapse and frontier nuance at scale.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Geographic Scale Ladder</span>
+            <h1>Scale</h1>
+            <p class="subtitle">From Arizona to the world: how the fixture ladder ends, and where local models collapse.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a href="results.html">Local Models</a>
+            <a class="active" href="scale.html">Scale Ladder</a>
+            <a href="frontier.html">Frontier</a>
+            <a href="viz.html">Visualizer</a>
+        </nav>
+
+        <div class="callout">
+            <p>The point is not that the model suddenly becomes the solver at larger scales. The point is that the deterministic solver path changes <em>honestly</em> as the problem size changes — and the orchestrated path remains authoritative regardless.</p>
+        </div>
+
+        <section class="section">
+            <h2>Compact Ladder View — Local Models</h2>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Instance</th>
+                            <th>Cities</th>
+                            <th>Solver</th>
+                            <th>Local direct valid?</th>
+                            <th>Local outcome</th>
+                            <th>Orch correct?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>tsp-004 / tsp-005</td>
+                            <td>8 – 10</td>
+                            <td>Brute-force exact</td>
+                            <td><span class="tag tag-warn">model-dependent</span></td>
+                            <td>Exact to structurally invalid</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-006</td>
+                            <td>20</td>
+                            <td>Held-Karp exact DP</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>Valid but worse than exact solver</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-007</td>
+                            <td>50</td>
+                            <td>NN + 2-opt heuristic</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>Valid but worse than heuristic</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-008</td>
+                            <td>100</td>
+                            <td>NN + 2-opt heuristic</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>Structural collapse — all tested local models</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Local models can remain usable into the geographic middle rung. They do not remain structurally reliable at world scale. The orchestrated path continues to track the deterministic solver at every rung.</p>
+        </section>
+
+        <section class="section">
+            <h2>20-City Southwest Geographic Comparison</h2>
+            <p>Fixture: tsp-006 · sw_20 · 20 cities · real lat/lon · haversine miles · Held-Karp exact DP</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Path</th>
+                            <th>Solver</th>
+                            <th>Solver exact?</th>
+                            <th>Valid?</th>
+                            <th>Direct gap</th>
+                            <th>Orch target</th>
+                            <th>Solver time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fixture baseline</td>
+                            <td>Held-Karp</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>703.5 mi</td>
+                            <td>optimal</td>
+                            <td>9.704s</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">First real-geographic medium-scale rung. The deterministic path is still exact. The direct path stays structurally valid but is materially worse than the exact solver. The orchestrated path matches the exact deterministic answer.</p>
+        </section>
+
+        <section class="section">
+            <h2>50-City U.S. Geographic Comparison</h2>
+            <p>Fixture: tsp-007 · us_50 · 50 cities · real lat/lon · haversine miles · nearest-neighbor + 2-opt heuristic</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Path</th>
+                            <th>Solver</th>
+                            <th>Solver exact?</th>
+                            <th>Valid?</th>
+                            <th>Direct gap</th>
+                            <th>Orch target</th>
+                            <th>Solver time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fixture baseline</td>
+                            <td>NN + 2-opt</td>
+                            <td><span class="tag tag-warn">heuristic</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>1,491.9 mi</td>
+                            <td>solver</td>
+                            <td>0.013s</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">National-scale rung. The deterministic path is still the professional answer, but it is no longer exact. The orchestrated path matches the deterministic solver output. The direct path is a benchmarked baseline, not the solving authority.</p>
+        </section>
+
+        <section class="section">
+            <h2>100-City World Comparison</h2>
+            <p>Fixture: tsp-008 · world_100 · 100 cities · real lat/lon · haversine miles · nearest-neighbor + 2-opt heuristic</p>
+
+            <h3>Local Model Slice</h3>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Direct valid?</th>
+                            <th>Direct outcome</th>
+                            <th>Orch target</th>
+                            <th>Direct time</th>
+                            <th>Orch time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>gemma4:26b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>missing 2 cities — Hanoi, Busan</td>
+                            <td><span class="tag tag-ok">solver</span></td>
+                            <td>222.216s</td>
+                            <td>16.307s</td>
+                        </tr>
+                        <tr>
+                            <td>gemma4:e4b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>missing 9 cities</td>
+                            <td><span class="tag tag-ok">solver</span></td>
+                            <td>21.572s</td>
+                            <td>14.555s</td>
+                        </tr>
+                        <tr>
+                            <td>gemma3:27b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>missing 9 cities</td>
+                            <td><span class="tag tag-ok">solver</span></td>
+                            <td>21.886s</td>
+                            <td>21.285s</td>
+                        </tr>
+                        <tr>
+                            <td>qwen2.5:14b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>severe missing-city collapse</td>
+                            <td><span class="tag tag-ok">solver</span></td>
+                            <td>9.255s</td>
+                            <td>9.924s</td>
+                        </tr>
+                        <tr>
+                            <td>llama3.1:8b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>severe missing-city collapse</td>
+                            <td><span class="tag tag-ok">solver</span></td>
+                            <td>7.821s</td>
+                            <td>4.540s</td>
+                        </tr>
+                        <tr>
+                            <td>llama3.2:3b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>severe missing-city collapse</td>
+                            <td><span class="tag tag-ok">solver</span></td>
+                            <td>5.276s</td>
+                            <td>2.978s</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Every tested local model collapsed structurally at world scale. gemma4:26b came closest — only 2 cities missing (Hanoi and Busan), likely a regional dropout on the Asia leg rather than random decay. The orchestrated path matched the deterministic solver on every row across all models.</p>
+
+            <h3>Capability Gradient at World Scale</h3>
+            <div class="grid">
+                <div class="card">
+                    <h3>Small local models</h3>
+                    <p>Severe structural collapse — many cities missing, route unusable.</p>
+                </div>
+                <div class="card">
+                    <h3>Mid-tier local models</h3>
+                    <p>gemma3:27b, gemma4:e4b — 9 cities missing. Consistent failure count across model families.</p>
+                </div>
+                <div class="card">
+                    <h3>gemma4:26b</h3>
+                    <p>2 cities missing. Nearest local model to structural validity at world scale. Sits at the transition between local collapse and frontier drift.</p>
+                </div>
+                <div class="card">
+                    <h3>Frontier models</h3>
+                    <p>Codex, Claude — structurally valid at 100 cities. Quality drift only: 7.5–14.5% gap vs deterministic heuristic.</p>
+                </div>
+            </div>
+
+            <h3>Frontier Nuance at World Scale</h3>
+            <p>Two bounded frontier-anchor assessments show a different failure mode. These are not clean shared-table rows — timing and methodology conditions were not identical to the local Ollama runs.</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Instance</th>
+                            <th>Cities</th>
+                            <th>Codex Frontier</th>
+                            <th>Claude Frontier</th>
+                            <th>Orch correct?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>tsp-004</td>
+                            <td>8</td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-005</td>
+                            <td>10</td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-006</td>
+                            <td>20</td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-warn">gap 0.0 (contaminated run)</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-007</td>
+                            <td>50</td>
+                            <td>not attempted</td>
+                            <td><span class="tag tag-warn">1,484.2 mi gap (12.8%)</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-008</td>
+                            <td>100</td>
+                            <td><span class="tag tag-warn">8,761.4 mi vs heuristic</span></td>
+                            <td><span class="tag tag-warn">4,996.3 mi (7.5%)</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Frontier models stay structurally valid far beyond the local set. Quality drift replaces structural collapse, but the orchestrated path remains authoritative at every rung.</p>
+        </section>
+
+        <section class="section">
+            <h2>What Changed At Scale</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Small (4–10 cities)</h3>
+                    <p>Brute-force exact search. Direct model solving varies from exact to structurally invalid by model.</p>
+                </div>
+                <div class="card">
+                    <h3>Medium (20 cities)</h3>
+                    <p>Held-Karp dynamic programming — still exact. Direct models stay valid but are worse than the exact answer.</p>
+                </div>
+                <div class="card">
+                    <h3>Large (50 cities)</h3>
+                    <p>Deterministic heuristic. The solver is no longer globally optimal, but remains the professional optimization authority.</p>
+                </div>
+                <div class="card">
+                    <h3>World (100 cities)</h3>
+                    <p>Deterministic heuristic. Local models collapse structurally. Frontier models drift in quality. The orchestrated path holds.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Failure Mode Shift</h2>
+            <p>At world scale, the failure split becomes especially clear:</p>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Local models — structural collapse</h3>
+                    <p>Drop cities, produce invalid tours. The route itself is unusable. Not gradual — a hard break in route validity.</p>
+                </div>
+                <div class="card">
+                    <h3>Frontier models — quality drift</h3>
+                    <p>Remain structurally valid but diverge materially from the deterministic heuristic baseline. A softer failure, same architectural lesson.</p>
+                </div>
+            </div>
+            <p style="margin-top:1rem;"><em>Stronger models delay failure. They do not eliminate the need for solver-backed design.</em></p>
+        </section>
+
+        <footer class="footer">
+            <p>LocalLLMTSP · Geographic Scale Ladder · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>

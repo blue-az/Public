@@ -1,0 +1,541 @@
+:root {
+    --night:       #192534;
+    --night-mid:   #1e3048;
+    --parchment:   #f5efe3;
+    --parchment-dk:#ede5d5;
+    --amber:       #b8710e;
+    --amber-bg:    #fef6e8;
+    --amber-border:#e8b86a;
+    --frost:       #5e9ec0;
+    --frost-bg:    #e8f4fa;
+    --frost-border:#9ecde4;
+    --pine:        #2c5a2e;
+    --pine-bg:     #e4f0e4;
+    --pine-border: #8cbd8e;
+    --snow:        #f0f6fc;
+    --wood:        #5c3d1e;
+    --ink:         #1e2e40;
+    --ink-muted:   #4d6070;
+    --border:      #d0c0a8;
+    --shadow:      rgba(20, 32, 48, 0.28);
+    --body-font:   "Palatino Linotype", "Palatino", "Book Antiqua", Georgia, serif;
+    --display-font:"Didot", "Bodoni MT", "Bodoni 72", Georgia, serif;
+    --mono-font:   "Courier New", Courier, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* Night sky outside */
+body {
+    font-family: var(--body-font);
+    font-size: 1.05rem;
+    background-color: var(--night);
+    background-image:
+        radial-gradient(ellipse at 30% 20%, rgba(94, 158, 192, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 60%, rgba(94, 158, 192, 0.07) 0%, transparent 45%),
+        repeating-linear-gradient(
+            120deg,
+            transparent 0px, transparent 80px,
+            rgba(200, 225, 240, 0.015) 80px, rgba(200, 225, 240, 0.015) 81px
+        );
+    min-height: 100vh;
+    color: var(--ink);
+}
+
+/* Snowflakes drifting in the margins */
+body::before {
+    content: "❄  ❄   ❄  ❄    ❄  ❄   ❄  ❄   ❄";
+    position: fixed;
+    top: 2.5rem;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(200, 225, 245, 0.14);
+    letter-spacing: 2.5rem;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+body::after {
+    content: "❄   ❄  ❄    ❄  ❄  ❄   ❄    ❄  ❄";
+    position: fixed;
+    bottom: 2.5rem;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(200, 225, 245, 0.10);
+    letter-spacing: 3rem;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* The chalet — warm interior */
+.chalet {
+    max-width: 1020px;
+    margin: 2rem auto;
+    background: var(--parchment);
+    box-shadow: 0 8px 60px var(--shadow), 0 2px 12px rgba(20,32,48,0.4);
+    position: relative;
+    z-index: 1;
+    padding-bottom: 3rem;
+}
+
+/* Mountain header — night sky fading to snow */
+.header {
+    background: linear-gradient(
+        180deg,
+        #0f1b2a 0%,
+        #192534 18%,
+        #1e3048 32%,
+        #2a4060 44%,
+        #3a5870 52%,
+        #7a9db5 62%,
+        #b8d0e0 72%,
+        #deeaf4 80%,
+        #f0f4f8 88%,
+        var(--parchment) 100%
+    );
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Mountain silhouette */
+.header::before {
+    content: "";
+    position: absolute;
+    bottom: 3.5rem;
+    left: 0; right: 0;
+    height: 90px;
+    background:
+        /* left peak */
+        polygon(0% 100%, 18% 20%, 28% 55%, 38% 15%, 52% 65%, 65% 30%, 75% 55%, 88% 10%, 100% 60%, 100% 100%);
+    clip-path: polygon(0% 100%, 18% 20%, 28% 55%, 38% 15%, 52% 65%, 65% 30%, 75% 55%, 88% 10%, 100% 60%, 100% 100%);
+    background-color: #253e55;
+    opacity: 0.6;
+}
+
+/* Snow cap overlay */
+.header::after {
+    content: "";
+    position: absolute;
+    bottom: 5rem;
+    left: 0; right: 0;
+    height: 45px;
+    clip-path: polygon(36% 100%, 38% 15%, 40% 100%, 63% 100%, 65% 30%, 67% 100%, 86% 100%, 88% 10%, 90% 100%);
+    background-color: rgba(230, 242, 252, 0.65);
+}
+
+.header .badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid rgba(200, 225, 245, 0.5);
+    color: rgba(200, 225, 245, 0.85);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: rgba(255,255,255,0.08);
+    margin-bottom: 1rem;
+    font-family: var(--mono-font);
+}
+
+.header h1 {
+    font-family: var(--display-font);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--snow);
+    letter-spacing: 1px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.header .subtitle {
+    font-style: italic;
+    color: rgba(210, 230, 245, 0.9);
+    font-size: 1rem;
+    max-width: 620px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+}
+
+/* Nav */
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+    background: var(--parchment-dk);
+}
+
+.nav a {
+    text-decoration: none;
+    color: var(--ink-muted);
+    padding: 0.7rem 1.3rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border-right: 1px solid var(--border);
+    transition: background 0.15s, color 0.15s;
+}
+
+.nav a:hover {
+    background: var(--amber-bg);
+    color: var(--amber);
+}
+
+.nav a.active {
+    background: var(--parchment);
+    color: var(--amber);
+    border-bottom: 3px solid var(--amber);
+    margin-bottom: -2px;
+}
+
+/* Stats row */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    border-bottom: 1px solid var(--border);
+}
+
+.stat {
+    padding: 1.2rem 1rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+}
+
+.stat:last-child { border-right: none; }
+
+.stat .num {
+    font-family: var(--display-font);
+    font-size: 1.9rem;
+    color: var(--wood);
+    display: block;
+    line-height: 1.1;
+}
+
+.stat .label {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.2rem;
+}
+
+/* Body content */
+.content {
+    padding: 0 2rem;
+}
+
+/* Sections */
+.section {
+    margin: 1.8rem 0;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.55);
+}
+
+.section h2 {
+    font-family: var(--display-font);
+    font-size: 1.35rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--wood);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.section h3 {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--amber);
+    margin: 1.2rem 0 0.5rem;
+}
+
+.section p {
+    line-height: 1.75;
+    margin-bottom: 0.8rem;
+    color: var(--ink);
+}
+
+.section ul, .section ol {
+    padding-left: 1.4rem;
+    line-height: 1.85;
+    margin-bottom: 0.8rem;
+    color: var(--ink);
+}
+
+/* Callout — fireplace warmth */
+.callout {
+    margin: 1.8rem 2rem;
+    border: 1px solid var(--amber-border);
+    border-left: 4px solid var(--amber);
+    background: var(--amber-bg);
+    padding: 1.1rem 1.4rem;
+}
+
+.callout p {
+    margin: 0;
+    line-height: 1.7;
+    color: var(--ink);
+    font-style: italic;
+}
+
+/* Frost callout — cold outside */
+.callout-frost {
+    border-color: var(--frost-border);
+    border-left-color: var(--frost);
+    background: var(--frost-bg);
+}
+
+/* Cards */
+.grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-top: 0.75rem;
+}
+
+.grid-2 {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-top: 0.75rem;
+}
+
+.card {
+    border: 1px solid var(--border);
+    padding: 1rem 1.1rem;
+    background: var(--parchment-dk);
+}
+
+.card h3 {
+    font-size: 0.95rem;
+    font-style: normal;
+    color: var(--wood);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.4rem;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Numbered result blocks */
+.result {
+    border: 1px solid var(--border);
+    margin-bottom: 1.2rem;
+    background: rgba(255,255,255,0.6);
+    display: flex;
+    gap: 0;
+}
+
+.result-num {
+    background: var(--wood);
+    color: var(--snow);
+    font-family: var(--display-font);
+    font-size: 1.6rem;
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 3.2rem;
+    line-height: 1;
+    padding-top: 1.25rem;
+}
+
+.result-body {
+    padding: 1rem 1.2rem;
+    flex: 1;
+}
+
+.result-body h3 {
+    font-size: 1rem;
+    color: var(--wood);
+    margin: 0 0 0.4rem;
+    font-style: normal;
+}
+
+.result-body p {
+    font-size: 0.92rem;
+    color: var(--ink);
+    line-height: 1.65;
+    margin-bottom: 0.4rem;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 0.12rem 0.5rem;
+    font-size: 0.78rem;
+    border-radius: 2px;
+    font-family: var(--body-font);
+}
+
+.tag-yes {
+    background: var(--pine-bg);
+    color: var(--pine);
+    border: 1px solid var(--pine-border);
+}
+
+.tag-no {
+    background: #fde8e8;
+    color: #7a1c1c;
+    border: 1px solid #f5c0c0;
+}
+
+.tag-partial {
+    background: var(--amber-bg);
+    color: var(--amber);
+    border: 1px solid var(--amber-border);
+}
+
+/* Tables */
+.table-wrap { overflow-x: auto; margin: 0.5rem 0; }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.table th, .table td {
+    border: 1px solid var(--border);
+    padding: 0.55rem 0.75rem;
+    text-align: left;
+}
+
+.table th {
+    background: var(--parchment-dk);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.8px;
+    color: var(--wood);
+}
+
+.reading-note {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Config tiers */
+.tier {
+    border-left: 3px solid var(--frost);
+    padding: 0.75rem 1rem;
+    background: var(--frost-bg);
+    margin-bottom: 0.75rem;
+}
+
+.tier.tier-2 { border-left-color: var(--amber); background: var(--amber-bg); }
+.tier.tier-3 { border-left-color: var(--pine); background: var(--pine-bg); }
+
+.tier h3 {
+    font-size: 0.9rem;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink);
+    margin: 0 0 0.3rem;
+}
+
+.tier p {
+    font-size: 0.88rem;
+    color: var(--ink-muted);
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* Nav cards */
+.nav-card {
+    display: block;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: var(--parchment-dk);
+    padding: 1.2rem 1.4rem;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.nav-card:hover {
+    background: var(--amber-bg);
+    border-color: var(--amber-border);
+}
+
+.nav-card h3 {
+    font-family: var(--display-font);
+    font-size: 1.1rem;
+    color: var(--wood);
+    margin-bottom: 0.35rem;
+}
+
+.nav-card p {
+    font-size: 0.88rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.nav-card .arrow {
+    float: right;
+    color: var(--amber);
+    font-size: 1.2rem;
+}
+
+/* Back link */
+.back-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-border);
+    font-size: 0.88rem;
+}
+
+/* Footer */
+.footer {
+    margin: 2rem 2rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+}
+
+.footer a { color: var(--amber); text-decoration: none; }
+
+/* Code block */
+.code {
+    font-family: var(--mono-font);
+    background: #f0ece4;
+    padding: 0.75rem 1rem;
+    border: 1px dashed var(--border);
+    font-size: 0.88rem;
+    white-space: pre-wrap;
+    color: var(--ink);
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 700px) {
+    .chalet { margin: 0; }
+    .header { padding: 2.5rem 1rem 2rem; }
+    .content { padding: 0 1rem; }
+    .callout { margin: 1.2rem 1rem; }
+    .result { flex-direction: column; }
+    .result-num { min-width: unset; padding: 0.5rem 1rem; font-size: 1.1rem; }
+    .nav a { padding: 0.6rem 0.8rem; font-size: 0.78rem; }
+}

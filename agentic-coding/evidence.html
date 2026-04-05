@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Evidence | Agentic Coding · Project Phoenix</title>
+    <meta name="description" content="Six failure families evidenced from documented Project Phoenix incidents — two evidence layers each.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="rain"></div>
+
+<header class="site-header">
+    <div class="badge-row" style="margin-bottom:0.75rem;">
+        <span class="badge">Case Evidence</span>
+        <span class="badge badge-cyan">6 Families · 2 Layers Each</span>
+    </div>
+    <h1>Case Evidence</h1>
+    <p class="subtitle">Six failure families. Each has a documented Phoenix incident and a second evidence layer from supervisor/implementation operational logs outside git.</p>
+</header>
+
+<nav class="nav">
+    <a href="index.html">Overview</a>
+    <a href="failures.html">Failure Families</a>
+    <a href="evidence.html" class="active">Case Evidence</a>
+</nav>
+
+<div class="stats-row">
+    <div class="stat-box">
+        <div class="number">6</div>
+        <div class="label">Cases Documented</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">2</div>
+        <div class="label">Layers Per Case</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">0</div>
+        <div class="label">Retroactive labels</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">Git + Logs</div>
+        <div class="label">Evidence Sources</div>
+    </div>
+</div>
+
+<div class="wrap">
+
+    <div class="panel panel-cyan">
+        <h2>Two Evidence Layers</h2>
+        <p>Each case uses two independent evidence layers:</p>
+        <ul>
+            <li><strong style="color:var(--neon-green);">Layer 1 — Artifact record:</strong> a documented paper, assessment report, benchmark CSV, or communication log entry that shows the failure occurred</li>
+            <li><strong style="color:var(--neon-cyan);">Layer 2 — Supervisor/implementation log:</strong> operational reasoning, intervention decision, and boundary formation recorded outside normal version control</li>
+        </ul>
+        <p>Git history records file changes and final states. It does not reliably capture when drift was first noticed, why a run was invalidated, or how false-success conditions were detected. The second layer preserves that reasoning.</p>
+    </div>
+
+    <!-- Case 1 -->
+    <div class="case">
+        <div class="case-header">
+            <h3>Case 1: Tool-Surface Drift</h3>
+            <span class="tag tag-evidenced">evidenced</span>
+        </div>
+        <div class="case-label">Source</div>
+        <p class="case-body"><code>V4_SKI_CHALET_ASSESSMENT_REPORT.md</code></p>
+        <div class="case-label">Incident</div>
+        <p class="case-body">In all three recorded V4 ski-chalet rows, the local model preserved the user's intent but immediately proposed non-Phoenix execution paths on the first pass:</p>
+        <ul>
+            <li>Row 1 (Serena Williams, age at peak): proposed a Wikipedia/web-style lookup; gave a vague provisional answer rather than executing the deterministic <code>PlayerAgent</code> tool</li>
+            <li>Row 2 (Djokovic clay vs hard): invented a non-Phoenix tool surface named <code>TennisStatsPro</code>; gave a directional answer without grounded tool execution</li>
+            <li>Row 3 (Andy Murray career trajectory): invented a non-Phoenix tool surface named <code>TennisRankingsAPI</code>; described expected output generically instead of executing <code>get_career_trajectory</code></li>
+        </ul>
+        <p class="case-body">The failure pattern in each row was identical: correct intent, wrong execution posture, immediate reach for generic or invented tools.</p>
+        <div class="case-label">Second-Layer Evidence</div>
+        <p class="case-body">Supervisor notes confirm that the redirect in each row was explicit and bounded — candidate domain plus candidate tool set — and that the local model did not require a second correction after the redirect. Final answers were grounded in executed deterministic tool outputs, not confabulated summaries.</p>
+        <div class="case-label">Supervisor Response</div>
+        <p class="case-body">One structured redirect per row: do not use web or invented tools; use only deterministic Project Phoenix tools; candidate domain <em>X</em>; candidate tools <em>[A, B, C]</em>. No semantic takeover required.</p>
+        <div class="case-label">Preventive Standard</div>
+        <p class="case-body">Hold the candidate-tool list at session start. Make the allowed execution surface explicit in the harness prompt rather than expecting the local model to infer it autonomously.</p>
+    </div>
+
+    <!-- Case 2 -->
+    <div class="case">
+        <div class="case-header">
+            <h3>Case 2: Summit Fever</h3>
+            <span class="tag tag-evidenced">evidenced</span>
+        </div>
+        <div class="case-label">Source</div>
+        <p class="case-body"><code>WHITE_PAPER_LOCAL_VS_CLAUDE_TENNIS_DOMAINS.md</code>, section 2.1</p>
+        <div class="case-label">Incident</div>
+        <p class="case-body">Before the clean V1–V3 construction matrix was defined, the benchmark work drifted into larger task packs, broader domain expansion, and heavy-query runtime confounding. The signal was already sufficient to answer the construction question — but the project kept climbing anyway. The paper explicitly names this: <em>"That failure mode was named summit fever: the project kept climbing after the signal was already sufficient."</em></p>
+        <p class="case-body">Comparability weakened, runtime confounds grew, and the earlier characterization of supervisor overhead could no longer be read cleanly against the clean-matrix results.</p>
+        <div class="case-label">Second-Layer Evidence</div>
+        <p class="case-body">The clean matrix was defined in response to this failure. V3 was explicitly separated from the baseline and normalized into a bounded 12-task pack rather than folded into an expanding experiment. The stop conditions introduced for the clean matrix are the artifact the summit fever episode left behind.</p>
+        <div class="case-label">Supervisor Response</div>
+        <p class="case-body">Introduced explicit stop conditions before the clean matrix began; separated V3 as a distinct bounded escalation experiment with fixed pack sizes; froze comparison scope before execution.</p>
+        <div class="case-label">Preventive Standard</div>
+        <p class="case-body">Define stop conditions before the experiment starts. Fix scope at the outset — scope corrections mid-run require reclassification of the work already done, not re-labeling.</p>
+    </div>
+
+    <!-- Case 3 -->
+    <div class="case">
+        <div class="case-header">
+            <h3>Case 3: False Success / Validator-Path Mismatch</h3>
+            <span class="tag tag-evidenced">evidenced</span>
+        </div>
+        <div class="case-label">Source</div>
+        <p class="case-body"><code>WHITE_PAPER_LOCAL_VS_CLAUDE_TENNIS_DOMAINS.md</code>, sections 3.4 and 6</p>
+        <div class="case-label">Incident</div>
+        <p class="case-body">The initial V4 rows were gathered against a misframed question — generic domain usability — rather than the intended ski-chalet pattern. The rows appeared to produce useful V4 evidence, but they were testing the wrong thing. A system that passes a usability check when a strong assistant operates directly is not the same as a system that passes when the strong assistant must work <em>through</em> the local model.</p>
+        <p class="case-body">When the framing error was caught, the misframed rows were reclassified to control-only status. A second instance: rows were labeled <code>SOFT_PASS</code> rather than <code>PASS</code> precisely to prevent the same error — the local model recovered correctly, but it did not stay on the Phoenix tool surface autonomously, so an unqualified pass label would have overstated the result.</p>
+        <div class="case-label">Second-Layer Evidence</div>
+        <p class="case-body">Supervisor notes confirm the explicit reclassification decision and the reasoning: the direct-control rows could not stand as ski-chalet evidence because the experimental question was different. The <code>SOFT_PASS</code> label was an explicit supervisor decision, recorded to prevent the result from being read as autonomous stability when it was not.</p>
+        <div class="case-label">Supervisor Response</div>
+        <p class="case-body">Reclassified misframed rows as control-only evidence; corrected the experimental frame; re-ran rows explicitly inside the ski-chalet setup; applied <code>SOFT_PASS</code> rather than <code>PASS</code> where autonomous stability was not demonstrated.</p>
+        <div class="case-label">Preventive Standard</div>
+        <p class="case-body">Freeze the experimental frame before gathering rows. Framing corrections require explicit reclassification, not re-labeling — a row cannot be promoted retroactively into evidence for a question it was not designed to test.</p>
+    </div>
+
+    <!-- Case 4 -->
+    <div class="case">
+        <div class="case-header">
+            <h3>Case 4: Bad Context Selection</h3>
+            <span class="tag tag-evidenced">evidenced</span>
+        </div>
+        <div class="case-label">Source</div>
+        <p class="case-body"><code>docs/RUN_TRACE_PROOF_OF_USE_001.md</code>; ShowcaseAgent routing benchmark</p>
+        <div class="case-label">Incident</div>
+        <p class="case-body">During forced-LLM routing evaluation of ShowcaseAgent, the trace layer surfaced two structurally coherent routing failures — correct query intent, wrong domain selected:</p>
+        <ul>
+            <li><code>"explain lasso vs ridge regression"</code> → routed to <code>WQ</code>; expected <code>Stan</code></li>
+            <li><code>"show teaching complexity score"</code> → routed to <code>Stan</code>; expected <code>ParableAgent</code></li>
+        </ul>
+        <p class="case-body">The system was not confused or incoherent. It selected a plausible domain, committed to it, and the run proceeded. The trace note records: <em>"These do not look like random failures. They look like domain-boundary ambiguity."</em></p>
+        <p class="case-body">Without the trace layer, these would have remained as isolated row failures in the benchmark CSV. The trace grouped them under a single failure code (<code>routing_error</code>) and exposed them as a replayable miss family. The useful unit was not "fix two rows independently" but "inspect the router seam between Stan vs WQ and ParableAgent vs Stan."</p>
+        <div class="case-label">Second-Layer Evidence</div>
+        <p class="case-body">The run trace summary artifact preserved the exact fields needed for replay: <code>run_id</code>, <code>scenario_id</code>, <code>input_query</code>, <code>selected_route</code>, <code>raw_failure_reason</code>. The operational log confirming the miss family was systematic rather than random.</p>
+        <div class="case-label">Supervisor Response</div>
+        <p class="case-body">The trace layer was built specifically to surface this class of failure. The response was not to fix individual rows but to identify the router seam as the repair target. No re-run was attempted until the seam boundary was understood.</p>
+        <div class="case-label">Preventive Standard</div>
+        <p class="case-body">A structured trace layer can convert isolated benchmark misses into replayable miss families. Bad context selection is not always visible as a failure — the run completes, the output is internally coherent — so a trace layer that preserves selection reasoning is the earliest detection point.</p>
+    </div>
+
+    <!-- Case 5 -->
+    <div class="case">
+        <div class="case-header">
+            <h3>Case 5: Doom Loops</h3>
+            <span class="tag tag-evidenced">evidenced</span>
+        </div>
+        <div class="case-label">Source</div>
+        <p class="case-body"><code>docs/DOOM_LOOP_ESCALATION_RECORD.md</code>; <code>experiments/tennis/AGENT_COMMUNICATION_LOG.jsonl</code></p>
+        <div class="case-label">Incident (Formal)</div>
+        <p class="case-body">The <code>DOOM_LOOP_ESCALATION_RECORD.md</code> documents a formal escalation structure built in response to an observed pattern where an agent was repeating work without meaningful state gain. A representative logged escalation:</p>
+        <div class="code-block">suspicion_reason:    "Repeated retries with no visible state gain"
+recent_actions:      reran protocol probe → reopened same artifact
+                     → retried same patch idea
+worker_self_summary: "I am retrying the same fix path and not
+                     learning anything new from the reruns."
+state_gain:          none
+supervisor_decision: change_strategy
+rationale:           "Preserve artifacts and switch to trace-first diagnosis."</div>
+        <div class="case-label">Incident (Operational)</div>
+        <p class="case-body">The tennis communication log records a related pattern at a lower intensity. A validator-interface rerun was needed after repeated <code>--task_id</code> flags only exercised the last task — the same command re-executed with the same flag repeatedly without correction, producing the same partial result each time. The supervisor subsequently corrected <code>manual_interventions</code> from 0 to 1 to reflect the required intervention.</p>
+        <p class="case-body">A second instance across ski-chalet run logs: every use-check query required local-only schema correction before the plan stayed on the deterministic MatchAgent tool surface — a near-loop where each query required the same correction before the agent could proceed.</p>
+        <div class="case-label">Second-Layer Evidence</div>
+        <p class="case-body">The doom loop escalation format itself is the operational artifact — it was created specifically because the pattern was recurring enough to need a durable escalation record. Communication log timestamps are the second layer confirming real instances.</p>
+        <div class="case-label">Supervisor Response</div>
+        <p class="case-body"><code>dejavu</code> flags the suspected loop; supervisor takes control; implementation becomes the explicit execution lane. Artifacts are preserved before the strategy changes. The escalation record structure ensures the reasoning is recorded outside git.</p>
+        <div class="case-label">Preventive Standard</div>
+        <p class="case-body">Do not record every hesitation or retry as a doom loop — the threshold is no visible state gain across meaningful action steps. When that threshold is crossed, preserve current artifacts first, then change strategy. The worker's self-summary is the key diagnostic: if it cannot describe what changed, the loop is confirmed.</p>
+    </div>
+
+    <!-- Case 6 -->
+    <div class="case">
+        <div class="case-header">
+            <h3>Case 6: Premature Closure</h3>
+            <span class="tag tag-evidenced">evidenced</span>
+        </div>
+        <div class="case-label">Source</div>
+        <p class="case-body"><code>experiments/tennis/AGENT_COMMUNICATION_LOG.jsonl</code>; V3 bounded execution spec directive</p>
+        <div class="case-label">Incident (INVALID_CLAIM)</div>
+        <p class="case-body">On 2026-03-12, implementation logged run <code>20260312T013903Z</code> as <code>INVALID_CLAIM</code>:</p>
+        <div class="code-block">"It does not strengthen the chalet capability result; it strengthens
+the runbook by exposing a false-positive validator path and missing
+use-check artifact preservation."</div>
+        <p class="case-body">The run passed the surface validator check. The trusted execution path — full artifact preservation through the use-check phase — did not complete. The result looked done; it was not trustworthy.</p>
+        <div class="case-label">Incident (PARTIAL Runs)</div>
+        <p class="case-body">Two runs were subsequently recorded as <code>PARTIAL</code> rather than allowed to carry any completion status:</p>
+        <ul>
+            <li>Run <code>20260312T033426Z</code>: MatchAgent V1 and V2 both passed staged-artifact validation, but the use check stopped before any complete <code>tool_results</code>/<code>final_answer</code> artifacts were preserved. Validation passed; the use phase did not finish.</li>
+            <li>Run <code>20260312T042815Z</code>: progress reached only V1 raw artifact generation before the run stopped. No staged validation, V2 generation, or use-check execution occurred.</li>
+        </ul>
+        <p class="case-body">Both runs had real progress. Neither was trustworthy as a result. The supervisor named them <code>PARTIAL</code> rather than accepting surface-level indicators as completion.</p>
+        <div class="case-label">Incident (Spec-Level Prevention)</div>
+        <p class="case-body">Before V3 runs were executed, the supervisor issued a blocking directive: <em>"runtime-based PARTIAL must require an objective trigger threshold rather than discretionary declaration"</em> and <em>"claimed completed prefix must be revalidated on the final artifact version for the row."</em> The spec was tightened before the pattern could corrupt V3 data.</p>
+        <div class="case-label">Second-Layer Evidence</div>
+        <p class="case-body">The communication log timestamps are the operational record. The <code>INVALID_CLAIM</code> classification, the <code>PARTIAL</code> labels, and the V3 spec directive are all explicit supervisor judgments recorded outside git.</p>
+        <div class="case-label">Supervisor Response</div>
+        <p class="case-body">Any run that passed a surface check but lacked full artifact preservation was reclassified — never promoted to completion status. <code>INVALID_CLAIM</code> was used when the false-positive path needed to be preserved as a runbook lesson. <code>PARTIAL</code> was used when real progress existed but the result was not trustworthy.</p>
+        <div class="case-label">Preventive Standard</div>
+        <p class="case-body">Surface validator exit code is not sufficient for completion. A result is complete only when the full trusted execution path — including artifact preservation through the final phase — has been confirmed. Stopping discipline must be objective: a <code>PARTIAL</code> threshold requires a defined trigger, not a discretionary call.</p>
+    </div>
+
+    <!-- Summary Table -->
+    <div class="panel">
+        <h2>Summary Table</h2>
+        <div class="tbl-wrap">
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>Failure Family</th>
+                        <th>Observed Incident</th>
+                        <th>Supervisor Response</th>
+                        <th>Preventive Standard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tool-surface drift</td>
+                        <td>V4 ski-chalet: local model proposed Wikipedia / invented tools in all 3 rows despite correct user intent</td>
+                        <td>One structured redirect per row: candidate domain + candidate tool set; no semantic takeover</td>
+                        <td>Hold candidate-tool list at session start; make execution surface explicit in harness prompt</td>
+                    </tr>
+                    <tr>
+                        <td>Summit fever</td>
+                        <td>Pre-clean-matrix benchmark expanded into larger packs and runtime confounds after construction signal was already sufficient</td>
+                        <td>Introduced explicit stop conditions; separated V3 as a bounded 12-task escalation with fixed scope</td>
+                        <td>Define stop conditions before the experiment starts; scope corrections mid-run require reclassification</td>
+                    </tr>
+                    <tr>
+                        <td>False success / validator-path mismatch</td>
+                        <td>Initial V4 rows gathered against misframed question (generic usability vs ski-chalet pattern); appeared to confirm progress but tested the wrong thing</td>
+                        <td>Reclassified misframed rows as control-only; re-ran true ski-chalet rows; applied SOFT_PASS where autonomous stability was not demonstrated</td>
+                        <td>Freeze the experimental frame before gathering rows; a row cannot be promoted retroactively into evidence for a different question</td>
+                    </tr>
+                    <tr>
+                        <td>Bad context selection</td>
+                        <td>ShowcaseAgent routing: "lasso vs ridge" → WQ (expected Stan); "teaching complexity score" → Stan (expected ParableAgent) — intent correct, domain wrong</td>
+                        <td>Trace layer surfaced both as a routing_error family; repair target identified as the router seam, not individual rows</td>
+                        <td>Build a trace layer that preserves selection reasoning; isolated row failures may be a miss family in disguise</td>
+                    </tr>
+                    <tr>
+                        <td>Doom loops</td>
+                        <td>Same patch retried repeatedly with no state gain; validator-interface repeated with same flag returning same partial result; schema correction required on every use-check query</td>
+                        <td>dejavu flags the loop; supervisor takes control; artifacts preserved before strategy changes</td>
+                        <td>Threshold is no visible state gain across meaningful actions; preserve artifacts first, then change strategy — do not retry the same path</td>
+                    </tr>
+                    <tr>
+                        <td>Premature closure</td>
+                        <td>Run 20260312T013903Z passed surface validator but lacked use-check artifact preservation → INVALID_CLAIM; two PARTIAL runs had V1/V2 pass but use phase incomplete</td>
+                        <td>INVALID_CLAIM preserved the false-positive path as a runbook lesson; PARTIAL labels prevented incomplete runs from carrying completion status</td>
+                        <td>Surface validator exit code is not completion — full artifact preservation through the final phase is required; PARTIAL threshold must be objective, not discretionary</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-pink">
+        <h2>Why Lessons Learned Are Not Optional</h2>
+        <p>The Phoenix material points toward a specific operating discipline:</p>
+        <ul>
+            <li>Explicit stop conditions</li>
+            <li>Supervisor and implementation separation</li>
+            <li>Bounded experiments with fixed scope</li>
+            <li>Artifact-preservation rules with objective thresholds</li>
+            <li>Invalid-claim reclassification rather than re-labeling</li>
+            <li>Deterministic validation surfaces, not surface-level checks</li>
+            <li>Communication logs outside git as a second historical layer</li>
+        </ul>
+        <p>These practices matter because accountability is human. The team that selects the model, builds the harness, defines the process, and accepts the output owns the operational result.</p>
+        <p style="color:var(--neon-yellow);">Lessons learned and standards are not optional. They are the primary path to trustworthy use.</p>
+    </div>
+
+</div>
+
+<footer class="site-footer">
+    <p>Agentic Coding Failure Patterns · Case Evidence · Project Phoenix · 2026-03-17</p>
+    <p style="margin-top:0.4rem;">
+        <a href="failures.html">← Failure Families</a> &nbsp;·&nbsp;
+        <a href="index.html">Overview</a> &nbsp;·&nbsp;
+        <a href="../project-phoenix/">Project Phoenix</a>
+    </p>
+</footer>
+</body>
+</html>

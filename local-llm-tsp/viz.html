@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalLLMTSP | Arizona Fixture Map</title>
+    <meta name="description" content="Interactive map of Arizona TSP fixtures: optimal solver route vs. direct model route.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .viz-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+        .viz-tab {
+            font-family: var(--body-font);
+            font-size: 0.82rem;
+            padding: 0.35rem 0.75rem;
+            border: 1px solid var(--border);
+            background: #fff8ee;
+            color: var(--ink);
+            cursor: pointer;
+            letter-spacing: 0.3px;
+        }
+        .viz-tab.active {
+            background: var(--paper-dark);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .viz-layout {
+            display: grid;
+            grid-template-columns: 1fr 240px;
+            gap: 1rem;
+            align-items: start;
+        }
+        @media (max-width: 680px) {
+            .viz-layout { grid-template-columns: 1fr; }
+        }
+        #viz-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid var(--border);
+            background: #fdf8f1;
+        }
+        .viz-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+        .viz-stat {
+            border: 1px solid var(--border);
+            padding: 0.7rem 0.85rem;
+            background: var(--paper-dark);
+            font-size: 0.84rem;
+            line-height: 1.55;
+        }
+        .viz-stat strong {
+            display: block;
+            font-size: 0.73rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--ink-muted);
+            margin-bottom: 0.4rem;
+        }
+        .viz-route-text {
+            font-size: 0.76rem;
+            color: var(--ink-muted);
+            margin-top: 0.35rem;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+        .viz-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-top: 0.75rem;
+            font-size: 0.88rem;
+            align-items: center;
+        }
+        .viz-controls label {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            cursor: pointer;
+        }
+        .swatch {
+            display: inline-block;
+            width: 22px;
+            height: 3px;
+            border-radius: 2px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        .swatch-dashed {
+            background: repeating-linear-gradient(90deg,
+                currentColor 0, currentColor 5px,
+                transparent 5px, transparent 9px);
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Interactive Visualization</span>
+            <h1>Arizona Fixture Map</h1>
+            <p class="subtitle">The TSP role-split made visible — optimal solver route vs. direct model route.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a href="results.html">Local Models</a>
+            <a href="scale.html">Scale Ladder</a>
+            <a href="frontier.html">Frontier</a>
+            <a class="active" href="viz.html">Visualizer</a>
+        </nav>
+
+        <section class="section">
+            <h2>How To Read This</h2>
+            <p>Each tab shows one Arizona fixture — fixed Euclidean points with real Arizona city names. The <strong style="color:#2d6a4f;">green solid route</strong> is what the deterministic solver produces: always optimal. The <strong style="color:#b91c1c;">red/amber route</strong> is what a direct model generates.</p>
+            <p>The greedy trap (tsp-003) is the most instructive: the direct route looks plausible but quietly drops Tucson, making it not a valid tour. The grayed city marked <em>✗</em> is the one never visited.</p>
+        </section>
+
+        <section class="section">
+            <div class="viz-tabs" id="viz-tabs"></div>
+
+            <div class="viz-layout">
+                <div>
+                    <svg id="viz-svg" viewBox="0 0 620 400"></svg>
+                    <div class="viz-controls">
+                        <label>
+                            <input type="checkbox" id="chk-opt" checked>
+                            <span class="swatch" style="background:#2d6a4f;"></span>
+                            Optimal (solver)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="chk-dir" checked>
+                            <span class="swatch swatch-dashed" id="dir-swatch" style="color:#b91c1c;"></span>
+                            Direct model
+                        </label>
+                    </div>
+                </div>
+
+                <div class="viz-panel">
+                    <div class="viz-stat" id="stat-inst"></div>
+                    <div class="viz-stat" id="stat-opt"></div>
+                    <div class="viz-stat" id="stat-dir"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Reading</h2>
+            <p>The role-split is clearest in tsp-003. The direct model closed a tour without visiting Tucson — structurally invalid. The orchestrated path never fails this way because correctness belongs to the solver, not the model.</p>
+            <p>On tsp-001 and tsp-004, a strong model can match the optimal route exactly. That is the best-case direct result. It does not generalize to harder instances, and weaker models fail structurally on tsp-004.</p>
+        </section>
+
+        <footer class="footer">
+            <p>LocalLLMTSP · Arizona Fixture Map · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+        </footer>
+
+    </div>
+
+    <script>
+    'use strict';
+
+    // ─── INSTANCE DATA ──────────────────────────────────────────────────────────
+    // City coordinates are fixed Euclidean demo coordinates from instances.json.
+    // Direct routes are from direct_fixture_response in the same file.
+    const INST = [
+        {
+            id: 'tsp-001',
+            label: 'tsp-001 · 4 cities · Easy Perimeter',
+            desc: 'The trivial case. Optimal tour walks the rectangle perimeter. A strong model matches this exactly.',
+            cities: [
+                {name:'Yuma',     x: 0, y: 0},
+                {name:'Phoenix',  x: 0, y: 2},
+                {name:'Flagstaff',x: 2, y: 2},
+                {name:'Tucson',   x: 2, y: 0}
+            ],
+            direct: ['Yuma','Phoenix','Flagstaff','Tucson','Yuma']
+        },
+        {
+            id: 'tsp-002',
+            label: 'tsp-002 · 5 cities · Clustered',
+            desc: 'Mild ambiguity. The direct route is structurally valid but misses the exact optimum by ~0.72 units.',
+            cities: [
+                {name:'Phoenix',  x: 0, y: 0},
+                {name:'Prescott', x: 1, y: 2},
+                {name:'Tucson',   x: 2, y: 0},
+                {name:'Sedona',   x: 6, y: 1},
+                {name:'Flagstaff',x: 7, y: 3}
+            ],
+            direct: ['Phoenix','Prescott','Sedona','Flagstaff','Tucson','Phoenix']
+        },
+        {
+            id: 'tsp-003',
+            label: 'tsp-003 · 6 cities · Greedy Trap',
+            desc: 'The direct route looks plausible but quietly drops Tucson. Not a valid tour — one city never visited.',
+            cities: [
+                {name:'Phoenix',  x: 0, y: 0},
+                {name:'Prescott', x: 1, y: 4},
+                {name:'Tucson',   x: 2, y: 0},
+                {name:'Yuma',     x: 6, y: 0},
+                {name:'Sedona',   x: 7, y: 4},
+                {name:'Flagstaff',x: 8, y: 0}
+            ],
+            direct: ['Phoenix','Prescott','Sedona','Flagstaff','Yuma','Phoenix']
+        },
+        {
+            id: 'tsp-004',
+            label: 'tsp-004 · 8 cities · Larger',
+            desc: 'At 8 cities, gemma3:27b achieves an exact tie. Weaker models (qwen2.5, llama3.1, llama3.2) produce structurally invalid routes.',
+            cities: [
+                {name:'Phoenix',     x:  0, y:  0},
+                {name:'Yuma',        x: -4, y: -2},
+                {name:'Tucson',      x:  2, y: -3},
+                {name:'Sierra Vista',x:  4, y: -5},
+                {name:'Prescott',    x: -1, y:  3},
+                {name:'Sedona',      x:  1, y:  5},
+                {name:'Flagstaff',   x:  2, y:  7},
+                {name:'Page',        x:  5, y:  9}
+            ],
+            direct: ['Phoenix','Tucson','Sierra Vista','Page','Flagstaff','Sedona','Prescott','Yuma','Phoenix']
+        },
+        {
+            id: 'tsp-005',
+            label: 'tsp-005 · 10 cities · Extended',
+            desc: 'At 10 cities, gemma3:27b drifts 5.43 from optimal. llama3.2:3b duplicates Phoenix — a structural failure.',
+            cities: [
+                {name:'Phoenix',     x:  0, y:  0},
+                {name:'Yuma',        x: -4, y: -2},
+                {name:'Tucson',      x:  2, y: -3},
+                {name:'Sierra Vista',x:  4, y: -5},
+                {name:'Prescott',    x: -1, y:  3},
+                {name:'Sedona',      x:  1, y:  5},
+                {name:'Flagstaff',   x:  2, y:  7},
+                {name:'Page',        x:  5, y:  9},
+                {name:'Kingman',     x: -6, y:  2},
+                {name:'Show Low',    x:  6, y:  3}
+            ],
+            direct: ['Phoenix','Tucson','Sierra Vista','Show Low','Page','Flagstaff','Sedona','Prescott','Kingman','Yuma','Phoenix']
+        }
+    ];
+
+    // ─── SOLVER: brute-force via Heap's algorithm (lazy, per-instance cache) ───
+    function eDist(a, b) {
+        return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+    }
+
+    function routeLen(nameArr, cities) {
+        const m = Object.fromEntries(cities.map(c => [c.name, c]));
+        let d = 0;
+        for (let i = 0; i < nameArr.length - 1; i++) {
+            const a = m[nameArr[i]], b = m[nameArr[i + 1]];
+            if (a && b) d += eDist(a, b);
+        }
+        return d;
+    }
+
+    // Heap's iterative permutation — avoids call-stack overhead for N=9
+    function* heapPerms(input) {
+        const a = input.slice(), n = a.length, c = new Int32Array(n);
+        yield a.slice();
+        let i = 1;
+        while (i < n) {
+            if (c[i] < i) {
+                const j = (i % 2 === 0) ? 0 : c[i];
+                [a[j], a[i]] = [a[i], a[j]];
+                yield a.slice();
+                c[i]++;
+                i = 1;
+            } else {
+                c[i] = 0;
+                i++;
+            }
+        }
+    }
+
+    function solve(cities) {
+        const start = cities[0].name;
+        const rest = cities.slice(1).map(c => c.name);
+        let bestDist = Infinity, bestRoute = null;
+        for (const perm of heapPerms(rest)) {
+            const route = [start, ...perm, start];
+            const d = routeLen(route, cities);
+            if (d < bestDist) { bestDist = d; bestRoute = route.slice(); }
+        }
+        return { route: bestRoute, dist: bestDist };
+    }
+
+    const optCache = new Array(INST.length).fill(null);
+    function getOpt(i) {
+        if (!optCache[i]) optCache[i] = solve(INST[i].cities);
+        return optCache[i];
+    }
+
+    // ─── SVG RENDERING ───────────────────────────────────────────────────────────
+    const NS = 'http://www.w3.org/2000/svg';
+    const W = 620, H = 400, PAD = 64;
+
+    function project(cities) {
+        const xs = cities.map(c => c.x), ys = cities.map(c => c.y);
+        const x0 = Math.min(...xs), x1 = Math.max(...xs);
+        const y0 = Math.min(...ys), y1 = Math.max(...ys);
+        const rx = x1 - x0 || 1, ry = y1 - y0 || 1;
+        const sc = Math.min((W - 2 * PAD) / rx, (H - 2 * PAD) / ry);
+        const ox = (W - 2 * PAD - rx * sc) / 2;
+        const oy = (H - 2 * PAD - ry * sc) / 2;
+        return cities.map(c => ({
+            ...c,
+            px: PAD + ox + (c.x - x0) * sc,
+            py: H - PAD - oy - (c.y - y0) * sc
+        }));
+    }
+
+    function svgEl(tag, attrs) {
+        const e = document.createElementNS(NS, tag);
+        for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+        return e;
+    }
+
+    function drawSegments(svg, nameArr, pmap, color, dashed) {
+        const pts = nameArr.map(n => pmap[n]).filter(Boolean);
+        for (let i = 0; i < pts.length - 1; i++) {
+            const attrs = {
+                x1: pts[i].px,   y1: pts[i].py,
+                x2: pts[i+1].px, y2: pts[i+1].py,
+                stroke: color, 'stroke-width': 2.5, 'stroke-linecap': 'round'
+            };
+            if (dashed) attrs['stroke-dasharray'] = '8 4';
+            svg.appendChild(svgEl('line', attrs));
+        }
+    }
+
+    function drawCities(svg, proj, missed) {
+        const cx = proj.reduce((s, c) => s + c.px, 0) / proj.length;
+        const cy = proj.reduce((s, c) => s + c.py, 0) / proj.length;
+
+        proj.forEach(c => {
+            const gone = missed.has(c.name);
+
+            // Label position: away from centroid
+            const ang = Math.atan2(c.py - cy, c.px - cx);
+            const LOFF = 21;
+            const lx = c.px + Math.cos(ang) * LOFF;
+            const ly = c.py + Math.sin(ang) * LOFF;
+
+            // Text anchoring
+            const anchor = c.px < cx - 6 ? 'end' : c.px > cx + 6 ? 'start' : 'middle';
+            const base   = c.py < cy - 6 ? 'auto' : c.py > cy + 6 ? 'hanging' : 'middle';
+
+            // Halo (improves legibility over route lines)
+            svg.appendChild(svgEl('circle', {
+                cx: c.px, cy: c.py, r: 12,
+                fill: 'rgba(253,248,241,0.65)', stroke: 'none'
+            }));
+
+            // City dot
+            svg.appendChild(svgEl('circle', {
+                cx: c.px, cy: c.py, r: gone ? 5 : 7,
+                fill:   gone ? '#c8b9a6' : '#2b2420',
+                stroke: gone ? '#94a3b8' : '#f4efe6',
+                'stroke-width': 2
+            }));
+
+            // Label text
+            const txt = svgEl('text', {
+                x: lx, y: ly,
+                'font-family': 'Baskerville,Garamond,serif',
+                'font-size': 12,
+                fill: gone ? '#94a3b8' : '#2b2420',
+                'text-anchor': anchor,
+                'dominant-baseline': base
+            });
+            txt.textContent = gone ? c.name + ' ✗' : c.name;
+            svg.appendChild(txt);
+        });
+    }
+
+    // ─── MAIN RENDER ─────────────────────────────────────────────────────────────
+    let cur = 2; // default: tsp-003 (greedy trap)
+
+    function render(i) {
+        const inst = INST[i];
+        const opt  = getOpt(i);
+        const svg  = document.getElementById('viz-svg');
+        svg.innerHTML = '';
+
+        const proj = project(inst.cities);
+        const pmap = Object.fromEntries(proj.map(c => [c.name, c]));
+
+        // Identify missed cities
+        const allNames = new Set(inst.cities.map(c => c.name));
+        const visited  = new Set(inst.direct.slice(0, -1)); // exclude closing repeat
+        const missed   = new Set([...allNames].filter(n => !visited.has(n)));
+
+        // Classify direct route
+        const isInvalid = missed.size > 0;
+        const dirDist   = isInvalid ? null : routeLen(inst.direct, inst.cities);
+        const gap       = dirDist !== null ? dirDist - opt.dist : null;
+        const isExact   = gap !== null && gap < 0.001;
+        const dirColor  = isInvalid ? '#b91c1c' : isExact ? '#2d6a4f' : '#92400e';
+
+        // Update direct swatch color
+        document.getElementById('dir-swatch').style.color = dirColor;
+
+        // Draw routes first (cities appear on top)
+        const showOpt = document.getElementById('chk-opt').checked;
+        const showDir = document.getElementById('chk-dir').checked;
+        if (showOpt) drawSegments(svg, opt.route,  pmap, '#2d6a4f', false);
+        if (showDir) drawSegments(svg, inst.direct, pmap, dirColor,  isInvalid);
+
+        drawCities(svg, proj, missed);
+
+        // ── Stats panels ──────────────────────────────────────────────────────
+        document.getElementById('stat-inst').innerHTML =
+            `<strong>${inst.id} — ${inst.cities.length} cities</strong>${inst.desc}`;
+
+        const optRouteText = opt.route.slice(0, -1).join(' → ');
+        document.getElementById('stat-opt').innerHTML =
+            `<strong>Optimal route (solver)</strong>
+            <span class="tag tag-ok" style="font-size:0.76rem;">Valid · Exact</span><br>
+            Length: ${opt.dist.toFixed(3)}
+            <div class="viz-route-text">${optRouteText}</div>`;
+
+        const badge = isInvalid
+            ? `<span class="tag tag-bad"  style="font-size:0.76rem;">INVALID — ${[...missed].join(', ')} dropped</span>`
+            : isExact
+            ? `<span class="tag tag-ok"   style="font-size:0.76rem;">Valid · Exact tie</span>`
+            : `<span class="tag tag-warn" style="font-size:0.76rem;">Valid · gap ${gap.toFixed(3)}</span>`;
+
+        const lenLine = isInvalid ? '' : `Length: ${dirDist.toFixed(3)}<br>`;
+        const dirRouteText = inst.direct.slice(0, -1).join(' → ');
+        document.getElementById('stat-dir').innerHTML =
+            `<strong>Direct model route</strong>
+            ${badge}<br>
+            ${lenLine}
+            <div class="viz-route-text">${dirRouteText}</div>`;
+    }
+
+    // ─── TABS ─────────────────────────────────────────────────────────────────────
+    function buildTabs() {
+        const wrap = document.getElementById('viz-tabs');
+        INST.forEach((inst, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'viz-tab' + (i === cur ? ' active' : '');
+            btn.textContent = inst.label;
+            btn.onclick = () => {
+                cur = i;
+                wrap.querySelectorAll('.viz-tab').forEach((b, j) => b.classList.toggle('active', j === i));
+                render(i);
+            };
+            wrap.appendChild(btn);
+        });
+    }
+
+    document.getElementById('chk-opt').onchange = () => render(cur);
+    document.getElementById('chk-dir').onchange = () => render(cur);
+
+    buildTabs();
+    render(cur);
+    </script>
+</body>
+</html>

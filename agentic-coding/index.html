@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Coding Failure Patterns | Project Phoenix</title>
+    <meta name="description" content="Why strong agentic coding systems still collapse in familiar ways. Eight failure families, six evidenced from Project Phoenix operations.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="rain"></div>
+
+<header class="site-header">
+    <div class="badge-row" style="margin-bottom:0.75rem;">
+        <span class="badge">Project Phoenix</span>
+        <span class="badge">2026-03-17</span>
+        <span class="badge badge-cyan">Agentic Coding</span>
+        <span class="badge blink">PROMOTED TO PRIMARY</span>
+    </div>
+    <h1>All Agentic Coding Successes<br>Are Different — But Failures Repeat</h1>
+    <p class="subtitle">Why Strong Agentic Systems Still Collapse In Familiar Ways</p>
+</header>
+
+<nav class="nav">
+    <a href="index.html" class="active">Overview</a>
+    <a href="failures.html">Failure Families</a>
+    <a href="evidence.html">Case Evidence</a>
+</nav>
+
+<div class="stats-row">
+    <div class="stat-box">
+        <div class="number">8</div>
+        <div class="label">Failure Families</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">6</div>
+        <div class="label">Fully Evidenced</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">2</div>
+        <div class="label">Evidence Layers</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">Standards</div>
+        <div class="label">The Response</div>
+    </div>
+</div>
+
+<div class="wrap">
+
+    <div class="callout">
+        <div class="big">1 Asymmetry</div>
+        <div class="label">The Core Finding</div>
+        <p class="note">
+            Successful outputs vary widely — probabilistic systems can explore many useful paths.<br>
+            Failures recur in recognizable families — structural hazards are not equally open-ended.<br>
+            <strong style="color:var(--neon-yellow);">Waiting for more raw model power is not a complete answer.</strong>
+        </p>
+    </div>
+
+    <div class="panel">
+        <h2>Executive Summary</h2>
+        <p>Recent work with Claude, Codex, local agents, and supervised local workflows surfaces an important asymmetry: agentic coding successes vary widely, but failures recur in recognizable families.</p>
+        <p>The success side is diverse because these systems are probabilistic and path-dependent. Strong coding agents can produce materially different but still excellent outcomes — different sequencing choices, different abstractions, different code shapes.</p>
+        <p>The failure side is less diverse. Drift, summit fever, bad context selection, false success, validator-path mistakes, and doom-loop behavior appear again and again. These are not quirks of one model. They are recurring hazards of human-built probabilistic systems operating in difficult, underspecified environments.</p>
+        <p style="color:var(--neon-yellow);">The practical response is not to expect scaling alone to remove these hazards. It is to build better operating standards, better supervision, and better lessons learned.</p>
+    </div>
+
+    <div class="panel panel-cyan">
+        <h2>The Operational Question</h2>
+        <p>The common public question hides the more important one:</p>
+        <div style="margin:0.75rem 0; padding:0.75rem 1rem; border-left:4px solid var(--neon-cyan); background:rgba(0,246,255,0.06);">
+            <p style="color:#888; text-decoration:line-through; margin-bottom:0.4rem;">"Which coding model is best?"</p>
+            <p style="color:var(--neon-cyan); font-size:1rem;">"Why do different strong coding agents produce very different successful outputs — while still failing in the same recurring ways?"</p>
+        </div>
+        <p>The most important differences are not just model differences. They are the interaction of probabilistic models, imperfect harnesses, limited context, and human operating discipline.</p>
+    </div>
+
+    <div class="panel">
+        <h2>Where The Evidence Comes From</h2>
+        <p>This paper emerges from Project Phoenix operations, not impressions. Work involved:</p>
+        <ul>
+            <li>Domain-building with strong hosted coding agents</li>
+            <li>Local-vs-hosted comparative experiments (TourAgent, ShowcaseAgent)</li>
+            <li>Supervised local workflows and ski-chalet offline testing</li>
+            <li>Implementation-agent and supervisor-agent collaboration</li>
+        </ul>
+        <p>That work generated more than code changes. It also generated experiment runbooks, stop conditions, invalid-claim reclassification rules, supervisor interventions, communication logs outside git, and lessons learned from actual drift and recovery.</p>
+        <p>Git history records file changes and final states. It does not reliably capture when drift was first noticed, why a run was invalidated, or how false-success conditions were detected. Supervisor and implementation communication logs act as a second historical layer — the record this paper is built from.</p>
+    </div>
+
+    <div class="panel panel-pink">
+        <h2>The Supervisor Rule</h2>
+        <p style="font-size:1.1rem; color:var(--neon-yellow); text-align:center; padding:0.5rem 0;">
+            The implementation agent makes the run happen.<br>
+            The supervisor makes the result <em>believable</em>.
+        </p>
+        <p>Documented supervisory interventions included: refusing to count artifact-free success claims, invalidating runs when the validator checked the wrong file, separating characterization from comparison, freezing stop conditions, and stopping unjustified scope expansion midstream.</p>
+        <p>Supervision did not merely improve answers. It improved trust.</p>
+    </div>
+
+    <div class="grid-2">
+        <a class="nav-card" href="failures.html">
+            <span class="arrow">→</span>
+            <div class="nav-label">Failure Families</div>
+            <p class="nav-desc">All eight failure families with taxonomy definitions: drift, tool-surface drift, summit fever, bad context selection, false success, doom loops, premature closure, validator-path mismatch.</p>
+        </a>
+        <a class="nav-card" href="evidence.html">
+            <span class="arrow">→</span>
+            <div class="nav-label">Case Evidence</div>
+            <p class="nav-desc">Six failure families evidenced from documented Phoenix incidents — two evidence layers each: the artifact record and the supervisor/implementation operational log.</p>
+        </a>
+    </div>
+
+</div>
+
+<footer class="site-footer">
+    <p>Agentic Coding Failure Patterns · Project Phoenix · 2026-03-17</p>
+    <p style="margin-top:0.4rem;">
+        <a href="../project-phoenix/">Project Phoenix Overview</a> &nbsp;·&nbsp;
+        <a href="../ski-chalet/">Ski Chalet</a> &nbsp;·&nbsp;
+        <a href="../orchestration/">Orchestration Paper</a>
+    </p>
+</footer>
+</body>
+</html>

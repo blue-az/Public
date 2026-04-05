@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalLLMTSP | Frontier Case Study</title>
+    <meta name="description" content="Bounded Codex Frontier vs. Claude Frontier comparison on the TSP ladder. Different failure mode, same architectural conclusion.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Frontier Anchor Case Study</span>
+            <h1>Frontier</h1>
+            <p class="subtitle">Codex Frontier vs. Claude Frontier on the same TSP ladder — two rounds, bounded operator-side comparison.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a href="results.html">Local Models</a>
+            <a href="scale.html">Scale Ladder</a>
+            <a class="active" href="frontier.html">Frontier</a>
+            <a href="viz.html">Visualizer</a>
+        </nav>
+
+        <div class="callout">
+            <p><strong>This is a bounded case study, not a formal benchmark.</strong> Timing and comparability conditions are not identical to the local Ollama runs. The frontier rows are preserved as operator-side workflow evidence, not clean cross-table rows.</p>
+        </div>
+
+        <section class="section">
+            <h2>What The Frontier Adds</h2>
+            <p>The local-model results already show the Phoenix conclusion: at 100 world cities, every tested local model collapsed structurally while the orchestrated path remained correct.</p>
+            <p>The frontier-anchor notes add an important qualification. Stronger models push the first degradation point farther out. The failure mode shifts:</p>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Local models — structural collapse</h3>
+                    <p>Drop cities. Produce invalid tours. This failure is not gradual — it is a hard break in route validity.</p>
+                </div>
+                <div class="card">
+                    <h3>Frontier models — quality drift</h3>
+                    <p>Remain structurally valid at world scale but diverge materially from the deterministic heuristic baseline.</p>
+                </div>
+            </div>
+            <p style="margin-top:1rem;">The failure mode shifts. The architectural conclusion survives both regimes.</p>
+        </section>
+
+        <section class="section">
+            <h2>Frontier Ladder Results</h2>
+            <p>Two bounded frontier assessments run independently on the same fixture set.</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Instance</th>
+                            <th>Cities</th>
+                            <th>Codex Frontier</th>
+                            <th>Claude Frontier</th>
+                            <th>Orch correct?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>tsp-004</td>
+                            <td>8</td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-005</td>
+                            <td>10</td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-006</td>
+                            <td>20</td>
+                            <td><span class="tag tag-ok">gap 0.0 — exact</span></td>
+                            <td><span class="tag tag-warn">gap 0.0 (contaminated run)</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-007</td>
+                            <td>50</td>
+                            <td>not attempted</td>
+                            <td><span class="tag tag-warn">1,484.2 mi gap (12.8%)</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-008</td>
+                            <td>100</td>
+                            <td><span class="tag tag-warn">8,761.4 mi vs heuristic</span></td>
+                            <td><span class="tag tag-warn">4,996.3 mi (7.5%)</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Both frontier models stayed structurally valid across the full tested ladder. Claude Frontier produced the better world-scale direct route quality in the observed run. Neither run changed the orchestrated-path conclusion.</p>
+        </section>
+
+        <section class="section">
+            <h2>Round 1 — Operator Workflow Comparison</h2>
+            <p>Task: assess the fixed TSP ladder for a frontier anchor, preserve results. Common ladder target: tsp-004, tsp-005, tsp-006, optional tsp-007.</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Wall-clock</th>
+                            <th>5h session usage</th>
+                            <th>Weekly usage</th>
+                            <th>User interventions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Codex Frontier</td>
+                            <td>~2 min</td>
+                            <td>7%</td>
+                            <td>2%</td>
+                            <td>none</td>
+                        </tr>
+                        <tr>
+                            <td>Claude Frontier</td>
+                            <td>~5 min</td>
+                            <td>10%</td>
+                            <td>1%</td>
+                            <td>one intervention</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Operator-observed session percentages, not provider token logs. Useful operational signal, not exact cross-provider token accounting.</p>
+        </section>
+
+        <section class="section">
+            <h2>Round 2 — World-Scale Extension</h2>
+            <p>Same general task: extend the ladder to the 100-city world rung.</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Wall-clock</th>
+                            <th>Weekly usage</th>
+                            <th>User interventions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Codex Frontier</td>
+                            <td>under 2 min</td>
+                            <td>4%</td>
+                            <td>none</td>
+                        </tr>
+                        <tr>
+                            <td>Claude Frontier</td>
+                            <td>~3 min</td>
+                            <td>8%</td>
+                            <td>one approval</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Pattern holds across both rounds. Codex Frontier was faster and lower friction. Same interpretation: useful workflow signal, not exact token accounting.</p>
+        </section>
+
+        <section class="section">
+            <h2>Two-Round Case Study Tradeoff</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Codex Frontier — workflow efficiency</h3>
+                    <p>Faster in both rounds, lower observed weekly budget usage, zero interventions required. Better fit for burst-oriented or lower-supervision workflows.</p>
+                </div>
+                <div class="card">
+                    <h3>Claude Frontier — route quality</h3>
+                    <p>Produced the better world-scale direct route in the observed run (~7.5% gap vs heuristic vs ~14.5% for Codex). Worth the overhead when final route quality matters more than throughput.</p>
+                </div>
+            </div>
+            <p style="margin-top:1rem;font-style:italic;">This is a case-study workflow claim, not a universal model ranking. Two rounds on one bounded task domain.</p>
+        </section>
+
+        <section class="section">
+            <h2>What Both Runs Agreed On</h2>
+            <ul>
+                <li>Both preserved clean direct solves for the smaller exact cases</li>
+                <li>Both concluded that the Phoenix architecture lesson did <strong>not</strong> collapse at frontier scale</li>
+                <li>Both refused to force the frontier rows into the shared local-model comparison table, because comparability was not clean enough</li>
+                <li>The orchestrated path matched the deterministic solver on every tested fixture, for both agents</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>TSP Interpretation</h2>
+            <p>The TSP lesson stayed stable even with frontier capability in the loop. Stronger direct solving can delay or reduce obvious failure. That does not remove the architectural decision.</p>
+            <div class="code">correctness should live in the solver, not in the model
+
+stronger models delay failure
+they do not eliminate the need for solver-backed architecture</div>
+        </section>
+
+        <section class="section">
+            <h2>Boundary</h2>
+            <p>This page should be used as a case-study data point, an operator comparison note, and a workflow discussion artifact.</p>
+            <p>This page should <strong>not</strong> be used as a general cross-provider benchmark, an exact token-usage comparison, or a broad claim about all future frontier tasks.</p>
+        </section>
+
+        <footer class="footer">
+            <p>LocalLLMTSP · Frontier Case Study · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>

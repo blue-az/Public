@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence | Where Orchestration Beats Raw Model Power</title>
+    <meta name="description" content="TourAgent, ShowcaseAgent, and Local Model Role Suitability — the three Project Phoenix addendum results that support the orchestration boundary claim.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+
+    <header class="header">
+        <span class="badge">Project Phoenix · Evidence</span>
+        <h1>The Three Addendum Results</h1>
+        <p class="subtitle">TourAgent, ShowcaseAgent, and Role Suitability — read together, not in isolation.</p>
+    </header>
+
+    <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a class="active" href="evidence.html">Evidence</a>
+        <a href="regimes.html">Regime Map</a>
+    </nav>
+
+    <div class="callout">
+        <p>This is a synthesis paper, not a new benchmark program. These results existed before this paper. The contribution is placing them beside each other and reading what they add up to.</p>
+    </div>
+
+    <!-- TourAgent -->
+    <section class="section" id="touragent">
+        <h2>TourAgent — Harness Before Exactness</h2>
+        <p><strong>Investigation:</strong> Tested whether grounding a local model against a deterministic domain substrate removes outright failure before it produces artifact-tight fidelity. Two models evaluated raw and grounded against the same domain task set.</p>
+        <p><strong>The question it answers:</strong> Does a grounding layer change the answer surface in a meaningful way, even if it does not immediately produce exact outputs?</p>
+
+        <h3>Wrong-or-Missing Answer Rate: Raw vs. Grounded</h3>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Raw (wrong or missing / 10)</th>
+                        <th>Grounded (wrong or missing / 10)</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>gemma3:27b</td>
+                        <td>4 / 10</td>
+                        <td><span class="tag tag-ok">0 / 10</span></td>
+                        <td>−4 wrong-or-missing</td>
+                    </tr>
+                    <tr>
+                        <td>qwen2.5-coder:32b</td>
+                        <td>3 / 10</td>
+                        <td><span class="tag tag-ok">0 / 10</span></td>
+                        <td>−3 wrong-or-missing</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="reading-note">Grounding changed the answer surface before exactness improved. Reliability improved before artifact-tight fidelity appeared. The harness did the work, not a model upgrade.</p>
+
+        <h3>What This Tells the Regime Map</h3>
+        <p>In the <em>grounded single-domain use</em> regime, the dominant factor is grounding and deterministic substrate quality — not raw model power. Both models moved to zero failures. What still separates stronger models is higher exactness and less answer softening — but the failure floor was set by the harness, not the model tier.</p>
+    </section>
+
+    <!-- ShowcaseAgent -->
+    <section class="section" id="showcaseagent">
+        <h2>ShowcaseAgent — Compression Before Broad Execution</h2>
+        <p><strong>Investigation:</strong> Tested whether routing and domain compression across a multi-domain portfolio could become useful before every direct-tool execution path became uniform. Four models evaluated against deterministic and model-driven routing paths.</p>
+        <p><strong>The question it answers:</strong> Does the system become navigationally useful before execution symmetry exists across all direct-tool paths?</p>
+
+        <h3>Routing Accuracy: Deterministic vs. Model-Driven</h3>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Routing path</th>
+                        <th>Model</th>
+                        <th>Correct / 41</th>
+                        <th>Accuracy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Deterministic</td>
+                        <td><em>n/a</em></td>
+                        <td>41 / 41</td>
+                        <td><span class="tag tag-ok">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Model-driven</td>
+                        <td>gemma3:27b</td>
+                        <td>39 / 41</td>
+                        <td><span class="tag tag-ok">95%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Model-driven</td>
+                        <td>gpt-oss:20b</td>
+                        <td>39 / 41</td>
+                        <td><span class="tag tag-ok">95%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Model-driven</td>
+                        <td>llama3.1:8b</td>
+                        <td>39 / 41</td>
+                        <td><span class="tag tag-ok">95%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Model-driven</td>
+                        <td>qwen2.5-coder:32b</td>
+                        <td>41 / 41</td>
+                        <td><span class="tag tag-ok">100%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="reading-note">Three models of substantially different sizes reached 39/41. The two missing items are semantic boundary cases shared across the models — not a function of raw model size. The system was navigationally useful long before execution symmetry existed across all direct-tool paths.</p>
+
+        <h3>What This Tells the Regime Map</h3>
+        <p>In the <em>routing and compression</em> regime, the dominant factor is routing structure and compression surface — not which model is strongest. What still separates stronger models is shared semantic boundary cases and family-specific routing quality, not the gap between an 8B and a 32B model on core routing tasks.</p>
+    </section>
+
+    <!-- Role Suitability -->
+    <section class="section" id="rolesuitability">
+        <h2>Local Model Role Suitability — Policy Changes the Boundary</h2>
+        <p><strong>Investigation:</strong> Tested how model-fit shifts when roles are separated (routing, grounded domain use, exactness-sensitive handoff) and when repair policy is made explicit. Five models across three policy levels and a laptop-threshold lane.</p>
+        <p><strong>The question it answers:</strong> Does role and policy selection change the result before raw model power does?</p>
+
+        <h3>Laptop Lane — Strict vs. Safe Repair Policy</h3>
+        <p>The laptop lane used lower-threshold hardware, testing whether usefulness survives after the GPU tier drops.</p>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Strict (/ 6)</th>
+                        <th>Safe repair (/ 6)</th>
+                        <th>Gap closed by repair</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>qwen2.5:14b</td>
+                        <td>4 / 6</td>
+                        <td><span class="tag tag-ok">5 / 6</span></td>
+                        <td>+1</td>
+                    </tr>
+                    <tr>
+                        <td>llama3.1:8b</td>
+                        <td><span class="tag tag-warn">1 / 6</span></td>
+                        <td><span class="tag tag-ok">5 / 6</span></td>
+                        <td>+4</td>
+                    </tr>
+                    <tr>
+                        <td>gpt-oss:20b</td>
+                        <td><span class="tag tag-bad">0 / 6</span></td>
+                        <td><span class="tag tag-bad">0 / 6</span></td>
+                        <td>no change</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="reading-note">A tiny trusted repair layer moved llama3.1:8b from 1/6 to 5/6 — the same score as qwen2.5:14b under safe repair. Repair policy narrowed the practical inter-model gap more than adding raw model headroom did. gpt-oss:20b failed to benefit because its errors fell outside the safe-repair boundary.</p>
+
+        <h3>What This Tells the Regime Map</h3>
+        <p>Two regimes in the map are directly supported here. In the <em>repair-assisted pipeline</em> regime, explicit repair policy is the dominant factor — not the model tier. In the <em>laptop-threshold operation</em> regime, role fit and threshold-appropriate model choice are the dominant factors. Hardware is a threshold condition. Once crossed, organization matters more than further headroom.</p>
+    </section>
+
+    <!-- Convergence -->
+    <section class="section">
+        <h2>What the Three Results Add Up To</h2>
+        <p>Each result, read alone, is a useful data point. Read together, they converge on the same lesson from three different angles:</p>
+        <div class="grid">
+            <div class="card">
+                <h3>Harness → failure floor</h3>
+                <p>TourAgent: grounding set the failure floor. Both models moved to zero failures regardless of their size gap.</p>
+            </div>
+            <div class="card">
+                <h3>Structure → routing quality</h3>
+                <p>ShowcaseAgent: routing structure drove accuracy. An 8B model matched a 32B model on core routing — both hit the same semantic boundary.</p>
+            </div>
+            <div class="card">
+                <h3>Policy → inter-model gap</h3>
+                <p>Role Suitability: a repair layer closed the gap between models more than a model upgrade would have, for the tasks inside its scope.</p>
+            </div>
+        </div>
+        <p style="margin-top:1rem;">The synthesis claim follows: in these regimes, system shape settled the result before raw model power did. The dominant factor was not the model — it was the organization around the model.</p>
+        <a class="back-link" href="regimes.html">See the full regime map →</a>
+    </section>
+
+    <footer class="footer">
+        <p>Where Orchestration Beats Raw Model Power · Evidence · Project Phoenix</p>
+        <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+    </footer>
+
+</div>
+</body>
+</html>

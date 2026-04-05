@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Failure Families | Agentic Coding · Project Phoenix</title>
+    <meta name="description" content="Eight recurring failure families in agentic coding systems — taxonomy definitions from Project Phoenix operations.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="rain"></div>
+
+<header class="site-header">
+    <div class="badge-row" style="margin-bottom:0.75rem;">
+        <span class="badge">Failure Taxonomy</span>
+        <span class="badge badge-cyan">8 Families</span>
+    </div>
+    <h1>Failure Families</h1>
+    <p class="subtitle">Eight recurring patterns. Six fully evidenced from Phoenix operations. Not isolated incidents — operational classes.</p>
+</header>
+
+<nav class="nav">
+    <a href="index.html">Overview</a>
+    <a href="failures.html" class="active">Failure Families</a>
+    <a href="evidence.html">Case Evidence</a>
+</nav>
+
+<div class="stats-row">
+    <div class="stat-box">
+        <div class="number">8</div>
+        <div class="label">Total Families</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">6</div>
+        <div class="label">Evidenced</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">2</div>
+        <div class="label">Adjacent (covered)</div>
+    </div>
+    <div class="stat-box">
+        <div class="number">0</div>
+        <div class="label">Isolated incidents</div>
+    </div>
+</div>
+
+<div class="wrap">
+
+    <div class="panel panel-cyan">
+        <h2>Why Families, Not Incidents</h2>
+        <p>Individual failures look random. Failure families are structural. The distinction matters because it changes the response: a random incident calls for a one-time fix; a structural family calls for a standing standard.</p>
+        <p>These eight families emerged from repeated observation across different agents, different tasks, and different harness configurations. They recur because the underlying causes — probabilistic execution, underspecified environments, imperfect human-built runtimes — are not eliminated by model upgrades alone.</p>
+        <p style="color:var(--neon-yellow);">Families marked <span class="tag tag-evidenced">evidenced</span> have documented Phoenix incidents with two evidence layers. Those marked <span class="tag tag-taxonomy">taxonomy</span> are covered by their adjacent evidenced families.</p>
+    </div>
+
+    <div class="failure">
+        <div class="failure-num">1</div>
+        <div>
+            <h3>Drift &nbsp;<span class="tag tag-taxonomy">taxonomy</span></h3>
+            <p>The system moves away from the intended domain surface, benchmark frame, or allowed tool set — without fully losing the original task. The work continues but on the wrong track.</p>
+            <p>Drift is the broad class. Tool-surface drift (family 2) is its most common, most recoverable subtype in Phoenix work. The general drift pattern covers cases where the frame itself shifts rather than just the tool selection.</p>
+            <p>Adequately covered by Family 2 evidence in the current record.</p>
+        </div>
+    </div>
+
+    <div class="failure">
+        <div class="failure-num">2</div>
+        <div>
+            <h3>Tool-Surface Drift &nbsp;<span class="tag tag-evidenced">evidenced</span></h3>
+            <p>The system reaches for invented or generic tools instead of the real deterministic substrate. User intent is preserved; execution posture is wrong.</p>
+            <p>The V4 ski-chalet evidence shows the exact pattern: in all three recorded rows, the local model understood the question but immediately proposed non-Phoenix execution paths — a Wikipedia-style lookup, invented tool surfaces (<code>TennisStatsPro</code>, <code>TennisRankingsAPI</code>), generic directional answers in place of deterministic tool execution.</p>
+            <p>One structured redirect was enough to recover in each row. The failure is tractable — a control-layer problem, not a model-quality problem — but it recurs without explicit harness pressure.</p>
+            <p><strong style="color:var(--neon-cyan);">Standard:</strong> Hold the candidate-tool list at session start. Make the allowed execution surface explicit in the harness prompt rather than expecting the local model to infer it autonomously.</p>
+        </div>
+    </div>
+
+    <div class="failure">
+        <div class="failure-num">3</div>
+        <div>
+            <h3>Summit Fever &nbsp;<span class="tag tag-evidenced">evidenced</span></h3>
+            <p>The project continues climbing after the useful signal has already been obtained. Scope expands, comparability weakens, runtime confounds grow.</p>
+            <p>The signal was already sufficient to answer the construction question. But the benchmark work drifted into larger task packs, broader domain expansion, and heavy-query runtime confounding anyway — because momentum filled the gap left by absent stopping discipline.</p>
+            <p>Summit fever is not a model-only problem. It is a project-control problem. The clean V1–V3 matrix was defined specifically in response to this episode.</p>
+            <p><strong style="color:var(--neon-cyan);">Standard:</strong> Define stop conditions before the experiment starts. Scope corrections mid-run require explicit reclassification of work already done — not re-labeling.</p>
+        </div>
+    </div>
+
+    <div class="failure">
+        <div class="failure-num">4</div>
+        <div>
+            <h3>Bad Context Selection &nbsp;<span class="tag tag-evidenced">evidenced</span></h3>
+            <p>The wrong files, wrong artifacts, or wrong parts of the task are given priority. The run proceeds and may be internally coherent — but it is structurally wrong from the start because the routing decision was made against the wrong context.</p>
+            <p>The ShowcaseAgent routing evidence shows two structurally coherent failures where correct query intent was mapped to the wrong domain. These did not look like random failures — they looked like domain-boundary ambiguity at a specific router seam.</p>
+            <p>Bad context selection is not always visible as a failure. The run completes, the output is internally coherent. A trace layer that preserves selection reasoning is the earliest detection point.</p>
+            <p><strong style="color:var(--neon-cyan);">Standard:</strong> Build a structured trace layer that preserves selection reasoning. Isolated benchmark misses may be a miss family in disguise — the useful unit is the router seam, not the individual row.</p>
+        </div>
+    </div>
+
+    <div class="failure">
+        <div class="failure-num">5</div>
+        <div>
+            <h3>False Success / Validator-Path Mismatch &nbsp;<span class="tag tag-evidenced">evidenced</span></h3>
+            <p>A result appears successful because the wrong validator, wrong file, or wrong artifact path was used. The trusted execution path failed; the surface check passed.</p>
+            <p>Two Phoenix instances: initial V4 rows gathered against a misframed question (generic usability, not the ski-chalet pattern) appeared to confirm progress but were testing the wrong thing; and individual runs that passed the surface validator while lacking full use-check artifact preservation were classified <code>INVALID_CLAIM</code> rather than allowed to count as results.</p>
+            <p>The <code>SOFT_PASS</code> label was a direct operational response to this hazard — preventing unqualified pass status when autonomous stability was not demonstrated.</p>
+            <p><strong style="color:var(--neon-cyan);">Standard:</strong> Freeze the experimental frame before gathering rows. A row cannot be promoted retroactively into evidence for a question it was not designed to test.</p>
+        </div>
+    </div>
+
+    <div class="failure">
+        <div class="failure-num">6</div>
+        <div>
+            <h3>Doom Loops &nbsp;<span class="tag tag-evidenced">evidenced</span></h3>
+            <p>The system keeps cycling through a bad local pattern without a meaningful state correction. Repeated reformulation, repeated near-miss repair, or repeated return to the same bad operating posture — with no visible state gain.</p>
+            <p>The Phoenix record includes a formal escalation structure (<code>DOOM_LOOP_ESCALATION_RECORD.md</code>) built specifically because this pattern recurred. Representative logged escalation: <em>"I am retrying the same fix path and not learning anything new from the reruns."</em></p>
+            <p>The doom loop threshold is not every hesitation or retry. It is no visible state gain across meaningful action steps.</p>
+            <p><strong style="color:var(--neon-cyan);">Standard:</strong> Preserve current artifacts first, then change strategy. The worker's self-summary is the key diagnostic: if it cannot describe what changed, the loop is confirmed.</p>
+        </div>
+    </div>
+
+    <div class="failure">
+        <div class="failure-num">7</div>
+        <div>
+            <h3>Premature Closure &nbsp;<span class="tag tag-evidenced">evidenced</span></h3>
+            <p>The system declares a result finished before it has been confirmed trustworthy. A partial result passes a surface check; the full trusted execution path has not completed; stopping discipline is absent.</p>
+            <p>Phoenix evidence includes: one <code>INVALID_CLAIM</code> run that passed the surface validator but lacked use-check artifact preservation; two <code>PARTIAL</code> runs with real progress that were not trustworthy as results; and a V3 spec directive that blocked execution until an objective <code>PARTIAL</code> threshold was defined.</p>
+            <p><strong style="color:var(--neon-cyan);">Standard:</strong> Surface validator exit code is not completion. A result is complete only when the full trusted execution path — including artifact preservation through the final phase — has been confirmed. The <code>PARTIAL</code> threshold must be objective, not discretionary.</p>
+        </div>
+    </div>
+
+    <div class="failure">
+        <div class="failure-num">8</div>
+        <div>
+            <h3>Validator-Path Mismatch (Standalone) &nbsp;<span class="tag tag-taxonomy">taxonomy</span></h3>
+            <p>A specific subtype of false success where the validator path itself is structurally disconnected from the trusted execution path. The validator runs; it passes; the thing it validated was not the result.</p>
+            <p>This family is treated as a standalone taxon because the failure mechanism — validator disconnection — is distinct from the experimental-frame error in Family 5. In the current Phoenix record, both instances are covered by the False Success evidence, so a separate standalone case is not required.</p>
+            <p>Adequately covered by Family 5 evidence in the current record.</p>
+        </div>
+    </div>
+
+    <div class="panel panel-pink">
+        <h2>The Structural Explanation</h2>
+        <p>These families recur because their root causes are structural, not accidental:</p>
+        <ul>
+            <li>Probabilistic systems can explore good paths — and they can also drift toward bad ones without an explicit control signal redirecting them</li>
+            <li>Underspecified environments invite execution posture errors — the model knows <em>what</em> to do, not <em>how</em> the harness expects it to do it</li>
+            <li>Imperfect human-built runtimes create artifact preservation gaps, validator disconnects, and scope creep that model capability alone cannot compensate for</li>
+            <li>Momentum in the absence of stopping discipline reliably produces summit fever and premature closure</li>
+        </ul>
+        <p>This explains why waiting for more raw model power is not a complete answer. Better models may reduce some mistakes. But drift, false success, bad context selection, and doom loops are <strong>operational hazards inside complex systems</strong> — not pure intelligence deficits.</p>
+    </div>
+
+</div>
+
+<footer class="site-footer">
+    <p>Agentic Coding Failure Patterns · Failure Families · Project Phoenix · 2026-03-17</p>
+    <p style="margin-top:0.4rem;">
+        <a href="evidence.html">Case Evidence →</a> &nbsp;·&nbsp;
+        <a href="index.html">← Overview</a> &nbsp;·&nbsp;
+        <a href="../project-phoenix/">Project Phoenix</a>
+    </p>
+</footer>
+</body>
+</html>

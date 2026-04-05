@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results | Ski Chalet · Project Phoenix</title>
+    <meta name="description" content="Four results from the ski-chalet investigation — from the lower boundary to the positive prepared-harness claim.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="chalet">
+
+    <header class="header">
+        <div class="badge">Results</div>
+        <h1>What the Evidence Says</h1>
+        <p class="subtitle">Four results. One lower boundary. One positive claim. Two things that define the practical variable.</p>
+    </header>
+
+    <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="harness.html">The Harness</a>
+        <a href="results.html" class="active">Results</a>
+    </nav>
+
+    <div class="stats">
+        <div class="stat">
+            <span class="num">No</span>
+            <span class="label">Raw model alone</span>
+        </div>
+        <div class="stat">
+            <span class="num">Yes</span>
+            <span class="label">Harnessed local</span>
+        </div>
+        <div class="stat">
+            <span class="num">1×</span>
+            <span class="label">Redirect to recover</span>
+        </div>
+        <div class="stat">
+            <span class="num">Harness</span>
+            <span class="label">Practical variable</span>
+        </div>
+    </div>
+
+    <div class="callout">
+        <p>These results are a boundary paper, not a final benchmark against every possible local setup. They establish the lower bound, the positive claim, the dominant failure mode, and the variable that matters most.</p>
+    </div>
+
+    <div class="content">
+
+        <section class="section">
+            <h2>Four Results</h2>
+
+            <div class="result">
+                <div class="result-num">1</div>
+                <div class="result-body">
+                    <h3>Raw local behavior is not enough &nbsp;<span class="tag tag-no">lower boundary</span></h3>
+                    <p>Recent local-mode evidence shows that raw local Gemma is too weak to stand in for useful offline domain work. On fixed domain question sets, the raw model produces answers that are too soft, too incomplete, and too unanchored to be reliable.</p>
+                    <p>The bare-mirror version of the ski-chalet fantasy — one machine, one model, no structure, no harness — gets a firm practical answer: <strong>no</strong>.</p>
+                    <p>This is still a useful result. It defines the lower boundary precisely. The question is not whether raw local works — it does not. The question is what is needed above it.</p>
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-num">2</div>
+                <div class="result-body">
+                    <h3>A harnessed local mode is materially better &nbsp;<span class="tag tag-yes">positive claim</span></h3>
+                    <p>Grounded Gemma performed much better than raw Gemma on the fixed tennis domain question set:</p>
+                    <div class="table-wrap" style="margin: 0.75rem 0;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Dimension</th>
+                                    <th>Raw Gemma</th>
+                                    <th>Grounded Gemma</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Specificity</td>
+                                    <td><span class="tag tag-no">weak</span></td>
+                                    <td><span class="tag tag-yes">stronger</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Alignment to domain</td>
+                                    <td><span class="tag tag-no">weak</span></td>
+                                    <td><span class="tag tag-yes">stronger</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Answer omission rate</td>
+                                    <td><span class="tag tag-no">higher</span></td>
+                                    <td><span class="tag tag-yes">lower</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Wrong-or-missing answers</td>
+                                    <td><span class="tag tag-no">non-zero</span></td>
+                                    <td><span class="tag tag-yes">zero (grounded)</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>This is the first real positive ski-chalet result. It shows that useful offline answering emerges once verified local harness support exists. The harness — not a model upgrade — is what produces the improvement.</p>
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-num">3</div>
+                <div class="result-body">
+                    <h3>The V4 rows exposed the real failure mode &nbsp;<span class="tag tag-partial">diagnostic</span></h3>
+                    <p>The most interpretable V4 ski-chalet evidence showed a specific, recoverable failure pattern:</p>
+                    <ul style="margin: 0.5rem 0 0.5rem 1.2rem;">
+                        <li>The local layer <strong>kept user intent</strong> ✓</li>
+                        <li>It <strong>drifted off the Phoenix tool surface</strong> on the first pass ✗</li>
+                        <li>One structured redirect was enough to <strong>recover</strong> ✓</li>
+                        <li>Final answers were <strong>grounded and useful</strong> ✓</li>
+                    </ul>
+                    <p>The weakness was not total failure. It was tool-surface drift and local instability without enough control pressure. That is a much more tractable problem than total failure — it is a control-layer problem, not a model-quality problem.</p>
+                    <p>One redirect recovered the session. That is the control layer doing its job.</p>
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-num">4</div>
+                <div class="result-body">
+                    <h3>The practical variable is harness level, not model size &nbsp;<span class="tag tag-yes">key finding</span></h3>
+                    <p>The current evidence supports a simple interpretation:</p>
+                    <div class="code">more preparation  → better odds
+more harness      → better odds
+stronger grounding → better odds
+better auditability → better odds
+clearer controls  → better odds
+
+bigger model alone → limited improvement without the above</div>
+                    <p style="margin-top:0.75rem;">The odds of offline success rise with preparation, grounding, auditability, and control — not only with a stronger raw model. This shifts the investment question: instead of "should I upgrade the model?", the more productive question is "should I improve the harness?"</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Interpretation</h2>
+            <p>The ski-chalet result is best understood as a harness boundary result.</p>
+            <p>When the question is framed as "can a raw local model do this alone?", the answer is no. That framing was useful for establishing the lower boundary, but it is not where the interesting result lives.</p>
+            <p>When the question is framed as "can a prepared local system with a working harness do this?", the answer is yes — for Tier 2 operations with the full four-layer harness present.</p>
+            <p>That reframing is not softening the claim. It is making it more honest and more useful. The original thought experiment imagined a blank-box scenario that mostly does not occur in practice. A local-LLM hobbyist who owns a 3090 is very likely to already have Ollama, a model, and some local project structure. The portable bundle is an incremental addition to that existing setup, not a heroic leap.</p>
+        </section>
+
+        <section class="section">
+            <h2>What This Paper Does Not Claim</h2>
+            <ul>
+                <li>That a blank random machine can do this</li>
+                <li>That a raw local model is enough</li>
+                <li>That the setup is ordinary consumer behavior</li>
+                <li>That every offline environment will have the same success profile</li>
+                <li>That the current harness level is final or optimal</li>
+                <li>That the strictest possible version of the original thought experiment passed — it mostly yields a useful "no," and that stricter lane should be kept conceptually distinct</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Why It Matters</h2>
+            <p>This matters because it gives local inference a more honest evaluation frame.</p>
+            <p>Instead of asking: <em>can the model do it alone?</em></p>
+            <p>The better question is: <em>what local preparation and harness level are enough to preserve useful work when the cloud disappears?</em></p>
+            <p>That is more relevant to real resilience and continuity than a pure prompt-only test. It is also the question that a builder can actually act on — because preparation, harness level, and bundle contents are all things you can improve before you leave for the chalet.</p>
+        </section>
+
+        <section class="section">
+            <h2>Working Conclusion</h2>
+            <p>The ski-chalet experiment should be explained as a prepared offline continuity scenario — not as a raw-local-model miracle.</p>
+
+            <div class="callout" style="margin: 1rem 0 0;">
+                <p>A local 3090 setup can remain useful offline when it is supported by a defined harness of deterministic data, grounding, control, and auditability. That is the clearest current ski-chalet result.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        <p>Ski Chalet Harness Boundary · Results · Project Phoenix · 2026-03-14</p>
+        <p style="margin-top:0.4rem;"><a href="harness.html">← The Harness</a> &nbsp;·&nbsp; <a href="../project-phoenix/">Project Phoenix Overview</a> &nbsp;·&nbsp; <a href="../orchestration/">Orchestration Paper</a></p>
+    </footer>
+
+</div>
+</body>
+</html>

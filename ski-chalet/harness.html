@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Harness | Ski Chalet · Project Phoenix</title>
+    <meta name="description" content="The four harness layers, the portable USB bundle, and the three configuration tiers that define offline continuity.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="chalet">
+
+    <header class="header">
+        <div class="badge">The Harness</div>
+        <h1>Prepared for the Cold</h1>
+        <p class="subtitle">Four layers. One bundle. The difference between a blank box and a working offline system.</p>
+    </header>
+
+    <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="harness.html" class="active">The Harness</a>
+        <a href="results.html">Results</a>
+    </nav>
+
+    <div class="stats">
+        <div class="stat">
+            <span class="num">4</span>
+            <span class="label">Harness Layers</span>
+        </div>
+        <div class="stat">
+            <span class="num">9</span>
+            <span class="label">Bundle Contents</span>
+        </div>
+        <div class="stat">
+            <span class="num">3</span>
+            <span class="label">Config Tiers</span>
+        </div>
+        <div class="stat">
+            <span class="num">gemma3:27b</span>
+            <span class="label">Reference Model</span>
+        </div>
+    </div>
+
+    <div class="callout">
+        <p>The harness is what makes the local setup meaningful. Without it, the ski-chalet question gets a clean "no." With it, you have prepared offline continuation. The four layers below are the difference.</p>
+    </div>
+
+    <div class="content">
+
+        <section class="section">
+            <h2>The Four Harness Layers</h2>
+            <p>The working harness is a layered local system. Each layer carries a distinct function. All four are needed for the prepared-chalet scenario to hold.</p>
+
+            <div class="result">
+                <div class="result-num">1</div>
+                <div class="result-body">
+                    <h3>Deterministic Substrate</h3>
+                    <p>The ground-truth layer. Structured datasets, databases, and reference artifacts that the model is grounded against. This is what makes answers checkable. Without a deterministic substrate, the model is just generating — there is no local authority to anchor its outputs against.</p>
+                    <p>At the chalet: the portable bundle carries the domain databases, question banks, and reference answer sheets that constitute the substrate.</p>
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-num">2</div>
+                <div class="result-body">
+                    <h3>Grounding Layer</h3>
+                    <p>The connection between model and substrate. The grounding layer is what moves the model from free generation to substrate-anchored answering. This is the most important layer for the ski-chalet result: grounded Gemma performs materially better than raw Gemma on fixed domain questions.</p>
+                    <p>Grounding changes the answer surface before exactness improves. Reliability improves first. That is the key lesson from TourAgent — and it applies to the chalet scenario directly.</p>
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-num">3</div>
+                <div class="result-body">
+                    <h3>Control Layer</h3>
+                    <p>The structured interaction surface that keeps the local model on the right tool path. The V4 evidence showed that the local layer kept user intent but drifted off the Phoenix tool surface on the first pass. One structured redirect was enough to recover. That redirect is the control layer working.</p>
+                    <p>Without the control layer, tool-surface drift is the dominant failure mode — not total failure, but persistent inefficiency that degrades the offline session over time.</p>
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-num">4</div>
+                <div class="result-body">
+                    <h3>Audit Layer</h3>
+                    <p>The ability to inspect, trace, and verify what the model produced. In an offline scenario, the audit layer is especially important because there is no external check. The user must be able to see whether the model stayed on the substrate, whether it drifted, and whether a given answer is trustworthy.</p>
+                    <p>The audit layer is not about punishing failure — it is about making the offline session observable enough to stay useful.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>The Portable Bundle</h2>
+            <p>The portable bundle is a USB kit that carries the harness into the offline environment. It is what turns a pre-installed local model runtime into a working domain system.</p>
+            <p>A plausible bundle contains:</p>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>Repo Snapshot</h3>
+                    <p>A versioned copy of the Project Phoenix domain repo at a known stable point.</p>
+                </div>
+                <div class="card">
+                    <h3>Local venv</h3>
+                    <p>A portable Python environment with all dependencies already resolved. No internet needed for pip.</p>
+                </div>
+                <div class="card">
+                    <h3>Deterministic Datasets</h3>
+                    <p>The domain data in structured local form — the substrate the model will be grounded against.</p>
+                </div>
+                <div class="card">
+                    <h3>Databases</h3>
+                    <p>SQLite or equivalent local databases carrying the domain's structured reference content.</p>
+                </div>
+                <div class="card">
+                    <h3>Question Banks</h3>
+                    <p>Fixed question sets that let you verify the system is working as expected after setup.</p>
+                </div>
+                <div class="card">
+                    <h3>Grounding Artifacts</h3>
+                    <p>The processed domain artifacts that the grounding layer uses — embeddings, indexes, answer sheets.</p>
+                </div>
+                <div class="card">
+                    <h3>Answer Sheets</h3>
+                    <p>Reference answers for the verification questions. Lets you detect drift and confirm the harness is grounded correctly.</p>
+                </div>
+                <div class="card">
+                    <h3>Scripts</h3>
+                    <p>Setup and run scripts that let you initialize the local environment without manual configuration steps.</p>
+                </div>
+                <div class="card">
+                    <h3>Docs</h3>
+                    <p>Offline documentation and usage notes. You may not remember the exact invocation syntax at the chalet.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Three Configuration Tiers</h2>
+            <p>Not every chalet setup is equal. The paper identifies three tiers of offline configuration that correspond to different levels of what is achievable. The current evidence most clearly supports <strong>Tier 2</strong>.</p>
+
+            <div class="tier">
+                <h3>Tier 1 — Minimal Grounded Chalet</h3>
+                <p>Local model + substrate only. Enough for grounded domain answering on the core question set. Tool-surface drift is likely without the control layer. Verification is limited without the audit layer. The lower bound of useful offline operation.</p>
+            </div>
+
+            <div class="tier tier-2">
+                <h3>Tier 2 — Prepared Chalet Config ← Current evidence supports this</h3>
+                <p>All four harness layers present. Full portable bundle. Structured redirects available. Answers verifiable against the substrate. The scenario this paper is primarily about. Odd, but not impossible.</p>
+            </div>
+
+            <div class="tier tier-3">
+                <h3>Tier 3 — Full Implementation-Agent Chalet</h3>
+                <p>Tier 2 plus a full implementation-agent workflow offline. Code generation, multi-step domain construction, write-then-verify cycles — all without cloud. This tier is not yet well-supported by the current evidence. A useful future boundary to define.</p>
+            </div>
+
+            <p class="reading-note">These tiers are the "next step" from the paper: defining configuration levels precisely so the claim can be stated exactly, rather than as a vague gesture at offline usefulness.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Host Machine Assumptions</h2>
+            <p>The prepared-chalet scenario assumes the host machine provides:</p>
+            <ul>
+                <li>Working GPU drivers</li>
+                <li>A 3090-class GPU</li>
+                <li>Ollama already installed</li>
+                <li>A local model such as <code style="font-family:var(--mono-font); font-size:0.9em;">gemma3:27b</code> already downloaded</li>
+                <li>Enough disk and runtime support to execute the portable bundle</li>
+            </ul>
+            <p>This is not everyday-normal. But it is plausible for the specific class of local-LLM hobbyist that the thought experiment assumes. A person who owns a 3090 and runs local models is, by definition, already closer to this setup than the median user.</p>
+            <p>That is the realism calibration. The scenario is niche. The claim is not that it is common — only that it is achievable by the people most likely to attempt it.</p>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        <p>Ski Chalet Harness Boundary · The Harness · Project Phoenix</p>
+        <p style="margin-top:0.4rem;"><a href="results.html">Results →</a> &nbsp;·&nbsp; <a href="../project-phoenix/">Project Phoenix Overview</a></p>
+    </footer>
+
+</div>
+</body>
+</html>

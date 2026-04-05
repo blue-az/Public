@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regime Map | Where Orchestration Beats Raw Model Power</title>
+    <meta name="description" content="Five operating regimes, the dominant factor in each, and the full interpretation of where system shape settles the result.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+
+    <header class="header">
+        <span class="badge">Project Phoenix · Regime Map</span>
+        <h1>The Regime Map</h1>
+        <p class="subtitle">Five operating regimes. For each: what settled the result, and what still separates stronger models.</p>
+    </header>
+
+    <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="evidence.html">Evidence</a>
+        <a class="active" href="regimes.html">Regime Map</a>
+    </nav>
+
+    <div class="callout">
+        <p>The regime map is the paper's core analytical artifact. It does not invent new evidence — it reads the existing evidence in a structured way, asking for each regime: was it raw model power, or system shape, that settled the result?</p>
+    </div>
+
+    <section class="section">
+        <h2>The Five Regimes</h2>
+        <p>Each regime is defined by a single main question that the system must answer under real operating constraints.</p>
+
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Regime</th>
+                        <th>Main success question</th>
+                        <th>Dominant factor so far</th>
+                        <th>What still separates stronger models</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Routing and compression</strong></td>
+                        <td>Can the system choose the right domain cleanly?</td>
+                        <td>Routing structure and compression surface</td>
+                        <td>Shared semantic boundary cases and family-specific routing quality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grounded single-domain use</strong></td>
+                        <td>Can the system remove outright failure?</td>
+                        <td>Grounding and deterministic substrate quality</td>
+                        <td>Higher exactness and less answer softening</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exactness-sensitive handoff</strong></td>
+                        <td>Can the answer survive a machine-facing contract without repair?</td>
+                        <td>Model fidelity under protocol pressure</td>
+                        <td>Strict schema adherence and lower reject rate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Repair-assisted pipeline</strong></td>
+                        <td>How much gap disappears once tiny trusted repair is allowed?</td>
+                        <td>Explicit repair policy</td>
+                        <td>How much semantic drift remains after safe repair is exhausted</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Laptop-threshold operation</strong></td>
+                        <td>How much usefulness survives after hardware drops?</td>
+                        <td>Role fit and threshold-appropriate model choice</td>
+                        <td>Better low-repair performance and wider stable operating envelope</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="reading-note">This is a synthesis map, not a universal ranking. The "dominant factor" column describes what the Phoenix evidence shows settled the result in each regime. It does not claim these regimes are exhaustive or that the mapping transfers unchanged to other domains.</p>
+    </section>
+
+    <section class="section">
+        <h2>Regime by Regime</h2>
+
+        <h3>Routing and Compression</h3>
+        <p>ShowcaseAgent showed that routing and domain compression across a multi-domain portfolio became useful before every direct-tool execution path became uniform. Three models of substantially different sizes reached 39/41 on the same routing set. The two misses were shared semantic boundary cases — not a function of raw model size. The system was navigationally useful before execution symmetry existed.</p>
+        <p>The dominant factor was routing structure and compression surface. Stronger models are still differentiated by how they handle shared semantic boundary cases, but the baseline routing task was already settled by structure.</p>
+
+        <h3>Grounded Single-Domain Use</h3>
+        <p>TourAgent showed that grounding a local model against a deterministic domain substrate moved both tested models from non-zero wrong-or-missing rates to zero — regardless of their size gap. gemma3:27b went from 4/10 to 0/10; qwen2.5-coder:32b went from 3/10 to 0/10.</p>
+        <p>The dominant factor was grounding and substrate quality. What still separates stronger models is higher exactness and less answer softening above the failure floor — but the floor itself was set by the harness.</p>
+
+        <h3>Exactness-Sensitive Handoff</h3>
+        <p>The exactness-sensitive handoff regime is the one where raw model quality still binds most directly. When the downstream consumer is a machine-facing contract with no repair budget, schema adherence and reject rate matter — and these vary by model in ways that the other regimes do not expose.</p>
+        <p>This is the regime where "upgrade the model" is the most defensible prescription. Orchestration helps — escalation rules and routing can reduce how often the system hits this path — but once inside it, model fidelity under protocol pressure is the dominant factor.</p>
+
+        <h3>Repair-Assisted Pipeline</h3>
+        <p>The Role Suitability laptop lane showed that a tiny trusted repair layer moved llama3.1:8b from 1/6 to 5/6 under safe repair — the same score as qwen2.5:14b under the same policy. The practical inter-model gap narrowed more from the repair layer than it would have from a model upgrade for tasks inside the repair boundary.</p>
+        <p>What still separates stronger models is semantic drift that falls outside the safe-repair scope. gpt-oss:20b failed to benefit at all because its errors were not safe-repairable. That is a structural limit of repair policy, not a reason to abandon it.</p>
+
+        <h3>Laptop-Threshold Operation</h3>
+        <p>The laptop lane also showed that usefulness survives hardware reduction when role and model are matched to the threshold. The hardware is a threshold condition. Once crossed, the question becomes which role and which model fit — not whether to add more GPU.</p>
+        <p>The RTX 3090 was available throughout Phoenix experiments, but the results did not depend on it being the decisive edge. Lower-threshold hardware with the right role assignment already showed real usefulness.</p>
+    </section>
+
+    <section class="section">
+        <h2>Interpretation</h2>
+        <p>The three results converge on the same lesson: the dominant factor changes by regime.</p>
+        <p>In routing and compression, the system became useful when the routing structure was organized — not when the strongest model was selected. In grounded single-domain use, the harness changed the answer surface before the model became exact. In repair-assisted pipelines, explicit policy narrowed the inter-model gap more than adding headroom did. In laptop-threshold operation, role fit and model selection against threshold mattered more than the GPU tier.</p>
+        <p>The hardware conclusion follows from the same logic. A high-end local GPU can be enough without being the decisive edge forever. Once a competence threshold is crossed, organization often matters more than further raw headroom.</p>
+
+        <h3>An Outside Analogy</h3>
+        <p>A recent RTX 3090 comparison between a PyTorch path and a fused Numba CUDA kernel produced a result that looked backward on paper: the fused custom kernel lost badly, and an unhealthy CUDA environment had to be discarded before the comparison was even valid. That is not Phoenix evidence — it is a systems reminder that a theoretically stronger primitive can still lose to a better-organized stack.</p>
+        <p>The interpretive discipline is the same: trust the whole operating result, not just the elegant primitive.</p>
+    </section>
+
+    <section class="section">
+        <h2>The Stack Order</h2>
+        <p>This is the operating hierarchy the paper's claim implies. The dominant factor in most Phoenix regimes so far appears at or before step 5 — model power is the last column, not the first.</p>
+        <div class="grid">
+            <div class="card">
+                <h3>1. Substrate</h3>
+                <p>Deterministic domain substrate. The ground truth layer. What the model is grounded against.</p>
+            </div>
+            <div class="card">
+                <h3>2. Routing</h3>
+                <p>The layer that decides which domain or tool handles the request. Structure here settles routing-regime outcomes.</p>
+            </div>
+            <div class="card">
+                <h3>3. Grounding</h3>
+                <p>The connection between model and substrate. Grounding quality set the failure floor in TourAgent before model power mattered.</p>
+            </div>
+            <div class="card">
+                <h3>4. Escalation &amp; Repair</h3>
+                <p>Explicit policy for what happens when the model falls short. Repair policy closed the practical inter-model gap in the laptop lane.</p>
+            </div>
+            <div class="card">
+                <h3>5. Role Assignment</h3>
+                <p>Matching model to role and hardware threshold. Role fit changed the result before model size did in laptop-lane operation.</p>
+            </div>
+            <div class="card">
+                <h3>6. Model Power</h3>
+                <p>Raw model capability. Still the binding constraint in exactness-sensitive handoff. Not the first column in the other four regimes.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Why This Matters</h2>
+        <p>Most local-model evaluation stops at a flat ranking: which model scored highest on a benchmark. That framing is incomplete once real operating constraints are included — downstream machine-facing contracts, hardware thresholds, repair budgets, and role requirements all change which model actually wins.</p>
+        <p>The regime map is the useful artifact: it tells a builder where to invest in system organization and where raw model quality is still the binding constraint. That is a more actionable output than a leaderboard row.</p>
+        <p>For Project Phoenix specifically, this paper is the synthesis step that promotes the three addendum papers from standalone evaluations into a coherent systems claim.</p>
+    </section>
+
+    <section class="section">
+        <h2>Conclusion</h2>
+        <p>The main lesson of the addendum is not that one local model finally won. It is that the useful unit is not the naked model and not the harness in isolation. It is the organized operating stack.</p>
+        <p>That stack includes substrate, routing, grounding, repair policy, role selection — and only then model power.</p>
+        <p>That is where orchestration beats raw model power: not everywhere, not always, but in enough real regimes that flat model rankings are no longer a sufficient description of system quality.</p>
+    </section>
+
+    <footer class="footer">
+        <p>Where Orchestration Beats Raw Model Power · Regime Map · Project Phoenix · 2026-04-04</p>
+        <p><a href="../project-phoenix/">Project Phoenix Overview</a> · <a href="../local-llm-tsp/">LocalLLMTSP</a></p>
+    </footer>
+
+</div>
+</body>
+</html>

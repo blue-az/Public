@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalLLMTSP | Local Model Results</title>
+    <meta name="description" content="Arizona ladder results for direct vs. orchestrated local LLM solving on fixed TSP instances.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Local Model Results</span>
+            <h1>Arizona Ladder</h1>
+            <p class="subtitle">Direct local-model solving vs. orchestrated solver-backed path on fixed Arizona fixtures.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a class="active" href="results.html">Local Models</a>
+            <a href="scale.html">Scale Ladder</a>
+            <a href="frontier.html">Frontier</a>
+            <a href="viz.html">Visualizer</a>
+        </nav>
+
+        <div class="callout">
+            <p>The simplest evidence: hold the workload fixed, vary only the model, and compare the direct path against the orchestrated path.</p>
+        </div>
+
+        <section class="section">
+            <h2>Compact Arizona Summary</h2>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Instance</th>
+                            <th>Cities</th>
+                            <th>gemma4:26b</th>
+                            <th>gemma4:e4b</th>
+                            <th>gemma3:27b</th>
+                            <th>qwen2.5:14b</th>
+                            <th>llama3.1:8b</th>
+                            <th>llama3.2:3b</th>
+                            <th>Orch correct?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>tsp-003</td>
+                            <td>6</td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-warn">gap 4.19</span></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-004</td>
+                            <td>8</td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-warn">gap 2.11</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-bad">duplicate city</span></td>
+                            <td><span class="tag tag-bad">missing city</span></td>
+                            <td><span class="tag tag-bad">duplicate city</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>tsp-005</td>
+                            <td>10</td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-warn">gap 3.82</span></td>
+                            <td><span class="tag tag-warn">gap 5.43</span></td>
+                            <td><span class="tag tag-warn">gap 18.42</span></td>
+                            <td><span class="tag tag-warn">gap 20.85</span></td>
+                            <td><span class="tag tag-bad">duplicate Phoenix</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">gemma4:26b is the first local model to achieve exact ties across the full Arizona ladder. gemma4:e4b cracked the greedy trap (tsp-003) that gemma3:27b could not. The orchestrated path remained correct across every model and every instance.</p>
+        </section>
+
+        <section class="section">
+            <h2>Gemma 4 Results</h2>
+            <p>Two gemma4 MoE models were added to the ladder — both run on an RTX 3090 via Ollama with default quantization.</p>
+
+            <h3>gemma4:e4b — Arizona Ladder</h3>
+            <p>11 GB loaded · ~4B active parameters</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Instance</th>
+                            <th>Cities</th>
+                            <th>Direct valid?</th>
+                            <th>Direct gap</th>
+                            <th>Orch exact?</th>
+                            <th>Direct time</th>
+                            <th>Orch time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>tsp-001</td><td>4</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>15.210s</td><td>10.038s</td>
+                        </tr>
+                        <tr>
+                            <td>tsp-002</td><td>5</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 1.769079</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>28.597s</td><td>9.829s</td>
+                        </tr>
+                        <tr>
+                            <td>tsp-003</td><td>6</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>29.426s</td><td>10.002s</td>
+                        </tr>
+                        <tr>
+                            <td>tsp-004</td><td>8</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 2.10799</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>54.150s</td><td>6.356s</td>
+                        </tr>
+                        <tr>
+                            <td>tsp-005</td><td>10</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 3.819021</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>32.654s</td><td>10.292s</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Zero structural failures. Cracked the greedy trap (tsp-003) exactly — gemma3:27b had a gap of 4.185 there. Mixed quality elsewhere vs gemma3:27b. Collapsed at world-100 with 9 missing cities, same count as gemma3:27b.</p>
+
+            <h3>gemma4:26b — Arizona Ladder</h3>
+            <p>17 GB loaded · ~26B total / 4B active (larger gate) · first local model to achieve 5/5 exact ties</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Instance</th>
+                            <th>Cities</th>
+                            <th>Direct valid?</th>
+                            <th>Direct gap</th>
+                            <th>Orch exact?</th>
+                            <th>Direct time</th>
+                            <th>Orch time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>tsp-001</td><td>4</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>7.059s</td><td>10.172s</td>
+                        </tr>
+                        <tr>
+                            <td>tsp-002</td><td>5</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>100.852s</td><td>10.384s</td>
+                        </tr>
+                        <tr>
+                            <td>tsp-003</td><td>6</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>123.816s</td><td>11.315s</td>
+                        </tr>
+                        <tr>
+                            <td>tsp-004</td><td>8</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>181.311s</td><td>10.575s</td>
+                        </tr>
+                        <tr>
+                            <td>tsp-005</td><td>10</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>292.824s</td><td>12.430s</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Perfect direct quality across all five Arizona fixtures — the first local model to achieve this. The cost: direct solve time scales from 7s (4 cities) to 293s (10 cities). At world-100, it dropped only 2 cities (Hanoi, Busan) — the closest any local model has come to structural validity at that scale. The orchestrated path stays flat at 10–16s regardless of instance size.</p>
+        </section>
+
+        <section class="section">
+            <h2>8-City Arizona Comparison</h2>
+            <p>Fixture: tsp-004 · az_large · 8 cities · brute-force exact solver</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Direct valid?</th>
+                            <th>Direct outcome</th>
+                            <th>Orch exact?</th>
+                            <th>Direct time</th>
+                            <th>Orch time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>gemma3:27b</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>20.394s</td>
+                            <td>14.926s</td>
+                        </tr>
+                        <tr>
+                            <td>qwen2.5:14b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>duplicate-city route</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>28.359s</td>
+                            <td>5.852s</td>
+                        </tr>
+                        <tr>
+                            <td>llama3.1:8b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>missing-city route</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>8.998s</td>
+                            <td>3.474s</td>
+                        </tr>
+                        <tr>
+                            <td>llama3.2:3b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>duplicate-city route</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>5.918s</td>
+                            <td>1.843s</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">At 8 cities, direct local-model solving already varies from exact to structurally invalid. The orchestrated path stayed exact across all tested models.</p>
+        </section>
+
+        <section class="section">
+            <h2>10-City Arizona Comparison</h2>
+            <p>Fixture: tsp-005 · az_large · 10 cities · brute-force exact solver</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Direct valid?</th>
+                            <th>Direct outcome</th>
+                            <th>Orch exact?</th>
+                            <th>Direct time</th>
+                            <th>Orch time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>gemma3:27b</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 5.432581</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>25.065s</td>
+                            <td>12.990s</td>
+                        </tr>
+                        <tr>
+                            <td>qwen2.5:14b</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 18.416634</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>14.665s</td>
+                            <td>8.215s</td>
+                        </tr>
+                        <tr>
+                            <td>llama3.1:8b</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 20.846102</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>9.132s</td>
+                            <td>4.806s</td>
+                        </tr>
+                        <tr>
+                            <td>llama3.2:3b</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>duplicate Phoenix</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>5.636s</td>
+                            <td>3.244s</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">At 10 cities, even the stronger direct models remain suboptimal. The weakest model becomes structurally invalid. The orchestrated path stayed exact across all tested models.</p>
+        </section>
+
+        <section class="section">
+            <h2>gemma3:27b — Full Arizona Fixture Ladder</h2>
+            <p>The stronger direct model held across every Arizona case — but still drifted from optimal on harder instances.</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Arizona case</th>
+                            <th>Instance</th>
+                            <th>Cities</th>
+                            <th>Direct valid?</th>
+                            <th>Direct outcome</th>
+                            <th>Orch exact?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Easy perimeter</td>
+                            <td>tsp-001</td>
+                            <td>4</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>Clustered</td>
+                            <td>tsp-002</td>
+                            <td>5</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 0.724103</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>Greedy trap</td>
+                            <td>tsp-003</td>
+                            <td>6</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 4.185364</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>Larger fixture</td>
+                            <td>tsp-004</td>
+                            <td>8</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>Larger fixture</td>
+                            <td>tsp-005</td>
+                            <td>10</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td>gap 5.432581</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">The direct path can stay structurally valid while still drifting away from optimal. The orchestrated path stayed exact across the whole fixture ladder.</p>
+        </section>
+
+        <section class="section">
+            <h2>llama3.2:3b — Full Arizona Fixture Ladder</h2>
+            <p>The smallest tested model shows the opposite edge: structural failure begins early once the fixture becomes even slightly more demanding.</p>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Arizona case</th>
+                            <th>Instance</th>
+                            <th>Cities</th>
+                            <th>Direct valid?</th>
+                            <th>Direct outcome</th>
+                            <th>Orch exact?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Easy perimeter</td>
+                            <td>tsp-001</td>
+                            <td>4</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                            <td><span class="tag tag-ok">exact tie</span></td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>Clustered</td>
+                            <td>tsp-002</td>
+                            <td>5</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>missing-city route</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>Greedy trap</td>
+                            <td>tsp-003</td>
+                            <td>6</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>missing-city route</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>Larger fixture</td>
+                            <td>tsp-004</td>
+                            <td>8</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>duplicate Phoenix</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                        <tr>
+                            <td>Larger fixture</td>
+                            <td>tsp-005</td>
+                            <td>10</td>
+                            <td><span class="tag tag-bad">no</span></td>
+                            <td>duplicate Phoenix</td>
+                            <td><span class="tag tag-ok">yes</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">The smallest model can still succeed on the very smallest case. The orchestrated path stayed exact across the whole fixture ladder regardless.</p>
+        </section>
+
+        <section class="section">
+            <h2>Model-by-Model Reading</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>gemma3:27b</h3>
+                    <p>Strongest direct model in the Arizona slice. Still not a reliable reason to make the model the solver — even a best-case result carries workload sensitivity.</p>
+                </div>
+                <div class="card">
+                    <h3>qwen2.5:14b</h3>
+                    <p>Can stay structurally valid while still drifting far from the optimal route. Structural validity and solution quality are separate concerns.</p>
+                </div>
+                <div class="card">
+                    <h3>llama3.1:8b</h3>
+                    <p>Stayed structurally valid on the 10-city slice but direct quality degraded materially as the workload grew.</p>
+                </div>
+                <div class="card">
+                    <h3>llama3.2:3b</h3>
+                    <p>Fast, but becomes structurally invalid on both fixed comparison slices. Speed advantage does not offset correctness failure.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Phoenix Point</h2>
+            <p>When the model is asked to <strong>directly solve</strong> the optimization problem, quality varies materially by model and workload.</p>
+            <p>When the model is used to <strong>interpret, route, and explain</strong> around a deterministic solver, correctness stays stable.</p>
+            <p><em>One-sentence version: the LLM is useful — just not as the solver.</em></p>
+        </section>
+
+        <footer class="footer">
+            <p>LocalLLMTSP · Local Model Results · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>
