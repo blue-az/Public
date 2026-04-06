@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Grounded Domain Agent | Answer Modes</title>
+    <meta name="description" content="Four answer modes with explicit claim boundaries: raw, grounded, artifact, implementation-agent.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Answer Modes</span>
+            <h1>Modes</h1>
+            <p class="subtitle">Four modes. Four different claim boundaries. Never collapse them into one vague category.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a class="active" href="modes.html">Modes</a>
+            <a href="harness.html">Harness</a>
+            <a href="spec.html">Spec</a>
+        </nav>
+
+        <div class="callout">
+            <p>The reason mode separation matters is not rigor for its own sake. It is that collapsing all local results into one vague category ("local LLM result") makes every claim uninterpretable. These boundaries are what make results reproducible and trustworthy.</p>
+        </div>
+
+        <section class="section">
+            <h2>Mode Summary</h2>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>What the model sees</th>
+                            <th>Default use</th>
+                            <th>Claim boundary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>raw</code></td>
+                            <td>User request only</td>
+                            <td>Baseline / debug</td>
+                            <td>Does <em>not</em> prove domain usefulness</td>
+                        </tr>
+                        <tr>
+                            <td><code>grounded</code></td>
+                            <td>Request + verified local context</td>
+                            <td>Default user-facing mode</td>
+                            <td>Proves constrained usefulness, not independent reasoning</td>
+                        </tr>
+                        <tr>
+                            <td><code>artifact</code></td>
+                            <td>Answer returned from validated precomputed layer</td>
+                            <td>Stable demos, presentations</td>
+                            <td>Proves validated answer availability, not live execution</td>
+                        </tr>
+                        <tr>
+                            <td><code>implementation_agent</code></td>
+                            <td>Model runs inside deterministic workflow</td>
+                            <td>Escalation / traceability</td>
+                            <td>Proves workflow capability, not raw-model strength</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">These are not a quality ranking. They are a claim boundary map. A grounded result is not "better than" a raw result in every context — it is a result with a different, clearer claim about what it proves.</p>
+        </section>
+
+        <section class="section">
+            <h2>Raw Mode</h2>
+            <p><strong>What it is:</strong> The local model sees only the user question. No verified context is injected first.</p>
+
+            <h3>What it proves</h3>
+            <p>Baseline local-model behavior on its own. Whether the model can answer plausibly without grounding.</p>
+
+            <h3>What it does not prove</h3>
+            <ul>
+                <li>Deterministic correctness</li>
+                <li>Reliable domain usefulness</li>
+                <li>Tool-use capability</li>
+            </ul>
+
+            <h3>Typical failure mode</h3>
+            <p>Plausible but wrong answers. Omission on list or set questions. Refusal on precise statistical questions.</p>
+
+            <h3>Correct use</h3>
+            <p>Baseline and debugging only. Raw results do not justify claims about domain usefulness. If you are tempted to publish a raw result as a domain capability claim, you are miscategorizing the experiment.</p>
+        </section>
+
+        <section class="section">
+            <h2>Grounded Mode</h2>
+            <p><strong>What it is:</strong> The local model sees the question plus verified domain context first. In TourAgent this means a deterministic answer seed, tool path, and evidence bundle injected into the prompt before the model responds.</p>
+
+            <h3>What it proves</h3>
+            <p>Constrained local usefulness. Whether the model can produce a good user-facing answer when facts are already verified. The practical value of grounding without full workflow execution.</p>
+
+            <h3>What it does not prove</h3>
+            <ul>
+                <li>Independent reasoning strength of the model</li>
+                <li>Live tool execution capability</li>
+                <li>General question-answering outside the grounded surface</li>
+            </ul>
+
+            <h3>Typical failure mode</h3>
+            <p>Good wording over a fixed validated surface, but no ability to go beyond it honestly. The model is a constrained answer renderer here, not an independent reasoner.</p>
+
+            <h3>Why it is the default</h3>
+            <p>Grounded mode balances usability, rigor, and local feasibility. The model adds presentation quality on top of deterministic correctness. That is a real contribution without overclaiming what the model is doing.</p>
+        </section>
+
+        <section class="section">
+            <h2>Artifact Mode</h2>
+            <p><strong>What it is:</strong> The system returns an answer from a validated precomputed answer layer. No live tool execution happens at answer time.</p>
+
+            <h3>What it proves</h3>
+            <p>Stable validated answer availability. Repeatable presentation of a frozen or overlaid answer surface.</p>
+
+            <h3>What it does not prove</h3>
+            <ul>
+                <li>Live tool execution</li>
+                <li>Live agent reasoning</li>
+                <li>Model capability</li>
+            </ul>
+
+            <h3>Typical failure mode</h3>
+            <p>Overclaim if presented as though tools are running live. An artifact answer is fast and stable precisely because it is not running live — that is a feature, not a limitation, but it must be declared.</p>
+
+            <h3>Correct use</h3>
+            <p>Stable demonstrations, presentations, frozen validation surfaces. The TourAgent CLI <code>--mode agent</code> flag is actually artifact mode — the internal implementation label and the audience-facing label are deliberately separated.</p>
+        </section>
+
+        <section class="section">
+            <h2>Implementation-Agent Mode</h2>
+            <p><strong>What it is:</strong> The local model operates inside a deterministic workflow. That can include tools, file reads, validation checks, logging, and artifact preservation. The model is one step in a traceable pipeline, not a freeform answerer.</p>
+
+            <h3>What it proves</h3>
+            <p>Workflow capability under controlled local constraints. This is the strongest local claim among the current modes — the most meaningful one for capability claims because it shows the model contributing usefully inside a real deterministic system.</p>
+
+            <h3>What it does not prove</h3>
+            <ul>
+                <li>Raw-model strength</li>
+                <li>General intelligence outside the workflow</li>
+                <li>That the same result would happen in raw or prompt-only mode</li>
+            </ul>
+
+            <h3>Typical failure mode</h3>
+            <p>Slow recovery on multi-step tasks. Higher scaffolding cost even when the final answer is correct. This mode earns the most trust but costs the most execution time.</p>
+
+            <h3>When to use it</h3>
+            <p>When traceability matters. When the answer will be saved as an artifact. When the user needs to know exactly which tools ran and what evidence supported the answer.</p>
+        </section>
+
+        <section class="section">
+            <h2>Audience Translation</h2>
+            <p>For external explanation, the cleanest wording for talks, papers, and demos:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Internal label</th>
+                            <th>Plain-language equivalent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>raw</code></td>
+                            <td>Model alone</td>
+                        </tr>
+                        <tr>
+                            <td><code>grounded</code></td>
+                            <td>Model plus verified context</td>
+                        </tr>
+                        <tr>
+                            <td><code>artifact</code></td>
+                            <td>Validated answer layer</td>
+                        </tr>
+                        <tr>
+                            <td><code>implementation_agent</code></td>
+                            <td>Controlled local workflow</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">The internal labels match the CLI flags. The plain-language equivalents are for external communication. Use both consistently — the internal labels preserve technical precision; the audience labels preserve clarity.</p>
+        </section>
+
+        <footer class="footer">
+            <p>Offline Grounded Domain Agent · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>

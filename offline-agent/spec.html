@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Grounded Domain Agent | Domain Spec</title>
+    <meta name="description" content="Minimal domain contract, claim rules, and the reusable CLI pattern.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Domain Spec</span>
+            <h1>Spec</h1>
+            <p class="subtitle">Minimal domain contract, claim rules, and the reusable multi-domain shell.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a href="modes.html">Modes</a>
+            <a href="harness.html">Harness</a>
+            <a class="active" href="spec.html">Spec</a>
+        </nav>
+
+        <div class="callout">
+            <p>A domain is not complete until it can declare what mode produced every answer, where the evidence came from, and which questions are the fixed validation surface. Those three things together make a domain result interpretable rather than merely plausible.</p>
+        </div>
+
+        <section class="section">
+            <h2>Minimal Domain Contract</h2>
+            <p>To support the offline grounded-agent pattern, a domain must define four packs.</p>
+
+            <h3>Domain Pack</h3>
+            <ul>
+                <li>Domain purpose — what question surface this domain answers</li>
+                <li>Deterministic substrate — what local data and logic it draws from</li>
+                <li>Fixed validation surface — the minimum question or request set</li>
+                <li>Time or snapshot boundary if the data has a freshness constraint</li>
+            </ul>
+
+            <h3>Grounding Pack</h3>
+            <ul>
+                <li>Verified seed or evidence builder — how the domain produces local context</li>
+                <li>Prompt template — how that context is injected before the model sees the question</li>
+                <li>Output schema — what fields the grounded answer must include</li>
+                <li>Logging path — where grounded run records go</li>
+            </ul>
+
+            <h3>Artifact Pack</h3>
+            <ul>
+                <li>Saved validated answer artifact — the frozen or overlaid answer surface</li>
+                <li>Artifact provenance fields — mode, snapshot, tool path, validation status</li>
+                <li>Rerun or update policy — when the artifact should be regenerated</li>
+            </ul>
+
+            <h3>Implementation-Agent Pack</h3>
+            <ul>
+                <li>Deterministic runner — the workflow script or module</li>
+                <li>Validation checks — what the runner verifies before accepting an answer</li>
+                <li>Error handling — how the runner signals and recovers from tool failure</li>
+                <li>Artifact preservation — how results are saved and identified</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Required Recorded Fields</h2>
+            <p>Every run or answer surface should record, where applicable:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>domain</code></td>
+                            <td>Which domain produced this result</td>
+                        </tr>
+                        <tr>
+                            <td><code>mode</code></td>
+                            <td>raw / grounded / artifact / implementation_agent</td>
+                        </tr>
+                        <tr>
+                            <td><code>question_set</code> or <code>request_set</code></td>
+                            <td>Which fixed surface this run covers</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>Which model was used for any model-facing steps</td>
+                        </tr>
+                        <tr>
+                            <td><code>runtime</code></td>
+                            <td>Elapsed time for reproducibility comparison</td>
+                        </tr>
+                        <tr>
+                            <td><code>evidence_source</code></td>
+                            <td>What substrate or artifact the answer drew from</td>
+                        </tr>
+                        <tr>
+                            <td><code>source_type</code></td>
+                            <td>database / file / artifact / live-tool</td>
+                        </tr>
+                        <tr>
+                            <td><code>source_references</code></td>
+                            <td>Specific files, tables, or artifact IDs</td>
+                        </tr>
+                        <tr>
+                            <td><code>tool_path</code></td>
+                            <td>Ordered list of tools or queries that ran</td>
+                        </tr>
+                        <tr>
+                            <td><code>validation_status</code></td>
+                            <td>Whether the answer was checked against the validation surface</td>
+                        </tr>
+                        <tr>
+                            <td><code>snapshot_boundary</code></td>
+                            <td>Data freshness boundary if applicable</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">This schema is the minimum that keeps results interpretable later. Partial records are acceptable — a grounded run may not have a tool_path if the grounding was a static seed. What matters is that every field that applies is present.</p>
+        </section>
+
+        <section class="section">
+            <h2>Claim Rules</h2>
+            <p>Use these rules consistently across all Phoenix domain reporting.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>What it justifies</th>
+                            <th>What it does not justify</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>raw</code></td>
+                            <td>Baseline model behavior observation</td>
+                            <td>Claims about domain usefulness</td>
+                        </tr>
+                        <tr>
+                            <td><code>grounded</code></td>
+                            <td>Claims about constrained usefulness</td>
+                            <td>Claims about independent model reasoning</td>
+                        </tr>
+                        <tr>
+                            <td><code>artifact</code></td>
+                            <td>Claims about validated answer availability</td>
+                            <td>Claims about live execution or tool capability</td>
+                        </tr>
+                        <tr>
+                            <td><code>implementation_agent</code></td>
+                            <td>Claims about controlled workflow capability</td>
+                            <td>Claims about raw-model strength outside the workflow</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="reading-note">Do not collapse these into one vague category like "local LLM result." That compression makes every claim uninterpretable. The claim rules are the accountability layer for the whole pattern.</p>
+        </section>
+
+        <section class="section">
+            <h2>Reusable CLI — Multi-Domain Shell</h2>
+            <p>The current implementation exposes a shared multi-domain entrypoint at <code>domains/offline_agent_cli.py</code>. It routes to domain-specific handlers while sharing the provenance schema and mode dispatch logic.</p>
+
+            <h3>Currently supported domains</h3>
+            <ul>
+                <li><code>touragent</code> — tennis domain analytics, full reference implementation</li>
+                <li><code>iso13485</code> — ISO standards lookup</li>
+                <li><code>globaltemperature</code> — historical climate records</li>
+            </ul>
+
+            <h3>Shared output schema</h3>
+            <div class="code">Mode: {mode}
+Question: {question}
+
+{answer}
+
+Runtime: {runtime_seconds:.2f}s
+Provenance: {provenance}
+Validation: {validation_status}        (when applicable)
+Source Type: {source_type}             (when applicable)
+Tool Path: {tool_path}                 (when applicable)</div>
+
+            <h3>Mode normalization</h3>
+            <p>The CLI normalizes the legacy <code>agent</code> flag to <code>artifact</code> internally. The audience-facing label and the internal implementation label are deliberately separated — <code>artifact</code> is the accurate technical description; <code>agent</code> was the original CLI keyword retained for backward compatibility.</p>
+        </section>
+
+        <section class="section">
+            <h2>Working Conclusion</h2>
+            <p>The broader Phoenix architecture should be:</p>
+            <div class="code">offline grounded domain agents built on deterministic local substrates,
+with grounded answering as the default,
+implementation-agent execution as the escalation path,
+and explicit provenance on every answer surface.</div>
+            <p style="margin-top: 0.9rem;">That is the clearest reusable outcome of the TourAgent work. The near-term goal is not to turn every domain into a full offline agent at once — it is to identify which domains are good candidates, apply the same explanation and validation discipline, and reuse the pattern where the substrate justifies it.</p>
+            <p><em>Stronger models extend the range of what grounding can accomplish. They do not eliminate the need for a grounded substrate underneath.</em></p>
+        </section>
+
+        <footer class="footer">
+            <p>Offline Grounded Domain Agent · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>

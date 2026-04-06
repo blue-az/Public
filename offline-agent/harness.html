@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Grounded Domain Agent | The Harness</title>
+    <meta name="description" content="Six layers that turn a local model into an offline grounded domain system.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Architecture</span>
+            <h1>The Harness</h1>
+            <p class="subtitle">Six layers that turn a local model into an operationally useful offline domain system.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a href="modes.html">Modes</a>
+            <a class="active" href="harness.html">Harness</a>
+            <a href="spec.html">Spec</a>
+        </nav>
+
+        <div class="callout">
+            <p>The harness is not a wrapper that makes a weak model seem stronger. It is the part of the system that ensures the model's output connects to something real — and that the connection is declared, not assumed.</p>
+        </div>
+
+        <section class="section">
+            <h2>Six Layers</h2>
+
+            <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 0.5rem;">
+                <div class="layer-card">
+                    <div class="layer-num">1</div>
+                    <div class="layer-body">
+                        <h3>Stable Entrypoint</h3>
+                        <p>One domain-facing surface rather than visible tool chaos. The entrypoint may be a CLI, cockpit, or agent-facing wrapper — but it hides internal tool complexity from the model and the user. This preserves the useful part of the meta-tool idea: one visible domain surface with deterministic routing underneath.</p>
+                    </div>
+                </div>
+
+                <div class="layer-card">
+                    <div class="layer-num">2</div>
+                    <div class="layer-body">
+                        <h3>Deterministic Substrate</h3>
+                        <p>Local databases, local files, deterministic service layers, reproducible queries, fixed transforms. Without this the system collapses into a local chatbot rather than a domain agent. The substrate is what the grounding layer draws from — if the substrate is not deterministic, every answer above it is suspect.</p>
+                    </div>
+                </div>
+
+                <div class="layer-card">
+                    <div class="layer-num">3</div>
+                    <div class="layer-body">
+                        <h3>Grounding</h3>
+                        <p>Verified evidence bundles, answer seeds, tool-path summaries, and local context injection. The grounding layer is what turns a model from a freeform guesser into a constrained domain answer renderer. Grounding must come from the deterministic substrate — never from the model's prior output feeding into itself.</p>
+                    </div>
+                </div>
+
+                <div class="layer-card">
+                    <div class="layer-num">4</div>
+                    <div class="layer-body">
+                        <h3>Implementation Layer</h3>
+                        <p>Controlled workflow execution through deterministic tools, file reads, validation checks, and saved artifacts. This is the escalation path for when a grounded answer is not enough — when the user needs full traceability or the answer will be preserved as a formal artifact. The model is one step in a real traceable pipeline.</p>
+                    </div>
+                </div>
+
+                <div class="layer-card">
+                    <div class="layer-num">5</div>
+                    <div class="layer-body">
+                        <h3>Provenance</h3>
+                        <p>Mode, source class, snapshot boundary, and tool path where applicable. Every serious answer should carry enough metadata to explain which mode produced it, what evidence or artifact it used, what time boundary applies, whether tools were run live, and whether validation was applied. Provenance is what makes a result interpretable later.</p>
+                    </div>
+                </div>
+
+                <div class="layer-card">
+                    <div class="layer-num">6</div>
+                    <div class="layer-body">
+                        <h3>Validation</h3>
+                        <p>A fixed request surface, repeatability policy, and saved answer artifact. This is what keeps the domain useful rather than merely plausible. Validation means: the same questions should produce the same answers, and those answers should be checkable against a ground truth. Without this layer, the system can drift without detection.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>What Each Layer Does For The System</h2>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Layer</th>
+                            <th>What it prevents</th>
+                            <th>What it enables</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Stable Entrypoint</td>
+                            <td>Tool surface chaos visible to the model</td>
+                            <td>Clean domain-facing interface; consistent entry behavior</td>
+                        </tr>
+                        <tr>
+                            <td>Deterministic Substrate</td>
+                            <td>System collapse into chatbot mode</td>
+                            <td>Verifiable facts that grounding can draw from</td>
+                        </tr>
+                        <tr>
+                            <td>Grounding</td>
+                            <td>Model guessing from weights alone</td>
+                            <td>Constrained usefulness as the default operational mode</td>
+                        </tr>
+                        <tr>
+                            <td>Implementation Layer</td>
+                            <td>Dead end when grounded answer is insufficient</td>
+                            <td>Full traceable escalation path with artifact output</td>
+                        </tr>
+                        <tr>
+                            <td>Provenance</td>
+                            <td>Uninterpretable results after the fact</td>
+                            <td>Reproducible, attributable answer surfaces</td>
+                        </tr>
+                        <tr>
+                            <td>Validation</td>
+                            <td>Silent drift over time</td>
+                            <td>Repeatable correctness check on the full domain surface</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Domain Eligibility</h2>
+            <p>Not every domain is a good candidate for this pattern. The harness requires a minimum substrate to work from.</p>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Good candidates</h3>
+                    <p>Domains with a meaningful human question surface, deterministic local logic, repeatable answer generation, and enough structure to define a fixed validation set.</p>
+                    <p style="margin-top:0.5rem; font-size:0.85rem; color: var(--ink-muted);">Examples: tennis domain analytics, ISO standards lookup, climate records, historical routing problems.</p>
+                </div>
+                <div class="card">
+                    <h3>Weak candidates</h3>
+                    <p>Domains that depend mostly on broad web lookup, vague freeform synthesis, or unstable external state with no controllable local substrate.</p>
+                    <p style="margin-top:0.5rem; font-size:0.85rem; color: var(--ink-muted);">The harness cannot substitute for missing substrate. It can only organize what is already deterministic.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Data Freshness Policy</h2>
+            <p>Not every domain needs live current data. The standard approach across all harness domains:</p>
+            <ol>
+                <li>Keep the deterministic historical base honest — do not fake currency it does not have.</li>
+                <li>Record the snapshot boundary explicitly in provenance.</li>
+                <li>Layer current-data overlays only where recency actually matters to the answer.</li>
+                <li>Validate those overlays separately from the historical base.</li>
+            </ol>
+            <p class="reading-note">Do not fake a current system by hiding frozen data boundaries. An honest frozen base with a declared snapshot is more useful than an unlabeled mix of historical and current data that the user cannot interpret.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Harness and Model Capability</h2>
+            <p>One of the practical lessons from the TourAgent implementation: the harness does not make a weak model perform like a strong one. What it does is ensure that when the model does contribute useful output, that output lands on verifiable ground rather than floating on the model's weights alone.</p>
+            <p>The corollary is the Gemini CLI observation: a strong model inside a thin harness often feels much weaker than a comparable model inside a strong harness. The harness is not cosmetic — it is the mechanism that converts model capability into domain reliability.</p>
+            <div class="code">strong model + thin harness  → unreliable in practice
+strong model + strong harness → reliable domain system</div>
+        </section>
+
+        <footer class="footer">
+            <p>Offline Grounded Domain Agent · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>

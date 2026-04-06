@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Grounded Domain Agent</title>
+    <meta name="description" content="The useful unit is not the naked local model. It is the harnessed domain system.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Project Phoenix</span>
+            <h1>Offline Grounded Domain Agent</h1>
+            <p class="subtitle">The useful unit is not the naked local model. It is the harnessed domain system.</p>
+        </header>
+
+        <nav class="nav">
+            <a class="active" href="index.html">Overview</a>
+            <a href="modes.html">Modes</a>
+            <a href="harness.html">Harness</a>
+            <a href="spec.html">Spec</a>
+        </nav>
+
+        <div class="callout">
+            <p>A local model becomes operationally useful when it is paired with a deterministic domain substrate, a grounding layer, explicit provenance, and a controlled escalation path. That combination is what this pattern defines.</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <span class="num">4</span>
+                <span class="label">Answer modes</span>
+            </div>
+            <div class="stat">
+                <span class="num">6</span>
+                <span class="label">Harness layers</span>
+            </div>
+            <div class="stat">
+                <span class="num">1</span>
+                <span class="label">Stable entrypoint</span>
+            </div>
+            <div class="stat">
+                <span class="num">3</span>
+                <span class="label">Reference domains</span>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>The Wrong Question</h2>
+            <p>The common question in local-model discussions is too vague:</p>
+            <div class="code">can a local model do useful work?</div>
+            <p>That hides the actual issue. What matters is not whether a naked model can answer plausibly from its own weights. What matters is whether a local system can remain useful when cloud support is absent or degraded.</p>
+            <p>The better question is:</p>
+            <div class="code">what makes a local domain-answering system operationally useful offline?</div>
+            <p>The answer is a harness — a deterministic substrate underneath the model, with explicit provenance on every answer and a defined escalation path when raw model output is not enough.</p>
+        </section>
+
+        <section class="section">
+            <h2>Three Different Things People Call "Local LLM"</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-tag">Raw</div>
+                    <h3>Model alone</h3>
+                    <p>The model sees only the user request. No verified context. This is the weakest serious local mode — plausible but not reliably correct on domain questions.</p>
+                </div>
+                <div class="card">
+                    <div class="card-tag">Grounded</div>
+                    <h3>Model + verified context</h3>
+                    <p>The model sees the question plus verified local evidence or a stable answer seed. Materially stronger. This is the default user-facing offline mode.</p>
+                </div>
+                <div class="card">
+                    <div class="card-tag">Implementation-Agent</div>
+                    <h3>Model inside a workflow</h3>
+                    <p>The model operates inside a deterministic workflow with tools, validation, artifact logging, and explicit trust boundaries. The strongest mode for capability claims.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>The Core Claim</h2>
+            <p>The biggest difference between local agent systems is often not raw model quality, but the quality of the runtime harness around the model.</p>
+            <div class="code">raw local model       → weak
+grounded local system → materially better
+implementation-agent  → strongest</div>
+            <p style="margin-top:0.9rem;">This is also why a very capable model inside a weak harness can feel unreliable, while a comparable model inside a strong harness can feel like a real working system. The harness determines what the model's capability actually produces in practice.</p>
+            <p>The right product framing is therefore not "offline chatbot." It is an offline grounded domain agent.</p>
+        </section>
+
+        <section class="section">
+            <h2>What an Offline Grounded Domain Agent Is</h2>
+            <p>An offline grounded domain agent is a domain-specific local system with:</p>
+            <ul>
+                <li>a stable user-facing entrypoint</li>
+                <li>a deterministic local fact substrate</li>
+                <li>a grounded answer mode as the default</li>
+                <li>an implementation-agent escalation mode</li>
+                <li>explicit provenance on every answer</li>
+                <li>a fixed validation surface</li>
+            </ul>
+            <p>This means the product is not "a local LLM." It is a local domain-answering system with clearly separated rigor modes.</p>
+        </section>
+
+        <section class="section">
+            <h2>Why Great Models Can Feel Weak</h2>
+            <p>Project-scale agent quality is determined less by raw model intelligence than by runtime engineering. Four gaps account for most of the difference:</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Reliable Tool Loops</h3>
+                    <p>Plan, call tool, verify result, update state, continue. Silent failure destroys trust faster than any raw model weakness.</p>
+                </div>
+                <div class="card">
+                    <h3>Persistent Working Memory</h3>
+                    <p>Plans, prior edits, tool outputs, process logs, and saved artifacts matter more than chat history alone.</p>
+                </div>
+                <div class="card">
+                    <h3>Real Tool Awareness</h3>
+                    <p>A serious agent needs actual contact with files and tools — not a text simulation of a project.</p>
+                </div>
+                <div class="card">
+                    <h3>Error Visibility</h3>
+                    <p>If the model is not forced to react to failure, it can narrate progress it did not actually earn.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Reference Implementation</h2>
+            <p>TourAgent is the current reference domain. It demonstrates all six layers of the pattern in one implementation:</p>
+            <ul>
+                <li>deterministic local domain substrate (tennis database)</li>
+                <li>frozen historical base artifact with narrow current-data overlay</li>
+                <li>raw, grounded, and artifact answer modes in one shell</li>
+                <li>implementation-agent examples as the strongest local workflow mode</li>
+                <li>provenance-aware answer handling on every response</li>
+                <li>fixed validation surface with a repeatable question set</li>
+            </ul>
+            <p>Three domains now expose the pattern through a shared multi-domain shell: <em>touragent</em>, <em>iso13485</em>, and <em>globaltemperature</em>.</p>
+            <p class="reading-note">TourAgent is the reference implementation, not the canonical home of the pattern. The architecture is domain-agnostic — any domain with deterministic local logic and a meaningful question surface is a candidate.</p>
+        </section>
+
+        <footer class="footer">
+            <p>Offline Grounded Domain Agent · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>
