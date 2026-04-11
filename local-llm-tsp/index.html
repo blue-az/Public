@@ -1,190 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocalLLMTSP | Project Phoenix</title>
-    <meta name="description" content="Should the LLM be the optimizer, or the orchestration layer? Project Phoenix answers this with a geographic TSP benchmark.">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LocalLLMTSP · Project Phoenix</title>
+  <meta name="description" content="Should an LLM be the TSP solver, or the orchestration layer around one? Project Phoenix answers this with a clean geographic benchmark.">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="page">
+  <div class="page">
 
-        <header class="header">
-            <span class="badge">Project Phoenix · Arizona TSP</span>
-            <h1>LocalLLMTSP</h1>
-            <p class="subtitle">Should the LLM be the optimizer, or the orchestration layer around a deterministic solver?</p>
-        </header>
+    <header class="header">
+      <span class="badge">Project Phoenix · Arizona TSP</span>
+      <h1>LocalLLMTSP</h1>
+      <p class="subtitle">Should the LLM be the optimizer, or the orchestration layer around a deterministic solver?</p>
+    </header>
 
-        <nav class="nav">
-            <a class="active" href="index.html">Overview</a>
-            <a href="results.html">Local Models</a>
-            <a href="scale.html">Scale Ladder</a>
-            <a href="frontier.html">Frontier</a>
-            <a href="viz.html">Visualizer</a>
-        </nav>
+    <nav class="nav">
+      <a class="active" href="index.html">Overview</a>
+      <a href="results.html">Local Models</a>
+      <a href="scale.html">Scale Ladder</a>
+      <a href="frontier.html">Frontier</a>
+      <a href="viz.html">Visualizer</a>
+      <a href="openclaw.html">OpenClaw Demo</a>
+    </nav>
 
-        <div class="stats">
-            <div class="stat">
-                <span class="num">8</span>
-                <span class="label">Fixture instances</span>
-            </div>
-            <div class="stat">
-                <span class="num">6</span>
-                <span class="label">Local models tested</span>
-            </div>
-            <div class="stat">
-                <span class="num">4</span>
-                <span class="label">Geographic scale rungs</span>
-            </div>
-            <div class="stat">
-                <span class="num">100%</span>
-                <span class="label">Orchestrated path accuracy</span>
-            </div>
-        </div>
-
-        <div class="callout">
-            <p><strong>Central conclusion:</strong> correctness should live in the solver, not in the model. Stronger models delay failure — they do not eliminate the need for solver-backed architecture.</p>
-        </div>
-
-        <section class="section">
-            <h2>Abstract</h2>
-            <p><code style="font-family:inherit;font-style:normal;">LocalLLMTSP</code> was built to answer a systems question, not a benchmark question: in a route-optimization workflow, should the LLM be the optimizer, or should it operate around a deterministic solver as the orchestration and explanation layer?</p>
-            <p>The traveling salesman problem is useful here because it makes the role split visible quickly. Direct model solving improves as models get stronger, but that does not settle where correctness should live. Across a fixed ladder of Arizona, Southwest, U.S., and world-scale fixtures, Project Phoenix keeps arriving at the same design answer: let the solver own the optimization, and let the model interpret, route, and explain.</p>
-            <p>The central result is straightforward. On bounded local-model slices, direct solving ranges from exact to structurally invalid at small scales and collapses entirely by the 100-city world rung. Frontier models push that boundary much farther out and can remain structurally valid at world scale, but they still drift materially from the deterministic solver. The orchestrated path remains stable across the entire ladder.</p>
-        </section>
-
-        <section class="section">
-            <h2>The Central Question</h2>
-            <p>Many discussions of LLM capability ask whether a model can solve a problem directly. That framing is often too narrow for practical systems work. The more useful engineering question is <em>where</em> the model should sit inside the system.</p>
-            <p>This domain compares two roles:</p>
-            <div class="grid">
-                <div class="card">
-                    <h3>Direct model solving</h3>
-                    <p>Ask the LLM to produce the route. Correctness depends entirely on generation quality. Varies by model and workload size.</p>
-                </div>
-                <div class="card">
-                    <h3>Model-guided orchestration</h3>
-                    <p>The LLM interprets the task, routes to the correct solver, and explains the result. Correctness lives in the deterministic solver.</p>
-                </div>
-            </div>
-            <p style="margin-top:1rem;">Project Phoenix generally favors the second pattern. <em>LocalLLMTSP</em> was built to test that preference on a clean, legible problem.</p>
-        </section>
-
-        <section class="section">
-            <h2>Method</h2>
-            <p>The comparison uses fixed TSP fixtures and holds the workload constant while changing the model or the scale rung. The fixture ladder is geographic:</p>
-
-            <div class="table-wrap">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Scale rung</th>
-                            <th>Instances</th>
-                            <th>Cities</th>
-                            <th>Solver</th>
-                            <th>Solver exact?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Arizona</td>
-                            <td>tsp-001 – tsp-005</td>
-                            <td>4 – 10</td>
-                            <td>Brute-force</td>
-                            <td><span class="tag tag-ok">yes</span></td>
-                        </tr>
-                        <tr>
-                            <td>Southwest</td>
-                            <td>tsp-006</td>
-                            <td>20</td>
-                            <td>Held-Karp DP</td>
-                            <td><span class="tag tag-ok">yes</span></td>
-                        </tr>
-                        <tr>
-                            <td>United States</td>
-                            <td>tsp-007</td>
-                            <td>50</td>
-                            <td>NN + 2-opt</td>
-                            <td><span class="tag tag-warn">heuristic</span></td>
-                        </tr>
-                        <tr>
-                            <td>World</td>
-                            <td>tsp-008</td>
-                            <td>100</td>
-                            <td>NN + 2-opt</td>
-                            <td><span class="tag tag-warn">heuristic</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="reading-note">The solver contract changes honestly with scale. The claim is not that the solver is always exact — the claim is that it remains the authoritative optimization path at each rung.</p>
-        </section>
-
-        <section class="section">
-            <h2>Phoenix Architecture Principles</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Solver owns correctness</h3>
-                    <p>The deterministic algorithm carries optimization policy. Not the model.</p>
-                </div>
-                <div class="card">
-                    <h3>Model interprets the task</h3>
-                    <p>Classify the request, select the appropriate algorithm, frame the parameters.</p>
-                </div>
-                <div class="card">
-                    <h3>Model routes to the solver</h3>
-                    <p>Deterministic dispatch — not improvised generation — produces the route.</p>
-                </div>
-                <div class="card">
-                    <h3>Model explains the result</h3>
-                    <p>Readable output, context, and caveats come from the LLM layer after the solver returns.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>What This Site Documents</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Local Models</h3>
-                    <p>Arizona ladder results. 8-city and 10-city comparisons across four local models with direct vs. orchestrated outcome tables.</p>
-                    <a class="back-link" href="results.html">Open Local Models</a>
-                </div>
-                <div class="card">
-                    <h3>Scale Ladder</h3>
-                    <p>Geographic expansion from Arizona to the 100-city world rung. Local model collapse and the honest solver boundary at each scale.</p>
-                    <a class="back-link" href="scale.html">Open Scale Ladder</a>
-                </div>
-                <div class="card">
-                    <h3>Frontier</h3>
-                    <p>Codex Frontier vs. Claude Frontier bounded case study. Different failure mode at world scale, same architectural conclusion.</p>
-                    <a class="back-link" href="frontier.html">Open Frontier</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Scope Boundary</h2>
-            <p>This site does <strong>not</strong> claim:</p>
-            <ul>
-                <li>That these four models define the whole local-model space</li>
-                <li>That the current fixture set is a universal benchmark</li>
-                <li>That the frontier case-study rows are comparable to the local Ollama runs</li>
-            </ul>
-            <p>It does claim:</p>
-            <ul>
-                <li>The role-assignment lesson is visible across the full ladder</li>
-                <li>The orchestrated path remained correct on every tested fixture and every tested model</li>
-                <li>Stronger models delay failure — they do not eliminate the need for solver-backed architecture</li>
-            </ul>
-        </section>
-
-        <footer class="footer">
-            <p>LocalLLMTSP · Project Phoenix · Arizona TSP Paper Package</p>
-            <p><a href="../project-phoenix/">Project Phoenix Overview</a> &nbsp;·&nbsp; <a href="../papers/">All Papers</a></p>
-        </footer>
-
+    <div class="stats">
+      <div class="stat">
+        <div class="num">8</div>
+        <div class="label">Fixture instances</div>
+      </div>
+      <div class="stat">
+        <div class="num">4</div>
+        <div class="label">Local models tested</div>
+      </div>
+      <div class="stat">
+        <div class="num">4</div>
+        <div class="label">Geographic scale rungs</div>
+      </div>
+      <div class="stat">
+        <div class="num">100%</div>
+        <div class="label">Orchestrated path accuracy</div>
+      </div>
     </div>
+
+    <div class="callout">
+      <p><strong>Central conclusion:</strong> correctness should live in the solver, not in the model. Stronger models delay failure — they do not eliminate the need for solver-backed architecture.</p>
+    </div>
+
+    <section class="section">
+      <h2>Abstract</h2>
+      <p><code>LocalLLMTSP</code> was built to answer a systems question, not a benchmark question: in a route-optimization workflow, should the LLM be the optimizer, or should it operate around a deterministic solver as the orchestration and explanation layer?</p>
+      <p>The traveling salesman problem is useful here because it makes the role split visible quickly. Direct model solving improves as models get stronger, but that does not settle where correctness should live. Across a fixed ladder of Arizona, Southwest, U.S., and world-scale fixtures, Project Phoenix keeps arriving at the same design answer: let the solver own the optimization, and let the model interpret, route, and explain.</p>
+      <p>The central result is straightforward. On bounded local-model slices, direct solving ranges from exact to structurally invalid at small scales and collapses entirely by the 100-city world rung. Frontier models push that boundary much farther out and can remain structurally valid at world scale, but they still drift materially from the deterministic solver. The orchestrated path remains stable across the entire ladder.</p>
+    </section>
+
+    <section class="section">
+      <h2>The Central Question</h2>
+      <p>Many discussions of LLM capability ask whether a model can solve a problem directly. That framing is often too narrow for practical systems work. The more useful engineering question is <em>where</em> the model should sit inside the system.</p>
+      <p>This domain compares two roles:</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Direct model solving</h3>
+          <p>Ask the LLM to produce the route. Correctness depends entirely on generation quality. Varies by model and workload size.</p>
+        </article>
+        <article class="card">
+          <h3>Model-guided orchestration</h3>
+          <p>The LLM interprets the task, routes to the correct solver, and explains the result. Correctness lives in the deterministic solver.</p>
+        </article>
+      </div>
+      <p style="margin-top:0.8rem;">Project Phoenix generally favors the second pattern. <code>LocalLLMTSP</code> was built to test that preference on a clean, legible problem.</p>
+    </section>
+
+    <section class="section">
+      <h2>Method</h2>
+      <p>The comparison uses fixed TSP fixtures and holds the workload constant while changing the model or the scale rung. The fixture ladder is geographic:</p>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Scale rung</th>
+              <th>Instance</th>
+              <th>Cities</th>
+              <th>Solver</th>
+              <th>Solver exact?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Arizona</td>
+              <td><code>tsp-001</code> – <code>tsp-005</code></td>
+              <td>4 – 10</td>
+              <td>Brute-force</td>
+              <td><span class="tag">yes</span></td>
+            </tr>
+            <tr>
+              <td>Southwest</td>
+              <td><code>tsp-006</code></td>
+              <td>20</td>
+              <td>Held-Karp DP</td>
+              <td><span class="tag">yes</span></td>
+            </tr>
+            <tr>
+              <td>United States</td>
+              <td><code>tsp-007</code></td>
+              <td>50</td>
+              <td>Nearest-neighbor + 2-opt</td>
+              <td><span class="tag-warn">heuristic</span></td>
+            </tr>
+            <tr>
+              <td>World</td>
+              <td><code>tsp-008</code></td>
+              <td>100</td>
+              <td>Nearest-neighbor + 2-opt</td>
+              <td><span class="tag-warn">heuristic</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="reading-note">The solver contract changes honestly with scale. The claim is not that the solver is always exact — the claim is that it remains the authoritative optimization path at each rung.</p>
+    </section>
+
+    <section class="section">
+      <h2>Phoenix Architecture Principles</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Solver owns correctness</h3>
+          <p>The deterministic algorithm carries optimization policy. Not the model.</p>
+        </article>
+        <article class="card">
+          <h3>Model interprets the task</h3>
+          <p>Classify the request, select the appropriate algorithm, frame the parameters.</p>
+        </article>
+        <article class="card">
+          <h3>Model routes to the solver</h3>
+          <p>Deterministic dispatch — not improvised generation — produces the route.</p>
+        </article>
+        <article class="card">
+          <h3>Model explains the result</h3>
+          <p>Readable output, context, and caveats come from the LLM layer after the solver returns.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>What This Site Documents</h2>
+      <div class="grid">
+        <article class="card">
+          <h3><a href="results.html" style="color:var(--accent-2);text-decoration:none;">Local Models →</a></h3>
+          <p>Arizona ladder results. 8-city and 10-city comparisons across 4 local models with direct vs. orchestrated outcome tables.</p>
+        </article>
+        <article class="card">
+          <h3><a href="scale.html" style="color:var(--accent-2);text-decoration:none;">Scale Ladder →</a></h3>
+          <p>Geographic expansion: 20-city Southwest, 50-city U.S., 100-city World. Local model collapse at world scale.</p>
+        </article>
+        <article class="card">
+          <h3><a href="frontier.html" style="color:var(--accent-2);text-decoration:none;">Frontier →</a></h3>
+          <p>Codex Frontier vs. Claude Frontier bounded case study. Different failure mode, same architectural conclusion.</p>
+        </article>
+        <article class="card">
+          <h3><a href="openclaw.html" style="color:var(--accent-2);text-decoration:none;">OpenClaw Demo →</a></h3>
+          <p>OpenClaw as the monitored shell, Project Phoenix as the deterministic authority. Three operator-facing commands.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Scope Boundary</h2>
+      <p>This site does <strong>not</strong> claim:</p>
+      <ul style="color:var(--muted);margin:0 0 0.5rem 0;padding-left:1.2rem;">
+        <li>That these four models define the whole local-model space</li>
+        <li>That the current fixture set is a universal benchmark</li>
+        <li>That the frontier case study rows are comparable to the local Ollama rows</li>
+      </ul>
+      <p>It does claim:</p>
+      <ul style="color:var(--ink);margin:0;padding-left:1.2rem;">
+        <li>The role-assignment lesson is visible across the full ladder</li>
+        <li>The orchestrated path remained correct on every tested fixture and every tested model</li>
+        <li>Stronger models delay failure — they do not eliminate the need for solver-backed architecture</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>LocalLLMTSP · Project Phoenix · Arizona TSP Paper Package</p>
+    </footer>
+  </div>
 </body>
 </html>

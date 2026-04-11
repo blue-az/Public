@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw x Project Phoenix · Demo</title>
+  <meta name="description" content="A small OpenClaw x Project Phoenix demo: OpenClaw as the monitored shell, Project Phoenix as the deterministic authority.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+
+    <header class="header">
+      <div class="hero-row">
+        <div class="hero-copy">
+          <span class="badge">OpenClaw x Project Phoenix</span>
+          <h1>OpenClaw Demo</h1>
+          <p class="subtitle">OpenClaw acts as the monitored control shell. Project Phoenix provides deterministic authority underneath.</p>
+        </div>
+        <div class="hero-mark">
+          <img src="openclaw-logo.jpeg" alt="OpenClaw logo">
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="results.html">Local Models</a>
+      <a href="scale.html">Scale Ladder</a>
+      <a href="frontier.html">Frontier</a>
+      <a href="viz.html">Visualizer</a>
+      <a class="active" href="openclaw.html">OpenClaw Demo</a>
+    </nav>
+
+    <div class="callout">
+      <p><strong>Core idea:</strong> OpenClaw makes Project Phoenix accessible. Project Phoenix makes OpenClaw outputs trustworthy.</p>
+    </div>
+
+    <section class="section">
+      <h2>Architecture</h2>
+      <div class="arch-diagram">
+        <div class="arch-node">
+          <div class="arch-title">OpenClaw</div>
+          <div class="arch-text">operator shell<br>proxy / monitoring<br>ingress layer</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-node">
+          <div class="arch-title">ShowcaseAgent</div>
+          <div class="arch-text">internal routing<br>presentation layer<br>benchmark surface</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-node">
+          <div class="arch-title">Phoenix Backends</div>
+          <div class="arch-text">deterministic scripts<br>domains / tools<br>authority layer</div>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>OpenClaw</h3>
+          <p>Outer operator shell, proxy surface, and monitoring layer. It handles ingress and presentation.</p>
+        </article>
+        <article class="card">
+          <h3>ShowcaseAgent</h3>
+          <p>Internal Phoenix routing and presentation layer. It remains the benchmarkable domain-compression surface.</p>
+        </article>
+        <article class="card">
+          <h3>Deterministic Phoenix Backends</h3>
+          <p>Authoritative scripts and domains underneath. Correctness lives here rather than in raw model generation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Why This Path</h2>
+      <p>The local <code>ollama-local</code> OpenClaw profile points at <code>ollama/gemma3:27b</code>, but that model does not support OpenClaw’s default tool-enabled local-agent path. Rather than forcing that boundary, this demo uses the Project Phoenix pattern that already works elsewhere:</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Deterministic wrapper</h3>
+          <p>Small shell wrappers expose deterministic Phoenix backends directly.</p>
+        </article>
+        <article class="card">
+          <h3>Inspectable output</h3>
+          <p>Each command returns either JSON or a concise human-readable operator summary.</p>
+        </article>
+        <article class="card">
+          <h3>Monitoring-friendly</h3>
+          <p>OpenClaw can sit in front as the monitored shell without becoming the source of truth.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Phoenix Ops Shell</h2>
+      <p>The first useful shell is deliberately small. It exposes three deterministic commands:</p>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Purpose</th>
+              <th>Why it matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>scripts/openclaw_tsp_demo.sh --human</code></td>
+              <td>TSP summary</td>
+              <td>Best lead demo. Cleanest external hook and clearest Phoenix conclusion.</td>
+            </tr>
+            <tr>
+              <td><code>scripts/openclaw_gemma_protocol_demo.sh --human</code></td>
+              <td>Gemma protocol verdict</td>
+              <td>Shows that operational trust and raw capability are different axes.</td>
+            </tr>
+            <tr>
+              <td><code>scripts/openclaw_latest_run_trace_demo.sh --human</code></td>
+              <td>Run-trace summary</td>
+              <td>Shows the internal debugging and failure-compression layer.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>TSP Lead Demo</h2>
+      <p><strong>Important nuance:</strong> <code>gemma4:26b</code> is clearly the strongest local direct TSP model in the current slice. It clears the Arizona ladder and degrades much less severely at 100 cities than the rest of the local set. That strengthens the Phoenix point rather than weakening it: stronger models help, but the solver-backed path still remains the authoritative answer.</p>
+      <pre>Project Phoenix TSP summary
+
+Arizona (10 cities, tsp-005):
+- gemma4:26b: exact tie
+- gemma3:27b: gap 5.432581
+- orchestrated path: yes
+
+World (100 cities, tsp-008):
+- gemma4:26b: missing 2 cities (Hanoi, Busan)
+- gemma3:27b: missing 9 cities
+- orchestrated target: solver
+
+gemma4:26b takeaway: gemma4:26b is the strongest local direct TSP model in the current slice: exact across Arizona and materially less degraded at 100 cities, but still not authoritative enough to replace the solver-backed path.
+Bottom line: Every tested local model failed direct route validity at 100 cities, while the orchestrated path still matched the deterministic solver output.
+Phoenix conclusion: correctness should live in the solver, not in the model
+Secondary line: stronger models delay failure; they do not eliminate the need for solver-backed architecture</pre>
+    </section>
+
+    <section class="section">
+      <h2>Gemma Protocol Follow-Up</h2>
+      <pre>Project Phoenix Gemma protocol summary
+
+Question:
+- Is Gemma 4 operationally safer than Gemma 3 on strict machine-facing protocol tasks?
+
+Gemma 3:
+- model: gemma3:27b
+- desktop: 3/6, 5/6, 5/6
+- z13: 2/6, 5/6, 5/6
+- reading: more operationally trustworthy on the protocol lane
+
+Gemma 4:
+- model: gemma4:26b
+- desktop first pass: 0/6, 0/6, 0/6
+- note: all six protocol probes landed as non_json
+- current read: partially prompt-fixable for simple schemas, still unreliable for complex nested or array-shaped machine-facing outputs
+
+Deployment verdict: Gemma 4 is not a strict-protocol model in the current release/configuration.
+Phoenix conclusion: raw capability and operational trust are different axes</pre>
+    </section>
+
+    <section class="section">
+      <h2>Run-Trace Follow-Up</h2>
+      <pre>Project Phoenix run-trace summary
+
+Question: What is the current role of the Phoenix run-trace layer?
+
+Current trace lines:
+- ShowcaseAgent routing traces exist and have already grouped recurring routing misses into replayable failure families.
+- TourAgent protocol traces exist across strict protocol, pipeline, and handoff lanes.
+- The run-trace layer is currently narrow and useful: it compresses failures into clearer replay or regression targets.
+
+Short answer: It is a narrow debugging and failure-compression layer, not a general telemetry platform.
+Phoenix conclusion: use run traces when they make the next action clearer; keep them narrow otherwise</pre>
+    </section>
+
+    <section class="section">
+      <h2>Presentation Order</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>1. TSP</h3>
+          <p>Lead with the clearest external hook and the strongest simple architectural lesson.</p>
+        </article>
+        <article class="card">
+          <h3>2. Gemma Protocol</h3>
+          <p>Show that Project Phoenix evaluates operational trust, not just reasoning flair.</p>
+        </article>
+        <article class="card">
+          <h3>3. Run Traces</h3>
+          <p>Close with the internal systems layer: replay, failure compression, and disciplined debugging.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>OpenClaw x Project Phoenix · First Demo Layer</p>
+    </footer>
+  </div>
+</body>
+</html>

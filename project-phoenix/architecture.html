@@ -66,13 +66,42 @@ Private consulting layer:
             </div>
         </section>
 
-        <section class="section">
+        <section class=”section”>
             <h2>Why This Matters</h2>
             <p>The main architectural lesson is that reliability comes less from model size alone and more from deterministic substrates, explicit validation, and clear trust boundaries.</p>
             <p>That is why the open core emphasizes standards and grounded execution surfaces rather than generic “agent” branding.</p>
         </section>
 
-        <footer class="footer">
+        <section class=”section”>
+            <h2>OpenClaw Integration Layer</h2>
+            <p>The outer shell problem — interface, operator access, and monitoring — is handled by a separate integration layer built on OpenClaw.</p>
+            <div class=”code”>
+OpenClaw (outer shell)
+  ↓  operator ingress · monitoring · HTTP gateway
+ShowcaseAgent (internal routing)
+  ↓  domain-compression · benchmark surface
+Phoenix Backends (authority layer)
+     deterministic scripts · domains · tools
+            </div>
+            <p style=”margin-top:0.8rem;”>Working rule: <strong>OpenClaw makes Phoenix accessible. Phoenix makes OpenClaw outputs trustworthy.</strong> The model is absent from the result path; correctness lives in the solver.</p>
+            <div class=”grid” style=”margin-top:0.8rem;”>
+                <div class=”card”>
+                    <h3>HTTP Endpoints</h3>
+                    <p>Four deterministic backends exposed via authenticated gateway routes: TSP summary, Gemma protocol verdict, run-trace, benchmark results.</p>
+                </div>
+                <div class=”card”>
+                    <h3>Invocation Log</h3>
+                    <p>Every operator call is logged with surface, latency, and deterministic flag. Aggregate stats available at <code>/phoenix-ops-status</code>.</p>
+                </div>
+                <div class=”card”>
+                    <h3>Regression Check</h3>
+                    <p>Combined summary output is baseline-locked. A shell check diffs each run against the stored baseline and exits non-zero on drift.</p>
+                </div>
+            </div>
+            <p style=”margin-top:0.8rem;”><a href=”../local-llm-tsp/openclaw.html”>OpenClaw Demo page →</a></p>
+        </section>
+
+        <footer class=”footer”>
             <p>Project Phoenix - Open-core standards for grounded domain systems</p>
             <p>Built on ideas and patterns from tau-bench (Sierra Research, MIT License)</p>
             <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
