@@ -87,18 +87,30 @@ Phoenix Backends (authority layer)
             <div class=”grid” style=”margin-top:0.8rem;”>
                 <div class=”card”>
                     <h3>HTTP Endpoints</h3>
-                    <p>Four deterministic backends exposed via authenticated gateway routes: TSP summary, Gemma protocol verdict, run-trace, benchmark results.</p>
+                    <p>Four deterministic backends exposed via authenticated gateway routes: TSP summary, Gemma protocol verdict, run-trace, and benchmark results. A fifth aggregate endpoint (<code>/phoenix-ops-summary</code>) fans out to all four in parallel.</p>
                 </div>
                 <div class=”card”>
-                    <h3>Invocation Log</h3>
-                    <p>Every operator call is logged with surface, latency, and deterministic flag. Aggregate stats available at <code>/phoenix-ops-status</code>.</p>
+                    <h3>Per-Backend Health</h3>
+                    <p>Every summary call logs one subevent row per backend. <code>/phoenix-ops-status</code> renders a BACKENDS section showing each backend's health state (<code>healthy</code> / <code>degraded</code> / <code>down</code>), last latency, call count, and last failure reason.</p>
                 </div>
                 <div class=”card”>
-                    <h3>Regression Check</h3>
-                    <p>Combined summary output is baseline-locked. A shell check diffs each run against the stored baseline and exits non-zero on drift.</p>
+                    <h3>Incident Mode</h3>
+                    <p>The top of <code>/phoenix-ops-status</code> surfaces the operator-relevant state immediately: <code>ATTENTION NEEDED</code> if any backend is down or degraded, or <code>STATUS: healthy — no incidents</code> with the last known-good summary timestamp.</p>
+                </div>
+                <div class=”card”>
+                    <h3>Trend Visibility</h3>
+                    <p>Each summary call writes a snapshot to a rolling log. <code>/phoenix-ops-trends</code> renders a table of latency, backend health, and ok/fail state across the last 40 calls — making regressions legible over time.</p>
+                </div>
+                <div class=”card”>
+                    <h3>Verification Chain</h3>
+                    <p>Four-level verification: baseline output check, endpoint shape check, threshold gates (errors, latency, backend down state), and a one-shot report bundle (<code>phoenix_ops_report.sh</code>).</p>
                 </div>
             </div>
-            <p style=”margin-top:0.8rem;”><a href=”../local-llm-tsp/openclaw.html”>OpenClaw Demo page →</a></p>
+            <p style=”margin-top:0.8rem;”>
+                <a href=”../local-llm-tsp/openclaw.html”>OpenClaw Demo page →</a>
+                &nbsp;·&nbsp;
+                <a href=”https://github.com/blue-az/Python/blob/main/project-phoenix/docs/WHITE_PAPER_OPENCLAW_PHOENIX_OPS.md” target=”_blank” rel=”noopener”>OpenClaw Operator Shell White Paper →</a>
+            </p>
         </section>
 
         <footer class=”footer”>
