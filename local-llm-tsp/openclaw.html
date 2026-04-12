@@ -91,35 +91,56 @@
 
     <section class="section">
       <h2>Phoenix Ops Shell</h2>
-      <p>The first useful shell is deliberately small. It exposes three deterministic commands:</p>
+      <p>Four deterministic backends, each a direct script invocation with no model in the result path:</p>
 
       <div class="table-wrap">
         <table class="table">
           <thead>
             <tr>
-              <th>Command</th>
-              <th>Purpose</th>
+              <th>Backend</th>
+              <th>Endpoint</th>
               <th>Why it matters</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><code>scripts/openclaw_tsp_demo.sh --human</code></td>
               <td>TSP summary</td>
+              <td><code>/phoenix-tsp</code></td>
               <td>Best lead demo. Cleanest external hook and clearest Phoenix conclusion.</td>
             </tr>
             <tr>
-              <td><code>scripts/openclaw_gemma_protocol_demo.sh --human</code></td>
               <td>Gemma protocol verdict</td>
+              <td><code>/phoenix-gemma</code></td>
               <td>Shows that operational trust and raw capability are different axes.</td>
             </tr>
             <tr>
-              <td><code>scripts/openclaw_latest_run_trace_demo.sh --human</code></td>
               <td>Run-trace summary</td>
+              <td><code>/phoenix-run-trace</code></td>
               <td>Shows the internal debugging and failure-compression layer.</td>
+            </tr>
+            <tr>
+              <td>Benchmark results</td>
+              <td><code>/phoenix-benchmark-summary</code></td>
+              <td>PlayerAgent V3 100-task results — generation quality from domain structure, not raw model capability.</td>
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <p style="margin-top:1rem;">Three aggregate operator surfaces sit on top:</p>
+      <div class="grid">
+        <article class="card">
+          <h3>/phoenix-ops-summary</h3>
+          <p>Fans out to all four backends in parallel. Degrades gracefully if any backend fails — healthy backends continue to serve.</p>
+        </article>
+        <article class="card">
+          <h3>/phoenix-ops-status</h3>
+          <p>Incident mode at the top (<code>ATTENTION NEEDED</code> or <code>STATUS: healthy</code>), per-backend health table (healthy / degraded / down), aggregate stats, and recent invocation log.</p>
+        </article>
+        <article class="card">
+          <h3>/phoenix-ops-trends</h3>
+          <p>Rolling history of summary calls — latency, backend health counts, and ok/fail state per call. Each summary invocation writes one snapshot row.</p>
+        </article>
       </div>
     </section>
 
@@ -202,6 +223,7 @@ Phoenix conclusion: use run traces when they make the next action clearer; keep 
 
     <footer class="footer">
       <p>OpenClaw x Project Phoenix · First Demo Layer</p>
+      <p><a href="../project-phoenix/">Project Phoenix Overview</a> &nbsp;·&nbsp; <a href="../papers/">All Papers</a></p>
     </footer>
   </div>
 </body>
