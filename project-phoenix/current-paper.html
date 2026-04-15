@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Phoenix | Current Paper</title>
-    <meta name="description" content="Current umbrella paper for Project Phoenix: open-core standards for grounded domain systems.">
+    <meta name="description" content="Current umbrella paper for Project Phoenix: open-core standards for grounded domain systems. 15-paper portfolio across two tracks.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="page">
         <header class="header">
-            <span class="badge">Current Paper</span>
+            <span class="badge">Current Paper · Updated 2026-04-15</span>
             <h1>Project Phoenix</h1>
             <p class="subtitle">Open-core standards for grounded domain systems.</p>
             <a class="back-link" href="index.html">Back to Overview</a>
@@ -24,7 +24,7 @@
             <a href="tau-bench.html">Tau-Bench</a>
             <a href="domains.html">Domains</a>
             <a href="architecture.html">Architecture</a>
-            <a href="current-paper.html">Current Paper</a>
+            <a href="current-paper.html" class="active">Current Paper</a>
             <a href="offline-grounded-paper.html">Offline Grounded Paper</a>
             <a href="../papers/">Research Papers</a>
         </nav>
@@ -33,6 +33,7 @@
             <h2>Current Position</h2>
             <p>Project Phoenix is best understood as an open-core framework for grounded domain systems rather than as a single interface, a single benchmark story, or a single agent architecture.</p>
             <p>Its public core consists of principles, validation standards, grounded architecture patterns, and white papers that explain how deterministic substrates, supervision, provenance, and bounded agent use can be combined into useful systems.</p>
+            <p>The portfolio now spans 15 primary papers across two tracks: Phoenix Operating Discipline (1.1–1.7, 1.11–1.15) and RVH/ML Evaluation (1.8–1.10). All papers have full drafts; empirical results incorporated in 1.9 and 1.10.</p>
         </section>
 
         <section class="section">
@@ -52,37 +53,84 @@
                 </div>
                 <div class="card">
                     <h3>White Papers</h3>
-                    <p>Public argument, historical support, and current interpretation.</p>
+                    <p>Public argument, historical support, and current interpretation across 15 papers.</p>
                 </div>
             </div>
         </section>
 
         <section class="section">
+            <h2>Paper Tracks</h2>
+            <p style="margin-bottom:1rem;">The portfolio divides into two tracks, with the operating discipline track further grouped into primary and detail papers.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>#</th><th>Title</th><th>Track</th></tr>
+                </thead>
+                <tbody>
+                    <tr style="background:var(--paper-dark); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--ink-muted);">
+                        <td colspan="3">Primary Papers — Operating Discipline</td>
+                    </tr>
+                    <tr><td>1.1</td><td>Project Phoenix — Open-Core Standards</td><td>Framework</td></tr>
+                    <tr><td>1.2</td><td>Offline Grounded Domain Agent</td><td>Grounding</td></tr>
+                    <tr><td>1.3</td><td>Ski Chalet Harness Boundary</td><td>Grounding</td></tr>
+                    <tr><td>1.4</td><td>Fab Simulation &amp; RVH</td><td>Grounding</td></tr>
+                    <tr><td>1.5</td><td>LocalLLMTSP — Solver-Backed Orchestration</td><td>Orchestration</td></tr>
+                    <tr><td>1.6</td><td>Where Orchestration Beats Raw Model Power</td><td>Orchestration</td></tr>
+                    <tr><td>1.7</td><td>Agentic Coding Failure Patterns</td><td>Operations</td></tr>
+                    <tr style="background:var(--paper-dark); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--ink-muted);">
+                        <td colspan="3">RVH / ML Evaluation</td>
+                    </tr>
+                    <tr><td>1.8</td><td>Rough Volatility — Cross-Domain Benchmark Principle</td><td>RVH</td></tr>
+                    <tr><td>1.9</td><td>Rough Volatility — ML Evaluation Domain</td><td>RVH</td></tr>
+                    <tr><td>1.10</td><td>Grounded Agent Failure Is Structurally Determined</td><td>Boundary</td></tr>
+                    <tr style="background:var(--paper-dark); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--ink-muted);">
+                        <td colspan="3">Details — Local Model &amp; Boundary</td>
+                    </tr>
+                    <tr><td>1.11</td><td>Local Model Role Suitability</td><td>Local Model</td></tr>
+                    <tr><td>1.12</td><td>ShowcaseAgent Routing And Compression</td><td>Local Model</td></tr>
+                    <tr><td>1.13</td><td>TourAgent Local Model Screen</td><td>Local Model</td></tr>
+                    <tr><td>1.14</td><td>True Ski Chalet Boundary Result</td><td>Boundary</td></tr>
+                    <tr><td>1.15</td><td>When The Organized Stack Loses</td><td>Boundary</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
             <h2>Special Case, Not Whole Project</h2>
-            <p>The recent offline-grounded-agent work is one of the strongest current Phoenix results, but it is a special case within a broader framework.</p>
+            <p>The offline-grounded-agent work (Paper 1.2) is one of the strongest current Project Phoenix results, but it is a special case within a broader framework. The grounded-agent result is better understood as a special case of Project Phoenix — a particularly important recent one, and the clearest current answer to the local-usefulness question.</p>
             <p>The larger claim is that useful systems require deterministic grounding, explicit validation, clear trust boundaries, and disciplined operating practice.</p>
+        </section>
+
+        <section class="section">
+            <h2>Key Results</h2>
+            <ul>
+                <li><strong>Project Phoenix is no longer just a build experiment.</strong> The project now has enough domain, portfolio, and paper structure to be treated as a real framework.</li>
+                <li><strong>The offline-grounded pattern is a strong transferable result.</strong> Grounding changes answer quality materially; deterministic substrates matter; implementation-agent workflows outperform raw local chat.</li>
+                <li><strong>Failure family is structurally determined.</strong> Paper 1.10 empirically confirmed that failure is predictable from harness configuration features, not query content.</li>
+                <li><strong>Standards and supervision matter as much as raw capability.</strong> Reliability is a systems problem, not just an intelligence problem.</li>
+                <li><strong>Open method and private process can be separated cleanly.</strong> Public: principles, standards, architecture, white papers. Private: consulting process, adaptation heuristics, operational playbooks.</li>
+            </ul>
         </section>
 
         <section class="section">
             <h2>Reading Order</h2>
             <ul>
-                <li><strong>Start here:</strong> this current umbrella paper page</li>
-                <li><strong>Then:</strong> <a href="principles.html">Principles</a> and <a href="architecture.html">Architecture</a></li>
-                <li><strong>Flagship special case:</strong> <a href="offline-grounded-paper.html">Offline Grounded Domain Agents</a></li>
-                <li><strong>Boundary/support paper:</strong> <a href="ski-chalet-paper.html">Ski Chalet Harness Boundary</a></li>
-                <li><strong>Operator shell design:</strong> <a href="https://github.com/blue-az/Python/blob/main/project-phoenix/docs/WHITE_PAPER_OPENCLAW_PHOENIX_OPS.md" target="_blank" rel="noopener">OpenClaw x Project Phoenix — Operator Shell White Paper</a></li>
-                <li><strong>Historical framework PDF:</strong> <a href="PROJECT_PHOENIX_WHITE_PAPER.pdf" target="_blank" rel="noopener">Project Phoenix Historical White Paper</a></li>
-                <li><strong>Full research portfolio:</strong> <a href="../papers/">Research Papers — all seven primary papers</a></li>
+                <li><strong>Framework:</strong> start here, then <a href="principles.html">Principles</a> and <a href="architecture.html">Architecture</a></li>
+                <li><strong>Primary papers:</strong> <a href="offline-grounded-paper.html">Paper 1.2 — Offline Grounded Domain Agent</a> and <a href="ski-chalet-paper.html">Paper 1.3 — Ski Chalet Harness Boundary</a></li>
+                <li><strong>Orchestration thesis:</strong> Papers 1.5 and 1.6 — solver-backed orchestration and where the organized stack wins</li>
+                <li><strong>Boundary conditions:</strong> Papers 1.10, 1.14, 1.15 — where the organized stack loses</li>
+                <li><strong>RVH / ML Evaluation:</strong> Papers 1.8 and 1.9 — cross-domain benchmark principle and realized volatility as high-signal benchmark territory</li>
+                <li><strong>Full portfolio:</strong> <a href="../papers/">Research Papers — all 15 papers</a></li>
             </ul>
         </section>
 
         <section class="section">
             <h2>Why It Matters</h2>
             <p>Project Phoenix argues that reliability is a systems problem, not just an intelligence problem. The emphasis is therefore on grounded domains, deterministic substrates, validation, and operational discipline rather than on prompt optimism or maximal autonomy.</p>
+            <p>Without this framing, the current strong grounded-agent result can overshadow the broader framework, and older broad framework papers can overstate stale implementation details. The useful middle position: keep the broad Project Phoenix frame; keep the grounded-agent result visible; do not collapse one into the other.</p>
         </section>
 
         <footer class="footer">
-            <p>Project Phoenix - Open-core standards for grounded domain systems</p>
+            <p>Project Phoenix — Open-core standards for grounded domain systems</p>
             <p>Built on ideas and patterns from tau-bench (Sierra Research, MIT License)</p>
             <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
             <p><a href="../papers/">Research Papers →</a></p>
