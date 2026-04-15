@@ -200,6 +200,16 @@ a.stat:hover .num {
     color: var(--accent);
 }
 
+.stat-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.stat-half {
+    flex: 1;
+}
+
 /* Grid + Cards */
 .grid {
     display: grid;
