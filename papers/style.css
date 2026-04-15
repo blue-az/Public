@@ -186,6 +186,20 @@ body {
     letter-spacing: 0.5px;
 }
 
+a.stat {
+    text-decoration: none;
+    color: inherit;
+}
+
+a.stat:hover {
+    background: #fff6ea;
+    border-color: var(--accent);
+}
+
+a.stat:hover .num {
+    color: var(--accent);
+}
+
 /* Grid + Cards */
 .grid {
     display: grid;
