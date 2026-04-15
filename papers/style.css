@@ -416,6 +416,18 @@ a.stat:hover .num {
     border-bottom: 1px solid var(--border);
 }
 
+/* Full inventory table group headers */
+.table tr.table-group-header td {
+    background: var(--paper-dark);
+    font-family: var(--body-font);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-muted);
+    padding: 0.4rem 0.7rem;
+    border-top: 2px solid var(--border);
+}
+
 /* Full inventory table */
 .table td.url-cell {
     font-family: var(--mono-font);
