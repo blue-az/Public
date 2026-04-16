@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Phoenix | Boundary Results</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <p class="eyebrow">Project Phoenix</p>
+      <h1>Phoenix Boundary Results</h1>
+      <p class="lede">
+        Three papers that map where the organized Phoenix stack hits its limits — and what
+        those limits reveal about system design. Failure is structural and predictable.
+        The ceiling is often speed, not capability. And the organized stack loses in
+        identifiable regimes.
+      </p>
+    </header>
+
+    <main>
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The boundary layer</p>
+          <h2>The Three Papers</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>Grounded Agent Failure Is Structurally Determined</h3>
+            <p class="example-kicker">Paper 1.10 — failure prediction</p>
+            <p>
+              Agentic failure family and outcome path are predictable from harness configuration
+              features, not query content. Substrate coverage accounts for 82.4% of harness
+              feature importance in TourAgent. Near-universal miss queries are indistinguishable
+              by all classifier-accessible features — confirming they are routing surface design
+              failures, not query-content failures.
+            </p>
+            <p class="example-takeaway">Know the harness. That is where the failure lives.</p>
+          </article>
+          <article class="example-card">
+            <h3>True Ski Chalet Boundary Result</h3>
+            <p class="example-kicker">Paper 1.14 — operational speed ceiling</p>
+            <p>
+              The first full true V4 ski chalet run: one local RTX 3090 machine, one data bundle,
+              no cloud access. The local-only gemma3:27b + MatchAgent stack answered all 10
+              original questions correctly — but only 6/10 arrived within the 120-second usability
+              threshold. Capability is not the local-only ceiling. Operational speed on derived
+              and repair-heavy queries is.
+            </p>
+            <p class="example-takeaway">10/10 correct. 6/10 fast enough. The boundary is real.</p>
+          </article>
+          <article class="example-card span-2">
+            <h3>When The Organized Stack Loses</h3>
+            <p class="example-kicker">Paper 1.15 — boundary conditions of the orchestration advantage</p>
+            <p>
+              Paper 1.6 established that the organized operating stack beats raw model power in
+              identifiable regimes. This paper maps the boundary conditions where that advantage
+              collapses: latency ceiling (coordination overhead consumes the time budget),
+              coverage gap (routing surface design failures invisible to classifiers and
+              stronger models alike), optimization maturity gap (PyTorch beats fused Numba CUDA
+              5.5x), runtime mismatch (ROCm wheel lacks gfx1151 target), and policy/role mismatch
+              (larger model loses to better-fit smaller model in a specific regime).
+            </p>
+            <p class="example-takeaway">The advantage is real. So are the five ways it collapses.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The central claim</p>
+          <h2>Failure Is Structural, Not Random</h2>
+        </div>
+        <div class="definition-grid">
+          <article class="term-card featured">
+            <p class="term-type">Finding</p>
+            <h3>Harness Configuration Dominates</h3>
+            <p>
+              Outcome prediction requires knowing the harness, not the query. Substrate coverage,
+              routing surface design, and repair policy tier are the predictive features.
+              Query content is not.
+            </p>
+          </article>
+          <article class="term-card accent">
+            <p class="term-type">Implication</p>
+            <h3>Domain Expertise Is The Binding Constraint</h3>
+            <p>
+              Correct failure prediction requires domain expertise in harness architecture.
+              A practitioner who does not know the harness cannot predict where the system
+              will fail — regardless of how well they know the model.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Two kinds of ceiling</p>
+          <h2>Capability vs. Operational Speed</h2>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-card">
+            <h3>Capability ceiling</h3>
+            <p>
+              The model cannot produce a correct answer. This is what most local-model
+              skepticism assumes. Paper 1.14 shows this is not the binding constraint
+              in the true ski chalet scenario — the answers were correct.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>Operational speed ceiling</h3>
+            <p>
+              The model can produce the correct answer but not within the usability
+              threshold. Derived and repair-heavy queries consume the time budget before
+              the answer arrives. This is the real local-only ceiling.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Five failure modes</p>
+          <h2>When The Organized Stack Loses</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Mode 1</span>
+            <h3>Latency Ceiling</h3>
+            <p>Coordination and repair overhead consume the time budget before the stronger primitive would have. The organized path is slower, not just slower enough to notice.</p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Mode 2</span>
+            <h3>Coverage Gap</h3>
+            <p>The routing surface design is itself the failure point. Not fixable by a stronger model or more repair. Visible only to domain expertise in the harness architecture.</p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Mode 3</span>
+            <h3>Optimization Maturity Gap</h3>
+            <p>The raw primitive has accumulated decades of optimization the organized path cannot replicate. PyTorch beats a fused custom Numba CUDA kernel 5.5x — not because the architecture is wrong, but because the ecosystem is mature.</p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Mode 4</span>
+            <h3>Runtime Mismatch</h3>
+            <p>Hardware support gaps break the organized path before the capability question even arises. ROCm wheel lacks the gfx1151 target; raw HIP works. The organized layer cannot compensate for a missing runtime.</p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Mode 5</span>
+            <h3>Policy / Role Mismatch</h3>
+            <p>A larger model loses to a better-fit smaller model in a specific operating regime. More raw size does not recover the loss when the role assignment is wrong.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Repair policy findings</p>
+          <h2>Policy Tier Predicts Protocol Acceptance</h2>
+        </div>
+        <div class="regime-grid">
+          <article class="regime-card">
+            <h3>Strict</h3>
+            <p>19% protocol acceptance. No repair shim. Baseline.</p>
+          </article>
+          <article class="regime-card">
+            <h3>Wrapper</h3>
+            <p>42% protocol acceptance. Wrapper stripping applied.</p>
+          </article>
+          <article class="regime-card">
+            <h3>Safe Repair</h3>
+            <p>50% protocol acceptance. Full safe repair policy applied.</p>
+          </article>
+          <article class="regime-card">
+            <h3>Monotonic</h3>
+            <p>Repair policy tier predicts acceptance monotonically across all tested configurations.</p>
+          </article>
+          <article class="regime-card">
+            <h3>Implication</h3>
+            <p>Repair policy is a first-class design decision. It is not a fallback — it is a performance variable.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag">One-line thesis</p>
+          <h2>What These Papers Are Actually Saying</h2>
+        </div>
+        <p class="thesis">
+          The organized stack wins in identifiable regimes. It loses in identifiable regimes too.
+          Knowing both boundaries is what separates domain expertise from benchmark optimism.
+        </p>
+      </section>
+
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag">Where this sits</p>
+          <h2>The Evidence Layers</h2>
+        </div>
+        <p class="thesis">
+          These papers extend the flagship Phoenix claims.
+          The local-model evidence layer lives in
+          <a class="compact-link" href="../details/">Local Model Details</a>.
+          The broader synthesis claim lives in
+          <a class="compact-link" href="../orchestration/">Where Orchestration Beats Raw Model Power</a>.
+        </p>
+      </section>
+    </main>
+
+    <footer style="margin-top:48px; padding:24px 32px; border-top:1px solid var(--line); display:flex; gap:24px; flex-wrap:wrap; font-family:'Trebuchet MS','Gill Sans',sans-serif; font-size:0.85rem; color:var(--muted);">
+      <a href="../project-phoenix/" style="color:var(--accent); text-decoration:none;">Project Phoenix Overview</a>
+      <a href="../papers/" style="color:var(--accent); text-decoration:none;">Research Papers</a>
+      <a href="../details/" style="color:var(--accent); text-decoration:none;">Local Model Details</a>
+      <a href="../orchestration/" style="color:var(--accent); text-decoration:none;">Orchestration Paper →</a>
+    </footer>
+  </div>
+</body>
+</html>

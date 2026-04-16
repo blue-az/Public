@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local Model Role Suitability | Project Phoenix</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <p class="badge">Project Phoenix · Addendum Paper</p>
+      <h1>Local Model Role Suitability</h1>
+      <p class="subtitle">
+        Different local models win in different roles and policy regimes. The question is not
+        which model wins in general. The question is which model is good enough for which job.
+      </p>
+    </header>
+
+    <main>
+      <section class="panel callout">
+        <p>
+          Current result: smaller local models are already enough for meaningful routing and some
+          grounded use, while exactness-sensitive downstream handoff remains a sharper boundary
+          where stronger models or stronger policies still matter.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>The Role Question</h2>
+        <p>
+          Project Phoenix does not treat local-model evaluation as a single ranking problem.
+          Routing, grounded domain use, machine-facing protocol work, and repair-assisted pipelines
+          are different operational roles. Models that look weaker in one role can still be the
+          right answer in another.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Three Practical Results</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Routing</h3>
+            <p>`llama3.1:8b` proved good enough for current ShowcaseAgent routing work.</p>
+          </article>
+          <article class="card">
+            <h3>Grounded Use</h3>
+            <p>Smaller models crossed into grounded TourAgent usefulness once the harness carried the answer path.</p>
+          </article>
+          <article class="card">
+            <h3>Protocol Pressure</h3>
+            <p>`gemma3:27b` remained materially stronger when the answer had to survive stricter downstream machine-facing requirements.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Why It Matters</h2>
+        <p>
+          This paper is the role-boundary piece of the local-model details layer. It explains why raw
+          size is not enough as an evaluation language and why repair policy and handoff strictness
+          change the answer before the model leaderboard does.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Related Addendum Papers</h2>
+        <div class="links">
+          <a href="../tour-agent/">TourAgent</a>
+          <a href="../showcase/">ShowcaseAgent</a>
+          <a href="../details/">Local Model Details</a>
+          <a href="../orchestration/">Where Orchestration Beats Raw Model Power</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

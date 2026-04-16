@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rough Volatility as ML Benchmark | Project Phoenix</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <p class="eyebrow">Project Phoenix · RVH Track</p>
+      <h1>Rough Volatility as ML Benchmark</h1>
+      <p class="lede">
+        Two papers on why domain expertise — not ML capability — is the binding constraint
+        in rough volatility forecasting and semiconductor yield prediction. The naive pipeline
+        fails structurally at every layer. The failures are predictable, diagnosable, and
+        invisible to a practitioner who does not know the process.
+      </p>
+    </header>
+
+    <main>
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The two papers</p>
+          <h2>Design Principle and Concrete Domain</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>Paper 1.8 — Cross-Domain Benchmark Principle</h3>
+            <p class="example-kicker">Rough volatility as a reusable benchmark design criterion</p>
+            <p>
+              Both realized volatility forecasting (empirical, H ≈ 0.1) and semiconductor
+              defectivity simulation (H = 0.1 by design) reward domain expertise at every
+              pipeline layer. Partial corrections produce plausible-looking but still
+              systematically wrong results — making shallow domain expertise detectable.
+              The 7.1% instability loss in the fab simulation is visible only through path
+              modeling; the static average erases it.
+            </p>
+            <p class="example-takeaway">Four conditions. Two domains. One benchmark design principle.</p>
+          </article>
+          <article class="example-card">
+            <h3>Paper 1.9 — Concrete ML Evaluation Domain</h3>
+            <p class="example-kicker">Realized volatility forecasting as the financial benchmark</p>
+            <p>
+              The generative process — fractional Brownian motion, H ≈ 0.1, validated across
+              thousands of assets — is structurally incompatible with every standard ML
+              architecture. LSTMs, Transformers, and AR models carry Markovian inductive
+              biases that conflict with rough volatility. The mismatch is not tunable; it is
+              architectural. HAR-RV is the expert floor, not the ceiling. An evaluator's job
+              is to determine whether a practitioner knows to start there — and why.
+            </p>
+            <p class="example-takeaway">Know the process before fitting any model. That is the bar.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">What rough volatility is</p>
+          <h2>H ≈ 0.1 — Rougher Than Brownian Motion</h2>
+        </div>
+        <div class="definition-grid">
+          <article class="term-card featured">
+            <p class="term-type">The Process</p>
+            <h3>Fractional Brownian Motion</h3>
+            <p>
+              Realized volatility behaves like a fractional Brownian motion with Hurst
+              exponent H ≈ 0.1 — empirically validated across thousands of assets by
+              Gatheral, Jaisson, and Rosenbaum (2018). H &lt; 0.5 means anti-persistent
+              increments: positive moves are more likely to reverse than continue.
+              At H = 0.1 the paths are substantially rougher than standard diffusions.
+            </p>
+          </article>
+          <article class="term-card accent">
+            <p class="term-type">The Consequence</p>
+            <h3>Clustering and Anti-Persistence Together</h3>
+            <p>
+              Volatility clusters at high levels — when it rains, it pours — while
+              increments remain anti-persistent. This two-layer structure is what makes
+              finite-context architectures structurally misspecified.
+              Adding depth or attention heads does not fix a Markovian bias.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Four pipeline layers</p>
+          <h2>Where The Naive ML Pipeline Fails</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Layer 1</span>
+            <h3>Feature Engineering</h3>
+            <p>
+              <strong>Default (wrong):</strong> raw daily returns.
+              <strong>Domain-correct:</strong> log-realized variance at 5-minute, 1-hour, and daily frequencies plus bipower variation.<br><br>
+              Raw daily returns have near-zero autocorrelation — the signal has already decayed.
+              A model ingesting raw returns is fitting noise. This is not a hyperparameter
+              problem; it requires knowing what the relevant process signal is.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Layer 2</span>
+            <h3>Architecture Selection</h3>
+            <p>
+              <strong>Default (wrong):</strong> LSTM, Transformer, AR.
+              <strong>Domain-correct:</strong> HAR-RV, rough fractional kernel, neural-SDE.<br><br>
+              Standard architectures carry Markovian inductive biases that cannot represent
+              fBm long-memory structure. The mismatch is architectural, not a scale problem.
+              Deeper LSTMs do not resolve it.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Layer 3</span>
+            <h3>Validation Protocol</h3>
+            <p>
+              <strong>Default (wrong):</strong> k-fold cross-validation.
+              <strong>Domain-correct:</strong> expanding-window walk-forward with 252-day burn-in.<br><br>
+              K-fold on a long-memory series allows future path information to contaminate
+              training. In-sample metrics look strong; out-of-sample performance collapses
+              during volatility regime shifts — exactly when the model is needed most.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Layer 4</span>
+            <h3>Evaluation Metric</h3>
+            <p>
+              <strong>Default (wrong):</strong> MSE.
+              <strong>Domain-correct:</strong> QLIKE.<br><br>
+              MSE over-penalizes large absolute errors without normalizing by the current
+              volatility level. QLIKE weights proportional errors and is the standard
+              criterion for volatility model comparison (Patton, 2011). A model optimized
+              on MSE is systematically miscalibrated during high-volatility regimes.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The interaction structure</p>
+          <h2>Corrections Are Jointly Necessary</h2>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-card">
+            <h3>Three out of four is not enough</h3>
+            <p>
+              Wrong features mask architecture failure in-sample — the model overfits noise
+              with sufficient capacity. Wrong validation masks both. Wrong loss hides
+              miscalibration until an out-of-sample volatility spike. A practitioner who
+              corrects any three but not the fourth still produces a systematically
+              miscalibrated result.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>Shallow knowledge is detectable</h3>
+            <p>
+              A practitioner who knows two of the four corrections will be confidently wrong
+              in specific, diagnosable ways that a domain expert can predict before seeing
+              the model output. This is what makes the domain high-signal benchmark territory:
+              partial expertise produces confident wrong answers, not noisier correct ones.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The expert floor</p>
+          <h2>HAR-RV Is Not A Simplification</h2>
+        </div>
+        <div class="definition-grid">
+          <article class="term-card featured">
+            <p class="term-type">Model</p>
+            <h3>HAR-RV (Corsi, 2009)</h3>
+            <p>
+              A linear heterogeneous autoregression on daily, weekly, and monthly realized
+              variance components. No hidden layers. No attention. Interpretable: each
+              coefficient maps directly to the multi-scale persistence structure of the
+              process. Hard to beat at standard evaluation horizons.
+            </p>
+          </article>
+          <article class="term-card accent">
+            <p class="term-type">Why It Matters</p>
+            <h3>It Is A Statement About The Process</h3>
+            <p>
+              HAR-RV encodes the heterogeneous structure of rough volatility directly.
+              A practitioner who knows this domain knows to start here. A practitioner
+              who does not will likely never produce HAR-RV through search — the standard
+              ML instinct is to add complexity, not to remove it.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Empirical evidence — Paper 1.9</p>
+          <h2>HAR-RV vs LSTM: Walk-Forward Results (S&amp;P 500, 2001–2025)</h2>
+        </div>
+        <p style="margin-bottom:18px; color:var(--muted); line-height:1.6;">
+          Walk-forward validation on 6,264 out-of-sample predictions. Expanding window,
+          252-day burn-in. HAR-RV uses OLS on daily, weekly, and monthly realized variance
+          components. LSTM trained on the same features with MSE loss — intentionally the
+          wrong loss function, as the paper describes.
+        </p>
+
+        <div class="compare-grid" style="margin-bottom:20px;">
+          <article class="compare-card" style="background:linear-gradient(150deg,rgba(155,77,47,0.08),rgba(255,255,255,0.94));">
+            <h3>Full Period QLIKE Ratio</h3>
+            <p style="font-size:2.8rem; font-weight:700; color:var(--accent); line-height:1; margin:12px 0;">96.7×</p>
+            <p>LSTM / HAR-RV over 2001–2025. HAR-RV wins across all 6,264 predictions.</p>
+          </article>
+          <article class="compare-card" style="background:linear-gradient(150deg,rgba(155,77,47,0.14),rgba(255,255,255,0.94));">
+            <h3>COVID 2020 QLIKE Ratio</h3>
+            <p style="font-size:2.8rem; font-weight:700; color:var(--accent); line-height:1; margin:12px 0;">265.9×</p>
+            <p>LSTM degrades worst precisely during the highest-stress period — when the model is needed most.</p>
+          </article>
+        </div>
+
+        <img src="03_qlike_ratios.png"
+             alt="QLIKE ratio bar chart: LSTM vs HAR-RV by period"
+             style="width:100%; border-radius:12px; border:1px solid var(--line); margin-bottom:20px;">
+        <p style="font-size:0.85rem; color:var(--muted); margin-bottom:24px; font-style:italic;">
+          Left: LSTM/HAR-RV QLIKE ratio by period — values above 1 mean HAR-RV wins.
+          Right: absolute QLIKE values — HAR-RV stays near zero across all periods while LSTM spikes at every stress event.
+        </p>
+
+        <img src="02_stress_periods.png"
+             alt="Stress period detail: GFC 2008, COVID 2020, Rates 2022"
+             style="width:100%; border-radius:12px; border:1px solid var(--line); margin-bottom:12px;">
+        <p style="font-size:0.85rem; color:var(--muted); font-style:italic;">
+          Stress period detail. HAR-RV (red) tracks actual RV (black) closely in all three periods.
+          LSTM (green dashed) overshoots dramatically — particularly during COVID 2020 where it reaches
+          137.87 QLIKE vs HAR-RV's 0.518.
+        </p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Cross-domain comparison</p>
+          <h2>Two Domains, One Benchmark Property</h2>
+        </div>
+        <div class="regime-grid">
+          <article class="regime-card">
+            <h3>Financial (empirical)</h3>
+            <p>fBm, H ≈ 0.1, validated across thousands of assets. Default pipeline misses clustering through Markovian bias.</p>
+          </article>
+          <article class="regime-card">
+            <h3>Semiconductor (modelled)</h3>
+            <p>fBm, H = 0.1, design choice. Static D₀ average erases 7.1% instability loss visible only through path modeling.</p>
+          </article>
+          <article class="regime-card">
+            <h3>Shared Failure</h3>
+            <p>Naive pipeline produces plausible in-sample results that miss operationally significant behavior at regime shifts.</p>
+          </article>
+          <article class="regime-card">
+            <h3>Shared Correction</h3>
+            <p>Domain-informed structure owns the modeling correctness. The ML pipeline sits on top of it — it does not replace it.</p>
+          </article>
+          <article class="regime-card">
+            <h3>Expert Bar</h3>
+            <p>Know which pipeline choices are wrong for this process — and why — before fitting any model.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Four benchmark conditions</p>
+          <h2>What Makes A Domain High-Signal For Testing Expertise</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Condition 1</span>
+            <h3>Structural Failures</h3>
+            <p>Pipeline failures are correctable only by changing the modeling approach — not by tuning hyperparameters.</p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Condition 2</span>
+            <h3>Process Knowledge Required</h3>
+            <p>The correct approach at each layer requires understanding the process, not just fitting the data.</p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Condition 3</span>
+            <h3>Pre-Fit Diagnosability</h3>
+            <p>A domain expert can identify which pipeline choices are mismatched before fitting any model.</p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Condition 4</span>
+            <h3>Partial Knowledge Is Detectable</h3>
+            <p>Partial corrections produce plausible-looking but still systematically wrong results. Shallow domain expertise is visible.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag">One-line thesis</p>
+          <h2>What These Papers Are Actually Saying</h2>
+        </div>
+        <p class="thesis">
+          Domain expertise is testable. A practitioner who knows rough volatility can specify
+          the correct pipeline before seeing the data — because they understand the process.
+          One who does not will be confidently wrong in ways a domain expert can predict in advance.
+        </p>
+      </section>
+
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag">Related work</p>
+          <h2>Companion Site</h2>
+        </div>
+        <p class="thesis">
+          The semiconductor simulation that motivated the cross-domain principle is documented at
+          <a class="compact-link" href="../fab-rvh/">Fab Simulation &amp; RVH</a> — Paper 1.4.
+        </p>
+      </section>
+    </main>
+
+    <footer style="margin-top:48px; padding:24px 32px; border-top:1px solid var(--line); display:flex; gap:24px; flex-wrap:wrap; font-family:'Trebuchet MS','Gill Sans',sans-serif; font-size:0.85rem; color:var(--muted);">
+      <a href="../papers/" style="color:var(--accent); text-decoration:none;">Research Papers</a>
+      <a href="../fab-rvh/" style="color:var(--accent); text-decoration:none;">Fab Simulation &amp; RVH</a>
+      <a href="../project-phoenix/" style="color:var(--accent); text-decoration:none;">Project Phoenix Overview</a>
+    </footer>
+  </div>
+</body>
+</html>
