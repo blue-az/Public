@@ -3,117 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Companies | Semiconductors</title>
-    <meta name="description" content="Semiconductors company coverage: leaders, segments, and catalyst activity.">
+    <title>Modules | Optiver</title>
+    <meta name="description" content="Optiver domain pipeline modules: data, feature engineering, model training, drift monitoring, and synthesis.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="page">
         <header class="header">
             <div class="badge">Project Phoenix Domain</div>
-            <h1>Company Coverage</h1>
-            <p class="subtitle">Vendors, Segment Leadership, and Catalyst Context</p>
+            <h1>Pipeline Modules</h1>
+            <p class="subtitle">Five Layers · Load → Engineer → Train → Monitor → Deploy</p>
         </header>
 
         <nav class="nav">
             <a href="index.html">Home</a>
             <a href="tools.html">Tools</a>
-            <a href="data.html">Database</a>
-            <a href="companies.html" class="active">Companies</a>
+            <a href="data.html">Data</a>
+            <a href="companies.html" class="active">Modules</a>
             <a href="variations.html">Variations</a>
             <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
         </nav>
 
         <section class="section">
-            <h2>Primary Leaders (Latest Snapshot: 2025-12-31)</h2>
+            <h2>Module Overview</h2>
+            <p>Each module is a narrow, verifiable layer. No module crosses pipeline stages. Outputs are written to disk before downstream modules begin.</p>
             <div class="grid grid-3">
                 <div class="card">
-                    <h3>NVIDIA</h3>
-                    <p>GPU Discrete: 84% | GPU DataCenter: 90%</p>
-                    <div class="meta">Dominant in accelerated compute segments</div>
+                    <h3>Data Client</h3>
+                    <p>OptiverDataClient wraps the Kaggle dataset. Fast access to price, imbalance, and temporal signals. Slice by stock, date, or feature subset.</p>
+                    <div class="meta">5 tools · 480k rows · 200 stocks</div>
                 </div>
                 <div class="card">
-                    <h3>AMD</h3>
-                    <p>GPU Discrete: 14% | CPU Client: 35% | CPU DataCenter: 38%</p>
-                    <div class="meta">Strong #2 positioning across CPU and GPU</div>
+                    <h3>Feature Forge</h3>
+                    <p>V1 baseline features and V2 Numba-accelerated microstructure features. WAP, bid-ask spread, triplet imbalance, temporal lags, global stock statistics.</p>
+                    <div class="meta">16 tools · walk-forward safe</div>
                 </div>
                 <div class="card">
-                    <h3>INTEL</h3>
-                    <p>CPU Client: 62% | CPU DataCenter: 60% | GPU Discrete: 2%</p>
-                    <div class="meta">Scale leader in CPU with smaller GPU footprint</div>
+                    <h3>Model Lab</h3>
+                    <p>LightGBM with time-series CV, walk-forward backtesting, and Optuna hyperparameter tuning. SHAP explainability and stacking ensembles.</p>
+                    <div class="meta">19 tools · MAE-optimized</div>
                 </div>
                 <div class="card">
-                    <h3>TSMC</h3>
-                    <p>Foundry Wafer: 61%</p>
-                    <div class="meta">Largest foundry participant in current snapshot</div>
+                    <h3>Drift Radar</h3>
+                    <p>PSI, KS test, JS divergence, concept drift, covariate shift, and structural break detection. Dashboard output gates deployment.</p>
+                    <div class="meta">16 tools · deployment gate</div>
                 </div>
                 <div class="card">
-                    <h3>SAMSUNG</h3>
-                    <p>Foundry Wafer: 13%</p>
-                    <div class="meta">Major integrated competitor in foundry market</div>
-                </div>
-                <div class="card">
-                    <h3>Other Foundry Players</h3>
-                    <p>SMIC 6% | UMC 6% | GLOBALFOUNDRIES 5% | OTHER 9%</p>
-                    <div class="meta">Long-tail structure used for concentration analysis</div>
+                    <h3>Synthesis</h3>
+                    <p>Full pipeline orchestration: load → engineer → train → monitor → gate → report. Single command, profile-driven depth.</p>
+                    <div class="meta">5 tools · V6 capstone</div>
                 </div>
             </div>
         </section>
 
         <section class="section">
-            <h2>Event Timeline Coverage</h2>
+            <h2>Module File Map</h2>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Company</th>
-                        <th>Event Count</th>
-                        <th>Use in Domain</th>
+                        <th>Module</th>
+                        <th>File</th>
+                        <th>Responsibility</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>NVIDIA</td><td>3</td><td>Earnings and AI-cycle catalyst windows</td></tr>
-                    <tr><td>AMD</td><td>2</td><td>Competitive response and datacenter trajectory</td></tr>
-                    <tr><td>INTEL</td><td>2</td><td>Node roadmap and CPU-share context</td></tr>
-                    <tr><td>TSMC</td><td>1</td><td>Foundry macro and capex context</td></tr>
-                    <tr><td>QUALCOMM</td><td>1</td><td>Edge/mobile demand read-through</td></tr>
-                    <tr><td>ASML</td><td>1</td><td>Equipment and leading-edge process signal</td></tr>
+                    <tr>
+                        <td>Data Client</td>
+                        <td><code>data_client.py</code></td>
+                        <td>Dataset loading, slicing, and summary statistics</td>
+                    </tr>
+                    <tr>
+                        <td>Feature Forge V1</td>
+                        <td><code>feature_engineering.py</code></td>
+                        <td>Imbalance, price, and temporal baseline features</td>
+                    </tr>
+                    <tr>
+                        <td>Feature Forge V2</td>
+                        <td><code>feature_engineering.py</code></td>
+                        <td>Numba-accelerated microstructure features</td>
+                    </tr>
+                    <tr>
+                        <td>Model Lab</td>
+                        <td><code>model_pipeline.py</code></td>
+                        <td>LightGBM CV, evaluation, zero-sum adjustment</td>
+                    </tr>
+                    <tr>
+                        <td>Optuna Tuner</td>
+                        <td><code>optuna_tuner.py</code></td>
+                        <td>TPE Bayesian hyperparameter search</td>
+                    </tr>
+                    <tr>
+                        <td>Walk-Forward</td>
+                        <td><code>walk_forward.py</code></td>
+                        <td>Production-simulating backtesting</td>
+                    </tr>
+                    <tr>
+                        <td>Drift Radar</td>
+                        <td><code>feature_drift.py</code></td>
+                        <td>PSI, KS, JS divergence feature monitoring</td>
+                    </tr>
+                    <tr>
+                        <td>Concept Drift</td>
+                        <td><code>target_drift.py</code></td>
+                        <td>Target and feature-target relationship drift</td>
+                    </tr>
+                    <tr>
+                        <td>Data Quality</td>
+                        <td><code>data_quality.py</code></td>
+                        <td>Missing values, outlier frequency, structural breaks</td>
+                    </tr>
+                    <tr>
+                        <td>Alerts</td>
+                        <td><code>monitoring_alerts.py</code></td>
+                        <td>Alert routing from drift and quality signals</td>
+                    </tr>
+                    <tr>
+                        <td>Synthesis</td>
+                        <td><code>agentic_engine.py</code></td>
+                        <td>End-to-end orchestration and deployment gate</td>
+                    </tr>
+                    <tr>
+                        <td>Reports</td>
+                        <td><code>report_templates.py</code></td>
+                        <td>Structured analysis, model, and monitoring reports</td>
+                    </tr>
                 </tbody>
             </table>
         </section>
 
         <section class="section">
-            <h2>Tracked Price Universe (14 Tickers)</h2>
-            <p>Coverage includes vendor equities and benchmark ETFs for relative-performance analysis.</p>
-            <div class="techniques" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
-                <span class="tech-tag">NVDA</span>
-                <span class="tech-tag">AMD</span>
-                <span class="tech-tag">INTC</span>
-                <span class="tech-tag">TSM</span>
-                <span class="tech-tag">AVGO</span>
-                <span class="tech-tag">QCOM</span>
-                <span class="tech-tag">MU</span>
-                <span class="tech-tag">TXN</span>
-                <span class="tech-tag">ADI</span>
-                <span class="tech-tag">ASML</span>
-                <span class="tech-tag">ON</span>
-                <span class="tech-tag">SOXX</span>
-                <span class="tech-tag">SMH</span>
-                <span class="tech-tag">SPY</span>
-            </div>
+            <h2>Pipeline Execution Rules</h2>
+            <ul>
+                <li>Data must be loaded before any feature calculation or analysis.</li>
+                <li>V2 features require V1 features to be computed first.</li>
+                <li>Model CV requires time-series purge gap to prevent leakage.</li>
+                <li>Export and verification pairs implement Write-Then-Verify.</li>
+                <li>Zero-sum adjustment applied after predictions for market neutrality.</li>
+                <li>PSI &lt; 0.1 = stable · PSI &gt; 0.25 = significant drift · deployment blocked.</li>
+                <li>Deployment decisions: deploy, defer, reject, or retrain.</li>
+            </ul>
         </section>
 
         <section class="section">
-            <h2>Example Competitive Query</h2>
-            <div class="code"><span class="highlight-secondary"># Compare NVDA and AMD (alias-aware) over 2024-2025</span>
-compare_companies(companies=["NVDA", "AMD"], start_year=2024, end_year=2025)
-
-<span class="highlight-secondary"># Check concentration in discrete GPUs</span>
-get_market_concentration(market="GPU", segment="Discrete")</div>
+            <h2>Synthesis Profiles</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Quick</h3>
+                    <p>Explore mode: load, summary, target analysis, report. Fast turnaround for initial data review.</p>
+                    <div class="meta">~2 min</div>
+                </div>
+                <div class="card">
+                    <h3>Standard</h3>
+                    <p>Model mode: features, LightGBM CV, drift check, basic report. Production-ready validation.</p>
+                    <div class="meta">~8 min</div>
+                </div>
+                <div class="card">
+                    <h3>Comprehensive</h3>
+                    <p>Full mode: parallel features, CV, walk-forward backtest, full monitoring suite, complete report.</p>
+                    <div class="meta">~20 min</div>
+                </div>
+            </div>
         </section>
 
         <footer class="footer">
-            <p>Semiconductors Domain - Project Phoenix | Companies</p>
-            <a href="index.html" class="back-link">Back to Semiconductors Home</a>
+            <p>Optiver Domain - Project Phoenix | Modules</p>
+            <a href="index.html" class="back-link">Back to Optiver Home</a>
         </footer>
     </div>
 </body>

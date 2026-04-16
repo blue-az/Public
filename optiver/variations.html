@@ -3,110 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Variations | Semiconductors</title>
-    <meta name="description" content="Semiconductors domain variations from core analysis to interactive research packs.">
+    <title>Variations | Optiver</title>
+    <meta name="description" content="Optiver domain variations: 6 configurations from data loading baseline to full synthesis workflow.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="page">
         <header class="header">
             <div class="badge">Project Phoenix Domain</div>
-            <h1>Semiconductors Variations</h1>
-            <p class="subtitle">8 Configurations from Basics to Interactive Dashboards</p>
+            <h1>Optiver Variations</h1>
+            <p class="subtitle">6 Configurations · Data Baseline → Full Synthesis</p>
         </header>
 
         <nav class="nav">
             <a href="index.html">Home</a>
             <a href="tools.html">Tools</a>
-            <a href="data.html">Database</a>
-            <a href="companies.html">Companies</a>
+            <a href="data.html">Data</a>
+            <a href="companies.html">Modules</a>
             <a href="variations.html" class="active">Variations</a>
             <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
         </nav>
 
         <section class="section">
             <h2>Variation Overview</h2>
-            <p>The Semiconductors domain extends the PPR_Agent variation strategy from 4 to 8 modes, preserving deterministic behavior while adding SOP and visualization layers.</p>
+            <p>Each variation adds a complete new capability layer on top of the previous. V6 is the full synthesis capstone — one command runs the entire pipeline.</p>
             <div class="variation-grid">
-                <div class="variation-card"><div class="num">6</div><h4>V1</h4><p>Full toolset</p></div>
-                <div class="variation-card"><div class="num">3</div><h4>V2</h4><p>Basic compare/search</p></div>
-                <div class="variation-card"><div class="num">3</div><h4>V3</h4><p>Temporal focus</p></div>
-                <div class="variation-card"><div class="num">4</div><h4>V4</h4><p>Competitive intel</p></div>
-                <div class="variation-card"><div class="num">5</div><h4>V5</h4><p>Catalyst analysis</p></div>
-                <div class="variation-card"><div class="num">3</div><h4>V6</h4><p>SOP orchestration</p></div>
-                <div class="variation-card"><div class="num">5</div><h4>V7</h4><p>Static visualizations</p></div>
-                <div class="variation-card"><div class="num">5</div><h4>V8</h4><p>Interactive visualizations</p></div>
+                <div class="variation-card">
+                    <div class="num">V1</div>
+                    <h4>Core Data + Features</h4>
+                    <p>Data loading, baseline features, analysis</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">V2</div>
+                    <h4>Advanced Features</h4>
+                    <p>V2 Numba microstructure features</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">V3</div>
+                    <h4>Explainability + Ensembles</h4>
+                    <p>SHAP, Optuna, stacking, walk-forward</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">V4</div>
+                    <h4>Drift + Monitoring</h4>
+                    <p>Drift detection, data quality, alerting</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">V5</div>
+                    <h4>Parallel Execution</h4>
+                    <p>Parallelized CV, features, tuning</p>
+                </div>
+                <div class="variation-card">
+                    <div class="num">V6</div>
+                    <h4>Synthesis Capstone</h4>
+                    <p>Full pipeline, deployment gate, reports</p>
+                </div>
             </div>
         </section>
 
         <section class="section">
-            <h2>V1-V4: Core Analysis Stack</h2>
+            <h2>V1 — Core Data + Features</h2>
+            <p>Establishes the base system: CLI, tool registry, and data client. V1 baseline features compute imbalance, price, and temporal signals.</p>
             <ul>
-                <li><strong>V1 (6 tools):</strong> complete share, trend, compare, financial, price, and search coverage.</li>
-                <li><strong>V2 (3 tools):</strong> streamlined leaderboard/compare/search for fast workflows.</li>
-                <li><strong>V3 (3 tools):</strong> temporal analysis with share, vendor metric, and price trends.</li>
-                <li><strong>V4 (4 tools):</strong> competitive intelligence with concentration analysis.</li>
+                <li>Data loading and slicing via <code>OptiverDataClient</code></li>
+                <li>Stock and target analysis tools</li>
+                <li>V1 baseline feature pipeline: imbalance, price, temporal</li>
+                <li>Feature correlation and cross-stock comparison</li>
+            </ul>
+            <div class="code"><span class="highlight-secondary"># V1 baseline workflow</span>
+load_data() -> analyze_stock(stock_id=5) -> calculate_all_features()</div>
+        </section>
+
+        <section class="section">
+            <h2>V2 — Advanced Microstructure Features</h2>
+            <p>Numba-accelerated V2 feature generation. Triplet and pairwise imbalance, microstructure signals, global stock statistics, and temporal window features. Walk-forward safe.</p>
+            <ul>
+                <li><code>calculate_triplet_imbalance</code> and <code>calculate_pairwise_imbalance</code></li>
+                <li><code>calculate_microstructure_features</code> and <code>calculate_global_stock_features</code></li>
+                <li>Temporal shift, return, and diff windows</li>
+                <li>Zero-sum adjustment and write-then-verify export</li>
+            </ul>
+            <div class="code"><span class="highlight-secondary"># V2 feature pipeline</span>
+load_data() -> generate_all_v2_features() -> export_features() -> verify_export()</div>
+        </section>
+
+        <section class="section">
+            <h2>V3 — Explainability · Optuna · Ensembles</h2>
+            <p>Adds SHAP explainability, Bayesian hyperparameter search, stacking ensembles, and walk-forward backtesting.</p>
+            <ul>
+                <li>SHAP values require a trained model and test set (not training data)</li>
+                <li>SHAP importance can differ from gain-based feature importance</li>
+                <li>Optuna uses TPE Bayesian optimization, ideally with CV evaluation</li>
+                <li>Stacking ensembles use out-of-fold predictions to prevent leakage</li>
+                <li>Walk-forward backtesting simulates production inference conditions</li>
             </ul>
         </section>
 
         <section class="section">
-            <h2>V5-V6: Write-Then-Verify Stack</h2>
-            <ul>
-                <li><strong>V5 (5 tools):</strong> event search, event impact on price/share, write note, verify note.</li>
-                <li><strong>V6 (3 tools):</strong> run SOP, verify SOP, and list SOP runs for auditable research cycles.</li>
-            </ul>
-            <div class="code"><span class="highlight-secondary"># SOP-centered flow</span>
-run_catalyst_sop(company="AMD", event_date="2025-01-30", thesis="Catalyst thesis")
-verify_catalyst_sop(run_id="...")
-list_catalyst_sop_runs(limit=10)</div>
-        </section>
-
-        <section class="section">
-            <h2>V7-V8: Visualization Stack</h2>
-            <ul>
-                <li><strong>V7 (5 tools):</strong> static PNG outputs for snapshots, trends, relative returns, event windows, and dashboard assembly.</li>
-                <li><strong>V8 (5 tools):</strong> interactive Plotly HTML outputs plus research-pack index generation.</li>
-            </ul>
-            <div class="code"><span class="highlight-secondary"># Interactive bundle</span>
-build_interactive_research_pack(
-    ticker="NVDA",
-    benchmark_ticker="SOXX",
-    market="GPU",
-    segment="Discrete",
-    event_date="2025-02-21",
-    window_days=5
-)</div>
-        </section>
-
-        <section class="section">
-            <h2>Tool Distribution Matrix</h2>
+            <h2>V4 — Drift Detection + Data Quality</h2>
+            <p>Full monitoring suite. PSI, KS test, JS divergence, concept drift, covariate shift, structural break detection, and regime classification.</p>
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>Tool Family</th>
-                        <th>V1</th>
-                        <th>V2</th>
-                        <th>V3</th>
-                        <th>V4</th>
-                        <th>V5</th>
-                        <th>V6</th>
-                        <th>V7</th>
-                        <th>V8</th>
-                    </tr>
+                    <tr><th>Signal</th><th>Method</th><th>Threshold</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>Core analytics</td><td><span class="highlight">Yes</span></td><td><span class="highlight">Yes</span></td><td><span class="highlight">Yes</span></td><td><span class="highlight">Yes</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-                    <tr><td>Catalyst/event</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="highlight">Yes</span></td><td><span class="highlight">Yes</span></td><td>-</td><td>-</td></tr>
-                    <tr><td>SOP orchestration</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="highlight">Yes</span></td><td>-</td><td>-</td></tr>
-                    <tr><td>Static plotting</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="highlight">Yes</span></td><td>-</td></tr>
-                    <tr><td>Interactive plotting</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="highlight">Yes</span></td></tr>
+                    <tr><td>Feature drift</td><td>PSI</td><td>&lt; 0.1 stable · &gt; 0.25 significant</td></tr>
+                    <tr><td>Distribution shift</td><td>KS test</td><td>alpha = 0.05</td></tr>
+                    <tr><td>Divergence</td><td>JS divergence</td><td>domain-specific</td></tr>
+                    <tr><td>Covariate shift</td><td>Domain classifier</td><td>AUC &gt; 0.6 indicates shift</td></tr>
+                    <tr><td>Structural breaks</td><td>CUSUM / Chow</td><td>change-point detection</td></tr>
                 </tbody>
             </table>
         </section>
 
+        <section class="section">
+            <h2>V5 — Parallel Execution</h2>
+            <p>ThreadPoolExecutor-backed parallel versions of the most compute-intensive operations. max_workers should not exceed available CPU cores.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Parallel Tools</h3>
+                    <div class="chip-row">
+                        <span class="chip">generate_all_v2_features_parallel</span>
+                        <span class="chip">train_lightgbm_cv_parallel</span>
+                        <span class="chip">tune_hyperparameters_parallel</span>
+                        <span class="chip">run_walk_forward_parallel</span>
+                        <span class="chip">track_feature_drift_parallel</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>V6 — Synthesis Capstone</h2>
+            <p>Full pipeline orchestration with profile-driven depth, deployment readiness gate, and structured reports.</p>
+            <div class="code"><span class="highlight-secondary"># Synthesis profiles</span>
+run_synthesis_workflow(profile="quick")          <span class="highlight-secondary"># explore only</span>
+run_synthesis_workflow(profile="standard")       <span class="highlight-secondary"># features + model</span>
+run_synthesis_workflow(profile="comprehensive")  <span class="highlight-secondary"># full pipeline</span>
+
+<span class="highlight-secondary"># Gate deployment on drift + quality criteria</span>
+check_deployment_readiness()  <span class="highlight-secondary"># → deploy | defer | reject | retrain</span>
+
+<span class="highlight-secondary"># Structured reports</span>
+create_analysis_report()
+create_model_report()
+create_monitoring_report()</div>
+            <p>Five deployment criteria: data quality, feature drift, CV MAE, Sharpe ratio, and active alerts. All five must clear before deployment is approved.</p>
+        </section>
+
         <footer class="footer">
-            <p>Semiconductors Domain - Project Phoenix | Variations</p>
-            <a href="index.html" class="back-link">Back to Semiconductors Home</a>
+            <p>Optiver Domain - Project Phoenix | Variations</p>
+            <a href="index.html" class="back-link">Back to Optiver Home</a>
         </footer>
     </div>
 </body>

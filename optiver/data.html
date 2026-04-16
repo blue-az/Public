@@ -3,70 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database | Semiconductors</title>
-    <meta name="description" content="Semiconductors SQLite schema, row coverage, and source-to-table mapping.">
+    <title>Data | Optiver</title>
+    <meta name="description" content="Optiver domain dataset: Kaggle Trading at the Close, 480k rows, 200 stocks, 17 columns.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="page">
         <header class="header">
             <div class="badge">Project Phoenix Domain</div>
-            <h1>Semiconductors Database</h1>
-            <p class="subtitle">SQLite Coverage Across Share, Financial, Price, and Event Data</p>
+            <h1>Optiver Data</h1>
+            <p class="subtitle">Kaggle Trading at the Close · 480k Rows · 200 Stocks · 17 Columns</p>
         </header>
 
         <nav class="nav">
             <a href="index.html">Home</a>
             <a href="tools.html">Tools</a>
-            <a href="data.html" class="active">Database</a>
-            <a href="companies.html">Companies</a>
+            <a href="data.html" class="active">Data</a>
+            <a href="companies.html">Modules</a>
             <a href="variations.html">Variations</a>
             <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
         </nav>
 
         <section class="section">
-            <h2>Table Coverage</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Table</th>
-                        <th>Rows</th>
-                        <th>Distinct Entities</th>
-                        <th>Date Range</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>market_share</code></td>
-                        <td>36</td>
-                        <td>9 companies, 3 markets, 4 segments</td>
-                        <td>2024-12-31 to 2025-12-31</td>
-                    </tr>
-                    <tr>
-                        <td><code>vendor_metrics</code></td>
-                        <td>2,869</td>
-                        <td>Vendor-period-metric observations</td>
-                        <td>SEC-driven fundamentals timeline</td>
-                    </tr>
-                    <tr>
-                        <td><code>prices</code></td>
-                        <td>106,413</td>
-                        <td>14 tickers</td>
-                        <td>1972-01-07 to 2026-02-05</td>
-                    </tr>
-                    <tr>
-                        <td><code>events</code></td>
-                        <td>10</td>
-                        <td>6 companies</td>
-                        <td>2024-01-25 to 2025-05-02</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h2>Dataset Coverage</h2>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="number">480K</div>
+                    <div class="label">Rows</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">200</div>
+                    <div class="label">Stocks</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">481</div>
+                    <div class="label">Trading Days</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">17</div>
+                    <div class="label">Columns</div>
+                </div>
+            </div>
+            <p>Source: <code>~/Python/Optiver/OptFeatureViz/train.csv</code> — Kaggle Trading at the Close competition dataset. Each row represents a 10-second auction interval for one stock on one trading day.</p>
         </section>
 
         <section class="section">
             <h2>Schema Reference</h2>
-            <h3>market_share</h3>
             <table class="table">
                 <thead>
                     <tr>
@@ -76,91 +58,87 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td><code>metric_date</code></td><td>TEXT</td><td>Snapshot date (e.g., 2025-12-31)</td></tr>
-                    <tr><td><code>market</code></td><td>TEXT</td><td>CPU, GPU, Foundry</td></tr>
-                    <tr><td><code>segment</code></td><td>TEXT</td><td>Client, DataCenter, Discrete, Wafer</td></tr>
-                    <tr><td><code>company</code></td><td>TEXT</td><td>Vendor label (e.g., NVIDIA, AMD)</td></tr>
-                    <tr><td><code>share_pct</code></td><td>REAL</td><td>Market share percentage</td></tr>
-                    <tr><td><code>source</code></td><td>TEXT</td><td>Source family for the observation</td></tr>
-                </tbody>
-            </table>
-
-            <h3>vendor_metrics</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Column</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td><code>metric_date</code></td><td>TEXT</td><td>Period end date</td></tr>
-                    <tr><td><code>period</code></td><td>TEXT</td><td>Reporting period (quarter/annual)</td></tr>
-                    <tr><td><code>company</code></td><td>TEXT</td><td>Vendor name</td></tr>
-                    <tr><td><code>ticker</code></td><td>TEXT</td><td>Trading symbol</td></tr>
-                    <tr><td><code>metric_name</code></td><td>TEXT</td><td>Revenue, GrossProfit, OperatingIncomeLoss, NetIncomeLoss</td></tr>
-                    <tr><td><code>metric_value</code></td><td>REAL</td><td>Reported numeric metric value</td></tr>
-                </tbody>
-            </table>
-
-            <h3>prices + events</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Table</th>
-                        <th>Key Fields</th>
-                        <th>Purpose</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>prices</code></td>
-                        <td><code>trade_date</code>, <code>ticker</code>, OHLCV</td>
-                        <td>Price trend, relative performance, event windows</td>
-                    </tr>
-                    <tr>
-                        <td><code>events</code></td>
-                        <td><code>event_date</code>, <code>company</code>, <code>event_type</code>, <code>title</code></td>
-                        <td>Catalyst-aware analysis and SOP note generation</td>
-                    </tr>
+                    <tr><td><code>stock_id</code></td><td>int</td><td>Stock identifier (0–199)</td></tr>
+                    <tr><td><code>date_id</code></td><td>int</td><td>Trading day identifier (0–480)</td></tr>
+                    <tr><td><code>seconds_in_bucket</code></td><td>int</td><td>Seconds elapsed in the auction window</td></tr>
+                    <tr><td><code>imbalance_size</code></td><td>float</td><td>Volume of imbalance at current snapshot</td></tr>
+                    <tr><td><code>imbalance_buy_sell_flag</code></td><td>int</td><td>Buy (1), sell (-1), or neutral (0) imbalance direction</td></tr>
+                    <tr><td><code>reference_price</code></td><td>float</td><td>Price at which imbalance is zero</td></tr>
+                    <tr><td><code>matched_size</code></td><td>float</td><td>Volume matched in auction at current price</td></tr>
+                    <tr><td><code>far_price</code></td><td>float</td><td>Indicative uncrossing price for all auction orders</td></tr>
+                    <tr><td><code>near_price</code></td><td>float</td><td>Indicative uncrossing price for limit orders</td></tr>
+                    <tr><td><code>bid_price</code></td><td>float</td><td>Best bid in continuous order book</td></tr>
+                    <tr><td><code>bid_size</code></td><td>float</td><td>Volume at best bid</td></tr>
+                    <tr><td><code>ask_price</code></td><td>float</td><td>Best ask in continuous order book</td></tr>
+                    <tr><td><code>ask_size</code></td><td>float</td><td>Volume at best ask</td></tr>
+                    <tr><td><code>wap</code></td><td>float</td><td>Weighted average price from bid/ask sizes</td></tr>
+                    <tr><td><code>target</code></td><td>float</td><td>60-second future price movement (prediction target)</td></tr>
+                    <tr><td><code>time_id</code></td><td>int</td><td>Unique time bucket identifier</td></tr>
+                    <tr><td><code>row_id</code></td><td>str</td><td>Unique row identifier (stock_id–time_id)</td></tr>
                 </tbody>
             </table>
         </section>
 
         <section class="section">
-            <h2>Ingestion Pipeline</h2>
+            <h2>System Architecture</h2>
+            <div class="code">unified_agent/
+├── data_client.py         # OptiverDataClient: data access layer
+├── tool_registry.py       # ToolRegistry: 84 tools by category
+├── execution_context.py   # ExecutionContext: shared pipeline state
+├── plan_builder.py        # PlanBuilder: regex → execution plan
+├── agentic_engine.py      # State machine orchestrator
+├── feature_engineering.py # V2 microstructure feature generation
+├── model_pipeline.py      # LightGBM training with time-series CV
+├── optuna_tuner.py        # Hyperparameter optimization (TPE)
+├── walk_forward.py        # Walk-forward backtesting
+├── feature_drift.py       # Feature drift detection (PSI, KS, JS)
+├── target_drift.py        # Target/concept drift detection
+├── data_quality.py        # Data quality monitoring
+├── monitoring_alerts.py   # Alert routing
+├── smart_tools.py         # Meta-tools (SmartAnalyze, SmartMonitor)
+└── report_templates.py    # Structured report outputs</div>
+        </section>
+
+        <section class="section">
+            <h2>Execution Flow</h2>
             <div class="grid">
                 <div class="card">
-                    <h3>SEC Fundamentals</h3>
-                    <p><code>scripts/pull_sec_companyfacts.py</code> pulls company facts and normalizes vendor metrics.</p>
+                    <h3>CLI + REPL</h3>
+                    <p><code>cli/main.py</code> provides interactive commands and one-shot queries. Natural language maps to tool execution plans.</p>
                 </div>
                 <div class="card">
-                    <h3>Price History</h3>
-                    <p><code>scripts/pull_stooq_prices.py</code> loads daily price history for benchmark and vendor tickers.</p>
+                    <h3>Planner</h3>
+                    <p><code>PlanBuilder</code> compiles regex patterns into ordered execution steps. More specific patterns take priority.</p>
                 </div>
                 <div class="card">
-                    <h3>Authoritative Share Inputs</h3>
-                    <p><code>scripts/sources/normalize_authoritative_sources.sh</code> maps source snapshots into <code>data/manual/*_market_share.csv</code>.</p>
+                    <h3>Engine</h3>
+                    <p><code>AgenticEngine</code> executes plan steps, updates <code>ExecutionContext</code>, and surfaces results.</p>
                 </div>
                 <div class="card">
-                    <h3>Database Build</h3>
-                    <p><code>scripts/init_db.py</code> creates and refreshes SQLite tables via idempotent inserts.</p>
+                    <h3>Reports</h3>
+                    <p><code>report_templates</code> generate analysis, model, and monitoring summaries with structured fields.</p>
                 </div>
             </div>
         </section>
 
         <section class="section">
-            <h2>Quick Commands</h2>
-            <div class="code">cd domains/Semiconductors
-pip install -r requirements.txt
-./scripts/bootstrap_data.sh
-python cockpit_poc/agent/tests/test_agent.py --test</div>
+            <h2>Quick Start</h2>
+            <div class="code"><span class="highlight-secondary"># Run interactive REPL</span>
+cd domains/Optiver/cli && python main.py
+
+<span class="highlight-secondary"># One-shot query</span>
+python main.py "analyze stock 5"
+
+<span class="highlight-secondary"># Run domain test suite</span>
+cd domains/Optiver && python test_domain.py
+
+<span class="highlight-secondary"># Full synthesis workflow</span>
+python main.py "run synthesis workflow standard"</div>
         </section>
 
         <footer class="footer">
-            <p>Semiconductors Domain - Project Phoenix | Database</p>
-            <a href="index.html" class="back-link">Back to Semiconductors Home</a>
+            <p>Optiver Domain - Project Phoenix | Data</p>
+            <a href="index.html" class="back-link">Back to Optiver Home</a>
         </footer>
     </div>
 </body>

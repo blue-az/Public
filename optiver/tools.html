@@ -3,189 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools | Semiconductors</title>
-    <meta name="description" content="Semiconductors domain tools across core, catalyst, SOP, and visualization workflows.">
+    <title>Tools | Optiver</title>
+    <meta name="description" content="Optiver domain tool registry: 84 tools across data, feature engineering, modeling, monitoring, and synthesis.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="page">
         <header class="header">
             <div class="badge">Project Phoenix Domain</div>
-            <h1>Semiconductors Tools</h1>
-            <p class="subtitle">25 Specialized Tools Across 8 Variations</p>
+            <h1>Optiver Tools</h1>
+            <p class="subtitle">84 Tools · Data · Features · Modeling · Monitoring · Synthesis</p>
         </header>
 
         <nav class="nav">
             <a href="index.html">Home</a>
             <a href="tools.html" class="active">Tools</a>
-            <a href="data.html">Database</a>
-            <a href="companies.html">Companies</a>
+            <a href="data.html">Data</a>
+            <a href="companies.html">Modules</a>
             <a href="variations.html">Variations</a>
             <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
         </nav>
 
         <section class="section">
-            <h2>Tool Family Overview</h2>
-            <p>Tooling follows Phoenix principles: atomic operations, explicit parameters, and verifiable outputs.</p>
+            <h2>Registry Overview</h2>
             <div class="stats-row">
                 <div class="stat-box">
-                    <div class="number">6</div>
-                    <div class="label">Core Tools</div>
+                    <div class="number">84</div>
+                    <div class="label">Total Tools</div>
                 </div>
                 <div class="stat-box">
                     <div class="number">5</div>
-                    <div class="label">Catalyst Tools</div>
+                    <div class="label">Data Tools</div>
                 </div>
                 <div class="stat-box">
-                    <div class="number">3</div>
-                    <div class="label">SOP Tools</div>
+                    <div class="number">16</div>
+                    <div class="label">Feature Tools</div>
                 </div>
                 <div class="stat-box">
-                    <div class="number">10</div>
-                    <div class="label">Visualization Tools</div>
+                    <div class="number">19</div>
+                    <div class="label">Model + ML Tools</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">16</div>
+                    <div class="label">Drift + Monitor</div>
                 </div>
             </div>
+            <p>Each tool owns one operation. No tool crosses pipeline stages. All outputs are verifiable before the next stage begins.</p>
         </section>
 
         <section class="section">
-            <h2>Core Market Intelligence (V1-V4)</h2>
+            <h2>Data Tools</h2>
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>Tool</th>
-                        <th>Purpose</th>
-                        <th>Example</th>
-                    </tr>
+                    <tr><th>Tool</th><th>Purpose</th></tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><code>GetTopMarketShareLeaders</code></td>
-                        <td>Rank companies by share in a market/segment snapshot.</td>
-                        <td><code>market="GPU", segment="Discrete"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>GetMarketShareTrend</code></td>
-                        <td>Return time-series share movements by company.</td>
-                        <td><code>market="CPU", segment="Client"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>CompareCompanies</code></td>
-                        <td>Head-to-head comparisons across selected years.</td>
-                        <td><code>companies=["NVDA", "AMD"]</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>GetVendorMetricTrend</code></td>
-                        <td>Financial metric trend from SEC company facts.</td>
-                        <td><code>company="NVDA", metric_name="Revenue"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>GetPricePerformance</code></td>
-                        <td>Price performance and relative comparisons by ticker.</td>
-                        <td><code>ticker="AVGO"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>SearchCompanies</code></td>
-                        <td>Alias-aware lookup across company and ticker names.</td>
-                        <td><code>search_term="INTEL"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>GetMarketConcentration</code></td>
-                        <td>Compute concentration (HHI-style) for competition framing.</td>
-                        <td><code>market="GPU", segment="Discrete"</code></td>
-                    </tr>
+                    <tr><td><code>load_data</code></td><td>Load Kaggle Trading at the Close dataset from disk.</td></tr>
+                    <tr><td><code>get_stock_info</code></td><td>Return metadata for a specific stock ID (0–199).</td></tr>
+                    <tr><td><code>get_date_range</code></td><td>Return the date ID range present in the dataset.</td></tr>
+                    <tr><td><code>get_data_summary</code></td><td>Statistical summary of rows, columns, and target distribution.</td></tr>
+                    <tr><td><code>filter_data</code></td><td>Slice dataset by stock ID, date range, or feature subset.</td></tr>
                 </tbody>
             </table>
         </section>
 
         <section class="section">
-            <h2>Catalyst + Write-Then-Verify (V5-V6)</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Tool</th>
-                        <th>Role</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>SearchEvents</code></td>
-                        <td>Query catalyst timeline by company, type, and date.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GetEventImpactOnPrice</code></td>
-                        <td>Windowed price analysis around catalyst dates.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GetEventImpactOnShare</code></td>
-                        <td>Relate catalyst timing to market-share shifts.</td>
-                    </tr>
-                    <tr>
-                        <td><code>WriteCatalystNote</code></td>
-                        <td>Persist structured research note tied to event metadata.</td>
-                    </tr>
-                    <tr>
-                        <td><code>VerifyCatalystNote</code></td>
-                        <td>Read-back verification for persisted note integrity.</td>
-                    </tr>
-                    <tr>
-                        <td><code>RunCatalystSOP</code></td>
-                        <td>Orchestrate standard catalyst research steps end-to-end.</td>
-                    </tr>
-                    <tr>
-                        <td><code>VerifyCatalystSOP</code></td>
-                        <td>Audit SOP output artifacts for completeness.</td>
-                    </tr>
-                    <tr>
-                        <td><code>ListCatalystSOPRuns</code></td>
-                        <td>Track and retrieve prior SOP executions.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="section">
-            <h2>Visualization Suite (V7-V8)</h2>
+            <h2>Feature Tools — V1 Baseline</h2>
             <div class="grid">
                 <div class="card">
-                    <h3>Static PNG Tools</h3>
-                    <p><code>PlotMarketShareSnapshot</code>, <code>PlotMarketShareTrend</code>, <code>PlotPriceRelativePerformance</code>, <code>PlotEventImpactWindow</code>, <code>PlotSemiconductorDashboard</code></p>
+                    <h3>Imbalance Features</h3>
+                    <p>Order book imbalance signals from bid/ask size and price.</p>
+                    <div class="chip-row">
+                        <span class="chip" style="background:rgba(108,92,231,0.12);color:var(--primary);border-color:rgba(108,92,231,0.35);">calculate_imbalance_features</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <h3>Interactive HTML Tools</h3>
-                    <p><code>BuildInteractiveShareSnapshot</code>, <code>BuildInteractiveRelativePerformance</code>, <code>BuildInteractiveEventStudy</code>, <code>BuildInteractiveSemiconductorBriefing</code>, <code>BuildInteractiveResearchPack</code></p>
+                    <h3>Price Features</h3>
+                    <p>WAP, reference price, and bid-ask spread derivations.</p>
+                    <div class="chip-row">
+                        <span class="chip" style="background:rgba(108,92,231,0.12);color:var(--primary);border-color:rgba(108,92,231,0.35);">calculate_price_features</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <h3>Output Paths</h3>
-                    <p>PNG outputs are written to <code>data/visualizations/</code>; interactive outputs are written to <code>data/visualizations_html/</code>.</p>
+                    <h3>Temporal Features</h3>
+                    <p>Seconds-in-bucket and auction-proximity signals.</p>
+                    <div class="chip-row">
+                        <span class="chip" style="background:rgba(108,92,231,0.12);color:var(--primary);border-color:rgba(108,92,231,0.35);">calculate_temporal_features</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Composite + Info</h3>
+                    <p>All-feature pipeline and registry lookup.</p>
+                    <div class="chip-row">
+                        <span class="chip" style="background:rgba(108,92,231,0.12);color:var(--primary);border-color:rgba(108,92,231,0.35);">calculate_all_features</span>
+                        <span class="chip" style="background:rgba(108,92,231,0.12);color:var(--primary);border-color:rgba(108,92,231,0.35);">get_feature_info</span>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="section">
-            <h2>Representative Calls</h2>
-            <div class="code"><span class="highlight-secondary"># Share leaderboard</span>
-get_top_market_share_leaders(market="GPU", segment="Discrete", limit=3)
+            <h2>Feature Tools — V2 Microstructure</h2>
+            <p>Numba-accelerated V2 features for walk-forward safe pipelines.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Triplet + Pairwise Imbalance</h3>
+                    <div class="chip-row">
+                        <span class="chip">calculate_triplet_imbalance</span>
+                        <span class="chip">calculate_pairwise_imbalance</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Microstructure + Global</h3>
+                    <div class="chip-row">
+                        <span class="chip">calculate_microstructure_features</span>
+                        <span class="chip">calculate_global_stock_features</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Temporal Windows</h3>
+                    <div class="chip-row">
+                        <span class="chip">calculate_temporal_shift</span>
+                        <span class="chip">calculate_temporal_return</span>
+                        <span class="chip">calculate_temporal_diff</span>
+                        <span class="chip">generate_all_v2_features</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Exports + Verification</h3>
+                    <div class="chip-row">
+                        <span class="chip">apply_zero_sum_adjustment</span>
+                        <span class="chip">export_features</span>
+                        <span class="chip">verify_export</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<span class="highlight-secondary"># Revenue trend for NVIDIA</span>
-get_vendor_metric_trend(company="NVDA", metric_name="Revenue")
+        <section class="section">
+            <h2>Analysis Tools</h2>
+            <table class="table">
+                <thead>
+                    <tr><th>Tool</th><th>Purpose</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>analyze_stock</code></td><td>Distribution, trend, and target summary for a stock ID.</td></tr>
+                    <tr><td><code>analyze_target</code></td><td>Target variable statistics and skew analysis.</td></tr>
+                    <tr><td><code>calculate_correlation</code></td><td>Feature-to-target and feature-to-feature correlation matrices.</td></tr>
+                    <tr><td><code>compare_stocks</code></td><td>Side-by-side stock behavior comparison.</td></tr>
+                    <tr><td><code>analyze_temporal_patterns</code></td><td>Intraday and cross-day temporal signal patterns.</td></tr>
+                </tbody>
+            </table>
+        </section>
 
-<span class="highlight-secondary"># Concentration in foundry wafer market</span>
-get_market_concentration(market="Foundry", segment="Wafer")
+        <section class="section">
+            <h2>Model Tools</h2>
+            <table class="table">
+                <thead>
+                    <tr><th>Tool</th><th>Purpose</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>prepare_train_test</code></td><td>Time-series aware train/test split with purge gap.</td></tr>
+                    <tr><td><code>train_baseline</code></td><td>Baseline LightGBM fit with default parameters.</td></tr>
+                    <tr><td><code>evaluate_model</code></td><td>MAE, RMSE, and zero-sum adjusted evaluation.</td></tr>
+                    <tr><td><code>get_feature_importance</code></td><td>Gain-based feature importance from trained model.</td></tr>
+                    <tr><td><code>create_cv_splits</code></td><td>Walk-forward cross-validation split generator.</td></tr>
+                    <tr><td><code>train_lightgbm_fold</code></td><td>Single fold LightGBM training with early stopping.</td></tr>
+                    <tr><td><code>train_lightgbm_cv</code></td><td>Full walk-forward CV with OOF predictions.</td></tr>
+                    <tr><td><code>predict_ensemble</code></td><td>Ensemble prediction from CV fold models.</td></tr>
+                    <tr><td><code>apply_zero_sum_prediction</code></td><td>Market-neutral prediction normalization.</td></tr>
+                </tbody>
+            </table>
+        </section>
 
-<span class="highlight-secondary"># Build interactive research pack</span>
-build_interactive_research_pack(
-    ticker="NVDA",
-    benchmark_ticker="SOXX",
-    market="GPU",
-    segment="Discrete",
-    event_date="2025-02-21",
-    window_days=5
-)</div>
+        <section class="section">
+            <h2>Advanced ML — SHAP · Optuna · Ensembles</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Explainability</h3>
+                    <div class="chip-row">
+                        <span class="chip">compute_shap_values</span>
+                        <span class="chip">get_shap_importance</span>
+                        <span class="chip">explain_single_prediction</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Tuning</h3>
+                    <div class="chip-row">
+                        <span class="chip">tune_hyperparameters</span>
+                        <span class="chip">get_best_params</span>
+                        <span class="chip">visualize_optimization</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Ensembles + Walk-Forward</h3>
+                    <div class="chip-row">
+                        <span class="chip">create_stacking_ensemble</span>
+                        <span class="chip">train_stacking_meta</span>
+                        <span class="chip">run_walk_forward</span>
+                        <span class="chip">analyze_regime</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Drift + Quality + Alerts</h2>
+            <p>PSI &lt; 0.1 = stable · PSI &gt; 0.25 = significant drift · KS alpha = 0.05</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Statistical Drift</h3>
+                    <div class="chip-row">
+                        <span class="chip">detect_ks_drift</span>
+                        <span class="chip">calculate_psi</span>
+                        <span class="chip">calculate_js_divergence</span>
+                        <span class="chip">track_feature_drift</span>
+                        <span class="chip">detect_multivariate_drift</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Concept + Covariate</h3>
+                    <div class="chip-row">
+                        <span class="chip">detect_target_drift</span>
+                        <span class="chip">detect_concept_drift</span>
+                        <span class="chip">detect_covariate_shift</span>
+                        <span class="chip">analyze_prediction_drift</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Quality + Structural</h3>
+                    <div class="chip-row">
+                        <span class="chip">track_missing_values</span>
+                        <span class="chip">track_outlier_frequency</span>
+                        <span class="chip">detect_structural_breaks_cusum</span>
+                        <span class="chip">detect_structural_breaks_chow</span>
+                        <span class="chip">fit_regime_hmm</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Alerts + Dashboard</h3>
+                    <div class="chip-row">
+                        <span class="chip">generate_drift_alerts</span>
+                        <span class="chip">get_monitoring_dashboard_data</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Parallel Execution + Synthesis</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Parallel Tools</h3>
+                    <p>ThreadPoolExecutor-backed variants of CV, feature gen, tuning, and monitoring.</p>
+                    <div class="chip-row">
+                        <span class="chip">generate_all_v2_features_parallel</span>
+                        <span class="chip">train_lightgbm_cv_parallel</span>
+                        <span class="chip">tune_hyperparameters_parallel</span>
+                        <span class="chip">run_walk_forward_parallel</span>
+                        <span class="chip">track_feature_drift_parallel</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Synthesis Capstone</h3>
+                    <p>End-to-end orchestration with deployment gate and structured reports.</p>
+                    <div class="chip-row">
+                        <span class="chip">run_synthesis_workflow</span>
+                        <span class="chip">check_deployment_readiness</span>
+                        <span class="chip">create_analysis_report</span>
+                        <span class="chip">create_model_report</span>
+                        <span class="chip">create_monitoring_report</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <footer class="footer">
-            <p>Semiconductors Domain - Project Phoenix | Tools</p>
-            <a href="index.html" class="back-link">Back to Semiconductors Home</a>
+            <p>Optiver Domain - Project Phoenix | Tools</p>
+            <a href="index.html" class="back-link">Back to Optiver Home</a>
         </footer>
     </div>
 </body>
