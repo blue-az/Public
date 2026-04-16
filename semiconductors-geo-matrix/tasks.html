@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optiver :: Task Patterns</title>
+    <title>Semiconductors :: Task Patterns</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
 
     <header class="site-header">
         <h1>Task Patterns</h1>
-        <p class="subtitle">PlanBuilder maps natural language into deterministic tool sequences.</p>
+        <p class="subtitle">Common query patterns and CLI command sequences for the Semiconductors domain.</p>
         <a class="back-link" href="index.html">Return to Geo-Matrix Hub</a>
     </header>
 
@@ -29,49 +29,95 @@
         </section>
 
         <section class="panel">
-            <h2>Pattern Priority</h2>
-            <p>The planner evaluates more specific patterns first, then falls back to general patterns.</p>
-            <div class="code-block">
-                1) Feature-specific (imbalance, price, temporal)
-                2) Analysis (analyze stock, correlation, compare)
-                3) Model (train, evaluate, feature importance)
-                4) Data (load, summary, filter)
-                5) Utility (show capabilities, suggest)
+            <h2>Market Share Queries</h2>
+            <div class="list-grid">
+                <div class="list-card">
+                    <h3>"top GPU discrete share"</h3>
+                    <div class="code-block">get_top_market_share_leaders(market="GPU", segment="Discrete", limit=3)</div>
+                </div>
+                <div class="list-card">
+                    <h3>"CPU datacenter trend"</h3>
+                    <div class="code-block">get_market_share_trend(market="CPU", segment="DataCenter")</div>
+                </div>
+                <div class="list-card">
+                    <h3>"compare NVDA and AMD"</h3>
+                    <div class="code-block">compare_companies(companies=["NVDA", "AMD"], start_year=2024, end_year=2025)</div>
+                </div>
+                <div class="list-card">
+                    <h3>"foundry concentration"</h3>
+                    <div class="code-block">get_market_concentration(market="Foundry", segment="Wafer")</div>
+                </div>
             </div>
         </section>
 
         <section class="panel">
-            <h2>Example Query -> Plan Sketch</h2>
+            <h2>Financial + Price Patterns</h2>
             <div class="list-grid">
                 <div class="list-card">
-                    <h3>"calculate imbalance features for stock 5"</h3>
-                    <p>Load data, then run imbalance feature pipeline.</p>
-                    <div class="code-block">load_data -> calculate_imbalance_features(stock_id=5)</div>
+                    <h3>"NVIDIA revenue trend"</h3>
+                    <div class="code-block">get_vendor_metric_trend(company="NVDA", metric_name="Revenue")</div>
                 </div>
                 <div class="list-card">
-                    <h3>"triplet imbalance"</h3>
-                    <p>Numba-accelerated V2 feature pack.</p>
-                    <div class="code-block">load_data -> calculate_triplet_imbalance</div>
+                    <h3>"AMD price performance vs SOXX"</h3>
+                    <div class="code-block">get_price_performance(ticker="AMD", benchmark_ticker="SOXX")</div>
                 </div>
                 <div class="list-card">
-                    <h3>"analyze stock 10"</h3>
-                    <p>Standard stock analysis with target summary.</p>
-                    <div class="code-block">load_data -> analyze_stock(stock_id=10)</div>
+                    <h3>"search for Broadcom"</h3>
+                    <div class="code-block">search_companies(search_term="BROADCOM")</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Catalyst + SOP Patterns</h2>
+            <div class="list-grid">
+                <div class="list-card">
+                    <h3>"find NVDA earnings events"</h3>
+                    <div class="code-block">search_events(company="NVIDIA", event_type="earnings")</div>
                 </div>
                 <div class="list-card">
-                    <h3>"train model"</h3>
-                    <p>Prepare split, train baseline, evaluate.</p>
-                    <div class="code-block">load_data -> prepare_train_test -> train_baseline -> evaluate_model</div>
+                    <h3>"price impact around Feb 21 event"</h3>
+                    <div class="code-block">get_event_impact_on_price(company="NVDA", event_date="2025-02-21", window_days=5)</div>
                 </div>
                 <div class="list-card">
-                    <h3>"feature importance"</h3>
-                    <p>Requires a trained model first.</p>
-                    <div class="code-block">train_lightgbm_cv -> get_feature_importance</div>
+                    <h3>"run catalyst SOP for AMD"</h3>
+                    <div class="code-block">run_catalyst_sop(
+    company="AMD",
+    event_date="2025-01-30",
+    thesis="MI300X adoption driving datacenter share"
+)</div>
                 </div>
                 <div class="list-card">
-                    <h3>"run synthesis workflow"</h3>
-                    <p>Capstone pipeline with profile-driven depth.</p>
-                    <div class="code-block">run_synthesis_workflow(profile="standard")</div>
+                    <h3>"list SOP runs"</h3>
+                    <div class="code-block">list_catalyst_sop_runs(limit=10)</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Visualization Patterns</h2>
+            <div class="list-grid">
+                <div class="list-card">
+                    <h3>"GPU discrete share snapshot chart"</h3>
+                    <div class="code-block">plot_market_share_snapshot(market="GPU", segment="Discrete")</div>
+                </div>
+                <div class="list-card">
+                    <h3>"build interactive research pack for NVDA"</h3>
+                    <div class="code-block">build_interactive_research_pack(
+    ticker="NVDA",
+    benchmark_ticker="SOXX",
+    market="GPU",
+    segment="Discrete",
+    event_date="2025-02-21",
+    window_days=5
+)</div>
+                </div>
+                <div class="list-card">
+                    <h3>"build executive briefing"</h3>
+                    <div class="code-block">build_interactive_semiconductor_briefing(
+    market="GPU",
+    ticker="NVDA"
+)</div>
                 </div>
             </div>
         </section>
@@ -84,23 +130,31 @@
                     <th>Command</th>
                 </tr>
                 <tr>
-                    <td>Interactive REPL</td>
-                    <td><code>cd domains/Optiver/cli && python main.py</code></td>
+                    <td>Launch CLI</td>
+                    <td><code>cd domains/Semiconductors/cli && python main.py</code></td>
                 </tr>
                 <tr>
-                    <td>Run a query</td>
-                    <td><code>cd domains/Optiver/cli && python main.py "analyze stock 5"</code></td>
+                    <td>Market share query</td>
+                    <td><code>python main.py "top GPU discrete share"</code></td>
                 </tr>
                 <tr>
-                    <td>Domain tests</td>
-                    <td><code>cd domains/Optiver && python test_domain.py</code></td>
+                    <td>Build briefing</td>
+                    <td><code>python main.py "build executive briefing"</code></td>
+                </tr>
+                <tr>
+                    <td>Run SOP</td>
+                    <td><code>python main.py "run catalyst SOP for NVDA"</code></td>
+                </tr>
+                <tr>
+                    <td>Run tests</td>
+                    <td><code>cd domains/Semiconductors && python test_domain.py</code></td>
                 </tr>
             </table>
         </section>
     </main>
 
     <footer class="site-footer">
-        <p>Patterns sourced from unified_agent/plan_builder.py</p>
+        <p>Semiconductors // Task patterns sourced from domain CLI and variation designs</p>
     </footer>
 </body>
 </html>

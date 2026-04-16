@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optiver :: Architecture</title>
+    <title>Semiconductors :: Architecture</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
 
     <header class="site-header">
         <h1>System Architecture</h1>
-        <p class="subtitle">Unified agent stack for Trading at the Close workflows.</p>
+        <p class="subtitle">SQLite database, ingestion pipeline, and domain module layout.</p>
         <a class="back-link" href="index.html">Return to Geo-Matrix Hub</a>
     </header>
 
@@ -29,63 +29,157 @@
         </section>
 
         <section class="panel">
-            <h2>Unified Agent Layout</h2>
-            <div class="code-block">
-                unified_agent/
-                |-- data_client.py         # OptiverDataClient: data access layer
-                |-- tool_registry.py       # ToolRegistry: 84 tools organized by category
-                |-- execution_context.py   # ExecutionContext: shared state
-                |-- plan_builder.py        # PlanBuilder: regex -> execution plan
-                |-- agentic_engine.py      # State machine orchestrator
-                |-- feature_engineering.py # V2 feature generation
-                |-- model_pipeline.py      # LightGBM training with time-series CV
-                |-- optuna_tuner.py        # Hyperparameter optimization
-                |-- walk_forward.py        # Walk-forward backtesting
-                |-- feature_drift.py       # Feature drift detection
-                |-- target_drift.py        # Target/concept drift detection
-                |-- data_quality.py        # Data quality monitoring
-                |-- monitoring_alerts.py   # Alert routing
-                |-- smart_tools.py         # Meta-tools (SmartAnalyze, SmartMonitor)
-                `-- report_templates.py    # Structured report outputs
+            <h2>Database Coverage</h2>
+            <table class="cmd-table">
+                <tr>
+                    <th>Table</th>
+                    <th>Rows</th>
+                    <th>Coverage</th>
+                </tr>
+                <tr>
+                    <td><code>market_share</code></td>
+                    <td>36</td>
+                    <td>9 companies · 3 markets · 4 segments · 2024–2025</td>
+                </tr>
+                <tr>
+                    <td><code>vendor_metrics</code></td>
+                    <td>2,869</td>
+                    <td>SEC fundamentals: Revenue, GrossProfit, OperatingIncome, NetIncome</td>
+                </tr>
+                <tr>
+                    <td><code>prices</code></td>
+                    <td>106,413</td>
+                    <td>14 tickers · 1972-01-07 to 2026-02-05 · daily OHLCV</td>
+                </tr>
+                <tr>
+                    <td><code>events</code></td>
+                    <td>10</td>
+                    <td>6 companies · 2024-01-25 to 2025-05-02 · earnings + launches</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="panel">
+            <h2>Schema Snapshot</h2>
+            <div class="split-grid">
+                <div class="list-card">
+                    <h3>market_share</h3>
+                    <div class="chip-row">
+                        <span class="chip">metric_date</span>
+                        <span class="chip">market</span>
+                        <span class="chip">segment</span>
+                        <span class="chip">company</span>
+                        <span class="chip">share_pct</span>
+                        <span class="chip">source</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>vendor_metrics</h3>
+                    <div class="chip-row">
+                        <span class="chip">metric_date</span>
+                        <span class="chip">period</span>
+                        <span class="chip">company</span>
+                        <span class="chip">ticker</span>
+                        <span class="chip">metric_name</span>
+                        <span class="chip">metric_value</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>prices</h3>
+                    <div class="chip-row">
+                        <span class="chip">trade_date</span>
+                        <span class="chip">ticker</span>
+                        <span class="chip">open</span>
+                        <span class="chip">high</span>
+                        <span class="chip">low</span>
+                        <span class="chip">close</span>
+                        <span class="chip">volume</span>
+                    </div>
+                </div>
+                <div class="list-card">
+                    <h3>events</h3>
+                    <div class="chip-row">
+                        <span class="chip">event_date</span>
+                        <span class="chip">company</span>
+                        <span class="chip">event_type</span>
+                        <span class="chip">title</span>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section class="panel">
-            <h2>Execution Flow</h2>
+            <h2>Ingestion Pipeline</h2>
             <div class="list-grid">
                 <div class="list-card">
-                    <h3>CLI + REPL</h3>
-                    <p>cli/main.py provides interactive commands and one-shot queries.</p>
+                    <h3>SEC Fundamentals</h3>
+                    <p><code>scripts/pull_sec_companyfacts.py</code> — pulls company facts from SEC EDGAR and normalizes vendor metrics.</p>
                 </div>
                 <div class="list-card">
-                    <h3>Planner</h3>
-                    <p>PlanBuilder compiles regex patterns into ordered execution steps.</p>
+                    <h3>Price History</h3>
+                    <p><code>scripts/pull_stooq_prices.py</code> — loads daily OHLCV price history for all 14 vendor and benchmark tickers.</p>
                 </div>
                 <div class="list-card">
-                    <h3>Engine</h3>
-                    <p>AgenticEngine executes plan steps and updates ExecutionContext.</p>
+                    <h3>Authoritative Share Data</h3>
+                    <p><code>scripts/sources/normalize_authoritative_sources.sh</code> — maps source snapshots into <code>data/manual/*_market_share.csv</code>.</p>
                 </div>
                 <div class="list-card">
-                    <h3>Reports</h3>
-                    <p>report_templates generate analysis, model, and monitoring summaries.</p>
+                    <h3>Database Build</h3>
+                    <p><code>scripts/init_db.py</code> — creates and refreshes SQLite tables via idempotent inserts.</p>
                 </div>
             </div>
         </section>
 
         <section class="panel">
-            <h2>Data Source</h2>
-            <p>Trading at the Close data is loaded from <code>~/Python/Optiver/OptFeatureViz/train.csv</code>.</p>
-            <div class="chip-row">
-                <span class="chip">~480k rows</span>
-                <span class="chip">200 stocks</span>
-                <span class="chip">481 dates</span>
-                <span class="chip">17 columns</span>
-            </div>
+            <h2>Module Layout</h2>
+            <div class="code-block">
+domains/Semiconductors/
+├── cli/main.py                  # CLI entry point
+├── data/
+│   ├── semiconductors.db        # SQLite database
+│   ├── manual/                  # Authoritative share CSVs
+│   └── visualizations_html/     # Interactive output artifacts
+├── scripts/
+│   ├── pull_sec_companyfacts.py
+│   ├── pull_stooq_prices.py
+│   ├── init_db.py
+│   └── bootstrap_data.sh
+├── market_share.py
+├── price_history.py
+├── catalyst_notes.py
+├── briefing_builder.py
+└── test_domain.py</div>
+        </section>
+
+        <section class="panel">
+            <h2>Bootstrap Commands</h2>
+            <table class="cmd-table">
+                <tr>
+                    <th>Action</th>
+                    <th>Command</th>
+                </tr>
+                <tr>
+                    <td>Install deps</td>
+                    <td><code>cd domains/Semiconductors && pip install -r requirements.txt</code></td>
+                </tr>
+                <tr>
+                    <td>Bootstrap data</td>
+                    <td><code>./scripts/bootstrap_data.sh</code></td>
+                </tr>
+                <tr>
+                    <td>Run tests</td>
+                    <td><code>python test_domain.py</code></td>
+                </tr>
+                <tr>
+                    <td>Launch CLI</td>
+                    <td><code>cd cli && python main.py</code></td>
+                </tr>
+            </table>
         </section>
     </main>
 
     <footer class="site-footer">
-        <p>Architecture sourced from domains/Optiver/CLAUDE.md</p>
+        <p>Semiconductors // Architecture sourced from domain CLAUDE.md</p>
     </footer>
 </body>
 </html>

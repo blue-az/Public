@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optiver :: Principles</title>
+    <title>Semiconductors :: Principles</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
 
     <header class="site-header">
         <h1>Phoenix Principles</h1>
-        <p class="subtitle">Four-phase agent framework, deterministic planning, and proof-driven reports.</p>
+        <p class="subtitle">How Project Phoenix methodology maps onto the Semiconductors domain.</p>
         <a class="back-link" href="index.html">Return to Geo-Matrix Hub</a>
     </header>
 
@@ -29,92 +29,99 @@
         </section>
 
         <section class="panel">
-            <h2>Four-Phase Agentic Framework</h2>
-            <div class="list-grid">
-                <div class="list-card">
-                    <h3>Phase 0: Foundation</h3>
-                    <p>CLI, tool registry, and data client establish the base system.</p>
-                </div>
-                <div class="list-card">
-                    <h3>Phase 1: Glass Box</h3>
-                    <p>Plan preview before execution via BlueprintPanel.</p>
-                </div>
-                <div class="list-card">
-                    <h3>Phase 2: Human-in-Loop</h3>
-                    <p>Pause/resume/cancel controls with execution inspector.</p>
-                </div>
-                <div class="list-card">
-                    <h3>Phase 3: Progressive Disclosure</h3>
-                    <p>Expandable step details for complex workflows.</p>
-                </div>
-                <div class="list-card">
-                    <h3>Phase 4: Multi-Modal Output</h3>
-                    <p>Visualizations, CSV export, and structured reports.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="panel">
-            <h2>Proof-Driven Workflow (V6)</h2>
+            <h2>Core Principles Applied</h2>
             <div class="list-grid">
                 <div class="list-card">
                     <h3>Write-Then-Verify</h3>
-                    <p>Exports and reports pair a write step with verification in lifecycle checks.</p>
-                    <div class="chip-row">
-                        <span class="chip">export_features -> verify_export</span>
-                        <span class="chip">create_*_report -> report_templates.validate_report</span>
-                        <span class="chip">run_full_lifecycle -> run_integration_test (design)</span>
-                    </div>
+                    <p>Catalyst notes are written to disk, then explicitly read back via <code>VerifyCatalystNote</code> before being used downstream. SOP runs are logged and verified via <code>VerifyCatalystSOP</code>.</p>
                 </div>
                 <div class="list-card">
-                    <h3>Anti-Hallucination Reports</h3>
-                    <p>Structured templates enforce consistent reporting fields.</p>
-                    <div class="chip-row">
-                        <span class="chip">create_analysis_report</span>
-                        <span class="chip">create_model_report</span>
-                        <span class="chip">create_monitoring_report</span>
-                    </div>
+                    <h3>Anti-Hallucination Templates</h3>
+                    <p>Executive briefings use structured templates with stable fields: market segments, share percentages, source citations, and date-scoped snapshots. No fabricated figures.</p>
                 </div>
                 <div class="list-card">
-                    <h3>Test-and-Prove</h3>
-                    <p>Golden file comparisons validate outputs against expected baselines.</p>
+                    <h3>Source Attribution</h3>
+                    <p>All market share observations carry a <code>source</code> field. SEC EDGAR backs financial metrics. Stooq provides price history. Share data mapped from authoritative analyst sources.</p>
+                </div>
+                <div class="list-card">
+                    <h3>Atomic Operations</h3>
+                    <p>Each tool owns exactly one query or action. <code>GetTopMarketShareLeaders</code> ranks. <code>GetMarketShareTrend</code> trends. <code>CompareCompanies</code> compares. No tool does two things.</p>
+                </div>
+                <div class="list-card">
+                    <h3>Variation Strategy</h3>
+                    <p>8 configurations from core analysis (V1) to interactive dashboards (V8). Each variation adds a complete new capability layer — catalyst analysis, SOP orchestration, or visualization.</p>
                 </div>
             </div>
         </section>
 
         <section class="panel">
-            <h2>Version Progression</h2>
+            <h2>Variation Progression</h2>
             <table class="cmd-table">
                 <tr>
-                    <th>Version</th>
+                    <th>Variation</th>
                     <th>Focus</th>
+                    <th>Tools</th>
                 </tr>
                 <tr>
-                    <td>V1-V2</td>
-                    <td>Core data, features, analysis, and advanced feature engineering.</td>
+                    <td>V1</td>
+                    <td>Full core stack: share, trend, compare, financial, price, search</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>V2</td>
+                    <td>Streamlined: leaderboard, compare, search for fast queries</td>
+                    <td>3</td>
                 </tr>
                 <tr>
                     <td>V3</td>
-                    <td>SHAP explainability, Optuna tuning, ensembles, walk-forward tests.</td>
+                    <td>Temporal: share trend, vendor metric trend, price performance</td>
+                    <td>3</td>
                 </tr>
                 <tr>
                     <td>V4</td>
-                    <td>Drift detection, data quality, regime detection, alerting.</td>
+                    <td>Competitive intelligence with concentration analysis</td>
+                    <td>4</td>
                 </tr>
                 <tr>
                     <td>V5</td>
-                    <td>Parallelized CV, walk-forward, feature generation, tuning.</td>
+                    <td>Catalyst: event search, price impact, share impact, note write/verify</td>
+                    <td>5</td>
                 </tr>
                 <tr>
                     <td>V6</td>
-                    <td>Synthesis workflow, deployment decisions, structured reports.</td>
+                    <td>SOP orchestration: run, verify, and list auditable research cycles</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>V7</td>
+                    <td>Static PNG visualizations: snapshots, trends, event windows</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>V8</td>
+                    <td>Interactive Plotly HTML: briefings, relative performance, research packs</td>
+                    <td>5</td>
                 </tr>
             </table>
+        </section>
+
+        <section class="panel">
+            <h2>Data Integrity Rules</h2>
+            <div class="list-card">
+                <ul>
+                    <li>Never report market share without a source family and date.</li>
+                    <li>All share percentages are snapshot-based — not projections.</li>
+                    <li>Financial metrics come from SEC company facts (not estimated).</li>
+                    <li>Alias-aware company lookup prevents duplicate or missed entities.</li>
+                    <li>Event catalyst windows use exact event dates, not approximations.</li>
+                    <li>PSI/statistical methods are not applied to market share — it is authoritative.</li>
+                </ul>
+            </div>
         </section>
     </main>
 
     <footer class="site-footer">
-        <p>Phoenix Principles sourced from CLAUDE.md and V6_DESIGN.md</p>
+        <p>Semiconductors // Phoenix Principles sourced from domain CLAUDE.md</p>
     </footer>
 </body>
 </html>

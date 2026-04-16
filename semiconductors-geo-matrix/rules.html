@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optiver :: Execution Rules</title>
+    <title>Semiconductors :: Execution Rules</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
 
     <header class="site-header">
         <h1>Execution Rules</h1>
-        <p class="subtitle">Operational constraints drawn from Optiver variation rule sets.</p>
+        <p class="subtitle">Operational constraints for the Semiconductors domain by variation layer.</p>
         <a class="back-link" href="index.html">Return to Geo-Matrix Hub</a>
     </header>
 
@@ -29,68 +29,72 @@
         </section>
 
         <section class="panel">
-            <h2>V1-V2 Core Rules</h2>
+            <h2>V1–V4 Core Analysis Rules</h2>
             <div class="list-card">
                 <ul>
-                    <li>Data must be loaded before any analysis or feature calculation.</li>
-                    <li>Stock IDs range from 0-199, date IDs represent trading days.</li>
-                    <li>Target variable is price movement at market close.</li>
-                    <li>V2 features are Numba-accelerated for performance.</li>
-                    <li>Time-series CV uses a purge gap to prevent leakage.</li>
-                    <li>Zero-sum adjustment ensures market-neutral predictions.</li>
-                    <li>Export/verify follows Write-Then-Verify pattern.</li>
-                    <li>LightGBM is the primary model with MAE objective.</li>
+                    <li>All share queries must specify <code>market</code> and <code>segment</code>.</li>
+                    <li>Valid markets: CPU, GPU, Foundry. Valid segments: Client, DataCenter, Discrete, Wafer.</li>
+                    <li>Share data is snapshot-based (2024-12-31 or 2025-12-31) — not time-series.</li>
+                    <li>Use <code>SearchCompanies</code> before other tools if company name is ambiguous.</li>
+                    <li>Ticker aliases are normalized: INTEL → INTC, NVIDIA → NVDA, TSMC → TSM.</li>
+                    <li>Concentration queries return HHI-style metrics — cite the segment and date.</li>
+                    <li>Financial metrics from SEC company facts; do not extrapolate beyond reported periods.</li>
+                    <li>Price performance comparisons require a benchmark ticker (default: SOXX or SPY).</li>
                 </ul>
             </div>
         </section>
 
         <section class="panel">
-            <h2>V3 Advanced ML Rules</h2>
+            <h2>V5–V6 Catalyst + SOP Rules</h2>
             <div class="list-card">
                 <ul>
-                    <li>SHAP values require trained model and test data.</li>
-                    <li>SHAP importance can differ from gain-based importance.</li>
-                    <li>Optuna uses TPE Bayesian optimization, ideally with CV.</li>
-                    <li>Stacking ensembles rely on OOF predictions to avoid leakage.</li>
-                    <li>Walk-forward backtests simulate production conditions.</li>
-                    <li>Regime analysis identifies performance clusters.</li>
+                    <li>Event queries require <code>company</code> and date range; <code>event_type</code> is optional.</li>
+                    <li>Price impact windows default to ±5 trading days around the event date.</li>
+                    <li><code>WriteCatalystNote</code> must precede <code>VerifyCatalystNote</code> — no verify without write.</li>
+                    <li>Notes are persisted to <code>data/catalyst_notes/</code> — do not fabricate file paths.</li>
+                    <li><code>RunCatalystSOP</code> requires: company, event_date, and thesis statement.</li>
+                    <li><code>VerifyCatalystSOP</code> audits all output artifacts for completeness.</li>
+                    <li><code>ListCatalystSOPRuns</code> returns run history — use <code>run_id</code> for verification.</li>
                 </ul>
             </div>
         </section>
 
         <section class="panel">
-            <h2>V4-V5 Monitoring + Parallel Rules</h2>
+            <h2>V7–V8 Visualization Rules</h2>
             <div class="list-card">
                 <ul>
-                    <li>PSI &lt; 0.1 indicates stability; PSI &gt; 0.25 is significant drift.</li>
-                    <li>KS test uses alpha=0.05 by default for drift detection.</li>
-                    <li>Concept drift reflects feature-target relationship changes.</li>
-                    <li>Covariate shift uses a domain classifier (AUC &gt; 0.6 indicates shift).</li>
-                    <li>Missing value spikes can signal pipeline issues.</li>
-                    <li>Parallel CV and backtests rely on ThreadPoolExecutor.</li>
-                    <li>max_workers should not exceed available CPU cores.</li>
+                    <li>PNG outputs are written to <code>data/visualizations/</code> before being reported.</li>
+                    <li>Interactive HTML outputs are written to <code>data/visualizations_html/</code>.</li>
+                    <li>Dashboard assembly tools require at least one primary visualization to be complete first.</li>
+                    <li>Research packs bundle all chart types into a single index file — do not link non-existent files.</li>
+                    <li><code>BuildInteractiveSemiconductorBriefing</code> is the V8 capstone — requires market + ticker.</li>
+                    <li>All chart titles must include market segment and snapshot date.</li>
                 </ul>
             </div>
         </section>
 
         <section class="panel">
-            <h2>V6 Synthesis Rules</h2>
-            <div class="list-card">
-                <ul>
-                    <li>Synthesis profiles: quick (explore), standard (model), comprehensive (full).</li>
-                    <li>Quick profile: load, summary, target analysis, report.</li>
-                    <li>Standard profile: features, model, basic report.</li>
-                    <li>Comprehensive profile: parallel features, CV, backtest, monitoring, full report.</li>
-                    <li>Deployment decisions: deploy, defer, reject, or retrain.</li>
-                    <li>Five deployment criteria: data quality, drift, CV MAE, Sharpe, alerts.</li>
-                    <li>Reports follow structured templates for analysis, model, and monitoring.</li>
-                </ul>
-            </div>
+            <h2>Company Coverage Reference</h2>
+            <table class="cmd-table">
+                <tr>
+                    <th>Company</th>
+                    <th>Ticker</th>
+                    <th>Segments</th>
+                </tr>
+                <tr><td>NVIDIA</td><td>NVDA</td><td>GPU Discrete 84% · GPU DataCenter 90%</td></tr>
+                <tr><td>AMD</td><td>AMD</td><td>GPU Discrete 14% · CPU Client 35% · CPU DataCenter 38%</td></tr>
+                <tr><td>Intel</td><td>INTC</td><td>CPU Client 62% · CPU DataCenter 60% · GPU Discrete 2%</td></tr>
+                <tr><td>TSMC</td><td>TSM</td><td>Foundry Wafer 61%</td></tr>
+                <tr><td>Samsung</td><td>—</td><td>Foundry Wafer 13%</td></tr>
+                <tr><td>Broadcom</td><td>AVGO</td><td>Price universe</td></tr>
+                <tr><td>Qualcomm</td><td>QCOM</td><td>Events · Price universe</td></tr>
+                <tr><td>ASML</td><td>ASML</td><td>Events · Price universe</td></tr>
+            </table>
         </section>
     </main>
 
     <footer class="site-footer">
-        <p>Rules sourced from Optiver variations/variation_1-5/rules.py</p>
+        <p>Semiconductors // Rules sourced from domain variations/variation_1-8/rules.py</p>
     </footer>
 </body>
 </html>
