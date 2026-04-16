@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xamkor | Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <span class="kicker">xamkor prototype</span>
+      <h1>Tools</h1>
+      <p class="sub">Representative tool endpoints for retrieval, trends, and HITL.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a class="active" href="tools.html">Tools</a>
+      <a href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="section">
+      <div class="grid">
+        <article class="card"><h3>get_recent_filings</h3><p>SEC filings with accession and source lineage.</p></article>
+        <article class="card"><h3>get_recent_news</h3><p>Web news rows with article context.</p></article>
+        <article class="card"><h3>get_price_relative_performance</h3><p>Benchmark-aware AMKR relative performance.</p></article>
+        <article class="card"><h3>evaluate_variation4_readiness</h3><p>Gates V4 until factual preconditions pass.</p></article>
+        <article class="card"><h3>generate_advisory_hypotheses</h3><p>Template-only claim generation (no freeform).</p></article>
+        <article class="card"><h3>submit_advisory_hypothesis_score</h3><p>Binding GO/NO_GO and write-then-verify flow.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Sample Chain</h2>
+      <pre>evaluate_variation4_readiness(company="AMKOR TECHNOLOGY", ticker="AMKR")
+generate_advisory_hypotheses(max_claims=3)
+submit_advisory_hypothesis_score(claim_id="AMKR-CLM-001", score=4)
+list_advisory_hypothesis_scores(limit=25)</pre>
+    </section>
+
+    <footer class="footer">xamkor · tools</footer>
+  </div>
+</body>
+</html>

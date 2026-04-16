@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Phoenix Eval | Method Comparison</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <span class="kicker">Methods</span>
+      <h1>Local+HITL vs Direct LLM</h1>
+      <p class="sub">Comparison framed by objective: delivery speed vs resilience demonstration.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="process.html">Process</a>
+      <a class="active" href="comparison.html">Methods</a>
+      <a href="qa.html">Pilot QA</a>
+    </nav>
+
+    <section class="panel">
+      <h2>Comparison Snapshot</h2>
+      <table class="table">
+        <thead><tr><th>Metric</th><th>gemma path (local + HITL)</th><th>Direct high-level LLM</th></tr></thead>
+        <tbody>
+          <tr><td>Wall time to 100 tasks</td><td>~30 min / variation</td><td>~5 min / variation</td></tr>
+          <tr><td>First-pass violations</td><td>V1 had 25 under-target complexity issues</td><td>0 in observed run</td></tr>
+          <tr><td>Retries</td><td>3 batches + repair script</td><td>0</td></tr>
+          <tr><td>Generation-only context</td><td>~10%</td><td>~3%</td></tr>
+          <tr><td>Total workflow context</td><td>High (validation/debug heavy)</td><td>Lower but still non-trivial</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Interpretation Rules</h2>
+      <div class="grid">
+        <article class="card"><h3>Do Not Confound</h3><p>Slow query tools (for example heavy era comparisons) are domain latency artifacts, not model-generation weakness.</p></article>
+        <article class="card"><h3>Evaluator Dependency</h3><p>The practical loop is human -> evaluator -> local LLM -> evaluator -> human.</p></article>
+        <article class="card"><h3>Actionable Rule</h3><p>Pick direct LLM for rapid utility, local+HITL for constrained-environment proof.</p></article>
+      </div>
+    </section>
+
+    <footer class="footer">Method framing source: key-takeaways.md</footer>
+  </div>
+</body>
+</html>

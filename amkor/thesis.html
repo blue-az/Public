@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Thesis | Amkor Technology</title>
+    <meta name="description" content="Five HITL-scored advisory hypotheses for the Amkor Technology OSAT intelligence domain.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Project Phoenix Domain</span>
+            <h1>Strategic Thesis</h1>
+            <p class="subtitle">Five Advisory Hypotheses · HITL-Scored · V4 Gate</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a href="intelligence.html">Intelligence System</a>
+            <a href="thesis.html">Strategic Thesis</a>
+            <a href="data.html">Data Coverage</a>
+        </nav>
+
+        <section class="section">
+            <h2>V4 Advisory Gate</h2>
+            <p>Advisory hypotheses are locked behind a readiness gate. The system evaluates whether V1 (snapshots), V2 (KPIs), and V3 (trends) tables are populated before synthesis is permitted. This enforces the abstraction ladder sequence — no advisory claim is generated without operational data to support it.</p>
+            <p>Each claim carries a <strong>HITL confidence score (1–5)</strong> and a written rationale. Scores are persisted in SQLite (<code>hypothesis_scores</code> table) — not flat files. Claims can be re-scored across sessions; the most recent score wins.</p>
+            <div class="code">evaluate_variation4_readiness() → {ready: true, gate: "PASS"}
+generate_advisory_hypotheses(max_claims=5) → [{claim_id, title, thesis, evidence_for, evidence_against}, ...]
+submit_advisory_hypothesis_score(claim_id="CLM-001", score=4, rationale="...") → {store: "sqlite:hypothesis_scores"}</div>
+        </section>
+
+        <section class="section">
+            <h2>CLM-001 — AI &amp; HPC Advanced Packaging Demand</h2>
+            <span class="tag">confidence: 4/5</span>
+            <span class="tag">category: demand</span>
+            <p>AMKR is a structural beneficiary of rising 2.5D/3D chip stacking demand driven by AI accelerator and GPU production ramps. Advanced packaging is a higher-margin mix shift vs. traditional wire bond.</p>
+            <div class="evidence-block">
+                <h4>Evidence For</h4>
+                <div class="for">
+                    <p>Management explicitly cited AI and HPC packaging demand as primary revenue driver in Q2 2023 earnings — the first such statement on record. Advanced packaging revenue mix has increased each reported quarter since. 2.5D CoWoS-adjacent demand from Nvidia, AMD, and Marvell AI ASICs requires OSAT capacity AMKR is uniquely positioned to provide at scale outside TSMC's captive CoWoS lines.</p>
+                </div>
+            </div>
+            <div class="evidence-block">
+                <h4>Evidence Against</h4>
+                <div class="against">
+                    <p>AMKR does not break out "advanced packaging" as a discrete revenue line in SEC XBRL filings — the percentage mix is disclosed only in 10-K/10-Q text, making quantitative tracking dependent on text extraction (CLM-003 gap). Direct CoWoS capacity is concentrated at TSMC; AMKR's positioning is complementary rather than competitive, limiting upside capture.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>CLM-002 — Arizona Facility as Domestic OSAT Moat</h2>
+            <span class="tag">confidence: 4/5</span>
+            <span class="tag">category: competitive positioning</span>
+            <p>Amkor's ~$2B advanced packaging facility in Peoria, AZ positions AMKR as the leading US-domestic OSAT provider at the moment regulatory tailwinds, CHIPS Act incentives, and reshoring mandates create structural demand for domestic semiconductor packaging capacity.</p>
+            <div class="evidence-block">
+                <h4>Evidence For</h4>
+                <div class="for">
+                    <p>Apple was announced as anchor customer in April 2024 — providing both revenue certainty and brand credibility for US government and enterprise customers who require domestic supply chains. CHIPS Act incentive funding confirmed February 2025, reducing capital risk. No other OSAT has a comparable US advanced packaging facility at this scale. Arizona facility entered initial customer qualification Q4 2024.</p>
+                </div>
+            </div>
+            <div class="evidence-block">
+                <h4>Evidence Against</h4>
+                <div class="against">
+                    <p>Facility construction and ramp risk is real — timeline delays would extend the period of capital drag without revenue offset. Apple concentration creates customer dependency; loss or reduction of Apple volumes would materially impair facility utilization. Intel's Arizona fabs and TSMC's Phoenix facility could compete for adjacent advanced packaging demand over time.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>CLM-003 — Advanced Packaging Revenue Mix (Data Gap)</h2>
+            <span class="tag">confidence: 3/5</span>
+            <span class="tag">category: data coverage</span>
+            <p>The claim that advanced packaging represents a growing and meaningful share of total AMKR revenue cannot be fully quantified from SEC XBRL tags alone. This is a structural data limitation of the domain, not a flaw in the thesis.</p>
+            <div class="evidence-block">
+                <h4>Evidence For</h4>
+                <div class="for">
+                    <p>AMKR 10-K text explicitly discusses advanced packaging revenue trajectory and end-market mix in MD&amp;A sections. The <code>get_segment_disclosure</code> tool extracts 600-character keyword windows from 10-K HTM files covering "advanced packaging", "flip chip", "2.5D", "Arizona", and related terms — providing qualitative coverage where XBRL quantification fails.</p>
+                </div>
+            </div>
+            <div class="evidence-block">
+                <h4>Evidence Against</h4>
+                <div class="against">
+                    <p>Without a discrete XBRL tag, year-over-year advanced packaging revenue % cannot be computed programmatically. Analyst estimates from sell-side models are not ingested. The 3/5 confidence score reflects data coverage limitation, not thesis skepticism — the underlying thesis (CLM-001) remains 4/5.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>CLM-004 — Geopolitical Manufacturing Exposure</h2>
+            <span class="tag">confidence: 3/5</span>
+            <span class="tag">category: risk</span>
+            <p>AMKR's heavy manufacturing concentration in South Korea, Japan, and Taiwan creates geopolitical exposure that Arizona partially mitigates but does not eliminate. This is a thesis modifier — tail risk that can compress multiples independent of operational performance.</p>
+            <div class="evidence-block">
+                <h4>Evidence For</h4>
+                <div class="for">
+                    <p>Greater than 60% of AMKR revenue is generated by facilities in South Korea and other Asian markets. Taiwan Strait tension, Korean Peninsula risk, and export control escalation all represent plausible scenarios where AMKR capacity would be disrupted. The P/E discount vs. US peers partially reflects this risk.</p>
+                </div>
+            </div>
+            <div class="evidence-block">
+                <h4>Evidence Against</h4>
+                <div class="against">
+                    <p>AMKR has operated in Asia for decades with no material supply disruption — historical base rate of disruption is low. Arizona facility reduces concentration over a 3–5 year horizon. Customer diversification across Apple, Qualcomm, onsemi, TI limits single-customer event risk. Geopolitical premiums in OSAT have historically been transient.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>CLM-005 — AMKR vs. ASX Competitive Dynamics</h2>
+            <span class="tag">confidence: 3/5</span>
+            <span class="tag">category: competitive analysis</span>
+            <p>ASE Technology (ASX) is AMKR's most directly comparable public peer and the world's largest OSAT. The relative revenue, margin, and price performance between AMKR and ASX reveals structural positioning differences worth monitoring as AI packaging demand ramps.</p>
+            <div class="evidence-block">
+                <h4>Evidence For</h4>
+                <div class="for">
+                    <p>ASX reports as a foreign private issuer (IFRS-full XBRL) on NYSE — making side-by-side comparison possible within the domain's data infrastructure. AMKR's US domestic positioning (Arizona) is a structural differentiator ASX cannot replicate. The <code>get_price_relative_performance</code> and <code>compare_companies</code> tools surface the AMKR vs. ASX performance spread directly.</p>
+                </div>
+            </div>
+            <div class="evidence-block">
+                <h4>Evidence Against</h4>
+                <div class="against">
+                    <p>ASX is substantially larger than AMKR by revenue, giving it scale advantages in customer negotiations and capital allocation. IFRS vs. US GAAP accounting differences complicate direct margin comparisons. Most OSAT peers (JCET, Powertech, KYEC) are Taiwan/China-listed with no SEC data — the peer set available for quantitative comparison is narrow.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Amkor Technology Intelligence Domain — Project Phoenix v0.3</p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+        </footer>
+    </div>
+</body>
+</html>

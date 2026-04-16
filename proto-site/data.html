@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proto Site | Data</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <span class="badge">Database Layer</span>
+      <h1>Data</h1>
+      <p class="subtitle">Example table coverage layout used across Public/Proto sites.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a class="active" href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="section">
+      <h2>Coverage Snapshot</h2>
+      <table class="table">
+        <thead>
+          <tr><th>Table</th><th>Purpose</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>filings</td><td>SEC submissions and metadata</td><td><span class="tag">Loaded</span></td></tr>
+          <tr><td>vendor_metrics</td><td>Companyfacts trend metrics</td><td><span class="tag">Loaded</span></td></tr>
+          <tr><td>prices</td><td>Historical benchmark pricing</td><td><span class="tag">Loaded</span></td></tr>
+          <tr><td>news_events</td><td>Web news with lineage</td><td><span class="tag">Loaded</span></td></tr>
+          <tr><td>events</td><td>Synthesized timeline (with source_detail)</td><td><span class="tag">Loaded</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Determinism Policy</h2>
+      <p>Deterministic core outputs, timestamps only in metadata fields.</p>
+    </section>
+
+    <footer class="footer">
+      <p>Proto Website Scaffold · Data</p>
+    </footer>
+  </div>
+</body>
+</html>

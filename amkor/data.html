@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Coverage | Amkor Technology</title>
+    <meta name="description" content="Ticker universe, data sources, and database population statistics for the Amkor Technology intelligence domain.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Project Phoenix Domain</span>
+            <h1>Data Coverage</h1>
+            <p class="subtitle">Ticker Universe · Data Sources · Database Statistics</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a href="intelligence.html">Intelligence System</a>
+            <a href="thesis.html">Strategic Thesis</a>
+            <a href="data.html">Data Coverage</a>
+        </nav>
+
+        <section class="section">
+            <h2>Ticker Universe</h2>
+            <p>8 tickers tracked across primary subject, OSAT peers, semiconductor customers, and market benchmarks. ASX is the only US-accessible OSAT direct peer — most others (JCET, Powertech, KYEC) are Taiwan/China-listed with no SEC filings.</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Company</th>
+                        <th>Role</th>
+                        <th>Exchange</th>
+                        <th>Filing Standard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AMKR</strong></td>
+                        <td>Amkor Technology</td>
+                        <td>Primary subject</td>
+                        <td>NASDAQ</td>
+                        <td>US GAAP XBRL</td>
+                    </tr>
+                    <tr>
+                        <td>ASX</td>
+                        <td>ASE Technology Holding</td>
+                        <td>OSAT direct peer</td>
+                        <td>NYSE ADR</td>
+                        <td>IFRS-full XBRL (FPI)</td>
+                    </tr>
+                    <tr>
+                        <td>ON</td>
+                        <td>onsemi</td>
+                        <td>IC maker / AMKR customer</td>
+                        <td>NASDAQ</td>
+                        <td>US GAAP XBRL</td>
+                    </tr>
+                    <tr>
+                        <td>QCOM</td>
+                        <td>Qualcomm</td>
+                        <td>Major packaging customer</td>
+                        <td>NASDAQ</td>
+                        <td>US GAAP XBRL</td>
+                    </tr>
+                    <tr>
+                        <td>MCHP</td>
+                        <td>Microchip Technology</td>
+                        <td>AMKR customer</td>
+                        <td>NASDAQ</td>
+                        <td>US GAAP XBRL</td>
+                    </tr>
+                    <tr>
+                        <td>TXN</td>
+                        <td>Texas Instruments</td>
+                        <td>OSAT services user</td>
+                        <td>NASDAQ</td>
+                        <td>US GAAP XBRL</td>
+                    </tr>
+                    <tr>
+                        <td>SMH</td>
+                        <td>VanEck Semiconductor ETF</td>
+                        <td>Sector benchmark</td>
+                        <td>NASDAQ</td>
+                        <td>Price only</td>
+                    </tr>
+                    <tr>
+                        <td>SPY</td>
+                        <td>S&P 500 ETF</td>
+                        <td>Broad market benchmark</td>
+                        <td>NYSE Arca</td>
+                        <td>Price only</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Data Sources</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>SEC EDGAR</h3>
+                    <p><strong>Company Facts API</strong> — XBRL financial metrics ingested via <code>/api/xbrl/companyfacts/{cik}.json</code>. Covers revenue, gross profit, operating income, net income, PP&amp;E, CapEx proxy for all 6 operating tickers.</p>
+                    <p style="margin-top:0.5rem"><strong>Submissions API</strong> — Filing index ingested via <code>/submissions/CIK{cik}.json</code>. 10-K, 10-Q, 8-K, 20-F forms tracked. 711 total filings across the ticker universe.</p>
+                    <p style="margin-top:0.5rem"><strong>10-K HTML Text</strong> — HTM filing documents downloaded and keyword-windowed for segment disclosure analysis (CLM-003 gap mitigation). 20 packaging/segment keywords extracted.</p>
+                </div>
+                <div class="card">
+                    <h3>Stooq Price Data</h3>
+                    <p>Daily OHLCV price history pulled from Stooq for all 8 tickers. 54,000+ price rows spanning approximately 14 months of history. Used for base-100 trend indexing, relative performance computation, and price event overlay.</p>
+                    <p style="margin-top:0.5rem">Pull script: <code>pull_stooq_prices.py</code>. No API key required. Rate-limit courtesy delays applied.</p>
+                </div>
+                <div class="card">
+                    <h3>Google News RSS</h3>
+                    <p>News headlines and summaries ingested via Google News RSS feed for AMKR-related queries. Stored in <code>news_events</code> table and synthesized into the <code>events</code> timeline.</p>
+                    <p style="margin-top:0.5rem">Pull script: <code>pull_news_rss.py</code>. Best-effort — no guaranteed coverage; supplemented by manual event seeds for high-signal milestones.</p>
+                </div>
+                <div class="card">
+                    <h3>Manual Event Seeds</h3>
+                    <p>Six high-signal corporate milestones hand-curated in <code>data/manual/events.csv</code>: Arizona groundbreaking (Feb 2024), Apple partnership (Apr 2024), CHIPS Act funding confirmation (Feb 2025), and three earnings events with explicit AI/packaging commentary.</p>
+                    <p style="margin-top:0.5rem">Manual seeds are merged with SEC filing events and RSS news items at DB initialization time.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Database Population</h2>
+            <p>All data is stored in <code>amkor.db</code> (SQLite). The database is rebuilt from source CSVs and JSON on demand via <code>python scripts/init_db.py</code>. Schema is defined in <code>schema.sql</code> and applied idempotently.</p>
+            <div class="stat-row">
+                <div class="stat">
+                    <span class="num">54k+</span>
+                    <span class="label">Price Rows</span>
+                </div>
+                <div class="stat">
+                    <span class="num">711</span>
+                    <span class="label">SEC Filings</span>
+                </div>
+                <div class="stat">
+                    <span class="num">6,334</span>
+                    <span class="label">Metric Rows</span>
+                </div>
+                <div class="stat">
+                    <span class="num">100</span>
+                    <span class="label">News Items</span>
+                </div>
+                <div class="stat">
+                    <span class="num">6</span>
+                    <span class="label">Key Events</span>
+                </div>
+            </div>
+            <table class="table" style="margin-top:1.2rem">
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Source</th>
+                        <th>Key Fields</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>vendor_metrics</td>
+                        <td>SEC EDGAR XBRL</td>
+                        <td>metric_date, ticker, metric_name, metric_value, unit</td>
+                        <td>Primary financial time-series; UNIQUE on (metric_date, period, company, metric_name)</td>
+                    </tr>
+                    <tr>
+                        <td>prices</td>
+                        <td>Stooq</td>
+                        <td>trade_date, ticker, open, high, low, close, volume</td>
+                        <td>UNIQUE on (trade_date, ticker); all 8 tickers</td>
+                    </tr>
+                    <tr>
+                        <td>filings</td>
+                        <td>SEC EDGAR Submissions</td>
+                        <td>filed_date, ticker, form, accession_number, filing_url</td>
+                        <td>UNIQUE on accession_number; includes 20-F for ASX</td>
+                    </tr>
+                    <tr>
+                        <td>news_events</td>
+                        <td>Google News RSS</td>
+                        <td>published_at, title, summary, article_url</td>
+                        <td>UNIQUE on (published_at, title); deduplicated at pull time</td>
+                    </tr>
+                    <tr>
+                        <td>events</td>
+                        <td>Manual + SEC + RSS</td>
+                        <td>event_date, event_type, title, summary, source</td>
+                        <td>Synthesized from all three sources; manual seeds take priority</td>
+                    </tr>
+                    <tr>
+                        <td>job_postings</td>
+                        <td>Workday / job APIs</td>
+                        <td>posted_date, role_title, location, team, job_url</td>
+                        <td>Best-effort; Amkor uses Workday — external endpoint sparsity expected</td>
+                    </tr>
+                    <tr>
+                        <td>text_disclosures</td>
+                        <td>SEC EDGAR 10-K HTM</td>
+                        <td>fiscal_year, ticker, keyword, excerpt, section_label</td>
+                        <td>600-char keyword windows; prerequisite: run pull_sec_10k_text.py</td>
+                    </tr>
+                    <tr>
+                        <td>hypothesis_scores</td>
+                        <td>HITL input</td>
+                        <td>claim_id, score, rationale, reviewer, scored_at</td>
+                        <td>Score range 1–5; persists across sessions; most recent score per claim used</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Data Refresh</h2>
+            <p>Data is refreshed manually using shell scripts. SEC pulls require a <code>SEC_USER_AGENT</code> environment variable (<code>name email@domain.com</code> format) per SEC fair-access policy. All pull scripts include rate-limit courtesy delays.</p>
+            <div class="code">export SEC_USER_AGENT="your-name your-email@domain.com"
+
+# Pull all sources
+bash scripts/full_refresh_human.sh
+
+# Or step-by-step:
+python scripts/pull_sec_companyfacts.py   # XBRL metrics
+python scripts/pull_sec_filings.py        # Filing index
+python scripts/pull_stooq_prices.py       # Price history
+python scripts/pull_news_rss.py           # Google News RSS
+python scripts/pull_job_postings.py       # Job postings (best-effort)
+python scripts/pull_sec_10k_text.py       # 10-K text for segment disclosure
+
+# Rebuild database
+python scripts/init_db.py</div>
+        </section>
+
+        <footer class="footer">
+            <p>Amkor Technology Intelligence Domain — Project Phoenix v0.3</p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+        </footer>
+    </div>
+</body>
+</html>

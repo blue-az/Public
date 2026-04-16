@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligence System | Amkor Technology</title>
+    <meta name="description" content="Four-variation abstraction ladder, 15 agentic tools, and Glass Box execution model for the Amkor Technology intelligence domain.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Project Phoenix Domain</span>
+            <h1>Intelligence System</h1>
+            <p class="subtitle">Abstraction Ladder · Agentic Tools · Glass Box Execution</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Overview</a>
+            <a href="intelligence.html">Intelligence System</a>
+            <a href="thesis.html">Strategic Thesis</a>
+            <a href="data.html">Data Coverage</a>
+        </nav>
+
+        <section class="section">
+            <h2>Execution Model</h2>
+            <p>The Amkor domain uses a <strong>Glass Box</strong> agent architecture — every plan is visible and interruptible before execution. Unlike opaque LLM agents, this system is a deterministic expert pattern-matcher: all parameters are computable at plan time, no random identifiers, no probabilistic branching.</p>
+            <p>The pipeline runs: <strong>Natural Language Query → Plan Builder → Human Approval Gate → Tool Executor → Structured Output</strong>. The user can inspect the full plan before any tool fires. Tools never call other tools at runtime — all chaining is resolved at plan time.</p>
+            <div class="code">NL Query: "What is Amkor's revenue trend?"
+Plan: GetRevenueTrend(ticker=AMKR, start_year=2020, end_year=2024)
+Gate: [APPROVE / EDIT / CANCEL]
+Execute: → {ticker, rows: [{year, revenue_B, yoy_growth_pct}, ...]}</div>
+        </section>
+
+        <section class="section">
+            <h2>Abstraction Ladder</h2>
+            <p>Four variations teach progressively from operational snapshots to advisory synthesis. Each variation builds on the previous — V4 is gated on V1–V3 data being populated.</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Variation</th>
+                        <th>Mode</th>
+                        <th>Purpose</th>
+                        <th>Key Tools</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>V1</strong> — Snapshot</td>
+                        <td>Procedural</td>
+                        <td>Operational baseline: jobs, filings, news, financial metrics, events</td>
+                        <td>get_recent_job_postings, get_recent_filings, get_recent_news, get_key_events, get_company_metric_trend</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V2</strong> — KPI</td>
+                        <td>Conditional</td>
+                        <td>Compact multi-metric summary: revenue, gross margin, operating income, CapEx in one table</td>
+                        <td>get_key_kpis, get_multi_metric_summary, get_filing_detail</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V3</strong> — Trend</td>
+                        <td>Chained analytics</td>
+                        <td>Time-series with year-over-year deltas: revenue growth, price relative performance, CapEx trajectory</td>
+                        <td>get_revenue_trend, get_price_trend, get_capex_trend, get_price_relative_performance, get_multi_metric_summary</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V4</strong> — Advisory</td>
+                        <td>HITL-gated synthesis</td>
+                        <td>Readiness-gated hypothesis generation and human-scored claim scoring</td>
+                        <td>evaluate_variation4_readiness, generate_advisory_hypotheses, submit_advisory_hypothesis_score, list_advisory_hypothesis_scores, get_segment_disclosure</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Agentic Tool Registry</h2>
+            <p>15 tools registered. All tools return structured dicts with deterministic keys. Tool descriptions are surfaced verbatim to the plan builder for NL routing.</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tool</th>
+                        <th>Variation</th>
+                        <th>Returns</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>get_database_stats</td>
+                        <td>V1</td>
+                        <td>Row counts across all tables: prices, filings, vendor_metrics, news, events, hypothesis_scores, text_disclosures</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>get_recent_job_postings</td>
+                        <td>V1</td>
+                        <td>Recent job postings with role, location, posted_date; note: Workday-sourced, sparsity expected</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>get_recent_filings</td>
+                        <td>V1</td>
+                        <td>SEC filings with form type, filed_date, company, filing_url for AMKR and peer set</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>get_company_metric_trend</td>
+                        <td>V1</td>
+                        <td>Single XBRL metric time-series for any ticker (raw values, no computed deltas)</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>compare_companies</td>
+                        <td>V1</td>
+                        <td>Side-by-side metric comparison across two or more tickers for a given metric and year</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>get_recent_news</td>
+                        <td>V1</td>
+                        <td>Recent news items from Google News RSS with title, published_at, summary</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>get_key_events</td>
+                        <td>V1</td>
+                        <td>High-signal corporate milestones (earnings, facility, partnership, strategy, CHIPS Act)</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>get_key_kpis</td>
+                        <td>V2</td>
+                        <td>Compact KPI dict: revenue_B, gross_margin_pct, operating_income_B, net_income_B, ppe_net_B for latest period</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>get_filing_detail</td>
+                        <td>V2</td>
+                        <td>Single filing detail with accession number, primary document, and filing_url</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>get_revenue_trend</td>
+                        <td>V3</td>
+                        <td>Year-by-year revenue with YoY growth %; deduplicates by year (last filing date wins); handles both XBRL revenue tags</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>get_price_trend</td>
+                        <td>V3</td>
+                        <td>Base-100 indexed price series for multi-ticker comparison; default tickers: AMKR, ASX, SMH</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>get_capex_trend</td>
+                        <td>V3</td>
+                        <td>CapEx proxy via PP&amp;E net; computes value_billions and yoy_delta_billions per year</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>get_price_relative_performance</td>
+                        <td>V3</td>
+                        <td>Cumulative return % and annualized alpha vs. sector benchmark (SMH) over a date range</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>get_multi_metric_summary</td>
+                        <td>V3</td>
+                        <td>Year-by-year FY table: revenue_B, gross_profit_B, gross_margin_pct, operating_income_B, net_income_B, ppe_net_B</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>get_segment_disclosure</td>
+                        <td>V4</td>
+                        <td>10-K text excerpts (600-char windows) for packaging/segment keywords; bridges the CLM-003 XBRL gap where advanced packaging revenue % is not a discrete tag</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Anti-Hallucination Design</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Template Outputs</h3>
+                    <p>Every tool returns a dict with fixed keys. The agent never interpolates free text — outputs are schema-bound, so downstream rendering is deterministic.</p>
+                </div>
+                <div class="card">
+                    <h3>Write-Then-Verify</h3>
+                    <p>Schema tables are only created if corresponding pull scripts and import routines exist. Dead schema — tables with no data pipeline — is removed, not left dormant.</p>
+                </div>
+                <div class="card">
+                    <h3>Readiness Gate</h3>
+                    <p>V4 advisory synthesis is locked behind <code>evaluate_variation4_readiness</code>. If V1–V3 tables are empty, the gate returns a block reason and refuses to generate hypotheses.</p>
+                </div>
+                <div class="card">
+                    <h3>HITL Scoring</h3>
+                    <p>Every advisory hypothesis carries a human-scored confidence (1–5) stored in SQLite. No claim is presented without a scored rationale — the system surfaces evidence for and against each thesis.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Amkor Technology Intelligence Domain — Project Phoenix v0.3</p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+        </footer>
+    </div>
+</body>
+</html>

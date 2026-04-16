@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proto Site | Project Phoenix</title>
+  <meta name="description" content="Prototype website scaffold based on Public/Proto patterns.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <span class="badge">Public/Proto Style</span>
+      <h1>Project Phoenix Prototype Site</h1>
+      <p class="subtitle">Static multipage scaffold modeled after the Public/Proto domain websites.</p>
+    </header>
+
+    <nav class="nav">
+      <a class="active" href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="stats">
+      <div class="stat"><div class="num">4</div><div class="label">Pages</div></div>
+      <div class="stat"><div class="num">Static</div><div class="label">Deployment Model</div></div>
+      <div class="stat"><div class="num">Proto</div><div class="label">Design Family</div></div>
+      <div class="stat"><div class="num">Mobile+</div><div class="label">Responsive</div></div>
+    </section>
+
+    <section class="section">
+      <h2>Overview</h2>
+      <p>This site is a baseline prototype you can fork per domain (xAmkor, Honeywell, Semiconductors, etc.). It follows the same navigation and card/table layout patterns used in <code>~/Public/Proto</code>.</p>
+    </section>
+
+    <section class="section">
+      <h2>Quick Start</h2>
+      <pre>cd /home/blueaz/Python/project-phoenix/proto-site
+python -m http.server 8080</pre>
+    </section>
+
+    <section class="section">
+      <h2>Template Blocks</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Header + Badge</h3>
+          <p>Consistent top section with project context and subtitle.</p>
+        </article>
+        <article class="card">
+          <h3>Nav Tabs</h3>
+          <p>Simple page-per-topic split: tools, data, variations.</p>
+        </article>
+        <article class="card">
+          <h3>Cards + Tables</h3>
+          <p>Use cards for principles, tables for inventories and coverage.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Proto Website Scaffold · Based on Public/Proto</p>
+    </footer>
+  </div>
+</body>
+</html>

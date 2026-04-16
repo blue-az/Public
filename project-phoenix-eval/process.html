@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Phoenix Eval | Process</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <span class="kicker">Process</span>
+      <h1>External Validation Flow (A-D)</h1>
+      <p class="sub">Evaluator protocol for scaffold-to-utility progression with explicit evidence gates.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a class="active" href="process.html">Process</a>
+      <a href="comparison.html">Methods</a>
+      <a href="qa.html">Pilot QA</a>
+    </nav>
+
+    <section class="panel">
+      <h2>Cadence and Gates</h2>
+      <table class="table">
+        <thead><tr><th>Session</th><th>Goal</th><th>Exit Gate</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td>Stability</td><td>No critical runtime failures in targeted tools.</td></tr>
+          <tr><td>B</td><td>Task Expansion Part 1 (V1/V2)</td><td>Schema-compliant tasks and stable execution.</td></tr>
+          <tr><td>C</td><td>Task Expansion Part 2 (V3/V4)</td><td>Validator pass or approved waiver state.</td></tr>
+          <tr><td>D</td><td>Hardening (optional)</td><td>Stable reruns, no critical drift.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Evidence Rules</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Mandatory Artifacts</h3>
+          <p>Validator output snippets, direct repro for known failures, and per-domain build-log updates each iteration.</p>
+        </article>
+        <article class="card">
+          <h3>Waiver Discipline</h3>
+          <p><code>WAIVER-TASK-COUNT-001</code> keeps the process moving while preserving explicit accountability.</p>
+        </article>
+        <article class="card">
+          <h3>Context Accounting</h3>
+          <p>Track <code>generation_context_pct</code>, <code>evaluation_context_pct</code>, and <code>total_session_context_pct</code> separately.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">Process source: EXTERNAL_VALIDATION.md</footer>
+  </div>
+</body>
+</html>

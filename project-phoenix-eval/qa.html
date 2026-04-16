@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Phoenix Eval | Pilot QA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <span class="kicker">Pilot QA</span>
+      <h1>Human Query Readiness</h1>
+      <p class="sub">DIRECT/DERIVED question taxonomy + pilot prompt set for practical usefulness validation.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="process.html">Process</a>
+      <a href="comparison.html">Methods</a>
+      <a class="active" href="qa.html">Pilot QA</a>
+    </nav>
+
+    <section class="panel">
+      <h2>Checklist Standard</h2>
+      <table class="table">
+        <thead><tr><th>Class</th><th>Definition</th><th>QA Contract</th></tr></thead>
+        <tbody>
+          <tr><td>DIRECT</td><td>One tool returns the core answer.</td><td>Required keys, non-null, sanity checks.</td></tr>
+          <tr><td>DERIVED</td><td>Requires multi-step synthesis/calculation.</td><td>Intermediate assertions + explicit transform + final value.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Pilot Query Pack</h2>
+      <div class="grid">
+        <article class="card"><h3>Coverage</h3><p>15 pilot prompts spanning direct lookups, computed comparisons, era splits, and upset detection.</p></article>
+        <article class="card"><h3>Known Gap</h3><p>YoY clay improvement needs dedicated derivation or tool support for first-class deterministic output.</p></article>
+        <article class="card"><h3>Outcome</h3><p>Phase 4 pilot execution complete with a 10/10 pass result.</p></article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Next Tool Iteration Candidate</h2>
+      <p><code>get_year_record</code> should add a <code>min_matches</code> parameter so peak-year win% answers can exclude low-volume seasons (for example COVID-affected years).</p>
+    </section>
+
+    <section class="panel">
+      <h2>Examples from Pilot Set</h2>
+      <p><code>MPQ_001</code> Diego clay vs hard profile<br>
+      <code>MPQ_006</code> American women slam champions since 2010<br>
+      <code>MPQ_010</code> ATP players with winning top-10 records<br>
+      <code>MPQ_015</code> Swiatek clay profile 2022 vs 2023</p>
+    </section>
+
+    <footer class="footer">QA sources: human_question_checklist.md + human_pilot_queries.yaml</footer>
+  </div>
+</body>
+</html>

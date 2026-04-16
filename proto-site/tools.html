@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proto Site | Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <span class="badge">Tool Registry</span>
+      <h1>Tools</h1>
+      <p class="subtitle">Example deterministic tool catalog section.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a class="active" href="tools.html">Tools</a>
+      <a href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="section">
+      <h2>Core Tools</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>get_recent_filings</h3>
+          <p>Retrieves SEC filing rows with source lineage.</p>
+        </article>
+        <article class="card">
+          <h3>get_recent_news</h3>
+          <p>Returns web-pulled RSS/news rows with article context.</p>
+        </article>
+        <article class="card">
+          <h3>get_company_metric_trend</h3>
+          <p>Returns ordered SEC companyfacts trend data.</p>
+        </article>
+        <article class="card">
+          <h3>evaluate_variation4_readiness</h3>
+          <p>Deterministic readiness gate before synthesis workflows.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Example Invocation</h2>
+      <pre>get_recent_filings(ticker="AMKR", limit=10)
+get_company_metric_trend(ticker="AMKR", metric_name="Revenues", period="FY")</pre>
+    </section>
+
+    <footer class="footer">
+      <p>Proto Website Scaffold · Tools</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Phoenix Eval | Overview</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <span class="kicker">Project Phoenix</span>
+      <h1>External Validation Overview</h1>
+      <p class="sub">Live snapshot of domain readiness, method comparison, and QA pilot posture.</p>
+    </header>
+
+    <nav class="nav">
+      <a class="active" href="index.html">Overview</a>
+      <a href="process.html">Process</a>
+      <a href="comparison.html">Methods</a>
+      <a href="qa.html">Pilot QA</a>
+    </nav>
+
+    <section class="metrics">
+      <div class="metric"><div class="n">A-D</div><div class="l">Validation Cadence</div></div>
+      <div class="metric"><div class="n">2 Domains</div><div class="l">MatchAgent + PlayerAgent</div></div>
+      <div class="metric"><div class="n">WAIVER</div><div class="l">Task-count gate tracked</div></div>
+      <div class="metric"><div class="n">Phase 4</div><div class="l">Complete</div></div>
+    </section>
+
+    <section class="panel">
+      <h2>Current Position</h2>
+      <p>The build has moved beyond scaffold checks into external validation and human-agent usefulness. Core finding: generation is cheap; evaluation and correction loops dominate total cost.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>What Passed</h3>
+          <p>Domain scaffolds, deterministic conventions, and pilot QA artifacts are in place. Smoke tests are passing where added.</p>
+        </article>
+        <article class="card">
+          <h3>What Matters</h3>
+          <p>The evaluator layer remains the key system dependency in local-LLM paths: diagnosis, gating, and failure-mode containment.</p>
+        </article>
+        <article class="card">
+          <h3>Decision Lens</h3>
+          <p>Use direct high-level LLM flow for speed-to-utility; use local+HITL when proving resilience under constrained/offline assumptions.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Status at a Glance</h2>
+      <table class="table">
+        <thead>
+          <tr><th>Area</th><th>Status</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Session A (stability)</td><td><span class="badge">Closed</span></td><td>DB-path instability on PlayerAgent resolved with <code>PRAGMA temp_store = MEMORY</code>.</td></tr>
+          <tr><td>Session B/C (expansion)</td><td><span class="badge">Closed</span></td><td>Pilot readiness gates passed with validated task packs and query runs.</td></tr>
+          <tr><td>Session D (hardening)</td><td><span class="badge">Complete</span></td><td>Regression suite passed: 12/12 in 1.75s.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Latest Validation Snapshot</h2>
+      <table class="table">
+        <thead><tr><th>Phase 4 Item</th><th>Status</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Baseline docs present</td><td><span class="badge">PASS</span></td><td>Required baseline artifacts present.</td></tr>
+          <tr><td>Smoke suite</td><td><span class="badge">PASS</span></td><td>15 tasks in 3.31s.</td></tr>
+          <tr><td>Pilot queries</td><td><span class="badge">PASS</span></td><td>10/10 pass rate.</td></tr>
+          <tr><td>Regression tests</td><td><span class="badge">PASS</span></td><td>12/12 in 1.75s.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="footer">project-phoenix-eval demo · Public/Proto static site</footer>
+  </div>
+</body>
+</html>

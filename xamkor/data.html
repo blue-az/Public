@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xamkor | Data</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <span class="kicker">xamkor prototype</span>
+      <h1>Data</h1>
+      <p class="sub">Core SQLite coverage and lineage controls.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a class="active" href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="section">
+      <h2>Tables</h2>
+      <table class="table">
+        <thead><tr><th>Table</th><th>Lineage</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>filings</td><td>source + filing_url + accession_number</td><td><span class="badge-ok">ok</span></td></tr>
+          <tr><td>news_events</td><td>source + source_detail + article_url</td><td><span class="badge-ok">ok</span></td></tr>
+          <tr><td>events</td><td>source + source_detail (synthesized)</td><td><span class="badge-ok">ok</span></td></tr>
+          <tr><td>vendor_metrics</td><td>source + source_detail</td><td><span class="badge-ok">ok</span></td></tr>
+          <tr><td>prices</td><td>source</td><td><span class="badge-ok">ok</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Determinism Rule</h2>
+      <p>Deterministic core payloads; runtime timestamps and run markers live in metadata fields only.</p>
+    </section>
+
+    <footer class="footer">xamkor · data</footer>
+  </div>
+</body>
+</html>
