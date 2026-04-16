@@ -3,56 +3,81 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Phoenix Eval | Process</title>
+  <title>Project Phoenix | Operator Flow</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
     <header class="hero">
-      <span class="kicker">Process</span>
-      <h1>External Validation Flow (A-D)</h1>
-      <p class="sub">Evaluator protocol for scaffold-to-utility progression with explicit evidence gates.</p>
+      <span class="kicker">Operator Flow</span>
+      <h1>OpenClaw → Phoenix</h1>
+      <p class="sub">The working pattern for verification, incident handling, and use-case execution through the operator shell.</p>
     </header>
 
     <nav class="nav">
       <a href="index.html">Overview</a>
-      <a class="active" href="process.html">Process</a>
-      <a href="comparison.html">Methods</a>
-      <a href="qa.html">Pilot QA</a>
+      <a class="active" href="process.html">Operator Flow</a>
+      <a href="comparison.html">Model Comparison</a>
+      <a href="qa.html">Use Cases</a>
     </nav>
 
     <section class="panel">
-      <h2>Cadence and Gates</h2>
+      <h2>Core Rule</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>OpenClaw</h3>
+          <p>Outer shell, operator-facing access point, monitoring surface, and workflow discipline layer.</p>
+        </article>
+        <article class="card">
+          <h3>ShowcaseAgent</h3>
+          <p>Internal routing and compression layer where applicable.</p>
+        </article>
+        <article class="card">
+          <h3>Phoenix</h3>
+          <p>Deterministic authority: solver-backed, benchmark-backed, script-backed correctness.</p>
+        </article>
+      </div>
+      <p><strong>Working rule:</strong> OpenClaw makes Project Phoenix accessible; Project Phoenix makes OpenClaw outputs trustworthy.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Standard Verification Ritual</h2>
       <table class="table">
-        <thead><tr><th>Session</th><th>Goal</th><th>Exit Gate</th></tr></thead>
+        <thead><tr><th>Step</th><th>Command</th><th>Purpose</th></tr></thead>
         <tbody>
-          <tr><td>A</td><td>Stability</td><td>No critical runtime failures in targeted tools.</td></tr>
-          <tr><td>B</td><td>Task Expansion Part 1 (V1/V2)</td><td>Schema-compliant tasks and stable execution.</td></tr>
-          <tr><td>C</td><td>Task Expansion Part 2 (V3/V4)</td><td>Validator pass or approved waiver state.</td></tr>
-          <tr><td>D</td><td>Hardening (optional)</td><td>Stable reruns, no critical drift.</td></tr>
+          <tr><td>1</td><td><code>openclaw --profile ollama-local gateway run --port 19001 --force</code></td><td>Bring up the live gateway in a separate terminal.</td></tr>
+          <tr><td>2</td><td><code>scripts/check_openclaw_hardening.sh</code></td><td>Verify endpoints, thresholds, screenshots, and incidents from one gate.</td></tr>
+          <tr><td>3</td><td><code>scripts/check_openclaw_hardening.sh --record</code></td><td>Record a milestone or audit run when needed.</td></tr>
+          <tr><td>4</td><td><code>scripts/check_openclaw_hardening.sh --skip-live</code></td><td>Artifact-only validation when the gateway is intentionally offline.</td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="panel">
-      <h2>Evidence Rules</h2>
+      <h2>Incident Workflow</h2>
       <div class="grid">
         <article class="card">
-          <h3>Mandatory Artifacts</h3>
-          <p>Validator output snippets, direct repro for known failures, and per-domain build-log updates each iteration.</p>
+          <h3>Capture</h3>
+          <p>Record the issue with screenshots or trace artifacts and create an incident packet with strict required fields.</p>
         </article>
         <article class="card">
-          <h3>Waiver Discipline</h3>
-          <p><code>WAIVER-TASK-COUNT-001</code> keeps the process moving while preserving explicit accountability.</p>
+          <h3>Repair</h3>
+          <p>Fix the actual problem in code or configuration while keeping the incident folder as the operator unit of work.</p>
         </article>
         <article class="card">
-          <h3>Context Accounting</h3>
-          <p>Track <code>generation_context_pct</code>, <code>evaluation_context_pct</code>, and <code>total_session_context_pct</code> separately.</p>
+          <h3>Resolve</h3>
+          <p>Write the resolution, validate the folder, and confirm the index stays internally consistent.</p>
         </article>
       </div>
+      <p>Resolved examples already exist in the current incident index, including the original gateway outage and the run-trace static-data bug.</p>
     </section>
 
-    <footer class="footer">Process source: EXTERNAL_VALIDATION.md</footer>
+    <section class="panel">
+      <h2>Known Caveat</h2>
+      <p>Sandboxed localhost checks do not always see the live gateway even when the foreground gateway is healthy. The reliable path is documented and operational: run the full hardening gate from the live shell environment when needed.</p>
+    </section>
+
+    <footer class="footer">Operator flow source: OPENCLAW_PHOENIX_OPS_RUNBOOK.md · OPENCLAW_OPERATOR_INDEX.md</footer>
   </div>
 </body>
 </html>

@@ -3,34 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Phoenix Eval | Method Comparison</title>
+  <title>Project Phoenix | Model Comparison</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
     <header class="hero">
-      <span class="kicker">Methods</span>
-      <h1>Local+HITL vs Direct LLM</h1>
-      <p class="sub">Comparison framed by objective: delivery speed vs resilience demonstration.</p>
+      <span class="kicker">Model Comparison</span>
+      <h1>Capture Integrity First</h1>
+      <p class="sub">The current protocol-comparison line is a harness finding before it is a model ranking.</p>
     </header>
 
     <nav class="nav">
       <a href="index.html">Overview</a>
-      <a href="process.html">Process</a>
-      <a class="active" href="comparison.html">Methods</a>
-      <a href="qa.html">Pilot QA</a>
+      <a href="process.html">Operator Flow</a>
+      <a class="active" href="comparison.html">Model Comparison</a>
+      <a href="qa.html">Use Cases</a>
     </nav>
 
     <section class="panel">
-      <h2>Comparison Snapshot</h2>
+      <h2>Primary Result</h2>
+      <p>Legacy <code>ollama run</code> subprocess capture overstated thinking-mode protocol failures. Clean REST API capture changes the ranking materially. This is the core finding of Paper 1.16.</p>
       <table class="table">
-        <thead><tr><th>Metric</th><th>gemma path (local + HITL)</th><th>Direct high-level LLM</th></tr></thead>
+        <thead><tr><th>Model</th><th>Mode</th><th>Capture</th><th>Pass</th><th>Current read</th></tr></thead>
         <tbody>
-          <tr><td>Wall time to 100 tasks</td><td>~30 min / variation</td><td>~5 min / variation</td></tr>
-          <tr><td>First-pass violations</td><td>V1 had 25 under-target complexity issues</td><td>0 in observed run</td></tr>
-          <tr><td>Retries</td><td>3 batches + repair script</td><td>0</td></tr>
-          <tr><td>Generation-only context</td><td>~10%</td><td>~3%</td></tr>
-          <tr><td>Total workflow context</td><td>High (validation/debug heavy)</td><td>Lower but still non-trivial</td></tr>
+          <tr><td><code>gemma3:27b</code></td><td>unsuppressed</td><td><code>ollama_api</code></td><td><span class="badge">5/6</span></td><td>Strong baseline; <code>PROTO_010</code> remains a content miss.</td></tr>
+          <tr><td><code>qwen2.5:14b</code></td><td>unsuppressed</td><td><code>ollama_api</code></td><td><span class="badge">4/6</span></td><td>Useful contrast; weaker than Gemma 3 and Gemma 4:31b in this slice.</td></tr>
+          <tr><td><code>gemma4:26b</code></td><td>unsuppressed</td><td><code>ollama_api</code></td><td><span class="badge-warn">4/6</span></td><td>Flat-schema gap remains without suppression.</td></tr>
+          <tr><td><code>gemma4:26b</code></td><td>suppressed</td><td><code>ollama_api</code></td><td><span class="badge">6/6</span></td><td>Full pass; suppression resolves the flat-schema issue.</td></tr>
+          <tr><td><code>gemma4:31b</code></td><td>unsuppressed</td><td><code>ollama_api</code></td><td><span class="badge">6/6</span></td><td>Strongest current local protocol lane.</td></tr>
+          <tr><td><code>gemma4:31b</code></td><td>suppressed</td><td><code>ollama_api</code></td><td><span class="badge">6/6</span></td><td>Same result; suppression not required.</td></tr>
         </tbody>
       </table>
     </section>
@@ -38,13 +40,24 @@
     <section class="panel">
       <h2>Interpretation Rules</h2>
       <div class="grid">
-        <article class="card"><h3>Do Not Confound</h3><p>Slow query tools (for example heavy era comparisons) are domain latency artifacts, not model-generation weakness.</p></article>
-        <article class="card"><h3>Evaluator Dependency</h3><p>The practical loop is human -> evaluator -> local LLM -> evaluator -> human.</p></article>
-        <article class="card"><h3>Actionable Rule</h3><p>Pick direct LLM for rapid utility, local+HITL for constrained-environment proof.</p></article>
+        <article class="card"><h3>Harness First</h3><p>Thinking-mode models require clean-output capture. Terminal subprocess capture is not canonical for protocol evaluation.</p></article>
+        <article class="card"><h3>Model Verdict Revised</h3><p><code>gemma4:31b</code> is the strongest current local result in this protocol lane under corrected capture. The earlier severe regression story was a measurement artifact.</p></article>
+        <article class="card"><h3>Residual Failure</h3><p><code>PROTO_010</code> remains a genuine content failure outside the capture problem. Not every miss was a harness artifact.</p></article>
       </div>
     </section>
 
-    <footer class="footer">Method framing source: key-takeaways.md</footer>
+    <section class="panel">
+      <h2>Featured Current Papers</h2>
+      <table class="table">
+        <thead><tr><th>Paper</th><th>Role</th><th>Current relevance</th></tr></thead>
+        <tbody>
+          <tr><td>Paper 1.16</td><td>Primary paper</td><td>Defines the capture-integrity correction. The full inventory remains in portfolio order; this paper is featured because it changes the current protocol line.</td></tr>
+          <tr><td>Operator Shell Pattern</td><td>Architecture paper</td><td>Explains how model-comparison packets fit into the OpenClaw outer layer without crossing the authority boundary.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="footer">Comparison source: MODEL_COMPARISON_PACKET_GEMMA_PROTOCOL.md · Paper 1.16</footer>
   </div>
 </body>
 </html>

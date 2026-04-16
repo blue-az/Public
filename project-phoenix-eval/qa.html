@@ -3,58 +3,64 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Phoenix Eval | Pilot QA</title>
+  <title>Project Phoenix | Use Cases</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
     <header class="hero">
-      <span class="kicker">Pilot QA</span>
-      <h1>Human Query Readiness</h1>
-      <p class="sub">DIRECT/DERIVED question taxonomy + pilot prompt set for practical usefulness validation.</p>
+      <span class="kicker">Use Cases</span>
+      <h1>First Seven Completed Use Cases</h1>
+      <p class="sub">The operator shell is justified by real packets and workflows, not by generic feature count.</p>
     </header>
 
     <nav class="nav">
       <a href="index.html">Overview</a>
-      <a href="process.html">Process</a>
-      <a href="comparison.html">Methods</a>
-      <a class="active" href="qa.html">Pilot QA</a>
+      <a href="process.html">Operator Flow</a>
+      <a href="comparison.html">Model Comparison</a>
+      <a class="active" href="qa.html">Use Cases</a>
     </nav>
 
     <section class="panel">
-      <h2>Checklist Standard</h2>
+      <h2>Completed Bundle</h2>
       <table class="table">
-        <thead><tr><th>Class</th><th>Definition</th><th>QA Contract</th></tr></thead>
+        <thead><tr><th>Use case</th><th>Type</th><th>Current output</th></tr></thead>
         <tbody>
-          <tr><td>DIRECT</td><td>One tool returns the core answer.</td><td>Required keys, non-null, sanity checks.</td></tr>
-          <tr><td>DERIVED</td><td>Requires multi-step synthesis/calculation.</td><td>Intermediate assertions + explicit transform + final value.</td></tr>
+          <tr><td>1. Benchmark Review</td><td>Measurement</td><td>Deterministic benchmark review packet from <code>benchmark_1_10_results.json</code>.</td></tr>
+          <tr><td>2. Run-Trace Triage</td><td>Measurement</td><td>Replay-target and escalation packet from the trace summaries.</td></tr>
+          <tr><td>3. Incident Repair Loop</td><td>Operator discipline</td><td>Structured incident create → repair → resolve → validate workflow.</td></tr>
+          <tr><td>4. Model Comparison Packet</td><td>Measurement</td><td>Capture-integrity-aware model packet for the protocol lane.</td></tr>
+          <tr><td>5. Documentation Status Review</td><td>Operator discipline</td><td>Deterministic doc drift detector for the OpenClaw/Phoenix doc set.</td></tr>
+          <tr><td>6. Routing Policy</td><td>Decision surface</td><td>Explicit four-lane routing policy grounded in the benchmark line.</td></tr>
+          <tr><td>7. Solver-Backed Demo Expansion</td><td>Decision surface / demo</td><td>ShowcaseAgent routing demo confirms the rule-surface argument in a second domain.</td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="panel">
-      <h2>Pilot Query Pack</h2>
+      <h2>Why This Matters</h2>
       <div class="grid">
-        <article class="card"><h3>Coverage</h3><p>15 pilot prompts spanning direct lookups, computed comparisons, era splits, and upset detection.</p></article>
-        <article class="card"><h3>Known Gap</h3><p>YoY clay improvement needs dedicated derivation or tool support for first-class deterministic output.</p></article>
-        <article class="card"><h3>Outcome</h3><p>Phase 4 pilot execution complete with a 10/10 pass result.</p></article>
+        <article class="card">
+          <h3>Measurement</h3>
+          <p>Information that was previously trapped in JSON files or trace summaries is now surfaced as operator packets.</p>
+        </article>
+        <article class="card">
+          <h3>Discipline</h3>
+          <p>The shell now enforces hardening, incident handling, and documentation review rather than relying on memory and ad hoc checks.</p>
+        </article>
+        <article class="card">
+          <h3>Decision Surfaces</h3>
+          <p>Phoenix findings are now queryable by operators without requiring deep internal repo knowledge.</p>
+        </article>
       </div>
     </section>
 
     <section class="panel">
-      <h2>Next Tool Iteration Candidate</h2>
-      <p><code>get_year_record</code> should add a <code>min_matches</code> parameter so peak-year win% answers can exclude low-volume seasons (for example COVID-affected years).</p>
+      <h2>Architecture Pairing</h2>
+      <p>The use-case bundle is paired with the operator-shell architecture paper. The paper argues the pattern; the use cases prove the shell reduced friction without crossing the authority boundary.</p>
     </section>
 
-    <section class="panel">
-      <h2>Examples from Pilot Set</h2>
-      <p><code>MPQ_001</code> Diego clay vs hard profile<br>
-      <code>MPQ_006</code> American women slam champions since 2010<br>
-      <code>MPQ_010</code> ATP players with winning top-10 records<br>
-      <code>MPQ_015</code> Swiatek clay profile 2022 vs 2023</p>
-    </section>
-
-    <footer class="footer">QA sources: human_question_checklist.md + human_pilot_queries.yaml</footer>
+    <footer class="footer">Use-case bundle source: OPENCLAW_USE_CASE_EXPANSION.md · THE_OPERATOR_SHELL_PATTERN.lyx</footer>
   </div>
 </body>
 </html>

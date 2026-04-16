@@ -3,78 +3,99 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Phoenix Eval | Overview</title>
+  <title>Project Phoenix | OpenClaw Operator Shell</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
     <header class="hero">
       <span class="kicker">Project Phoenix</span>
-      <h1>External Validation Overview</h1>
-      <p class="sub">Live snapshot of domain readiness, method comparison, and QA pilot posture.</p>
+      <h1>OpenClaw Operator Shell</h1>
+      <p class="sub">Current status of the outer-layer integration: verified operator surfaces, hardening gate, incident workflow, and the first completed use-case bundle.</p>
     </header>
 
     <nav class="nav">
       <a class="active" href="index.html">Overview</a>
-      <a href="process.html">Process</a>
-      <a href="comparison.html">Methods</a>
-      <a href="qa.html">Pilot QA</a>
+      <a href="process.html">Operator Flow</a>
+      <a href="comparison.html">Model Comparison</a>
+      <a href="qa.html">Use Cases</a>
     </nav>
 
     <section class="metrics">
-      <div class="metric"><div class="n">A-D</div><div class="l">Validation Cadence</div></div>
-      <div class="metric"><div class="n">2 Domains</div><div class="l">MatchAgent + PlayerAgent</div></div>
-      <div class="metric"><div class="n">WAIVER</div><div class="l">Task-count gate tracked</div></div>
-      <div class="metric"><div class="n">Phase 4</div><div class="l">Complete</div></div>
+      <div class="metric"><div class="n">5</div><div class="l">Live HTTP Surfaces</div></div>
+      <div class="metric"><div class="n">7</div><div class="l">Completed Use Cases</div></div>
+      <div class="metric"><div class="n">2</div><div class="l">Primary Papers Featured</div></div>
+      <div class="metric"><div class="n">4</div><div class="l">Tracked Incidents (2 Resolved)</div></div>
     </section>
 
     <section class="panel">
       <h2>Current Position</h2>
-      <p>The build has moved beyond scaffold checks into external validation and human-agent usefulness. Core finding: generation is cheap; evaluation and correction loops dominate total cost.</p>
+      <p>Project Phoenix already had deterministic authority: grounded domain tools, solver-backed computation, and benchmark-backed evaluation. The missing piece was the outer layer — interface, monitoring, and workflow discipline. OpenClaw now fills that operator-shell role without becoming the authority.</p>
       <div class="grid">
         <article class="card">
-          <h3>What Passed</h3>
-          <p>Domain scaffolds, deterministic conventions, and pilot QA artifacts are in place. Smoke tests are passing where added.</p>
+          <h3>What Exists</h3>
+          <p>Five live operator surfaces, a hardening gate, screenshot and incident workflows, and deterministic script-backed packets for benchmark review, model comparison, routing policy, and run-trace triage.</p>
         </article>
         <article class="card">
-          <h3>What Matters</h3>
-          <p>The evaluator layer remains the key system dependency in local-LLM paths: diagnosis, gating, and failure-mode containment.</p>
+          <h3>What Changed</h3>
+          <p>The line has moved from feature build-out into use-case expansion. The first seven-use-case bundle is complete and documented in the operator-shell architecture paper.</p>
         </article>
         <article class="card">
-          <h3>Decision Lens</h3>
-          <p>Use direct high-level LLM flow for speed-to-utility; use local+HITL when proving resilience under constrained/offline assumptions.</p>
+          <h3>What Stays Fixed</h3>
+          <p>OpenClaw is the shell. Phoenix remains the deterministic authority. The model never becomes the source of truth for correctness.</p>
         </article>
       </div>
     </section>
 
     <section class="panel">
-      <h2>Status at a Glance</h2>
+      <h2>Operator Snapshot</h2>
       <table class="table">
         <thead>
-          <tr><th>Area</th><th>Status</th><th>Notes</th></tr>
+          <tr><th>Area</th><th>Status</th><th>Current read</th></tr>
         </thead>
         <tbody>
-          <tr><td>Session A (stability)</td><td><span class="badge">Closed</span></td><td>DB-path instability on PlayerAgent resolved with <code>PRAGMA temp_store = MEMORY</code>.</td></tr>
-          <tr><td>Session B/C (expansion)</td><td><span class="badge">Closed</span></td><td>Pilot readiness gates passed with validated task packs and query runs.</td></tr>
-          <tr><td>Session D (hardening)</td><td><span class="badge">Complete</span></td><td>Regression suite passed: 12/12 in 1.75s.</td></tr>
+          <tr><td>Phase 2 presentation</td><td><span class="badge">Complete</span></td><td>Screenshot pack captured and linked.</td></tr>
+          <tr><td>Phase 3 entry point</td><td><span class="badge">Complete</span></td><td>OpenClaw-invoked deterministic Phoenix surface is live.</td></tr>
+          <tr><td>Phase 4 monitoring</td><td><span class="badge">Complete</span></td><td>Summary, status, workspace, and trends surfaces verified.</td></tr>
+          <tr><td>Phase 5 benchmark support</td><td><span class="badge">Complete</span></td><td>Benchmark summary is surfaced through the operator shell.</td></tr>
+          <tr><td>Hardening</td><td><span class="badge">Active</span></td><td><code>scripts/check_openclaw_hardening.sh</code> is the default verification gate.</td></tr>
+          <tr><td>Use-case expansion</td><td><span class="badge">Complete</span></td><td>First seven-use-case bundle completed on 2026-04-16.</td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="panel">
-      <h2>Latest Validation Snapshot</h2>
+      <h2>Featured Current Papers</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Paper 1.16</h3>
+          <p><strong>The Model Did Not Fail The Protocol, The Terminal Did</strong></p>
+          <p>Primary paper on protocol capture integrity. Legacy <code>ollama run</code> terminal capture overstated thinking-model failures. Under clean REST API capture, <code>gemma4:31b</code> passes <code>6/6</code>.</p>
+        </article>
+        <article class="card">
+          <h3>Operator Shell Pattern</h3>
+          <p><strong>Building on Project Phoenix Without Replacing It</strong></p>
+          <p>Architecture paper for the OpenClaw outer layer and the first seven completed operator use cases. The shell reduces friction and enforces discipline without crossing the authority boundary.</p>
+        </article>
+      </div>
+      <p>The full inventory remains in canonical portfolio order. These featured papers are highlighted because they define the current OpenClaw/Project Phoenix line.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Live Surfaces</h2>
       <table class="table">
-        <thead><tr><th>Phase 4 Item</th><th>Status</th><th>Result</th></tr></thead>
+        <thead><tr><th>Surface</th><th>Role</th><th>Current use</th></tr></thead>
         <tbody>
-          <tr><td>Baseline docs present</td><td><span class="badge">PASS</span></td><td>Required baseline artifacts present.</td></tr>
-          <tr><td>Smoke suite</td><td><span class="badge">PASS</span></td><td>15 tasks in 3.31s.</td></tr>
-          <tr><td>Pilot queries</td><td><span class="badge">PASS</span></td><td>10/10 pass rate.</td></tr>
-          <tr><td>Regression tests</td><td><span class="badge">PASS</span></td><td>12/12 in 1.75s.</td></tr>
+          <tr><td><code>/phoenix-ops-summary</code></td><td>Authority snapshot</td><td>Deterministic system-state view.</td></tr>
+          <tr><td><code>/phoenix-ops-status</code></td><td>Backend health</td><td>Operator-facing backend and aggregate checks.</td></tr>
+          <tr><td><code>/phoenix-ops-workspace</code></td><td>Compression surface</td><td>Starting point for operators; status, routing, screenshot, and incident context.</td></tr>
+          <tr><td><code>/phoenix-ops-trends</code></td><td>Trend reporting</td><td>Compact view of recent movements.</td></tr>
+          <tr><td><code>/phoenix-benchmark-summary</code></td><td>Benchmark packet</td><td>Deterministic benchmark exposure through OpenClaw.</td></tr>
         </tbody>
       </table>
     </section>
 
-    <footer class="footer">project-phoenix-eval demo · Public/Proto static site</footer>
+    <footer class="footer">Source anchors: OPENCLAW_CURRENT_STATE_2026-04-16.md · OPENCLAW_OPERATOR_INDEX.md · THE_OPERATOR_SHELL_PATTERN.lyx</footer>
   </div>
 </body>
 </html>

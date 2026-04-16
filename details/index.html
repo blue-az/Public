@@ -196,12 +196,15 @@
           </article>
           <article class="example-card">
             <h3>Gemma4</h3>
-            <p class="example-kicker">Behavior weakness</p>
+            <p class="example-kicker">Measurement integrity first</p>
             <p>
-              Gemma4 can still break strict machine-facing protocols by emitting thinking preambles
-              or wrapper text. A wrapper helps less when the model keeps violating the handoff contract.
+              The original gemma4 protocol failures were a capture artifact: <code>ollama run</code>
+              subprocess capture embeds VT100 terminal sequences that corrupt multi-line JSON for
+              thinking-mode models. Under clean REST API capture, gemma4:31b passes all six protocol
+              probes — the strongest local result on this lane. gemma4:26b passes with
+              <code>/no_think</code> suppression.
             </p>
-            <p class="example-takeaway">Protocol weakness is harder to compensate for than tool weakness.</p>
+            <p class="example-takeaway">The harness boundary matters for measurement, not just for deployment. Invalid capture produces invalid rankings.</p>
           </article>
         </div>
       </section>
@@ -231,6 +234,38 @@
           <article class="regime-card">
             <h3>Laptop-threshold operation</h3>
             <p>Dominant factor: role fit and threshold-appropriate model choice.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Operator shell pattern</p>
+          <h2>OpenClaw Wraps Phoenix — It Does Not Replace It</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>The boundary rule</h3>
+            <p class="example-kicker">Shell outside, authority inside</p>
+            <p>
+              OpenClaw provides the operator access layer: five HTTP surfaces, a hardening gate,
+              and an incident workflow. Phoenix provides what makes those surfaces trustworthy:
+              deterministic substrates, solver-backed outputs, grounded domain paths.
+              The authority boundary does not move regardless of which use case is active.
+            </p>
+            <p class="example-takeaway">An operator shell is not the authority layer and should never become one.</p>
+          </article>
+          <article class="example-card">
+            <h3>Seven use cases</h3>
+            <p class="example-kicker">Measurement, discipline, decision surface, demo</p>
+            <p>
+              Seven use cases across three categories prove the pattern holds under load.
+              Rule-based routing delivers 41/41 accuracy vs 39/41 forced-LLM. Substrate coverage
+              accounts for 82.4% of harness feature importance. Every measurement routes to a
+              Phoenix backend; every demo shows the deterministic layer outperforming the model
+              in its own domain.
+            </p>
+            <p class="example-takeaway">The shell stays outside. The authority stays inside. Correctness stays in the deterministic layer.</p>
           </article>
         </div>
       </section>

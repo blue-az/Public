@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Phoenix Research Papers</title>
-    <meta name="description" content="Fifteen primary research papers from Project Phoenix — grounded domain systems, orchestration, local inference, operating discipline, and ML evaluation benchmarks.">
+    <meta name="description" content="Seventeen primary research papers from Project Phoenix — grounded domain systems, orchestration, local inference, operating discipline, ML evaluation benchmarks, and operator infrastructure.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,12 +13,12 @@
         <header class="header">
             <span class="badge">Project Phoenix · Research Portfolio</span>
             <h1>Project Phoenix Papers</h1>
-            <p class="subtitle">Fifteen primary papers on grounded domain systems, orchestration architecture, agentic operating discipline, and ML evaluation benchmarks</p>
+            <p class="subtitle">Seventeen primary papers on grounded domain systems, orchestration architecture, agentic operating discipline, ML evaluation benchmarks, and operator infrastructure</p>
         </header>
 
         <div class="stats">
             <a class="stat" href="#inventory">
-                <span class="num">7</span>
+                <span class="num">17</span>
                 <span class="label">Primary Papers</span>
             </a>
             <a class="stat" href="#inventory">
@@ -26,7 +26,7 @@
                 <span class="label">Live Sites</span>
             </a>
             <a class="stat" href="#clusters">
-                <span class="num">6</span>
+                <span class="num">8</span>
                 <span class="label">Research Clusters</span>
             </a>
             <div class="stat">
@@ -49,6 +49,10 @@
 
         <div class="callout" style="margin-top:1rem;">
             <p><strong>RVH / ML Evaluation:</strong> <a href="../rough-volatility/" style="color:var(--accent);">Rough Volatility as ML Benchmark</a> covers Papers 1.8 and 1.9 — why domain expertise, not ML capability, is the binding constraint in rough volatility forecasting and the cross-domain benchmark principle it reveals.</p>
+        </div>
+
+        <div class="callout" style="margin-top:1rem;">
+            <p><strong>Measurement Integrity &amp; Operator Layer:</strong> Papers 1.16 and 1.17 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models, and the fix inverted the gemma4 story entirely. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority.</p>
         </div>
 
         <!-- Reading Guide -->
@@ -75,6 +79,10 @@
                 <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
                     <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">ML Evaluation &amp; Cross-Domain Benchmarks</h3>
                     <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.8 and 1.9</strong> establish why realized volatility forecasting is high-signal benchmark territory — and what the same structural argument implies across semiconductor defectivity and other rough-process domains.</p>
+                </div>
+                <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
+                    <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Measurement Integrity &amp; Operator Layer</h3>
+                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.16 and 1.17</strong> address the infrastructure surrounding the Phoenix system. 1.16: capture pipeline failures produce false evaluation verdicts. 1.17: an operator shell can expose the deterministic stack without replacing it as the authority.</p>
                 </div>
             </div>
         </section>
@@ -244,6 +252,39 @@
             </div>
         </section>
 
+        <!-- Cluster VII -->
+        <section class="section">
+            <div class="cluster-heading">VII &nbsp;·&nbsp; Measurement Integrity</div>
+            <p style="margin-bottom:1.2rem; color:var(--ink-muted); font-style:italic; font-size:var(--font-size-sm);">When the evaluation infrastructure itself fails — and how to distinguish a capture pipeline failure from a model capability failure.</p>
+
+            <div class="grid-2">
+
+                <a class="paper-card" href="../details/" target="_blank">
+                    <span class="paper-num">Paper 1.16</span>
+                    <h3>The Model Did Not Fail the Protocol. The Terminal Did.</h3>
+                    <p class="paper-thesis">Subprocess capture of ollama run output includes VT100 cursor-rewrite sequences that corrupt multi-line JSON for thinking-mode models, producing systematic false negatives. Under clean REST API capture, gemma4:31b passes all six protocol probes — the strongest result on this lane. The selective recovery pattern (only thinking-mode models affected) proves the failure was at the capture boundary, not the model boundary.</p>
+                    <span class="paper-link">Open site →</span>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- Cluster VIII -->
+        <section class="section">
+            <div class="cluster-heading">VIII &nbsp;·&nbsp; Operator Layer</div>
+            <p style="margin-bottom:1.2rem; color:var(--ink-muted); font-style:italic; font-size:var(--font-size-sm);">Building an operator-facing outer layer over the deterministic stack — and keeping it outside the authority boundary.</p>
+
+            <div class="grid-2">
+
+                <div class="paper-card">
+                    <span class="paper-num">Paper 1.17</span>
+                    <h3>The Operator Shell Pattern</h3>
+                    <p class="paper-thesis">An operator shell reduces friction, surfaces information, and enforces discipline without the model touching correctness. OpenClaw wraps Project Phoenix as the access layer — five HTTP operator surfaces, a hardening gate, and an incident workflow — while Phoenix remains the deterministic authority. Seven use cases across measurement, discipline, and decision surfaces confirm the pattern: the shell stays outside, the authority stays inside.</p>
+                </div>
+
+            </div>
+        </section>
+
         <!-- Full inventory -->
         <section class="section" id="inventory">
             <h2>Full Inventory</h2>
@@ -319,7 +360,7 @@
                             <td class="url-cell"><a href="../rough-volatility/" target="_blank">rough-volatility/</a></td>
                         </tr>
                         <tr class="table-group-header">
-                            <td colspan="4">Details — 1.10 through 1.15</td>
+                            <td colspan="4">Boundary &amp; Details — 1.10 through 1.15</td>
                         </tr>
                         <tr>
                             <td>1.10</td>
@@ -357,10 +398,25 @@
                             <td>Boundary</td>
                             <td class="url-cell"><a href="../failure-details/" target="_blank">failure-details/</a></td>
                         </tr>
+                        <tr class="table-group-header">
+                            <td colspan="4">Measurement Integrity &amp; Operator Layer — 1.16 and 1.17</td>
+                        </tr>
+                        <tr>
+                            <td>1.16</td>
+                            <td>The Model Did Not Fail the Protocol. The Terminal Did.</td>
+                            <td>Measurement</td>
+                            <td class="url-cell"><a href="../details/" target="_blank">details/</a></td>
+                        </tr>
+                        <tr>
+                            <td>1.17</td>
+                            <td>The Operator Shell Pattern</td>
+                            <td>Operator Layer</td>
+                            <td class="url-cell">—</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site.</p>
+            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site. Paper 1.16 is referenced in the details site Gemma3 vs Gemma4 panel. Paper 1.17 does not yet have a dedicated site.</p>
         </section>
 
         <footer class="footer">
