@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Operator Shell Pattern | Project Phoenix · Paper 1.17</title>
+  <meta name="description" content="How OpenClaw wraps Project Phoenix as an operator access layer — without replacing it as the authority. Seven use cases across measurement, discipline, and decision surfaces.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <p class="eyebrow">Project Phoenix · Paper 1.17</p>
+      <h1>The Operator Shell Pattern</h1>
+      <p class="lede">
+        A deterministic backend without an operator layer has a usability problem, not a capability problem.
+        OpenClaw fills that gap — five HTTP surfaces, a hardening gate, seven completed use cases — while
+        Project Phoenix remains the unambiguous authority. The shell stays outside. The authority stays inside.
+        Correctness stays in the deterministic layer.
+      </p>
+    </header>
+
+    <main>
+
+      <!-- The Core Rule -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The working rule</p>
+          <h2>One Constraint That Cannot Flex</h2>
+        </div>
+        <div class="definition-grid">
+          <article class="term-card featured">
+            <p class="term-type">The Rule</p>
+            <h3>OpenClaw Makes Phoenix Accessible</h3>
+            <p>
+              OpenClaw is the operator-facing surface: HTTP endpoints, monitoring views, hardening gate,
+              incident workflow. It reduces friction, surfaces information, and enforces discipline.
+              It does not produce answers. It does not own correctness.
+            </p>
+          </article>
+          <article class="term-card accent">
+            <p class="term-type">The Inverse</p>
+            <h3>Phoenix Makes OpenClaw Outputs Trustworthy</h3>
+            <p>
+              Every OpenClaw output that is worth trusting gets its trustworthiness from a Project Phoenix
+              backend: a grounded domain tool, a solver-backed computation, a real benchmark result.
+              The model, if present, is responsible for format and presentation only — never for the answer.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Three-Tier Architecture -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Implementation architecture</p>
+          <h2>Three Tiers — One Authority Boundary</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Shell</span>
+            <h3>OpenClaw — Operator Access Layer</h3>
+            <p>
+              Five HTTP endpoints on the <code>ollama-local</code> profile (port 19001):
+              <code>/phoenix-ops-summary</code> (authority snapshot),
+              <code>/phoenix-ops-status</code> (backend health),
+              <code>/phoenix-ops-workspace</code> (operator compression surface),
+              <code>/phoenix-ops-trends</code> (compact trend reporting),
+              <code>/phoenix-benchmark-summary</code> (deterministic benchmark exposure).
+              All five are model-free on the correctness path — the gateway routes to shell scripts
+              that call deterministic Phoenix backends.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Compression</span>
+            <h3>ShowcaseAgent — Routing and Domain Compression</h3>
+            <p>
+              Sits between the shell and the Phoenix domains. Provides deterministic rule-based routing
+              across 9 domains (41/41, 100% accuracy) and forced-LLM routing for comparison. Meta-tool
+              compression replaces direct-tool overload with a smaller number of higher-level routing choices.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Authority</span>
+            <h3>Project Phoenix — Deterministic Backends</h3>
+            <p>
+              Correctness, grounding, and solver outputs live here and nowhere else.
+              Substrate coverage accounts for 82.4% of harness feature importance (Paper 1.10).
+              The model is never the authority layer. Any feature that would have blurred this
+              boundary — model-authoritative tool use, endpoint-level correctness decisions,
+              autonomous escalation — was explicitly deferred.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Measurement Use Cases -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Use cases — measurement</p>
+          <h2>Making System State Accessible</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>Use Case 1 — Benchmark Review</h3>
+            <p class="example-kicker"><code>openclaw_benchmark_review.sh</code></p>
+            <p>
+              Reads <code>benchmark_1_10_results.json</code> and emits a structured operator packet.
+              Substrate coverage accounts for 82.4% of TourAgent harness feature importance.
+              The combined model reaches 78% accuracy (+7.5pp over base rate).
+              ShowcaseAgent's 97.3% base rate means harness features cannot improve on the deterministic floor.
+              Nine misses across 246 forced-LLM rows reduce to 3 unique queries — routing surface design
+              failures, not query-content failures. All of this was in the JSON file before the use case
+              was built. The use case made it accessible without requiring manual inspection.
+            </p>
+            <p class="example-takeaway">The information existed. It was inaccessible. Now it is not.</p>
+          </article>
+          <article class="example-card">
+            <h3>Use Case 2 — Run-Trace Triage</h3>
+            <p class="example-kicker"><code>openclaw_run_trace_triage.sh</code></p>
+            <p>
+              Reads all four run-trace summary files and maps recurring failure families to replay targets
+              and escalation verdicts. The triage correctly identifies that the aggregate TourAgent protocol
+              trace (35% pass rate) is dominated by legacy capture artifacts — the same confound documented
+              in Paper 1.16. The effective baseline is 6/6 under clean REST API capture.
+              The only active failure family in the ShowcaseAgent routing lane is a known design gap
+              tracked as two open incidents. No escalation required.
+            </p>
+            <p class="example-takeaway">Aggregate score versus effective baseline — made explicit for the first time.</p>
+          </article>
+          <article class="example-card span-2">
+            <h3>Use Case 4 — Model Comparison Packet</h3>
+            <p class="example-kicker"><code>openclaw_model_comparison_packet.sh</code></p>
+            <p>
+              Packages local model protocol comparisons with explicit capture-integrity checks.
+              The key contribution was not the packet — it was the finding: legacy <code>ollama run</code>
+              subprocess capture includes VT100 terminal cursor-rewrite sequences that corrupt multi-line
+              JSON for thinking-mode models, producing systematic false negatives. Under clean REST API
+              capture, gemma4:31b passes all six protocol probes — the strongest local result on this lane.
+              gemma4:26b passes with <code>/no_think</code> suppression. This finding became Paper 1.16.
+              The model comparison packet encodes the corrected results and the capture transport used,
+              so future operator comparisons carry their own validity metadata.
+            </p>
+            <p class="example-takeaway">The shell did not just expose Phoenix. It surfaced a flaw in how Phoenix was being measured.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Discipline Use Cases -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Use cases — discipline</p>
+          <h2>Enforcing Workflow Standards</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>Use Case 3 — Incident Repair Loop</h3>
+            <p class="example-kicker"><code>openclaw_repair_packet.sh</code> → <code>openclaw_validate_incidents.sh</code></p>
+            <p>
+              Ran three real issues through the structured repair workflow: one complete end-to-end cycle
+              and two tracked open incidents. The complete cycle fixed a genuine defect: the run-trace
+              summary script was returning hardcoded static text rather than reading actual trace files.
+              Before-state captured, incident opened, script fixed to read real data, after-state captured,
+              incident resolved and validated.
+              The two open incidents — Stan routing surface missing regularization patterns, ParableAgent
+              routing surface missing teaching complexity pattern — are the exact queries that appear as
+              LLM routing failures in Use Case 7. The incident index created traceability connecting
+              measurement to tracked gap to demo.
+            </p>
+            <p class="example-takeaway">A script silently returning static data — caught and fixed.</p>
+          </article>
+          <article class="example-card">
+            <h3>Use Case 5 — Documentation Status Review</h3>
+            <p class="example-kicker"><code>openclaw_doc_status_review.sh</code></p>
+            <p>
+              Built a deterministic drift detector for five operator-facing documents. Checks stale dated
+              notes, stale claims by keyword, undocumented scripts, and broken script references.
+              On its first run it found five real drift items: three stale claims in the operator index
+              (status section still described hardening as the active workstream when use cases were already
+              complete), one outdated current-state note (five days old with significant work done since),
+              and one newly created script not yet referenced in any doc. All five were fixed before
+              the use case was closed. The doc review now runs clean as part of standard verification.
+            </p>
+            <p class="example-takeaway">Documentation that has drifted from system state — caught and fixed.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Decision Surface and Demo Use Cases -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Use cases — decision surface &amp; demo</p>
+          <h2>Encoding Phoenix Findings as Operator Artifacts</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>Use Case 6 — Routing Policy</h3>
+            <p class="example-kicker"><code>openclaw_routing_policy.sh --eval "&lt;task&gt;"</code></p>
+            <p>
+              Encodes the four-lane routing policy as a deterministic script backed by actual benchmark
+              numbers from Papers 1.10–1.16. Lane 0 (deterministic): hard rule — never route a deterministic
+              task to a model, because the model adds noise where none previously existed.
+              Lane 1 (local repair-assisted). Lane 2 (local strict protocol): <code>ollama_api</code>
+              transport is mandatory for thinking-mode models.
+              Lane 3 (strong model API). Five escalation triggers grounded in benchmark evidence.
+              Before this use case, the routing policy existed implicitly across several papers.
+              It now exists as an explicit operator-facing decision surface that can be queried and
+              updated as new evidence accumulates.
+            </p>
+            <p class="example-takeaway">Implicit policy made explicit. Queryable. Updatable.</p>
+          </article>
+          <article class="example-card">
+            <h3>Use Case 7 — Solver-Backed Demo</h3>
+            <p class="example-kicker"><code>openclaw_showcase_routing_demo.sh</code></p>
+            <p>
+              Applies the TSP demo pattern to a second deterministic domain: ShowcaseAgent query routing.
+              Reads three benchmark CSVs and produces a structured summary comparing rule-based routing
+              (41/41, 100%) against forced LLM routing (39/41, 95.1%). The two LLM failures are boundary
+              queries at domain seams — the exact queries tracked as open incidents in Use Case 3.
+              This connection is explicit in the demo output. The TSP parallel holds: correctness lives
+              in the rule surface, not the model. A second deterministic domain confirms the pattern
+              is not specific to route optimisation.
+            </p>
+            <p class="example-takeaway">Rule routing 41/41. Forced-LLM 39/41. The two failures are open incidents. The pattern holds.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- What the use cases collectively prove -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Collective finding</p>
+          <h2>What Seven Use Cases Prove Together</h2>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-card">
+            <h3>Information access</h3>
+            <p>
+              The measurement use cases (1, 2, 4) show that information which existed in raw artifacts
+              was inaccessible to an operator without detailed internal knowledge. In Use Case 4,
+              the process of making it accessible also surfaced a fundamental measurement problem —
+              capture pipeline corruption — that invalidated a significant portion of the legacy
+              protocol benchmark results.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>Workflow discipline</h3>
+            <p>
+              The discipline use cases (3, 5) show that operator workflow standards decay without
+              enforcement infrastructure. A run-trace script had been returning static text for an
+              extended period without anyone noticing. Documentation had accumulated three stale claims
+              and an outdated current-state snapshot. Neither was a crisis — but both erode operator
+              trust in system state. The incident workflow and doc review caught and fixed both.
+            </p>
+          </article>
+          <article class="compare-card span-2">
+            <h3>Encoding decisions as operator artifacts</h3>
+            <p>
+              The decision surface and demo use cases (6, 7) show that Project Phoenix findings —
+              grounded in real benchmark data — become operator-accessible only when encoded in a
+              form that can be queried without domain expertise. The routing policy existed across
+              several papers. The routing demo result (41/41 rule versus 39/41 LLM) was in a CSV file.
+              Neither was useful to an operator until surfaced by a script with a clear output shape.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Limitations -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Honest limits</p>
+          <h2>What Remains Open</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Limit 1</span>
+            <h3>Sandbox Localhost Visibility</h3>
+            <p>
+              Sandboxed localhost checks do not always see the live gateway even when the gateway is
+              healthy. Verification from the live shell environment is required for endpoint checks.
+              Documented but not fixed.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Limit 2</span>
+            <h3>Two Open Routing Gaps</h3>
+            <p>
+              The Stan regularization cluster and the ParableAgent teaching complexity pattern are
+              tracked as open incidents. Use Case 7 confirms these are routing surface design gaps,
+              not model capability issues. The fixes require routing surface changes not yet implemented.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Limit 3</span>
+            <h3>Pipeline and Handoff Lanes Need Clean-Capture Reruns</h3>
+            <p>
+              The TourAgent protocol pipeline and handoff trace lanes have only pre-fix legacy results.
+              Clean-capture reruns using <code>ollama_api</code> transport have not been run for these lanes.
+              The aggregate protocol score of 35% is known to be capture-artifact dominated; the corrected
+              per-lane numbers are not yet available.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Limit 4</span>
+            <h3>Solver-Backed Demo Confirmed in Two Domains</h3>
+            <p>
+              The pattern — correctness lives in the rule surface, not the model — has been confirmed
+              in TSP (Paper 1.5) and ShowcaseAgent routing (Use Case 7). Additional domains would
+              strengthen the claim beyond two cases.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Thesis -->
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag" style="color:rgba(234,199,178,0.8);">The pattern in one sentence</p>
+          <h2>The Shell Stays Outside</h2>
+        </div>
+        <p class="thesis">
+          The shell stays outside. The authority stays inside. Correctness stays in the deterministic layer.
+          An operator shell can reduce friction, surface information, and enforce discipline — without the
+          model ever touching correctness — if that boundary is treated as a design constraint from the start,
+          not as a post-hoc quality check.
+        </p>
+      </section>
+
+      <!-- Where this sits -->
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag" style="color:rgba(234,199,178,0.8);">Where this sits</p>
+          <h2>Related Papers</h2>
+        </div>
+        <p class="thesis">
+          Paper 1.16 (capture integrity) is the direct predecessor — the model comparison packet in
+          Use Case 4 surfaced the finding that became it.
+          The authority layer this paper wraps is documented across
+          <a class="compact-link" href="../papers/">all seventeen Phoenix papers</a>.
+          The local model evidence sits in
+          <a class="compact-link" href="../details/">Local Model Details</a>.
+          The boundary conditions sit in
+          <a class="compact-link" href="../failure-details/">Phoenix Boundary Results</a>.
+        </p>
+      </section>
+
+    </main>
+
+    <footer style="margin-top:48px; padding:24px 32px; border-top:1px solid var(--line); display:flex; gap:24px; flex-wrap:wrap; font-family:'Trebuchet MS','Gill Sans',sans-serif; font-size:0.85rem; color:var(--muted);">
+      <a href="../project-phoenix/" style="color:var(--accent); text-decoration:none;">Project Phoenix Overview</a>
+      <a href="../papers/" style="color:var(--accent); text-decoration:none;">Research Papers</a>
+      <a href="../details/" style="color:var(--accent); text-decoration:none;">Local Model Details</a>
+      <a href="../failure-details/" style="color:var(--accent); text-decoration:none;">Boundary Results</a>
+    </footer>
+  </div>
+</body>
+</html>
