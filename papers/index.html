@@ -36,7 +36,7 @@
         </div>
 
         <div class="callout">
-            <p><strong>Common thread:</strong> Useful agentic systems require domain grounding, deterministic substrates, explicit validation, and operating discipline. Standards and architecture — not prompt optimism or raw scaling — settle the outcome in identifiable regimes.</p>
+            <p><strong>The finding:</strong> For grounded domain tasks — well-defined task classes with deterministic substrates — harness configuration is the binding constraint. Model identity is not. These papers prove this claim under stress test conditions: local models, which cannot compensate for a weak harness, converge with frontier models at the semantic usefulness level when the harness is sufficient. This scope is deliberate. Outside it, model capability matters in ways the framework does not cover.</p>
         </div>
 
         <div class="callout" style="margin-top:1rem;">
@@ -53,6 +53,10 @@
 
         <div class="callout" style="margin-top:1rem;">
             <p><strong>Measurement Integrity &amp; Operator Layer:</strong> Papers 1.16 and 1.17 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models, and the fix inverted the gemma4 story entirely. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority.</p>
+        </div>
+
+        <div class="callout" style="margin-top:1rem;">
+            <p><strong>Domain Demo:</strong> <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a> — the deterministic substrate in production. Government-mandated cardiac device performance data (57M US implants, 17 years, 3 manufacturers) behind a six-tool SQLite layer. Two interface paths: deterministic CLI and local Ollama shell. Canonical query suite: 6 queries × 2 paths, all pass.</p>
         </div>
 
         <!-- Reading Guide -->
@@ -259,7 +263,7 @@
 
             <div class="grid-2">
 
-                <a class="paper-card" href="../details/" target="_blank">
+                <a class="paper-card" href="../capture-integrity/" target="_blank">
                     <span class="paper-num">Paper 1.16</span>
                     <h3>The Model Did Not Fail the Protocol. The Terminal Did.</h3>
                     <p class="paper-thesis">Subprocess capture of ollama run output includes VT100 cursor-rewrite sequences that corrupt multi-line JSON for thinking-mode models, producing systematic false negatives. Under clean REST API capture, gemma4:31b passes all six protocol probes — the strongest result on this lane. The selective recovery pattern (only thinking-mode models affected) proves the failure was at the capture boundary, not the model boundary.</p>
@@ -406,7 +410,7 @@
                             <td>1.16</td>
                             <td>The Model Did Not Fail the Protocol. The Terminal Did.</td>
                             <td>Measurement</td>
-                            <td class="url-cell"><a href="../details/" target="_blank">details/</a></td>
+                            <td class="url-cell"><a href="../capture-integrity/" target="_blank">capture-integrity/</a></td>
                         </tr>
                         <tr>
                             <td>1.17</td>
@@ -417,7 +421,7 @@
                     </tbody>
                 </table>
             </div>
-            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site. Paper 1.16 is referenced in the details site Gemma3 vs Gemma4 panel. Paper 1.17 has a dedicated site at operator-shell/.</p>
+            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site. Paper 1.16 has a dedicated site at capture-integrity/. Paper 1.17 has a dedicated site at operator-shell/. Domain demo: ppr-agent/.</p>
         </section>
 
         <footer class="footer">

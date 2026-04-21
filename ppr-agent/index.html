@@ -1,187 +1,308 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPR_Agent | Medical Device Market Intelligence</title>
-    <meta name="description" content="Product Performance Report data extraction and analysis for cardiac rhythm management devices.">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PPR Agent — Regulated Cardiac Device Performance Reporting | Project Phoenix</title>
+  <meta name="description" content="Government-mandated product performance data from Abbott, Boston Scientific, and Medtronic. 57 million US implants. 17 years. The substrate is the product.">
+  <link rel="stylesheet" href="../capture-integrity/styles.css">
 </head>
 <body>
-    <div class="page">
-        <header class="header">
-            <div class="badge">Project Phoenix Domain</div>
-            <h1>PPR_Agent</h1>
-            <p class="subtitle">Medical Device Market Intelligence</p>
-        </header>
+  <div class="page-shell">
+    <header class="hero">
+      <p class="eyebrow">Project Phoenix · Domain Demo</p>
+      <h1>The Substrate Is the Product.</h1>
+      <p class="lede">
+        PPR Agent queries government-mandated cardiac device performance reports from Abbott,
+        Boston Scientific, and Medtronic. 57 million US implants across 17 years. The model
+        selects a tool and formats the answer. The database supplies the facts.
+        Swap the model — the numbers don't change.
+      </p>
+    </header>
 
-        <nav class="nav">
-            <a href="index.html" class="active">Home</a>
-            <a href="tools.html">Tools</a>
-            <a href="data.html">Database</a>
-            <a href="companies.html">Companies</a>
-            <a href="variations.html">Variations</a>
-            <a href="https://proto.efehnconsulting.com/project-phoenix/">Phoenix</a>
-        </nav>
+    <main>
 
-        <div class="stats-row">
-            <div class="stat-box">
-                <div class="number">2,374</div>
-                <div class="label">Devices</div>
-            </div>
-            <div class="stat-box">
-                <div class="number">57.8M</div>
-                <div class="label">US Implants</div>
-            </div>
-            <div class="stat-box">
-                <div class="number">17</div>
-                <div class="label">Years</div>
-            </div>
-            <div class="stat-box">
-                <div class="number">3</div>
-                <div class="label">Companies</div>
-            </div>
+      <!-- Stats -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The data source</p>
+          <h2>Government-Mandated. Manufacturer-Disclosed. Verifiable.</h2>
         </div>
+        <div class="definition-grid">
+          <article class="term-card featured">
+            <p class="term-type">What the data is</p>
+            <h3>Product Performance Reports — required by FDA for cardiac rhythm management devices.</h3>
+            <p>
+              Abbott, Boston Scientific, and Medtronic are required to publish annual PPRs
+              disclosing cumulative US implant counts, model numbers, and device family
+              classifications. These are not estimates. They are manufacturer disclosures
+              under regulatory obligation.
+            </p>
+          </article>
+          <article class="term-card accent">
+            <p class="term-type">Why this matters</p>
+            <h3>The model cannot improve or degrade this data.</h3>
+            <p>
+              Every implant count in the database came from a PPR. The model's job is to
+              parse intent, select a tool, and format a cited answer. It cannot guess a count,
+              invent a device name, or improve an extraction. If the data says
+              <code>device_family: Unknown</code>, the answer says Unknown.
+            </p>
+          </article>
+        </div>
+        <div class="stat-row" style="display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap;">
+          <div style="text-align:center;min-width:100px">
+            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">2,289</div>
+            <div style="font-size:.85rem;color:var(--text-muted)">Devices</div>
+          </div>
+          <div style="text-align:center;min-width:100px">
+            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">57M</div>
+            <div style="font-size:.85rem;color:var(--text-muted)">US Implants</div>
+          </div>
+          <div style="text-align:center;min-width:100px">
+            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">17</div>
+            <div style="font-size:.85rem;color:var(--text-muted)">Years (2008–2024)</div>
+          </div>
+          <div style="text-align:center;min-width:100px">
+            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">3</div>
+            <div style="font-size:.85rem;color:var(--text-muted)">Manufacturers</div>
+          </div>
+          <div style="text-align:center;min-width:100px">
+            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">6</div>
+            <div style="font-size:.85rem;color:var(--text-muted)">Deterministic Tools</div>
+          </div>
+        </div>
+      </section>
 
-        <section class="section">
-            <h2>Domain Overview</h2>
-            <p>PPR_Agent is an automated system for extracting and analyzing cardiac rhythm management (CRM) device data from Product Performance Reports (PPRs) published by Abbott, Boston Scientific, and Medtronic.</p>
-            <p>The system covers 17 years of data (2008-2024) with comprehensive market share analysis, competitive intelligence, and trend forecasting capabilities.</p>
-        </section>
+      <!-- Architecture -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The architecture</p>
+          <h2>Deterministic Authority. Model Interface.</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Layer 1 — Authority</span>
+            <h3>SQLite Substrate</h3>
+            <p>
+              PPR data extracted from manufacturer PDFs, validated against gold-standard CSVs,
+              and stored in a normalized SQLite database. Every answer traces to a row.
+              No model involvement at this layer.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Layer 2 — Tools</span>
+            <h3>Six Deterministic Tool Contracts</h3>
+            <p>
+              Each tool has an exact input schema, an exact output schema, and a correctness
+              test. Tools query the substrate directly. They return JSON.
+              They do not summarize, infer, or fill gaps.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Layer 3 — Interface</span>
+            <h3>Model as Query Shell</h3>
+            <p>
+              The model parses intent, selects a tool, provides arguments, and formats the
+              cited answer. It is not permitted to answer from memory, guess counts, or
+              bypass tool retrieval. Two interface paths exist: deterministic CLI
+              (no model) and local Ollama-backed shell (no external API key).
+            </p>
+          </article>
+        </div>
+      </section>
 
-        <section class="section">
-            <h2>Database Coverage</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Value</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Total Devices</td>
-                        <td>2,374</td>
-                        <td><span class="tech-tag green">Complete</span></td>
-                    </tr>
-                    <tr>
-                        <td>Total US Implants</td>
-                        <td>57.8 million</td>
-                        <td><span class="tech-tag green">Complete</span></td>
-                    </tr>
-                    <tr>
-                        <td>Year Coverage</td>
-                        <td>2008-2024 (17 years)</td>
-                        <td><span class="tech-tag green">Complete</span></td>
-                    </tr>
-                    <tr>
-                        <td>Companies</td>
-                        <td>3 (ABT, BSX, MDT)</td>
-                        <td><span class="tech-tag green">Complete</span></td>
-                    </tr>
-                    <tr>
-                        <td>Complete 3-Company Coverage</td>
-                        <td>2014-2024 (11 years)</td>
-                        <td><span class="tech-tag green">Complete</span></td>
-                    </tr>
-                    <tr>
-                        <td>Data Quality</td>
-                        <td>95.7% identification rate</td>
-                        <td><span class="tech-tag green">Excellent</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+      <!-- Canonical Demo -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Canonical demo — Query 001</p>
+          <h2>What a Grounded Answer Looks Like</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>The Question</h3>
+            <p>What were the top 5 pacemaker devices by US implant volume in 2024?</p>
+            <p class="example-takeaway">Natural language. No schema knowledge required from the user.</p>
+          </article>
+          <article class="example-card">
+            <h3>Tool Selected</h3>
+            <p><code>get_top_devices</code></p>
+            <p>Parameters: <code>year=2024, device_category="Pacemaker", limit=5</code></p>
+            <p class="example-takeaway">Provenance: <code>devices</code> table · filter year+category · order implants DESC</p>
+          </article>
+        </div>
+        <div style="margin-top:1.5rem;overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
+            <thead>
+              <tr style="border-bottom:2px solid var(--border)">
+                <th style="padding:.6rem 1rem;text-align:left">Rank</th>
+                <th style="padding:.6rem 1rem;text-align:left">Company</th>
+                <th style="padding:.6rem 1rem;text-align:left">Device Family</th>
+                <th style="padding:.6rem 1rem;text-align:left">Model</th>
+                <th style="padding:.6rem 1rem;text-align:right">US Implants</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:.6rem 1rem">1</td>
+                <td style="padding:.6rem 1rem">MDT</td>
+                <td style="padding:.6rem 1rem">Azure XT DR</td>
+                <td style="padding:.6rem 1rem"><code>W1DR01</code></td>
+                <td style="padding:.6rem 1rem;text-align:right">738,134</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:.6rem 1rem">2</td>
+                <td style="padding:.6rem 1rem">MDT</td>
+                <td style="padding:.6rem 1rem">Adapta DR</td>
+                <td style="padding:.6rem 1rem"><code>ADDR01</code></td>
+                <td style="padding:.6rem 1rem;text-align:right">454,879</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border);background:var(--surface-alt,rgba(255,255,255,.03))">
+                <td style="padding:.6rem 1rem">3</td>
+                <td style="padding:.6rem 1rem">ABT</td>
+                <td style="padding:.6rem 1rem"><strong>Unknown</strong></td>
+                <td style="padding:.6rem 1rem"><code>PM2272 US R</code></td>
+                <td style="padding:.6rem 1rem;text-align:right">449,533</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:.6rem 1rem">4</td>
+                <td style="padding:.6rem 1rem">MDT</td>
+                <td style="padding:.6rem 1rem">Advisa DR MRI</td>
+                <td style="padding:.6rem 1rem"><code>A2DR01</code></td>
+                <td style="padding:.6rem 1rem;text-align:right">344,430</td>
+              </tr>
+              <tr>
+                <td style="padding:.6rem 1rem">5</td>
+                <td style="padding:.6rem 1rem">ABT</td>
+                <td style="padding:.6rem 1rem">Accent DR RF</td>
+                <td style="padding:.6rem 1rem"><code>PM2210 US R</code></td>
+                <td style="padding:.6rem 1rem;text-align:right">244,868</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:1rem;font-size:.85rem;color:var(--text-muted)">
+          Row 3 device family is <strong>Unknown</strong> — an unresolved extraction gap in the
+          source PDF. The system reports the substrate exactly. It does not substitute or infer a name.
+        </p>
+      </section>
 
-        <section class="section">
-            <h2>Device Categories</h2>
-            <div class="grid grid-3">
-                <div class="card">
-                    <h3>Pacemaker</h3>
-                    <p>844 devices, 35.8M implants</p>
-                    <div class="meta">Traditional rhythm management</div>
-                </div>
-                <div class="card">
-                    <h3>ICD</h3>
-                    <p>902 devices, 12.0M implants</p>
-                    <div class="meta">Implantable Cardioverter Defibrillator</div>
-                </div>
-                <div class="card">
-                    <h3>CRT-D</h3>
-                    <p>511 devices, 8.5M implants</p>
-                    <div class="meta">Cardiac Resynchronization Therapy</div>
-                </div>
-                <div class="card">
-                    <h3>CRT-P</h3>
-                    <p>116 devices, 1.4M implants</p>
-                    <div class="meta">CRT Pacemaker (no defibrillator)</div>
-                </div>
-                <div class="card">
-                    <h3>S-ICD</h3>
-                    <p>Subcutaneous ICD</p>
-                    <div class="meta">No transvenous leads</div>
-                </div>
-                <div class="card">
-                    <h3>TPS / Leadless</h3>
-                    <p>1 device, 100K implants</p>
-                    <div class="meta">Leadless pacemaker technology</div>
-                </div>
-            </div>
-        </section>
+      <!-- Canonical Suite Results -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Canonical suite</p>
+          <h2>Six Queries. Two Paths. All Pass.</h2>
+        </div>
+        <div style="overflow-x:auto;margin-top:1rem;">
+          <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
+            <thead>
+              <tr style="border-bottom:2px solid var(--border)">
+                <th style="padding:.6rem 1rem;text-align:left">Query</th>
+                <th style="padding:.6rem 1rem;text-align:left">Tool</th>
+                <th style="padding:.6rem 1rem;text-align:center">CLI</th>
+                <th style="padding:.6rem 1rem;text-align:center">Ollama</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:.6rem 1rem">Top 5 pacemakers by implant volume, 2024</td>
+                <td style="padding:.6rem 1rem"><code>get_top_devices</code></td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:.6rem 1rem">Compare Medtronic and Boston Scientific, 2020–2024</td>
+                <td style="padding:.6rem 1rem"><code>compare_companies</code></td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:.6rem 1rem">Market share trend, all companies, 2020–2024</td>
+                <td style="padding:.6rem 1rem"><code>get_market_share_trend</code></td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:.6rem 1rem">Medtronic year-over-year growth, 2020–2024</td>
+                <td style="padding:.6rem 1rem"><code>get_year_over_year_growth</code></td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:.6rem 1rem">Device families with 10+ years in market</td>
+                <td style="padding:.6rem 1rem"><code>get_device_longevity</code></td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+              </tr>
+              <tr>
+                <td style="padding:.6rem 1rem">Search for Quadra devices</td>
+                <td style="padding:.6rem 1rem"><code>search_devices</code></td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:1rem;font-size:.85rem;color:var(--text-muted)">
+          CLI path: deterministic pattern matching, no model. Ollama path: local
+          <code>qwen2.5:14b</code>, no external API key. Both paths hit the same SQLite
+          substrate and return identical tool results.
+        </p>
+      </section>
 
-        <section class="section">
-            <h2>Sample Queries</h2>
-            <div class="code"><span class="highlight-secondary"># What were the top 10 devices by implant volume in 2024?</span>
-get_top_devices_by_implants(year=2024, limit=10)
+      <!-- The Boundary -->
+      <section class="panel dark">
+        <div class="panel-head">
+          <p class="section-tag">The boundary</p>
+          <h2>What the Model Can and Cannot Do</h2>
+        </div>
+        <div class="definition-grid">
+          <article class="term-card">
+            <p class="term-type">Allowed</p>
+            <h3>Intent parsing · Tool selection · Parameter extraction · Answer formatting · Citation</h3>
+            <p>
+              The model reads the question, decides which tool fits, provides the parameters,
+              and formats the returned rows into a readable cited answer. This is the entire
+              scope of its authority.
+            </p>
+          </article>
+          <article class="term-card accent">
+            <p class="term-type">Not allowed</p>
+            <h3>Guessing counts · Answering from memory · Skipping tool retrieval · Normalizing Unknown</h3>
+            <p>
+              If the tool returns empty, the answer is "No data found." If a device family
+              is Unknown in the substrate, it is Unknown in the answer. The model has no
+              override on what the data says.
+            </p>
+          </article>
+        </div>
+      </section>
 
-<span class="highlight-secondary"># Show Abbott's market share trend for CRT-D over the last 5 years</span>
-get_market_share_trend(start_year=2019, end_year=2024, device_category="CRT-D")
+      <!-- Related -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Related</p>
+          <h2>Project Phoenix Context</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3><a href="https://proto.efehnconsulting.com/project-phoenix/" style="color:inherit">Project Phoenix</a></h3>
+            <p>The open-core framework behind this demo. Standards for grounded domain systems: deterministic substrate, explicit validation, clear trust boundaries.</p>
+          </article>
+          <article class="example-card">
+            <h3><a href="https://proto.efehnconsulting.com/capture-integrity/" style="color:inherit">Paper 1.16 — Capture Integrity</a></h3>
+            <p>The harness boundary finding that preceded this demo. Capture transport is part of the measurement result. When the apparatus is not neutral, the score cannot be interpreted as a model-only signal.</p>
+          </article>
+        </div>
+      </section>
 
-<span class="highlight-secondary"># Compare Medtronic and Boston Scientific ICD devices</span>
-compare_companies(companies=["MDT", "BSX"], start_year=2019, end_year=2024, device_category="ICD")
+    </main>
 
-<span class="highlight-secondary"># Which device families have been in the market the longest?</span>
-get_device_longevity(min_years=5, limit=20)
+    <footer style="padding:2rem;text-align:center;font-size:.85rem;color:var(--text-muted);border-top:1px solid var(--border)">
+      PPR Agent · Project Phoenix Domain Demo ·
+      <a href="https://proto.efehnconsulting.com/project-phoenix/" style="color:var(--text-muted)">proto.efehnconsulting.com</a>
+    </footer>
 
-<span class="highlight-secondary"># Find all Quadra devices in the database</span>
-search_devices(search_term="Quadra")</div>
-        </section>
-
-        <section class="section">
-            <h2>Available Tools</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>GetTopDevicesByImplants</h3>
-                    <p>Rankings by implant volume with year, company, and category filters</p>
-                </div>
-                <div class="card">
-                    <h3>GetMarketShareTrend</h3>
-                    <p>Market share percentages over time by company and category</p>
-                </div>
-                <div class="card">
-                    <h3>CompareCompanies</h3>
-                    <p>Multi-company competitive analysis across metrics</p>
-                </div>
-                <div class="card">
-                    <h3>GetDeviceLongevity</h3>
-                    <p>Long-term product tracking and lifecycle analysis</p>
-                </div>
-                <div class="card">
-                    <h3>GetYearOverYearGrowth</h3>
-                    <p>Growth trend analysis with YoY calculations</p>
-                </div>
-                <div class="card">
-                    <h3>SearchDevices</h3>
-                    <p>Text search for device families and model numbers</p>
-                </div>
-            </div>
-        </section>
-
-        <footer class="footer">
-            <p>PPR_Agent Domain - Project Phoenix | Medical Device Market Intelligence</p>
-            <a href="https://proto.efehnconsulting.com/project-phoenix/" class="back-link">Back to Project Phoenix</a>
-        </footer>
-    </div>
+  </div>
 </body>
 </html>
