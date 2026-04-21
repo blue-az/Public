@@ -6,6 +6,104 @@
   <title>PPR Agent — Regulated Cardiac Device Performance Reporting | Project Phoenix</title>
   <meta name="description" content="Government-mandated product performance data from Abbott, Boston Scientific, and Medtronic. 57 million US implants. 17 years. The substrate is the product.">
   <link rel="stylesheet" href="../capture-integrity/styles.css">
+  <style>
+    /* Visualization styles */
+    .chart-section { margin-top: 1.5rem; }
+    .chart-title {
+      font-family: "Trebuchet MS", sans-serif;
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .75rem;
+    }
+    /* Stacked bar chart */
+    .stacked-chart { display: grid; gap: .5rem; }
+    .bar-row { display: flex; align-items: center; gap: .75rem; }
+    .bar-label {
+      width: 2.8rem;
+      font-size: .8rem;
+      color: var(--muted);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .bar-track {
+      flex: 1;
+      height: 28px;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+    }
+    .bar-seg {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.9);
+      overflow: hidden;
+      white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .bar-seg:hover { opacity: .85; }
+    .seg-abt  { background: var(--accent); }
+    .seg-mdt  { background: var(--teal); }
+    .seg-bsx  { background: var(--gold); }
+    .chart-legend {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: .75rem;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    /* Horizontal bar chart */
+    .hbar-chart { display: grid; gap: .6rem; }
+    .hbar-row { display: grid; align-items: center; gap: .75rem; grid-template-columns: 9rem 1fr 5rem; }
+    .hbar-name {
+      font-size: .8rem;
+      color: var(--ink);
+      text-align: right;
+      line-height: 1.3;
+    }
+    .hbar-name span {
+      display: block;
+      font-size: .7rem;
+      color: var(--muted);
+    }
+    .hbar-track {
+      height: 22px;
+      background: rgba(0,0,0,.05);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .hbar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--teal), var(--accent));
+    }
+    .hbar-fill.abt { background: linear-gradient(90deg, var(--accent), var(--accent-soft)); }
+    .hbar-val {
+      font-size: .78rem;
+      color: var(--muted);
+      text-align: right;
+    }
+    @media (max-width: 640px) {
+      .hbar-row { grid-template-columns: 7rem 1fr 4rem; }
+    }
+  </style>
 </head>
 <body>
   <div class="page-shell">
@@ -16,7 +114,8 @@
         PPR Agent queries government-mandated cardiac device performance reports from Abbott,
         Boston Scientific, and Medtronic. 57 million US implants across 17 years. The model
         selects a tool and formats the answer. The database supplies the facts.
-        Swap the model — the numbers don't change.
+        Swap the model, rewrite the interface — the numbers don't change.
+        The invariants live in the substrate, not the code.
       </p>
     </header>
 
@@ -50,26 +149,26 @@
             </p>
           </article>
         </div>
-        <div class="stat-row" style="display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap;">
+        <div style="display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap;">
           <div style="text-align:center;min-width:100px">
             <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">2,289</div>
-            <div style="font-size:.85rem;color:var(--text-muted)">Devices</div>
+            <div style="font-size:.85rem;color:var(--muted)">Devices</div>
           </div>
           <div style="text-align:center;min-width:100px">
             <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">57M</div>
-            <div style="font-size:.85rem;color:var(--text-muted)">US Implants</div>
+            <div style="font-size:.85rem;color:var(--muted)">US Implants</div>
           </div>
           <div style="text-align:center;min-width:100px">
             <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">17</div>
-            <div style="font-size:.85rem;color:var(--text-muted)">Years (2008–2024)</div>
+            <div style="font-size:.85rem;color:var(--muted)">Years (2008–2024)</div>
           </div>
           <div style="text-align:center;min-width:100px">
             <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">3</div>
-            <div style="font-size:.85rem;color:var(--text-muted)">Manufacturers</div>
+            <div style="font-size:.85rem;color:var(--muted)">Manufacturers</div>
           </div>
           <div style="text-align:center;min-width:100px">
             <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">6</div>
-            <div style="font-size:.85rem;color:var(--text-muted)">Deterministic Tools</div>
+            <div style="font-size:.85rem;color:var(--muted)">Deterministic Tools</div>
           </div>
         </div>
       </section>
@@ -87,7 +186,8 @@
             <p>
               PPR data extracted from manufacturer PDFs, validated against gold-standard CSVs,
               and stored in a normalized SQLite database. Every answer traces to a row.
-              No model involvement at this layer.
+              No model involvement at this layer. Rewrite every layer above it — this layer
+              does not move.
             </p>
           </article>
           <article class="stack-card">
@@ -134,7 +234,7 @@
         <div style="margin-top:1.5rem;overflow-x:auto;">
           <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
             <thead>
-              <tr style="border-bottom:2px solid var(--border)">
+              <tr style="border-bottom:2px solid var(--line)">
                 <th style="padding:.6rem 1rem;text-align:left">Rank</th>
                 <th style="padding:.6rem 1rem;text-align:left">Company</th>
                 <th style="padding:.6rem 1rem;text-align:left">Device Family</th>
@@ -143,28 +243,28 @@
               </tr>
             </thead>
             <tbody>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">1</td>
                 <td style="padding:.6rem 1rem">MDT</td>
                 <td style="padding:.6rem 1rem">Azure XT DR</td>
                 <td style="padding:.6rem 1rem"><code>W1DR01</code></td>
                 <td style="padding:.6rem 1rem;text-align:right">738,134</td>
               </tr>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">2</td>
                 <td style="padding:.6rem 1rem">MDT</td>
                 <td style="padding:.6rem 1rem">Adapta DR</td>
                 <td style="padding:.6rem 1rem"><code>ADDR01</code></td>
                 <td style="padding:.6rem 1rem;text-align:right">454,879</td>
               </tr>
-              <tr style="border-bottom:1px solid var(--border);background:var(--surface-alt,rgba(255,255,255,.03))">
+              <tr style="border-bottom:1px solid var(--line);background:rgba(155,77,47,.04)">
                 <td style="padding:.6rem 1rem">3</td>
                 <td style="padding:.6rem 1rem">ABT</td>
                 <td style="padding:.6rem 1rem"><strong>Unknown</strong></td>
                 <td style="padding:.6rem 1rem"><code>PM2272 US R</code></td>
                 <td style="padding:.6rem 1rem;text-align:right">449,533</td>
               </tr>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">4</td>
                 <td style="padding:.6rem 1rem">MDT</td>
                 <td style="padding:.6rem 1rem">Advisa DR MRI</td>
@@ -181,7 +281,7 @@
             </tbody>
           </table>
         </div>
-        <p style="margin-top:1rem;font-size:.85rem;color:var(--text-muted)">
+        <p style="margin-top:1rem;font-size:.85rem;color:var(--muted)">
           Row 3 device family is <strong>Unknown</strong> — an unresolved extraction gap in the
           source PDF. The system reports the substrate exactly. It does not substitute or infer a name.
         </p>
@@ -196,7 +296,7 @@
         <div style="overflow-x:auto;margin-top:1rem;">
           <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
             <thead>
-              <tr style="border-bottom:2px solid var(--border)">
+              <tr style="border-bottom:2px solid var(--line)">
                 <th style="padding:.6rem 1rem;text-align:left">Query</th>
                 <th style="padding:.6rem 1rem;text-align:left">Tool</th>
                 <th style="padding:.6rem 1rem;text-align:center">CLI</th>
@@ -204,72 +304,181 @@
               </tr>
             </thead>
             <tbody>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">Top 5 pacemakers by implant volume, 2024</td>
                 <td style="padding:.6rem 1rem"><code>get_top_devices</code></td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
               </tr>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">Compare Medtronic and Boston Scientific, 2020–2024</td>
                 <td style="padding:.6rem 1rem"><code>compare_companies</code></td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
               </tr>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">Market share trend, all companies, 2020–2024</td>
                 <td style="padding:.6rem 1rem"><code>get_market_share_trend</code></td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
               </tr>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">Medtronic year-over-year growth, 2020–2024</td>
                 <td style="padding:.6rem 1rem"><code>get_year_over_year_growth</code></td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
               </tr>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">Device families with 10+ years in market</td>
                 <td style="padding:.6rem 1rem"><code>get_device_longevity</code></td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
               </tr>
               <tr>
                 <td style="padding:.6rem 1rem">Search for Quadra devices</td>
                 <td style="padding:.6rem 1rem"><code>search_devices</code></td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
-                <td style="padding:.6rem 1rem;text-align:center;color:#4ade80">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
+                <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p style="margin-top:1rem;font-size:.85rem;color:var(--text-muted)">
+        <p style="margin-top:1rem;font-size:.85rem;color:var(--muted)">
           CLI path: deterministic pattern matching, no model. Ollama path: local
           <code>qwen2.5:14b</code>, no external API key. Both paths hit the same SQLite
           substrate and return identical tool results.
         </p>
       </section>
 
-      <!-- The Boundary -->
-      <section class="panel dark">
+      <!-- Visualizations -->
+      <section class="panel">
         <div class="panel-head">
-          <p class="section-tag">The boundary</p>
+          <p class="section-tag">The data</p>
+          <h2>What the Substrate Actually Says</h2>
+        </div>
+        <p style="color:var(--muted);margin-bottom:1.5rem;">
+          These charts render frozen canonical query results — exact rows from the deterministic tool layer.
+          No model generated these numbers.
+        </p>
+
+        <!-- Market share chart -->
+        <div class="chart-section">
+          <p class="chart-title">US Market Share by Company · 2020–2024 · <code>get_market_share_trend</code></p>
+          <div class="stacked-chart">
+            <!-- 2020: ABT 73.9, BSX 17.07, MDT 9.03 -->
+            <div class="bar-row">
+              <div class="bar-label">2020</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-abt" style="flex-basis:73.9%" title="ABT 73.9%">73.9%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:17.07%" title="BSX 17.1%">17.1%</div>
+                <div class="bar-seg seg-mdt" style="flex-basis:9.03%" title="MDT 9.0%">9%</div>
+              </div>
+            </div>
+            <!-- 2021: ABT 72.34, BSX 17.51, MDT 10.16 -->
+            <div class="bar-row">
+              <div class="bar-label">2021</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-abt" style="flex-basis:72.34%" title="ABT 72.3%">72.3%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:17.51%" title="BSX 17.5%">17.5%</div>
+                <div class="bar-seg seg-mdt" style="flex-basis:10.16%" title="MDT 10.2%">10%</div>
+              </div>
+            </div>
+            <!-- 2022: ABT 70.63, BSX 18.74, MDT 10.64 -->
+            <div class="bar-row">
+              <div class="bar-label">2022</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-abt" style="flex-basis:70.63%" title="ABT 70.6%">70.6%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:18.74%" title="BSX 18.7%">18.7%</div>
+                <div class="bar-seg seg-mdt" style="flex-basis:10.64%" title="MDT 10.6%">10.6%</div>
+              </div>
+            </div>
+            <!-- 2023: ABT 55.45, MDT 29.53, BSX 15.02 -->
+            <div class="bar-row">
+              <div class="bar-label">2023</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-abt" style="flex-basis:55.45%" title="ABT 55.5%">55.5%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:15.02%" title="BSX 15.0%">15%</div>
+                <div class="bar-seg seg-mdt" style="flex-basis:29.53%" title="MDT 29.5%">29.5%</div>
+              </div>
+            </div>
+            <!-- 2024: MDT 52.75, ABT 35.21, BSX 12.04 -->
+            <div class="bar-row">
+              <div class="bar-label">2024</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-abt" style="flex-basis:35.21%" title="ABT 35.2%">35.2%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:12.04%" title="BSX 12.0%">12%</div>
+                <div class="bar-seg seg-mdt" style="flex-basis:52.75%" title="MDT 52.8%">52.8%</div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>ABT (Abbott)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>MDT (Medtronic)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>BSX (Boston Scientific)</div>
+          </div>
+          <p style="margin-top:.75rem;font-size:.8rem;color:var(--muted)">
+            Abbott held ~71% share 2020–2022. Medtronic grew from 9% to 53% by 2024 —
+            a real data feature in the substrate, not a model inference.
+          </p>
+        </div>
+
+        <!-- Top 5 pacemakers chart -->
+        <div class="chart-section" style="margin-top:2rem;">
+          <p class="chart-title">Top 5 Pacemakers by US Implant Volume · 2024 · <code>get_top_devices</code></p>
+          <div class="hbar-chart">
+            <div class="hbar-row">
+              <div class="hbar-name">Azure XT DR <span>MDT · W1DR01</span></div>
+              <div class="hbar-track"><div class="hbar-fill" style="width:100%"></div></div>
+              <div class="hbar-val">738,134</div>
+            </div>
+            <div class="hbar-row">
+              <div class="hbar-name">Adapta DR <span>MDT · ADDR01</span></div>
+              <div class="hbar-track"><div class="hbar-fill" style="width:61.6%"></div></div>
+              <div class="hbar-val">454,879</div>
+            </div>
+            <div class="hbar-row">
+              <div class="hbar-name"><strong>Unknown</strong> <span>ABT · PM2272 US R</span></div>
+              <div class="hbar-track"><div class="hbar-fill abt" style="width:60.9%"></div></div>
+              <div class="hbar-val">449,533</div>
+            </div>
+            <div class="hbar-row">
+              <div class="hbar-name">Advisa DR MRI <span>MDT · A2DR01</span></div>
+              <div class="hbar-track"><div class="hbar-fill" style="width:46.7%"></div></div>
+              <div class="hbar-val">344,430</div>
+            </div>
+            <div class="hbar-row">
+              <div class="hbar-name">Accent DR RF <span>ABT · PM2210 US R</span></div>
+              <div class="hbar-track"><div class="hbar-fill abt" style="width:33.2%"></div></div>
+              <div class="hbar-val">244,868</div>
+            </div>
+          </div>
+          <p style="margin-top:.75rem;font-size:.8rem;color:var(--muted)">
+            Rank 3 device family is <strong>Unknown</strong> — an unresolved extraction gap in the source PDF.
+            The substrate reports it. The chart renders it. The model does not substitute a name.
+          </p>
+        </div>
+      </section>
+
+      <!-- The Boundary -->
+      <section class="panel" style="background:linear-gradient(135deg,rgba(32,78,84,.96),rgba(24,33,38,.96));color:#f8f2e7;">
+        <div class="panel-head">
+          <p class="section-tag" style="color:var(--accent-soft)">The boundary</p>
           <h2>What the Model Can and Cannot Do</h2>
         </div>
         <div class="definition-grid">
-          <article class="term-card">
-            <p class="term-type">Allowed</p>
+          <article class="term-card" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#f8f2e7;">
+            <p class="term-type" style="color:var(--accent-soft)">Allowed</p>
             <h3>Intent parsing · Tool selection · Parameter extraction · Answer formatting · Citation</h3>
-            <p>
+            <p style="color:rgba(248,242,231,.8)">
               The model reads the question, decides which tool fits, provides the parameters,
               and formats the returned rows into a readable cited answer. This is the entire
               scope of its authority.
             </p>
           </article>
-          <article class="term-card accent">
-            <p class="term-type">Not allowed</p>
+          <article class="term-card accent" style="background:rgba(155,77,47,.15);border-color:rgba(155,77,47,.3);color:#f8f2e7;">
+            <p class="term-type" style="color:var(--accent-soft)">Not allowed</p>
             <h3>Guessing counts · Answering from memory · Skipping tool retrieval · Normalizing Unknown</h3>
-            <p>
+            <p style="color:rgba(248,242,231,.8)">
               If the tool returns empty, the answer is "No data found." If a device family
               is Unknown in the substrate, it is Unknown in the answer. The model has no
               override on what the data says.
@@ -298,9 +507,9 @@
 
     </main>
 
-    <footer style="padding:2rem;text-align:center;font-size:.85rem;color:var(--text-muted);border-top:1px solid var(--border)">
+    <footer style="padding:2rem;text-align:center;font-size:.85rem;color:var(--muted);border-top:1px solid var(--line)">
       PPR Agent · Project Phoenix Domain Demo ·
-      <a href="https://proto.efehnconsulting.com/project-phoenix/" style="color:var(--text-muted)">proto.efehnconsulting.com</a>
+      <a href="https://proto.efehnconsulting.com/project-phoenix/" style="color:var(--muted)">proto.efehnconsulting.com</a>
     </footer>
 
   </div>
