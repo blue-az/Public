@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw Wrapper | Project Phoenix</title>
+    <meta name="description" content="OpenClaw as the operator wrapper over Project Phoenix: access, compression, monitoring, and workflow discipline without crossing the authority boundary.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="hero">
+            <div class="hero-copy">
+                <span class="badge">Paper 1.17 · Operator Shell Pattern</span>
+                <h1>OpenClaw Wrapper</h1>
+                <p class="subtitle">OpenClaw is the operator-facing wrapper around Project Phoenix: the shell that makes deterministic backends accessible without becoming the authority.</p>
+                <div class="hero-actions">
+                    <a href="#architecture">See architecture</a>
+                    <a href="#use-cases">Review use cases</a>
+                </div>
+            </div>
+            <div class="hero-mark">
+                <img src="openclaw-logo.jpeg" alt="OpenClaw logo">
+            </div>
+        </header>
+
+        <nav class="nav">
+            <a href="#claim">Claim</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#surfaces">Surfaces</a>
+            <a href="#use-cases">Use Cases</a>
+            <a href="#boundary">Boundary</a>
+            <a href="#limits">Limits</a>
+        </nav>
+
+        <section class="stats">
+            <article class="stat">
+                <div class="num">5</div>
+                <div class="label">Live HTTP surfaces</div>
+            </article>
+            <article class="stat">
+                <div class="num">7</div>
+                <div class="label">Completed wrapper use cases</div>
+            </article>
+            <article class="stat">
+                <div class="num">4</div>
+                <div class="label">Tracked incidents</div>
+            </article>
+            <article class="stat">
+                <div class="num">1</div>
+                <div class="label">Validated behavioral contracts</div>
+            </article>
+            <article class="stat">
+                <div class="num">0</div>
+                <div class="label">Correctness decisions delegated to model</div>
+            </article>
+        </section>
+
+        <section class="callout" id="claim">
+            <p><strong>Working rule:</strong> OpenClaw makes Project Phoenix accessible. Project Phoenix makes OpenClaw outputs trustworthy.</p>
+        </section>
+
+        <section class="panel prose">
+            <h2>The Claim</h2>
+            <p>Project Phoenix already had deterministic authority: grounded domain tools, solver-backed computation, and benchmark-backed evaluation. What it lacked was an operator-facing wrapper that exposed those capabilities without forcing the operator to know the internal repo structure.</p>
+            <p>OpenClaw fills that gap as an outer layer for access, compression, monitoring, and workflow discipline. The wrapper is useful only if the authority boundary holds. The shell can expose, summarize, and verify. It cannot become the place where correctness is decided.</p>
+        </section>
+
+        <section class="panel" id="architecture">
+            <h2>Three-Tier Architecture</h2>
+            <div class="stack">
+                <article class="stack-node">
+                    <div class="stack-label">Shell</div>
+                    <h3>OpenClaw</h3>
+                    <p>HTTP surfaces, operator packets, hardening gate, and incident workflow.</p>
+                </article>
+                <div class="stack-arrow">↓</div>
+                <article class="stack-node">
+                    <div class="stack-label">Compression</div>
+                    <h3>ShowcaseAgent</h3>
+                    <p>Routing and domain compression layer. Exposes Phoenix findings in operator-readable form.</p>
+                </article>
+                <div class="stack-arrow">↓</div>
+                <article class="stack-node">
+                    <div class="stack-label">Authority</div>
+                    <h3>Phoenix Backends</h3>
+                    <p>Deterministic domains and solvers. Correctness, grounding, and benchmark truth stay here.</p>
+                </article>
+            </div>
+
+            <div class="grid cols-3">
+                <article class="card">
+                    <h3>Access</h3>
+                    <p>Expose deterministic backends through stable endpoints and scripts instead of tribal knowledge.</p>
+                </article>
+                <article class="card">
+                    <h3>Compression</h3>
+                    <p>Turn raw JSON, traces, and CSV artifacts into operator-readable packets and decision surfaces.</p>
+                </article>
+                <article class="card">
+                    <h3>Discipline</h3>
+                    <p>Enforce incident handling, hardening checks, and documentation review so workflow decay is visible.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="panel" id="surfaces">
+            <h2>Live Operator Surfaces</h2>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Surface</th>
+                            <th>Role</th>
+                            <th>Current use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/phoenix-ops-summary</code></td>
+                            <td>Authority snapshot</td>
+                            <td>Compressed system state across Phoenix backends.</td>
+                        </tr>
+                        <tr>
+                            <td><code>/phoenix-ops-status</code></td>
+                            <td>Backend health</td>
+                            <td>Per-backend health, aggregate checks, and recent invocation log.</td>
+                        </tr>
+                        <tr>
+                            <td><code>/phoenix-ops-workspace</code></td>
+                            <td>Operator workspace</td>
+                            <td>Starting surface for status, routing, screenshot, and incident context.</td>
+                        </tr>
+                        <tr>
+                            <td><code>/phoenix-ops-trends</code></td>
+                            <td>Trend reporting</td>
+                            <td>Compact rolling view of latency, health counts, and summary history.</td>
+                        </tr>
+                        <tr>
+                            <td><code>/phoenix-benchmark-summary</code></td>
+                            <td>Benchmark packet</td>
+                            <td>Deterministic benchmark exposure through the wrapper.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid cols-2">
+                <article class="card">
+                    <h3>Hardening Gate</h3>
+                    <p><code>scripts/check_openclaw_hardening.sh</code> is the single verification command for endpoint health, threshold compliance, and artifact state.</p>
+                    <p class="micro">Modes: default live check, <code>--record</code> for milestone audit runs, <code>--skip-live</code> for artifact-only validation.</p>
+                </article>
+                <article class="card">
+                    <h3>Incident Workflow</h3>
+                    <p><code>openclaw_repair_packet.sh</code> through <code>openclaw_validate_incidents.sh</code> tracks operator-visible failures from capture to resolution.</p>
+                    <p class="micro">Resolution behavior is now governed by a validated PBC behavioral contract (<code>scripts/pbc/openclaw-resolution.pbc.md</code>), schema-conformant and regression-testable. The contract has documentation authority; enforcement gate is the next step.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="panel" id="use-cases">
+            <h2>Seven Use Cases</h2>
+            <p class="section-intro">Paper 1.17 selected use cases under one rule: do not add features in search of use cases; add use cases that prove the wrapper is useful.</p>
+
+            <div class="usecase-group">
+                <div class="group-title">Measurement</div>
+                <div class="grid cols-3">
+                    <article class="card">
+                        <h3>1. Benchmark Review</h3>
+                        <p><code>openclaw_benchmark_review.sh</code></p>
+                        <p>Compresses benchmark artifacts into an operator packet. Makes harness importance and protocol-tier results visible without manual JSON inspection.</p>
+                    </article>
+                    <article class="card">
+                        <h3>2. Run-Trace Triage</h3>
+                        <p><code>openclaw_run_trace_triage.sh</code></p>
+                        <p>Maps recurring failure families to replay targets and escalation verdicts. Separates live design gaps from legacy capture noise.</p>
+                    </article>
+                    <article class="card">
+                        <h3>4. Model Comparison Packet</h3>
+                        <p><code>openclaw_model_comparison_packet.sh</code></p>
+                        <p>Packages local model comparisons with transport-validity metadata. Encodes the Paper 1.16 capture-integrity correction.</p>
+                    </article>
+                </div>
+            </div>
+
+            <div class="usecase-group">
+                <div class="group-title">Operator Discipline</div>
+                <div class="grid cols-2">
+                    <article class="card">
+                        <h3>3. Incident Repair Loop</h3>
+                        <p><code>openclaw_repair_packet.sh</code></p>
+                        <p>Tracks real breakages through before-state capture, fix, after-state evidence, and validation. One stale run-trace script was fixed end-to-end through this loop.</p>
+                    </article>
+                    <article class="card">
+                        <h3>5. Documentation Status Review</h3>
+                        <p><code>openclaw_doc_status_review.sh</code></p>
+                        <p>Runs deterministic drift checks across operator documents. Found and cleared stale claims, an outdated current-state note, and missing script references.</p>
+                    </article>
+                </div>
+            </div>
+
+            <div class="usecase-group">
+                <div class="group-title">Decision Surfaces And Demos</div>
+                <div class="grid cols-2">
+                    <article class="card">
+                        <h3>6. Routing Policy</h3>
+                        <p><code>openclaw_routing_policy.sh</code></p>
+                        <p>Encodes a four-lane routing policy backed by benchmark evidence: deterministic, local repair-assisted, local strict protocol, and strong-model API.</p>
+                    </article>
+                    <article class="card">
+                        <h3>7. Solver-Backed Demo</h3>
+                        <p><code>openclaw_showcase_routing_demo.sh</code></p>
+                        <p>Confirms the same pattern seen in TSP: rule routing stays authoritative, while forced LLM routing introduces the failures.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel" id="boundary">
+            <h2>The Boundary That Did Not Move</h2>
+            <div class="grid cols-2">
+                <article class="card emphasis">
+                    <h3>What the wrapper does</h3>
+                    <ul>
+                        <li>Expose deterministic backends through stable operator surfaces</li>
+                        <li>Summarize artifacts into readable packets and dashboards</li>
+                        <li>Enforce verification, incident handling, and documentation hygiene</li>
+                    </ul>
+                </article>
+                <article class="card warning">
+                    <h3>What the wrapper does not do</h3>
+                    <ul>
+                        <li>Decide correctness at the endpoint level</li>
+                        <li>Bypass Phoenix in the name of convenience</li>
+                        <li>Use model judgment where deterministic outputs already exist</li>
+                    </ul>
+                </article>
+            </div>
+            <p class="boundary-line">OpenClaw never became the authority layer. The shell stayed outside. The authority stayed inside. Correctness stayed in the deterministic layer.</p>
+        </section>
+
+        <section class="panel" id="limits">
+            <h2>Current Limits</h2>
+            <div class="grid cols-2">
+                <article class="card">
+                    <h3>Sandbox visibility</h3>
+                    <p>Sandboxed localhost checks do not always see the live gateway. Some endpoint verification still needs the live shell environment.</p>
+                </article>
+                <article class="card">
+                    <h3>Open routing gaps</h3>
+                    <p>Stan regularization and ParableAgent teaching-complexity gaps remain tracked as incidents and still need routing-surface fixes.</p>
+                </article>
+                <article class="card">
+                    <h3>Clean-capture reruns</h3>
+                    <p>Pipeline and handoff trace lanes still need post-fix reruns under clean <code>ollama_api</code> capture.</p>
+                </article>
+                <article class="card">
+                    <h3>Pattern breadth</h3>
+                    <p>The solver-backed demo pattern is confirmed in TSP and ShowcaseAgent routing. More domains would strengthen the claim.</p>
+                </article>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>OpenClaw Wrapper · Paper 1.17 · Project Phoenix</p>
+            <p><a href="../project-phoenix/">Project Phoenix Overview</a> · <a href="../project-phoenix-eval/">Operator Shell Status</a> · <a href="../papers/">All Papers</a></p>
+        </footer>
+    </div>
+</body>
+</html>

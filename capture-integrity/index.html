@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Model Did Not Fail The Protocol, The Terminal Did | Project Phoenix · Paper 1.16</title>
+  <meta name="description" content="A protocol evaluation score is a joint claim about the model and the measurement apparatus. When the apparatus is not neutral, the score cannot be interpreted as a model-only signal.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <p class="eyebrow">Project Phoenix · Paper 1.16</p>
+      <h1>The Model Did Not Fail The Protocol. The Terminal Did.</h1>
+      <p class="lede">
+        A protocol evaluation score is a joint claim about the model and the measurement apparatus.
+        When the apparatus is not neutral, the score cannot be interpreted as a model-only signal.
+        This paper reports a specific non-neutrality — and what changed when it was fixed.
+      </p>
+    </header>
+
+    <main>
+
+      <!-- The Claim -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The claim</p>
+          <h2>Capture Infrastructure Is Part of the Result</h2>
+        </div>
+        <div class="definition-grid">
+          <article class="term-card featured">
+            <p class="term-type">What was being measured</p>
+            <h3>Six grounded protocol probes across three schema shapes — flat, nested, and array/mixed — on a TourAgent benchmark lane. The model is asked to return valid JSON matching a schema exactly.</h3>
+            <p>
+              Three policy tiers apply: strict (exact JSON, no wrapping), wrapper (fenced or lightly
+              wrapped JSON accepted), safe_repair (broader extraction attempted). Results were reported
+              per probe and per tier.
+            </p>
+          </article>
+          <article class="term-card accent">
+            <p class="term-type">What was failing</p>
+            <h3>The capture transport, not the model.</h3>
+            <p>
+              <code>ollama run</code> subprocess capture includes VT100 terminal cursor-rewrite
+              sequences alongside model output. These sequences corrupt multi-line JSON at the
+              content level. The corruption is not recoverable by post-hoc stripping — the characters
+              are gone. The effect is disproportionate for thinking-mode models, whose long reasoning
+              preambles trigger more terminal rewrite events.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- The Failure Mode -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">The failure mode</p>
+          <h2>What VT100 Capture Actually Produces</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Mechanism</span>
+            <h3>Terminal Sequences in Captured Stdout</h3>
+            <p>
+              When <code>ollama run</code> streams output to a terminal, it uses VT100
+              cursor-movement sequences to update the display in place — cursor-left followed
+              by clear-to-end-of-line: <code>ESC[ND ESC[K</code>. In an interactive terminal,
+              these are processed by the terminal emulator. Captured via
+              <code>subprocess.run(..., capture_output=True)</code>, the raw escape sequences
+              appear alongside the text they were intended to overwrite.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Flat schemas</span>
+            <h3>Recoverable Corruption</h3>
+            <p>
+              For flat single-line JSON, the corruption pattern is a full restart from the opening
+              brace — a truncated partial followed by the restarted complete JSON. Post-hoc
+              extraction can find the last valid JSON block and recover the correct value.
+              This is why flat-schema probes (PROTO_001, PROTO_004) showed mixed results
+              under the legacy runner rather than total failure.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Nested and multi-line schemas</span>
+            <h3>Unrecoverable Corruption</h3>
+            <p>
+              For nested JSON, terminal rewrites apply to individual field names mid-string.
+              The result is merged text — for example, <code>"Sloane StepheStephens"</code>
+              after stripping escape codes. This is content-level corruption. No extractor
+              can recover it: the characters are gone. These probes produced systematic
+              false negatives for any thinking-mode model evaluated through a terminal transport.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Why thinking-mode models are disproportionately affected</span>
+            <h3>Longer Output, More Rewrites</h3>
+            <p>
+              Thinking-mode models emit a long reasoning preamble before the final response.
+              The preamble triggers many more terminal rewrite events across a longer buffer.
+              The legacy extractor's greedy regex, anchored from the first brace in the full
+              string, captured a corrupted mega-block spanning the entire preamble rather than
+              just the final JSON response. Non-thinking-mode models emit shorter outputs with
+              fewer rewrites and are less affected — which is why they serve as the control condition.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Primary result -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Primary result</p>
+          <h2>What the Reparse Showed — Before Any Model Was Rerun</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>gpt-oss:20b — The Strongest Recovery</h3>
+            <p>
+              gpt-oss:20b recovered +8/12, from 1/12 to 9/12 under the updated extractor alone —
+              before any model was rerun. This is the strongest evidence that the capture confound
+              was systematic, not a gemma4-specific quirk. gpt-oss:20b's prior protocol story was
+              almost entirely a measurement artifact. Its hardware stability issues remain a
+              separate disqualifier, but the protocol-following characterisation must be treated
+              as unreliable until a clean-transport run can be completed.
+            </p>
+            <p class="example-takeaway">Prior score: 1/12. Corrected reparse: 9/12. No model was rerun.</p>
+          </article>
+          <article class="example-card">
+            <h3>The Control Condition Holds</h3>
+            <p>
+              The recovery is selective: only models with thinking-mode output show any change
+              under the updated extractor. gemma3:27b, llama3.1:8b, and qwen2.5:14b — all
+              non-thinking-mode — show no score change. If the fix were recovering noise rather
+              than real signal, it would also affect these models. It does not. The selectivity
+              of the recovery is what makes the causal claim defensible.
+            </p>
+            <p class="example-takeaway">Non-thinking-mode models: no change. The control holds.</p>
+          </article>
+          <article class="example-card span-2">
+            <h3>gemma4:26b — Partial Recovery, Real Residual Failures</h3>
+            <p>
+              Even after the extractor fix, gemma4:26b does not fully recover (8/18 vs 18/18).
+              Some failures are genuine. The reparse distinguishes the two failure classes —
+              capture-induced false negatives and real model failures — where the raw scores
+              could not. This is the methodological contribution of the reparse step: not
+              inflating scores, but separating measurement artifact from real behavior.
+            </p>
+            <p class="example-takeaway">The reparse does not make models look better than they are. It removes the noise that made them look worse.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Controlled rerun -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Controlled rerun — REST API capture</p>
+          <h2>The Canonical Clean-Capture Result</h2>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-card">
+            <h3>gemma4:31b — 6/6</h3>
+            <p>
+              Under clean REST API capture, gemma4:31b passes all six probes without think suppression.
+              This is the strongest result on this lane across any model or configuration tested.
+              Under the legacy terminal capture, this result was invisible — the preamble length
+              triggered enough rewrites to corrupt the extraction consistently.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>gemma4:26b — Probe-Specific Residual</h3>
+            <p>
+              gemma4:26b unsuppressed fails only PROTO_001 and PROTO_004 — the two flat-schema probes —
+              under REST API capture. Think suppression via <code>/no_think</code> fixes both completely.
+              The residual issue with unsuppressed 26b is specific to those two probes, not a broad
+              protocol regression. The extension suite (PROTO_011–016) confirms this.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>PROTO_010 — A Genuine Content Failure</h3>
+            <p>
+              PROTO_010 remains a genuine failure for gemma3:27b and qwen2.5 regardless of capture
+              method. gemma4 passes it. This probe is retained as a control case demonstrating that
+              clean-capture does not simply inflate scores — it preserves real failures while removing
+              measurement artifacts. The failure is tied to canonicalization under format ambiguity,
+              not to schema class or eligibility set construction.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>The Repair — One Function Swap</h3>
+            <p>
+              HTTP POST to <code>/api/generate</code> with <code>stream: false</code>.
+              Clean JSON response body with no terminal codes. The runner change is a
+              one-function swap. The cost is negligible. Any evaluation pipeline still using
+              <code>ollama run</code> subprocess capture for JSON protocol work should be treated
+              as producing capture-confounded results until corrected.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Probe specificity -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Extension — PROTO_011–016</p>
+          <h2>Failures Are Probe-Specific, Not Structural-Class</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Finding</span>
+            <h3>All Five Model/Mode Combinations Pass All Six New Probes</h3>
+            <p>
+              Six new probes were designed to test whether failure patterns from the original suite
+              generalize. Three flat-schema probes targeted gemma4:26b unsuppressed (which failed
+              PROTO_001 and PROTO_004). Three multi-entity content probes targeted gemma3:27b
+              (which failed PROTO_010). All pass. The original failures do not replicate on
+              structurally similar probes.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Implication</span>
+            <h3>Schema Class Is Too Coarse a Taxonomy</h3>
+            <p>
+              The relevant unit of difficulty is narrower than flat, nested, or array/mixed.
+              A more useful taxonomy distinguishes: scalar precision, exact-string reproduction,
+              filtered eligibility set construction, and grouped aggregation. PROTO_001 and PROTO_004
+              failures fit scalar precision. PROTO_010 failures fit exact-string reproduction combined
+              with implicit eligibility. The new probes exercise other categories without that
+              combination — which is why they do not replicate the original failures.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Main interpretation -->
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag" style="color:rgba(234,199,178,0.8);">Main interpretation</p>
+          <h2>What This Changes</h2>
+        </div>
+        <p class="thesis">
+          The corrected story is not that gemma4 is a strong protocol model that was wrongly accused.
+          It is that evaluation infrastructure is part of the claim being made when a score is reported.
+          A score from a terminal-capture pipeline and a score from a clean-transport pipeline are not
+          the same measurement — even when run on the same model with the same prompts.
+          The specific mechanism here is not a gemma4-specific issue. It affects any model whose output
+          triggers terminal rewrites in Ollama's streaming display. Any evaluation pipeline still using
+          <code style="background:rgba(234,199,178,0.15); border-radius:3px; padding:1px 4px;">ollama run</code>
+          subprocess capture for JSON protocol work should be treated as producing capture-confounded
+          results until corrected.
+        </p>
+      </section>
+
+      <!-- Limitations -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">Honest limits</p>
+          <h2>What This Paper Does Not Claim</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Scope</span>
+            <h3>One Domain Lane, Six Probes, Single Hardware</h3>
+            <p>
+              The controlled rerun used a single hardware configuration (RTX 3090 desktop).
+              The think-suppression finding for gemma4:26b is based on one run per condition
+              and should be confirmed with a second replicate before being treated as stable.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">gpt-oss:20b</span>
+            <h3>Reparse Only — No Clean-Transport Rerun</h3>
+            <p>
+              gpt-oss:20b was not included in the controlled rerun due to documented hardware
+              stability risk. Its corrected scores are based on historical artifacts only.
+              Hardware stability issues remain a separate disqualifier from protocol performance.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">The broader claim</span>
+            <h3>Not That gemma4:31b Is Generally Strong</h3>
+            <p>
+              This paper claims only that in this bounded setup, the terminal capture confound
+              was the dominant source of gemma4's apparent protocol failure, and that removing it
+              changes the ranking materially. It does not claim that gemma4:31b is generally strong
+              across all protocol tasks, that think suppression is universally beneficial, or that
+              the REST API transport eliminates all evaluation confounds.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Conclusion -->
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag" style="color:rgba(234,199,178,0.8);">Conclusion</p>
+          <h2>Protocol Trust Requires Capture Integrity</h2>
+        </div>
+        <p class="thesis">
+          The model did not fail the protocol. The terminal did. The measurement apparatus captured
+          terminal display sequences alongside model output, corrupted the JSON extraction, and
+          produced false negatives that were mistaken for model-capability failures. The fix is to
+          not use a terminal as a capture transport. A harness that misclassifies correct model
+          output as a failure is not a neutral observer. It is part of the result.
+        </p>
+      </section>
+
+      <!-- Where this sits -->
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag" style="color:rgba(234,199,178,0.8);">Where this sits</p>
+          <h2>Related Papers</h2>
+        </div>
+        <p class="thesis">
+          The operator shell that surfaced this finding during model comparison work is documented in
+          <a class="compact-link" href="../operator-shell/">Paper 1.17 — The Operator Shell Pattern</a>.
+          The broader local model evidence sits in
+          <a class="compact-link" href="../details/">Local Model Details</a>.
+          All seventeen Phoenix papers are in the
+          <a class="compact-link" href="../papers/">Research Papers index</a>.
+        </p>
+      </section>
+
+    </main>
+
+    <footer style="margin-top:48px; padding:24px 32px; border-top:1px solid var(--line); display:flex; gap:24px; flex-wrap:wrap; font-family:'Trebuchet MS','Gill Sans',sans-serif; font-size:0.85rem; color:var(--muted);">
+      <a href="../project-phoenix/" style="color:var(--accent); text-decoration:none;">Project Phoenix Overview</a>
+      <a href="../project-phoenix/get-started.html" style="color:var(--accent); text-decoration:none;">Get Started</a>
+      <a href="../papers/" style="color:var(--accent); text-decoration:none;">Research Papers</a>
+      <a href="../details/" style="color:var(--accent); text-decoration:none;">Local Model Details</a>
+      <a href="../operator-shell/" style="color:var(--accent); text-decoration:none;">Operator Shell Pattern</a>
+    </footer>
+  </div>
+</body>
+</html>

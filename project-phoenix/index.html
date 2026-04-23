@@ -41,6 +41,8 @@
             <a href="architecture.html">Architecture</a>
             <a href="current-paper.html">Current Paper</a>
             <a href="../papers/">Research Papers</a>
+            <a href="get-started.html">Get Started</a>
+            <a href="../openclaw-wrapper/">OpenClaw</a>
         </nav>
 
         <div class="pullquote">
@@ -51,6 +53,13 @@
             <h2>Purpose</h2>
             <p>Project Phoenix publishes principles, standards, and white papers for building grounded domain systems that are inspectable, testable, and useful in practice.</p>
             <p>It is not a generic chatbot layer. It is a framework for disciplined domain interfaces, deterministic validation, and carefully bounded agent use.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Organizing Principle</h2>
+            <p>For grounded domain tasks, harness configuration is the binding constraint — not model identity.</p>
+            <p>A system with grounded substrates, explicit routing, and a validated output contract will produce consistent results across model families. A system without those things will produce inconsistent results regardless of how capable the model is. This claim has a scope: it holds for well-defined domain tasks where deterministic substrates exist. It does not claim model identity is irrelevant for open-ended reasoning.</p>
+            <p>Local models are where this principle is proved rather than assumed. Frontier models can compensate for a weak harness — so their results do not distinguish harness quality from model capability. Local models cannot compensate. When a constrained local model converges with a stronger one at the semantic usefulness level — which Papers 1.11 and 1.13 demonstrate — the harness is doing the work. That is the finding. Local model empirics are the stress test that makes it falsifiable.</p>
         </section>
 
         <section class="section">

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PPR Agent — Regulated Cardiac Device Performance Reporting | Project Phoenix</title>
-  <meta name="description" content="Government-mandated product performance data from Abbott, Boston Scientific, and Medtronic. 84 million US implants. 17 years. The substrate is the product.">
+  <meta name="description" content="Government-mandated product performance data from Abbott, Boston Scientific, and Medtronic. 92 million US implants. 18 years. The substrate is the product.">
   <link rel="stylesheet" href="../capture-integrity/styles.css">
   <style>
     /* Visualization styles */
@@ -112,7 +112,7 @@
       <h1>The Substrate Is the Product.</h1>
       <p class="lede">
         PPR Agent queries government-mandated cardiac device performance reports from Abbott,
-        Boston Scientific, and Medtronic. 84 million US implants across 17 years. The model
+        Boston Scientific, and Medtronic. 92 million US implants across 18 years. The model
         selects a tool and formats the answer. The database supplies the facts.
         Swap the model, rewrite the interface — the numbers don't change.
         The invariants live in the substrate, not the code.
@@ -151,16 +151,16 @@
         </div>
         <div style="display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap;">
           <div style="text-align:center;min-width:100px">
-            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">3,347</div>
+            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">3,576</div>
             <div style="font-size:.85rem;color:var(--muted)">Devices</div>
           </div>
           <div style="text-align:center;min-width:100px">
-            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">84M</div>
+            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">92M</div>
             <div style="font-size:.85rem;color:var(--muted)">US Implants</div>
           </div>
           <div style="text-align:center;min-width:100px">
-            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">17</div>
-            <div style="font-size:.85rem;color:var(--muted)">Years (2008–2024)</div>
+            <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">18</div>
+            <div style="font-size:.85rem;color:var(--muted)">Years (2008–2025)</div>
           </div>
           <div style="text-align:center;min-width:100px">
             <div style="font-size:2.2rem;font-weight:700;color:var(--accent)">3</div>
@@ -221,13 +221,13 @@
         <div class="example-grid">
           <article class="example-card">
             <h3>The Question</h3>
-            <p>What were the top 5 pacemaker devices by US implant volume in 2024?</p>
+            <p>What were the top 5 pacemaker devices by US implant volume in 2025?</p>
             <p class="example-takeaway">Natural language. No schema knowledge required from the user.</p>
           </article>
           <article class="example-card">
             <h3>Tool Selected</h3>
             <p><code>get_top_devices</code></p>
-            <p>Parameters: <code>year=2024, device_category="Pacemaker", limit=5</code></p>
+            <p>Parameters: <code>year=2025, device_category="Pacemaker", limit=5</code></p>
             <p class="example-takeaway">Provenance: <code>devices</code> table · filter year+category · order implants DESC</p>
           </article>
         </div>
@@ -248,41 +248,41 @@
                 <td style="padding:.6rem 1rem">MDT</td>
                 <td style="padding:.6rem 1rem">Azure XT DR</td>
                 <td style="padding:.6rem 1rem"><code>W1DR01</code></td>
-                <td style="padding:.6rem 1rem;text-align:right">738,134</td>
+                <td style="padding:.6rem 1rem;text-align:right">878,312</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--line);background:rgba(155,77,47,.04)">
+                <td style="padding:.6rem 1rem">2</td>
+                <td style="padding:.6rem 1rem">ABT</td>
+                <td style="padding:.6rem 1rem"><strong>Unknown</strong></td>
+                <td style="padding:.6rem 1rem"><code>PM2272</code></td>
+                <td style="padding:.6rem 1rem;text-align:right">500,885</td>
               </tr>
               <tr style="border-bottom:1px solid var(--line)">
-                <td style="padding:.6rem 1rem">2</td>
+                <td style="padding:.6rem 1rem">3</td>
                 <td style="padding:.6rem 1rem">MDT</td>
                 <td style="padding:.6rem 1rem">Adapta DR</td>
                 <td style="padding:.6rem 1rem"><code>ADDR01</code></td>
-                <td style="padding:.6rem 1rem;text-align:right">454,879</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--line);background:rgba(155,77,47,.04)">
-                <td style="padding:.6rem 1rem">3</td>
-                <td style="padding:.6rem 1rem">ABT</td>
-                <td style="padding:.6rem 1rem"><strong>Unknown</strong></td>
-                <td style="padding:.6rem 1rem"><code>PM2272 US R</code></td>
-                <td style="padding:.6rem 1rem;text-align:right">449,533</td>
+                <td style="padding:.6rem 1rem;text-align:right">454,889</td>
               </tr>
               <tr style="border-bottom:1px solid var(--line)">
                 <td style="padding:.6rem 1rem">4</td>
                 <td style="padding:.6rem 1rem">MDT</td>
                 <td style="padding:.6rem 1rem">Advisa DR MRI</td>
                 <td style="padding:.6rem 1rem"><code>A2DR01</code></td>
-                <td style="padding:.6rem 1rem;text-align:right">344,430</td>
+                <td style="padding:.6rem 1rem;text-align:right">344,448</td>
               </tr>
               <tr>
                 <td style="padding:.6rem 1rem">5</td>
-                <td style="padding:.6rem 1rem">ABT</td>
-                <td style="padding:.6rem 1rem">Accent DR RF</td>
-                <td style="padding:.6rem 1rem"><code>PM2210 US R</code></td>
-                <td style="padding:.6rem 1rem;text-align:right">244,868</td>
+                <td style="padding:.6rem 1rem">BSX</td>
+                <td style="padding:.6rem 1rem">ACCOLADE/PROPONENT/ESSENTIO DR</td>
+                <td style="padding:.6rem 1rem"><code>L101/L111/L201/L211/L301/L311</code></td>
+                <td style="padding:.6rem 1rem;text-align:right">330,000</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p style="margin-top:1rem;font-size:.85rem;color:var(--muted)">
-          Row 3 device family is <strong>Unknown</strong> — an unresolved extraction gap in the
+          Row 2 device family is <strong>Unknown</strong> — an unresolved extraction gap in the
           source PDF. The system reports the substrate exactly. It does not substitute or infer a name.
         </p>
       </section>
@@ -305,7 +305,7 @@
             </thead>
             <tbody>
               <tr style="border-bottom:1px solid var(--line)">
-                <td style="padding:.6rem 1rem">Top 5 pacemakers by implant volume, 2024</td>
+                <td style="padding:.6rem 1rem">Top 5 pacemakers by implant volume, 2025</td>
                 <td style="padding:.6rem 1rem"><code>get_top_devices</code></td>
                 <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
                 <td style="padding:.6rem 1rem;text-align:center;color:var(--olive)">✓</td>
@@ -363,8 +363,62 @@
 
         <!-- Market share chart -->
         <div class="chart-section">
-          <p class="chart-title">US Market Share by Company · 2020–2024 · <code>get_market_share_trend</code></p>
+          <p class="chart-title">US Market Share by Company · 2014–2025 · <code>get_market_share_trend</code></p>
           <div class="stacked-chart">
+            <!-- 2014: MDT 58.95, ABT 24.88, BSX 16.17 -->
+            <div class="bar-row">
+              <div class="bar-label">2014</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-mdt" style="flex-basis:58.95%" title="MDT 59.0%">59.0%</div>
+                <div class="bar-seg seg-abt" style="flex-basis:24.88%" title="ABT 24.9%">24.9%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:16.17%" title="BSX 16.2%">16.2%</div>
+              </div>
+            </div>
+            <!-- 2015: MDT 55.15, ABT 29.12, BSX 15.74 -->
+            <div class="bar-row">
+              <div class="bar-label">2015</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-mdt" style="flex-basis:55.15%" title="MDT 55.1%">55.1%</div>
+                <div class="bar-seg seg-abt" style="flex-basis:29.12%" title="ABT 29.1%">29.1%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:15.74%" title="BSX 15.7%">15.7%</div>
+              </div>
+            </div>
+            <!-- 2016: MDT 55.42, ABT 29.89, BSX 14.69 -->
+            <div class="bar-row">
+              <div class="bar-label">2016</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-mdt" style="flex-basis:55.42%" title="MDT 55.4%">55.4%</div>
+                <div class="bar-seg seg-abt" style="flex-basis:29.89%" title="ABT 29.9%">29.9%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:14.69%" title="BSX 14.7%">14.7%</div>
+              </div>
+            </div>
+            <!-- 2017: MDT 46.01, ABT 35.77, BSX 18.22 — ABT acquires St. Jude Medical Jan 2017 -->
+            <div class="bar-row">
+              <div class="bar-label" style="color:var(--accent);font-weight:600">2017★</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-mdt" style="flex-basis:46.01%" title="MDT 46.0%">46.0%</div>
+                <div class="bar-seg seg-abt" style="flex-basis:35.77%" title="ABT 35.8%">35.8%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:18.22%" title="BSX 18.2%">18.2%</div>
+              </div>
+            </div>
+            <!-- 2018: MDT 46.45, ABT 35.46, BSX 18.09 -->
+            <div class="bar-row">
+              <div class="bar-label">2018</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-mdt" style="flex-basis:46.45%" title="MDT 46.5%">46.5%</div>
+                <div class="bar-seg seg-abt" style="flex-basis:35.46%" title="ABT 35.5%">35.5%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:18.09%" title="BSX 18.1%">18.1%</div>
+              </div>
+            </div>
+            <!-- 2019: MDT 47.30, ABT 32.82, BSX 19.88 -->
+            <div class="bar-row">
+              <div class="bar-label">2019</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-mdt" style="flex-basis:47.30%" title="MDT 47.3%">47.3%</div>
+                <div class="bar-seg seg-abt" style="flex-basis:32.82%" title="ABT 32.8%">32.8%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:19.88%" title="BSX 19.9%">19.9%</div>
+              </div>
+            </div>
             <!-- 2020: MDT 48.26, ABT 32.34, BSX 19.41 -->
             <div class="bar-row">
               <div class="bar-label">2020</div>
@@ -383,13 +437,13 @@
                 <div class="bar-seg seg-bsx" style="flex-basis:18.98%" title="BSX 19.0%">19.0%</div>
               </div>
             </div>
-            <!-- 2022: MDT 51.44, ABT 28.97, BSX 19.6 -->
+            <!-- 2022: MDT 51.44, ABT 28.97, BSX 19.60 -->
             <div class="bar-row">
               <div class="bar-label">2022</div>
               <div class="bar-track">
                 <div class="bar-seg seg-mdt" style="flex-basis:51.44%" title="MDT 51.4%">51.4%</div>
                 <div class="bar-seg seg-abt" style="flex-basis:28.97%" title="ABT 29.0%">29.0%</div>
-                <div class="bar-seg seg-bsx" style="flex-basis:19.6%" title="BSX 19.6%">19.6%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:19.60%" title="BSX 19.6%">19.6%</div>
               </div>
             </div>
             <!-- 2023: MDT 51.89, ABT 28.56, BSX 19.55 -->
@@ -410,50 +464,59 @@
                 <div class="bar-seg seg-bsx" style="flex-basis:20.62%" title="BSX 20.6%">20.6%</div>
               </div>
             </div>
+            <!-- 2025: MDT 51.54, ABT 28.06, BSX 20.40 -->
+            <div class="bar-row">
+              <div class="bar-label">2025</div>
+              <div class="bar-track">
+                <div class="bar-seg seg-mdt" style="flex-basis:51.54%" title="MDT 51.5%">51.5%</div>
+                <div class="bar-seg seg-abt" style="flex-basis:28.06%" title="ABT 28.1%">28.1%</div>
+                <div class="bar-seg seg-bsx" style="flex-basis:20.40%" title="BSX 20.4%">20.4%</div>
+              </div>
+            </div>
           </div>
           <div class="chart-legend">
-            <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>ABT (Abbott)</div>
             <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>MDT (Medtronic)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>ABT (Abbott)</div>
             <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>BSX (Boston Scientific)</div>
           </div>
           <p style="margin-top:.75rem;font-size:.8rem;color:var(--muted)">
-            MDT led the market from 2020 at ~48%, growing to ~52% by 2023, then ~51% in 2024.
-            The 2024 MDT dip reflects official retirement of legacy device models from the PPR report — a real data feature, not a model inference.
+            ★ <strong>2017</strong>: Abbott completed its $25B acquisition of St. Jude Medical in January 2017, consolidating SJM's cumulative implant counts under ABT. ABT share jumped +6 pp; MDT share dropped −9 pp. Both reflect the reclassification, not a change in device performance.
+            The 2024 MDT dip reflects official retirement of legacy device models from the PPR report — visible in the data, sourced to the substrate.
           </p>
         </div>
 
         <!-- Top 5 pacemakers chart -->
         <div class="chart-section" style="margin-top:2rem;">
-          <p class="chart-title">Top 5 Pacemakers by US Implant Volume · 2024 · <code>get_top_devices</code></p>
+          <p class="chart-title">Top 5 Pacemakers by US Implant Volume · 2025 · <code>get_top_devices</code></p>
           <div class="hbar-chart">
             <div class="hbar-row">
               <div class="hbar-name">Azure XT DR <span>MDT · W1DR01</span></div>
               <div class="hbar-track"><div class="hbar-fill" style="width:100%"></div></div>
-              <div class="hbar-val">738,134</div>
+              <div class="hbar-val">878,312</div>
+            </div>
+            <div class="hbar-row">
+              <div class="hbar-name"><strong>Unknown</strong> <span>ABT · PM2272</span></div>
+              <div class="hbar-track"><div class="hbar-fill abt" style="width:57.0%"></div></div>
+              <div class="hbar-val">500,885</div>
             </div>
             <div class="hbar-row">
               <div class="hbar-name">Adapta DR <span>MDT · ADDR01</span></div>
-              <div class="hbar-track"><div class="hbar-fill" style="width:61.6%"></div></div>
-              <div class="hbar-val">454,879</div>
-            </div>
-            <div class="hbar-row">
-              <div class="hbar-name"><strong>Unknown</strong> <span>ABT · PM2272 US R</span></div>
-              <div class="hbar-track"><div class="hbar-fill abt" style="width:60.9%"></div></div>
-              <div class="hbar-val">449,533</div>
+              <div class="hbar-track"><div class="hbar-fill" style="width:51.8%"></div></div>
+              <div class="hbar-val">454,889</div>
             </div>
             <div class="hbar-row">
               <div class="hbar-name">Advisa DR MRI <span>MDT · A2DR01</span></div>
-              <div class="hbar-track"><div class="hbar-fill" style="width:46.7%"></div></div>
-              <div class="hbar-val">344,430</div>
+              <div class="hbar-track"><div class="hbar-fill" style="width:39.2%"></div></div>
+              <div class="hbar-val">344,448</div>
             </div>
             <div class="hbar-row">
               <div class="hbar-name">ACCOLADE/PROPONENT/ESSENTIO DR <span>BSX · L101/L111/L201/L211/L301/L311</span></div>
-              <div class="hbar-track"><div class="hbar-fill bsx" style="width:41.6%"></div></div>
-              <div class="hbar-val">307,000</div>
+              <div class="hbar-track"><div class="hbar-fill" style="width:37.6%;background:linear-gradient(90deg,var(--gold),var(--gold))"></div></div>
+              <div class="hbar-val">330,000</div>
             </div>
           </div>
           <p style="margin-top:.75rem;font-size:.8rem;color:var(--muted)">
-            Rank 3 device family is <strong>Unknown</strong> — an unresolved extraction gap in the source PDF.
+            Rank 2 device family is <strong>Unknown</strong> — an unresolved extraction gap in the source PDF.
             The substrate reports it. The chart renders it. The model does not substitute a name.
           </p>
         </div>

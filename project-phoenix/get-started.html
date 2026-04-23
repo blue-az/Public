@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Phoenix | Get Started</title>
+    <meta name="description" content="Find your entry point into Project Phoenix — whether you're exploring the pattern, building a first implementation, or evaluating a complex domain engagement.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .route-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .route-card {
+            border: 2px solid var(--border);
+            background: var(--highlight);
+            padding: 1.5rem;
+            box-shadow: 0 4px 14px var(--shadow);
+        }
+
+        .route-card h3 {
+            font-family: var(--display-font);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .route-card .route-who {
+            font-size: var(--font-size-sm);
+            color: var(--ink-muted);
+            font-style: italic;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.6rem;
+        }
+
+        .route-card p {
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .route-card .back-link {
+            display: inline-block;
+        }
+
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .check-list li {
+            padding: 0.4rem 0;
+            padding-left: 1.4rem;
+            position: relative;
+            font-size: var(--font-size-sm);
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .check-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .waitlist-block {
+            border: 2px solid var(--border);
+            background: var(--ink);
+            color: var(--paper);
+            padding: 1.8rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 24px var(--shadow);
+        }
+
+        .waitlist-block h2 {
+            font-family: var(--display-font);
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            color: var(--paper);
+        }
+
+        .waitlist-block p {
+            color: rgba(244, 239, 230, 0.8);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+
+        .waitlist-form {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .waitlist-form input[type="email"] {
+            flex: 1;
+            min-width: 220px;
+            padding: 0.7rem 1rem;
+            font-family: var(--body-font);
+            font-size: var(--font-size-sm);
+            border: 1px solid rgba(244, 239, 230, 0.3);
+            background: rgba(244, 239, 230, 0.08);
+            color: var(--paper);
+            outline: none;
+        }
+
+        .waitlist-form input[type="email"]::placeholder {
+            color: rgba(244, 239, 230, 0.4);
+        }
+
+        .waitlist-form button {
+            padding: 0.7rem 1.4rem;
+            font-family: var(--display-font);
+            font-size: var(--font-size-sm);
+            background: var(--paper);
+            color: var(--ink);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .waitlist-form button:hover {
+            background: var(--highlight);
+        }
+
+        .not-for-you {
+            border: 1px solid var(--border);
+            background: rgba(200, 185, 166, 0.2);
+            padding: 1.2rem 1.5rem;
+            margin-top: 1.5rem;
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+            color: var(--ink-muted);
+        }
+
+        .not-for-you strong {
+            color: var(--ink);
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Project Phoenix</span>
+            <h1>Get Started</h1>
+            <p class="subtitle">Find your entry point — exploring, building, or scaling.</p>
+            <a class="back-link" href="index.html">Back to Overview</a>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="philosophy.html">Philosophy</a>
+            <a href="four-phases.html">Four Phases</a>
+            <a href="principles.html">Principles</a>
+            <a href="tau-bench.html">Tau-Bench</a>
+            <a href="domains.html">Domains</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="current-paper.html">Current Paper</a>
+            <a href="../papers/">Research Papers</a>
+            <a href="get-started.html">Get Started</a>
+        </nav>
+
+        <!-- Is this for you -->
+        <section class="section">
+            <h2>Is This For You?</h2>
+            <p>Project Phoenix is designed for a specific situation. Before going further, check whether your problem fits the regime where Phoenix has been proved to work.</p>
+
+            <p style="margin-top:1rem;"><strong>Phoenix works when:</strong></p>
+            <ul class="check-list">
+                <li>You have a domain with a bounded, well-defined task class — a specific set of questions the system must reliably answer</li>
+                <li>Correctness is verifiable — there are right and wrong answers, and you can tell the difference</li>
+                <li>A deterministic substrate is possible — real data, a solver, a grounded domain tool, not just model inference</li>
+                <li>You need the system to hold up under repeated, inspectable use — not just demo conditions</li>
+            </ul>
+
+            <div class="not-for-you">
+                <strong>Phoenix is not the right frame if:</strong>
+                You need general open-ended reasoning across novel domains, creative generation without correctness constraints,
+                or a system where the task class is too broad or shifting to define. In those regimes, model capability is the
+                binding constraint — not harness configuration. Phoenix does not operate there and does not claim to.
+            </div>
+        </section>
+
+        <!-- Three routes -->
+        <section class="section">
+            <h2>Three Entry Points</h2>
+            <p>Choose based on where you are right now — not where you want to end up.</p>
+
+            <div class="route-grid">
+
+                <div class="route-card">
+                    <h3>See the Pattern</h3>
+                    <p class="route-who">For: anyone new to Phoenix, skeptical, or evaluating</p>
+                    <p>
+                        Start with the TourAgent live demo. Ten tennis questions with repeatable,
+                        grounded answers. The demo shows the deterministic substrate approach in
+                        action — what changes when the harness does the work instead of the model.
+                    </p>
+                    <p>
+                        After the demo, the research papers give you the evidence behind the
+                        pattern across multiple domains.
+                    </p>
+                    <a class="back-link" href="../tour-agent/" target="_blank">Open TourAgent Demo →</a>
+                </div>
+
+                <div class="route-card">
+                    <h3>Build a First Implementation</h3>
+                    <p class="route-who">For: practitioners with a domain problem in hand</p>
+                    <p>
+                        A Phoenix V1 has four steps: define your task class, identify your
+                        substrate, write the output contract, and build the verification step.
+                        The guide below walks through each one.
+                    </p>
+                    <a class="back-link" href="#v1-guide">Read the V1 guide →</a>
+                </div>
+
+                <div class="route-card">
+                    <h3>Complex Domain Engagement</h3>
+                    <p class="route-who">For: larger teams, high-stakes domains, or multi-domain systems</p>
+                    <p>
+                        Complex implementations — multiple domains, high correctness requirements,
+                        existing infrastructure to integrate — benefit from direct engagement.
+                        The private consulting layer covers domain analysis, harness design,
+                        and adaptation heuristics that are not in the open-core materials.
+                    </p>
+                    <a class="back-link" href="mailto:erik@efehnconsulting.com">Start a conversation →</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- What is a domain -->
+        <section class="section">
+            <h2>What Is a Domain in Phoenix Terms?</h2>
+            <p>
+                A domain is a bounded problem space where the system must reliably answer a
+                defined class of questions using verifiable, grounded inputs. The domain is
+                not the subject matter — it is the combination of task class, substrate, and
+                correctness standard.
+            </p>
+            <p style="margin-top:1rem;">
+                TourAgent's domain is tennis tournament data: who won, what the score was,
+                who played whom. The task class is narrow. The substrate is real match records.
+                Correctness is binary. That combination is what makes the harness tractable.
+            </p>
+            <p style="margin-top:1rem;">
+                Your domain might be billing state transitions, route optimization, yield
+                forecasting, or document classification — any bounded problem where answers
+                can be grounded and verified. The subject matter is secondary. The structure
+                is what matters.
+            </p>
+        </section>
+
+        <!-- V1 Guide -->
+        <section class="section" id="v1-guide">
+            <h2>Your V1 — Four Steps</h2>
+            <p>
+                A minimum viable Phoenix implementation has four parts. Each one is a gate:
+                if you cannot complete a step, stop and resolve it before building further.
+                A system that skips a step is not a Phoenix harness — it is a model with
+                scaffolding, which is a different thing.
+            </p>
+
+            <div class="card" style="margin-top:1.4rem;">
+                <h3>Step 1 — Define Your Task Class</h3>
+                <p style="margin-top:0.6rem; font-size:var(--font-size-sm); line-height:1.6;">
+                    Write down the exact questions your system must answer. Be precise.
+                    "Answer customer support queries" is not a task class — it is a category.
+                    "Return the current status of an order given an order ID" is a task class.
+                    The narrower and more explicit the task class, the more tractable the harness.
+                    If you cannot write it down in one sentence, your task class is too broad.
+                </p>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3>Step 2 — Identify Your Substrate</h3>
+                <p style="margin-top:0.6rem; font-size:var(--font-size-sm); line-height:1.6;">
+                    Find the ground truth source. This is the engine. It must be deterministic:
+                    a database, a solver, a real dataset, an authoritative API. Not model inference.
+                    If the answer to a query depends on what the model thinks rather than what a
+                    substrate contains, you do not have a Phoenix domain yet. The substrate is
+                    what makes the harness trustworthy — without it, correctness cannot be verified.
+                </p>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3>Step 3 — Write the Output Contract</h3>
+                <p style="margin-top:0.6rem; font-size:var(--font-size-sm); line-height:1.6;">
+                    Before building anything, write down what a correct answer looks like.
+                    What fields does it include? What format? What does the system guarantee
+                    to return, and what does it guarantee not to return? The output contract
+                    is not documentation — it is the specification the verification step checks
+                    against. If the output contract is not explicit before you build, you cannot
+                    verify correctness after.
+                </p>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3>Step 4 — Build the Verification Step</h3>
+                <p style="margin-top:0.6rem; font-size:var(--font-size-sm); line-height:1.6;">
+                    Every output must be verified before it leaves the system. The verification
+                    step can be a schema check, a read-back against the substrate, a golden file
+                    comparison, or a human-in-the-loop review for high-stakes outputs. The method
+                    depends on the domain. What is not optional is the step itself. A harness
+                    without a verification step produces outputs that may be correct — you just
+                    cannot tell which ones.
+                </p>
+            </div>
+        </section>
+
+        <!-- Open-core boundary -->
+        <section class="section" id="open-core">
+            <h2>What Is Free. What Is Not.</h2>
+            <p>
+                Project Phoenix is open-core. The distinction is deliberate: the principles,
+                patterns, and research are public because they are useful to practitioners
+                who want to build their own systems. The consulting layer is private because
+                it covers the work that does not generalize cleanly across domains.
+            </p>
+
+            <div class="grid" style="margin-top:1.4rem;">
+                <div class="card">
+                    <h3>Open-Core — Free</h3>
+                    <ul class="check-list" style="margin-top:0.6rem;">
+                        <li>The four V1 steps above</li>
+                        <li>Six Phoenix principles — write-then-verify, abstraction ladder, domain tool design, anti-hallucination templates, test-and-prove cycle, HITL gate</li>
+                        <li>Architecture patterns and validation standards</li>
+                        <li>All seventeen research papers</li>
+                        <li>TourAgent live demo</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Consulting Layer — Private</h3>
+                    <ul class="check-list" style="margin-top:0.6rem;">
+                        <li>Domain analysis for ambiguous or complex task classes</li>
+                        <li>Harness design for multi-domain or legacy systems</li>
+                        <li>Adaptation heuristics for specific infrastructure</li>
+                        <li>Client pairing logic — matching routing policy to domain characteristics</li>
+                        <li>Live operating playbooks</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p style="margin-top:1.2rem; font-size:var(--font-size-sm); color:var(--ink-muted);">
+                A useful heuristic: if your domain fits cleanly into the four V1 steps and your
+                task class is well-defined, the open-core materials are sufficient to get started.
+                If your domain is ambiguous, multi-layered, or has high-stakes correctness
+                requirements, direct engagement is the faster path.
+                <a href="mailto:erik@efehnconsulting.com" style="color:var(--accent);">Start a conversation →</a>
+            </p>
+        </section>
+
+        <!-- Waitlist -->
+        <div class="waitlist-block" id="waitlist">
+            <h2>Implementation Guide — Join the List</h2>
+            <p>
+                The self-service Phoenix implementation guide is in progress. It will cover:
+                how to define your domain, what minimum viable harness requires, and what a
+                V1 implementation looks like end to end. Join the list to receive it first.
+            </p>
+            <form class="waitlist-form" action="https://formspree.io/f/mnjlvgrn" method="POST">
+                <input type="email" name="email" placeholder="your@email.com" required>
+                <input type="hidden" name="_subject" value="Phoenix Waitlist Signup">
+                <input type="hidden" name="_next" value="https://proto.efehnconsulting.com/project-phoenix/get-started.html?joined=1">
+                <button type="submit">Join the Waitlist</button>
+            </form>
+        </div>
+
+        <footer class="footer">
+            <p>Project Phoenix - Open-core standards for grounded domain systems</p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+            <p><a href="../papers/">Research Papers →</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('joined') === '1') {
+            const block = document.getElementById('waitlist');
+            block.innerHTML += '<p style="margin-top:1rem; color:rgba(244,239,230,0.9); font-style:italic;">You\'re on the list. We\'ll be in touch.</p>';
+        }
+    </script>
+</body>
+</html>
