@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Phoenix Research Papers</title>
-    <meta name="description" content="Seventeen primary research papers from Project Phoenix — grounded domain systems, orchestration, local inference, operating discipline, ML evaluation benchmarks, and operator infrastructure.">
+    <meta name="description" content="Nineteen primary research papers from Project Phoenix — grounded domain systems, orchestration, local inference, operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, and applied production evidence.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,20 +13,20 @@
         <header class="header">
             <span class="badge">Project Phoenix · Research Portfolio</span>
             <h1>Project Phoenix Papers</h1>
-            <p class="subtitle">Seventeen primary papers on grounded domain systems, orchestration architecture, agentic operating discipline, ML evaluation benchmarks, and operator infrastructure</p>
+            <p class="subtitle">Nineteen primary papers on grounded domain systems, orchestration architecture, agentic operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, and applied production evidence</p>
         </header>
 
         <div class="stats">
             <a class="stat" href="#inventory">
-                <span class="num">17</span>
+                <span class="num">19</span>
                 <span class="label">Primary Papers</span>
             </a>
             <a class="stat" href="#inventory">
-                <span class="num">11</span>
+                <span class="num">12</span>
                 <span class="label">Live Sites</span>
             </a>
             <a class="stat" href="#clusters">
-                <span class="num">8</span>
+                <span class="num">9</span>
                 <span class="label">Research Clusters</span>
             </a>
             <div class="stat">
@@ -52,11 +52,7 @@
         </div>
 
         <div class="callout" style="margin-top:1rem;">
-            <p><strong>Measurement Integrity &amp; Operator Layer:</strong> Papers 1.16 and 1.17 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models, and the fix inverted the gemma4 story entirely. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority.</p>
-        </div>
-
-        <div class="callout" style="margin-top:1rem;">
-            <p><strong>Domain Demo:</strong> <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a> — the deterministic substrate in production. Government-mandated cardiac device performance data (57M US implants, 17 years, 3 manufacturers) behind a six-tool SQLite layer. Two interface paths: deterministic CLI and local Ollama shell. Canonical query suite: 6 queries × 2 paths, all pass.</p>
+            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality.</p>
         </div>
 
         <!-- Reading Guide -->
@@ -86,7 +82,11 @@
                 </div>
                 <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
                     <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Measurement Integrity &amp; Operator Layer</h3>
-                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.16 and 1.17</strong> address the infrastructure surrounding the Phoenix system. 1.16: capture pipeline failures produce false evaluation verdicts. 1.17: an operator shell can expose the deterministic stack without replacing it as the authority.</p>
+                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.16, 1.17, and 1.19</strong> address the infrastructure surrounding the Phoenix system. 1.16: capture pipeline failures produce false evaluation verdicts. 1.17: an operator shell can expose the deterministic stack without replacing it as the authority. 1.19: when stronger models override literal substrate inspection, the model itself becomes part of the non-neutrality.</p>
+                </div>
+                <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
+                    <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Applied / Production Evidence</h3>
+                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Paper 1.18</strong> is the first numbered production case — PPR Agent running against government-mandated cardiac device data for 18 years. This is field validation, not lane validation — the framework operating against regulated disclosures from three manufacturers.</p>
                 </div>
             </div>
         </section>
@@ -259,7 +259,7 @@
         <!-- Cluster VII -->
         <section class="section">
             <div class="cluster-heading">VII &nbsp;·&nbsp; Measurement Integrity</div>
-            <p style="margin-bottom:1.2rem; color:var(--ink-muted); font-style:italic; font-size:var(--font-size-sm);">When the evaluation infrastructure itself fails — and how to distinguish a capture pipeline failure from a model capability failure.</p>
+            <p style="margin-bottom:1.2rem; color:var(--ink-muted); font-style:italic; font-size:var(--font-size-sm);">When the evaluation infrastructure itself fails — or when the model's own disposition toward the substrate becomes part of the apparatus.</p>
 
             <div class="grid-2">
 
@@ -267,6 +267,13 @@
                     <span class="paper-num">Paper 1.16</span>
                     <h3>The Model Did Not Fail the Protocol. The Terminal Did.</h3>
                     <p class="paper-thesis">Subprocess capture of ollama run output includes VT100 cursor-rewrite sequences that corrupt multi-line JSON for thinking-mode models, producing systematic false negatives. Under clean REST API capture, gemma4:31b passes all six protocol probes — the strongest result on this lane. The selective recovery pattern (only thinking-mode models affected) proves the failure was at the capture boundary, not the model boundary.</p>
+                    <span class="paper-link">Open site →</span>
+                </a>
+
+                <a class="paper-card" href="../capture-integrity/#paper-1-19" target="_blank">
+                    <span class="paper-num">Paper 1.19</span>
+                    <h3>Literal Substrate Inspection — When Stronger Models Override the Evidence</h3>
+                    <p class="paper-thesis">Stronger models do not remove the need for harnesses; sometimes they increase it. When semantic correction overrides literal substrate inspection, a more capable model can produce a worse answer than a smaller or less opinionated one. A ten-prompt local matrix and a single-prompt <code>strawperry</code> probe show at least three distinct wrong-count mechanisms. The fix is not a smarter model — it is a harness that preserves the exact substrate and routes literal operations to deterministic tools.</p>
                     <span class="paper-link">Open site →</span>
                 </a>
 
@@ -284,6 +291,23 @@
                     <span class="paper-num">Paper 1.17</span>
                     <h3>The Operator Shell Pattern</h3>
                     <p class="paper-thesis">An operator shell reduces friction, surfaces information, and enforces discipline without the model touching correctness. OpenClaw wraps Project Phoenix as the access layer — five HTTP operator surfaces, a hardening gate, and an incident workflow — while Phoenix remains the deterministic authority. Seven use cases across measurement, discipline, and decision surfaces confirm the pattern: the shell stays outside, the authority stays inside.</p>
+                    <span class="paper-link">Open site →</span>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- Cluster IX -->
+        <section class="section">
+            <div class="cluster-heading">IX &nbsp;·&nbsp; Applied / Production Evidence</div>
+            <p style="margin-bottom:1.2rem; color:var(--ink-muted); font-style:italic; font-size:var(--font-size-sm);">Field validation, not lane validation — the framework operating against regulated data in a real domain.</p>
+
+            <div class="grid-2">
+
+                <a class="paper-card" href="../ppr-agent/" target="_blank">
+                    <span class="paper-num">Paper 1.18</span>
+                    <h3>PPR Agent — A Deterministic Substrate for Auditable Medical-Device Intelligence</h3>
+                    <p class="paper-thesis">Government-mandated Product Performance Reports from Abbott, Boston Scientific, and Medtronic — 3,576 device rows, 92 million US implants, 18 years (2008–2025), complete three-company coverage since 2014 — behind a SQLite substrate and a deterministic tool surface. The model selects a tool and formats the answer; the database supplies the facts. A frozen canonical query suite enforces that unknown values stay unknown, source gaps stay visible, and no answer is invented. Field evidence for the Phoenix thesis: substrate is authority, model is interface.</p>
                     <span class="paper-link">Open site →</span>
                 </a>
 
@@ -404,7 +428,7 @@
                             <td class="url-cell"><a href="../failure-details/" target="_blank">failure-details/</a></td>
                         </tr>
                         <tr class="table-group-header">
-                            <td colspan="4">Measurement Integrity &amp; Operator Layer — 1.16 and 1.17</td>
+                            <td colspan="4">Measurement Integrity — 1.16 and 1.19</td>
                         </tr>
                         <tr>
                             <td>1.16</td>
@@ -413,15 +437,33 @@
                             <td class="url-cell"><a href="../capture-integrity/" target="_blank">capture-integrity/</a></td>
                         </tr>
                         <tr>
+                            <td>1.19</td>
+                            <td>Literal Substrate Inspection — When Stronger Models Override the Evidence</td>
+                            <td>Measurement</td>
+                            <td class="url-cell"><a href="../capture-integrity/#paper-1-19" target="_blank">capture-integrity/</a></td>
+                        </tr>
+                        <tr class="table-group-header">
+                            <td colspan="4">Operator Layer — 1.17</td>
+                        </tr>
+                        <tr>
                             <td>1.17</td>
                             <td>The Operator Shell Pattern</td>
                             <td>Operator Layer</td>
                             <td class="url-cell"><a href="../operator-shell/" target="_blank">operator-shell/</a></td>
                         </tr>
+                        <tr class="table-group-header">
+                            <td colspan="4">Applied / Production Evidence — 1.18</td>
+                        </tr>
+                        <tr>
+                            <td>1.18</td>
+                            <td>PPR Agent — A Deterministic Substrate for Auditable Medical-Device Intelligence</td>
+                            <td>Applied</td>
+                            <td class="url-cell"><a href="../ppr-agent/" target="_blank">ppr-agent/</a></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site. Paper 1.16 has a dedicated site at capture-integrity/. Paper 1.17 has a dedicated site at operator-shell/. Domain demo: ppr-agent/.</p>
+            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/.</p>
         </section>
 
         <footer class="footer">

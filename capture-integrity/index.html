@@ -3,19 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Model Did Not Fail The Protocol, The Terminal Did | Project Phoenix · Paper 1.16</title>
-  <meta name="description" content="A protocol evaluation score is a joint claim about the model and the measurement apparatus. When the apparatus is not neutral, the score cannot be interpreted as a model-only signal.">
+  <title>Capture Integrity & Literal Substrate Inspection | Project Phoenix · Papers 1.16 and 1.19</title>
+  <meta name="description" content="Two measurement-integrity findings from Project Phoenix. Paper 1.16: terminal capture corrupts protocol scores. Paper 1.19: stronger models can override literal substrate inspection. Both establish that the measurement apparatus — capture layer and model disposition — is part of the result.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="page-shell">
     <header class="hero">
-      <p class="eyebrow">Project Phoenix · Paper 1.16</p>
+      <p class="eyebrow">Project Phoenix · Measurement Integrity · Papers 1.16 and 1.19</p>
       <h1>The Model Did Not Fail The Protocol. The Terminal Did.</h1>
       <p class="lede">
         A protocol evaluation score is a joint claim about the model and the measurement apparatus.
         When the apparatus is not neutral, the score cannot be interpreted as a model-only signal.
         This paper reports a specific non-neutrality — and what changed when it was fixed.
+        A companion paper (1.19) follows the same principle into the model itself: when a capable
+        model applies semantic correction to a literal substrate, the model becomes part of the
+        non-neutrality.
       </p>
     </header>
 
@@ -305,18 +308,260 @@
         </p>
       </section>
 
+      <!-- Paper 1.19 boundary -->
+      <section class="panel" id="paper-1-19">
+        <div class="panel-head">
+          <p class="section-tag" style="color:rgba(234,199,178,0.8);">Companion paper · Project Phoenix · Paper 1.19</p>
+          <h2>Literal Substrate Inspection — When Stronger Models Override the Evidence</h2>
+        </div>
+        <p class="thesis">
+          Paper 1.16 fixed a capture layer. Paper 1.19 asks the next question: once the
+          apparatus is clean, does the model itself inspect the substrate, or does it reinterpret
+          the substrate as a familiar semantic object? The answer, for literal-substrate tasks,
+          is that more capable models can be less reliable — not because they lack intelligence,
+          but because they apply the wrong kind of intelligence.
+        </p>
+      </section>
+
+      <!-- 1.19 · The claim -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">1.19 · The claim</p>
+          <h2>Literal Tasks Are Authority-Bound Tasks</h2>
+        </div>
+        <div class="definition-grid">
+          <article class="term-card featured">
+            <p class="term-type">Core takeaway</p>
+            <h3>Stronger models do not remove the need for harnesses. Sometimes they increase it.</h3>
+            <p>
+              When semantic correction overrides literal substrate inspection, a more capable model
+              can produce a worse answer than a smaller or less opinionated model. The ground truth
+              for a literal task is the substrate itself — the byte string, the database row, the
+              file path, the schema, the counter, or the deterministic tool result. If the model
+              reinterprets that substrate as a familiar semantic object, capability becomes a liability.
+            </p>
+          </article>
+          <article class="term-card accent">
+            <p class="term-type">The miniature probe</p>
+            <h3><code>How many p's are there in strawperry?</code></h3>
+            <p>
+              Three answer paths are available: literal substrate inspection (count the exact string),
+              reasoning trace (decompose and count), or semantic correction (silently normalize
+              <code>strawperry</code> toward <code>strawberry</code> or a memorized benchmark meme, then
+              answer from the wrong object). The correct answer is not a matter of model confidence.
+              It is a matter of which object the system treats as authoritative.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 1.19 · The matrix -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">1.19 · Observed local results</p>
+          <h2>Controlled Matrix — Ten Misspelled Strings, Four Local Models</h2>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-card">
+            <h3>gemma3:27b — 4/10</h3>
+            <p>
+              Normalized <code>strawperry</code> toward <code>strawberry</code> under the loose prompt and
+              answered incorrectly. Under the tight controlled prompt (REST API, <code>think=false</code>,
+              temperature 0, integer-only output) it still reached only 4/10. Failures spread across
+              semantic normalization and apparent counting hallucination.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>gemma4:26b — 9/10</h3>
+            <p>
+              With thinking enabled on the loose prompt, decomposed the literal string and answered
+              <code>1</code>. With <code>--think=false</code>, answered <code>1</code> without visible
+              scratchpad. On the controlled matrix, 9/10. The one failure — <code>raspberrry</code> /
+              <code>r</code> expected 4, answered 3 — is the cleanest semantic-normalization signature
+              in the run.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>gemma4:31b — 9/10</h3>
+            <p>
+              Ties with 26b on the tight matrix, but fails on different strings — a tie, not a dominance
+              relationship. Under the loose prompt, answered <code>2</code> for <code>strawperry</code>
+              while correctly preserving the adjacent nonsense string <code>strawserry</code> / <code>s</code>.
+              The string-selective failure is the sharpest single-prompt result in the probe.
+            </p>
+          </article>
+          <article class="compare-card">
+            <h3>qwen2.5:14b — 3/10</h3>
+            <p>
+              Answered <code>0</code> for <code>blackbery</code> / <code>r</code>, <code>1</code> for
+              <code>bananna</code> / <code>n</code>, and <code>2</code> for <code>raspberrry</code> /
+              <code>r</code>. These answers match neither the literal string nor the canonical spelling —
+              a different mechanism from gemma3's semantic repair, closer to misreading or tokenization
+              confusion.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 1.19 · Three failure mechanisms -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">1.19 · Interpretation</p>
+          <h2>At Least Three Wrong-Count Patterns, Not One Failure Class</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Mechanism 1</span>
+            <h3>Semantic Normalization Toward a Canonical Form</h3>
+            <p>
+              The cleanest example is <code>raspberrry</code> / <code>r</code>. The literal string has
+              four <code>r</code> characters; canonical <code>raspberry</code> has three. Both gemma4:26b
+              and gemma4:31b answered <code>3</code> under the tight controlled prompt. The prompt explicitly
+              named the exact string — the model overrode it anyway. This is the sharpest single row in the
+              matrix.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Mechanism 2</span>
+            <h3>Familiar-String Prior Interference (Meme-Prior Hypothesis)</h3>
+            <p>
+              The loose-prompt gemma4:31b contrast sharpens the same point from the other direction.
+              It answered <code>2</code> for <code>strawperry</code> / <code>p</code> but correctly answered
+              <code>2</code> for the adjacent nonsense <code>strawserry</code> / <code>s</code>. The
+              model is not globally unable to count. It fails selectively when the string is close to a
+              familiar benchmark or semantic object. The observable fact is that the same model preserves
+              one literal nonsense string while overriding another nearby one.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Mechanism 3</span>
+            <h3>Misreading, Tokenization Confusion, or Counting Hallucination</h3>
+            <p>
+              qwen2.5's <code>0</code> for <code>blackbery</code> matches neither the literal nor the canonical
+              count. gemma3's <code>3</code> for <code>grapefruut</code> / <code>u</code> (literal <code>2</code>,
+              canonical <code>1</code>) fits neither hypothesis cleanly. These are still literal-substrate
+              failures — but the mechanism is character decomposition error or hallucination, not semantic
+              repair. The failure class is broader than "the model corrected your typo."
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 1.19 · The Phoenix framing -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">1.19 · Phoenix framing</p>
+          <h2>The Fix Is Not a Smarter Model. It Is a Harness.</h2>
+        </div>
+        <div class="example-grid">
+          <article class="example-card">
+            <h3>The Right Implementation</h3>
+            <p>
+              For the <code>strawperry</code> prompt, the correct implementation is not to ask the model
+              to be smarter. It is:
+            </p>
+            <p><code style="font-size:0.95rem;">"strawperry".count("p")</code></p>
+            <p class="example-takeaway">The model interprets intent. The substrate provides authority.</p>
+          </article>
+          <article class="example-card">
+            <h3>The Model's Role Is Routing</h3>
+            <p>
+              Recognize that the user is asking for a literal string count. Preserve the exact input
+              string. Call a deterministic counter. Report the counter result without substitution.
+              The same design principle runs across the Phoenix/OpenClaw stack: the model interprets
+              intent; the substrate provides authority.
+            </p>
+            <p class="example-takeaway">Routing, not reasoning, is the reliable model role here.</p>
+          </article>
+          <article class="example-card span-2">
+            <h3>Four Harness Constraints for Literal-Substrate Tasks</h3>
+            <p>
+              <strong>Capture:</strong> preserve the exact user-provided string or source artifact.
+              <strong>Classification:</strong> route literal operations to deterministic tools.
+              <strong>Execution:</strong> perform counting, lookup, parsing, or comparison outside the model.
+              <strong>Reporting:</strong> require the final answer to cite the preserved substrate and tool result.
+            </p>
+            <p class="example-takeaway">
+              This pattern applies beyond character counting — CSV row lookup, PPR disclosure counts,
+              code symbol search, file path manipulation, schema validation, exact record reproduction,
+              regulated-data summarization.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 1.19 · Main claim -->
+      <section class="panel compact">
+        <div class="panel-head">
+          <p class="section-tag" style="color:rgba(234,199,178,0.8);">1.19 · Main claim</p>
+          <h2>Literal Tasks Need Literal Substrates</h2>
+        </div>
+        <p class="thesis">
+          In tasks where the answer is defined by a literal substrate, stronger models can be less
+          reliable unless the harness prevents semantic override. This is deliberately narrower than
+          "larger models are worse." Larger models are often better. The claim is that larger or more
+          capable models may carry stronger priors, stronger repair behavior, and stronger
+          benchmark-meme recall. Those traits help many reasoning tasks but can damage literal fidelity.
+          Without a harness, model intelligence can become semantic interference.
+        </p>
+      </section>
+
+      <!-- 1.19 · What this does not claim -->
+      <section class="panel">
+        <div class="panel-head">
+          <p class="section-tag">1.19 · Honest limits</p>
+          <h2>What This Paper Does Not Claim</h2>
+        </div>
+        <div class="stack">
+          <article class="stack-card">
+            <span class="stack-label">Not a ranking</span>
+            <h3>gemma4:26b Is Not Generally Better Than gemma4:31b</h3>
+            <p>
+              Under the tight controlled prompt they tie at 9/10 — they simply fail on different strings.
+              The evidence does not support a broad model ranking. It supports a narrower claim about
+              literal fidelity under semantic-prior pressure.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Not a tokenization story alone</span>
+            <h3>Tokenization Is Useful but Insufficient</h3>
+            <p>
+              Tokenization explains why models do not see characters directly. It does not explain the
+              selective, string-specific pattern where a model preserves one nonsense string and
+              overrides another nearby one. At least three distinct wrong-count mechanisms are present
+              in the matrix.
+            </p>
+          </article>
+          <article class="stack-card">
+            <span class="stack-label">Not about character counting</span>
+            <h3>The Systems Claim Generalizes Beyond Toy Strings</h3>
+            <p>
+              The same failure class appears whenever a model substitutes a plausible object for the
+              actual object — repairing an unusual product name, normalizing an <code>Unknown</code>
+              field into a plausible family name, or answering from a memorized benchmark pattern
+              instead of the current prompt. The surface task differs; the failure is the same.
+            </p>
+          </article>
+        </div>
+      </section>
+
       <!-- Where this sits -->
       <section class="panel compact">
         <div class="panel-head">
-          <p class="section-tag" style="color:rgba(234,199,178,0.8);">Where this sits</p>
+          <p class="section-tag" style="color:rgba(234,199,178,0.8);">Where these sit</p>
           <h2>Related Papers</h2>
         </div>
         <p class="thesis">
-          The operator shell that surfaced this finding during model comparison work is documented in
+          Papers 1.16 and 1.19 together form the Measurement Integrity cluster: the capture layer and
+          the model's own disposition toward the substrate are both part of the apparatus. The operator
+          shell that surfaced the 1.16 capture finding is documented in
           <a class="compact-link" href="../operator-shell/">Paper 1.17 — The Operator Shell Pattern</a>.
+          The PPR agent — the production application of the substrate-as-authority principle that 1.19
+          generalizes — is documented as
+          <a class="compact-link" href="../ppr-agent/">Paper 1.18 — PPR Agent, A Deterministic Substrate for Auditable Medical-Device Intelligence</a>.
           The broader local model evidence sits in
           <a class="compact-link" href="../details/">Local Model Details</a>.
-          All seventeen Phoenix papers are in the
+          All nineteen Phoenix papers are in the
           <a class="compact-link" href="../papers/">Research Papers index</a>.
         </p>
       </section>
