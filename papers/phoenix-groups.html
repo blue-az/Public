@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Phoenix Papers — Grouped</title>
+    <meta name="description" content="Project Phoenix paper inventory grouped by paper_group, exported from PAPERS_MANIFEST.json. Complementary to the numbered /papers/ index.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+.phoenix-badge {
+    display: inline-block;
+    padding: 0.05rem 0.45rem;
+    margin-right: 0.3rem;
+    border: 1px solid var(--border);
+    background: var(--paper-dark);
+    color: var(--ink-muted);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.phoenix-badge--lifecycle-frozen {
+    background: var(--good-bg);
+    color: var(--good);
+    border-color: var(--good);
+}
+.phoenix-badge--lifecycle-active-draft {
+    background: var(--warn-bg);
+    color: var(--warn);
+    border-color: var(--warn);
+}
+.phoenix-badge--lifecycle-stub {
+    background: rgba(255,255,255,0.55);
+}
+.phoenix-badge--publication-published {
+    background: var(--good-bg);
+    color: var(--good);
+    border-color: var(--good);
+}
+.phoenix-badge--publication-private {
+    background: rgba(255,255,255,0.55);
+}
+.phoenix-badge--group_status-confirmed {
+    background: var(--good-bg);
+    color: var(--good);
+    border-color: var(--good);
+}
+.phoenix-badge--group_status-provisional {
+    background: var(--warn-bg);
+    color: var(--warn);
+    border-color: var(--warn);
+}
+.phoenix-paper-card--forthcoming {
+    opacity: 0.7;
+}
+.phoenix-paper-link--forthcoming {
+    color: var(--ink-muted);
+    border-bottom: 1px dashed var(--ink-muted);
+}
+</style>
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Project Phoenix · Grouped Papers</span>
+            <h1>Phoenix Papers — Grouped</h1>
+            <p class="subtitle">Phoenix-managed paper sources, grouped by paper_group rather than numbering. Exported from <code>PAPERS_MANIFEST.json</code>.</p>
+        </header>
+
+        <div class="callout">
+            <p><strong>About this page:</strong> Project Phoenix owns the paper sources under <code>project-phoenix/docs</code>. This page is generated from <code>PAPERS_MANIFEST.json</code> and groups by <code>paper_group</code>, not by the numbered cluster scheme used on <a href="index.html" style="color:var(--accent);">the main /papers/ index</a>. The two surfaces are complementary: the main index is hand-curated; this page is a metadata-driven export. Showing all Phoenix-managed papers, including stubs and forthcoming work.</p>
+        </div>
+
+        <section class="section">
+    <div class="cluster-heading">Local LLM Operator Judgment &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
+    <div class="grid-2">
+            <a class="paper-card phoenix-paper-card" href="../project-phoenix/generated-papers/gemma-handoff-discipline.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-frozen">frozen</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Smarter, Faster, and Bounded by Handoff Discipline</h3><p class="paper-thesis">Handoff-discipline doctrine for strict machine-facing local-model lanes. Frozen 2026-04-29 with the corrected matrix, the three-datapoint drift addendum, DocDrop as the positive deployment case, and a three-run PPR Lane 2 evidence packet as the adversarial complement.</p><span class="paper-link">Open paper →</span></a>
+            <div class="paper-card phoenix-paper-card phoenix-paper-card--forthcoming"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-active-draft">active draft</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-private">private</span></span><h3>Privacy Is Worth Paying For</h3><p class="paper-thesis">Separates the privacy argument for local inference from the false claim that the local lane is free.</p><span class="paper-link phoenix-paper-link--forthcoming">Forthcoming</span></div>
+            <div class="paper-card phoenix-paper-card phoenix-paper-card--forthcoming"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-stub">stub</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-private">private</span></span><h3>Slow Is Not Smart</h3><p class="paper-thesis">Argues that larger, slower local models are often being treated as quality signals on tasks where the harness is the real bottleneck.</p><span class="paper-link phoenix-paper-link--forthcoming">Forthcoming</span></div>
+            <a class="paper-card phoenix-paper-card" href="../project-phoenix/generated-papers/please-is-sand-off-a-beach.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-frozen">frozen</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Please Is Sand Off A Beach</h3><p class="paper-thesis">Argues that courtesy tokens are negligible compared with structural token waste such as giant context dumps, repeated scaffolding, retries, and missing decomposition.</p><span class="paper-link">Open paper →</span></a>
+    </div>
+</section>
+
+        <footer style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--ink-muted); font-size:var(--font-size-sm); text-align:center;">
+            <p>Generated 2026-04-30T22:34:01.961215+00:00 from <code>docs/PAPERS_MANIFEST.json</code> via <code>scripts/publish_papers_index.py</code>.</p>
+        </footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+{
+  "feed": "phoenix-papers",
+  "version": 1,
+  "generated_at": "2026-04-30T22:34:01.961215+00:00",
+  "source_manifest": "docs/PAPERS_MANIFEST.json",
+  "public_only": false,
+  "groups": [
+    {
+      "group": "Local LLM Operator Judgment",
+      "group_status": "confirmed",
+      "papers": [
+        {
+          "id": "gemma-handoff-discipline",
+          "title": "Smarter, Faster, and Bounded by Handoff Discipline",
+          "source_path": "docs/GEMMA_4_IS_SMARTER_GEMMA_3_IS_SAFER.md",
+          "track": "paper",
+          "paper_number": "1.20",
+          "lifecycle": "frozen",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "gemma-handoff-discipline",
+          "proto_output_path": "project-phoenix/generated-papers/gemma-handoff-discipline.html",
+          "proto_markdown_path": "project-phoenix/generated-papers-src/gemma-handoff-discipline.md",
+          "publish": true,
+          "summary": "Handoff-discipline doctrine for strict machine-facing local-model lanes. Frozen 2026-04-29 with the corrected matrix, the three-datapoint drift addendum, DocDrop as the positive deployment case, and a three-run PPR Lane 2 evidence packet as the adversarial complement."
+        },
+        {
+          "id": "privacy-is-worth-paying-for",
+          "title": "Privacy Is Worth Paying For",
+          "source_path": "docs/PRIVACY_IS_WORTH_PAYING_FOR_STUB.md",
+          "track": "paper",
+          "paper_number": "1.21",
+          "lifecycle": "active draft",
+          "publication_status": "private",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "privacy-is-worth-paying-for",
+          "proto_output_path": "project-phoenix/generated-papers/privacy-is-worth-paying-for.html",
+          "proto_markdown_path": "project-phoenix/generated-papers-src/privacy-is-worth-paying-for.md",
+          "publish": false,
+          "summary": "Separates the privacy argument for local inference from the false claim that the local lane is free."
+        },
+        {
+          "id": "slow-is-not-smart",
+          "title": "Slow Is Not Smart",
+          "source_path": "docs/SLOW_IS_NOT_SMART_STUB.md",
+          "track": "paper",
+          "paper_number": "1.22",
+          "lifecycle": "stub",
+          "publication_status": "private",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "slow-is-not-smart",
+          "proto_output_path": "project-phoenix/generated-papers/slow-is-not-smart.html",
+          "proto_markdown_path": "project-phoenix/generated-papers-src/slow-is-not-smart.md",
+          "publish": false,
+          "summary": "Argues that larger, slower local models are often being treated as quality signals on tasks where the harness is the real bottleneck."
+        },
+        {
+          "id": "please-is-sand-off-a-beach",
+          "title": "Please Is Sand Off A Beach",
+          "source_path": "docs/PLEASE_IS_SAND_OFF_A_BEACH.md",
+          "track": "paper",
+          "paper_number": "1.23",
+          "lifecycle": "frozen",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "please-is-sand-off-a-beach",
+          "proto_output_path": "project-phoenix/generated-papers/please-is-sand-off-a-beach.html",
+          "proto_markdown_path": "project-phoenix/generated-papers-src/please-is-sand-off-a-beach.md",
+          "publish": true,
+          "summary": "Argues that courtesy tokens are negligible compared with structural token waste such as giant context dumps, repeated scaffolding, retries, and missing decomposition."
+        }
+      ]
+    }
+  ]
+}
