@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smarter, Faster, and Bounded by Handoff Discipline</title>
+  <meta name="description" content="Handoff-discipline doctrine for strict machine-facing local-model lanes. Frozen 2026-04-29 with the corrected matrix, the three-datapoint drift addendum, DocDrop as the positive deployment case, and a three-run PPR Lane 2 evidence packet as the adversarial complement.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · frozen</div>
+    <h1>Smarter, Faster, and Bounded by Handoff Discipline</h1>
+    <p class="meta">Handoff-discipline doctrine for strict machine-facing local-model lanes. Frozen 2026-04-29 with the corrected matrix, the three-datapoint drift addendum, DocDrop as the positive deployment case, and a three-run PPR Lane 2 evidence packet as the adversarial complement.</p>
+    <p class="meta">Canonical source: <code>docs/GEMMA_4_IS_SMARTER_GEMMA_3_IS_SAFER.md</code></p>
+    <h2>Status</h2>
+<p>Frozen 2026-04-29. Promoted from active draft on the basis of:</p>
+<ul>
+<li>The corrected protocol-probe matrix (clean-capture rerun, 2026-04-15) that   invalidated the original 0/6 reading of <code>gemma4:26b</code></li>
+<li>The DocDrop production deployment of <code>gemma4:26b</code> <code>/no_think</code> driving   strict 5-field JSON extraction in a real privacy-bounded pipeline</li>
+<li>A captured PPR Lane 2 live evidence packet that, across three runs of the   same eight canonical probes, repeatedly catches model-side parameter   mutation at the validator boundary (RC=3) — the adversarial complement to   DocDrop&#x27;s positive deployment case</li>
+<li>A third dated regression datapoint that strengthened, rather than weakened,   the doctrine: the unsuppressed lane drifted again between 2026-04-28 and   2026-04-29 (<code>6/6 → 5/6</code>), exactly the kind of motion the regression probe   exists to catch</li>
+</ul>
+<h2>Thesis</h2>
+<p>Frontier-class local models like Gemma 4 are smarter and faster than their predecessors, but their default verbose-reasoning posture breaks rigid machine-to-machine JSON handoffs. The operational lesson is not to avoid the smarter model. It is to enforce **handoff discipline** at the deployment boundary. With <code>/no_think</code> suppression and a schema-bound output contract, the same <code>gemma4:26b</code> that previously appeared dangerous clears 6/6 strict- protocol probes and can be made safe for bounded deployment surfaces through strict receive-side discipline.</p>
+<p>This is engineering doctrine, not a bug discovery.</p>
+<h2>How We Arrived Here</h2>
+<h3>1. The original false read</h3>
+<p>The first bounded protocol probe of <code>gemma4:26b</code> returned <code>0/6</code> across three desktop runs. Every output landed as <code>non_json</code>. Read at face value, this looked like a within-family regression: <code>gemma3</code> was passing 3/6–5/6 on the same harness; <code>gemma4</code> had collapsed to 0/6 while running fast and producing clean bundles.</p>
+<p>That read prompted the original framing of this paper line: same family, same harness, same lane — and the newer model couldn&#x27;t stay inside the protocol. The provocative &quot;more dangerous&quot; question mark followed naturally.</p>
+<h3>2. The capture-pipeline finding</h3>
+<p>On 2026-04-15, the harness was instrumented to compare <code>ollama run</code> subprocess capture against the Ollama REST API directly. The legacy path was capturing raw terminal output including VT100 cursor-rewrite sequences (e.g. <code>\x1b[6D\x1b[K</code>) that Ollama uses for its streaming display. Those codes corrupted multi-line JSON at the content level — irrecoverable by post-hoc ANSI stripping.</p>
+<p>Models without thinking-mode preambles (<code>gemma3</code>, <code>qwen2.5</code>) were comparatively immune because their output streamed in a more linear shape. Thinking-mode models (<code>gemma4</code>, <code>gpt-oss</code>) took the worst hits because the preamble-then-answer interleave amplified the corruption.</p>
+<p>The fix was a one-line transport switch: <code>/api/generate</code> with <code>stream: false</code>. The legacy <code>ollama_run</code> path remains, gated behind a flag, for reproduction.</p>
+<p>The original 0/6 measurement was filed upstream as <code>google-deepmind/gemma#604</code>. The corrected matrix in §3 below was posted as a follow-up comment to that issue on 2026-04-16; the issue remains open pending an upstream determination on whether unsuppressed <code>gemma4:26b</code> flat-schema discipline is expected behavior, or whether the recommended default for machine-facing JSON use cases is suppression.</p>
+<h3>3. The corrected matrix (2026-04-15 clean capture)</h3>
+<p>Same harness, same probes, clean capture:</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Mode</th><th>Pass</th></tr></thead>
+<tbody>
+<tr><td><code>gemma3:27b</code></td><td>—</td><td>5/6</td></tr>
+<tr><td><code>qwen2.5:14b</code></td><td>—</td><td>4/6</td></tr>
+<tr><td><code>gemma4:26b</code></td><td>unsuppressed</td><td>4/6</td></tr>
+<tr><td><code>gemma4:26b</code></td><td><code>/no_think</code> suppressed</td><td>**6/6**</td></tr>
+<tr><td><code>gemma4:31b</code></td><td>unsuppressed</td><td>**6/6**</td></tr>
+<tr><td><code>gemma4:31b</code></td><td><code>/no_think</code> suppressed</td><td>**6/6**</td></tr>
+</tbody>
+</table>
+<p>The 0/6 disappeared entirely. Unsuppressed <code>gemma4:26b</code> actually scores 4/6; the two failing probes (PROTO_001, PROTO_004) are flat-schema cases where the thinking preamble interleaves with JSON output even via clean transport. Suppression closes that gap completely.</p>
+<p><code>PROTO_010</code> is the inverse signal: both <code>gemma3:27b</code> and <code>qwen2.5:14b</code> fail it as a genuine multi-entity-reasoning content failure. <code>gemma4</code> passes it. That single probe is the cleanest available evidence for &quot;smarter&quot; — it isolates reasoning quality from protocol compliance.</p>
+<h3>2026-04-29 dated companion table (Ollama 0.20.0)</h3>
+<p>A second clean-capture matrix run on 2026-04-29 produced this companion table. The setup is identical to the April-15 run; only the calendar date and Ollama state have moved:</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Mode</th><th>2026-04-15</th><th>2026-04-29</th></tr></thead>
+<tbody>
+<tr><td><code>gemma3:27b</code></td><td>—</td><td>5/6</td><td>5/6</td></tr>
+<tr><td><code>qwen2.5:14b</code></td><td>—</td><td>4/6</td><td>4/6</td></tr>
+<tr><td><code>gemma4:26b</code></td><td>unsuppressed</td><td>4/6</td><td>5/6</td></tr>
+<tr><td><code>gemma4:26b</code></td><td><code>/no_think</code> suppressed</td><td>**6/6**</td><td>**6/6**</td></tr>
+<tr><td><code>gemma4:31b</code></td><td>unsuppressed</td><td>**6/6**</td><td>_rerun pending (see note)_</td></tr>
+<tr><td><code>gemma4:31b</code></td><td><code>/no_think</code> suppressed</td><td>**6/6**</td><td>_rerun pending (see note)_</td></tr>
+</tbody>
+</table>
+<p>&gt; Note on <code>gemma4:31b</code> rows: the 2026-04-29 rerun against <code>gemma4:31b</code> was &gt; initiated as part of this matrix run but had not completed at freeze time. &gt; <code>gemma4:31b</code> is a ceiling reference for this paper, not the deployment lane; &gt; the bounded thesis rests on the <code>gemma4:26b</code> rows above. The fortnightly &gt; regression cadence will pick up the missing 31b rows on its next scheduled &gt; run; if a result lands earlier, this table will be updated post-freeze.</p>
+<p>The April-15 framing of <code>gemma4:26b</code> unsuppressed as a 4/6 lane was already softened by the 2026-04-28 regression run (6/6) and is softened further by this 2026-04-29 row (5/6). The unsuppressed lane is consistent only in the sense that it consistently moves. The suppressed lane stays at 6/6 across both dates and is the contract production should anchor on.</p>
+<p><code>gemma3:27b</code> and <code>qwen2.5:14b</code> are stable across the two runs and continue to serve as the content-failure controls for <code>PROTO_010</code>.</p>
+<h2>The Handoff Discipline Solution</h2>
+<p>Two operational levers, both deployable today:</p>
+<h3>Lever 1: thinking-mode suppression</h3>
+<p>The <code>/no_think</code> prompt prefix tells <code>gemma4</code> to skip its reasoning preamble and emit the answer directly. It is one token at the top of the prompt. On strict-protocol probes it moves <code>gemma4:26b</code> from 4/6 to 6/6.</p>
+<p>That was the measured 2026-04-15 result. A later scheduled regression probe on 2026-04-28 under Ollama <code>0.20.0</code> found that the unsuppressed gap had closed on this machine: <code>gemma4:26b</code> scored 6/6 both unsuppressed and suppressed. The operational lesson is therefore slightly stronger than the April matrix alone suggested: suppression is a **defensive default**, not an untouchable law of nature. The contract that matters is not &quot;always suppress&quot; but &quot;probe the lane often enough to detect drift before production trust is affected.&quot;</p>
+<h3>Lever 2: schema-bound output contract</h3>
+<p>The Ollama REST API exposes a <code>format: &quot;json&quot;</code> constraint that forces decoded output to be parseable JSON. Combined with an explicit schema in the prompt and a typed validator on the receiving side, the deployment surface becomes:</p>
+<pre><code>
+prompt: /no_think + schema  →  format: &quot;json&quot; enforced at decode  →
+strict typed validator at receive  →  exit 2 (parse) or 3 (schema) on failure
+</code></pre>
+<p>A failure at any stage is observable, not a silent corruption of downstream state. The model is allowed to be verbose if it wants to — the deployment boundary is what stays disciplined.</p>
+<h2>Drift Addendum (2026-04-15 → 2026-04-28 → 2026-04-29, Ollama 0.20.0)</h2>
+<p>Three dated runs are now on record. The unsuppressed lane has moved on every run. The suppressed lane has stayed at 6/6 across all three. That is the load- bearing observation behind the doctrine.</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Mode</th><th>2026-04-15</th><th>2026-04-28</th><th>2026-04-29</th></tr></thead>
+<tbody>
+<tr><td><code>gemma4:26b</code></td><td>unsuppressed</td><td><code>4/6</code></td><td><code>6/6</code></td><td><code>5/6</code></td></tr>
+<tr><td><code>gemma4:26b</code></td><td><code>/no_think</code> suppressed</td><td><code>6/6</code></td><td><code>6/6</code></td><td><code>6/6</code></td></tr>
+<tr><td><code>gemma3:27b</code></td><td>unsuppressed</td><td><code>5/6</code></td><td><code>5/6</code></td><td><code>5/6</code></td></tr>
+<tr><td><code>qwen2.5:14b</code></td><td>unsuppressed</td><td><code>4/6</code></td><td>_not installed_</td><td><code>4/6</code></td></tr>
+</tbody>
+</table>
+<p>Interpretation:</p>
+<ul>
+<li>the April clean-capture correction remains valid across all three runs</li>
+<li>the <code>/no_think</code> suppression contract for <code>gemma4:26b</code> is **stable**   (<code>6/6 → 6/6 → 6/6</code>) — the production lane has not moved</li>
+<li>the unsuppressed lane is **not stable** (<code>4/6 → 6/6 → 5/6</code>) — relying on   <code>gemma4:26b</code> without suppression is exactly the surface a deployment   contract needs to defend against</li>
+<li>the gap between unsuppressed and suppressed is small in absolute terms   (one probe), but it is a real, repeatedly-observed signal, not a one-shot   artifact</li>
+<li>the regression probe did the job it was built for: it caught a movement on   its first run, and the subsequent run confirmed the lane is dynamic enough   to warrant a defensive default rather than a one-shot stability claim</li>
+</ul>
+<p>The 2026-04-29 failing probe in the unsuppressed run was <code>PROTO_001</code>, where <code>gemma4:26b</code> emitted decimal win percentages (<code>0.556</code>, <code>0.513</code>) instead of percentage values (<code>55.6</code>, <code>51.3</code>). The output was clean JSON — the model simply chose a different value contract than the schema asked for. That is the exact failure mode strict receive-side validation is designed to catch.</p>
+<p>The upstream variable across these runs is Ollama <code>0.20.0</code>. This is not enough evidence to assign causality narrowly to Ollama itself; it is enough to state that the live deployment surface keeps changing under fixed model and version labels.</p>
+<p>The doctrine therefore freezes as follows: keep <code>/no_think</code> as the production default for <code>gemma4:26b</code>, but treat it as a **defensive default backed by a fortnightly regression probe**, not as a timeless requirement. The next probe is due 2026-05-13. The exact run command lives in <code>docs/GEMMA_PROTOCOL_VERIFICATION_RUNBOOK.md</code>.</p>
+<h2>Two Bounded Cases</h2>
+<p>The doctrine is supported by two bounded cases that exercise it from opposite directions.</p>
+<ul>
+<li>**Case 1 (DocDrop)** is the positive bounded deployment case: a real   privacy-bounded pipeline where <code>gemma4:26b</code> <code>/no_think</code> drives strict   5-field JSON extraction end-to-end against real meeting documents.</li>
+<li>**Case 2 (PPR Lane 2)** is the adversarial bounded handoff case: a   three-run evidence packet that repeatedly demonstrates <code>gemma4:26b</code>   mutating machine-facing parameters at the validator boundary, and the   receive-side contract catching every mutation at RC=3.</li>
+</ul>
+<p>The two cases are deliberately asymmetric. Case 1 demonstrates the doctrine at work in a successful deployment; Case 2 demonstrates why the doctrine is necessary in the first place. Together they bracket the same operational claim from above and below.</p>
+<h3>Case 1. DocDrop</h3>
+<p>The DocDrop privacy-doc analysis pipeline is the production-grade document extraction case for the handoff-discipline thesis. The use case is bounded but real:</p>
+<ul>
+<li>Sensitive meeting documents on USB media (<code>.docx</code> / <code>.pdf</code>)</li>
+<li>Local-only inference (Ollama on <code>localhost</code>, no data egress)</li>
+<li>Per-document map step → 5-field JSON summary</li>
+<li>Reduce step → final Markdown report</li>
+</ul>
+<p>The map step uses <code>gemma4:26b</code> with <code>/no_think</code> and <code>format: &quot;json&quot;</code>. A receive-side validator type-checks five required fields (<code>document_title</code>, <code>executive_summary</code>, <code>key_action_items</code>, <code>meeting_participants</code>, <code>sentiment_tone</code>). The orchestrator advances its progress file only on <code>RC=0</code>; parse failures (exit 2) and schema failures (exit 3) are first-class signals — the orchestrator skips the document without corrupting the run.</p>
+<p>This is exactly the deployment shape the thesis predicts. The smarter model now runs in a privacy-safe lane it would have been disqualified from under the original false read. Pipeline run and verified end-to-end against real meeting documents.</p>
+<h3>Case 2. PPR Lane 2 Tool Dispatch</h3>
+<p>The second bounded case is a local <code>PPR_Agent</code> query-parser surface where the model is not allowed to answer from memory. It emits one JSON tool-call object for a deterministic SQLite-backed medical-device substrate.</p>
+<p>The strict deployment shape is the same:</p>
+<ul>
+<li>Local-only inference (<code>localhost:11434</code>, Ollama REST API)</li>
+<li><code>gemma4:26b</code> with <code>/no_think</code></li>
+<li><code>format: &quot;json&quot;</code> enforced at decode</li>
+<li>receive-side validation of <code>tool</code> plus per-tool parameter schema</li>
+<li>deterministic dispatch only after validation passes</li>
+<li>explicit failure contract: exit 2 (parse/transport), exit 3 (schema),   exit 4 (dispatch)</li>
+</ul>
+<p>This case matters because it exercises a different kind of machine-facing handoff than DocDrop. The output is not a five-field document summary. It is a bounded action object whose only job is to select a deterministic tool and typed argument set without corrupting the authority boundary.</p>
+<p>This is an adversarial bounded handoff case, not a clean-success case. The strict PPR Lane 2 surface is implemented, evidenced, and validator-correct. The model-facing side is not &quot;production-stable&quot; in the DocDrop sense: across three runs of the same eight probes on the same Ollama version, <code>gemma4:26b</code> emits a different malformed parameter object on a different probe each time. That instability is the point — it is exactly what the receive-side validator exists to catch, and the captured packet shows it doing so on every observed failure at RC=3.</p>
+<p>The packet exercises the eight canonical Lane 2 probes through <code>ppr_ollama.py</code>&#x27;s strict surface and records, for each probe: the raw model response, the validated tool-call payload (or <code>null</code> on rejection), the normalized parameters, the exit code, and the latency.</p>
+<p>The eight probes cover the parameter coverage matrix for the six legacy PPR tools, including one deliberate negative case:</p>
+<table class="paper-table">
+<thead><tr><th>Probe</th><th>Coverage</th><th>Expected exit</th></tr></thead>
+<tbody>
+<tr><td><code>PPR_LANE2_001</code></td><td>scalars + optional category</td><td><code>0</code></td></tr>
+<tr><td><code>PPR_LANE2_002</code></td><td>range + optional category</td><td><code>0</code></td></tr>
+<tr><td><code>PPR_LANE2_003</code></td><td>list + range + alias normalization</td><td><code>0</code></td></tr>
+<tr><td><code>PPR_LANE2_004</code></td><td>optional integers only</td><td><code>0</code></td></tr>
+<tr><td><code>PPR_LANE2_005</code></td><td>range + multi-word company alias</td><td><code>0</code></td></tr>
+<tr><td><code>PPR_LANE2_006</code></td><td>string search term</td><td><code>0</code></td></tr>
+<tr><td><code>PPR_LANE2_007</code></td><td>full optional surface for <code>get_top_devices</code></td><td><code>0</code></td></tr>
+<tr><td><code>PPR_LANE2_008</code></td><td>invalid company in list (negative case)</td><td><code>3</code></td></tr>
+</tbody>
+</table>
+<p>Three dated runs were captured during freeze (2026-04-29, Ollama <code>0.20.0</code>):</p>
+<table class="paper-table">
+<thead><tr><th>Run</th><th>Stamp</th><th>Pass rate</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>ppr_lane2_evidence_20260429T235929Z</code></td><td>4/8</td><td>exposed two prompt/validator inconsistencies (<code>category</code> vs <code>device_category</code>, <code>query</code> vs <code>search_term</code>); fixed in <code>ppr_ollama.py</code> <code>SYSTEM_PROMPT</code></td></tr>
+<tr><td>2</td><td><code>ppr_lane2_evidence_20260430T000100Z</code></td><td>5/8</td><td>post-fix; remaining failures all genuine model-side schema drift</td></tr>
+<tr><td>3</td><td><code>ppr_lane2_evidence_20260430T000304Z</code></td><td>3/8</td><td>post-fix; same probe set, different failure distribution</td></tr>
+</tbody>
+</table>
+<p>Across the three runs, the validator never returned a false positive — every failure was either a real prompt-design bug (run 1) or a genuine model-side schema mutation (runs 2–3). The 2026-04-30 model-side failure modes the validator caught include:</p>
+<ul>
+<li>truncated/garbled JSON literals (<code>&quot;start_year&quot;: 202\t}</code>)</li>
+<li>hallucinated parameter names (<code>end_imbalance_year</code>, <code>end_lag</code>, <code>end_im_year</code>,   <code>device_company_category</code>, <code>search_quadra_term</code>)</li>
+<li>transport timeout on a malformed-input case (negative probe)</li>
+</ul>
+<p>These are exactly the failure modes a deterministic dispatch surface must defend against. Without strict receive-side validation, every one of them would either crash the SQLite layer or, worse, dispatch with the wrong typed arguments and return data that looked plausible but was wrong.</p>
+<p>The headline observation is therefore not the pass rate — it is that the boundary is correctly engineered (every malformed payload was rejected with an observable exit code, and the deterministic substrate was never reached with one) while the model-facing side keeps mutating machine-facing parameters often enough that the validator is load-bearing rather than decorative. That is the bounded operational claim the paper makes for Case 2: the boundary works, and the boundary is necessary, both demonstrated on the same packet.</p>
+<p>Per-probe artifacts and manifests live under <code>domains/DemoAgents/PPR_Agent/benchmark/results/</code>. The runner is <code>scripts/ppr_lane2_evidence_run.py</code> and the canonical probe set lives at <code>domains/DemoAgents/PPR_Agent/benchmark/queries/ppr_lane2_canonical_probes.json</code>.</p>
+<h2>What This Paper Is Not</h2>
+<ul>
+<li>Not a frontier-safety statement about Gemma 4</li>
+<li>Not a claim that thinking-mode is bad</li>
+<li>Not a claim that local models replace frontier capability for arbitrary tasks</li>
+<li>Not a model-quality benchmark — the protocol probes are six bounded   surfaces, not a general competence test</li>
+</ul>
+<h2>What This Paper Is</h2>
+<ul>
+<li>A bounded operational claim about strict-handoff lanes</li>
+<li>A concrete accounting of how the original measurement was wrong, and how   it was caught</li>
+<li>Two bounded case studies showing the deployment discipline that makes   verbose reasoning models usable in machine-to-machine pipelines</li>
+</ul>
+<h2>What Would Strengthen The Paper Further</h2>
+<p>The freeze-time strengtheners (regression probe, dated matrix rerun, PPR evidence packet) all landed and are referenced inline above. The remaining items are post-freeze strengtheners — useful, but not load-bearing for the bounded thesis as frozen:</p>
+<ul>
+<li>A short comparison row for a small frontier model under the same strict-   output prompt (template at <code>docs/CLAUDE_HAIKU_STRICT_ROW_TEMPLATE.md</code>).   This positions local Lane 2 against the cheapest frontier alternative.   Deferred at freeze because the operator&#x27;s frontier API access path was   unavailable; can be added without touching the bounded thesis.</li>
+<li>Additional time-spaced regression-probe runs beyond the three dated runs   on record. The fortnightly cadence is captured in   <code>docs/GEMMA_PROTOCOL_VERIFICATION_RUNBOOK.md</code>. Each subsequent run either   reinforces the suppressed-lane stability claim or surfaces a new drift   signal worth documenting.</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li>Capture-pipeline correction (memory): <code>project_openclaw_protocol_finding.md</code></li>
+<li>Corrected matrix artifacts: <code>docs/MODEL_COMPARISON_PACKET_GEMMA_PROTOCOL.md</code></li>
+<li>Protocol stability packet: <code>docs/GEMMA_PROTOCOL_STABILITY_PACKET.md</code></li>
+<li>Frontier comparison template: <code>docs/CLAUDE_HAIKU_STRICT_ROW_TEMPLATE.md</code></li>
+<li>DocDrop pipeline plan: <code>docs/LOCAL_PRIVACY_DOC_ANALYSIS_PLAN.md</code></li>
+<li>PPR Lane 2 case: <code>docs/PPR_OLLAMA_LANE2_CASE.md</code></li>
+<li>DocDrop scripts: <code>scripts/chalet_run_question.py</code>,   <code>scripts/orchestrate_summaries.py</code>, <code>scripts/final_synthesis.py</code></li>
+<li>PPR strict surface: <code>domains/DemoAgents/PPR_Agent/ppr_ollama.py</code></li>
+<li>PPR Lane 2 evidence runner: <code>scripts/ppr_lane2_evidence_run.py</code></li>
+<li>PPR Lane 2 canonical probe set: <code>domains/DemoAgents/PPR_Agent/benchmark/queries/ppr_lane2_canonical_probes.json</code></li>
+<li>Scheduled suppression check: <code>scripts/gemma4_suppression_regression.py</code></li>
+<li>Matrix rerun runner: <code>scripts/gemma_protocol_matrix_rerun.py</code></li>
+<li>Upstream issue tracking the original false read + correction follow-up:   <code>google-deepmind/gemma#604</code></li>
+<li>OpenClaw routing context: <code>docs/OPENCLAW_ROUTING_POLICY.md</code>,   <code>docs/PHOENIX_WORK_ROUTER_SPEC.md</code> (Lane 2 = local-strict-protocol)</li>
+</ul>
+  </div>
+</body>
+</html>
