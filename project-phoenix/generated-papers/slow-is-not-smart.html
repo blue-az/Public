@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slow Is Not Smart</title>
+  <meta name="description" content="Bounded operator lesson: larger, slower local models do not automatically improve validated Phoenix lanes. Frozen and published 2026-05-01 after SLOW-001 and PTS-001 evidence showed gemma4:31b was slower without improving the measured outcomes.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · frozen</div>
+    <h1>Slow Is Not Smart</h1>
+    <p class="meta">Bounded operator lesson: larger, slower local models do not automatically improve validated Phoenix lanes. Frozen and published 2026-05-01 after SLOW-001 and PTS-001 evidence showed gemma4:31b was slower without improving the measured outcomes.</p>
+    <p class="meta">Canonical source: <code>docs/SLOW_IS_NOT_SMART.md</code></p>
+    <h2>Status</h2>
+<p>Frozen.</p>
+<p>This paper line is frozen after the SLOW-001 DocDrop model-matrix packet plus the PTS-001 synthesis matrix and 3-run replay. The projected synthesis-counterexample failed in the strongest direction — <code>gemma4:31b</code> regressed in 4/4 runs against a fixture that <code>gemma3:27b</code> handled cleanly first try.</p>
+<p>Evidence packets:</p>
+<ul>
+<li><code>docs/domain_runs/SLOW-001/docdrop_model_matrix_report.md</code> — bounded   strict-output extraction</li>
+<li><code>docs/domain_runs/PTS-001/comparison_report.md</code> — synthesis matrix   (<code>gemma3:27b</code> 6/6, <code>gemma4:26b</code> parse_fail at 4096 tok, <code>gemma4:31b</code> 5/6   with hallucinated date)</li>
+<li><code>docs/domain_runs/PTS-001/replay/replay_aggregate.md</code> — 3-run replay of   <code>gemma4:31b</code> on PTS-001 confirming the regression is systematic, not a   one-off artefact</li>
+</ul>
+<p>It is also a companion line to <code>GEMMA_4_IS_SMARTER_GEMMA_3_IS_SAFER.md</code>. That paper makes the doctrine claim about handoff discipline. This one makes the related sizing claim: model scale is not a substitute for task analysis, validation, and a well-bounded lane.</p>
+<h2>Working Claim</h2>
+<p>For the production-shape tasks Project Phoenix actually deploys on — bounded JSON handoff, schema-bound tool dispatch, document field extraction — model size and decoding speed are not reliable quality signals. A slower, larger local model may be the right choice for some workloads, but it must earn that choice on the task surface being measured.</p>
+<p>The narrower form of the claim:</p>
+<ul>
+<li>on strict-output tasks, the bottleneck is prompt + schema + receive-side   validation, not model size</li>
+<li>on those tasks, <code>gemma4:26b</code> and <code>gemma4:31b</code> produce the same outcome at   different speeds</li>
+<li>an operator choosing 30B+ local inference for these lanes may be paying   latency and hardware cost for capability the lane does not use</li>
+</ul>
+<p>The broader form of the claim:</p>
+<ul>
+<li>local-LLM decisions often treat larger models as obviously better</li>
+<li>the Project Phoenix evidence base does not support that assumption for the   task surfaces it has measured</li>
+<li>the right question is not &quot;what is the biggest model I can run?&quot; but &quot;what   model is sufficient for this validated lane?&quot;</li>
+</ul>
+<h2>Why This Paper Exists</h2>
+<p>The hardware decision is real engineering work. A local model is not just a model choice; it brings memory requirements, latency, thermal limits, operator wait time, and maintenance obligations. Those costs are worth paying when the workload needs them. They are waste when the lane is already bounded by schema, validator, and deterministic orchestration.</p>
+<p>There are at least three legitimate reasons to choose larger local capacity:</p>
+<ol>
+<li>the operator has a real use case where 30B+ at 5-10 tok/s is the right tool:    long context, multi-step reasoning, deep summarization over a single    massive input</li>
+<li>the operator is buying optionality: they want the headroom in case (1) becomes    true for them later, even if it is not true now</li>
+<li>the operator is assuming size equals quality without measuring the actual    lane</li>
+</ol>
+<p>This paper is about the third case. It does not argue against larger models. It argues for measuring whether size matters on the task being deployed.</p>
+<h2>How We Arrived Here</h2>
+<h3>1. The DocDrop SLOW-001 experiment</h3>
+<p>A controlled experiment was conducted using the DocDrop task with synthetic fixtures to compare the performance of <code>gemma3:27b</code>, <code>gemma4:26b</code>, and <code>gemma4:31b</code>. The metrics captured included success rate, parse/schema failures, token counts, and wall-time.</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Success Rate</th><th>Total Wall Time (s)</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>:----------</td><td>:-----------</td><td>:------------------</td><td>:---------------------------------------</td></tr>
+<tr><td><code>gemma3:27b</code></td><td>3/3</td><td>32.787</td><td>All successful</td></tr>
+<tr><td><code>gemma4:26b</code></td><td>2/3</td><td>29.920</td><td>One parse failure at max 2048 output tokens</td></tr>
+<tr><td><code>gemma4:31b</code></td><td>3/3</td><td>131.072</td><td>All successful</td></tr>
+</tbody>
+</table>
+<p>**Conclusion:** For this bounded DocDrop extraction task, <code>gemma3:27b</code> and <code>gemma4:31b</code> achieved perfect success rates, but <code>gemma4:31b</code> was about 4x slower. <code>gemma4:26b</code> was fastest overall but had one parse failure. The strongest comparison is therefore <code>gemma3:27b</code> versus <code>gemma4:31b</code>: the smaller model achieved the same validated outcome at a fraction of the wall-time. This supports the claim that larger/slower models do not necessarily improve bounded strict-output tasks enough to justify the cost.</p>
+<h3>2. The Project Phoenix evidence base</h3>
+<p>Two production-shape lanes already deployed and verified:</p>
+<ul>
+<li>DocDrop privacy-doc extraction: <code>gemma4:26b</code> <code>/no_think</code>, 5-field JSON   output, schema-validated, runs at production speed. Verified end-to-end   against real meeting documents.</li>
+<li>PPR Lane 2 strict tool-call dispatch: <code>gemma4:26b</code> <code>/no_think</code>,   per-tool schema validation, exit codes 2/3/4 distinct on failure.   Hardened code committed; live evidence capture in progress.</li>
+</ul>
+<p>Both lanes use 26B. Neither needs more.</p>
+<h3>3. The 26B vs 31B contrast on strict-protocol probes</h3>
+<p>Same harness, same six bounded probes, two clean-capture rerun dates:</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Mode</th><th>2026-04-15</th><th>2026-04-28 (Ollama 0.20.0)</th></tr></thead>
+<tbody>
+<tr><td><code>gemma4:26b</code></td><td>unsuppressed</td><td>4/6</td><td>6/6</td></tr>
+<tr><td><code>gemma4:26b</code></td><td><code>/no_think</code></td><td>6/6</td><td>6/6</td></tr>
+<tr><td><code>gemma4:31b</code></td><td>unsuppressed</td><td>6/6</td><td>(incomplete)</td></tr>
+<tr><td><code>gemma4:31b</code></td><td><code>/no_think</code></td><td>6/6</td><td>(incomplete)</td></tr>
+</tbody>
+</table>
+<p>The 31B advantage in April was that it cleared 6/6 unsuppressed where 26B needed <code>/no_think</code>. Under Ollama 0.20.0 that gap closed upstream. As of the April 28 rerun, the two models produce the same passing outcome on strict tasks, with 31B running materially slower.</p>
+<p>The 31B incomplete cell on April 28 is partly an honest signal: the rerun did not finish cleanly because 31B is slow enough that the operator gave up. That operator behavior is itself the paper.</p>
+<h3>4. The &quot;slow is good for documents&quot; framing</h3>
+<p>There is a recurring assumption that slower or larger models are better for document scanning, OCR-adjacent extraction, or other ingestion-heavy work.</p>
+<p>The DocDrop deployment is exactly that lane — bounded extraction from real documents into a strict 5-field JSON contract — and it runs at production speed on 26B. There is no point in the pipeline where a slower 31B (or larger) would produce a better extraction. The bottleneck is the prompt and the receive-side validator, not the model.</p>
+<p>This is one of the cleanest places to test the conflation. If the paper needs a single empirical anchor, this is it.</p>
+<h2>Measured Counterexample: PTS-001</h2>
+<p>The honest counterexample to SLOW-001 had to be a task that requires synthesis rather than extraction. PTS-001 — Project Timeline Synthesis — is that task. The model receives a mixed bundle of emails, meeting minutes, and project updates, then must construct a chronological timeline, order explicit and implied dates, identify conflicts between delays and firm deadlines, notice suggestions that were later overridden, and produce impact statements that explain timeline, cost, or scope risk.</p>
+<p>The hypothesis going in was that <code>gemma3:27b</code> and <code>gemma4:26b</code> might extract many events but struggle with ordering, conflict detection, and impact analysis, while <code>gemma4:31b</code> would have a plausible chance to produce a stronger synthesis — earning its wall-time cost.</p>
+<p>That hypothesis did not survive the measurement.</p>
+<p>Single fixture (<code>tests/fixtures/pts_synthetic/fixture_pts_001.txt</code>), three-model matrix, one-shot, no retries. Full ledger: <code>docs/domain_runs/PTS-001/comparison_report.md</code>.</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Outcome</th><th>Wall (s)</th><th>Output tok</th><th>Quality probes</th></tr></thead>
+<tbody>
+<tr><td>:------------</td><td>:----------</td><td>:-------</td><td>:---------</td><td>:-------------</td></tr>
+<tr><td><code>gemma3:27b</code></td><td>success</td><td>26.93</td><td>770</td><td>**6 / 6**</td></tr>
+<tr><td><code>gemma4:26b</code></td><td>parse_fail</td><td>47.54</td><td>4096 (cap)</td><td>n/a</td></tr>
+<tr><td><code>gemma4:31b</code></td><td>success</td><td>133.98</td><td>758</td><td>5 / 6</td></tr>
+</tbody>
+</table>
+<p>The &quot;quality probes&quot; are heuristic, not human-judged: chronological ordering, StarStream-override detection, deadline-slip detection, and substantive impact analysis on the override and the firm deadline. The point lost by <code>31b</code> was chronological order, because the model emitted a hallucinated date <code>&quot;2026-63-26&quot;</code> (impossible month 63) and placed it out of sequence in the timeline. <code>gemma3:27b</code> also captured multi-owner attribution on joint meetings, which <code>31b</code> collapsed to single-owner rows.</p>
+<p><code>gemma4:26b</code> failed in the same way SLOW-001 documented: ran the output budget out without finishing the JSON. Doubling <code>num_predict</code> from 2048 to 4096 did not save it on the synthesis surface — the model was verbose enough to exhaust the larger budget too.</p>
+<p>The headline finding for the paper: on this single synthesis fixture, the slower / larger model was **both slower and worse**. It paid roughly 5x the wall time of <code>27b</code> and produced a hallucinated impossible date plus reduced owner attribution. The failed counterexample matters because PTS-001 was the lane where larger size was supposed to have the best chance to win.</p>
+<p>This makes the working claim broader rather than narrower. The single-fixture caveat still applies: PTS-001 is n=1, the probes are heuristic, the hallucinated date could be a generation artefact rather than a systematic regression. A second fixture or a 3-run repeat on the same fixture is the reasonable hardening step before the synthesis-lane claim is treated as load-bearing.</p>
+<h2>Where Size Might Genuinely Matter</h2>
+<p>The paper should not overclaim. There are real task surfaces where larger local models earn their cost:</p>
+<ul>
+<li>very long context (single document or thread well past 32k tokens)</li>
+<li>multi-step reasoning where 26B plateaus and 31B+ does not</li>
+<li>creative or open-ended summarization where output quality is judged by a   human reader, not a strict validator</li>
+<li>agentic loops where the model needs to make many small judgment calls   without supervision</li>
+</ul>
+<p>None of these are the strict-handoff lanes Project Phoenix deploys on. All of them deserve a fair audit if this paper line is going to be honest about where the conflation breaks down.</p>
+<h2>What This Paper Is Not</h2>
+<ul>
+<li>Not a general benchmark of Gemma-family models</li>
+<li>Not a claim that larger local models are useless</li>
+<li>Not a recommendation to avoid local hardware investment</li>
+<li>Not a claim about every long-context or open-ended reasoning workload</li>
+</ul>
+<h2>What This Paper Is</h2>
+<ul>
+<li>A bounded operator lesson from Project Phoenix lanes</li>
+<li>A warning against treating latency or model size as a proxy for quality</li>
+<li>A reminder that strict-handoff systems are often limited by prompt,   schema, validator, and orchestration design rather than by raw model size</li>
+<li>A case for choosing the smallest model that clears the lane with acceptable   quality, reliability, and latency</li>
+</ul>
+<h2>What Would Strengthen The Frozen Claim Further</h2>
+<p>These are nice-to-haves, not freeze blockers:</p>
+<ul>
+<li>A dated market snapshot — Mac Mini availability, ordering lead time, the   specific configurations buyers are choosing.</li>
+<li>Public-signal sample — Reddit / HN / discord discussions about why buyers   are choosing 30B+ class hardware over smaller local lanes.</li>
+<li>A second synthesis fixture (different domain) to extend the synthesis-lane   finding beyond a single project-timeline shape.</li>
+</ul>
+<h2>Current Rule</h2>
+<p>This document is Frozen.</p>
+<p>The DocDrop bounded-extraction lane and the PTS-001 synthesis lane both support the same finding: the smaller, faster, supposedly less capable model produced the better outcome. The 31b regression on PTS-001 is reproducible across four runs in three distinct failure modes — broken chronology in 3/4, hallucinated impossible date in 1/4, dropped required field in 1/4 — while 27b handled the same fixture cleanly first try.</p>
+<p>The freeze is bounded as the paper writes it: the claim is about strict- handoff and timeline-synthesis lanes Project Phoenix actually deploys on, not about every conceivable use of a local LLM. Lanes where larger size genuinely helps (very long context, deep summarisation, agentic loops) remain explicitly out of scope.</p>
+  </div>
+</body>
+</html>
