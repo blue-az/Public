@@ -1,0 +1,14 @@
+# Project Phoenix → Bulkhead τ migration redirects.
+#
+# Phase 4 of the public-rebrand rollout (2026-05-01). Frozen paper artifacts
+# have been mirrored to /bulkhead-tau/generated-papers/ (HTML) and
+# /bulkhead-tau/generated-papers-src/ (markdown) by publish_paper.py. These
+# 301s send legacy /project-phoenix/... paper URLs to their new homes,
+# preserving slugs.
+#
+# Pages OTHER than the generated paper artifacts (philosophy.html,
+# architecture.html, etc.) are intentionally NOT redirected — the
+# project-phoenix landing remains as the engineering-core surface for now,
+# per the in-steps rollout decision (option B).
+
+RedirectMatch 301 ^/project-phoenix/(generated-papers|generated-papers-src)/(.+)$ /bulkhead-tau/$1/$2
