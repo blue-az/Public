@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-04-30T22:34:01.961215+00:00",
+  "generated_at": "2026-05-01T02:16:47.497685+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -28,18 +28,18 @@
         {
           "id": "privacy-is-worth-paying-for",
           "title": "Privacy Is Worth Paying For",
-          "source_path": "docs/PRIVACY_IS_WORTH_PAYING_FOR_STUB.md",
+          "source_path": "docs/PRIVACY_IS_WORTH_PAYING_FOR.md",
           "track": "paper",
           "paper_number": "1.21",
-          "lifecycle": "active draft",
-          "publication_status": "private",
+          "lifecycle": "frozen",
+          "publication_status": "published",
           "paper_group": "Local LLM Operator Judgment",
-          "group_status": "provisional",
+          "group_status": "confirmed",
           "public_slug": "privacy-is-worth-paying-for",
           "proto_output_path": "project-phoenix/generated-papers/privacy-is-worth-paying-for.html",
           "proto_markdown_path": "project-phoenix/generated-papers-src/privacy-is-worth-paying-for.md",
-          "publish": false,
-          "summary": "Separates the privacy argument for local inference from the false claim that the local lane is free."
+          "publish": true,
+          "summary": "Separates the privacy argument for local inference from the false claim that the local lane is free. Frozen 2026-05-01 with PPR Lane 2 and DocDrop same-task local-vs-frontier ledgers."
         },
         {
           "id": "slow-is-not-smart",
