@@ -16,7 +16,7 @@ It is the third frozen companion line in the local-LLM operator-judgment cluster
 
 - `GEMMA_4_IS_SMARTER_GEMMA_3_IS_SAFER.md` — handoff-discipline
   doctrine; model-behavior conflation
-- `SLOW_IS_NOT_SMART_STUB.md` — size / quality conflation
+- `SLOW_IS_NOT_SMART.md` — size / quality conflation
 - `PLEASE_IS_SAND_OFF_A_BEACH.md` — token-cost attribution; ritual-vs-structural waste conflation
 - this paper — cost / privacy conflation
 
@@ -155,7 +155,7 @@ several places that an API-boundary view misses.
 ### Capex
 
 - the 32GB+ unified-memory hardware that runs a 26B-class model fluently
-  is real money — see `SLOW_IS_NOT_SMART_STUB.md`
+  is real money — see `SLOW_IS_NOT_SMART.md`
 
 ## Where the Trade Is Right
 

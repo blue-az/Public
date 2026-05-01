@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Phoenix Research Papers</title>
-    <meta name="description" content="Twenty-one primary research papers from Project Phoenix — grounded domain systems, orchestration, local inference, operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, and applied production evidence.">
+    <meta name="description" content="Twenty-three primary research papers from Project Phoenix — grounded domain systems, orchestration, local inference, operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, applied production evidence, and local LLM operator judgment.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,12 +13,12 @@
         <header class="header">
             <span class="badge">Project Phoenix · Research Portfolio</span>
             <h1>Project Phoenix Papers</h1>
-            <p class="subtitle">Twenty-one primary papers on grounded domain systems, orchestration architecture, agentic operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, and applied production evidence</p>
+            <p class="subtitle">Twenty-three primary papers on grounded domain systems, orchestration architecture, agentic operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, applied production evidence, and local LLM operator judgment</p>
         </header>
 
         <div class="stats">
             <a class="stat" href="#inventory">
-                <span class="num">21</span>
+                <span class="num">23</span>
                 <span class="label">Primary Papers</span>
             </a>
             <a class="stat" href="#inventory">
@@ -26,7 +26,7 @@
                 <span class="label">Live Sites</span>
             </a>
             <a class="stat" href="#clusters">
-                <span class="num">9</span>
+                <span class="num">10</span>
                 <span class="label">Research Clusters</span>
             </a>
             <div class="stat">
@@ -52,7 +52,7 @@
         </div>
 
         <div class="callout" style="margin-top:1rem;">
-            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality.</p>
+            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.23 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, and token-cost attention.</p>
         </div>
 
         <!-- Reading Guide -->
@@ -87,6 +87,10 @@
                 <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
                     <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Applied / Production Evidence</h3>
                     <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Paper 1.18</strong> is the first numbered production case — PPR Agent running against government-mandated cardiac device data for 18 years. This is field validation, not lane validation — the framework operating against regulated disclosures from three manufacturers.</p>
+                </div>
+                <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
+                    <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Local LLM Operator Judgment</h3>
+                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.20–1.23</strong> turn the Phoenix evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, and where token-cost attention actually belongs.</p>
                 </div>
             </div>
         </section>
@@ -317,7 +321,7 @@
         <!-- Cluster X -->
         <section class="section">
             <div class="cluster-heading">X &nbsp;·&nbsp; Local LLM Operator Judgment</div>
-            <p style="margin-bottom:1.2rem; color:var(--ink-muted); font-style:italic; font-size:var(--font-size-sm);">Where token-cost attention belongs, and where it does not.</p>
+            <p style="margin-bottom:1.2rem; color:var(--ink-muted); font-style:italic; font-size:var(--font-size-sm);">Operational judgment for local LLM lanes: handoff discipline, privacy cost, sizing discipline, and token-cost attention.</p>
 
             <div class="grid-2">
 
@@ -325,6 +329,20 @@
                     <span class="paper-num">Paper 1.20</span>
                     <h3>Smarter, Faster, and Bounded by Handoff Discipline</h3>
                     <p class="paper-thesis">Handoff-discipline doctrine for strict machine-facing local-model lanes.</p>
+                    <span class="paper-link">Open paper →</span>
+                </a>
+
+                <a class="paper-card" href="../project-phoenix/generated-papers/privacy-is-worth-paying-for.html" target="_blank">
+                    <span class="paper-num">Paper 1.21</span>
+                    <h3>Privacy Is Worth Paying For</h3>
+                    <p class="paper-thesis">Separates the privacy argument for local inference from the false claim that the local lane is free. The operational question is when privacy, control, and auditability justify the real cost.</p>
+                    <span class="paper-link">Open paper →</span>
+                </a>
+
+                <a class="paper-card" href="../project-phoenix/generated-papers/slow-is-not-smart.html" target="_blank">
+                    <span class="paper-num">Paper 1.22</span>
+                    <h3>Slow Is Not Smart</h3>
+                    <p class="paper-thesis">Larger, slower local models do not automatically improve validated Phoenix lanes. Strict-handoff systems are often bounded by prompt, schema, validator, and orchestration design rather than raw model size.</p>
                     <span class="paper-link">Open paper →</span>
                 </a>
 
@@ -485,13 +503,25 @@
                             <td class="url-cell"><a href="../ppr-agent/" target="_blank">ppr-agent/</a></td>
                         </tr>
                         <tr class="table-group-header">
-                            <td colspan="4">Local LLM Operator Judgment — 1.20 and 1.23</td>
+                            <td colspan="4">Local LLM Operator Judgment — 1.20 through 1.23</td>
                         </tr>
                         <tr>
                             <td>1.20</td>
                             <td>Smarter, Faster, and Bounded by Handoff Discipline</td>
                             <td>Local LLM</td>
                             <td class="url-cell"><a href="../project-phoenix/generated-papers/gemma-handoff-discipline.html" target="_blank">project-phoenix/generated-papers/</a></td>
+                        </tr>
+                        <tr>
+                            <td>1.21</td>
+                            <td>Privacy Is Worth Paying For</td>
+                            <td>Local LLM</td>
+                            <td class="url-cell"><a href="../project-phoenix/generated-papers/privacy-is-worth-paying-for.html" target="_blank">project-phoenix/generated-papers/</a></td>
+                        </tr>
+                        <tr>
+                            <td>1.22</td>
+                            <td>Slow Is Not Smart</td>
+                            <td>Local LLM</td>
+                            <td class="url-cell"><a href="../project-phoenix/generated-papers/slow-is-not-smart.html" target="_blank">project-phoenix/generated-papers/</a></td>
                         </tr>
                         <tr>
                             <td>1.23</td>
@@ -502,7 +532,7 @@
                     </tbody>
                 </table>
             </div>
-            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/.</p>
+            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/. Papers 1.20–1.23 live under project-phoenix/generated-papers/ and are also exposed through phoenix-groups.html.</p>
         </section>
 
         <footer class="footer">
