@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-05-01T02:16:47.497685+00:00",
+  "generated_at": "2026-05-01T04:46:55.983876+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -47,7 +47,7 @@
           "source_path": "docs/SLOW_IS_NOT_SMART_STUB.md",
           "track": "paper",
           "paper_number": "1.22",
-          "lifecycle": "stub",
+          "lifecycle": "active draft",
           "publication_status": "private",
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "provisional",
@@ -55,7 +55,7 @@
           "proto_output_path": "project-phoenix/generated-papers/slow-is-not-smart.html",
           "proto_markdown_path": "project-phoenix/generated-papers-src/slow-is-not-smart.md",
           "publish": false,
-          "summary": "Argues that larger, slower local models are often being treated as quality signals on tasks where the harness is the real bottleneck."
+          "summary": "Argues that larger, slower local models are often being treated as quality signals on tasks where the harness is the real bottleneck. Promoted to active draft with the SLOW-001 DocDrop model-matrix packet; freeze still requires a measured reasoning-heavy counterexample."
         },
         {
           "id": "please-is-sand-off-a-beach",
