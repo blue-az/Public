@@ -21,6 +21,8 @@
     .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
     .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
     .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
   </style>
 </head>
 <body>
@@ -40,7 +42,7 @@
 </ul>
 <p>It is also a companion line to <code>GEMMA_4_IS_SMARTER_GEMMA_3_IS_SAFER.md</code>. That paper makes the doctrine claim about handoff discipline. This one makes the related sizing claim: model scale is not a substitute for task analysis, validation, and a well-bounded lane.</p>
 <h2>Working Claim</h2>
-<p>For the production-shape tasks Project Phoenix actually deploys on — bounded JSON handoff, schema-bound tool dispatch, document field extraction — model size and decoding speed are not reliable quality signals. A slower, larger local model may be the right choice for some workloads, but it must earn that choice on the task surface being measured.</p>
+<p>For the production-shape tasks Bulkhead τ actually deploys on — bounded JSON handoff, schema-bound tool dispatch, document field extraction — model size and decoding speed are not reliable quality signals. A slower, larger local model may be the right choice for some workloads, but it must earn that choice on the task surface being measured.</p>
 <p>The narrower form of the claim:</p>
 <ul>
 <li>on strict-output tasks, the bottleneck is prompt + schema + receive-side   validation, not model size</li>
@@ -151,6 +153,11 @@
 <p>This document is Frozen.</p>
 <p>The DocDrop bounded-extraction lane and the PTS-001 synthesis lane both support the same finding: the smaller, faster, supposedly less capable model produced the better outcome. The 31b regression on PTS-001 is reproducible across four runs in three distinct failure modes — broken chronology in 3/4, hallucinated impossible date in 1/4, dropped required field in 1/4 — while 27b handled the same fixture cleanly first try.</p>
 <p>The freeze is bounded as the paper writes it: the claim is about strict- handoff and timeline-synthesis lanes Project Phoenix actually deploys on, not about every conceivable use of a local LLM. Lanes where larger size genuinely helps (very long context, deep summarisation, agentic loops) remain explicitly out of scope.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Engineering core: <a href="/project-phoenix/">Project Phoenix</a>.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
   </div>
 </body>
 </html>

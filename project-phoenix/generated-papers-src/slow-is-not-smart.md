@@ -28,7 +28,7 @@ validation, and a well-bounded lane.
 
 ## Working Claim
 
-For the production-shape tasks Project Phoenix actually deploys on — bounded
+For the production-shape tasks Bulkhead τ actually deploys on — bounded
 JSON handoff, schema-bound tool dispatch, document field extraction — model
 size and decoding speed are not reliable quality signals. A slower, larger
 local model may be the right choice for some workloads, but it must earn that
