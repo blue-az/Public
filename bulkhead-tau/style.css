@@ -1,0 +1,383 @@
+:root {
+    --paper: #f4efe6;
+    --paper-dark: #e7dccb;
+    --ink: #2b2420;
+    --ink-muted: #5a4f46;
+    --border: #c8b9a6;
+    --accent: #7a6653;
+    --highlight: #efe3d3;
+    --shadow: rgba(43, 36, 32, 0.15);
+    --body-font: "Baskerville", "Garamond", "Palatino Linotype", "Times New Roman", serif;
+    --display-font: "Didot", "Bodoni MT", "Bodoni 72", "Garamond", "Times New Roman", serif;
+    --font-size-sm: 0.9rem;
+    --font-size-md: 1.1rem;
+    --font-size-lg: clamp(2.5rem, 4.4vw, 3.8rem);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--body-font);
+    font-size: var(--font-size-md);
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0)),
+        repeating-linear-gradient(0deg, rgba(90, 79, 70, 0.06) 0px, rgba(90, 79, 70, 0.06) 1px, transparent 1px, transparent 4px),
+        repeating-linear-gradient(90deg, rgba(90, 79, 70, 0.04) 0px, rgba(90, 79, 70, 0.04) 1px, transparent 1px, transparent 6px);
+    min-height: 100vh;
+}
+
+.page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 3rem;
+}
+
+.header {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border: 2px solid var(--border);
+    background: var(--highlight);
+    box-shadow: 0 10px 24px var(--shadow);
+}
+
+.header h1 {
+    font-family: var(--display-font);
+    font-size: var(--font-size-lg);
+    letter-spacing: 1px;
+    margin-bottom: 0.4rem;
+}
+
+.header .subtitle {
+    font-style: italic;
+    color: var(--ink-muted);
+    font-size: var(--font-size-md);
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin: 1.8rem 0 2rem;
+}
+
+.nav a {
+    text-decoration: none;
+    color: var(--ink);
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.9rem;
+    background: #fff8ee;
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    letter-spacing: 1px;
+}
+
+.section {
+    margin-bottom: 2rem;
+    padding: 1.6rem;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 6px 16px var(--shadow);
+}
+
+.section h2 {
+    font-family: var(--display-font);
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+}
+
+.section p {
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.section ul {
+    padding-left: 1.2rem;
+    line-height: 1.6;
+}
+
+.grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card {
+    border: 1px solid var(--border);
+    padding: 1rem;
+    background: var(--paper-dark);
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: #fff6ea;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-md);
+}
+
+.table th,
+.table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem;
+    text-align: left;
+}
+
+.table th {
+    background: var(--paper-dark);
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    letter-spacing: 1px;
+}
+
+.code {
+    font-family: "Courier New", Courier, monospace;
+    background: #f7f0e4;
+    padding: 0.75rem 1rem;
+    border: 1px dashed var(--accent);
+    font-size: var(--font-size-sm);
+    white-space: pre-wrap;
+}
+
+.footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--ink-muted);
+}
+
+.geo-banner {
+    display: grid;
+    grid-template-columns: 96px 1fr 140px;
+    align-items: center;
+    margin: 0 0 2rem;
+    min-height: 86px;
+    padding: 0;
+    text-decoration: none;
+    color: #2e1400;
+    border: 4px outset #f7f0ff;
+    background:
+        linear-gradient(180deg, #2f008f 0%, #001f7a 100%);
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.45) inset,
+        0 0 18px rgba(80, 74, 255, 0.28),
+        0 12px 24px rgba(122, 102, 83, 0.18);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    image-rendering: pixelated;
+}
+
+.geo-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 8px, transparent 8px 16px),
+        linear-gradient(90deg, transparent 0 12%, rgba(255,255,255,0.1) 12% 13%, transparent 13% 87%, rgba(255,255,255,0.1) 87% 88%, transparent 88% 100%);
+    pointer-events: none;
+}
+
+.geo-banner::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+
+.geo-banner:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.6) inset,
+        0 0 26px rgba(80, 74, 255, 0.45),
+        0 18px 36px rgba(122, 102, 83, 0.22);
+}
+
+.geo-banner-side {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    height: 100%;
+    z-index: 1;
+}
+
+.geo-banner-side-left {
+    background:
+        linear-gradient(180deg, #ff37a8, #ff8d1f);
+    border-right: 3px solid rgba(255,255,255,0.35);
+    padding: 0.4rem 0.2rem;
+}
+
+.geo-banner-side-right {
+    display: grid;
+    gap: 0.25rem;
+    background:
+        linear-gradient(180deg, #fff15d, #ff9f1c);
+    border-left: 3px solid rgba(0,0,0,0.18);
+    color: #180021;
+}
+
+.geo-banner-image {
+    display: block;
+    max-width: 70px;
+    height: auto;
+    filter: drop-shadow(1px 2px 0 rgba(0,0,0,0.4));
+}
+
+.geo-banner-image-ball {
+    width: 46px;
+}
+
+.geo-banner-image-monitor {
+    width: 60px;
+}
+
+.geo-banner-main {
+    display: grid;
+    gap: 0.1rem;
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+    padding: 0.4rem 1rem;
+    z-index: 1;
+}
+
+.geo-banner-kicker {
+    font-family: "Arial Black", "Trebuchet MS", sans-serif;
+    font-size: 0.72rem;
+    line-height: 1;
+    color: #fff37f;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.55);
+}
+
+.geo-banner-title {
+    font-family: "Arial Black", "Trebuchet MS", sans-serif;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    line-height: 0.9;
+    letter-spacing: 1.4px;
+    color: #ffffff;
+    text-shadow:
+        2px 2px 0 rgba(0, 0, 0, 0.65),
+        0 0 10px rgba(255, 95, 198, 0.25);
+}
+
+.geo-banner-copy {
+    font-family: "Arial Black", "Trebuchet MS", sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.02;
+    color: #fff4a8;
+    font-weight: 900;
+    max-width: 44rem;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.55);
+}
+
+.geo-banner-cta {
+    padding: 0.45rem 0.55rem;
+    border: 3px outset #fff6a0;
+    background: linear-gradient(180deg, #ff39b8, #7a00a3);
+    color: #fffbea;
+    font-family: "Arial Black", "Trebuchet MS", sans-serif;
+    font-size: 1rem;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.55);
+    animation: cta-blink 1s step-start infinite;
+    box-shadow: 0 0 10px rgba(255, 57, 184, 0.4);
+}
+
+.geo-banner-mini {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.18);
+}
+
+@keyframes cta-blink {
+    50% { filter: brightness(1.25); }
+}
+
+.pullquote {
+    text-align: center;
+    padding: 1.8rem 2.5rem;
+    margin-bottom: 2rem;
+    border-top: 2px solid var(--border);
+    border-bottom: 2px solid var(--border);
+    background: var(--highlight);
+}
+
+.pullquote p {
+    font-family: var(--display-font);
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.5;
+    letter-spacing: 0.2px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+}
+
+@media (max-width: 720px) {
+    .page {
+        padding: 2rem 1rem 2.5rem;
+    }
+
+    .section {
+        padding: 1.2rem;
+    }
+
+    .geo-banner {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .geo-banner-side {
+        border: 0;
+        background: transparent;
+        color: inherit;
+    }
+
+    .geo-banner-cta {
+        justify-self: center;
+    }
+
+    .geo-banner-main {
+        padding: 0;
+    }
+}
