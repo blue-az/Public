@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-05-01T06:27:50.359583+00:00",
+  "generated_at": "2026-05-02T02:14:51.970363+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -22,6 +22,12 @@
           "public_slug": "gemma-handoff-discipline",
           "proto_output_path": "project-phoenix/generated-papers/gemma-handoff-discipline.html",
           "proto_markdown_path": "project-phoenix/generated-papers-src/gemma-handoff-discipline.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/gemma-handoff-discipline.html",
+              "markdown": "bulkhead-tau/generated-papers-src/gemma-handoff-discipline.md"
+            }
+          ],
           "publish": true,
           "summary": "Handoff-discipline doctrine for strict machine-facing local-model lanes. Frozen 2026-04-29 with the corrected matrix, the three-datapoint drift addendum, DocDrop as the positive deployment case, and a three-run PPR Lane 2 evidence packet as the adversarial complement."
         },
@@ -38,6 +44,12 @@
           "public_slug": "privacy-is-worth-paying-for",
           "proto_output_path": "project-phoenix/generated-papers/privacy-is-worth-paying-for.html",
           "proto_markdown_path": "project-phoenix/generated-papers-src/privacy-is-worth-paying-for.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/privacy-is-worth-paying-for.html",
+              "markdown": "bulkhead-tau/generated-papers-src/privacy-is-worth-paying-for.md"
+            }
+          ],
           "publish": true,
           "summary": "Separates the privacy argument for local inference from the false claim that the local lane is free. Frozen 2026-05-01 with PPR Lane 2 and DocDrop same-task local-vs-frontier ledgers."
         },
@@ -54,6 +66,12 @@
           "public_slug": "slow-is-not-smart",
           "proto_output_path": "project-phoenix/generated-papers/slow-is-not-smart.html",
           "proto_markdown_path": "project-phoenix/generated-papers-src/slow-is-not-smart.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/slow-is-not-smart.html",
+              "markdown": "bulkhead-tau/generated-papers-src/slow-is-not-smart.md"
+            }
+          ],
           "publish": true,
           "summary": "Bounded operator lesson: larger, slower local models do not automatically improve validated Phoenix lanes. Frozen and published 2026-05-01 after SLOW-001 and PTS-001 evidence showed gemma4:31b was slower without improving the measured outcomes."
         },
@@ -70,8 +88,36 @@
           "public_slug": "please-is-sand-off-a-beach",
           "proto_output_path": "project-phoenix/generated-papers/please-is-sand-off-a-beach.html",
           "proto_markdown_path": "project-phoenix/generated-papers-src/please-is-sand-off-a-beach.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/please-is-sand-off-a-beach.html",
+              "markdown": "bulkhead-tau/generated-papers-src/please-is-sand-off-a-beach.md"
+            }
+          ],
           "publish": true,
           "summary": "Argues that courtesy tokens are negligible compared with structural token waste such as giant context dumps, repeated scaffolding, retries, and missing decomposition."
+        },
+        {
+          "id": "the-model-is-not-the-function",
+          "title": "The Model Is Not The Function",
+          "source_path": "docs/THE_MODEL_IS_NOT_THE_FUNCTION.md",
+          "track": "paper",
+          "paper_number": "1.24",
+          "lifecycle": "frozen",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "the-model-is-not-the-function",
+          "proto_output_path": "project-phoenix/generated-papers/the-model-is-not-the-function.html",
+          "proto_markdown_path": "project-phoenix/generated-papers-src/the-model-is-not-the-function.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/the-model-is-not-the-function.html",
+              "markdown": "bulkhead-tau/generated-papers-src/the-model-is-not-the-function.md"
+            }
+          ],
+          "publish": true,
+          "summary": "For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec, not against the visual length of the code it replaces. Frozen 2026-05-01 with CAP-001 (six-orders-of-magnitude wall-time gap to the smallest LLM that matches the spec-aware lane) and LIB-001 (19/19 empty-output failure on gemma4:26b, reproduced and confirmed not to be a num_predict clipping artifact)."
         }
       ]
     }

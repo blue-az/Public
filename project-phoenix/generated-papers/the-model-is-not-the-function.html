@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Model Is Not The Function</title>
+  <meta name="description" content="For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec, not against the visual length of the code it replaces. Frozen 2026-05-01 with CAP-001 (six-orders-of-magnitude wall-time gap to the smallest LLM that matches the spec-aware lane) and LIB-001 (19/19 empty-output failure on gemma4:26b, reproduced and confirmed not to be a num_predict clipping artifact).">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · frozen</div>
+    <h1>The Model Is Not The Function</h1>
+    <p class="meta">For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec, not against the visual length of the code it replaces. Frozen 2026-05-01 with CAP-001 (six-orders-of-magnitude wall-time gap to the smallest LLM that matches the spec-aware lane) and LIB-001 (19/19 empty-output failure on gemma4:26b, reproduced and confirmed not to be a num_predict clipping artifact).</p>
+    <p class="meta">Canonical source: <code>docs/THE_MODEL_IS_NOT_THE_FUNCTION.md</code></p>
+    <p>**Status:** frozen 2026-05-01</p>
+<p>**Paper group:** Local LLM Operator Judgment</p>
+<h2>Working Claim</h2>
+<p>Short code, simple code, fewer lines, fewer dependencies, and better systems are often conflated. The same mistake now appears in LLM-runtime arguments: a model call can make code look simpler while making the system less deterministic, slower, more expensive, and harder to verify.</p>
+<p>The claim is not that model calls are bad. The claim is narrower:</p>
+<p>&gt; For bounded predicates with deterministic oracles, an LLM must earn runtime &gt; use against a written spec, not against the visual length of the code it &gt; replaces.</p>
+<h2>Why This Paper Exists</h2>
+<p>The common &quot;coding in 2027&quot; joke compares a tiny deterministic helper against a large model-call wrapper. That is funny because it is partly true, but the comparison may be measuring the wrong thing.</p>
+<p>This is also an old argument about libraries and lines of code:</p>
+<ul>
+<li>importing a dependency for three lines can be waste, or it can be the right   abstraction if it carries edge cases and maintenance value</li>
+<li>lines of code count within a stable context, but become noisy across   programmers, languages, specs, and edge-case expectations</li>
+<li>shorter code is not automatically simpler systems code</li>
+</ul>
+<h2>Scope and Non-Claims</h2>
+<p>This paper is narrow on purpose.</p>
+<ul>
+<li>**In scope:** bounded predicates with deterministic oracles, of the kind a competent engineer can specify in a paragraph (<code>startsWithCapitalLetter</code>, <code>isISODate</code>).</li>
+<li>**Sample size:** 20 fixtures (CAP-001) and 19 fixtures (LIB-001). First-evidence packets, not benchmarks.</li>
+<li>**Models tested:** local Ollama lanes — <code>llama3.1:8b</code> and <code>gemma4:26b</code>. Not frontier hosted models, not structured-output modes, not tool-augmented agents.</li>
+<li>**Not claimed:** that LLMs are bad at language tasks, that frontier models cannot pass these predicates, that agentic systems should avoid model calls, or that any unbounded natural-language task should be replaced by deterministic code.</li>
+<li>**Claimed:** for this class of task, &quot;replace the function with a model call&quot; must earn its runtime against a written spec — not against the visual length of the code.</li>
+</ul>
+<h2>Synthesis of Evidence</h2>
+<p>The evidence from CAP-001 and LIB-001 demonstrates that for bounded predicates with deterministic oracles, raw model capability is an insufficient substitute for a well-defined specification or a standard library.</p>
+<h3>1. Raw Scale Does Not Solve Operational Cost (CAP-001)</h3>
+<p>In CAP-001 (<code>startsWithCapitalLetter</code>), we ran two LLM lanes against a spec-aware deterministic lane on 20 fixtures. The smaller model (<code>llama3.1:8b</code>) was fast but only reached 75% accuracy — it didn&#x27;t solve the problem. The cheapest LLM lane that *did* match the spec-aware lane was <code>gemma4:26b</code> at 100% accuracy and ~45.6 s average wall time. The spec-aware deterministic lane finished all 20 fixtures in ~22 µs. The honest comparison is therefore between the spec-aware lane and the smallest LLM that actually meets the bar: a wall-time gap of roughly six orders of magnitude, on a predicate whose specification fits in a paragraph. Visual simplicity (a single model call) concealed an operational burden that scale did not pay down.</p>
+<h3>2. Standard Libraries Trump LLM Invocations (LIB-001)</h3>
+<p>In LIB-001 (<code>isISODate</code>), the argument sharpened. The Python standard library (<code>datetime.date.fromisoformat</code>) provided perfect accuracy at ~0.00007 s total wall time across 19 fixtures. The <code>gemma4:26b</code> lane yielded 19/19 parse failures — every response was an empty string. We re-ran the lane with the output-token cap raised from <code>num_predict=4</code> to <code>num_predict=64</code>; the empty-output result was unchanged, so this is not a token-cap clipping artifact. We do not claim every LLM runtime exhibits this failure mode; we claim that this specific prompt-and-model configuration emits zero usable answers, that it survives the obvious knob, and that the deterministic lane cannot fail this way by construction. Visual simplicity (a one-line model call) here purchased an operational lane that returned no answers at all.</p>
+<h2>Conclusion</h2>
+<p>&quot;Visual simplicity&quot; in code (replacing logic with a model call) often conceals significant &quot;system complexity&quot; and operational risk. A deterministic, spec-aware function or a standard library call is not just faster and cheaper; it is fundamentally more governable, reliable, and predictable. The model is not the function; it is a probabilistic approximation of the function with a high-cost runtime.</p>
+<p>---</p>
+<h2>Evidence Ledger</h2>
+<ul>
+<li>**CAP-001 (<code>startsWithCapitalLetter</code>):** <code>docs/domain_runs/CAP-001/report.md</code></li>
+<li>**LIB-001 (<code>isISODate</code>):** <code>docs/domain_runs/LIB-001/report.md</code></li>
+<li>**LIB-001 num_predict verification:** <code>docs/domain_runs/LIB-001/verify_num_predict_report.md</code> — confirms 19/19 empty-output reproduction and rules out the token-cap hypothesis (2026-05-01).</li>
+</ul>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Engineering core: <a href="/project-phoenix/">Project Phoenix</a>.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

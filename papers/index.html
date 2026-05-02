@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Phoenix Research Papers</title>
-    <meta name="description" content="Twenty-three primary research papers from Project Phoenix — grounded domain systems, orchestration, local inference, operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, applied production evidence, and local LLM operator judgment.">
+    <meta name="description" content="Twenty-four primary research papers from Project Phoenix — grounded domain systems, orchestration, local inference, operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, applied production evidence, and local LLM operator judgment.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,12 +13,12 @@
         <header class="header">
             <span class="badge">Project Phoenix · Research Portfolio</span>
             <h1>Project Phoenix Papers</h1>
-            <p class="subtitle">Twenty-three primary papers on grounded domain systems, orchestration architecture, agentic operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, applied production evidence, and local LLM operator judgment</p>
+            <p class="subtitle">Twenty-four primary papers on grounded domain systems, orchestration architecture, agentic operating discipline, ML evaluation benchmarks, operator infrastructure, measurement integrity, applied production evidence, and local LLM operator judgment</p>
         </header>
 
         <div class="stats">
             <a class="stat" href="#inventory">
-                <span class="num">23</span>
+                <span class="num">24</span>
                 <span class="label">Primary Papers</span>
             </a>
             <a class="stat" href="#inventory">
@@ -56,7 +56,7 @@
         </div>
 
         <div class="callout" style="margin-top:1rem;">
-            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.23 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, and token-cost attention.</p>
+            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.24 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, token-cost attention, and the substitution discipline that says a model call must earn its runtime against a written spec rather than against the visual length of the code it replaces.</p>
         </div>
 
         <!-- Reading Guide -->
@@ -94,7 +94,7 @@
                 </div>
                 <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
                     <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Local LLM Operator Judgment</h3>
-                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.20–1.23</strong> turn the Phoenix evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, and where token-cost attention actually belongs.</p>
+                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.20–1.24</strong> turn the Phoenix evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, where token-cost attention actually belongs, and when a model call should not be a model call at all.</p>
                 </div>
             </div>
         </section>
@@ -357,6 +357,13 @@
                     <span class="paper-link">Open paper →</span>
                 </a>
 
+                <a class="paper-card" href="../project-phoenix/generated-papers/the-model-is-not-the-function.html" target="_blank">
+                    <span class="paper-num">Paper 1.24</span>
+                    <h3>The Model Is Not The Function</h3>
+                    <p class="paper-thesis">For bounded predicates with deterministic oracles, an LLM must earn its runtime against a written spec rather than against the visual length of the code it replaces. CAP-001 and LIB-001 evidence packets, with a num_predict verification ruling out the obvious counter-explanation.</p>
+                    <span class="paper-link">Open paper →</span>
+                </a>
+
             </div>
         </section>
 
@@ -507,7 +514,7 @@
                             <td class="url-cell"><a href="../ppr-agent/" target="_blank">ppr-agent/</a></td>
                         </tr>
                         <tr class="table-group-header">
-                            <td colspan="4">Local LLM Operator Judgment — 1.20 through 1.23</td>
+                            <td colspan="4">Local LLM Operator Judgment — 1.20 through 1.24</td>
                         </tr>
                         <tr>
                             <td>1.20</td>
@@ -533,10 +540,16 @@
                             <td>Local LLM</td>
                             <td class="url-cell"><a href="../project-phoenix/generated-papers/please-is-sand-off-a-beach.html" target="_blank">project-phoenix/generated-papers/</a></td>
                         </tr>
+                        <tr>
+                            <td>1.24</td>
+                            <td>The Model Is Not The Function</td>
+                            <td>Local LLM</td>
+                            <td class="url-cell"><a href="../project-phoenix/generated-papers/the-model-is-not-the-function.html" target="_blank">project-phoenix/generated-papers/</a></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/. Papers 1.20–1.23 live under project-phoenix/generated-papers/ and are also exposed through phoenix-groups.html.</p>
+            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/. Papers 1.20–1.24 live under project-phoenix/generated-papers/ and are also exposed through phoenix-groups.html.</p>
         </section>
 
         <footer class="footer">
