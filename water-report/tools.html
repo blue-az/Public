@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AZ Water | Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <span class="badge">Tool Registry</span>
+      <h1>Deterministic Tools</h1>
+      <p class="subtitle">Canonical endpoints for WaterReportAgent.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a class="active" href="tools.html">Tools</a>
+      <a href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="section">
+      <h2>V1: Foundation Tools</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>lookup_reservoir</h3>
+          <p>Returns a single reservoir row with elevation, storage, and sentinel-parsed rain data.</p>
+        </article>
+        <article class="card">
+          <h3>list_reservoirs_in_system</h3>
+          <p>Aggregates reservoirs by system (Salt/Verde) with subtotal storage calculation.</p>
+        </article>
+        <article class="card">
+          <h3>get_usable_ramps</h3>
+          <p>Filters boat ramps by positive depth to determine recreation usability.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>V2: Generative Tools</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>recommend_recreation</h3>
+          <p>Composes V1 data into a human-readable recreation forecast string.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Sample Invocation</h2>
+      <pre>lookup_reservoir(name="Roosevelt Lake")
+list_reservoirs_in_system(system="Salt")
+recommend_recreation(reservoir_name="Roosevelt Lake")</pre>
+    </section>
+
+    <footer class="footer">
+      <p>Project Phoenix · AZ Water Report Tools</p>
+      <p><a href="https://proto.efehnconsulting.com/water-report/">proto.efehnconsulting.com/water-report/</a></p>
+    </footer>
+  </div>
+</body>
+</html>

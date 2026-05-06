@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AZ Water | Data</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body onload="initSite('data')">
+  <div class="page">
+    <header class="header">
+      <span class="badge">Substrate Inventory</span>
+      <h1>Core Data</h1>
+      <p class="subtitle">Deterministic CSV substrates and lineage metadata.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a class="active" href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="section">
+      <h2>Reservoir Inventory</h2>
+      <div style="overflow-x: auto;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Reservoir</th>
+              <th>System</th>
+              <th>% Full</th>
+              <th>Elevation</th>
+              <th>Storage (AF)</th>
+              <th>24h Change</th>
+            </tr>
+          </thead>
+          <tbody id="reservoir-body">
+            <!-- Injected by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Boat Ramp Status</h2>
+      <div id="ramp-grid" class="grid">
+        <!-- Injected by app.js -->
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Substrate Lineage</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Type</th>
+            <th>Authority</th>
+            <th>SHA-256</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>reservoirs.csv</td>
+            <td>Substrate</td>
+            <td>SRP Snapshot</td>
+            <td><code>021d9c0...</code></td>
+          </tr>
+          <tr>
+            <td>ramps.csv</td>
+            <td>Substrate</td>
+            <td>SRP Snapshot</td>
+            <td><code>f3cc38e...</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="footer">
+      <p>Project Phoenix · AZ Water Report Data</p>
+      <p><a href="https://proto.efehnconsulting.com/water-report/">proto.efehnconsulting.com/water-report/</a></p>
+    </footer>
+  </div>
+</body>
+</html>

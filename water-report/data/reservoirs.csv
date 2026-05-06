@@ -1,0 +1,7 @@
+name,system,dam,percent_full,current_elevation_ft,current_storage_af,remaining_elevation_ft,available_storage_af,change_24h_af,rain_inches
+Roosevelt Lake,Salt,Roosevelt Dam,45,2099.06,737878,51.94,893654,-1584,
+Apache Lake,Salt,Horse Mesa Dam,93,1907.80,228977,6.20,16161,712,
+Canyon Lake,Salt,Mormon Flat Dam,95,1657.71,55223,2.79,2629,-919,
+Saguaro Lake,Salt,Stewart Mountain Dam,92,1524.69,64443,4.31,5322,316,
+Horseshoe Lake,Verde,Horseshoe Dam,53,2004.06,58054,21.94,51163,135,
+Bartlett Lake,Verde,Bartlett Dam,68,1775.19,121690,22.81,56496,-510,

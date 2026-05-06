@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AZ Water | Project Phoenix Prototype</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body onload="initSite('index')">
+  <div class="page">
+    <header class="header">
+      <span class="badge">WaterReportAgent Prototype</span>
+      <h1>AZ Water Report</h1>
+      <p class="subtitle">A Project Phoenix domain for AZ reservoir status and infrastructure usability.</p>
+    </header>
+
+    <nav class="nav">
+      <a class="active" href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section id="stats-grid" class="stats">
+      <!-- Injected by app.js: Total Storage, % Full, Active Reservoirs, Authority -->
+    </section>
+
+    <section class="section">
+      <h2>Overview</h2>
+      <p>The AZ Water Report domain provides a bounded, deterministic view of Arizona's water storage infrastructure, focusing on the Salt and Verde river systems managed by SRP. It demonstrates the Project Phoenix principles of data-anchored tools and multi-table logical composition.</p>
+    </section>
+
+    <section class="section">
+      <h2>Highlights</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Deterministic Tools</h3>
+          <p>Lookup and aggregation logic is anchored to frozen CSV substrates, not model memory.</p>
+        </article>
+        <article class="card">
+          <h3>Infrastructure Status</h3>
+          <p>Real-time usability evaluation for boat ramps across the entire storage system.</p>
+        </article>
+        <article class="card">
+          <h3>Progressive Maturity</h3>
+          <p>From factual retrieval (V1) to structured generative recommendations (V2).</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Project Phoenix · AZ Water Report Prototype</p>
+      <p><a href="https://proto.efehnconsulting.com/water-report/">proto.efehnconsulting.com/water-report/</a></p>
+    </footer>
+  </div>
+</body>
+</html>
