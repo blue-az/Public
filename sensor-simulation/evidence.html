@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence Console | Sensor Simulation Lab</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #d0d0d0;
+            --card-bg: #161616;
+            --accent: #9c27b0;
+            --border-color: #222;
+        }
+        body {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            font-size: 0.85rem;
+        }
+        header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #111;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .evidence-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        pre {
+            background-color: #000;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #1a1a1a;
+            color: #bbb;
+        }
+        .status-row { display: flex; gap: 20px; margin-bottom: 10px; }
+        .status-key { color: #666; width: 150px; }
+        .status-val { color: #fff; }
+        
+        .path-item {
+            display: block;
+            margin-bottom: 8px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .status-row { flex-direction: column; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <span style="color: var(--accent); font-weight: bold;">EVIDENCE_CONSOLE</span>
+            <span style="color: #444; margin: 0 10px;">|</span>
+            <span style="color: #888;">Project Phoenix</span>
+        </div>
+        <a href="index.html" style="color: #666; text-decoration: none;">&larr; Exit Console</a>
+    </header>
+
+    <div class="container">
+        <div class="section-title">Current Blockers</div>
+        <div class="evidence-card">
+            <div class="status-row">
+                <div class="status-key">PROXIMITY_BUILD</div>
+                <div class="status-val">Missing 'arm-none-eabi-gcc' on host. Compilation deferred.</div>
+            </div>
+            <div class="status-row">
+                <div class="status-key">PROXIMITY_LINK</div>
+                <div class="status-val">I2C extern verification pending first successful build.</div>
+            </div>
+            <div class="status-row">
+                <div class="status-key">ZEPP_WATCH_SYNC</div>
+                <div class="status-val">Paired device session required for sub-millisecond impact alignment.</div>
+            </div>
+        </div>
+
+        <div class="section-title">Captured Artifacts (Forensic)</div>
+        <div class="evidence-card">
+            <p style="margin-top: 0;"><strong>Lane 1: Proximity Validator</strong></p>
+            <pre>[*] Starting Cycle-Locked Forensic Validation...
+[!] FAILED: Compiled firmware NOT FOUND at .../proximity_firmware.elf
+    Please run 'make' in .../firmware/ using arm-none-eabi-gcc.</pre>
+            
+            <p style="margin-top: 30px;"><strong>Lane 2: Physics Microscope</strong></p>
+            <pre>DEBUG SIGNAL CLASSIFICATION PERFORMANCE
+---------------------------------------
+              precision    recall  f1-score   support
+    Forehand       0.96      0.97      0.97       909
+    Backhand       0.97      0.98      0.98      1799
+       Serve       0.99      0.97      0.98       701
+
+    accuracy                           0.97      3409
+
+DEBUG SIGNAL SEMANTIC MAPPING
+-----------------------------
+dbg_var_1    -> power           | r= 0.8148 | STRONG
+dbg_var_2    -> power           | r= 0.8342 | STRONG
+dbg_min_az   -> power           | r=-0.8700 | STRONG
+dbg_max_ay   -> power           | r= 0.8352 | STRONG</pre>
+        </div>
+
+        <div class="section-title">Local Repository Paths (Forensic Source)</div>
+        <div class="evidence-card">
+            <div class="path-item">project-phoenix/domains/SensorAgents/README.md</div>
+            <div class="path-item">project-phoenix/ProximityAgent/SIMULATION_CLOSURE_REPORT.md</div>
+            <div class="path-item">project-phoenix/ultrasonic_labwired_sim.py</div>
+            <div class="path-item">project-phoenix/firmware/proximity_firmware.c</div>
+            <div class="path-item">project-phoenix/TennisAgent/test_debug_classification.py</div>
+            <div class="path-item">project-phoenix/TennisAgent/decode_debug_oracle.py</div>
+        </div>
+    </div>
+
+    <footer style="padding: 40px; text-align: center; color: #444; font-size: 0.75rem;">
+        TIMESTAMP: 2026-05-06 | STATUS: PUBLIC EVIDENCE SNAPSHOT
+    </footer>
+</body>
+</html>

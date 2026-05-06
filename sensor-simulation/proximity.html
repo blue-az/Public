@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proximity Oracle | Sensor Simulation Lab</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --accent-blue: #2196f3;
+            --border-color: #333;
+            --terminal-bg: #000;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            padding: 30px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .nav-back { text-decoration: none; color: #888; font-size: 0.9rem; }
+        .nav-back:hover { color: var(--accent-blue); }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 40px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        h2 { margin-top: 0; font-size: 1.5rem; margin-bottom: 25px; color: var(--accent-blue); }
+        
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 0;
+            overflow-x: auto;
+        }
+        .box {
+            border: 1px solid #444;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 120px;
+            background-color: #252525;
+        }
+        .arrow { flex-grow: 1; height: 1px; background-color: #444; margin: 0 15px; position: relative; min-width: 40px; }
+        .arrow::after { content: '>'; position: absolute; right: -5px; top: -10px; color: #444; }
+        .label { font-size: 0.75rem; color: #666; margin-bottom: 5px; }
+
+        .terminal {
+            background-color: var(--terminal-bg);
+            color: #0f0;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+        .term-error { color: #f44336; }
+        
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { 
+            padding: 10px 0; 
+            border-bottom: 1px solid #2a2a2a; 
+            display: flex; 
+            align-items: center; 
+            font-size: 0.95rem;
+        }
+        .checklist li::before { content: '○'; margin-right: 15px; color: #555; }
+        .checklist li.done::before { content: '●'; color: var(--accent-blue); }
+        .checklist li.pending::before { content: '○'; color: #ffc107; }
+
+        .core-message {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 20px;
+            border-left: 4px solid var(--accent-blue);
+            background-color: rgba(33, 150, 243, 0.05);
+        }
+
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center;">
+            <span style="font-size: 1.5rem; margin-right: 15px;">📡</span>
+            <div>
+                <h1 style="margin: 0; font-size: 1.4rem;">Proximity Oracle</h1>
+                <div style="color: #666; font-size: 0.85rem;">Hardware-in-the-Loop Firmware Validator</div>
+            </div>
+        </div>
+        <a href="index.html" class="nav-back">&larr; Back to Lab</a>
+    </header>
+
+    <div class="main-container">
+        <div class="content">
+            <div class="status-badge">🛠️ Honest Scaffold / Build-Chain Pending</div>
+            
+            <div class="card">
+                <h2>Virtual I2C Bridge Topology</h2>
+                <div class="diagram">
+                    <div class="node-group">
+                        <div class="label">Source</div>
+                        <div class="box">1D Distance Stream</div>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="node-group">
+                        <div class="label">Substrate</div>
+                        <div class="box">Shared Memory</div>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="node-group">
+                        <div class="label">Bus (0x24)</div>
+                        <div class="box">LabWired I2C</div>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="node-group">
+                        <div class="label">Target</div>
+                        <div class="box">Firmware (.elf)</div>
+                    </div>
+                </div>
+                <p style="color: #888; font-size: 0.9rem;">
+                    The simulation routes 1D distance samples through a virtual I2C bridge toward a firmware validation path. 
+                    Cycle-accurate execution is pending the compiled firmware binary.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Validator Diagnostic Output</h2>
+                <div class="terminal">
+                    <div>[*] Starting Cycle-Locked Forensic Validation...</div>
+                    <div class="term-error"><br>[!] FAILED: Compiled firmware NOT FOUND at /home/blueaz/Python/project-phoenix/domains/SensorAgents/ProximityAgent/firmware/proximity_firmware.elf</div>
+                    <div>    Please run 'make' in /home/blueaz/Python/project-phoenix/domains/SensorAgents/ProximityAgent/firmware/ using arm-none-eabi-gcc.</div>
+                </div>
+                <p style="margin-top: 20px; font-weight: 500;">
+                    Why this failure is a success:
+                </p>
+                <p style="color: #aaa; font-size: 0.95rem;">
+                    The validator refuses to produce a "pass" result based on phantom logic. It requires a tangible binary substrate 
+                    to prove that the MCU is actually clearing status registers and acknowledging data samples.
+                </p>
+            </div>
+        </div>
+
+        <aside>
+            <div class="card" style="padding: 20px;">
+                <h2 style="font-size: 1.1rem; margin-bottom: 20px;">Validation Checklist</h2>
+                <ul class="checklist">
+                    <li class="done">C source exists</li>
+                    <li class="done">Makefile exists</li>
+                    <li class="done">Validator points at ELF</li>
+                    <li class="done">Timeout guard active</li>
+                    <li class="pending">Toolchain (GCC)</li>
+                    <li class="pending">Firmware Linkage</li>
+                    <li class="pending">Execution Proof</li>
+                </ul>
+            </div>
+
+            <div class="core-message">
+                "This validator refuses false proof."
+            </div>
+        </aside>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; color: #555; font-size: 0.8rem; border-top: 1px solid #333;">
+        Project Phoenix | Sensor Simulation Lab &copy; 2026
+    </footer>
+</body>
+</html>

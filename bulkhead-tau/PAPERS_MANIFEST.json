@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "proto_root": "/home/blueaz/Public/Proto",
+  "proto_default_target": "bulkhead-tau",
+  "papers": [
+    {
+      "id": "gemma-handoff-discipline",
+      "title": "Smarter, Faster, and Bounded by Handoff Discipline",
+      "source_path": "docs/GEMMA_4_IS_SMARTER_GEMMA_3_IS_SAFER.md",
+      "track": "paper",
+      "paper_number": "1.20",
+      "lifecycle": "frozen",
+      "publication_status": "published",
+      "paper_group": "Local LLM Operator Judgment",
+      "group_status": "confirmed",
+      "public_slug": "gemma-handoff-discipline",
+      "proto_output_path": "project-phoenix/generated-papers/gemma-handoff-discipline.html",
+      "proto_markdown_path": "project-phoenix/generated-papers-src/gemma-handoff-discipline.md",
+      "proto_mirror_paths": [
+        {
+          "html": "bulkhead-tau/generated-papers/gemma-handoff-discipline.html",
+          "markdown": "bulkhead-tau/generated-papers-src/gemma-handoff-discipline.md"
+        }
+      ],
+      "publish": true,
+      "summary": "Handoff-discipline doctrine for strict machine-facing local-model lanes. Frozen 2026-04-29 with the corrected matrix, the three-datapoint drift addendum, DocDrop as the positive deployment case, and a three-run PPR Lane 2 evidence packet as the adversarial complement."
+    },
+    {
+      "id": "privacy-is-worth-paying-for",
+      "title": "Privacy Is Worth Paying For",
+      "source_path": "docs/PRIVACY_IS_WORTH_PAYING_FOR.md",
+      "track": "paper",
+      "paper_number": "1.21",
+      "lifecycle": "frozen",
+      "publication_status": "published",
+      "paper_group": "Local LLM Operator Judgment",
+      "group_status": "confirmed",
+      "public_slug": "privacy-is-worth-paying-for",
+      "proto_output_path": "project-phoenix/generated-papers/privacy-is-worth-paying-for.html",
+      "proto_markdown_path": "project-phoenix/generated-papers-src/privacy-is-worth-paying-for.md",
+      "proto_mirror_paths": [
+        {
+          "html": "bulkhead-tau/generated-papers/privacy-is-worth-paying-for.html",
+          "markdown": "bulkhead-tau/generated-papers-src/privacy-is-worth-paying-for.md"
+        }
+      ],
+      "publish": true,
+      "summary": "Separates the privacy argument for local inference from the false claim that the local lane is free. Frozen 2026-05-01 with PPR Lane 2 and DocDrop same-task local-vs-frontier ledgers."
+    },
+    {
+      "id": "slow-is-not-smart",
+      "title": "Slow Is Not Smart",
+      "source_path": "docs/SLOW_IS_NOT_SMART.md",
+      "track": "paper",
+      "paper_number": "1.22",
+      "lifecycle": "frozen",
+      "publication_status": "published",
+      "paper_group": "Local LLM Operator Judgment",
+      "group_status": "confirmed",
+      "public_slug": "slow-is-not-smart",
+      "proto_output_path": "project-phoenix/generated-papers/slow-is-not-smart.html",
+      "proto_markdown_path": "project-phoenix/generated-papers-src/slow-is-not-smart.md",
+      "proto_mirror_paths": [
+        {
+          "html": "bulkhead-tau/generated-papers/slow-is-not-smart.html",
+          "markdown": "bulkhead-tau/generated-papers-src/slow-is-not-smart.md"
+        }
+      ],
+      "publish": true,
+      "summary": "Larger, slower local models do not automatically improve validated Phoenix lanes. Frozen 2026-05-01. Addendum 2026-05-02: 31B 'fitting' is an operational hazard; default context windows force RAM spillage and OCP trips on marginal PSUs, while providing zero intelligence gain over fully-resident MoE models (Gemma 4 26B)."
+    },
+    {
+      "id": "please-is-sand-off-a-beach",
+      "title": "Please Is Sand Off A Beach",
+      "source_path": "docs/PLEASE_IS_SAND_OFF_A_BEACH.md",
+      "track": "paper",
+      "paper_number": "1.23",
+      "lifecycle": "frozen",
+      "publication_status": "published",
+      "paper_group": "Local LLM Operator Judgment",
+      "group_status": "confirmed",
+      "public_slug": "please-is-sand-off-a-beach",
+      "proto_output_path": "project-phoenix/generated-papers/please-is-sand-off-a-beach.html",
+      "proto_markdown_path": "project-phoenix/generated-papers-src/please-is-sand-off-a-beach.md",
+      "proto_mirror_paths": [
+        {
+          "html": "bulkhead-tau/generated-papers/please-is-sand-off-a-beach.html",
+          "markdown": "bulkhead-tau/generated-papers-src/please-is-sand-off-a-beach.md"
+        }
+      ],
+      "publish": true,
+      "summary": "Argues that courtesy tokens are negligible compared with structural token waste such as giant context dumps, repeated scaffolding, retries, and missing decomposition."
+    },
+    {
+      "id": "the-model-is-not-the-function",
+      "title": "The Model Is Not The Function",
+      "source_path": "docs/THE_MODEL_IS_NOT_THE_FUNCTION.md",
+      "track": "paper",
+      "paper_number": "1.24",
+      "lifecycle": "frozen",
+      "publication_status": "published",
+      "paper_group": "Local LLM Operator Judgment",
+      "group_status": "confirmed",
+      "public_slug": "the-model-is-not-the-function",
+      "proto_output_path": "project-phoenix/generated-papers/the-model-is-not-the-function.html",
+      "proto_markdown_path": "project-phoenix/generated-papers-src/the-model-is-not-the-function.md",
+      "proto_mirror_paths": [
+        {
+          "html": "bulkhead-tau/generated-papers/the-model-is-not-the-function.html",
+          "markdown": "bulkhead-tau/generated-papers-src/the-model-is-not-the-function.md"
+        }
+      ],
+      "publish": true,
+      "summary": "For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec. Extended 2026-05-02 with RETRIEVAL-001: harnessed LLMs are expensive 'passengers' in grounded retrieval, adding a 7x latency tax for 0% factual recall gain on extreme long-tail entities."
+    },
+    {
+      "id": "orchestration-is-cheaper-than-reasoning",
+      "title": "Orchestration Is Cheaper Than Reasoning",
+      "source_path": "docs/ORCHESTRATION_IS_CHEAPER_THAN_REASONING.md",
+      "track": "paper",
+      "paper_number": "1.25",
+      "lifecycle": "frozen",
+      "publication_status": "published",
+      "paper_group": "Local LLM Operator Judgment",
+      "group_status": "confirmed",
+      "public_slug": "orchestration-is-cheaper-than-reasoning",
+      "proto_output_path": "project-phoenix/generated-papers/orchestration-is-cheaper-than-reasoning.html",
+      "proto_markdown_path": "project-phoenix/generated-papers-src/orchestration-is-cheaper-than-reasoning.md",
+      "proto_mirror_paths": [
+        {
+          "html": "bulkhead-tau/generated-papers/orchestration-is-cheaper-than-reasoning.html",
+          "markdown": "bulkhead-tau/generated-papers-src/orchestration-is-cheaper-than-reasoning.md"
+        }
+      ],
+      "publish": true,
+      "summary": "For models with extensive reasoning capacity, the computational cost of finding the answer often exceeds the cost of explaining it. Today's TSP and Scheduling benchmarks (ORCHESTRATION-001) demonstrate that orchestration provides a 2x to 14x speedup over direct reasoning while significantly improving reliability."
+    }
+  ]
+}

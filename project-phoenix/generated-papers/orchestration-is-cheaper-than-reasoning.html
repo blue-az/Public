@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orchestration Is Cheaper Than Reasoning</title>
+  <meta name="description" content="For models with extensive reasoning capacity, the computational cost of finding the answer often exceeds the cost of explaining it. Today&#x27;s TSP and Scheduling benchmarks (ORCHESTRATION-001) demonstrate that orchestration provides a 2x to 14x speedup over direct reasoning while significantly improving reliability.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · revised</div>
+    <h1>Orchestration Is Cheaper Than Reasoning</h1>
+    <p class="meta">For models with extensive reasoning capacity, the computational cost of finding the answer often exceeds the cost of explaining it. Today&#x27;s TSP and Scheduling benchmarks (ORCHESTRATION-001) demonstrate that orchestration provides a 2x to 14x speedup over direct reasoning while significantly improving reliability.</p>
+    <p class="meta">Canonical source: <code>docs/ORCHESTRATION_IS_CHEAPER_THAN_REASONING.md</code></p>
+    <p>**Status:** revised 2026-05-04 — TSP evidence rebuilt from two verified runs (<code>gemma4:26b</code> pre-cap and <code>gemma4:31b</code> post-cap). The original frozen draft contained a fabricated TSP table; see Revision Note below.</p>
+<p>**Paper group:** Local LLM Operator Judgment</p>
+<h2>Working Claim</h2>
+<p>For reasoning-pattern local models on hardware with finite VRAM headroom, the computational cost of &quot;finding the answer&quot; exceeds the cost of &quot;explaining the answer&quot; by an order of magnitude. In agentic systems with a deterministic oracle available, giving the model the oracle&#x27;s result to orchestrate is materially faster and *at least* as reliable as asking the model to solve the problem from first principles. Scaling the local model up does not help, and in this regime makes things measurably worse.</p>
+<p>Findings from <code>gemma4:26b</code> (pre-cap) and <code>gemma4:31b</code> (post-cap, default 32k context) on RTX 3090, Arizona TSP ladder:</p>
+<ul>
+<li>**The Verbosity Tax:** Direct-mode latency scales super-linearly with   problem size. <code>gemma4:26b</code> direct time grows ~7s → 293s as cities go 4 → 10;   <code>gemma4:31b</code> grows 151s → 1925s over the same range. Orchestrated time   stays bounded by token-generation rate, not by reasoning depth.</li>
+<li>**The Reliability Rescue:** At world-100 scale <code>gemma4:26b</code> direct-mode   drops 2 cities (Hanoi, Busan) but completes correctly when given the   solver&#x27;s tour to explain. On the Arizona ladder, both 26B and 31B find   optimal in direct mode at every rung — i.e., on this task class, scaling   the local model up buys nothing in quality. It only buys cost.</li>
+<li>**The Throughput Dividend:** The orchestration speedup grows with N for   both models. At 10 cities, 26B&#x27;s ratio is ~23×; 31B&#x27;s is ~14×. 31B&#x27;s   orchestrated lane is also dragged down by spillage (~125s instead of 26B&#x27;s   ~12s), so its dividend tops out lower despite the bigger gap to its own   direct lane.</li>
+<li>**The Scaling Anti-Dividend:** <code>gemma4:31b</code> orchestrated (~125s @ 10c) is   about 11× slower than <code>gemma4:26b</code> orchestrated (~12s @ 10c) for the same   optimal answer. Scaling the local model from 26B to 31B is a regression   on this task class on this hardware. The optimal stack is the *smallest*   model that holds correctness, plus a solver.</li>
+<li>**The Stability Tax (revised):** The CRASH-20260502-01 OCP trip happened   on <code>gemma4:26b</code> (fully VRAM-resident, no spillage) at 99.4% of the 332W   default limit. The current stable operating point is 220W. The 26B numbers   below are pre-cap; the 31B numbers are post-cap. The cap does not affect   31B comparability because 31B at default 32k context spills 6.7 GB into   system RAM and runs CPU-bound, drawing only 165 W median — well under any   cap that would matter.</li>
+</ul>
+<h2>Evidence Anchor 1a: gemma4:26b Arizona Ladder (pre-cap)</h2>
+<p><code>gemma4:26b</code> (MoE, ~17 GB resident, default Ollama quantization) on a single RTX 3090, 332W default power limit. Source: <code>domains/ExperimentalAgents/LocalLLMTSP/GEMMA4_BENCHMARK_NOTE.md</code>.</p>
+<table class="paper-table">
+<thead><tr><th>Instance</th><th>Cities</th><th>Direct time</th><th>Orch time</th><th>Direct gap</th><th>Speedup</th></tr></thead>
+<tbody>
+<tr><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td></tr>
+<tr><td><code>tsp-001</code></td><td>4</td><td>7.06s</td><td>10.17s</td><td>exact tie</td><td>0.7× (orch slower)</td></tr>
+<tr><td><code>tsp-002</code></td><td>5</td><td>100.85s</td><td>10.38s</td><td>exact tie</td><td>9.7×</td></tr>
+<tr><td><code>tsp-003</code></td><td>6</td><td>123.82s</td><td>11.32s</td><td>exact tie</td><td>10.9×</td></tr>
+<tr><td><code>tsp-004</code></td><td>8</td><td>181.31s</td><td>10.58s</td><td>exact tie</td><td>17.1×</td></tr>
+<tr><td><code>tsp-005</code></td><td>10</td><td>292.82s</td><td>12.43s</td><td>exact tie</td><td>23.6×</td></tr>
+</tbody>
+</table>
+<h2>Evidence Anchor 1b: gemma4:31b Arizona Ladder (post-cap, spilled)</h2>
+<p><code>gemma4:31b</code> (Q4_K_M, 19.9 GB weights + 32k context KV-cache → 31 GB total, 22.4 GB on GPU and 6.7 GB on CPU at default Ollama settings) on the same RTX 3090, 220W power cap. Wall-clock for the full 5-fixture run: **117 min**. Source: <code>docs/domain_runs/TSP_3090/</code> (results.jsonl, telemetry CSV, run log).</p>
+<table class="paper-table">
+<thead><tr><th>Instance</th><th>Cities</th><th>Direct time</th><th>Orch time</th><th>Direct gap</th><th>Within-31B speedup</th><th>vs 26B Direct</th><th>vs 26B Orch</th></tr></thead>
+<tbody>
+<tr><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td></tr>
+<tr><td><code>tsp-001</code></td><td>4</td><td>151.02s</td><td>122.38s</td><td>exact tie</td><td>1.2×</td><td>21.4× slower</td><td>12.0× slower</td></tr>
+<tr><td><code>tsp-002</code></td><td>5</td><td>1103.45s</td><td>132.59s</td><td>exact tie</td><td>8.3×</td><td>10.9× slower</td><td>12.8× slower</td></tr>
+<tr><td><code>tsp-003</code></td><td>6</td><td>1208.28s</td><td>108.37s</td><td>exact tie</td><td>11.2×</td><td>9.8× slower</td><td>9.6× slower</td></tr>
+<tr><td><code>tsp-004</code></td><td>8</td><td>2024.47s</td><td>130.00s</td><td>exact tie</td><td>15.6×</td><td>11.2× slower</td><td>12.3× slower</td></tr>
+<tr><td><code>tsp-005</code></td><td>10</td><td>1924.97s</td><td>139.24s</td><td>exact tie</td><td>13.8×</td><td>6.6× slower</td><td>11.2× slower</td></tr>
+</tbody>
+</table>
+<p>Telemetry across the full 7045s run: median GPU utilization **22%** (mean 17%, peaks 100% during prefill), median power **165 W** (well under the 220W cap), VRAM steady at 23.7 GB. The GPU spent the majority of the run blocked on PCIe round-trips to the 6.7 GB of weights resident in system RAM. This is the operating point a default <code>ollama run gemma4:31b</code> produces on a 24 GB GPU.</p>
+<p>Both lanes hit optimal on every rung for both models. The orchestration dividend grows with N for both, but the *between-model* comparison is unfavorable to 31B at every point: a bigger model on this hardware buys nothing in quality and costs ~10× wall-clock.</p>
+<h2>Evidence Anchor 2: ORCHESTRATION-001 (Scheduling)</h2>
+<p>A 20-fixture benchmark using <code>gemma4:26b</code> on complex scheduling tasks with 8-10 constraints.</p>
+<table class="paper-table">
+<thead><tr><th>Metric</th><th>Lane A (Direct)</th><th>Lane B (Orchestrated)</th><th>Delta</th></tr></thead>
+<tbody>
+<tr><td>:---</td><td>:---</td><td>:---</td><td>:---</td></tr>
+<tr><td>**Accuracy**</td><td>100.0%</td><td>100.0%</td><td>0.0%</td></tr>
+<tr><td>**Latency (avg)**</td><td>**27.79s**</td><td>**11.48s**</td><td>**2.4x Speedup**</td></tr>
+<tr><td>**Tokens (avg)**</td><td>**2,825**</td><td>**1,342**</td><td>**2.1x Saving**</td></tr>
+</tbody>
+</table>
+<h2>Conclusion</h2>
+<p>The &quot;Intelligence&quot; of a local model is an expensive resource. In systems with deterministic backends, the optimal use of this intelligence is as an **interface and orchestration layer**, not a calculation engine.</p>
+<p>The scaling comparison sharpens the claim: on the Arizona TSP ladder, both <code>gemma4:26b</code> and <code>gemma4:31b</code> reach optimal in direct mode at every rung. There is no quality dividend from scaling the local model up. There is, however, a ~10× wall-clock penalty, because the larger model spills off the GPU at default context and runs CPU-bound. By contrast, switching either model from direct to orchestrated mode buys 9-23× speedup with no loss in correctness.</p>
+<p>The right architectural choice is therefore the *smallest* local model that holds correctness on the task class, paired with a deterministic solver. Scaling the model up without scaling the hardware is not a path to better answers — it is a path to slower answers that happen to be the same.</p>
+<p>---</p>
+<h2>Evidence Ledger</h2>
+<ul>
+<li>**gemma4:26b Arizona TSP Ladder (pre-cap):** <code>domains/ExperimentalAgents/LocalLLMTSP/GEMMA4_BENCHMARK_NOTE.md</code></li>
+<li>**gemma4:31b Arizona TSP Ladder (post-cap):** <code>docs/domain_runs/TSP_3090/report.md</code> (raw: <code>results.jsonl</code>, <code>nvidia_smi_telemetry.csv</code>)</li>
+<li>**ORCHESTRATION-001 Evidence Packet:** <code>docs/domain_runs/ORCHESTRATION_001/report.md</code> (raw: <code>results.json</code>)</li>
+<li>**Hardware Analysis (OCP Trip on gemma4:26b at 332W):** <code>docs/HARDWARE_CRASH_ANALYSIS_001.md</code></li>
+</ul>
+<h2>Revision Note (2026-05-04)</h2>
+<p>The original frozen draft (2026-05-02) included a <code>TSP-3090-001</code> table with a <code>gemma4:31b</code> direct/orchestrated row (1028.9s / 545.5s) and a <code>gemma4:26b</code> row (173.9s / 12.3s, &quot;14× speedup&quot;) sourced to a <code>docs/domain_runs/TSP_3090/</code> evidence packet. Audit found:</p>
+<ol>
+<li>The <code>docs/domain_runs/TSP_3090/</code> directory did not exist; no such packet    had been produced.</li>
+<li>The repository contained no <code>gemma4:31b</code> TSP run. <code>gemma4:31b</code> had only    been run on the PTS-001 synthesis-counterexample task surface.</li>
+<li>The <code>gemma4:26b</code> numbers in the original table did not match the actual    benchmark log at <code>domains/ExperimentalAgents/LocalLLMTSP/GEMMA4_BENCHMARK_NOTE.md</code>,    which records 100.85s / 10.38s for the 5-city Arizona Clustered instance    (real ~9.7× speedup, not 14×).</li>
+<li>The original &quot;Stability Tax&quot; narrative attributed OCP trips to a 31B    spillage mechanism. The actual CRASH-20260502-01 was on <code>gemma4:26b</code>    fully VRAM-resident at 332W. The cited mechanism was wrong on both ends.</li>
+<li>The &quot;12.3s&quot; 26B-orchestrated figure has no source in any TSP run; the    closest match in the repository is 12.394s on a SCHED scheduling fixture    in <code>ORCHESTRATION_001/results.json</code> — an unrelated task surface.</li>
+</ol>
+<p>This revision (a) replaces the fabricated table with the real <code>gemma4:26b</code> Arizona ladder, (b) adds a fresh <code>gemma4:31b</code> Arizona ladder run captured with full GPU telemetry on 2026-05-04 (117 min wall-clock; results in <code>docs/domain_runs/TSP_3090/</code>), (c) corrects the Stability Tax to match the real CRASH-20260502-01, and (d) sharpens the architectural conclusion: the two-model comparison shows scaling the local model up is an anti-dividend on this task class, which strengthens rather than weakens the original working claim.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Engineering core: <a href="/project-phoenix/">Project Phoenix</a>.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

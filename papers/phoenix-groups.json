@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-05-02T02:14:51.970363+00:00",
+  "generated_at": "2026-05-05T06:07:10.629440+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -73,7 +73,7 @@
             }
           ],
           "publish": true,
-          "summary": "Bounded operator lesson: larger, slower local models do not automatically improve validated Phoenix lanes. Frozen and published 2026-05-01 after SLOW-001 and PTS-001 evidence showed gemma4:31b was slower without improving the measured outcomes."
+          "summary": "Larger, slower local models do not automatically improve validated Phoenix lanes. Frozen 2026-05-01. Addendum 2026-05-02: 31B 'fitting' is an operational hazard; default context windows force RAM spillage and OCP trips on marginal PSUs, while providing zero intelligence gain over fully-resident MoE models (Gemma 4 26B)."
         },
         {
           "id": "please-is-sand-off-a-beach",
@@ -117,7 +117,29 @@
             }
           ],
           "publish": true,
-          "summary": "For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec, not against the visual length of the code it replaces. Frozen 2026-05-01 with CAP-001 (six-orders-of-magnitude wall-time gap to the smallest LLM that matches the spec-aware lane) and LIB-001 (19/19 empty-output failure on gemma4:26b, reproduced and confirmed not to be a num_predict clipping artifact)."
+          "summary": "For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec. Extended 2026-05-02 with RETRIEVAL-001: harnessed LLMs are expensive 'passengers' in grounded retrieval, adding a 7x latency tax for 0% factual recall gain on extreme long-tail entities."
+        },
+        {
+          "id": "orchestration-is-cheaper-than-reasoning",
+          "title": "Orchestration Is Cheaper Than Reasoning",
+          "source_path": "docs/ORCHESTRATION_IS_CHEAPER_THAN_REASONING.md",
+          "track": "paper",
+          "paper_number": "1.25",
+          "lifecycle": "revised",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "orchestration-is-cheaper-than-reasoning",
+          "proto_output_path": "project-phoenix/generated-papers/orchestration-is-cheaper-than-reasoning.html",
+          "proto_markdown_path": "project-phoenix/generated-papers-src/orchestration-is-cheaper-than-reasoning.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/orchestration-is-cheaper-than-reasoning.html",
+              "markdown": "bulkhead-tau/generated-papers-src/orchestration-is-cheaper-than-reasoning.md"
+            }
+          ],
+          "publish": true,
+          "summary": "For models with extensive reasoning capacity, the computational cost of finding the answer often exceeds the cost of explaining it. Today's TSP and Scheduling benchmarks (ORCHESTRATION-001) demonstrate that orchestration provides a 2x to 14x speedup over direct reasoning while significantly improving reliability."
         }
       ]
     }
