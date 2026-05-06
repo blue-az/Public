@@ -95,8 +95,8 @@
                 <div class="status-val">I2C extern verification pending first successful build.</div>
             </div>
             <div class="status-row">
-                <div class="status-key">ZEPP_WATCH_SYNC</div>
-                <div class="status-val">Paired device session required for sub-millisecond impact alignment.</div>
+                <div class="status-key">AW_ZEPP_SYNC</div>
+                <div class="status-val">Strict physical alignment pending sub-millisecond session capture.</div>
             </div>
         </div>
 
@@ -110,29 +110,27 @@
             <p style="margin-top: 30px;"><strong>Lane 2: Physics Microscope</strong></p>
             <pre>DEBUG SIGNAL CLASSIFICATION PERFORMANCE
 ---------------------------------------
-              precision    recall  f1-score   support
-    Forehand       0.96      0.97      0.97       909
-    Backhand       0.97      0.98      0.98      1799
-       Serve       0.99      0.97      0.98       701
+accuracy                           0.97      3409
 
-    accuracy                           0.97      3409
+AW-ZEPP PAIRING SCAFFOLD (2026-01-30)
+-------------------------------------
+Found 97 Zepp impacts within a broad Apple Watch session window.
+Status: Broad Temporal Overlap confirmed.</pre>
 
-DEBUG SIGNAL SEMANTIC MAPPING
------------------------------
-dbg_var_1    -> power           | r= 0.8148 | STRONG
-dbg_var_2    -> power           | r= 0.8342 | STRONG
-dbg_min_az   -> power           | r=-0.8700 | STRONG
-dbg_max_ay   -> power           | r= 0.8352 | STRONG</pre>
+            <p style="margin-top: 30px;"><strong>Tiered Viz Lab Portfolio</strong></p>
+            <div class="path-item">viz-lab/raw_signal_trace.html (5MB)</div>
+            <div class="path-item">viz-lab/swing_3d_interactive.html (4.8MB)</div>
+            <div class="path-item">viz-lab/semantic_heatmap.html (4.7MB)</div>
         </div>
 
         <div class="section-title">Project Phoenix Internal Paths (Forensic Source)</div>
         <div class="evidence-card">
             <div class="path-item">project-phoenix/domains/SensorAgents/README.md</div>
             <div class="path-item">project-phoenix/ProximityAgent/SIMULATION_CLOSURE_REPORT.md</div>
-            <div class="path-item">project-phoenix/ultrasonic_labwired_sim.py</div>
-            <div class="path-item">project-phoenix/firmware/proximity_firmware.c</div>
-            <div class="path-item">project-phoenix/TennisAgent/test_debug_classification.py</div>
-            <div class="path-item">project-phoenix/TennisAgent/decode_debug_oracle.py</div>
+            <div class="path-item">project-phoenix/docs/domain_runs/AW-ZEPP-001/report.md</div>
+            <div class="path-item">project-phoenix/TennisAgent/visualizations/oracle_correlation_viz.py</div>
+            <div class="path-item">project-phoenix/TennisAgent/visualizations/interactive_trajectory_viz.py</div>
+            <div class="path-item">project-phoenix/TennisAgent/visualizations/session_to_signal.py</div>
         </div>
     </div>
 

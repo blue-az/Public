@@ -10,6 +10,8 @@
             --text-color: #e0e0e0;
             --card-bg: #1e1e1e;
             --accent-green: #4caf50;
+            --accent-blue: #2196f3;
+            --accent-purple: #9c27b0;
             --border-color: #333;
         }
         body {
@@ -63,6 +65,7 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 30px;
+            margin-bottom: 30px;
         }
         
         h2 { margin-top: 0; font-size: 1.4rem; margin-bottom: 20px; color: var(--accent-green); border-bottom: 1px solid #333; padding-bottom: 10px; }
@@ -101,6 +104,43 @@
             font-size: 0.9rem;
         }
         .flow-arrow { color: #555; font-weight: bold; }
+
+        .viz-panel {
+            margin-top: 40px;
+        }
+        .viz-panel h2 { color: var(--accent-blue); }
+        .viz-frame-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .viz-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        .viz-link { color: var(--accent-blue); text-decoration: none; font-weight: 600; }
+        .viz-link:hover { text-decoration: underline; }
+
+        .tier-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 5px;
+        }
 
         @media (max-width: 800px) {
             .grid, .feature-grid { grid-template-columns: 1fr; }
@@ -155,30 +195,47 @@
                 </div>
             </div>
 
-            <div class="card">
-                <h2>Physical Feature Mapping</h2>
-                <div class="feature-grid">
-                    <div class="feature-item">
-                        <div class="feat-name">dbg_min_az</div>
-                        <div class="feat-map">Maps to: Power</div>
-                        <div class="feat-corr">r = -0.87</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feat-name">dbg_max_ay</div>
-                        <div class="feat-map">Maps to: Power</div>
-                        <div class="feat-corr">r = 0.84</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feat-name">dbg_var_2</div>
-                        <div class="feat-map">Maps to: Power</div>
-                        <div class="feat-corr">r = 0.83</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feat-name">dbg_sum_gx</div>
-                        <div class="feat-map">Stroke Identifier</div>
-                        <div class="feat-corr">High Weight</div>
-                    </div>
-                </div>
+            <div class="card" style="border-left: 4px solid var(--accent-purple);">
+                <h2>Apple Watch Integration</h2>
+                <div class="tier-label">Status: Pairing Scaffold</div>
+                <p style="color: #ccc; font-size: 0.95rem;">
+                    Identified broad temporal overlap for session <strong>2026-01-30</strong> (97 Zepp impacts within watch window).
+                </p>
+                <p style="margin-top: 15px; color: #888; font-size: 0.85rem;">
+                    <em>Note: Currently establishes a pairing scaffold with broad temporal overlap. Strict physical impact alignment is pending.</em>
+                </p>
+            </div>
+        </div>
+
+        <div class="viz-panel">
+            <div class="tier-label">Tier 3: The Semantic Layer</div>
+            <h2>The Oracle's Verdict</h2>
+            <div class="viz-frame-container">
+                <iframe src="viz-lab/semantic_heatmap.html"></iframe>
+            </div>
+            <div class="viz-meta">
+                <span>Interactive Correlation Matrix (r=0.84 for dbg_var_2)</span>
+                <a href="viz-lab/semantic_heatmap.html" target="_blank" class="viz-link">Open Fullscreen &rarr;</a>
+            </div>
+
+            <div class="tier-label">Tier 2: The Spatial Layer</div>
+            <h2>The Physics Microscope</h2>
+            <div class="viz-frame-container">
+                <iframe src="viz-lab/swing_3d_interactive.html"></iframe>
+            </div>
+            <div class="viz-meta">
+                <span>Interactive 3D Trajectory (Swing ID: 1658297433600)</span>
+                <a href="viz-lab/swing_3d_interactive.html" target="_blank" class="viz-link">Open Fullscreen &rarr;</a>
+            </div>
+
+            <div class="tier-label">Tier 1: The Signal Layer</div>
+            <h2>The Raw Truth</h2>
+            <div class="viz-frame-container">
+                <iframe src="viz-lab/raw_signal_trace.html"></iframe>
+            </div>
+            <div class="viz-meta">
+                <span>333Hz Multi-Axis Raw Sensor Trace</span>
+                <a href="viz-lab/raw_signal_trace.html" target="_blank" class="viz-link">Open Fullscreen &rarr;</a>
             </div>
         </div>
 
