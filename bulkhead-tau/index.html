@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulkhead τ | Deterministic Governance Substrate</title>
-    <meta name="description" content="Bulkhead τ is a deterministic governance substrate for AI systems: a watertight engine room bounded by a Charter (PBC) above and a Logbook (GT-KB) below. Public release line built on the Project Phoenix engineering core.">
+    <meta name="description" content="Bulkhead τ is a deterministic governance substrate for AI systems: evidence-backed agent systems and deterministic substrates. Built on the Project Phoenix engineering core.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,135 +19,63 @@
 
         <nav class="nav">
             <a href="index.html">Home</a>
-            <a href="#architecture">Architecture</a>
-            <a href="#why">Why This Exists</a>
-            <a href="#release">0.6.1 Release</a>
-            <a href="#papers">Papers</a>
-            <a href="../papers/">All Papers</a>
+            <a href="../papers/">Research Papers</a>
+            <a href="../sensor-simulation/">Simulation Lab</a>
+            <a href="../local-llm-tsp/">Benchmarks</a>
             <a href="../project-phoenix/">Engineering Core</a>
         </nav>
 
         <div class="pullquote">
-            <p>The market is shipping rafts. Bulkhead &tau; ships vessels.</p>
+            <p>The market is shipping rafts. Bulkhead τ ships vessels.</p>
         </div>
+
+        <section class="section">
+            <h2>The Evidence tracks</h2>
+            <p style="margin-bottom: 2rem;">Start here to explore the deterministic governance substrate through three primary lenses:</p>
+            
+            <div class="grid">
+                <a class="card" href="../papers/" style="text-decoration: none; color: inherit;">
+                    <h3>Research Papers</h3>
+                    <p>The evidence base. Twenty-five primary papers covering grounded systems, orchestration architecture, and local LLM operator judgment.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Explore Research &rarr;</span>
+                </a>
+
+                <a class="card" href="../sensor-simulation/" style="text-decoration: none; color: inherit;">
+                    <h3>Sensor Simulation Lab</h3>
+                    <p>Live validation environment. Firmware validators for future hardware and physics microscopes for legacy sensor forensic data.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Enter Simulation Lab &rarr;</span>
+                </a>
+
+                <a class="card" href="../local-llm-tsp/" style="text-decoration: none; color: inherit;">
+                    <h3>Benchmarks &amp; Proofs</h3>
+                    <p>Real-world evidence. Geographic TSP scale ladders and solver-backed orchestration proofs demonstrating where correctness must live.</p>
+                    <span style="color: var(--accent); font-weight: bold;">View Benchmarks &rarr;</span>
+                </a>
+            </div>
+        </section>
 
         <section id="purpose" class="section">
             <h2>Purpose</h2>
-            <p>Bulkhead &tau; is the public release line for a system that does not try to make AI smarter. It tries to make AI <em>governable</em>. The intelligence sits inside a watertight shell, bounded above by an explicit Charter and below by an explicit Logbook. Inputs arrive as fuel; outputs leave as repeatable insights; nothing leaks.</p>
-            <p>Where the rest of the AI tooling space is building thin wrappers around language models &mdash; thousands of rafts, fast to build and quick to capsize &mdash; Bulkhead &tau; is the engineered alternative: a deterministic substrate that survives contact with real domains.</p>
+            <p>Bulkhead τ is the public release line for a system that does not try to make AI smarter. It tries to make AI <em>governable</em>. The intelligence sits inside a watertight shell, bounded above by an explicit Charter (PBC) and below by an explicit Logbook (GT-KB). Inputs arrive as fuel; outputs leave as repeatable insights; nothing leaks.</p>
+            <p>Where the rest of the AI tooling space is building thin wrappers around language models &mdash; thousands of rafts, fast to build and quick to capsize &mdash; Bulkhead τ is the engineered alternative: a deterministic substrate that survives contact with real domains.</p>
         </section>
 
         <section id="architecture" class="section">
             <h2>The Three-Tier Seal</h2>
-            <p>Bulkhead &tau; sits in the middle of a bounded architecture. It is not the whole system. It is the watertight core inside a larger discipline.</p>
             <div class="grid">
                 <div class="card">
                     <h3>Upper Boundary &mdash; PBC</h3>
-                    <p>The Charter. Component-Based Governance documents (<code>.pbc.md</code>) define mission, scope, and routing constraints. The engine room obeys the Charter. When the documentation changes, the system changes course &mdash; not the other way around.</p>
+                    <p>The Charter. Component-Based Governance documents (<code>.pbc.md</code>) define mission, scope, and routing constraints. The engine room obeys the Charter.</p>
                 </div>
                 <div class="card">
-                    <h3>Core &mdash; Bulkhead &tau;</h3>
-                    <p>The watertight engine room. Intakes fuel (data), executes physics (deterministic substrates plus governed agent use), and delivers thrust (validated outputs). Hallucination seepage is contained, not tolerated.</p>
+                    <h3>Core &mdash; Bulkhead τ</h3>
+                    <p>The watertight engine room. Intakes data, executes physics via deterministic substrates, and delivers validated thrust. Hallucination seepage is contained.</p>
                 </div>
                 <div class="card">
-                    <h3>Lower Boundary &mdash; GT&#8209;KB</h3>
-                    <p>The Logbook. Every vibration, every turn of the screw, every routing decision feeds the ground-truth knowledge base. The system is auditable because the Logbook is non-optional.</p>
+                    <h3>Lower Boundary &mdash; GT-KB</h3>
+                    <p>The Logbook. Every vibration and routing decision feeds the ground-truth knowledge base. The system is auditable because the Logbook is non-optional.</p>
                 </div>
             </div>
-        </section>
-
-        <section id="why" class="section">
-            <h2>Why This Exists</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Determinism</h3>
-                    <p>Real execution and validation live in explicit domain logic, not in prompt behavior. The substrate is the authority; the model is the interface.</p>
-                </div>
-                <div class="card">
-                    <h3>Auditability</h3>
-                    <p>Claims, artifacts, and trust boundaries are inspectable. The Logbook records what happened; the Charter records what was supposed to happen; the gap between the two is where the work is.</p>
-                </div>
-                <div class="card">
-                    <h3>Bounded Discipline</h3>
-                    <p>The system does not try to do everything. It is strictly bounded by two adjacent disciplines &mdash; PBC above, GT&#8209;KB below &mdash; so failures localize to a tier instead of smearing across the stack.</p>
-                </div>
-                <div class="card">
-                    <h3>Useful Standards</h3>
-                    <p>Patterns other operators can adapt without copying the full consulting process. The papers below are part of that contract.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="release" class="section">
-            <h2>Release 0.6.1</h2>
-            <p>The first release under the Bulkhead &tau; name captures the architectural shift from a hardcoded routing surface to one anchored on co-located governance documents. Every domain now ships with a Component-Based Governance file (<code>.pbc.md</code>) next to the code it governs, so the contract and the executable live in the same place.</p>
-            <p>The thirteen domains in the public router inventory:</p>
-            <div class="grid">
-                <div class="card">
-                    <h3>Sensor &amp; Activity</h3>
-                    <p>TennisAgent &middot; GarminAgent &middot; GolfAgent</p>
-                </div>
-                <div class="card">
-                    <h3>Education &amp; Reasoning</h3>
-                    <p>Stan &middot; WQ &middot; AI_WQ &middot; ParableAgent</p>
-                </div>
-                <div class="card">
-                    <h3>Demo &amp; Production</h3>
-                    <p>Optiver &middot; QCiAgent &middot; PPR_Agent</p>
-                </div>
-                <div class="card">
-                    <h3>Personal &amp; Standards</h3>
-                    <p>Portfolio &middot; Recipes &middot; YieldModel</p>
-                </div>
-            </div>
-            <p>The point of the release is structural, not numerical. When the documentation moves, the system moves &mdash; and when the documentation does not exist, neither does the routing claim.</p>
-        </section>
-
-        <section id="papers" class="section">
-            <h2>Papers</h2>
-            <p>Twenty-three primary papers cover the engineering, the boundary results, and the operating discipline behind Bulkhead &tau;. The newest cluster &mdash; Local LLM Operator Judgment &mdash; is the immediate context for the 0.6.1 release.</p>
-            <div class="grid">
-                <div class="card">
-                    <h3>Gemma Handoff Discipline (1.20)</h3>
-                    <p>Why disciplined handoff between local model variants is the load-bearing structure for stable agent behavior, not the raw model.</p>
-                    <a class="back-link" href="generated-papers/gemma-handoff-discipline.html">Read paper &rarr;</a>
-                </div>
-                <div class="card">
-                    <h3>Privacy Is Worth Paying For (1.21)</h3>
-                    <p>Separates the privacy argument for local inference from the false claim that the local lane is free. Cost accounting from frontier-vs-local same-task ledgers.</p>
-                    <a class="back-link" href="generated-papers/privacy-is-worth-paying-for.html">Read paper &rarr;</a>
-                </div>
-                <div class="card">
-                    <h3>Slow Is Not Smart (1.22)</h3>
-                    <p>Larger and slower local models are not automatically better. SLOW-001 and PTS-001 show <code>gemma3:27b</code> beat <code>gemma4:31b</code> on both bounded extraction and timeline synthesis &mdash; the projected synthesis counterexample failed in the strongest direction.</p>
-                    <a class="back-link" href="generated-papers/slow-is-not-smart.html">Read paper &rarr;</a>
-                </div>
-                <div class="card">
-                    <h3>Please Is Sand Off A Beach (1.23)</h3>
-                    <p>Token-cost attention belongs at structural waste, not at conversational ritual. A bounded answer to the &ldquo;please vs. token cost&rdquo; framing.</p>
-                    <a class="back-link" href="generated-papers/please-is-sand-off-a-beach.html">Read paper &rarr;</a>
-                </div>
-                <div class="card">
-                    <h3>All Papers (1.1 &ndash; 1.23)</h3>
-                    <p>Full inventory across grounded systems, orchestration architecture, ML evaluation benchmarks, boundary results, measurement integrity, applied production evidence, and local LLM operator judgment.</p>
-                    <a class="back-link" href="../papers/">Open paper inventory &rarr;</a>
-                </div>
-                <div class="card">
-                    <h3>Engineering Core</h3>
-                    <p>Bulkhead &tau; is the public release line. The engineering core is internally called Project Phoenix and continues to operate at <code>/project-phoenix/</code>.</p>
-                    <a class="back-link" href="../project-phoenix/">Open engineering core &rarr;</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>What This Is Not</h2>
-            <ul>
-                <li>Not a chatbot layer. Bulkhead &tau; does not wrap a model with prompts; it wraps a model with structure.</li>
-                <li>Not a benchmark suite. The papers are field evidence from production-shape lanes, not synthetic leaderboards.</li>
-                <li>Not a replacement for engineering judgment. The Charter is written by humans; the Logbook is read by humans; the engine room exists to make both possible at scale.</li>
-                <li>Not a magic claim. The scope is bounded: well-defined domain tasks where deterministic substrates exist. Outside that scope, Bulkhead &tau; does not pretend to be load-bearing.</li>
-            </ul>
         </section>
 
         <footer class="footer">

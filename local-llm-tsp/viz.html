@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocalLLMTSP | Arizona Fixture Map</title>
+    <title>Arizona Fixture Map | Bulkhead τ</title>
     <meta name="description" content="Interactive map of Arizona TSP fixtures: optimal solver route vs. direct model route.">
     <link rel="stylesheet" href="style.css">
     <style>
@@ -459,6 +459,15 @@
     }
 
     document.getElementById('chk-opt').onchange = () => render(cur);
+    document.getElementById('chk-dir').onchange = () => render(cur);
+
+    buildTabs();
+    render(cur);
+    </script>
+</body>
+</html>
+l>
+ render(cur);
     document.getElementById('chk-dir').onchange = () => render(cur);
 
     buildTabs();
