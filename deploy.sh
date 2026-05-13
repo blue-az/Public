@@ -1,34 +1,61 @@
-#!/bin/bash
-# Deploy prototype to IONOS
-# Usage: ./deploy.sh <folder_name>
+#!/usr/bin/env bash
+# Deploy Proto assets to IONOS webspace.
+# Usage:
+#   ./deploy.sh papers            — sync papers index only
+#   ./deploy.sh project-phoenix   — sync generated papers
+#   ./deploy.sh all               — sync everything
 
-# IONOS credentials
-SERVER="access993872858.webspace-data.io"
-USER="u115257687"
+set -euo pipefail
+
+HOST="access993872858.webspace-data.io"
 PORT="22"
-REMOTE_PATH="/homepages/1/d993872858/htdocs/prototypes"
+USER="u115257687"
+REMOTE_ROOT="prototypes"
+LOCAL_ROOT="$(cd "$(dirname "$0")" && pwd)"
 
-# Check argument
-if [ -z "$1" ]; then
-    echo "Usage: ./deploy.sh <folder_name>"
-    echo "Example: ./deploy.sh site_1"
-    exit 1
-fi
+TARGET="${1:-all}"
 
-SITE="$1"
+CONTROL_SOCKET="/tmp/ionos_deploy_$$"
 
-if [ ! -d "$SITE" ]; then
-    echo "Error: Directory '$SITE' not found"
-    exit 1
-fi
+start_master() {
+    ssh -fNM -p "$PORT" \
+        -o ControlMaster=yes \
+        -o ControlPath="$CONTROL_SOCKET" \
+        -o StrictHostKeyChecking=accept-new \
+        "$USER@$HOST"
+}
 
-echo "Deploying $SITE to IONOS..."
+stop_master() {
+    ssh -O exit -o ControlPath="$CONTROL_SOCKET" "$USER@$HOST" 2>/dev/null || true
+}
 
-# Using rsync (only uploads changes)
-rsync -avz --progress -e "ssh -p $PORT" \
-    "./$SITE/" \
-    "$USER@$SERVER:$REMOTE_PATH/$SITE/"
+rsync_push() {
+    local src="$1"
+    local dest="$2"
+    echo "[*] Syncing $src → $USER@$HOST:$dest"
+    rsync -avz \
+        -e "ssh -p $PORT -o ControlMaster=no -o ControlPath=$CONTROL_SOCKET" \
+        "$src" "$USER@$HOST:$dest"
+}
 
-echo ""
-echo "Done! Site live at:"
-echo "https://proto.efehnconsulting.com/$SITE/"
+start_master
+trap stop_master EXIT
+
+case "$TARGET" in
+    papers)
+        rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
+        ;;
+    project-phoenix)
+        rsync_push "$LOCAL_ROOT/project-phoenix/" "$REMOTE_ROOT/project-phoenix/"
+        ;;
+    all)
+        rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
+        rsync_push "$LOCAL_ROOT/project-phoenix/" "$REMOTE_ROOT/project-phoenix/"
+        ;;
+    *)
+        echo "Usage: $0 [papers|project-phoenix|all]"
+        exit 1
+        ;;
+esac
+
+echo "[✓] Deploy complete."
