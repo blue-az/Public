@@ -36,7 +36,7 @@
             <div class="grid">
                 <a class="card" href="../papers/" style="text-decoration: none; color: inherit;">
                     <h3>Research Papers</h3>
-                    <p>The evidence base. Twenty-five primary papers covering grounded systems, orchestration architecture, and local LLM operator judgment.</p>
+                    <p>The evidence base. Twenty-six primary papers covering grounded systems, orchestration architecture, and local LLM operator judgment.</p>
                     <span style="color: var(--accent); font-weight: bold;">Explore Research &rarr;</span>
                 </a>
 
@@ -65,17 +65,29 @@
             <div class="grid">
                 <div class="card">
                     <h3>Upper Boundary &mdash; PBC</h3>
-                    <p>The Charter. Component-Based Governance documents (<code>.pbc.md</code>) define mission, scope, and routing constraints. The engine room obeys the Charter.</p>
+                    <p><strong>The Charter.</strong> Component-Based Governance documents (<code>.pbc.md</code>) define mission, scope, and routing constraints. PBC remains the canonical, authored Charter.</p>
+                    <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/blue-az/Python" target="_blank" style="color: var(--accent);">View PBC Repository &rarr;</a></p>
                 </div>
                 <div class="card">
                     <h3>Core &mdash; Bulkhead τ</h3>
-                    <p>The watertight engine room. Intakes data, executes physics via deterministic substrates, and delivers validated thrust. Hallucination seepage is contained.</p>
+                    <p><strong>The engine room.</strong> Intakes data, executes physics via deterministic substrates, and delivers validated thrust. In Release 0.6.1, the engine is being wired to consume live evidence from the Logbook before treating Charter behaviors as authoritative.</p>
                 </div>
                 <div class="card">
                     <h3>Lower Boundary &mdash; GT-KB</h3>
-                    <p>The Logbook. Every vibration and routing decision feeds the ground-truth knowledge base. The system is auditable because the Logbook is non-optional.</p>
+                    <p><strong>The Logbook.</strong> A live evidence ledger (<code>GT-KB</code>) that decouples historical lifecycle status from current evidence-derived trust state. If reality pushes back, the Logbook demotes trust without needing to rewrite the Charter.</p>
+                    <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/blue-az/ai-chatkit" target="_blank" style="color: var(--accent);">View GT-KB Repository &rarr;</a></p>
                 </div>
             </div>
+        </section>
+
+        <section class="section" style="background: rgba(139, 69, 19, 0.05); padding: 2rem; border-left: 4px solid var(--accent);">
+            <h3 style="margin-top: 0;">The Evidence-Backed Trust Loop</h3>
+            <p>We have transitioned from a linear lifecycle to an <strong>evidence-backed trust loop</strong>. This resolves the "overloaded verified" problem by separating historical governance (the <em>Verified</em> milestone) from current evidence (the <em>Passing</em> trust state).</p>
+            <ul style="line-height: 1.6; margin-top: 1rem;">
+                <li><strong>PBC</strong> remains authored and stable.</li>
+                <li><strong>GT-KB</strong> trust state changes dynamically as evidence changes (passing, failing, stale, disputed, or blocked).</li>
+                <li><strong>Bulkhead τ</strong> provides the downstream defense, gating runtime authority on that live trust state.</li>
+            </ul>
         </section>
 
         <footer class="footer">
