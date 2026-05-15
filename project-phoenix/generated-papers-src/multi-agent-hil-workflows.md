@@ -178,12 +178,12 @@ For practical agentic engineering, we recommend that sessions be designed to pro
 
 ## Post-Publication Addendum — May 14, 2026
 
-Following the multi-agent HIL study (PROX-HIL-001), a subsequent fault-tolerance sweep (PROX-SWEEP-001) was executed to validate the long-term reliability of the simulation stack. This sweep identified a previously undocumented edge case in the proximity firmware: ultrasonic "ghost" reflections at distances below 330mm were occasionally triggering false-positive object detection. 
+Following the multi-agent HIL study (PROX-HIL-001), a subsequent fault-tolerance sweep (PROX-SWEEP-001) characterized firmware robustness on the same HIL stack across three independent noise axes: ADC quantization, EMI bit-flips, and sample drops. The sweep surfaced a structural safety asymmetry under EMI: corruption of the high distance byte (`DIST_H`) skews readings upward, pushing them above the 150mm alarm threshold and silently silencing alarms. The mechanism was confirmed by masking the bit-flip injector to `DIST_L` only — errors then became symmetric, isolating `DIST_H` corruption as the asymmetry driver.
 
 **Results from PROX-SWEEP-001:**
-- **Firmware Hardening:** Implemented a physics-derived 330mm physical bounds check in the firmware loop.
-- **Error Rate Reduction:** The False Negative (FN) rate was reduced from 3.7% to 1.0% under simulated EMI conditions.
-- **Verification:** The hardening was validated using the same heterogeneous agent stack described in this paper, confirming that the "handoff artifact" pattern remains robust across iterative firmware hardening cycles.
+- **Firmware Hardening:** A physics-derived 330mm bounds check (300mm nominal max plus 10% margin) now discards readings outside the sensor's physical range before the threshold decision.
+- **False-Negative Reduction:** Under EMI at p=0.1 bit-flips/byte, mean False Negatives per 100-sample run fell from **3.7 → 1.0** (73% reduction). The residual FN=1.0 is the theoretical floor: `DIST_L` (low-byte) corruption that stays within the 330mm bound.
+- **Scope note:** PROX-SWEEP-001 was a single-agent task on a single host; it is therefore not itself an instance of the multi-agent handoff pattern this paper describes. It is included here as follow-on empirical evidence on the same HIL substrate, not as a re-validation of the handoff thesis.
 
 ---
 
