@@ -19,7 +19,7 @@
 
         <div class="stats">
             <a class="stat" href="#inventory">
-                <span class="num">26</span>
+                <span class="num">25</span>
                 <span class="label">Primary Papers</span>
             </a>
             <a class="stat" href="#inventory">
@@ -57,7 +57,7 @@
         </div>
 
         <div class="callout" style="margin-top:1rem;">
-            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.26 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, token-cost attention, the substitution discipline that says a model call must earn its runtime against a written spec, and multi-agent HIL workflows showing how heterogeneous simulation stacks decompose along language and permission boundaries.</p>
+            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.25 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, token-cost attention, and the substitution discipline that says a model call must earn its runtime against a written spec rather than against the visual length of the code it replaces.</p>
         </div>
 
         <!-- Reading Guide -->
@@ -95,7 +95,7 @@
                 </div>
                 <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
                     <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Local LLM Operator Judgment</h3>
-                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.20–1.26</strong> turn the Phoenix evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, where token-cost attention actually belongs, when a model call should not be a model call at all, and multi-agent HIL workflows that decompose along language and permission boundaries.</p>
+                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.20–1.25</strong> turn the Phoenix evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, where token-cost attention actually belongs, and when a model call should not be a model call at all.</p>
                 </div>
             </div>
         </section>
@@ -372,13 +372,6 @@
                     <p class="paper-thesis">For models with extensive reasoning capacity, the computational cost of finding the answer often exceeds the cost of explaining it. Today's TSP and Scheduling benchmarks demonstrate that orchestration provides a 2x to 14x speedup over direct reasoning while significantly improving reliability.</p>
                     <span class="paper-link">Open paper →</span>
                 </a>
-
-                <a class="paper-card" href="../project-phoenix/generated-papers/multi-agent-hil-workflows.html" target="_blank">
-                    <span class="paper-num">Paper 1.26</span>
-                    <h3>Multi-Agent AI Workflows in Hardware-in-the-Loop Simulation</h3>
-                    <p class="paper-thesis">Heterogeneous HIL stacks decompose into agent roles along language and permission boundaries. The handoff artifact is the critical interface for multi-agent continuity. Field data from GRAFANA-OBS-001/PROX-HIL-001 on the Z13 laptop: Rust simulation, Python harness, Claude Code orchestration, Grafana Tempo observability.</p>
-                    <span class="paper-link">Open paper →</span>
-                </a>
             </div>
         </section>
 
@@ -529,7 +522,7 @@
                             <td class="url-cell"><a href="../ppr-agent/" target="_blank">ppr-agent/</a></td>
                         </tr>
                         <tr class="table-group-header">
-                            <td colspan="4">Local LLM Operator Judgment — 1.20 through 1.26</td>
+                            <td colspan="4">Local LLM Operator Judgment — 1.20 through 1.24</td>
                         </tr>
                         <tr>
                             <td>1.20</td>
@@ -567,16 +560,10 @@
                             <td>Local LLM</td>
                             <td class="url-cell"><a href="../project-phoenix/generated-papers/orchestration-is-cheaper-than-reasoning.html" target="_blank">orchestration-is-cheaper-than-reasoning</a></td>
                         </tr>
-                        <tr>
-                            <td>1.26</td>
-                            <td>Multi-Agent AI Workflows in Hardware-in-the-Loop Simulation</td>
-                            <td>Local LLM</td>
-                            <td class="url-cell"><a href="../project-phoenix/generated-papers/multi-agent-hil-workflows.html" target="_blank">multi-agent-hil-workflows</a></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/. Papers 1.20–1.26 live under project-phoenix/generated-papers/ and are also exposed through phoenix-groups.html.</p>
+            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/. Papers 1.20–1.25 live under project-phoenix/generated-papers/ and are also exposed through phoenix-groups.html.</p>
         </section>
 
         <footer class="footer">
