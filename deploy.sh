@@ -48,12 +48,16 @@ case "$TARGET" in
     project-phoenix)
         rsync_push "$LOCAL_ROOT/project-phoenix/" "$REMOTE_ROOT/project-phoenix/"
         ;;
+    bulkhead-tau)
+        rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
+        ;;
     all)
         rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
         rsync_push "$LOCAL_ROOT/project-phoenix/" "$REMOTE_ROOT/project-phoenix/"
+        rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
         ;;
     *)
-        echo "Usage: $0 [papers|project-phoenix|all]"
+        echo "Usage: $0 [papers|project-phoenix|bulkhead-tau|all]"
         exit 1
         ;;
 esac
