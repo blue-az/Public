@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grouped Papers | Bulkhead τ</title>
-    <meta name="description" content="Paper inventory grouped by paper_group. Complementary to the numbered /papers/ index. Built from the Project Phoenix internal framework.">
+    <title>Project Phoenix Papers — Grouped</title>
+    <meta name="description" content="Project Phoenix paper inventory grouped by paper_group, exported from PAPERS_MANIFEST.json. Complementary to the numbered /papers/ index.">
     <link rel="stylesheet" href="style.css">
     <style>
 .phoenix-badge {
@@ -63,14 +63,13 @@
     <div class="page">
 
         <header class="header">
-            <span class="badge">Bulkhead τ · Grouped Papers</span>
-            <h1>Grouped Papers</h1>
-            <p class="subtitle">Evidence-backed agent systems and deterministic substrates.</p>
-            <p class="internal-label" style="color: #666; font-size: 0.9rem; margin-top: 5px;">Internally, this work is developed under Project Phoenix.</p>
+            <span class="badge">Project Phoenix · Grouped Papers</span>
+            <h1>Phoenix Papers — Grouped</h1>
+            <p class="subtitle">Phoenix-managed paper sources, grouped by paper_group rather than numbering. Exported from <code>PAPERS_MANIFEST.json</code>.</p>
         </header>
 
         <div class="callout">
-            <p><strong>About this page:</strong> This page is generated from <code>PAPERS_MANIFEST.json</code> and groups by <code>paper_group</code>, not by the numbered cluster scheme used on <a href="index.html" style="color:var(--accent);">the main /papers/ index</a>. The two surfaces are complementary: the main index is hand-curated; this page is a metadata-driven export.</p>
+            <p><strong>About this page:</strong> Project Phoenix owns the paper sources under <code>project-phoenix/docs</code>. This page is generated from <code>PAPERS_MANIFEST.json</code> and groups by <code>paper_group</code>, not by the numbered cluster scheme used on <a href="index.html" style="color:var(--accent);">the main /papers/ index</a>. The two surfaces are complementary: the main index is hand-curated; this page is a metadata-driven export. Showing all Phoenix-managed papers, including stubs and forthcoming work.</p>
         </div>
 
         <section class="section">
@@ -85,9 +84,24 @@
     </div>
 </section>
 
+        <section class="section">
+    <div class="cluster-heading">Agentic Engineering Field Studies &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
+    <div class="grid-2">
+            <a class="paper-card phoenix-paper-card" href="../project-phoenix/generated-papers/multi-agent-hil-workflows.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-published">published</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Multi-Agent AI Workflows in Hardware-in-the-Loop Simulation</h3><p class="paper-thesis">Demonstrates that heterogeneous HIL stacks decompose into agent roles along language and permission boundaries, and that the handoff artifact is the critical interface for multi-agent continuity. Field data from GRAFANA-OBS-001/PROX-HIL-001 on the Z13 laptop.</p><span class="paper-link">Open paper →</span></a>
+    </div>
+</section>
+
+        <section class="section">
+    <div class="cluster-heading">Sensor-to-Simulation Engineering &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
+    <div class="grid-2">
+            <a class="paper-card phoenix-paper-card" href="../project-phoenix/generated-papers/wearable-sensor-corpus.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-published">published</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>A Field Guide to Wearable Sport Sensors: Data Landscape, Fidelity Boundaries, and Engineering Constraints</h3><p class="paper-thesis">Characterizes the five-sensor corpus deployed in Project Phoenix (Babolat POP, Zepp Tennis, Apple Watch, Garmin, MiiFit) through a fidelity-boundary lens: the point at which each sensor&#x27;s output stops being measurement and starts being vendor interpretation. AW-ZEPP cross-sensor alignment results (60/60 closure at 357.63 ms residual jitter; 60.3% ceiling on the discontinuity session) anchor the claim that Zepp swing timestamps are a usable simulation clock within sessions. Concludes that no sensor in the corpus exposes a sample-accurate waveform, so sensor-driven HIL on this corpus is necessarily event-driven, not waveform-driven.</p><span class="paper-link">Open paper →</span></a>
+            <div class="paper-card phoenix-paper-card phoenix-paper-card--forthcoming"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-stub">stub</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-private">private</span></span><h3>LabWired: Cycle-Accurate Hardware Simulation for Embedded Sensor Systems</h3><p class="paper-thesis">Explains the LabWired hardware simulation platform: architecture, device model library, Path A declarative vs Path B shared-memory simulation approaches, and the STM32F401 I2C implementation. Positions LabWired as the cycle-accurate substrate for sensor-driven firmware validation.</p><span class="paper-link phoenix-paper-link--forthcoming">Forthcoming</span></div>
+            <div class="paper-card phoenix-paper-card phoenix-paper-card--forthcoming"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-stub">stub</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-private">private</span></span><h3>Closing the Loop: From Real Sensor Data to Cycle-Accurate Firmware Validation</h3><p class="paper-thesis">Synthesizes the sensor corpus (1.27) and simulation platform (1.28) into a unified methodology: using real wearable data to drive HIL firmware runs via the shm_i2c shared-memory bridge. Argues that sensor-accurate HIL closes the validation gap between lab simulation and field deployment.</p><span class="paper-link phoenix-paper-link--forthcoming">Forthcoming</span></div>
+    </div>
+</section>
+
         <footer style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--ink-muted); font-size:var(--font-size-sm); text-align:center;">
-            <p>Bulkhead τ · Built from the Project Phoenix internal framework</p>
-            <p>Generated from <code>docs/PAPERS_MANIFEST.json</code> via <code>scripts/publish_papers_index.py</code>.</p>
+            <p>Generated 2026-05-20T04:46:02.530642+00:00 from <code>docs/PAPERS_MANIFEST.json</code> via <code>scripts/publish_papers_index.py</code>.</p>
         </footer>
 
     </div>

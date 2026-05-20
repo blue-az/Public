@@ -56,7 +56,7 @@
 
         <section id="purpose" class="section">
             <h2>Purpose</h2>
-            <p>Bulkhead τ is the public release line for a system that does not try to make AI smarter. It tries to make AI <em>governable</em>. The intelligence sits inside a watertight shell, bounded above by an explicit Charter (PBC) and below by an explicit Logbook (GT-KB). Inputs arrive as fuel; outputs leave as repeatable insights; nothing leaks.</p>
+            <p>Bulkhead τ is the public release line for a system that does not try to make AI smarter. It tries to make AI <em>governable</em>. The intelligence sits inside a watertight shell, bounded above by a PBC-compatible Charter layer and below by a GT-KB-derived Logbook layer. Inputs arrive as fuel; outputs leave as repeatable insights; nothing leaks.</p>
             <p>Where the rest of the AI tooling space is building thin wrappers around language models &mdash; thousands of rafts, fast to build and quick to capsize &mdash; Bulkhead τ is the engineered alternative: a deterministic substrate that survives contact with real domains.</p>
         </section>
 
@@ -65,18 +65,18 @@
             <div class="grid">
                 <div class="card">
                     <h3>Upper Boundary &mdash; PBC</h3>
-                    <p><strong>The Charter.</strong> Component-Based Governance documents (<code>.pbc.md</code>) define mission, scope, and routing constraints. PBC remains the canonical, authored Charter.</p>
+                    <p><strong>The Charter.</strong> Product Behavior Contract documents (<code>.pbc.md</code>) define mission, scope, and routing constraints. This layer is upstream-aligned with PBC's provider-neutral anchoring model, so external evidence can attach to stable behaviors without making PBC depend on any one ledger.</p>
                     <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/stewie-sh/pbc-spec" target="_blank" style="color: var(--accent);">View PBC Specification &rarr;</a></p>
                 </div>
                 <div class="card">
                     <h3>Core &mdash; Bulkhead τ</h3>
-                    <p><strong>The engine room.</strong> Intakes data, executes physics via deterministic substrates, and delivers validated thrust. In Release 0.6.1, the engine is being wired to consume live evidence from the Logbook before treating Charter behaviors as authoritative.</p>
+                    <p><strong>The engine room.</strong> Intakes data, executes physics via deterministic substrates, and delivers validated thrust. In Release 0.6.1, the engine is being wired to consume live evidence from the fork-maintained Logbook before treating Charter behaviors as authoritative.</p>
                     <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/sierra-research/tau2-bench" target="_blank" style="color: var(--accent);">τ2-bench Foundation &rarr;</a></p>
                 </div>
                 <div class="card">
-                    <h3>Lower Boundary &mdash; GT-KB</h3>
-                    <p><strong>The Logbook.</strong> A live evidence ledger (<code>GT-KB</code>) that decouples historical lifecycle status from current evidence-derived trust state. If reality pushes back, the Logbook demotes trust without needing to rewrite the Charter.</p>
-                    <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/Remaker-Digital/groundtruth-kb" target="_blank" style="color: var(--accent);">View GT-KB Repository &rarr;</a></p>
+                    <h3>Lower Boundary &mdash; GT-KB-Derived</h3>
+                    <p><strong>The Logbook.</strong> A fork-maintained evidence layer derived from <code>GT-KB</code> that decouples historical lifecycle status from current evidence-derived trust state. If reality pushes back, the Logbook demotes trust without needing to rewrite the Charter.</p>
+                    <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/blue-az/groundtruth-kb" target="_blank" style="color: var(--accent);">View Bulkhead τ GT-KB Fork &rarr;</a> &middot; <a href="https://github.com/Remaker-Digital/groundtruth-kb" target="_blank" style="color: var(--accent);">Upstream GT-KB</a></p>
                 </div>
             </div>
         </section>
@@ -85,10 +85,11 @@
             <h3 style="margin-top: 0;">The Evidence-Backed Trust Loop</h3>
             <p>We have transitioned from a linear lifecycle to an <strong>evidence-backed trust loop</strong>. This resolves the "overloaded verified" problem by separating historical governance (the <em>Verified</em> milestone) from current evidence (the <em>Passing</em> trust state).</p>
             <ul style="line-height: 1.6; margin-top: 1rem;">
-                <li><strong>PBC</strong> remains authored and stable.</li>
-                <li><strong>GT-KB</strong> trust state changes dynamically as evidence changes (passing, failing, stale, disputed, or blocked).</li>
+                <li><strong>PBC</strong> remains authored, stable, and provider-neutral.</li>
+                <li><strong>The GT-KB-derived fork</strong> changes trust state dynamically as evidence changes (passing, failing, stale, disputed, or blocked).</li>
                 <li><strong>Bulkhead τ</strong> provides the downstream defense, gating runtime authority on that live trust state.</li>
             </ul>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--ink-muted);">Provenance note: the PBC anchoring path is upstream-aligned through merged provider-neutral guidance; the GT-KB trust-state layer is currently maintained in the Bulkhead τ fork.</p>
         </section>
 
         <footer class="footer">
