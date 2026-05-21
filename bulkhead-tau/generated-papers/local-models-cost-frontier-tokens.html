@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Models Cost Frontier Tokens: The Hidden Supervisor-Side Bill in Local-Inference Workflows</title>
+  <meta name="description" content="Local-inference workflows do not eliminate the frontier-token bill; they shift it from inference billing to the supervising operator&#x27;s session budget at audit, repair, and convergence time. Retrospective evidence across 10 historical Project Phoenix workflows (COST-RETRO-001) shows the cost concentrates in REPAIRED cases — DBB-005 absorbed 5 supervisor turns plus a remediation rewrite; the Paper 1.25 audit cycle absorbed hours of frontier session-time. Three bounded counterexamples (ORCHESTRATION_001 clean scheduling, SLOW-001 gemma3:27b bounded extraction, CAP-001 architectural counterexample) show where the claim does not bind. Inference-side optimizations (MTP / speculative decoding) narrow the local lane&#x27;s wall-clock penalty but do not touch audit/repair cost, so the supervisor-cost ratio rises as inference speed improves. Consolidates the Local LLM Operator Judgment cluster (1.20–1.25).">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>Local Models Cost Frontier Tokens: The Hidden Supervisor-Side Bill in Local-Inference Workflows</h1>
+    <p class="meta">Local-inference workflows do not eliminate the frontier-token bill; they shift it from inference billing to the supervising operator&#x27;s session budget at audit, repair, and convergence time. Retrospective evidence across 10 historical Project Phoenix workflows (COST-RETRO-001) shows the cost concentrates in REPAIRED cases — DBB-005 absorbed 5 supervisor turns plus a remediation rewrite; the Paper 1.25 audit cycle absorbed hours of frontier session-time. Three bounded counterexamples (ORCHESTRATION_001 clean scheduling, SLOW-001 gemma3:27b bounded extraction, CAP-001 architectural counterexample) show where the claim does not bind. Inference-side optimizations (MTP / speculative decoding) narrow the local lane&#x27;s wall-clock penalty but do not touch audit/repair cost, so the supervisor-cost ratio rises as inference speed improves. Consolidates the Local LLM Operator Judgment cluster (1.20–1.25).</p>
+    <p class="meta">Canonical source: <code>docs/LOCAL_MODELS_COST_FRONTIER_TOKENS.md</code></p>
+    <h2>The Hidden Supervisor-Side Bill in Local-Inference Workflows</h2>
+<h3>White Paper 1.30 — May 2026</h3>
+<p>**Author:** blue-az **Status:** Published **Paper group:** Local LLM Operator Judgment **Predecessor:** Paper 1.21 (<code>PRIVACY_IS_WORTH_PAYING_FOR.md</code>) — companion measurement **Gate-evidence packet:** <code>docs/domain_runs/COST-RETRO-001/report.md</code></p>
+<p>---</p>
+<h2>Abstract</h2>
+<p>Smaller local models, marketed as &quot;free&quot; or &quot;cheap&quot; because they run on local hardware, in fact consume **frontier-model tokens** — not at inference time, but at audit, repair, and convergence time. The cost shifts from inference billing to the supervising frontier operator&#x27;s session budget. For task classes that require supervised correctness, the all-in cost (local inference + frontier-operator audit and repair) exceeds the inference-only cost that local-lane marketing implies, and in measurable cases exceeds direct frontier execution. For bounded task classes where the local model converges cleanly, or where the correct architecture eliminates the LLM entirely, the claim does not bind. The retrospective evidence base is ten historical workflows in a single repository over a ~6-week observation window; the strongest single instance is a PR-of-record audit cycle (Paper 1.25&#x27;s TSP-table repair) that absorbed hours of supervising-frontier session-time. Inference-side optimizations such as multi-token-prediction (MTP) drafters narrow the local lane&#x27;s wall-clock penalty but do not touch the supervisor-side cost components, so the *ratio* of supervisor cost to total cost rises as inference-side speed improves.</p>
+<p>---</p>
+<h2>1. Introduction</h2>
+<p>The contemporary marketing claim around locally-hosted language models is straightforward: run inference on your own hardware, pay no per-token fee, get the privacy benefits, and use the model for tasks that would otherwise hit a frontier API. The implicit budget arithmetic is &quot;frontier API call → zero,&quot; and the implicit conclusion is that local-lane workflows are *strictly cheaper* than frontier-lane workflows, modulo the local hardware&#x27;s amortized cost.</p>
+<p>This paper argues that the arithmetic is wrong for any task class that requires supervised correctness. The cost the local lane appears to save is paid in frontier tokens elsewhere in the same workflow — at audit, repair, and convergence time, billed to the supervising operator&#x27;s session budget rather than to an API account. The cost has been moved upstream in the workflow, not eliminated.</p>
+<p>The argument is bounded. For bounded task classes that converge cleanly on a local model (deterministic-output bounded scheduling, bounded strict-output extraction), and for task classes that should not involve any LLM (bounded predicates better served by spec-aware deterministic functions), the cost-shift claim does not bind. Identifying where it does bind and where it doesn&#x27;t is the load-bearing contribution: the cost question is task-class-conditional, not absolute.</p>
+<p>Paper 1.21 (<code>PRIVACY_IS_WORTH_PAYING_FOR.md</code>) is the companion measurement. 1.21 establishes that local inference is not free *at the inference layer* (1.83× total-token use, 2.45× wall-time vs. frontier on the same DocDrop fixture class). This paper measures the layer 1.21 does not: the *supervisor-side* cost of pairing local inference with frontier supervision in production-correctness workflows. The two papers should be read as a pair. 1.21 closes the &quot;local is free at inference&quot; loophole; this paper closes the &quot;you can sidestep frontier billing by routing through local&quot; loophole.</p>
+<p>---</p>
+<h2>2. The Three Frontier-Cost Categories</h2>
+<p>The frontier cost of a supervised local-lane workflow accrues in three observable categories. Each is independently measurable and each is independent of inference-side optimizations.</p>
+<h3>2.1 Audit Cost</h3>
+<p>The supervisor reads local-model output to verify correctness against ground truth, schema, or downstream consumer expectations. The reading is what costs frontier tokens — the supervisor&#x27;s session budget burns even when the local-model output is fine.</p>
+<p>**Measurement.** COST-PROBE-001 (<code>docs/domain_runs/COST-PROBE-001/report.md</code>) measured ~0.83% Claude session-budget per supervisor audit turn on the DocDrop fixture class (3 fixtures × <code>gemma3:27b</code>). The 30% aggregate estimate previously cataloged in <code>GEMINI_FAILURE_MODES.md</code> entry #10 is consistent with this once re-read as ~30 turns × ~1% rather than as a per-turn cost.</p>
+<p>**Implication.** Audit cost is *recurrent*: every supervisor turn that reads a local-model artifact incurs the cost. For HITL workflows where supervisor and local-model exchange many turns, the per-turn cost compounds into the workflow&#x27;s dominant budget line item.</p>
+<h3>2.2 Repair Cost</h3>
+<p>When the local-model output is wrong — fabricated, schema-broken, drift-affected, narration-surface failed — the supervisor spends frontier tokens diagnosing the failure and producing a corrected artifact. Repair cost is unbounded above: a single repair cycle on a high-severity failure can absorb hours of frontier session-time.</p>
+<p>**Canonical instance.** The Paper 1.25 audit cycle (2026-05-04) is the canonical repair-cost case in the project&#x27;s history. A Gemini-CLI-authored paper shipped to the frozen-manifest stage with a fabricated TSP results table. The repair pass loaded onto Claude included: identifying the fabrication (path resolution, grep against benchmark logs, cross-task-surface trace of the borrowed number), source repair, running the *real* 117-minute <code>gemma4:31b</code> Arizona TSP ladder that the paper had claimed was already run, re-rendering the paper, re-publishing through the publish_paper chain, and authoring the catalog entry for the failure (<code>GEMINI_FAILURE_MODES.md</code> entry #6). Total Claude session-time: hours. The original Gemini commit took minutes.</p>
+<p>**Pattern: cost asymmetry.** Repair cost is asymmetric to the cost of the original failure. The fabrication commit was cheap to produce; the audit-and-repair pass was expensive. This asymmetry is the mechanism of the cost-shift claim — the local-lane workflow&#x27;s apparent low cost is genuine until the supervisor catches a failure, at which point the supervisor&#x27;s budget absorbs the recovery.</p>
+<h3>2.3 Convergence Cost</h3>
+<p>When the local model cannot complete a task that a frontier model can, the supervisor re-runs the task on the frontier path. The convergence cost is the *additional* supervisor effort to reach completion via re-routing — including the time to diagnose the local model&#x27;s failure mode well enough to know that re-routing is the right move.</p>
+<p>**Measurement: PlayerAgent V3 benchmark (2026-03-09 / 10, run <code>run_20260309_234818</code>).** Same 100-task task surface, three models:</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Outcome</th><th>Wall-clock</th><th>Retries</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><code>claude-sonnet-4-6</code></td><td>100/100</td><td>5.6 min</td><td>0</td><td>direct frontier</td></tr>
+<tr><td><code>gemma3:27b</code></td><td>100/100</td><td>13.9 min</td><td>(HITL loop)</td><td>local + supervisor review</td></tr>
+<tr><td><code>gpt-oss:20b</code></td><td>DNF (2× hard crash)</td><td>—</td><td>—</td><td>unrecoverable</td></tr>
+<tr><td><code>granite4:latest</code></td><td>DNF (silent quality fail)</td><td>—</td><td>—</td><td>mechanical pass, content fail</td></tr>
+</tbody>
+</table>
+<p>The two completing models reached the same correctness outcome on the same task surface. The local path was 2.5× slower wall-clock *and* required additional supervisor session-budget per HITL iteration (the audit-cost line item). The frontier path required zero supervisor review beyond the operator-driven prompt. For tasks where the local model DNFs (the <code>gpt-oss:20b</code> and <code>granite4:latest</code> rows), the entire local-lane cost is wasted; the convergence path is the full frontier-lane cost on top of the already-burned local lane.</p>
+<p>---</p>
+<h2>3. Distinguishing From Paper 1.21</h2>
+<p><code>PRIVACY_IS_WORTH_PAYING_FOR.md</code> is the foundational companion. It establishes that the local lane is not free *at inference*: 1.83× total-token use, 3.37× output-token use, 2.45× wall-time, 1/3 first-pass success vs. 3/3 on the DocDrop synthetic-fixture lane (<code>docs/domain_runs/PRIVACY-DOCDROP-001/comparison_report.md</code>). 1.21&#x27;s frame is *privacy is the legitimating reason to pay the cost*. Its measurements are inference-side: tokens emitted by the local model, retries the local model needs, wall-time the local model takes.</p>
+<p>This paper&#x27;s frame is different. The cost being measured is the **supervising frontier operator&#x27;s session budget**, which 1.21 does not address. When local inference is paired with frontier supervision (HITL, multi-agent, audit-and-sign-off workflows), the frontier model spends billable tokens that are not visible in any inference comparison. 1.21 prices the local lane *in isolation*; this paper prices the local lane *as supervised in production*, which is how the cost actually accrues.</p>
+<p>The two papers land as a pair. 1.21 closes the inference-side loophole. This paper closes the supervision-side loophole.</p>
+<p>---</p>
+<h2>4. Retrospective Evidence — Ten Historical Workflows</h2>
+<p>The full evidence packet is at <code>docs/domain_runs/COST-RETRO-001/report.md</code>. Ten historical workflows in the Project Phoenix repo were inspected for frontier-token audit/repair cost. The summary table:</p>
+<h3>4.1 Outcome Classification</h3>
+<table class="paper-table">
+<thead><tr><th>Outcome</th><th>Workflows</th><th>Total documented repair/audit turns</th><th>Supervisor-cost signature</th></tr></thead>
+<tbody>
+<tr><td>ACCEPTED (clean first-pass)</td><td>ORCHESTRATION_001 (both lanes); SLOW-001 gemma3:27b lane; PTS-001 gemma3:27b lane; COST-PROBE-001 data-extraction surface</td><td>0</td><td>Either no audit applied, or audit produced a narration-flag without repair</td></tr>
+<tr><td>REPAIRED (supervisor intervention required)</td><td>DBB-005 gemma4_local; TSP_3090 / Paper 1.25 cycle; GRAFANA-OBS-001 multi-agent handoff</td><td>5 + ~<code>hours</code> + 1 = at least 7 documented turns plus one major rewrite cycle</td><td>Concentrated: each REPAIRED case absorbed substantial frontier session-time</td></tr>
+<tr><td>REJECTED (local output discarded)</td><td>SLOW-001 gemma4:26b on synthesis; PTS-001 gemma4:31b and gemma4:26b; PRIVACY-DOCDROP-001 quality lane; CAP-001 LLM lane; RETRIEVAL_001 Lanes B2/C; COST-PROBE-001 fixture-02 narration label</td><td>0 (decision was to discard)</td><td>Audit cost = the diagnostic step itself; downstream cost = whatever was lost by not shipping</td></tr>
+<tr><td>ABANDONED (memory-cited)</td><td>PlayerAgent V3: <code>gpt-oss:20b</code>, <code>granite4:latest</code>, <code>qwen3.5:27b</code></td><td>n/a</td><td>Convergence cost; not directly inspectable from <code>docs/domain_runs/</code></td></tr>
+</tbody>
+</table>
+<p>The strongest cost-shift signal is concentrated in the REPAIRED class, not in the volume of supervised-correctness cases. Three workflows account for the bulk of documented repair cost:</p>
+<ul>
+<li>**DBB-005 gemma4_local**: 5 repair turns (3 automated + 2 manual supervisor interventions) plus a remediation rewrite at commit <code>a921cf4</code>. Outcome: PASS_WITH_WAIVER. Documented at <code>docs/domain_runs/DBB-005/gemma4_local/supervisor_verdict.md</code> and <code>repair_log.txt</code>.</li>
+<li>**TSP_3090 / Paper 1.25 cycle**: hours of Claude session-time absorbed by the audit-rewrite cycle. The cost asymmetry between the original Gemini commit (minutes) and the recovery (hours) is the mechanism made measurable.</li>
+<li>**GRAFANA-OBS-001 multi-agent handoff**: Gemini CLI hit a capability boundary (couldn&#x27;t write Rust to the upstream <code>labwired-core</code> repo); Claude Sonnet 4.6 took over and implemented the missing <code>shm_i2c</code> device (PR #87). Cross-agent handoff *is* the repair turn here.</li>
+</ul>
+<h3>4.2 Bounded Counterexamples</h3>
+<p>Three concrete counterexamples surfaced where the cost-shift claim does *not* bind:</p>
+<p>**ORCHESTRATION_001** — <code>gemma4:26b</code> at N=20 produced 100% accuracy on both Lane A (direct) and Lane B (orchestrated) for bounded complex-scheduling tasks. Zero supervisor turns invoked. The deterministic-output validation collapses the audit surface to a pass/fail check — no narration surface to drift, no repair to absorb supervisor cost. Bounded scheduling with crisp validation is the cleanest in-pipeline counterexample.</p>
+<p>**SLOW-001 gemma3:27b lane** — 3/3 first-pass success on bounded strict-output DocDrop extraction. Zero supervisor turns invoked in SLOW-001 itself; an audit added later in COST-PROBE-001 caught a *narration-surface* flag (sentiment-tone flattening, 1 of 3 fixtures) but did not produce a repair pass. On the data-extraction half of the task (titles, attendees, action items, dates), the local model is mechanically reliable; the audit-cost surface is the narration half (sentiment label), which is THE_NARRATION_SURFACE_STUB.md&#x27;s territory, not generic audit cost.</p>
+<p>**CAP-001** — bounded-predicate task class where the right architectural answer is to *eliminate the LLM* and use a spec-aware deterministic function instead (<code>llama3.1:8b</code> at 75% vs. spec-aware function at 100%; <code>gemma4:26b</code> matched 100% but at 11× the spec-aware function&#x27;s wall-time). There is no supervisor audit turn to count, because the correct decision is not to involve an LLM in the pipeline. This is a structurally different counterexample shape than ORCHESTRATION_001 and SLOW-001 — it bounds the claim from *outside* the LLM pipeline rather than from within.</p>
+<p>**RETRIEVAL_001** is a fourth-shaped candidate (LLM-as-passenger in a retrieval task — 7× latency tax for no value-add) that pairs with CAP-001 architecturally. Same shape: the LLM doesn&#x27;t belong in the pipeline; &quot;audit it more carefully&quot; is the wrong response.</p>
+<p>---</p>
+<h2>5. Engaging Inference-Side Optimizations (MTP / Speculative Decoding)</h2>
+<p>Contemporary inference-side optimizations — multi-token-prediction (MTP) drafters, speculative decoding, parallel sampling — narrow the gap this paper argues against, but only on the surface this paper does not measure. The distinction is load-bearing and worth engaging directly.</p>
+<p>The relevant 2026 example: Google DeepMind announced Gemma-4 MTP drafters claiming &quot;up to 3× inference speedup&quot; with &quot;zero degradation in output.&quot; Popular developer commentary frames this as *&quot;park this on self-hosted hardware and offload a bunch of major tasks to it instead of your expensive frontier API queues&quot;* — the exact intuition this paper critiques.</p>
+<h3>5.1 What MTP Optimizes</h3>
+<ul>
+<li>**Local-model wall-clock and GPU throughput.** Real and useful. The drafter predicts tokens; the main model accepts or rejects against its own sampling distribution; net effect is a generation-side speedup.</li>
+<li>**Convergence cost** (§2.3) — to a degree. Faster local generation means faster retries when the local lane fails to converge. Reduces the wall-clock penalty on the local-lane failure-and-retry loop.</li>
+</ul>
+<h3>5.2 What MTP Does Not Touch</h3>
+<ul>
+<li>**Audit cost** (§2.1). The supervisor still has to read the local-model output to verify correctness, regardless of how fast the output was generated. Faster output may even *increase* per-unit-time audit load on the supervisor.</li>
+<li>**Repair cost** (§2.2). When the local-model output is wrong, the supervisor still spends frontier tokens diagnosing and fixing it. Inference speed has no effect on fabrication rate.</li>
+<li>**The &quot;zero quality loss&quot; claim itself.** This is a *theoretical* invariant — speculative decoding preserves the main model&#x27;s sampling distribution when drafter predictions are accepted only on match. It is not an *operational* invariant about all downstream task surfaces. Subtle drift in agentic loops, long-form output, or code generation can fall below standard benchmark sensitivity while showing up at narration surfaces (per <code>THE_NARRATION_SURFACE_STUB.md</code> and <code>docs/domain_runs/NARRATION-REPL-001/partition.md</code>). The &quot;zero degradation&quot; claim is precisely the kind of load-bearing product claim that benefits from probe-level verification rather than benchmark-level acceptance.</li>
+</ul>
+<h3>5.3 The Relative Argument Strengthens</h3>
+<p>As inference-side optimization narrows the visible local-lane penalty (the part 1.21 measures), the *ratio* of supervisor-side cost to total cost goes up. A 3× inference speedup that leaves audit cost unchanged makes audit a larger fraction of all-in cost, not a smaller one. The hidden cost becomes more visible by relative weight, not less.</p>
+<p>**The defensible synthesis.** MTP-class optimizations are good for the local lane at what they optimize. The popular extension — *therefore offload from frontier API queues* — does not follow, because the surface that determines all-in cost when correctness is required (the supervisor&#x27;s audit and repair budget) is unaffected by the optimization. The local lane is faster and cheaper at *what local does*; it is not free at *what production correctness requires*.</p>
+<p>---</p>
+<h2>6. The Local LLM Operator Judgment Cluster</h2>
+<p>This paper consolidates a thesis that the cluster&#x27;s prior papers (1.20–1.25) approached piecewise:</p>
+<ul>
+<li>**1.20 (<code>GEMMA_4_IS_SMARTER_GEMMA_3_IS_SAFER</code>)** — handoff discipline costs operator review time.</li>
+<li>**1.21 (<code>PRIVACY_IS_WORTH_PAYING_FOR</code>)** — privacy is worth paying for; the local lane is not free at inference.</li>
+<li>**1.22 (<code>SLOW_IS_NOT_SMART</code>)** — slow is not smart; scaling local up regresses on bounded tasks.</li>
+<li>**1.23 (<code>PLEASE_IS_SAND_OFF_A_BEACH</code>)** — ritual-vs-structural cost.</li>
+<li>**1.24 (<code>THE_MODEL_IS_NOT_THE_FUNCTION</code>)** — visible code simplicity hides system complexity.</li>
+<li>**1.25 (<code>ORCHESTRATION_IS_CHEAPER_THAN_REASONING</code>)** — scaling local up is anti-dividend on hardware-bound systems; the optimal use of intelligence is as an interface/explanation layer.</li>
+</ul>
+<p>Each cluster paper touches a piece of the cost picture. None states the claim that ties them together: *the cost the local lane appears to save is paid in frontier tokens elsewhere in the same workflow.* Without this paper, the cluster reads as a set of related observations. With it, the cluster has a spine.</p>
+<p>The claim is counter-intuitive in the broader open-source / local-inference vernacular, which sells &quot;no API bill&quot; as equivalent to &quot;no cost.&quot; The cluster&#x27;s existing papers chip at this; this paper consolidates to the strongest defensible form: *the model is not free if its supervisor is not free.*</p>
+<p>---</p>
+<h2>7. Proof Boundary</h2>
+<p>The cost-shift claim binds on task classes that simultaneously satisfy two conditions:</p>
+<ol>
+<li>**Supervised correctness is required.** The task&#x27;s output must be verified before consumption. Tasks where the user accepts the raw local-model output without independent verification do not invoke supervisor cost.</li>
+<li>**Verification has non-trivial overhead.** The task&#x27;s correctness cannot be checked by a one-line validator or a deterministic comparison. Tasks with crisp pass/fail validation (numeric outputs against ground truth, JSON schema validation) collapse the audit surface and bound the cost-shift argument.</li>
+</ol>
+<p>The claim does **not** bind on:</p>
+<ul>
+<li>**Bounded task classes where the local model converges cleanly** (ORCHESTRATION_001, SLOW-001 gemma3:27b — §4.2).</li>
+<li>**Task classes where the correct architecture eliminates the LLM** (CAP-001 — §4.2).</li>
+<li>**Pure-exploration / draft-only writing** where verification is unneeded by design.</li>
+<li>**Private-data tasks where audit is impossible regardless of cost** — the local lane is the *only* lane, so the cost comparison is moot (this is 1.21&#x27;s territory).</li>
+</ul>
+<p>The strongest form of the claim, defensible without overreach: *for any task class with non-trivial verification overhead and supervised correctness requirements, the all-in token cost (local + frontier audit) exceeds the inference-only cost the local-lane marketing implies, and may exceed direct frontier execution.*</p>
+<p>---</p>
+<h2>8. Limitations and Open Questions</h2>
+<p>What this paper does not measure:</p>
+<ul>
+<li>**Per-turn frontier-token attribution for most workflows.** Only COST-PROBE-001 instrumented <code>/usage</code> delta per supervisor turn. DBB-005&#x27;s &quot;2 manual supervisor interventions&quot; and TSP_3090&#x27;s &quot;hours of Claude session-time&quot; are qualitative; per-turn token / budget breakdowns are not reconstructable from the artifacts.</li>
+<li>**PlayerAgent V3 benchmark not in <code>docs/domain_runs/</code>.** The canonical 100-task convergence case lives under <code>domains/SensorAgents/TennisAgent/</code>. Numbers are summarized in memory but not in the inspectable retrospective tree.</li>
+<li>**Cost-of-not-auditing remains hypothetical.** COST-PROBE-001 documented one narration-surface failure (sentiment-tone flattening on fixture_02) that would have shipped without audit. The downstream cost of that ship-through (what damage a flattened sentiment label does to a real consumer of the extraction) is hypothetical, not measured.</li>
+<li>**No cross-model audit-cost comparison.** All audit-instrumented runs used <code>gemma3:27b</code>. Whether <code>gemma4:26b</code>, <code>gemma4:31b</code>, <code>llama3.1:8b</code>, or other local models would generate more or fewer narration-surface failures (driving higher or lower audit cost) is open.</li>
+<li>**Heavy-tailed repair cost is undercounted.** DBB-005&#x27;s &quot;5 repair turns&quot; understates supervisor work because the remediation rewrite (commit <code>a921cf4</code>) was treated as supervisor work outside the harness loop. Similarly TSP_3090&#x27;s &quot;Paper 1.25 audit cycle&quot; was not turn-counted in the artifacts. The actual frontier-token spend on REPAIRED cases is almost certainly larger than the discrete turn counts suggest.</li>
+</ul>
+<p>What would tighten the paper for future work:</p>
+<ul>
+<li>A larger task-level rate measurement on the same fixture class, with a second operator-state baseline (the gate-spec retired execution path called for this; the operator-mode probe was retired due to its own friction, but an API-mode equivalent would close the gap).</li>
+<li>Cross-model audit-cost comparison on a fixed task class.</li>
+<li>A designed probe of cost-of-not-auditing: run the same task class with deliberate no-audit local-lane execution; measure the rate at which fabrication ships.</li>
+</ul>
+<p>---</p>
+<h2>9. Conclusion</h2>
+<p>Three claims, each bounded as documented above:</p>
+<ol>
+<li>**Audit, repair, and convergence costs are real, measurable, and concentrated in the supervisor&#x27;s frontier session budget.** COST-PROBE-001 measured ~1% Claude session-budget per supervisor turn on the DocDrop fixture class. The Paper 1.25 audit cycle absorbed hours of Claude session-time as a single instance.</li>
+<li>**The cost-shift claim binds on supervised-correctness tasks with non-trivial verification overhead.** It does not bind on bounded task classes with deterministic-output validation (ORCHESTRATION_001, SLOW-001) or task classes where the LLM doesn&#x27;t belong in the pipeline (CAP-001). The boundary is task-class-conditional, not absolute.</li>
+<li>**Inference-side optimization (MTP / speculative decoding) sharpens the relative argument, not weakens it.** Audit and repair costs are unaffected by inference speed; as inference speed improves, audit becomes a larger fraction of all-in cost.</li>
+</ol>
+<p>The cluster&#x27;s prior papers each touched a piece of the cost picture. This paper&#x27;s contribution is the spine that connects them: the cost the local lane appears to save is paid in frontier tokens elsewhere in the same workflow. The model is not free if its supervisor is not free.</p>
+<p>---</p>
+<h2>Appendix A — Reproducibility Artifacts</h2>
+<table class="paper-table">
+<thead><tr><th>Claim</th><th>Artifact / verification</th></tr></thead>
+<tbody>
+<tr><td>Per-supervisor-turn cost on DocDrop fixtures (~0.83%)</td><td><code>docs/domain_runs/COST-PROBE-001/report.md</code>, table §&quot;Results&quot;</td></tr>
+<tr><td>DBB-005: 5 repair turns + 2 manual supervisor interventions</td><td><code>docs/domain_runs/DBB-005/gemma4_local/supervisor_verdict.md</code>, <code>repair_log.txt</code></td></tr>
+<tr><td>Paper 1.25 audit cycle</td><td><code>docs/ORCHESTRATION_IS_CHEAPER_THAN_REASONING.md</code> (post-repair source); <code>GEMINI_FAILURE_MODES.md</code> entry #6</td></tr>
+<tr><td>GRAFANA-OBS-001 multi-agent handoff</td><td><code>docs/domain_runs/GRAFANA-OBS-001/PHASE_SUMMARY.md</code>; upstream PR #87 = commit <code>3e7ba90</code> in <code>w1ne/labwired-core</code></td></tr>
+<tr><td>ORCHESTRATION_001 bounded counterexample</td><td><code>docs/domain_runs/ORCHESTRATION_001/report.md</code></td></tr>
+<tr><td>SLOW-001 bounded counterexample</td><td><code>docs/domain_runs/SLOW-001/docdrop_model_matrix_report.md</code></td></tr>
+<tr><td>CAP-001 architectural counterexample</td><td><code>docs/domain_runs/CAP-001/report.md</code></td></tr>
+<tr><td>Retrospective evidence packet</td><td><code>docs/domain_runs/COST-RETRO-001/report.md</code></td></tr>
+<tr><td>PlayerAgent V3 benchmark (convergence cost)</td><td>memory entry <code>run_20260309_234818</code>; partially documented under <code>domains/SensorAgents/TennisAgent/</code></td></tr>
+</tbody>
+</table>
+<p>---</p>
+<h2>Appendix B — What This Paper Does Not Claim</h2>
+<ul>
+<li>That all local-inference workflows cost more than frontier execution. The claim binds only on supervised-correctness tasks with non-trivial verification overhead (see §7).</li>
+<li>That local-model failure rates are universally high. The claim is about the *concentration* of supervisor cost in REPAIRED outcomes, not about the prevalence of failures. <code>gemma3:27b</code> on DocDrop strict-output extraction passed 3/3 cleanly (SLOW-001).</li>
+<li>That inference-side optimizations are worthless. MTP / speculative decoding do useful work for the local lane (§5.1). The paper&#x27;s claim is that they do not touch the surface this paper measures.</li>
+<li>That the catalog rate (72% narration-surface across cataloged failures, per <code>NARRATION-REPL-001/partition.md</code>) is an unbiased fabrication-rate estimate. The catalog has no denominator; it conditions on *being a failure*, not on *being a task*. The COST-PROBE-001 task-level rate (33% on DocDrop sentiment-tone with gemma3:27b) is the more honest estimate, with the caveat that it is single-model and single-fixture-class.</li>
+<li>That the retrospective&#x27;s 10 workflows generalize beyond this repo, this agent set, or this ~6-week observation window. The packet is exploratory evidence, not a benchmark.</li>
+</ul>
+<p>---</p>
+<h2>Appendix C — Voice Discipline</h2>
+<p>The cluster&#x27;s voice-signature catalog (in <code>docs/AGENT_AUDIT_PROTOCOL.md</code>) flags phrases like *&quot;factor of infinity,&quot; &quot;nuclear bomb,&quot; &quot;elite Systemic AI space,&quot;* and the closure-reflex register (*&quot;Mission Complete,&quot; &quot;officially closed&quot;*). The counter-intuitive headline (&quot;local models cost frontier tokens&quot;) is load-bearing for the paper&#x27;s interest; the supporting prose should not inflate beyond what the evidence supports. This draft has been authored against the catalog and reviewed for closure-reflex drift before commit.</p>
+<p>The strongest form of the claim — and the form this paper should defend — is bounded: *for any task class with non-trivial verification overhead, the all-in token cost (local + frontier audit) exceeds the inference-only cost the local-lane marketing implies, and may exceed direct frontier execution.* Falsifiable, bounded, defensible. Anything stronger (&quot;local always costs more&quot;) is overreach; anything weaker (&quot;local sometimes has overhead&quot;) is not the paper.</p>
+<p>---</p>
+<p>*Active draft begun 2026-05-20. Phoenix-side authoring; all evidence anchored in <code>docs/domain_runs/COST-RETRO-001/report.md</code> and the artifacts it cites. No new probe runs performed for this draft.*</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Engineering core: <a href="/project-phoenix/">Project Phoenix</a>.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

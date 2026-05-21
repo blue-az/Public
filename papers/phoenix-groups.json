@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-05-20T04:46:02.530642+00:00",
+  "generated_at": "2026-05-21T05:18:04.328059+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -140,6 +140,28 @@
           ],
           "publish": true,
           "summary": "For models with extensive reasoning capacity, the computational cost of finding the answer often exceeds the cost of explaining it. Today's TSP and Scheduling benchmarks (ORCHESTRATION-001) demonstrate that orchestration provides a 2x to 14x speedup over direct reasoning while significantly improving reliability."
+        },
+        {
+          "id": "local-models-cost-frontier-tokens",
+          "title": "Local Models Cost Frontier Tokens: The Hidden Supervisor-Side Bill in Local-Inference Workflows",
+          "source_path": "docs/LOCAL_MODELS_COST_FRONTIER_TOKENS.md",
+          "track": "paper",
+          "paper_number": "1.30",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "local-models-cost-frontier-tokens",
+          "proto_output_path": "project-phoenix/generated-papers/local-models-cost-frontier-tokens.html",
+          "proto_markdown_path": "project-phoenix/generated-papers-src/local-models-cost-frontier-tokens.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/local-models-cost-frontier-tokens.html",
+              "markdown": "bulkhead-tau/generated-papers-src/local-models-cost-frontier-tokens.md"
+            }
+          ],
+          "publish": true,
+          "summary": "Local-inference workflows do not eliminate the frontier-token bill; they shift it from inference billing to the supervising operator's session budget at audit, repair, and convergence time. Retrospective evidence across 10 historical Project Phoenix workflows (COST-RETRO-001) shows the cost concentrates in REPAIRED cases \u2014 DBB-005 absorbed 5 supervisor turns plus a remediation rewrite; the Paper 1.25 audit cycle absorbed hours of frontier session-time. Three bounded counterexamples (ORCHESTRATION_001 clean scheduling, SLOW-001 gemma3:27b bounded extraction, CAP-001 architectural counterexample) show where the claim does not bind. Inference-side optimizations (MTP / speculative decoding) narrow the local lane's wall-clock penalty but do not touch audit/repair cost, so the supervisor-cost ratio rises as inference speed improves. Consolidates the Local LLM Operator Judgment cluster (1.20\u20131.25)."
         }
       ]
     },
