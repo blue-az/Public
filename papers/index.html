@@ -57,7 +57,11 @@
         </div>
 
         <div class="callout" style="margin-top:1rem;">
-            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.26 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, token-cost attention, the substitution discipline that says a model call must earn its runtime against a written spec, and multi-agent HIL workflows showing how heterogeneous simulation stacks decompose along language and permission boundaries.</p>
+            <p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Project Phoenix as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/" style="color:var(--accent);">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.26, and 1.30 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, token-cost attention, the substitution discipline that says a model call must earn its runtime against a written spec, and multi-agent HIL workflows showing how heterogeneous simulation stacks decompose along language and permission boundaries.</p>
+        </div>
+
+        <div class="callout" style="margin-top:1rem;">
+            <p><strong>Sensor-to-Simulation Engineering:</strong> Paper 1.27 establishes the data landscape and fidelity boundaries for wearable sport sensors, showing why sensor-driven HIL is necessarily event-driven rather than waveform-driven.</p>
         </div>
 
         <!-- Reading Guide -->
@@ -95,7 +99,11 @@
                 </div>
                 <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
                     <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Local LLM Operator Judgment</h3>
-                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.20–1.26</strong> turn the Phoenix evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, where token-cost attention actually belongs, when a model call should not be a model call at all, and multi-agent HIL workflows that decompose along language and permission boundaries.</p>
+                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Papers 1.20–1.26, and 1.30</strong> turn the Phoenix evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, where token-cost attention actually belongs, when a model call should not be a model call at all, and multi-agent HIL workflows that decompose along language and permission boundaries.</p>
+                </div>
+                <div style="border:1px solid var(--border); padding:1rem; background:rgba(255,255,255,0.5);">
+                    <h3 style="font-family:var(--display-font); font-size:1.1rem; margin-bottom:0.5rem;">Sensor-to-Simulation Engineering</h3>
+                    <p style="font-size:var(--font-size-sm); line-height:1.6;"><strong>Paper 1.27</strong> characterizes wearable sport sensors through a fidelity-boundary lens, establishing event-driven simulation clocks as the cycle-accurate validation substrate for firmware.</p>
                 </div>
             </div>
         </section>
@@ -379,6 +387,30 @@
                     <p class="paper-thesis">Heterogeneous HIL stacks decompose into agent roles along language and permission boundaries. The handoff artifact is the critical interface for multi-agent continuity. Field data from GRAFANA-OBS-001/PROX-HIL-001 on the Z13 laptop: Rust simulation, Python harness, Claude Code orchestration, Grafana Tempo observability.</p>
                     <span class="paper-link">Open paper →</span>
                 </a>
+
+                <a class="paper-card" href="../project-phoenix/generated-papers/local-models-cost-frontier-tokens.html" target="_blank">
+                    <span class="paper-num">Paper 1.30</span>
+                    <h3>Local Models Cost Frontier Tokens: The Hidden Supervisor-Side Bill in Local-Inference Workflows</h3>
+                    <p class="paper-thesis">Local-inference workflows do not eliminate the frontier-token bill; they shift it from inference billing to the supervising operator's session budget at audit, repair, and convergence time. Retrospective evidence across 10 historical Project Phoenix workflows shows the cost concentrates in REPAIRED cases, and while inference-side optimizations narrow the wall-clock penalty, they do not touch audit/repair cost.</p>
+                    <span class="paper-link">Open paper →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Cluster XI -->
+        <section class="section">
+            <div class="cluster-heading">XI &nbsp;·&nbsp; Sensor-to-Simulation Engineering</div>
+            <p style="margin-bottom:1.2rem; color:var(--ink-muted); font-style:italic; font-size:var(--font-size-sm);">Characterizing wearable sport sensors and building cycle-accurate hardware simulation for firmware validation.</p>
+
+            <div class="grid-2">
+
+                <a class="paper-card" href="../project-phoenix/generated-papers/wearable-sensor-corpus.html" target="_blank">
+                    <span class="paper-num">Paper 1.27</span>
+                    <h3>A Field Guide to Wearable Sport Sensors: Data Landscape, Fidelity Boundaries, and Engineering Constraints</h3>
+                    <p class="paper-thesis">Characterizes the five-sensor corpus deployed in Project Phoenix through a fidelity-boundary lens: the point at which each sensor's output stops being measurement and starts being vendor interpretation. Concludes that no sensor in the corpus exposes a sample-accurate waveform, so sensor-driven HIL on this corpus is necessarily event-driven, not waveform-driven.</p>
+                    <span class="paper-link">Open paper →</span>
+                </a>
+
             </div>
         </section>
 
@@ -529,7 +561,7 @@
                             <td class="url-cell"><a href="../ppr-agent/" target="_blank">ppr-agent/</a></td>
                         </tr>
                         <tr class="table-group-header">
-                            <td colspan="4">Local LLM Operator Judgment — 1.20 through 1.26</td>
+                            <td colspan="4">Local LLM Operator Judgment — 1.20 through 1.26, and 1.30</td>
                         </tr>
                         <tr>
                             <td>1.20</td>
@@ -573,10 +605,25 @@
                             <td>Local LLM</td>
                             <td class="url-cell"><a href="../project-phoenix/generated-papers/multi-agent-hil-workflows.html" target="_blank">multi-agent-hil-workflows</a></td>
                         </tr>
+                        <tr>
+                            <td>1.30</td>
+                            <td>Local Models Cost Frontier Tokens: The Hidden Supervisor-Side Bill in Local-Inference Workflows</td>
+                            <td>Local LLM</td>
+                            <td class="url-cell"><a href="../project-phoenix/generated-papers/local-models-cost-frontier-tokens.html" target="_blank">local-models-cost-frontier-tokens</a></td>
+                        </tr>
+                        <tr class="table-group-header">
+                            <td colspan="4">Sensor-to-Simulation Engineering — 1.27</td>
+                        </tr>
+                        <tr>
+                            <td>1.27</td>
+                            <td>A Field Guide to Wearable Sport Sensors: Data Landscape, Fidelity Boundaries, and Engineering Constraints</td>
+                            <td>Simulation</td>
+                            <td class="url-cell"><a href="../project-phoenix/generated-papers/wearable-sensor-corpus.html" target="_blank">wearable-sensor-corpus</a></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/. Papers 1.20–1.26 live under project-phoenix/generated-papers/ and are also exposed through phoenix-groups.html.</p>
+            <p class="reading-note">All sites live at proto.efehnconsulting.com. Papers 1.8–1.9 share the rough-volatility site; 1.12–1.13 share the details site; 1.10/1.14/1.15 share the failure-details site; 1.16 and 1.19 share the capture-integrity site. Paper 1.17 has a dedicated site at operator-shell/. Paper 1.18 has a dedicated site at ppr-agent/. Papers 1.20–1.26, 1.27, and 1.30 live under project-phoenix/generated-papers/ and are also exposed through phoenix-groups.html.</p>
         </section>
 
         <footer class="footer">

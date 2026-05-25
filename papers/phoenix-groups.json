@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-05-21T05:18:04.328059+00:00",
+  "generated_at": "2026-05-25T21:58:48.880569+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -216,10 +216,10 @@
         {
           "id": "labwired-simulation-platform",
           "title": "LabWired: Cycle-Accurate Hardware Simulation for Embedded Sensor Systems",
-          "source_path": "docs/WHITE_PAPER_LABWIRED_PLATFORM_STUB.md",
+          "source_path": "docs/WHITE_PAPER_LABWIRED_PLATFORM.md",
           "track": "paper",
           "paper_number": "1.28",
-          "lifecycle": "stub",
+          "lifecycle": "active draft",
           "publication_status": "private",
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "provisional",
@@ -232,10 +232,10 @@
         {
           "id": "sensor-driven-hil",
           "title": "Closing the Loop: From Real Sensor Data to Cycle-Accurate Firmware Validation",
-          "source_path": "docs/WHITE_PAPER_SENSOR_DRIVEN_HIL_STUB.md",
+          "source_path": "docs/WHITE_PAPER_SENSOR_DRIVEN_HIL.md",
           "track": "paper",
           "paper_number": "1.29",
-          "lifecycle": "stub",
+          "lifecycle": "active draft",
           "publication_status": "private",
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "provisional",
