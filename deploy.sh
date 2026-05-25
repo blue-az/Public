@@ -55,6 +55,7 @@ case "$TARGET" in
         rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
         rsync_push "$LOCAL_ROOT/bulkhead-tau-core/" "$REMOTE_ROOT/bulkhead-tau-core/"
         rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
+        rsync_push "$LOCAL_ROOT/.htaccess" "$REMOTE_ROOT/.htaccess"
         ;;
     *)
         echo "Usage: $0 [papers|bulkhead-tau-core|bulkhead-tau|all]"
