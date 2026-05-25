@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulkhead τ | Deterministic Governance Substrate</title>
-    <meta name="description" content="Bulkhead τ is a deterministic governance substrate for AI systems: evidence-backed agent systems and deterministic substrates. Built on the Project Phoenix engineering core.">
+    <meta name="description" content="Bulkhead τ is a deterministic governance substrate for AI systems: evidence-backed agent systems and deterministic substrates. Built on the underlying engineering core.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,7 +14,6 @@
             <span class="badge">Release 0.6.1</span>
             <h1>Bulkhead τ</h1>
             <p class="subtitle">Evidence-backed agent systems and deterministic substrates.</p>
-            <p class="internal-label" style="color: #666; font-size: 0.9rem; margin-top: 5px;">Internally, this work is developed under Project Phoenix.</p>
         </header>
 
         <nav class="nav">
@@ -26,7 +25,7 @@
         </nav>
 
         <div class="pullquote">
-            <p>The market is shipping rafts. Bulkhead τ ships vessels.</p>
+            <p>Reliable governance substrates for complex implementations: bridging Charter standards and Logbook evidence.</p>
         </div>
 
         <section class="section">
@@ -56,45 +55,50 @@
 
         <section id="purpose" class="section">
             <h2>Purpose</h2>
-            <p>Bulkhead τ is the public release line for a system that does not try to make AI smarter. It tries to make AI <em>governable</em>. The intelligence sits inside a watertight shell, bounded above by a PBC-compatible Charter layer and below by a GT-KB-derived Logbook layer. Inputs arrive as fuel; outputs leave as repeatable insights; nothing leaks.</p>
-            <p>Where the rest of the AI tooling space is building thin wrappers around language models &mdash; thousands of rafts, fast to build and quick to capsize &mdash; Bulkhead τ is the engineered alternative: a deterministic substrate that survives contact with real domains.</p>
+            <p>Bulkhead τ is the public release line for a deterministic expert system built as personal consultant tooling for complex implementations. The system does not attempt to expand model capabilities; instead, it enforces governance by bounding execution between a formal specification Charter above and an append-only evidence Logbook below.</p>
+            <p>Rather than relying on non-deterministic language models for runtime control, Bulkhead τ embeds those models inside a strict deterministic substrate. This ensures all operations are fully auditable, bounded, and governed by explicit architectural boundaries.</p>
         </section>
 
         <section id="architecture" class="section">
-            <h2>The Three-Tier Seal</h2>
+            <h2>The Boundary Architecture</h2>
             <div class="grid">
+                <!-- Charter Column -->
                 <div class="card">
-                    <h3>Upper Boundary &mdash; PBC</h3>
-                    <p><strong>The Charter.</strong> Product Behavior Contract documents (<code>.pbc.md</code>) define mission, scope, and routing constraints. This layer is upstream-aligned with PBC's provider-neutral anchoring model, so external evidence can attach to stable behaviors without making PBC depend on any one ledger.</p>
+                    <h3>Charter (Upper Boundary)</h3>
+                    <p><strong>Specification Standard.</strong> Evaluated against Product Behavior Contract specifications (<code>.pbc.md</code>), which define target behavior patterns and routing constraints. PBC is maintained by <code>stewie-sh</code>. We actively contribute provider-neutral anchoring guidance upstream and canonically consume these specifications downstream. Every architectural and operational decision routes through the contract question: <em>Does this behavior fit the charter?</em></p>
                     <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/stewie-sh/pbc-spec" target="_blank" style="color: var(--accent);">View PBC Specification &rarr;</a></p>
                 </div>
+                
+                <!-- Engine Room Column -->
                 <div class="card">
-                    <h3>Core &mdash; Bulkhead τ</h3>
-                    <p><strong>The engine room.</strong> Intakes data, executes physics via deterministic substrates, and delivers validated thrust. In Release 0.6.1, the engine is being wired to consume live evidence from the fork-maintained Logbook before treating Charter behaviors as authoritative.</p>
-                    <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/sierra-research/tau2-bench" target="_blank" style="color: var(--accent);">τ2-bench Foundation &rarr;</a></p>
+                    <h3>Engine Room (Bulkhead τ)</h3>
+                    <p><strong>Core Substrate.</strong> A custom, deterministic expert system built locally for implementation engagements, layered on the open-source <code>tau-bench</code> foundation (originally authored by Sierra Research, licensed under the MIT License). Operates under a strict supervisor/implementer pattern, utilizing cross-audit agent rotation, phase discipline, and a four-phase execution framework (Glass Box &rarr; Human-in-the-Loop &rarr; Progressive Disclosure &rarr; Multi-Modal Output).</p>
+                    <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/sierra-research/tau-bench" target="_blank" style="color: var(--accent);">tau-bench Foundation (MIT) &rarr;</a></p>
                 </div>
+                
+                <!-- Logbook Column -->
                 <div class="card">
-                    <h3>Lower Boundary &mdash; GT-KB-Derived</h3>
-                    <p><strong>The Logbook.</strong> A fork-maintained evidence layer derived from <code>GT-KB</code> that decouples historical lifecycle status from current evidence-derived trust state. If reality pushes back, the Logbook demotes trust without needing to rewrite the Charter.</p>
-                    <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/blue-az/groundtruth-kb" target="_blank" style="color: var(--accent);">View Bulkhead τ GT-KB Fork &rarr;</a> &middot; <a href="https://github.com/Remaker-Digital/groundtruth-kb" target="_blank" style="color: var(--accent);">Upstream GT-KB</a></p>
+                    <h3>Logbook (Lower Boundary)</h3>
+                    <p><strong>Evidence &amp; Deliberation.</strong> Anchored in the intellectual lineage of the <code>gt-kb</code> codebase authored by Mike Palmeter (Remaker Digital). Bulkhead τ implements a parallel, consultant-scale logbook design that inherits (a) first-class priority for deliberation records, (b) the logbook vocabulary, and (c) strict append-only discipline. It uses custom local Markdown finding files in our memory system rather than an SQLite database. It remains structurally separate from GroundTruth (the productized platform successor to the gt-kb lineage).</p>
+                    <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/Remaker-Digital/groundtruth-kb" target="_blank" style="color: var(--accent);">Upstream gt-kb Lineage &rarr;</a></p>
                 </div>
             </div>
         </section>
 
         <section class="section" style="background: rgba(139, 69, 19, 0.05); padding: 2rem; border-left: 4px solid var(--accent);">
             <h3 style="margin-top: 0;">The Evidence-Backed Trust Loop</h3>
-            <p>We have transitioned from a linear lifecycle to an <strong>evidence-backed trust loop</strong>. This resolves the "overloaded verified" problem by separating historical governance (the <em>Verified</em> milestone) from current evidence (the <em>Passing</em> trust state).</p>
+            <p>Operational safety is maintained by separating historical governance milestones from current evidence-derived states through an active trust loop:</p>
             <ul style="line-height: 1.6; margin-top: 1rem;">
-                <li><strong>PBC</strong> remains authored, stable, and provider-neutral.</li>
-                <li><strong>The GT-KB-derived fork</strong> changes trust state dynamically as evidence changes (passing, failing, stale, disputed, or blocked).</li>
-                <li><strong>Bulkhead τ</strong> provides the downstream defense, gating runtime authority on that live trust state.</li>
+                <li><strong>The Charter:</strong> Authored, stable, and provider-neutral specifications maintained upstream by <code>stewie-sh</code>.</li>
+                <li><strong>The Engine Room:</strong> The core Bulkhead τ substrate, gating execution authority and enforcing phase discipline.</li>
+                <li><strong>The Logbook:</strong> An append-only evidence layer that monitors real-time passing, failing, stale, or disputed states.</li>
             </ul>
-            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--ink-muted);">Provenance note: the PBC anchoring path is upstream-aligned through merged provider-neutral guidance; the GT-KB trust-state layer is currently maintained in the Bulkhead τ fork.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--ink-muted);">Provenance note: The PBC anchoring path is upstream-aligned through provider-neutral specification guidelines. The trust-state verification logic is a custom parallel implementation, inheriting its conceptual structure from the gt-kb design.</p>
         </section>
 
         <footer class="footer">
-            <p>Bulkhead τ · Built from the Project Phoenix internal framework</p>
-            <p>Engineering core: <a href="../project-phoenix/">Project Phoenix</a> &middot; Papers: <a href="../papers/">/papers/</a></p>
+            <p>Bulkhead τ · Built from the underlying engineering core</p>
+            <p>Engineering core: <a href="../project-phoenix/">Engineering Core</a> &middot; Papers: <a href="../papers/">/papers/</a></p>
             <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
         </footer>
     </div>
