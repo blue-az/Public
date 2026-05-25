@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Model Is Not The Function</title>
-  <meta name="description" content="For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec, not against the visual length of the code it replaces. Frozen 2026-05-01 with CAP-001 (six-orders-of-magnitude wall-time gap to the smallest LLM that matches the spec-aware lane) and LIB-001 (19/19 empty-output failure on gemma4:26b, reproduced and confirmed not to be a num_predict clipping artifact).">
+  <meta name="description" content="For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec. Extended 2026-05-02 with RETRIEVAL-001: harnessed LLMs are expensive &#x27;passengers&#x27; in grounded retrieval, adding a 7x latency tax for 0% factual recall gain on extreme long-tail entities.">
   <style>
     body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
     .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
@@ -29,7 +29,7 @@
   <div class="page">
     <div class="badge">Paper · frozen</div>
     <h1>The Model Is Not The Function</h1>
-    <p class="meta">For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec, not against the visual length of the code it replaces. Frozen 2026-05-01 with CAP-001 (six-orders-of-magnitude wall-time gap to the smallest LLM that matches the spec-aware lane) and LIB-001 (19/19 empty-output failure on gemma4:26b, reproduced and confirmed not to be a num_predict clipping artifact).</p>
+    <p class="meta">For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec. Extended 2026-05-02 with RETRIEVAL-001: harnessed LLMs are expensive &#x27;passengers&#x27; in grounded retrieval, adding a 7x latency tax for 0% factual recall gain on extreme long-tail entities.</p>
     <p class="meta">Canonical source: <code>docs/THE_MODEL_IS_NOT_THE_FUNCTION.md</code></p>
     <p>**Status:** frozen 2026-05-01</p>
 <p>**Paper group:** Local LLM Operator Judgment</p>
@@ -71,7 +71,7 @@
 </ul>
     <div class="release-line">
       Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
-      Engineering core: <a href="/project-phoenix/">Project Phoenix</a>.
+      Engineering core: <a href="/bulkhead-tau-core/">Engineering Core</a>.
       Paper inventory: <a href="/papers/">/papers/</a>.
     </div>
   </div>

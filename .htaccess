@@ -1,0 +1,7 @@
+# Redirects for renamed project-phoenix public path to bulkhead-tau-core
+
+# 1. Mirrored paper redirects (legacy /project-phoenix/generated-papers/... redirects to /bulkhead-tau/...)
+RedirectMatch 301 ^/project-phoenix/(generated-papers|generated-papers-src)/(.+)$ /bulkhead-tau/$1/$2
+
+# 2. General redirect from /project-phoenix/ to /bulkhead-tau-core/
+RedirectMatch 301 ^/project-phoenix/(.*)$ /bulkhead-tau-core/$1

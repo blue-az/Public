@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-05-25T21:58:48.880569+00:00",
+  "generated_at": "2026-05-25T23:37:09.079400+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -20,8 +20,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "gemma-handoff-discipline",
-          "proto_output_path": "project-phoenix/generated-papers/gemma-handoff-discipline.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/gemma-handoff-discipline.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/gemma-handoff-discipline.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/gemma-handoff-discipline.md",
           "proto_mirror_paths": [
             {
               "html": "bulkhead-tau/generated-papers/gemma-handoff-discipline.html",
@@ -42,8 +42,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "privacy-is-worth-paying-for",
-          "proto_output_path": "project-phoenix/generated-papers/privacy-is-worth-paying-for.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/privacy-is-worth-paying-for.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/privacy-is-worth-paying-for.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/privacy-is-worth-paying-for.md",
           "proto_mirror_paths": [
             {
               "html": "bulkhead-tau/generated-papers/privacy-is-worth-paying-for.html",
@@ -64,8 +64,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "slow-is-not-smart",
-          "proto_output_path": "project-phoenix/generated-papers/slow-is-not-smart.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/slow-is-not-smart.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/slow-is-not-smart.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/slow-is-not-smart.md",
           "proto_mirror_paths": [
             {
               "html": "bulkhead-tau/generated-papers/slow-is-not-smart.html",
@@ -86,8 +86,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "please-is-sand-off-a-beach",
-          "proto_output_path": "project-phoenix/generated-papers/please-is-sand-off-a-beach.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/please-is-sand-off-a-beach.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/please-is-sand-off-a-beach.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/please-is-sand-off-a-beach.md",
           "proto_mirror_paths": [
             {
               "html": "bulkhead-tau/generated-papers/please-is-sand-off-a-beach.html",
@@ -108,8 +108,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "the-model-is-not-the-function",
-          "proto_output_path": "project-phoenix/generated-papers/the-model-is-not-the-function.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/the-model-is-not-the-function.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/the-model-is-not-the-function.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/the-model-is-not-the-function.md",
           "proto_mirror_paths": [
             {
               "html": "bulkhead-tau/generated-papers/the-model-is-not-the-function.html",
@@ -130,8 +130,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "orchestration-is-cheaper-than-reasoning",
-          "proto_output_path": "project-phoenix/generated-papers/orchestration-is-cheaper-than-reasoning.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/orchestration-is-cheaper-than-reasoning.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/orchestration-is-cheaper-than-reasoning.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/orchestration-is-cheaper-than-reasoning.md",
           "proto_mirror_paths": [
             {
               "html": "bulkhead-tau/generated-papers/orchestration-is-cheaper-than-reasoning.html",
@@ -152,8 +152,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "local-models-cost-frontier-tokens",
-          "proto_output_path": "project-phoenix/generated-papers/local-models-cost-frontier-tokens.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/local-models-cost-frontier-tokens.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/local-models-cost-frontier-tokens.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/local-models-cost-frontier-tokens.md",
           "proto_mirror_paths": [
             {
               "html": "bulkhead-tau/generated-papers/local-models-cost-frontier-tokens.html",
@@ -180,8 +180,8 @@
           "paper_group": "Agentic Engineering Field Studies",
           "group_status": "confirmed",
           "public_slug": "multi-agent-hil-workflows",
-          "proto_output_path": "project-phoenix/generated-papers/multi-agent-hil-workflows.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/multi-agent-hil-workflows.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/multi-agent-hil-workflows.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/multi-agent-hil-workflows.md",
           "publish": true,
           "summary": "Demonstrates that heterogeneous HIL stacks decompose into agent roles along language and permission boundaries, and that the handoff artifact is the critical interface for multi-agent continuity. Field data from GRAFANA-OBS-001/PROX-HIL-001 on the Z13 laptop."
         }
@@ -202,8 +202,8 @@
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "confirmed",
           "public_slug": "wearable-sensor-corpus",
-          "proto_output_path": "project-phoenix/generated-papers/wearable-sensor-corpus.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/wearable-sensor-corpus.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/wearable-sensor-corpus.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/wearable-sensor-corpus.md",
           "proto_mirror_paths": [
             {
               "html": "bulkhead-tau/generated-papers/wearable-sensor-corpus.html",
@@ -224,8 +224,8 @@
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "provisional",
           "public_slug": "labwired-simulation-platform",
-          "proto_output_path": "project-phoenix/generated-papers/labwired-simulation-platform.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/labwired-simulation-platform.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/labwired-simulation-platform.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/labwired-simulation-platform.md",
           "publish": false,
           "summary": "Explains the LabWired hardware simulation platform: architecture, device model library, Path A declarative vs Path B shared-memory simulation approaches, and the STM32F401 I2C implementation. Positions LabWired as the cycle-accurate substrate for sensor-driven firmware validation."
         },
@@ -240,8 +240,8 @@
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "provisional",
           "public_slug": "sensor-driven-hil",
-          "proto_output_path": "project-phoenix/generated-papers/sensor-driven-hil.html",
-          "proto_markdown_path": "project-phoenix/generated-papers-src/sensor-driven-hil.md",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/sensor-driven-hil.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/sensor-driven-hil.md",
           "publish": false,
           "summary": "Synthesizes the sensor corpus (1.27) and simulation platform (1.28) into a unified methodology: using real wearable data to drive HIL firmware runs via the shm_i2c shared-memory bridge. Argues that sensor-accurate HIL closes the validation gap between lab simulation and field deployment."
         }

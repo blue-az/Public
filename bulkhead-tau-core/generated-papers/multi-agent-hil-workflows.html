@@ -167,11 +167,11 @@
 <p>For practical agentic engineering, we recommend that sessions be designed to produce a classified state document (the Handoff Artifact) as a primary output, not just a commit or a summary.</p>
 <p>---</p>
 <h2>Post-Publication Addendum — May 14, 2026</h2>
-<p>Following the multi-agent HIL study (PROX-HIL-001), a subsequent fault-tolerance sweep (PROX-SWEEP-001) characterized firmware robustness on the same HIL stack across three independent noise axes: ADC quantization, EMI bit-flips, and sample drops. The sweep surfaced a structural safety asymmetry under EMI: corruption of the high distance byte (<code>DIST_H</code>) skews readings upward, pushing them above the 150mm alarm threshold and silently silencing alarms. The mechanism was confirmed by masking the bit-flip injector to <code>DIST_L</code> only &mdash; errors then became symmetric, isolating <code>DIST_H</code> corruption as the asymmetry driver.</p>
+<p>Following the multi-agent HIL study (PROX-HIL-001), a subsequent fault-tolerance sweep (PROX-SWEEP-001) characterized firmware robustness on the same HIL stack across three independent noise axes: ADC quantization, EMI bit-flips, and sample drops. The sweep surfaced a structural safety asymmetry under EMI: corruption of the high distance byte (<code>DIST_H</code>) skews readings upward, pushing them above the 150mm alarm threshold and silently silencing alarms. The mechanism was confirmed by masking the bit-flip injector to <code>DIST_L</code> only — errors then became symmetric, isolating <code>DIST_H</code> corruption as the asymmetry driver.</p>
 <p>**Results from PROX-SWEEP-001:**</p>
 <ul>
 <li>**Firmware Hardening:** A physics-derived 330mm bounds check (300mm nominal max plus 10% margin) now discards readings outside the sensor&#x27;s physical range before the threshold decision.</li>
-<li>**False-Negative Reduction:** Under EMI at p=0.1 bit-flips/byte, mean False Negatives per 100-sample run fell from **3.7 &rarr; 1.0** (73% reduction). The residual FN=1.0 is the theoretical floor: <code>DIST_L</code> (low-byte) corruption that stays within the 330mm bound.</li>
+<li>**False-Negative Reduction:** Under EMI at p=0.1 bit-flips/byte, mean False Negatives per 100-sample run fell from **3.7 → 1.0** (73% reduction). The residual FN=1.0 is the theoretical floor: <code>DIST_L</code> (low-byte) corruption that stays within the 330mm bound.</li>
 <li>**Scope note:** PROX-SWEEP-001 was a single-agent task on a single host; it is therefore not itself an instance of the multi-agent handoff pattern this paper describes. It is included here as follow-on empirical evidence on the same HIL substrate, not as a re-validation of the handoff thesis.</li>
 </ul>
 <p>---</p>
@@ -209,7 +209,7 @@
 <p>--- *This paper was prepared by Gemini CLI based on field notes, session logs, and verifiable artifacts from the Project Phoenix repository.* *Corrections by: Claude Sonnet 4.6.* *Committed by: Gemini CLI*</p>
     <div class="release-line">
       Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
-      Engineering core: <a href="/project-phoenix/">Project Phoenix</a>.
+      Engineering core: <a href="/bulkhead-tau-core/">Engineering Core</a>.
       Paper inventory: <a href="/papers/">/papers/</a>.
     </div>
   </div>
