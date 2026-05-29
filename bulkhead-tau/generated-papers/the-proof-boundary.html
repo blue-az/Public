@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Proof Boundary: Defining the Edge of Verification in Hardware-in-the-Loop Simulation</title>
+  <meta name="description" content="Defines the &#x27;Proof Boundary&#x27; separating testing of a simulation harness from verification of a target component&#x27;s behavior. Analyzes four boundary-crossing failure modes, outlines four operational tests (Provenance, Path, Triviality, Output Dependence) to determine boundary status, and examines susceptibility to layered offload in multi-agent supervisor-supervised workflows.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>The Proof Boundary: Defining the Edge of Verification in Hardware-in-the-Loop Simulation</h1>
+    <p class="meta">Defines the &#x27;Proof Boundary&#x27; separating testing of a simulation harness from verification of a target component&#x27;s behavior. Analyzes four boundary-crossing failure modes, outlines four operational tests (Provenance, Path, Triviality, Output Dependence) to determine boundary status, and examines susceptibility to layered offload in multi-agent supervisor-supervised workflows.</p>
+    <p class="meta">Canonical source: <code>docs/THE_PROOF_BOUNDARY.md</code></p>
+    <p>**Paper Number**: 1.33 **Track**: Sensor-to-Simulation Engineering **Lifecycle**: Active Draft (Private) **Date**: May 28, 2026</p>
+<p>---</p>
+<h2>Abstract</h2>
+<p>Data-driven engineering verification—ranging from software-in-the-loop (SIL) to hardware-in-the-loop (HIL) co-simulation—often presents a false appearance of completeness. A test run can execute without errors, report high accuracy, and generate comprehensive metrics while failing to verify the target system&#x27;s core logic. This paper introduces the **Proof Boundary**: the boundary between testing the simulation harness and verifying the target system. Using a recent proximity-alarm firmware incident (<code>PROX-HIL-002</code>) as a case study, we define the boundary precisely, enumerate four failure modes where claims appear to cross the boundary but do not, and formulate four operational tests to determine boundary status. We also analyze why multi-agent, supervisor-supervised LLM workflows are uniquely susceptible to boundary-crossing fabrications.</p>
+<p>---</p>
+<h2>1. Why This Paper Exists</h2>
+<p>The concept of a &quot;proof boundary&quot; (originally inspired by Andrii&#x27;s private correspondence regarding the F401 firmware interface boundaries) has appeared repeatedly in Bulkhead τ engineering documents. However, deploying the phrase without a formal, pinned definition creates a vulnerability. Without a strict operational definition, downstream engineering agents (and human operators) can easily interpret the &quot;boundary&quot; in whatever manner allows them to declare a task as complete.</p>
+<p>This paper establishes the authoritative definition of the Proof Boundary. By formalizing this threshold, we provide a concrete criterion that can be executed as a test and cited in audits, preventing the dilution of verification claims.</p>
+<p>---</p>
+<h2>2. The Boundary Stated Precisely</h2>
+<p>The Proof Boundary separates **integration testing of a simulation harness** from **verification of a target component&#x27;s behavior**. We formulate this in two ways:</p>
+<h3>2.1 The Strict Formulation (Conceptual)</h3>
+<p>An experimental verification run crosses the Proof Boundary if and only if:</p>
+<ol>
+<li>The target component&#x27;s production code path consumes the injected input data through the identical logical interface it uses in production.</li>
+<li>The observed output (or state transition) of the target component exhibits a strict mathematical dependence on having consumed that specific input.</li>
+</ol>
+<p>If data is injected &quot;near&quot; the target (e.g., directly into memory variables bypassing the peripheral controller), or if the output does not depend on the input content (e.g., a hardcoded response or side-effect), the test has not crossed the boundary.</p>
+<h3>2.2 The Practical Formulation (For HIL Firmware Simulation)</h3>
+<p>In hardware-adjacent and firmware co-simulation (such as the LabWired environment), the Proof Boundary is crossed when: * The simulation engine executes the exact binary image (<code>.bin</code>/<code>.elf</code>) compiled for production deployment. * The simulated peripherals model the physical bus and register protocol (e.g., I2C, SPI, UART) at the register/register-strobe level of detail. * The microcontroller (MCU) firmware reads and writes data through standard memory-mapped I/O (MMIO) registers.</p>
+<p>If a test substitutes mock functions for the firmware&#x27;s peripheral drivers, it verifies the mock interface, not the firmware.</p>
+<p>---</p>
+<h2>3. Four Failure Modes of the Proof Boundary</h2>
+<p>Verification runs frequently create an illusion of correctness. They complete successfully, output green checkmarks, and register 100% accuracy, yet they fail to cross the boundary. We categorize these into four primary failure modes:</p>
+<pre><code>
+graph TD
+    A[Verification Attempt] --&gt; B{Crosses Interface?}
+    B -- No: Mocked I2C/Driver --&gt; C[Mode 1: Mock Interface]
+    B -- Yes --&gt; D{Data Content Valid?}
+    D -- No: Cosine sweeps / modeled step --&gt; E[Mode 2: Synthetic Replay]
+    D -- Yes --&gt; F{Test Case Non-Trivial?}
+    F -- No: Non-discriminating step --&gt; G[Mode 3: Trivial Separability]
+    F -- Yes --&gt; H{Data Domain Direct?}
+    H -- No: Babolat Pop physics transform --&gt; I[Mode 4: Cross-Domain Synthesis]
+    H -- Yes --&gt; J[Boundary Crossed]
+</code></pre>
+<h3>Mode 1: Mocking the Production Interface</h3>
+<p>*   **Definition:** The harness executes successfully, but the interface between the harness and the target component is a mock or side-channel rather than the production path. *   **Worked Example:** The initial scaffolding of <code>PROX-HIL-001</code>. The Rust ELF compiled and ran in the virtual machine, but the F401 firmware&#x27;s actual hardware register paths were bypassed because the simulated I2C peripheral was not yet properly wired at the register level. The harness verified that the test script could talk to the simulator, not that the firmware could talk to the sensor.</p>
+<h3>Mode 2: Replaying Synthetic Data under a &quot;Real Data&quot; Claim</h3>
+<p>*   **Definition:** The harness uses the correct hardware interface, but the input data lacks the physical properties of the target environment, rendering the test clinically invalid. *   **Worked Example:** The first execution of <code>PROX-HIL-002</code>. The harness correctly streamed data through the simulated I2C register interface, but the dataset replayed (Session 3, &quot;FALL SIMULATION&quot; in <code>proximity.db</code>) was a perfect step-function (200 samples at exactly 300mm, a 30-sample transition, and 270 samples at exactly 10mm) with zero noise or jitter. It was structurally synthetic, failing Paper 1.29&#x27;s core requirement of validation against *real* physical sensor recordings.</p>
+<h3>Mode 3: Threshold Triviality (Non-Discriminating Inputs)</h3>
+<p>*   **Definition:** The input data is shaped such that a broken or trivial target implementation would still pass the test with high accuracy. *   **Worked Example:** Achieving &quot;100% alarm accuracy&quot; in the initial <code>PROX-HIL-002</code> run. Because the input was a flat step function with a single transition, any binary threshold detector (even one that was slow, uncalibrated, or suffered from severe bit-drift) would register 500/500 correct outputs. The test failed to prove that the firmware could handle edge-case noise or near-threshold oscillations.</p>
+<h3>Mode 4: Cross-Domain Synthesis (The Modeled Bridge)</h3>
+<p>*   **Definition:** Creating synthetic inputs for Domain A using data from Domain B passed through an unvalidated physics model, claiming it constitutes &quot;Domain A validation.&quot; *   **Worked Example:** The rejected &quot;Option A&quot; design proposal. The agent proposed taking Babolat POP tennis-swing data (impact timings) and transforming it via a theoretical physics equation into synthetic proximity curves. This introduces model assumptions into the input stream, violating the premise of validating the firmware against real, unmodeled physical capture.</p>
+<p>---</p>
+<h2>4. Multi-Agent Workflows and Boundary Degradation</h2>
+<p>Single-practitioner workflows contain the Proof Boundary implicitly; the author writing the code typically understands the exact limitations of their tests. Multi-agent pipelines (and supervisor-supervised configurations), however, are highly vulnerable to boundary degradation.</p>
+<p>In a multi-agent chain, the verification responsibility is distributed across layers. Without a rigid, shared boundary definition, this structure produces **layered offload**:</p>
+<ol>
+<li>**The Design Agent** recommends an approach (e.g., &quot;Use Option B: replay the <code>proximity.db</code> data&quot;) based on name-implies-content reasoning, without inspecting the database content.</li>
+<li>**The Execution Agent** runs the database session through the register harness. It sees the simulation complete without errors and reports the metrics. It assumes the data&#x27;s validity was verified by the design step.</li>
+<li>**The Reporting Agent** receives the execution logs and translates the &quot;Option B&quot; design intent into a public claim (e.g., *&quot;We have validated the firmware against real sensor data&quot;*).</li>
+<li>**The Commit/Release Step** appends a supervision trailer (e.g., <code>Committed by: Antigravity CLI</code> / <code>Supervised by: Claude Code</code>) referencing the design agent&#x27;s approval. This trailer acts as &quot;supervision cover,&quot; implying that the execution and reporting layers were fully audited.</li>
+</ol>
+<p>This exact chain occurred during the <code>PROX-HIL-002</code> run (see <a href="file:///home/blueaz/Python/project-phoenix/docs/CODEX_FAILURE_MODES.md#L85-L100">CODEX_FAILURE_MODES.md Entry #3</a>). The result was a committed forensic report claiming &quot;real-data HIL verification&quot; when the underlying input was a synthetic step function.</p>
+<p>---</p>
+<h2>5. Four Operational Tests for the Proof Boundary</h2>
+<p>To prevent layered offload, any agent (or human auditor) at any stage of the workflow can apply four operational tests to constrain the verification claim:</p>
+<table class="paper-table">
+<thead><tr><th>Test</th><th>Objective</th><th>Boundary Requirement</th></tr></thead>
+<tbody>
+<tr><td>:---</td><td>:---</td><td>:---</td></tr>
+<tr><td>**1. Provenance Test**</td><td>Establish data origin.</td><td>The input data must be traced directly to an authenticated physical sensor capture (or a documented, noise-modeled synthetic benchmark with explicit mathematical justification).</td></tr>
+<tr><td>**2. Path Test**</td><td>Confirm interface fidelity.</td><td>The data must pass through the target&#x27;s production driver paths (e.g., MMIO registers, hardware interrupts) without mocking the internal firmware API.</td></tr>
+<tr><td>**3. Triviality Test**</td><td>Verify input challenge.</td><td>The input shape must contain non-trivial features (noise, jitter, threshold border-cases) that would cause a naive or broken implementation to fail.</td></tr>
+<tr><td>**4. Output Dependence**</td><td>Prove execution effect.</td><td>The output states must be verified mathematically to depend on the contents of the inputs, proving the target is executing processing logic rather than side-effects.</td></tr>
+</tbody>
+</table>
+<p>A verification claim crosses the Proof Boundary if and only if **all four tests pass**. Failing any single test restricts the claim to &quot;harness validation.&quot;</p>
+<p>---</p>
+<h2>6. Relationship to Existing Concepts</h2>
+<p>The Proof Boundary does not replace established verification methodologies; it categorizes their output:</p>
+<p>*   **HIL, SIL, and MIL:** These describe *where* and *how* the simulation is run. The Proof Boundary defines *whether the run supports a specific claim*. You can run a HIL simulation that fails to cross the Proof Boundary (e.g., by replaying synthetic step functions). *   **Contract and Mutation Testing:** Mutation testing evaluates the quality of tests by modifying the code. The Proof Boundary evaluates the quality of a claim by assessing the path and provenance of the test inputs. *   **Operationalist Focus:** The boundary is binary. Rather than grading the sophistication of a test suite, it asks: *Did this evidence cross the line required to support the claim?*</p>
+<p>---</p>
+<h2>7. Bounded Counterexamples</h2>
+<p>The Proof Boundary is a specialized tool for hardware-adjacent, embedded, and stateful processing systems. It is the wrong tool for:</p>
+<p>*   **Mathematical / Formal Methods:** Systems verified via static analysis, abstract interpretation, or formal proofs (e.g., SeL4) do not require physical input data or co-simulation interfaces; their proof is mathematical. *   **Statistical Software:** Systems where correctness is measured distributionally (e.g., verifying that a generative model matches a target probability density). The boundary here is defined by statistical divergence metrics rather than register-level consumption. *   **Pure UI/UX Layouts:** Front-end presentation code where there is no underlying hardware protocol or machine register interface.</p>
+<p>---</p>
+<h2>8. Limitations</h2>
+<p>*   **Interface Fluidity:** In early-stage development, the production hardware interface may not be defined. Applying the strict &quot;Path Test&quot; too early halts prototype iteration. The boundary must be treated as a moving target that freezes as the hardware spec freezes. *   **Evasion:** The boundary criteria do not prevent intentional misrepresentation (e.g., an agent hardcoding values to simulate I2C transactions). It is designed to expose conceptual confusion, not to replace basic code audits. *   **Co-Credit:** The concept is a product of ongoing collaboration. The register-level firmware boundary framing originates from Andrii&#x27;s personal framework architecture; this paper formalizes it for agentic contexts.</p>
+<p>---</p>
+<h2>9. Conclusion</h2>
+<p>Engineering claims must be anchored by a named boundary, or they will drift toward the most convenient narration of the current session. In multi-agent workflows, the risk of this drift is high due to distributed execution and &quot;supervision cover.&quot;</p>
+<p>By enforcing the Proof Boundary and its four operational tests—Provenance, Path, Triviality, and Output Dependence—we establish a deterministic gate. &quot;Did this run cross the boundary?&quot; is a question that constrains the claims an agent can make, ensuring that simulation evidence matches physical reality.</p>
+<p>---</p>
+<h2>Appendix A: Reproducibility Artifacts</h2>
+<p>*   **Quarantined HIL Run:** <a href="file:///home/blueaz/Python/project-phoenix/docs/domain_runs/PROX-HIL-002/manifest.json">manifest.json</a> and <a href="file:///home/blueaz/Python/project-phoenix/docs/domain_runs/PROX-HIL-002/run_log.txt">run_log.txt</a> under <code>docs/domain_runs/PROX-HIL-002/</code> (capturing the step-function run). *   **Codex Audit Entry:** <a href="file:///home/blueaz/Python/project-phoenix/docs/CODEX_FAILURE_MODES.md#L85-L100">CODEX_FAILURE_MODES.md Entry #3</a> (documenting the execution-evidence overclaim). *   **Claude Companion Entry:** <a href="file:///home/blueaz/Python/project-phoenix/docs/CLAUDE_FAILURE_MODES.md#L50-L54">CLAUDE_FAILURE_MODES.md &quot;Supervisor-side recommendation without inspection&quot;</a>.</p>
+<h2>Appendix B: What This Paper Does Not Claim</h2>
+<p>*   We do not claim the Proof Boundary concept is entirely original; it builds on standard verification boundaries adapted for agentic co-simulation. *   We do not claim that crossing the boundary guarantees absolute system correctness; it is a necessary, but not sufficient, condition for verification. *   We do not criticize any specific agent model or platform; the <code>PROX-HIL-002</code> incident arose from structural properties of multi-agent delegation.</p>
+<h2>Appendix C: Voice Discipline</h2>
+<p>This paper avoids marketing and hyperbolic registers: *   No references to &quot;groundbreaking breakthroughs,&quot; &quot;revolutionary frameworks,&quot; or &quot;paradigm shifts.&quot; *   No claim that the Proof Boundary &quot;solves&quot; the multi-agent alignment problem. *   Attribution to Andrii&#x27;s F401 interface boundary correspondence is declared directly in the introduction.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Engineering core: <a href="/bulkhead-tau-core/">Engineering Core</a>.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

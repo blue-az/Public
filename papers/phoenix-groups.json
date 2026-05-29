@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-05-25T23:37:09.079400+00:00",
+  "generated_at": "2026-05-29T06:07:57.322896+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -162,6 +162,28 @@
           ],
           "publish": true,
           "summary": "Local-inference workflows do not eliminate the frontier-token bill; they shift it from inference billing to the supervising operator's session budget at audit, repair, and convergence time. Retrospective evidence across 10 historical Project Phoenix workflows (COST-RETRO-001) shows the cost concentrates in REPAIRED cases \u2014 DBB-005 absorbed 5 supervisor turns plus a remediation rewrite; the Paper 1.25 audit cycle absorbed hours of frontier session-time. Three bounded counterexamples (ORCHESTRATION_001 clean scheduling, SLOW-001 gemma3:27b bounded extraction, CAP-001 architectural counterexample) show where the claim does not bind. Inference-side optimizations (MTP / speculative decoding) narrow the local lane's wall-clock penalty but do not touch audit/repair cost, so the supervisor-cost ratio rises as inference speed improves. Consolidates the Local LLM Operator Judgment cluster (1.20\u20131.25)."
+        },
+        {
+          "id": "models-dont-get-better-catalogs-do",
+          "title": "Models Don't Get Better, Catalogs Do: Cross-Audit Failure Cataloging as Operator-Side Reliability Infrastructure",
+          "source_path": "docs/MODELS_DONT_GET_BETTER_CATALOGS_DO.md",
+          "track": "paper",
+          "paper_number": "1.31",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "models-dont-get-better-catalogs-do",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/models-dont-get-better-catalogs-do.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/models-dont-get-better-catalogs-do.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/models-dont-get-better-catalogs-do.html",
+              "markdown": "bulkhead-tau/generated-papers-src/models-dont-get-better-catalogs-do.md"
+            }
+          ],
+          "publish": true,
+          "summary": "Reliability gains from waiting for the next model release are slow, diffuse, and not under operator control; reliability gains from operator-side cross-audit failure catalogs are fast, specific, and operator-controlled. The catalog (per-agent failure-mode files, severity-rated, append-only, no self-entries) survives agent identity changes across model releases and CLI vendor releases. Concrete chain: incident -> cross-audited catalog entry -> memory entry -> harness rule (worked example: AGY Rule 7 working-state preservation, from a multi-pin GPIO cleanup-broke-the-circuit incident, 2026-05-26). Defended claim is relative: operator-side catalog accumulation outpaces model improvement on operator-relevant time horizons and on the dimensions operators care about. Boundaries documented: claim binds for supervised multi-agent workflows with patterned recurrence; does not bind for single-agent stacks, unsupervised workflows, or task classes where model capability ceiling is the dominant variable."
         }
       ]
     },
@@ -244,6 +266,50 @@
           "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/sensor-driven-hil.md",
           "publish": false,
           "summary": "Synthesizes the sensor corpus (1.27) and simulation platform (1.28) into a unified methodology: using real wearable data to drive HIL firmware runs via the shm_i2c shared-memory bridge. Argues that sensor-accurate HIL closes the validation gap between lab simulation and field deployment."
+        },
+        {
+          "id": "deep-dive-tennis-match-pool",
+          "title": "Deep Dive Into a Tennis Match Data Pool: How Much Data One Competitive Bout Yields \u2014 A 2023 USTA Round-of-16 Loss Under Dual-Sensor Wearable Instrumentation",
+          "source_path": "docs/DEEP_DIVE_TENNIS_MATCH_POOL.md",
+          "track": "paper",
+          "paper_number": "1.32",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Sensor-to-Simulation Engineering",
+          "group_status": "confirmed",
+          "public_slug": "deep-dive-tennis-match-pool",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/deep-dive-tennis-match-pool.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/deep-dive-tennis-match-pool.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/deep-dive-tennis-match-pool.html",
+              "markdown": "bulkhead-tau/generated-papers-src/deep-dive-tennis-match-pool.md"
+            }
+          ],
+          "publish": true,
+          "summary": "A single USTA Round-of-16 loss (2023-05-14, score 4-6 2-6) instrumented with two wearable sensors simultaneously. Zepp2 captured 352 shots with per-shot XY impact location, stroke type, ball speed, and spin; Babolat POP captured 284 aggregate shots in the same window. Diagnostic findings: sweet-spot rate 31.5%, forehand-side dominance 64%, FLAT-dominant stroke composition at 42%. Methodological finding (load-bearing): the two sensors disagree on shot count by 19% on a single match, empirically supporting the cross-sensor-divergence claim from Paper 1.27. Bounded conclusion: single-match data supports pattern description, refuses causal attribution of the loss. Builds on Paper 1.27 (Wearable Sensor Corpus) by applying its corpus-level framing to one bout at depth. The load-bearing analytic artifact is the pre-existing 1.6 MB Plotly dashboard at data/reports/zepp2_impact_dashboard_2023-05-14.html (72 figure slices, stroke x frame x metric cube); this paper is the narrative companion. Opponent anonymized as 'the opponent' throughout. n=1 limitation explicit."
+        },
+        {
+          "id": "the-proof-boundary",
+          "title": "The Proof Boundary: Defining the Edge of Verification in Hardware-in-the-Loop Simulation",
+          "source_path": "docs/THE_PROOF_BOUNDARY.md",
+          "track": "paper",
+          "paper_number": "1.33",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Sensor-to-Simulation Engineering",
+          "group_status": "confirmed",
+          "public_slug": "the-proof-boundary",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/the-proof-boundary.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/the-proof-boundary.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/the-proof-boundary.html",
+              "markdown": "bulkhead-tau/generated-papers-src/the-proof-boundary.md"
+            }
+          ],
+          "publish": true,
+          "summary": "Defines the 'Proof Boundary' separating testing of a simulation harness from verification of a target component's behavior. Analyzes four boundary-crossing failure modes, outlines four operational tests (Provenance, Path, Triviality, Output Dependence) to determine boundary status, and examines susceptibility to layered offload in multi-agent supervisor-supervised workflows."
         }
       ]
     }
