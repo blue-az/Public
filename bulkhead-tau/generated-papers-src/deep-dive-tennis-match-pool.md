@@ -358,8 +358,6 @@ A reproducing analyst should be able to start at the unified DB matches table, f
 
 ## Appendix C — Voice Discipline
 
-This paper's title contains the word "pool" preserved from the user's working title. The user noted at planning time that the word might be intentional or a typo for "play"; final title resolution is deferred to the user's review pass and the editorial decision is not made by Claude.
-
 **Anonymization protocol applied during authoring**:
 - The opponent's name does not appear in this file
 - All database queries reference numeric session IDs, not opponent names

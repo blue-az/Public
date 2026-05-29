@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deep Dive Into a Tennis Match Pool: Single-Bout Wearable-Sensor Analysis of a 2023 USTA Round-of-16 Loss</title>
+  <title>Deep Dive Into a Tennis Match Data Pool: How Much Data One Competitive Bout Yields — A 2023 USTA Round-of-16 Loss Under Dual-Sensor Wearable Instrumentation</title>
   <meta name="description" content="A single USTA Round-of-16 loss (2023-05-14, score 4-6 2-6) instrumented with two wearable sensors simultaneously. Zepp2 captured 352 shots with per-shot XY impact location, stroke type, ball speed, and spin; Babolat POP captured 284 aggregate shots in the same window. Diagnostic findings: sweet-spot rate 31.5%, forehand-side dominance 64%, FLAT-dominant stroke composition at 42%. Methodological finding (load-bearing): the two sensors disagree on shot count by 19% on a single match, empirically supporting the cross-sensor-divergence claim from Paper 1.27. Bounded conclusion: single-match data supports pattern description, refuses causal attribution of the loss. Builds on Paper 1.27 (Wearable Sensor Corpus) by applying its corpus-level framing to one bout at depth. The load-bearing analytic artifact is the pre-existing 1.6 MB Plotly dashboard at data/reports/zepp2_impact_dashboard_2023-05-14.html (72 figure slices, stroke x frame x metric cube); this paper is the narrative companion. Opponent anonymized as &#x27;the opponent&#x27; throughout. n=1 limitation explicit.">
   <style>
     body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
@@ -28,9 +28,9 @@
 <body>
   <div class="page">
     <div class="badge">Paper · published</div>
-    <h1>Deep Dive Into a Tennis Match Pool: Single-Bout Wearable-Sensor Analysis of a 2023 USTA Round-of-16 Loss</h1>
+    <h1>Deep Dive Into a Tennis Match Data Pool: How Much Data One Competitive Bout Yields — A 2023 USTA Round-of-16 Loss Under Dual-Sensor Wearable Instrumentation</h1>
     <p class="meta">A single USTA Round-of-16 loss (2023-05-14, score 4-6 2-6) instrumented with two wearable sensors simultaneously. Zepp2 captured 352 shots with per-shot XY impact location, stroke type, ball speed, and spin; Babolat POP captured 284 aggregate shots in the same window. Diagnostic findings: sweet-spot rate 31.5%, forehand-side dominance 64%, FLAT-dominant stroke composition at 42%. Methodological finding (load-bearing): the two sensors disagree on shot count by 19% on a single match, empirically supporting the cross-sensor-divergence claim from Paper 1.27. Bounded conclusion: single-match data supports pattern description, refuses causal attribution of the loss. Builds on Paper 1.27 (Wearable Sensor Corpus) by applying its corpus-level framing to one bout at depth. The load-bearing analytic artifact is the pre-existing 1.6 MB Plotly dashboard at data/reports/zepp2_impact_dashboard_2023-05-14.html (72 figure slices, stroke x frame x metric cube); this paper is the narrative companion. Opponent anonymized as &#x27;the opponent&#x27; throughout. n=1 limitation explicit.</p>
-    <p class="meta">Canonical source: <code>docs/DEEP_DIVE_TENNIS_MATCH_POOL.md</code></p>
+    <p class="meta">Canonical source: <code>docs/DEEP_DIVE_TENNIS_MATCH_DATA_POOL.md</code></p>
     <h2>How Much Data One Competitive Bout Yields — A 2023 USTA Round-of-16 Loss Under Dual-Sensor Wearable Instrumentation</h2>
 <h3>White Paper 1.32 — May 2026</h3>
 <p>**Author:** blue-az **Status:** Active draft **Paper group:** Sensor-to-Simulation Engineering **Predecessor:** Paper 1.27 (<code>WHITE_PAPER_WEARABLE_SENSOR_CORPUS.md</code>) — broader corpus framing this paper applies to one bout **Data sources:** Zepp2 session 55 (<code>Sensors/2Zepp/ZeppWrangle/ZeppWrangle.csv</code>); Babolat aggregate row in <code>tennis_unified.db</code> matches table for session 560; rendered Zepp dashboard at <code>domains/SensorAgents/TennisAgent/data/reports/zepp2_impact_dashboard_2023-05-14.html</code> **Anonymization note:** the opponent is referred to as &quot;the opponent&quot; throughout. The opponent&#x27;s name appears in upstream raw data and in public USTA tournament records but does not appear in this paper&#x27;s rendered prose, queries, or figure captions.</p>
@@ -330,7 +330,6 @@
 </ul>
 <p>---</p>
 <h2>Appendix C — Voice Discipline</h2>
-<p>This paper&#x27;s title contains the word &quot;pool&quot; preserved from the user&#x27;s working title. The user noted at planning time that the word might be intentional or a typo for &quot;play&quot;; final title resolution is deferred to the user&#x27;s review pass and the editorial decision is not made by Claude.</p>
 <p>**Anonymization protocol applied during authoring**:</p>
 <ul>
 <li>The opponent&#x27;s name does not appear in this file</li>
