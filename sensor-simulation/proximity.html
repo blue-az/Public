@@ -10,6 +10,10 @@
             --text-color: #e0e0e0;
             --card-bg: #1e1e1e;
             --accent-blue: #2196f3;
+            --accent-green: #4caf50;
+            --accent-yellow: #ffc107;
+            --accent-red: #f44336;
+            --accent-gray: #9e9e9e;
             --border-color: #333;
             --terminal-bg: #000;
         }
@@ -42,18 +46,22 @@
             gap: 40px;
         }
         
-        .status-badge {
+        .badge {
             display: inline-block;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            background-color: rgba(255, 193, 7, 0.15);
-            color: #ffc107;
-            margin-bottom: 20px;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-right: 8px;
+            margin-bottom: 4px;
         }
+        .badge-simulated { background-color: rgba(33, 150, 243, 0.15); color: var(--accent-blue); }
+        .badge-physical { background-color: rgba(76, 175, 80, 0.15); color: var(--accent-green); }
+        .badge-replay { background-color: rgba(255, 193, 7, 0.15); color: var(--accent-yellow); }
+        .badge-quarantined { background-color: rgba(244, 67, 54, 0.15); color: var(--accent-red); }
+        .badge-blocked { background-color: rgba(158, 158, 158, 0.15); color: var(--accent-gray); }
         
         .card {
             background-color: var(--card-bg);
@@ -65,24 +73,38 @@
         
         h2 { margin-top: 0; font-size: 1.5rem; margin-bottom: 25px; color: var(--accent-blue); }
         
-        .diagram {
+        .ladder {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .ladder-step {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 40px 0;
-            overflow-x: auto;
-        }
-        .box {
-            border: 1px solid #444;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            min-width: 120px;
             background-color: #252525;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            transition: transform 0.2s;
         }
-        .arrow { flex-grow: 1; height: 1px; background-color: #444; margin: 0 15px; position: relative; min-width: 40px; }
-        .arrow::after { content: '>'; position: absolute; right: -5px; top: -10px; color: #444; }
-        .label { font-size: 0.75rem; color: #666; margin-bottom: 5px; }
+        .ladder-step:hover { transform: translateX(5px); border-color: #444; }
+        .step-num { font-family: monospace; font-weight: bold; color: #555; width: 30px; font-size: 1.1rem; }
+        .step-content { flex-grow: 1; }
+        .step-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 2px; }
+        .step-desc { font-size: 0.85rem; color: #888; }
+        .step-badges { display: flex; flex-wrap: wrap; margin-left: 15px; }
+
+        .overclaim-panel {
+            background-color: rgba(244, 67, 54, 0.05);
+            border: 1px solid rgba(244, 67, 54, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 40px;
+        }
+        .overclaim-panel h3 { margin-top: 0; color: var(--accent-red); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .overclaim-list { list-style: none; padding: 0; margin: 15px 0 0; }
+        .overclaim-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 0.9rem; color: #bbb; }
+        .overclaim-list li::before { content: '!'; position: absolute; left: 0; color: var(--accent-red); font-weight: bold; }
 
         .terminal {
             background-color: var(--terminal-bg);
@@ -94,22 +116,9 @@
             overflow-x: auto;
             border: 1px solid #333;
         }
-        .term-error { color: #f44336; }
-        
-        .checklist { list-style: none; padding: 0; }
-        .checklist li { 
-            padding: 10px 0; 
-            border-bottom: 1px solid #2a2a2a; 
-            display: flex; 
-            align-items: center; 
-            font-size: 0.95rem;
-        }
-        .checklist li::before { content: '○'; margin-right: 15px; color: #555; }
-        .checklist li.done::before { content: '●'; color: var(--accent-blue); }
-        .checklist li.pending::before { content: '○'; color: #ffc107; }
 
         .core-message {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             text-align: center;
             padding: 20px;
@@ -119,6 +128,8 @@
 
         @media (max-width: 900px) {
             .main-container { grid-template-columns: 1fr; }
+            .ladder-step { flex-direction: column; align-items: flex-start; }
+            .step-badges { margin-left: 0; margin-top: 10px; }
         }
     </style>
 </head>
@@ -136,70 +147,136 @@
 
     <div class="main-container">
         <div class="content">
-            <div class="status-badge">🛠️ Honest Scaffold / Build-Chain Pending</div>
-            
             <div class="card">
-                <h2>Virtual I2C Bridge Topology</h2>
-                <div class="diagram">
-                    <div class="node-group">
-                        <div class="label">Source</div>
-                        <div class="box">1D Distance Stream</div>
+                <h2>Proximity Evidence Ladder</h2>
+                <div class="ladder">
+                    <div class="ladder-step">
+                        <div class="step-num">01</div>
+                        <div class="step-content">
+                            <div class="step-title">MuJoCo Geometry</div>
+                            <div class="step-desc">Torso-thigh-shin articulated body kinematics baseline.</div>
+                        </div>
+                        <div class="step-badges"><span class="badge badge-simulated">simulated</span></div>
                     </div>
-                    <div class="arrow"></div>
-                    <div class="node-group">
-                        <div class="label">Substrate</div>
-                        <div class="box">Shared Memory</div>
+                    <div class="ladder-step">
+                        <div class="step-num">02</div>
+                        <div class="step-content">
+                            <div class="step-title">HC-SR04 GPIO Protocol Sim</div>
+                            <div class="step-desc">Protocol-level bit-bash fixture for firmware unit tests.</div>
+                        </div>
+                        <div class="step-badges"><span class="badge badge-simulated">simulated</span></div>
                     </div>
-                    <div class="arrow"></div>
-                    <div class="node-group">
-                        <div class="label">Bus (0x24)</div>
-                        <div class="box">LabWired I2C</div>
+                    <div class="ladder-step">
+                        <div class="step-num">03</div>
+                        <div class="step-content">
+                            <div class="step-title">Paired HC-SR04 Fixture</div>
+                            <div class="step-desc">Model of dual-node differential logic without acoustic physics.</div>
+                        </div>
+                        <div class="step-badges"><span class="badge badge-simulated">simulated</span></div>
                     </div>
-                    <div class="arrow"></div>
-                    <div class="node-group">
-                        <div class="label">Target</div>
-                        <div class="box">Firmware (.elf)</div>
+                    <div class="ladder-step">
+                        <div class="step-num">04</div>
+                        <div class="step-content">
+                            <div class="step-title">Capture/Analyzer Pipeline</div>
+                            <div class="step-desc">Software stack for BLE subscription and flexion assessment.</div>
+                        </div>
+                        <div class="step-badges"><span class="badge badge-simulated">simulated</span></div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="step-num">05</div>
+                        <div class="step-content">
+                            <div class="step-title">HIL-001 LabWired Subset Proof</div>
+                            <div class="step-desc">Rust substrate materialization with cycle-locked advancement.</div>
+                        </div>
+                        <div class="step-badges"><span class="badge badge-simulated">simulated</span></div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="step-num">06</div>
+                        <div class="step-content">
+                            <div class="step-title">HIL-002 Database Replay</div>
+                            <div class="step-desc">Replay of "FALL SIMULATION" session through HIL substrate.</div>
+                        </div>
+                        <div class="step-badges">
+                            <span class="badge badge-replay">database replay</span>
+                            <span class="badge badge-quarantined">quarantined</span>
+                        </div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="step-num">07</div>
+                        <div class="step-content">
+                            <div class="step-title">PROX-SWEEP Fault Tolerance</div>
+                            <div class="step-desc">Simulated bit-flip and drop-rate stress tests.</div>
+                        </div>
+                        <div class="step-badges"><span class="badge badge-simulated">simulated</span></div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="step-num">08</div>
+                        <div class="step-content">
+                            <div class="step-title">BENCH-003 Physical Closeout</div>
+                            <div class="step-desc">Wireless paired-sensor bring-up (USB powered).</div>
+                        </div>
+                        <div class="step-badges"><span class="badge badge-physical">physical</span></div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="step-num">09</div>
+                        <div class="step-content" style="color: #666;">
+                            <div class="step-title">Battery-Powered Characterization</div>
+                            <div class="step-desc">Untethered board operation and durability.</div>
+                        </div>
+                        <div class="step-badges"><span class="badge badge-blocked">blocked</span></div>
                     </div>
                 </div>
-                <p style="color: #888; font-size: 0.9rem;">
-                    The simulation routes 1D distance samples through a virtual I2C bridge toward a firmware validation path. 
-                    Cycle-accurate execution is pending the compiled firmware binary.
-                </p>
+
+                <div class="overclaim-panel">
+                    <h3>Do Not Overclaim</h3>
+                    <ul class="overclaim-list">
+                        <li><strong>PROX-HIL-002 is not real-data evidence.</strong> It validates threshold logic behavior but uses an undocumented database session for provenance.</li>
+                        <li><strong>Battery-powered characterization is the bottleneck.</strong> Hardware is currently limited to tethered USB power for long-duration capture.</li>
+                        <li><strong>Website is explanatory.</strong> This visualization tracks progress but does not constitute new proof beyond the private ledger.</li>
+                    </ul>
+                </div>
             </div>
 
             <div class="card">
-                <h2>Validator Diagnostic Output</h2>
+                <h2>Validator Diagnostic Output (HIL-001)</h2>
                 <div class="terminal">
+                    <div>[*] Initializing Shared Memory: /tmp/labwired_proximity_imu</div>
+                    <div>[*] Initializing LabWired Machine (Ultrasonic Bridge)...</div>
                     <div>[*] Starting Cycle-Locked Forensic Validation...</div>
-                    <div class="term-error"><br>[!] FAILED: Compiled firmware NOT FOUND at /home/blueaz/Python/bulkhead-tau-core/domains/SensorAgents/ProximityAgent/firmware/proximity_firmware.elf</div>
-                    <div>    Please run 'make' in /home/blueaz/Python/bulkhead-tau-core/domains/SensorAgents/ProximityAgent/firmware/ using arm-none-eabi-gcc.</div>
+                    <div>  [Sample   0] Distance:  300mm | Processing Cycles:  1,000</div>
+                    <div>  [Sample  20] Distance:  229mm | Processing Cycles: 10,500</div>
+                    <div>  [Sample  99] Distance:  300mm | Processing Cycles: 10,500</div>
+                    <div><br>==================================================</div>
+                    <div>ULTRASONIC HIL SIMULATION COMPLETE</div>
+                    <div>==================================================</div>
+                    <div>Total Samples Injected: 100</div>
+                    <div>Alarm accuracy:         N/A (Substrate proof only)</div>
                 </div>
-                <p style="margin-top: 20px; font-weight: 500;">
-                    Why this failure is a success:
-                </p>
-                <p style="color: #aaa; font-size: 0.95rem;">
-                    The validator refuses to produce a "pass" result based on phantom logic. It requires a tangible binary substrate 
-                    to prove that the MCU is actually clearing status registers and acknowledging data samples.
-                </p>
             </div>
         </div>
 
         <aside>
             <div class="card" style="padding: 20px;">
-                <h2 style="font-size: 1.1rem; margin-bottom: 20px;">Validation Checklist</h2>
-                <ul class="checklist">
-                    <li class="done">C source exists</li>
-                    <li class="done">Makefile exists</li>
-                    <li class="done">Validator points at ELF</li>
-                    <li class="done">Timeout guard active</li>
-                    <li class="pending">Toolchain (GCC)</li>
-                    <li class="pending">Firmware Linkage</li>
-                    <li class="pending">Execution Proof</li>
-                </ul>
+                <h2 style="font-size: 1.1rem; margin-bottom: 20px;">Current Gates</h2>
+                <div style="font-size: 0.9rem; color: #888; margin-bottom: 15px;">
+                    Progress toward Paper 1.29 (Real Data Provenance)
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <span class="badge badge-physical">Done</span> nRF52840 wireless bench
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <span class="badge badge-simulated">Done</span> Rust HIL Substrate
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <span class="badge badge-blocked">Open</span> Battery characterization
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <span class="badge badge-blocked">Open</span> Physical session replay
+                </div>
             </div>
 
             <div class="core-message">
-                "This validator refuses false proof."
+                "We separated the phantom from the fact."
             </div>
         </aside>
     </div>
