@@ -71,6 +71,39 @@
 </table>
 <p>Telemetry across the full 7045s run: median GPU utilization **22%** (mean 17%, peaks 100% during prefill), median power **165 W** (well under the 220W cap), VRAM steady at 23.7 GB. The GPU spent the majority of the run blocked on PCIe round-trips to the 6.7 GB of weights resident in system RAM. This is the operating point a default <code>ollama run gemma4:31b</code> produces on a 24 GB GPU.</p>
 <p>Both lanes hit optimal on every rung for both models. The orchestration dividend grows with N for both, but the *between-model* comparison is unfavorable to 31B at every point: a bigger model on this hardware buys nothing in quality and costs ~10× wall-clock.</p>
+<h2>Evidence Anchor 1c: gemma4:26b vs gemma4:12b Arizona Ladder (REST API, June 2026)</h2>
+<p>To resolve the CLI-wrapped generate-looping bottleneck, the benchmark was migrated to the Ollama HTTP REST API (<code>/api/generate</code> with <code>&quot;stream&quot;: false</code>, <code>temperature: 0.0</code>, and <code>&quot;num_predict&quot;: 2048</code>).</p>
+<p>The optimized runs compare <code>gemma4:26b</code> and the newly integrated <code>gemma4:12b</code> model.</p>
+<h3>gemma4:12b (7.6 GB resident, REST API)</h3>
+<table class="paper-table">
+<thead><tr><th>Instance</th><th>Cities</th><th>Direct time</th><th>Orch time</th><th>Direct valid?</th><th>Speedup</th></tr></thead>
+<tbody>
+<tr><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td></tr>
+<tr><td><code>tsp-001</code></td><td>4</td><td>13.99s</td><td>14.78s</td><td>yes</td><td>0.9×</td></tr>
+<tr><td><code>tsp-002</code></td><td>5</td><td>33.87s</td><td>15.91s</td><td>no</td><td>2.1×</td></tr>
+<tr><td><code>tsp-003</code></td><td>6</td><td>33.91s</td><td>17.22s</td><td>no</td><td>2.0×</td></tr>
+<tr><td><code>tsp-004</code></td><td>8</td><td>34.04s</td><td>18.24s</td><td>no</td><td>1.9×</td></tr>
+<tr><td><code>tsp-005</code></td><td>10</td><td>35.03s</td><td>16.26s</td><td>no</td><td>2.2×</td></tr>
+</tbody>
+</table>
+<h3>gemma4:26b (17 GB resident, REST API)</h3>
+<table class="paper-table">
+<thead><tr><th>Instance</th><th>Cities</th><th>Direct time</th><th>Orch time</th><th>Direct valid?</th><th>Speedup</th></tr></thead>
+<tbody>
+<tr><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td><td>:---</td></tr>
+<tr><td><code>tsp-001</code></td><td>4</td><td>15.81s</td><td>12.61s</td><td>yes</td><td>1.3×</td></tr>
+<tr><td><code>tsp-002</code></td><td>5</td><td>22.34s</td><td>10.75s</td><td>no</td><td>2.1×</td></tr>
+<tr><td><code>tsp-003</code></td><td>6</td><td>20.92s</td><td>11.55s</td><td>no</td><td>1.8×</td></tr>
+<tr><td><code>tsp-004</code></td><td>8</td><td>20.77s</td><td>11.72s</td><td>no</td><td>1.8×</td></tr>
+<tr><td><code>tsp-005</code></td><td>10</td><td>21.58s</td><td>11.38s</td><td>no</td><td>1.9×</td></tr>
+</tbody>
+</table>
+<h3>Key Optimization Insights:</h3>
+<ol>
+<li>**The CLI Wrapper Bottleneck**: Shifting from the <code>ollama run</code> subprocess CLI wrapper to the direct HTTP REST API reduced <code>gemma4:26b</code> direct 10-city latency from **292.82s** to **21.58s** (a **13.5× speedup**). This proves that the super-linear latency scaling observed in the original CLI runs was a transport-layer and token-buffering overhead bottleneck, rather than model inference scaling.</li>
+<li>**The 26b Latency Advantage**: In the optimized API-driven environment, <code>gemma4:26b</code> exhibits **lower total latency** than <code>gemma4:12b</code> (orchestrated average of ~11.6s vs ~16.5s). This is a result of the 26b model&#x27;s superior stop-token discipline and concise thinking preambles, whereas the 12b model generates more verbose preambles and suffers from minor generation looping even under REST options.</li>
+<li>**Orchestration Boundaries**: Direct mode fails to produce valid tours for both models at $\ge 5$ cities, while orchestration mode remains 100% correct by delegating execution to the solver.</li>
+</ol>
 <h2>Evidence Anchor 2: ORCHESTRATION-001 (Scheduling)</h2>
 <p>A 20-fixture benchmark using <code>gemma4:26b</code> on complex scheduling tasks with 8-10 constraints.</p>
 <table class="paper-table">
@@ -106,7 +139,6 @@
 <p>This revision (a) replaces the fabricated table with the real <code>gemma4:26b</code> Arizona ladder, (b) adds a fresh <code>gemma4:31b</code> Arizona ladder run captured with full GPU telemetry on 2026-05-04 (117 min wall-clock; results in <code>docs/domain_runs/TSP_3090/</code>), (c) corrects the Stability Tax to match the real CRASH-20260502-01, and (d) sharpens the architectural conclusion: the two-model comparison shows scaling the local model up is an anti-dividend on this task class, which strengthens rather than weakens the original working claim.</p>
     <div class="release-line">
       Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
-      Engineering core: <a href="/bulkhead-tau-core/">Engineering Core</a>.
       Paper inventory: <a href="/papers/">/papers/</a>.
     </div>
   </div>

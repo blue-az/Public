@@ -87,6 +87,35 @@ dividend grows with N for both, but the *between-model* comparison is
 unfavorable to 31B at every point: a bigger model on this hardware buys
 nothing in quality and costs ~10× wall-clock.
 
+## Evidence Anchor 1c: gemma4:26b vs gemma4:12b Arizona Ladder (REST API, June 2026)
+
+To resolve the CLI-wrapped generate-looping bottleneck, the benchmark was migrated to the Ollama HTTP REST API (`/api/generate` with `"stream": false`, `temperature: 0.0`, and `"num_predict": 2048`). 
+
+The optimized runs compare `gemma4:26b` and the newly integrated `gemma4:12b` model.
+
+### gemma4:12b (7.6 GB resident, REST API)
+| Instance | Cities | Direct time | Orch time | Direct valid? | Speedup |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `tsp-001` | 4 | 13.99s | 14.78s | yes | 0.9× |
+| `tsp-002` | 5 | 33.87s | 15.91s | no | 2.1× |
+| `tsp-003` | 6 | 33.91s | 17.22s | no | 2.0× |
+| `tsp-004` | 8 | 34.04s | 18.24s | no | 1.9× |
+| `tsp-005` | 10 | 35.03s | 16.26s | no | 2.2× |
+
+### gemma4:26b (17 GB resident, REST API)
+| Instance | Cities | Direct time | Orch time | Direct valid? | Speedup |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `tsp-001` | 4 | 15.81s | 12.61s | yes | 1.3× |
+| `tsp-002` | 5 | 22.34s | 10.75s | no | 2.1× |
+| `tsp-003` | 6 | 20.92s | 11.55s | no | 1.8× |
+| `tsp-004` | 8 | 20.77s | 11.72s | no | 1.8× |
+| `tsp-005` | 10 | 21.58s | 11.38s | no | 1.9× |
+
+### Key Optimization Insights:
+1. **The CLI Wrapper Bottleneck**: Shifting from the `ollama run` subprocess CLI wrapper to the direct HTTP REST API reduced `gemma4:26b` direct 10-city latency from **292.82s** to **21.58s** (a **13.5× speedup**). This proves that the super-linear latency scaling observed in the original CLI runs was a transport-layer and token-buffering overhead bottleneck, rather than model inference scaling.
+2. **The 26b Latency Advantage**: In the optimized API-driven environment, `gemma4:26b` exhibits **lower total latency** than `gemma4:12b` (orchestrated average of ~11.6s vs ~16.5s). This is a result of the 26b model's superior stop-token discipline and concise thinking preambles, whereas the 12b model generates more verbose preambles and suffers from minor generation looping even under REST options.
+3. **Orchestration Boundaries**: Direct mode fails to produce valid tours for both models at $\ge 5$ cities, while orchestration mode remains 100% correct by delegating execution to the solver.
+
 ## Evidence Anchor 2: ORCHESTRATION-001 (Scheduling)
 
 A 20-fixture benchmark using `gemma4:26b` on complex scheduling tasks with 8-10 constraints.

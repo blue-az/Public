@@ -2,7 +2,7 @@
 # Deploy Proto assets to IONOS webspace.
 # Usage:
 #   ./deploy.sh papers            — sync papers index only
-#   ./deploy.sh bulkhead-tau-core — sync core generated papers
+#   ./deploy.sh bulkhead-tau      — sync generated papers
 #   ./deploy.sh all               — sync everything
 
 set -euo pipefail
@@ -45,9 +45,6 @@ case "$TARGET" in
     papers)
         rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
         ;;
-    bulkhead-tau-core)
-        rsync_push "$LOCAL_ROOT/bulkhead-tau-core/" "$REMOTE_ROOT/bulkhead-tau-core/"
-        ;;
     bulkhead-tau)
         rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
         ;;
@@ -59,13 +56,12 @@ case "$TARGET" in
         ;;
     all)
         rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
-        rsync_push "$LOCAL_ROOT/bulkhead-tau-core/" "$REMOTE_ROOT/bulkhead-tau-core/"
         rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
         rsync_push "$LOCAL_ROOT/sensor-simulation/" "$REMOTE_ROOT/sensor-simulation/"
         rsync_push "$LOCAL_ROOT/.htaccess" "$REMOTE_ROOT/.htaccess"
         ;;
     *)
-        echo "Usage: $0 [papers|bulkhead-tau-core|bulkhead-tau|all]"
+        echo "Usage: $0 [papers|bulkhead-tau|all]"
         exit 1
         ;;
 esac

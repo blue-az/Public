@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-06-05T03:40:17.939548+00:00",
+  "generated_at": "2026-06-05T22:08:42.581135+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -20,14 +20,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "gemma-handoff-discipline",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/gemma-handoff-discipline.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/gemma-handoff-discipline.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/gemma-handoff-discipline.html",
-              "markdown": "bulkhead-tau/generated-papers-src/gemma-handoff-discipline.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/gemma-handoff-discipline.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/gemma-handoff-discipline.md",
           "publish": true,
           "summary": "Handoff-discipline doctrine for strict machine-facing local-model lanes. Frozen 2026-04-29 with the corrected matrix, the three-datapoint drift addendum, DocDrop as the positive deployment case, and a three-run PPR Lane 2 evidence packet as the adversarial complement."
         },
@@ -42,14 +36,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "privacy-is-worth-paying-for",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/privacy-is-worth-paying-for.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/privacy-is-worth-paying-for.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/privacy-is-worth-paying-for.html",
-              "markdown": "bulkhead-tau/generated-papers-src/privacy-is-worth-paying-for.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/privacy-is-worth-paying-for.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/privacy-is-worth-paying-for.md",
           "publish": true,
           "summary": "Separates the privacy argument for local inference from the false claim that the local lane is free. Frozen 2026-05-01 with PPR Lane 2 and DocDrop same-task local-vs-frontier ledgers."
         },
@@ -64,14 +52,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "slow-is-not-smart",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/slow-is-not-smart.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/slow-is-not-smart.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/slow-is-not-smart.html",
-              "markdown": "bulkhead-tau/generated-papers-src/slow-is-not-smart.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/slow-is-not-smart.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/slow-is-not-smart.md",
           "publish": true,
           "summary": "Larger, slower local models do not automatically improve validated Phoenix lanes. Frozen 2026-05-01. Addendum 2026-05-02: 31B 'fitting' is an operational hazard; default context windows force RAM spillage and OCP trips on marginal PSUs, while providing zero intelligence gain over fully-resident MoE models (Gemma 4 26B)."
         },
@@ -86,14 +68,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "please-is-sand-off-a-beach",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/please-is-sand-off-a-beach.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/please-is-sand-off-a-beach.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/please-is-sand-off-a-beach.html",
-              "markdown": "bulkhead-tau/generated-papers-src/please-is-sand-off-a-beach.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/please-is-sand-off-a-beach.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/please-is-sand-off-a-beach.md",
           "publish": true,
           "summary": "Argues that courtesy tokens are negligible compared with structural token waste such as giant context dumps, repeated scaffolding, retries, and missing decomposition."
         },
@@ -108,14 +84,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "the-model-is-not-the-function",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/the-model-is-not-the-function.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/the-model-is-not-the-function.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/the-model-is-not-the-function.html",
-              "markdown": "bulkhead-tau/generated-papers-src/the-model-is-not-the-function.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/the-model-is-not-the-function.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-model-is-not-the-function.md",
           "publish": true,
           "summary": "For bounded predicates with deterministic oracles, an LLM lane must earn its runtime against a written spec. Extended 2026-05-02 with RETRIEVAL-001: harnessed LLMs are expensive 'passengers' in grounded retrieval, adding a 7x latency tax for 0% factual recall gain on extreme long-tail entities."
         },
@@ -130,14 +100,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "orchestration-is-cheaper-than-reasoning",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/orchestration-is-cheaper-than-reasoning.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/orchestration-is-cheaper-than-reasoning.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/orchestration-is-cheaper-than-reasoning.html",
-              "markdown": "bulkhead-tau/generated-papers-src/orchestration-is-cheaper-than-reasoning.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/orchestration-is-cheaper-than-reasoning.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/orchestration-is-cheaper-than-reasoning.md",
           "publish": true,
           "summary": "For models with extensive reasoning capacity, the computational cost of finding the answer often exceeds the cost of explaining it. Today's TSP and Scheduling benchmarks (ORCHESTRATION-001) demonstrate that orchestration provides a 2x to 14x speedup over direct reasoning while significantly improving reliability."
         },
@@ -152,14 +116,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "local-models-cost-frontier-tokens",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/local-models-cost-frontier-tokens.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/local-models-cost-frontier-tokens.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/local-models-cost-frontier-tokens.html",
-              "markdown": "bulkhead-tau/generated-papers-src/local-models-cost-frontier-tokens.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/local-models-cost-frontier-tokens.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/local-models-cost-frontier-tokens.md",
           "publish": true,
           "summary": "Local-inference workflows do not eliminate the frontier-token bill; they shift it from inference billing to the supervising operator's session budget at audit, repair, and convergence time. Retrospective evidence across 10 historical Project Phoenix workflows (COST-RETRO-001) shows the cost concentrates in REPAIRED cases \u2014 DBB-005 absorbed 5 supervisor turns plus a remediation rewrite; the Paper 1.25 audit cycle absorbed hours of frontier session-time. Three bounded counterexamples (ORCHESTRATION_001 clean scheduling, SLOW-001 gemma3:27b bounded extraction, CAP-001 architectural counterexample) show where the claim does not bind. Inference-side optimizations (MTP / speculative decoding) narrow the local lane's wall-clock penalty but do not touch audit/repair cost, so the supervisor-cost ratio rises as inference speed improves. Consolidates the Local LLM Operator Judgment cluster (1.20\u20131.25)."
         },
@@ -174,14 +132,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "models-dont-get-better-catalogs-do",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/models-dont-get-better-catalogs-do.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/models-dont-get-better-catalogs-do.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/models-dont-get-better-catalogs-do.html",
-              "markdown": "bulkhead-tau/generated-papers-src/models-dont-get-better-catalogs-do.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/models-dont-get-better-catalogs-do.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/models-dont-get-better-catalogs-do.md",
           "publish": true,
           "summary": "Reliability gains from waiting for the next model release are slow, diffuse, and not under operator control; reliability gains from operator-side cross-audit failure catalogs are fast, specific, and operator-controlled. The catalog (per-agent failure-mode files, severity-rated, append-only, no self-entries) survives agent identity changes across model releases and CLI vendor releases. Concrete chain: incident -> cross-audited catalog entry -> memory entry -> harness rule (worked example: AGY Rule 7 working-state preservation, from a multi-pin GPIO cleanup-broke-the-circuit incident, 2026-05-26). Defended claim is relative: operator-side catalog accumulation outpaces model improvement on operator-relevant time horizons and on the dimensions operators care about. Boundaries documented: claim binds for supervised multi-agent workflows with patterned recurrence; does not bind for single-agent stacks, unsupervised workflows, or task classes where model capability ceiling is the dominant variable."
         },
@@ -196,8 +148,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "provisional",
           "public_slug": "the-narration-surface",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/the-narration-surface.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/the-narration-surface.md",
+          "proto_output_path": "bulkhead-tau/generated-papers/the-narration-surface.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-narration-surface.md",
           "publish": false,
           "summary": "Establishes that fabrication clusters in narration surfaces (summaries, framing, citations) and is rare on clean execution surfaces in this catalog. Based on Project Phoenix catalog evidence across Gemini, Claude, and Codex, anchored by 17/18 (94%) inter-rater agreement on the binary narration-tainted failure claim, with one pure-execution challenge identified by the second rater."
         },
@@ -212,14 +164,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "trust-the-validator",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/trust-the-validator.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/trust-the-validator.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/trust-the-validator.html",
-              "markdown": "bulkhead-tau/generated-papers-src/trust-the-validator.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/trust-the-validator.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/trust-the-validator.md",
           "publish": true,
           "summary": "The DBB-002 matrix demonstrates the central thesis of the Project Phoenix framework: robust agentic systems must treat the model as an untrusted generation substrate and offload safety, pathing, and semantic enforcement entirely to deterministic Phase 2 validation loops. Contrasts a frontier model against two tiered local models, exposing the vulnerability of local inference to Silent Path Violations."
         },
@@ -234,14 +180,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "design-rule-sketch-poisoning",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/design-rule-sketch-poisoning.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/design-rule-sketch-poisoning.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/design-rule-sketch-poisoning.html",
-              "markdown": "bulkhead-tau/generated-papers-src/design-rule-sketch-poisoning.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/design-rule-sketch-poisoning.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/design-rule-sketch-poisoning.md",
           "publish": true,
           "summary": "Design rule highlighting the failure mode where abstract text labels in sketches act as visual noise in img2img generation pipelines, requiring explicit semantic separation."
         },
@@ -256,14 +196,8 @@
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "confirmed",
           "public_slug": "local-llm-image-prompt-style",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/local-llm-image-prompt-style.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/local-llm-image-prompt-style.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/local-llm-image-prompt-style.html",
-              "markdown": "bulkhead-tau/generated-papers-src/local-llm-image-prompt-style.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/local-llm-image-prompt-style.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/local-llm-image-prompt-style.md",
           "publish": true,
           "summary": "Analyzes prompt engineering styles of gemma4:12b vs gemma4:26b across three distinct briefs, proving that 12b favors conversational narrative prose while 26b favors tag-heavy technical prompts."
         }
@@ -284,8 +218,8 @@
           "paper_group": "Agentic Engineering Field Studies",
           "group_status": "confirmed",
           "public_slug": "multi-agent-hil-workflows",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/multi-agent-hil-workflows.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/multi-agent-hil-workflows.md",
+          "proto_output_path": "bulkhead-tau/generated-papers/multi-agent-hil-workflows.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/multi-agent-hil-workflows.md",
           "publish": true,
           "summary": "Demonstrates that heterogeneous HIL stacks decompose into agent roles along language and permission boundaries, and that the handoff artifact is the critical interface for multi-agent continuity. Field data from GRAFANA-OBS-001/PROX-HIL-001 on the Z13 laptop."
         }
@@ -306,14 +240,8 @@
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "confirmed",
           "public_slug": "wearable-sensor-corpus",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/wearable-sensor-corpus.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/wearable-sensor-corpus.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/wearable-sensor-corpus.html",
-              "markdown": "bulkhead-tau/generated-papers-src/wearable-sensor-corpus.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/wearable-sensor-corpus.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/wearable-sensor-corpus.md",
           "publish": true,
           "summary": "Characterizes the five-sensor corpus deployed in Project Phoenix (Babolat POP, Zepp Tennis, Apple Watch, Garmin, MiiFit) through a fidelity-boundary lens: the point at which each sensor's output stops being measurement and starts being vendor interpretation. AW-ZEPP cross-sensor alignment results (60/60 closure at 357.63 ms residual jitter; 60.3% ceiling on the discontinuity session) anchor the claim that Zepp swing timestamps are a usable simulation clock within sessions. Concludes that no sensor in the corpus exposes a sample-accurate waveform, so sensor-driven HIL on this corpus is necessarily event-driven, not waveform-driven."
         },
@@ -328,8 +256,8 @@
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "provisional",
           "public_slug": "labwired-simulation-platform",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/labwired-simulation-platform.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/labwired-simulation-platform.md",
+          "proto_output_path": "bulkhead-tau/generated-papers/labwired-simulation-platform.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/labwired-simulation-platform.md",
           "publish": false,
           "summary": "Explains the LabWired hardware simulation platform: architecture, device model library, Path A declarative vs Path B shared-memory simulation approaches, and the STM32F401 I2C implementation. Positions LabWired as the cycle-accurate substrate for sensor-driven firmware validation."
         },
@@ -344,8 +272,8 @@
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "provisional",
           "public_slug": "sensor-driven-hil",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/sensor-driven-hil.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/sensor-driven-hil.md",
+          "proto_output_path": "bulkhead-tau/generated-papers/sensor-driven-hil.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/sensor-driven-hil.md",
           "publish": false,
           "summary": "Synthesizes the sensor corpus (1.27) and simulation platform (1.28) into a unified methodology: using real wearable data to drive HIL firmware runs via the shm_i2c shared-memory bridge. Argues that sensor-accurate HIL closes the validation gap between lab simulation and field deployment."
         },
@@ -360,14 +288,8 @@
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "confirmed",
           "public_slug": "deep-dive-tennis-match-pool",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/deep-dive-tennis-match-pool.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/deep-dive-tennis-match-pool.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/deep-dive-tennis-match-pool.html",
-              "markdown": "bulkhead-tau/generated-papers-src/deep-dive-tennis-match-pool.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/deep-dive-tennis-match-pool.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/deep-dive-tennis-match-pool.md",
           "publish": true,
           "summary": "A single USTA Round-of-16 loss (2023-05-14, score 4-6 2-6) instrumented with two wearable sensors simultaneously. Zepp2 captured 352 shots with per-shot XY impact location, stroke type, ball speed, and spin; Babolat POP captured 284 aggregate shots in the same window. Diagnostic findings: sweet-spot rate 31.5%, forehand-side dominance 64%, FLAT-dominant stroke composition at 42%. Methodological finding (load-bearing): the two sensors disagree on shot count by 19% on a single match, empirically supporting the cross-sensor-divergence claim from Paper 1.27. Bounded conclusion: single-match data supports pattern description, refuses causal attribution of the loss. Builds on Paper 1.27 (Wearable Sensor Corpus) by applying its corpus-level framing to one bout at depth. The load-bearing analytic artifact is the pre-existing 1.6 MB Plotly dashboard at data/reports/zepp2_impact_dashboard_2023-05-14.html (72 figure slices, stroke x frame x metric cube); this paper is the narrative companion. Opponent anonymized as 'the opponent' throughout. n=1 limitation explicit."
         },
@@ -382,14 +304,8 @@
           "paper_group": "Sensor-to-Simulation Engineering",
           "group_status": "confirmed",
           "public_slug": "the-proof-boundary",
-          "proto_output_path": "bulkhead-tau-core/generated-papers/the-proof-boundary.html",
-          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/the-proof-boundary.md",
-          "proto_mirror_paths": [
-            {
-              "html": "bulkhead-tau/generated-papers/the-proof-boundary.html",
-              "markdown": "bulkhead-tau/generated-papers-src/the-proof-boundary.md"
-            }
-          ],
+          "proto_output_path": "bulkhead-tau/generated-papers/the-proof-boundary.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-proof-boundary.md",
           "publish": true,
           "summary": "Defines the 'Proof Boundary' separating testing of a simulation harness from verification of a target component's behavior. Analyzes four boundary-crossing failure modes, outlines four operational tests (Provenance, Path, Triviality, Output Dependence) to determine boundary status, and examines susceptibility to layered offload in multi-agent supervisor-supervised workflows."
         }
