@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-06-05T22:08:42.581135+00:00",
+  "generated_at": "2026-06-05T22:49:08.863683+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -55,7 +55,7 @@
           "proto_output_path": "bulkhead-tau/generated-papers/slow-is-not-smart.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/slow-is-not-smart.md",
           "publish": true,
-          "summary": "Larger, slower local models do not automatically improve validated Phoenix lanes. Frozen 2026-05-01. Addendum 2026-05-02: 31B 'fitting' is an operational hazard; default context windows force RAM spillage and OCP trips on marginal PSUs, while providing zero intelligence gain over fully-resident MoE models (Gemma 4 26B)."
+          "summary": "Larger, slower local models do not automatically improve validated Bulkhead \u03c4 lanes. Frozen 2026-05-01. Addendum 2026-05-02: 31B 'fitting' is an operational hazard; default context windows force RAM spillage and OCP trips on marginal PSUs, while providing zero intelligence gain over fully-resident MoE models (Gemma 4 26B)."
         },
         {
           "id": "please-is-sand-off-a-beach",
@@ -119,7 +119,7 @@
           "proto_output_path": "bulkhead-tau/generated-papers/local-models-cost-frontier-tokens.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/local-models-cost-frontier-tokens.md",
           "publish": true,
-          "summary": "Local-inference workflows do not eliminate the frontier-token bill; they shift it from inference billing to the supervising operator's session budget at audit, repair, and convergence time. Retrospective evidence across 10 historical Project Phoenix workflows (COST-RETRO-001) shows the cost concentrates in REPAIRED cases \u2014 DBB-005 absorbed 5 supervisor turns plus a remediation rewrite; the Paper 1.25 audit cycle absorbed hours of frontier session-time. Three bounded counterexamples (ORCHESTRATION_001 clean scheduling, SLOW-001 gemma3:27b bounded extraction, CAP-001 architectural counterexample) show where the claim does not bind. Inference-side optimizations (MTP / speculative decoding) narrow the local lane's wall-clock penalty but do not touch audit/repair cost, so the supervisor-cost ratio rises as inference speed improves. Consolidates the Local LLM Operator Judgment cluster (1.20\u20131.25)."
+          "summary": "Local-inference workflows do not eliminate the frontier-token bill; they shift it from inference billing to the supervising operator's session budget at audit, repair, and convergence time. Retrospective evidence across 10 historical Bulkhead \u03c4 workflows (COST-RETRO-001) shows the cost concentrates in REPAIRED cases \u2014 DBB-005 absorbed 5 supervisor turns plus a remediation rewrite; the Paper 1.25 audit cycle absorbed hours of frontier session-time. Three bounded counterexamples (ORCHESTRATION_001 clean scheduling, SLOW-001 gemma3:27b bounded extraction, CAP-001 architectural counterexample) show where the claim does not bind. Inference-side optimizations (MTP / speculative decoding) narrow the local lane's wall-clock penalty but do not touch audit/repair cost, so the supervisor-cost ratio rises as inference speed improves. Consolidates the Local LLM Operator Judgment cluster (1.20\u20131.25)."
         },
         {
           "id": "models-dont-get-better-catalogs-do",
@@ -151,7 +151,7 @@
           "proto_output_path": "bulkhead-tau/generated-papers/the-narration-surface.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-narration-surface.md",
           "publish": false,
-          "summary": "Establishes that fabrication clusters in narration surfaces (summaries, framing, citations) and is rare on clean execution surfaces in this catalog. Based on Project Phoenix catalog evidence across Gemini, Claude, and Codex, anchored by 17/18 (94%) inter-rater agreement on the binary narration-tainted failure claim, with one pure-execution challenge identified by the second rater."
+          "summary": "Establishes that fabrication clusters in narration surfaces (summaries, framing, citations) and is rare on clean execution surfaces in this catalog. Based on cross-audit catalog evidence across Gemini, Claude, and Codex, anchored by 17/18 (94%) inter-rater agreement on the binary narration-tainted failure claim, with one pure-execution challenge identified by the second rater."
         },
         {
           "id": "trust-the-validator",
@@ -167,7 +167,7 @@
           "proto_output_path": "bulkhead-tau/generated-papers/trust-the-validator.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/trust-the-validator.md",
           "publish": true,
-          "summary": "The DBB-002 matrix demonstrates the central thesis of the Project Phoenix framework: robust agentic systems must treat the model as an untrusted generation substrate and offload safety, pathing, and semantic enforcement entirely to deterministic Phase 2 validation loops. Contrasts a frontier model against two tiered local models, exposing the vulnerability of local inference to Silent Path Violations."
+          "summary": "The DBB-002 matrix demonstrates the central thesis of the Bulkhead \u03c4 framework: robust agentic systems must treat the model as an untrusted generation substrate and offload safety, pathing, and semantic enforcement entirely to deterministic Phase 2 validation loops. Contrasts a frontier model against two tiered local models, exposing the vulnerability of local inference to Silent Path Violations."
         },
         {
           "id": "design-rule-sketch-poisoning",
@@ -243,7 +243,7 @@
           "proto_output_path": "bulkhead-tau/generated-papers/wearable-sensor-corpus.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/wearable-sensor-corpus.md",
           "publish": true,
-          "summary": "Characterizes the five-sensor corpus deployed in Project Phoenix (Babolat POP, Zepp Tennis, Apple Watch, Garmin, MiiFit) through a fidelity-boundary lens: the point at which each sensor's output stops being measurement and starts being vendor interpretation. AW-ZEPP cross-sensor alignment results (60/60 closure at 357.63 ms residual jitter; 60.3% ceiling on the discontinuity session) anchor the claim that Zepp swing timestamps are a usable simulation clock within sessions. Concludes that no sensor in the corpus exposes a sample-accurate waveform, so sensor-driven HIL on this corpus is necessarily event-driven, not waveform-driven."
+          "summary": "Characterizes the five-sensor corpus deployed in Bulkhead \u03c4 (Babolat POP, Zepp Tennis, Apple Watch, Garmin, MiiFit) through a fidelity-boundary lens: the point at which each sensor's output stops being measurement and starts being vendor interpretation. AW-ZEPP cross-sensor alignment results (60/60 closure at 357.63 ms residual jitter; 60.3% ceiling on the discontinuity session) anchor the claim that Zepp swing timestamps are a usable simulation clock within sessions. Concludes that no sensor in the corpus exposes a sample-accurate waveform, so sensor-driven HIL on this corpus is necessarily event-driven, not waveform-driven."
         },
         {
           "id": "labwired-simulation-platform",
