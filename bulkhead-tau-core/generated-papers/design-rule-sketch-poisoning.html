@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Rule: Image-to-Image Sketch Poisoning</title>
+  <meta name="description" content="Design rule highlighting the failure mode where abstract text labels in sketches act as visual noise in img2img generation pipelines, requiring explicit semantic separation.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · frozen</div>
+    <h1>Design Rule: Image-to-Image Sketch Poisoning</h1>
+    <p class="meta">Design rule highlighting the failure mode where abstract text labels in sketches act as visual noise in img2img generation pipelines, requiring explicit semantic separation.</p>
+    <p class="meta">Canonical source: <code>docs/DESIGN_RULE_SKETCH_POISONING.md</code></p>
+    <h2>Status</h2>
+<p>Frozen / Published (Paper 1.36)</p>
+<h2>Context</h2>
+<p>When utilizing local LLMs or vision-language models to generate image prompts from conceptual sketches, a specific failure mode arises when the source sketch contains abstract text labels (e.g., &quot;COMPANIES&quot;, &quot;ATS&quot;, &quot;USERS&quot;).</p>
+<h2>Mechanism: The &quot;Sketch Poisoning&quot; Effect</h2>
+<p>In image-to-image (img2img) generation pipelines (like Stable Diffusion architectures), the model interprets the visual structures of the input image alongside the text prompt.</p>
+<p>When a sketch contains literal text labels intended for human comprehension, the img2img model attempts to physically render these geometric shapes (the letters) into the final output. Because the model is optimizing for the text prompt&#x27;s aesthetic (e.g., &quot;photorealistic office&quot;, &quot;clean vector art&quot;) but is constrained by the hard geometry of the sketched letters, it produces garbled, hallucinated artifacts where the text used to be. The text acts as &quot;visual noise&quot; or &quot;poison&quot; to the generation process.</p>
+<h2>Design Rule</h2>
+<p>**When preparing reference sketches for img2img generation, strip all semantic text labels.**</p>
+<ol>
+<li>**Use pure geometry:** Represent concepts using shapes, containers, and structural lines.</li>
+<li>**Move semantics to the prompt:** The textual description of what the shapes represent must be handled entirely by the text prompt provided to the model, not embedded in the pixels of the reference image.</li>
+<li>**Clean the input:** If using a human-drawn whiteboard or diagram, actively erase or mask text labels before feeding the image into the generation pipeline.</li>
+</ol>
+<h2>Provenance</h2>
+<p>This rule was derived from comparative testing between <code>gemma4:12b</code> and <code>gemma4:26b</code> during image prompt generation tasks, where the inclusion of diagrammatic text consistently degraded the visual coherence of the final generated assets.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Engineering core: <a href="/bulkhead-tau-core/">Engineering Core</a>.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

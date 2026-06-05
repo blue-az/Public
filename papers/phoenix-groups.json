@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-05-29T06:07:57.322896+00:00",
+  "generated_at": "2026-06-05T03:40:17.939548+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -184,6 +184,88 @@
           ],
           "publish": true,
           "summary": "Reliability gains from waiting for the next model release are slow, diffuse, and not under operator control; reliability gains from operator-side cross-audit failure catalogs are fast, specific, and operator-controlled. The catalog (per-agent failure-mode files, severity-rated, append-only, no self-entries) survives agent identity changes across model releases and CLI vendor releases. Concrete chain: incident -> cross-audited catalog entry -> memory entry -> harness rule (worked example: AGY Rule 7 working-state preservation, from a multi-pin GPIO cleanup-broke-the-circuit incident, 2026-05-26). Defended claim is relative: operator-side catalog accumulation outpaces model improvement on operator-relevant time horizons and on the dimensions operators care about. Boundaries documented: claim binds for supervised multi-agent workflows with patterned recurrence; does not bind for single-agent stacks, unsupervised workflows, or task classes where model capability ceiling is the dominant variable."
+        },
+        {
+          "id": "the-narration-surface",
+          "title": "The Narration Surface \u2014 Where Agentic LLM Fabrication Lives",
+          "source_path": "docs/THE_NARRATION_SURFACE.md",
+          "track": "paper",
+          "paper_number": "1.34",
+          "lifecycle": "active draft",
+          "publication_status": "private",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "the-narration-surface",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/the-narration-surface.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/the-narration-surface.md",
+          "publish": false,
+          "summary": "Establishes that fabrication clusters in narration surfaces (summaries, framing, citations) and is rare on clean execution surfaces in this catalog. Based on Project Phoenix catalog evidence across Gemini, Claude, and Codex, anchored by 17/18 (94%) inter-rater agreement on the binary narration-tainted failure claim, with one pure-execution challenge identified by the second rater."
+        },
+        {
+          "id": "trust-the-validator",
+          "title": "Trust the Validator, Not the Model: Deterministic Quality Gates in Bounded Domain Building under Bulkhead Tau",
+          "source_path": "docs/WHITE_PAPER_TRUST_THE_VALIDATOR.md",
+          "track": "paper",
+          "paper_number": "1.35",
+          "lifecycle": "frozen",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "trust-the-validator",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/trust-the-validator.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/trust-the-validator.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/trust-the-validator.html",
+              "markdown": "bulkhead-tau/generated-papers-src/trust-the-validator.md"
+            }
+          ],
+          "publish": true,
+          "summary": "The DBB-002 matrix demonstrates the central thesis of the Project Phoenix framework: robust agentic systems must treat the model as an untrusted generation substrate and offload safety, pathing, and semantic enforcement entirely to deterministic Phase 2 validation loops. Contrasts a frontier model against two tiered local models, exposing the vulnerability of local inference to Silent Path Violations."
+        },
+        {
+          "id": "design-rule-sketch-poisoning",
+          "title": "Design Rule: Image-to-Image Sketch Poisoning",
+          "source_path": "docs/DESIGN_RULE_SKETCH_POISONING.md",
+          "track": "paper",
+          "paper_number": "1.36",
+          "lifecycle": "frozen",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "design-rule-sketch-poisoning",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/design-rule-sketch-poisoning.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/design-rule-sketch-poisoning.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/design-rule-sketch-poisoning.html",
+              "markdown": "bulkhead-tau/generated-papers-src/design-rule-sketch-poisoning.md"
+            }
+          ],
+          "publish": true,
+          "summary": "Design rule highlighting the failure mode where abstract text labels in sketches act as visual noise in img2img generation pipelines, requiring explicit semantic separation."
+        },
+        {
+          "id": "local-llm-image-prompt-style",
+          "title": "Local LLM Prompt Style Divergence in Text-to-Image Pipelines",
+          "source_path": "docs/LOCAL_LLM_IMAGE_PROMPT_STYLE.md",
+          "track": "paper",
+          "paper_number": "1.37",
+          "lifecycle": "frozen",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "local-llm-image-prompt-style",
+          "proto_output_path": "bulkhead-tau-core/generated-papers/local-llm-image-prompt-style.html",
+          "proto_markdown_path": "bulkhead-tau-core/generated-papers-src/local-llm-image-prompt-style.md",
+          "proto_mirror_paths": [
+            {
+              "html": "bulkhead-tau/generated-papers/local-llm-image-prompt-style.html",
+              "markdown": "bulkhead-tau/generated-papers-src/local-llm-image-prompt-style.md"
+            }
+          ],
+          "publish": true,
+          "summary": "Analyzes prompt engineering styles of gemma4:12b vs gemma4:26b across three distinct briefs, proving that 12b favors conversational narrative prose while 26b favors tag-heavy technical prompts."
         }
       ]
     },
@@ -270,7 +352,7 @@
         {
           "id": "deep-dive-tennis-match-pool",
           "title": "Deep Dive Into a Tennis Match Data Pool: How Much Data One Competitive Bout Yields \u2014 A 2023 USTA Round-of-16 Loss Under Dual-Sensor Wearable Instrumentation",
-          "source_path": "docs/DEEP_DIVE_TENNIS_MATCH_POOL.md",
+          "source_path": "docs/DEEP_DIVE_TENNIS_MATCH_DATA_POOL.md",
           "track": "paper",
           "paper_number": "1.32",
           "lifecycle": "published",

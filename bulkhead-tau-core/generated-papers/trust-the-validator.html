@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trust the Validator, Not the Model: Deterministic Quality Gates in Bounded Domain Building under Bulkhead Tau</title>
+  <meta name="description" content="The DBB-002 matrix demonstrates the central thesis of the Project Phoenix framework: robust agentic systems must treat the model as an untrusted generation substrate and offload safety, pathing, and semantic enforcement entirely to deterministic Phase 2 validation loops. Contrasts a frontier model against two tiered local models, exposing the vulnerability of local inference to Silent Path Violations.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · frozen</div>
+    <h1>Trust the Validator, Not the Model: Deterministic Quality Gates in Bounded Domain Building under Bulkhead Tau</h1>
+    <p class="meta">The DBB-002 matrix demonstrates the central thesis of the Project Phoenix framework: robust agentic systems must treat the model as an untrusted generation substrate and offload safety, pathing, and semantic enforcement entirely to deterministic Phase 2 validation loops. Contrasts a frontier model against two tiered local models, exposing the vulnerability of local inference to Silent Path Violations.</p>
+    <p class="meta">Canonical source: <code>docs/WHITE_PAPER_TRUST_THE_VALIDATOR.md</code></p>
+    <h2>1. Executive Summary</h2>
+<p>As enterprise AI adoption transitions from conversational aids to autonomous software engineers, the reliance on model-side reasoning presents a structural liability. In the Bulkhead τ (Project Phoenix) architecture, we posit that the safety and efficacy of an agentic workflow is not guaranteed by the intelligence of the underlying model, but rather by the rigidity of the deterministic quality gates that govern it.</p>
+<p>This paper presents the findings of the **Domain Build Benchmark 002 (DBB-002)**, contrasting a frontier model via the Gemini CLI against two tiered local models (Gemma 4 26B and Gemma 3 27B). The empirical evidence demonstrates that &quot;silent path violations&quot;—where models write syntactically correct code into incorrect or unauthorized directory structures—appear as a salient local-model failure mode. We conclude that robust agentic systems must treat the model as an untrusted generation substrate and offload safety, pathing, and semantic enforcement entirely to deterministic Phase 2 validation loops.</p>
+<h2>2. The Architecture of Bulkhead τ Verification</h2>
+<p>Bulkhead τ operates on a &quot;Trust the Validator&quot; paradigm. Rather than instructing a model to &quot;be careful&quot; or relying on system prompts for path enforcement, the framework employs an execution environment where:</p>
+<ol>
+<li>**Isolated Witness Boundaries:** Agents operate within segregated OS user spaces with cryptographic identity enforcement.</li>
+<li>**Phase 2 Hardened Validation:** Compile success is insufficient. Automated validators enforce file presence, exact output format schemas, and structural directory adherence.</li>
+<li>**Automated Repair Loops:** When a model violates a Phase 2 gate, the deterministic failure log is piped back as context, forcing the model to self-correct within the established boundaries.</li>
+</ol>
+<h2>3. Empirical Evidence: DBB-002 (WaterReportAgent)</h2>
+<p>The DBB-002 benchmark evaluated the implementation of a multi-table lookup scenario. The performance divergence across the three models illustrates the necessity of externalized validation.</p>
+<p>*(The following analysis is derived from the canonical artifact: <code>docs/domain_runs/DBB-002/matrix_summary.md</code>)*</p>
+<h3>DBB-002 Comparison Matrix</h3>
+<table class="paper-table">
+<thead><tr><th>Path</th><th>First-Pass Validity</th><th>Final Quality</th><th>Repair Loops</th><th>Supervision Interventions</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td>:---</td><td>:---</td><td>:---</td><td>:---:</td><td>:---:</td><td>:---:</td></tr>
+<tr><td>**gemini_cli**</td><td><code>PASS</code></td><td><code>PASS</code></td><td>0</td><td>0</td><td>**PASS**</td></tr>
+<tr><td>**gemma4_local** (26b)</td><td><code>PARTIAL</code></td><td><code>PASS</code></td><td>1</td><td>0</td><td>**PASS**</td></tr>
+<tr><td>**gemma3_local** (27b)</td><td><code>PARTIAL</code></td><td><code>PASS</code></td><td>1</td><td>1</td><td>**PASS**</td></tr>
+</tbody>
+</table>
+<h3>3.1 The Frontier Baseline: Zero-Repair Execution</h3>
+<p>The <code>gemini_cli</code> (backed by a frontier model) passed the DBB-002 packet with zero repairs and zero supervision. It accurately navigated the directory structure and generated perfectly conforming JSON schemas on the first pass.</p>
+<h3>3.2 The Capable Local Model: Automated Self-Repair</h3>
+<p>The <code>gemma4_local</code> model achieved a <code>PASS</code> verdict, but required **1 automated repair loop**. It initially failed a Phase 2 format check, but successfully corrected itself when the deterministic validation failure was fed back into its context window. This demonstrates the viability of &quot;cheap&quot; local reasoning when coupled with a robust, automated repair mechanism.</p>
+<h3>3.3 The Brittle Local Model: Silent Path Violations</h3>
+<p>The <code>gemma3_local</code> model resulted in a <code>PASS</code>, exposing the core liability of local generation. It required **1 automated repair** and **1 manual supervision intervention**. Crucially, it committed a **Silent Path Violation**, writing structurally correct code into <code>domains/ExperimentalAgents/p0/</code> instead of the requested <code>domains/ExperimentalAgents/WaterReportAgent/p0/</code> directory. Without the Phase 2 path validator explicitly flagging the missing file, the run would have been mistakenly logged as a success.</p>
+<h2>4. Glossary of Key Terms</h2>
+<p>To contextualize this analysis: *   **Silent Path Violation**: A failure mode where the model writes syntactically correct code but places files in the wrong directory, making the model believe it succeeded when it actually broke the system structure. *   **Phase 2 Hardened Validation**: Strictly enforced, automated checks that verify not just compile success, but file paths, file presence, and exact output format schemas. *   **Repair Loop**: An automated feedback cycle where validator failure logs are fed back to the model to allow it to self-correct without human coding. *   **Supervision Intervention**: Manual action required by a human operator or supervising harness to resolve format errors (e.g., extracting code from a malformed markdown response). *   **P0 Workflows / Artifacts**: The minimal, initial set of user-facing operations that a newly built domain must prove it can execute.</p>
+<h2>5. Conclusion</h2>
+<p>The results of DBB-002 firmly establish that relying on model intelligence for structural compliance is a false economy. As models scale down for local inference (e.g., Gemma 3/4), their capacity to hold complex directory and schema constraints degrades before their capacity to write functional logic.</p>
+<p>By externalizing these constraints into deterministic, zero-trust quality gates, organizations can safely leverage cheaper, privacy-preserving local models. Under the Bulkhead τ framework, the model is permitted to fail; it is the validator that ensures the system succeeds.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Engineering core: <a href="/bulkhead-tau-core/">Engineering Core</a>.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>
