@@ -54,6 +54,9 @@ case "$TARGET" in
     sensor-simulation)
         rsync_push "$LOCAL_ROOT/sensor-simulation/" "$REMOTE_ROOT/sensor-simulation/"
         ;;
+    periodic-agent)
+        rsync_push "$LOCAL_ROOT/periodic-agent/" "$REMOTE_ROOT/periodic-agent/"
+        ;;
     all)
         rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
         rsync_push "$LOCAL_ROOT/bulkhead-tau-core/" "$REMOTE_ROOT/bulkhead-tau-core/"
