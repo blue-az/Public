@@ -52,6 +52,31 @@
             </div>
         </section>
 
+        <section class="section">
+            <h2>The Boundary Trilogy Demos</h2>
+            <p style="margin-bottom: 2rem;">Playable interactive demonstrations illustrating the three core boundaries of Bulkhead τ:</p>
+            
+            <div class="grid">
+                <a class="card" href="bulkhead-flappy/index.html" style="text-decoration: none; color: inherit;">
+                    <h3>Bulkhead τ: Flappy</h3>
+                    <p><strong>Upper Boundary (Charter).</strong> An interactive tugboat launch demo showing PBC-driven constraint enforcement.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Launch Flappy &rarr;</span>
+                </a>
+
+                <a class="card" href="bulkhead-damage-control/index.html" style="text-decoration: none; color: inherit;">
+                    <h3>Bulkhead τ: Damage Control</h3>
+                    <p><strong>Mid Boundary (Policy/Containment).</strong> A simulator focused on isolating failure points in real-time to prevent systemic cascades.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Launch Damage Control &rarr;</span>
+                </a>
+
+                <a class="card" href="bulkhead-voyage/index.html" style="text-decoration: none; color: inherit;">
+                    <h3>Bulkhead τ: Voyage</h3>
+                    <p><strong>Lower Boundary (Logbook).</strong> A terminal-style text CYOA showcasing the believe-vs-verify loop against logbook evidence.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Launch Voyage &rarr;</span>
+                </a>
+            </div>
+        </section>
+
         <section id="purpose" class="section">
             <h2>Purpose</h2>
             <p>Bulkhead τ is the public release line for a deterministic expert system built as personal consultant tooling for complex implementations. The system does not attempt to expand model capabilities; instead, it enforces governance by bounding execution between a formal specification Charter above and an append-only evidence Logbook below.</p>
@@ -78,7 +103,7 @@
                 <!-- Logbook Column -->
                 <div class="card">
                     <h3>Logbook (Lower Boundary)</h3>
-                    <p><strong>Evidence &amp; Deliberation.</strong> Anchored in the intellectual lineage of the <code>gt-kb</code> codebase authored by Mike Palmeter (Remaker Digital). Bulkhead τ implements a parallel, consultant-scale logbook design that inherits (a) first-class priority for deliberation records, (b) the logbook vocabulary, and (c) strict append-only discipline. It uses custom local Markdown finding files in our memory system rather than an SQLite database. It remains structurally separate from GroundTruth (the productized platform successor to the gt-kb lineage).</p>
+                    <p><strong>Evidence &amp; Deliberation.</strong> Anchored in the intellectual lineage of the <code>gt-kb</code> codebase authored by Mike Palmeter (Remaker Digital). Bulkhead τ implements a parallel, consultant-scale logbook design that inherits (a) first-class priority for deliberation records, (b) the logbook vocabulary, and (c) strict append-only discipline. It implements a working trust-state database (SQLite <code>trust.db</code> in the <code>.groundtruth_proto/</code> substrate) to log behavior assertions from automated validation runs (with the first production entry logged for <code>tennis-agent</code> serve speed regression graduation), enforcing downstream execution gates. It remains structurally separate from GroundTruth (the productized platform successor to the gt-kb lineage).</p>
                     <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/Remaker-Digital/groundtruth-kb" target="_blank" style="color: var(--accent);">Upstream gt-kb Lineage &rarr;</a></p>
                 </div>
             </div>
@@ -90,7 +115,7 @@
             <ul style="line-height: 1.6; margin-top: 1rem;">
                 <li><strong>The Charter:</strong> Authored, stable, and provider-neutral specifications maintained upstream by <code>stewie-sh</code>.</li>
                 <li><strong>The Engine Room:</strong> The core Bulkhead τ substrate, gating execution authority and enforcing phase discipline.</li>
-                <li><strong>The Logbook:</strong> An append-only evidence layer that monitors real-time passing, failing, stale, or disputed states.</li>
+                <li><strong>The Logbook:</strong> An append-only SQLite trust database that monitors real-time passing, failing, stale, or disputed states, actively gating execution.</li>
             </ul>
             <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--ink-muted);">Provenance note: The PBC anchoring path is upstream-aligned through provider-neutral specification guidelines. The trust-state verification logic is a custom parallel implementation, inheriting its conceptual structure from the gt-kb design.</p>
         </section>

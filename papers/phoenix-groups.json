@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-06-05T22:49:08.863683+00:00",
+  "generated_at": "2026-06-16T06:15:16.586284+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -143,15 +143,15 @@
           "source_path": "docs/THE_NARRATION_SURFACE.md",
           "track": "paper",
           "paper_number": "1.34",
-          "lifecycle": "active draft",
-          "publication_status": "private",
+          "lifecycle": "frozen",
+          "publication_status": "published",
           "paper_group": "Local LLM Operator Judgment",
-          "group_status": "provisional",
+          "group_status": "confirmed",
           "public_slug": "the-narration-surface",
           "proto_output_path": "bulkhead-tau/generated-papers/the-narration-surface.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-narration-surface.md",
-          "publish": false,
-          "summary": "Establishes that fabrication clusters in narration surfaces (summaries, framing, citations) and is rare on clean execution surfaces in this catalog. Based on cross-audit catalog evidence across Gemini, Claude, and Codex, anchored by 17/18 (94%) inter-rater agreement on the binary narration-tainted failure claim, with one pure-execution challenge identified by the second rater."
+          "publish": true,
+          "summary": "Establishes that fabrication clusters in narration surfaces (summaries, framing, citations) and is rare on clean execution surfaces in this Bulkhead Tau catalog. Based on cross-audit catalog evidence across Gemini, Claude, and Codex, anchored by 17/18 (94%) inter-rater agreement on the binary narration-tainted failure claim, with one pure-execution challenge identified by the second rater."
         },
         {
           "id": "trust-the-validator",
@@ -200,6 +200,22 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/local-llm-image-prompt-style.md",
           "publish": true,
           "summary": "Analyzes prompt engineering styles of gemma4:12b vs gemma4:26b across three distinct briefs, proving that 12b favors conversational narrative prose while 26b favors tag-heavy technical prompts."
+        },
+        {
+          "id": "when-local-llm-clusters-do-not-help",
+          "title": "When Local LLM Clusters Do Not Help",
+          "source_path": "docs/WHEN_LOCAL_LLM_CLUSTERS_DO_NOT_HELP.md",
+          "track": "paper",
+          "paper_number": "1.39",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "when-local-llm-clusters-do-not-help",
+          "proto_output_path": "bulkhead-tau/generated-papers/when-local-llm-clusters-do-not-help.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/when-local-llm-clusters-do-not-help.md",
+          "publish": true,
+          "summary": "Negative result from a heterogeneous consumer local-inference cluster: RPC sharding across a desktop RTX 3090 and z13 Radeon 8050S worked but underperformed desktop-local execution; z13's GPU-only ceiling stopped below the 26B/27B class; the Intel Mac Mini was CPU-only for this lane. The useful result is orchestration, not distributed inference."
         }
       ]
     },
@@ -251,15 +267,15 @@
           "source_path": "docs/WHITE_PAPER_LABWIRED_PLATFORM.md",
           "track": "paper",
           "paper_number": "1.28",
-          "lifecycle": "active draft",
-          "publication_status": "private",
+          "lifecycle": "published",
+          "publication_status": "published",
           "paper_group": "Sensor-to-Simulation Engineering",
-          "group_status": "provisional",
+          "group_status": "confirmed",
           "public_slug": "labwired-simulation-platform",
           "proto_output_path": "bulkhead-tau/generated-papers/labwired-simulation-platform.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/labwired-simulation-platform.md",
-          "publish": false,
-          "summary": "Explains the LabWired hardware simulation platform: architecture, device model library, Path A declarative vs Path B shared-memory simulation approaches, and the STM32F401 I2C implementation. Positions LabWired as the cycle-accurate substrate for sensor-driven firmware validation."
+          "publish": true,
+          "summary": "Explains the LabWired hardware simulation platform: architecture, expanded component library, Path A declarative register-bank modeling vs Path B behavioral/shared-memory device models, and the STM32F401 I2C implementation. The current inventory confirms TMP102 remains attachable via type:\"tmp102\", SPI/UART/GPIO models exist, and the F401 fidelity claim is bounded to register state-machine behavior, reset values, and cycle cost rather than analog bus-edge timing."
         },
         {
           "id": "sensor-driven-hil",
@@ -267,15 +283,15 @@
           "source_path": "docs/WHITE_PAPER_SENSOR_DRIVEN_HIL.md",
           "track": "paper",
           "paper_number": "1.29",
-          "lifecycle": "active draft",
-          "publication_status": "private",
+          "lifecycle": "published",
+          "publication_status": "published",
           "paper_group": "Sensor-to-Simulation Engineering",
-          "group_status": "provisional",
+          "group_status": "confirmed",
           "public_slug": "sensor-driven-hil",
           "proto_output_path": "bulkhead-tau/generated-papers/sensor-driven-hil.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/sensor-driven-hil.md",
-          "publish": false,
-          "summary": "Synthesizes the sensor corpus (1.27) and simulation platform (1.28) into a unified methodology: using real wearable data to drive HIL firmware runs via the shm_i2c shared-memory bridge. Argues that sensor-accurate HIL closes the validation gap between lab simulation and field deployment."
+          "publish": true,
+          "summary": "Synthesizes the sensor corpus (1.27) and simulation platform (1.28) into a unified methodology: using documented physical proximity data to drive HIL firmware runs via the shm_i2c shared-memory bridge. Bounded by the corrected LabWired F401 claim: register state-machine behavior, reset values, and cycle cost are modeled, but analog bus-edge timing is not claimed. PROX-HIL-003 closes the real-data gate for this bounded physical-replay case."
         },
         {
           "id": "deep-dive-tennis-match-pool",
@@ -308,6 +324,28 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-proof-boundary.md",
           "publish": true,
           "summary": "Defines the 'Proof Boundary' separating testing of a simulation harness from verification of a target component's behavior. Analyzes four boundary-crossing failure modes, outlines four operational tests (Provenance, Path, Triviality, Output Dependence) to determine boundary status, and examines susceptibility to layered offload in multi-agent supervisor-supervised workflows."
+        }
+      ]
+    },
+    {
+      "group": "Agent Path Evaluation",
+      "group_status": "confirmed",
+      "papers": [
+        {
+          "id": "codex-vs-claude-false-choice",
+          "title": "Codex vs Claude Code Is a False Choice",
+          "source_path": "docs/CODEX_VS_CLAUDE_FALSE_CHOICE.md",
+          "track": "paper",
+          "paper_number": "1.38",
+          "lifecycle": "frozen",
+          "publication_status": "published",
+          "paper_group": "Agent Path Evaluation",
+          "group_status": "confirmed",
+          "public_slug": "codex-vs-claude-false-choice",
+          "proto_output_path": "bulkhead-tau/generated-papers/codex-vs-claude-false-choice.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/codex-vs-claude-false-choice.md",
+          "publish": true,
+          "summary": "Case study arguing that Codex vs Claude Code is usually the wrong abstraction for Bulkhead Tau domain building. In the Amkor/xAmkor comparison, the artifact-backed claim is compositional: xAmkor was stronger on the benchmark/verifier surface, while Amkor carried broader cockpit/application surface."
         }
       ]
     }

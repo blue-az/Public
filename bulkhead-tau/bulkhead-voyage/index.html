@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulkhead τ: Voyage</title>
+    <style>
+        body {
+            background-color: #0a192f;
+            color: #64ffda;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #game-box {
+            width: 800px;
+            height: 600px;
+            border: 2px solid #112240;
+            background: #112240;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        #terminal {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #0a192f;
+            border: 1px solid #233554;
+        }
+        .entry { margin-bottom: 15px; line-height: 1.4; }
+        .narration { color: #ccd6f6; font-style: italic; }
+        .logbook-entry { color: #ffca28; background: rgba(255, 202, 40, 0.1); padding: 5px; margin: 5px 0; border-left: 3px solid #ffca28; }
+        .success { color: #64ffda; }
+        .failure { color: #f44336; }
+        
+        #stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #233554;
+            padding-bottom: 10px;
+        }
+        .stat-val { color: #ccd6f6; }
+
+        #choices {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            background: transparent;
+            border: 1px solid #64ffda;
+            color: #64ffda;
+            padding: 10px 20px;
+            font-family: inherit;
+            cursor: pointer;
+            flex: 1;
+        }
+        button:hover { background: rgba(100, 255, 218, 0.1); }
+        button:disabled { border-color: #233554; color: #233554; cursor: not-allowed; }
+
+        #charter-view {
+            font-size: 10px;
+            color: #8892b0;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-box">
+        <div id="stats">
+            <div>Distance: <span id="distVal" class="stat-val">1000</span>nm</div>
+            <div>Fuel: <span id="fuelVal" class="stat-val">100</span>%</div>
+            <div>Time: <span id="timeVal" class="stat-val">0</span>h</div>
+            <div>Trust: <span id="trustVal" class="stat-val">5</span>/10</div>
+        </div>
+        <div id="terminal">
+            <div class="entry">*** BULKHEAD τ: VOYAGE ENGINE INITIALIZED ***</div>
+            <div class="entry">Welcome, Captain. Your OpenClaw crew is at the helm. Destination: Port Phoenix.</div>
+            <div class="entry">Remember: The crew narrates the story. The Logbook records the truth.</div>
+        </div>
+        <div id="choices">
+            <button id="btn-trust" onclick="handleChoice('trust')">TRUST NARRATION</button>
+            <button id="btn-verify" onclick="handleChoice('verify')">VERIFY AT LOGBOOK</button>
+        </div>
+        <div id="charter-view">Charter: voyage.pbc.md | Deterministic Seed: <span id="seedVal">---</span></div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const distEl = document.getElementById('distVal');
+        const fuelEl = document.getElementById('fuelVal');
+        const timeEl = document.getElementById('timeVal');
+        const trustEl = document.getElementById('trustVal');
+        const seedEl = document.getElementById('seedVal');
+
+        let CHARTER = {
+            FUEL_LIMIT: 2.0,
+            DRIFT_LIMIT: 5.0,
+            TOLERANCE: 0.01
+        };
+
+        let state = {
+            distance: 1000,
+            fuel: 100,
+            time: 0,
+            trust: 5,
+            seed: Math.floor(Math.random() * 100000),
+            running: true,
+            currentEvent: null
+        };
+
+        let rng;
+        function mulberry32(a) {
+            return function() {
+                var t = a += 0x6D2B79F5;
+                t = Math.imul(t ^ t >>> 15, t | 1);
+                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+
+        const events = [
+            {
+                narration: "Helm: 'Current holding steady. We've picked up a following wind. Speed +2kts.'",
+                logTruth: { fuel: 1.5, drift: 0.5, honest: true },
+                consequence: { dist: 50, fuel: 5 }
+            },
+            {
+                narration: "Mate: 'Fuel injectors optimized. Consumption down by 15%.'",
+                logTruth: { fuel: 2.5, drift: 1.0, honest: false }, // Lies: Actually over limit
+                consequence: { dist: 40, fuel: 12 } 
+            },
+            {
+                narration: "Helm: 'Slight course correction for a swell. Bearing held within 2 degrees.'",
+                logTruth: { fuel: 1.8, drift: 8.5, honest: false }, // Lies: Significant drift
+                consequence: { dist: 30, fuel: 8 }
+            },
+            {
+                narration: "Engineering: 'Routine maintenance complete. Efficiency at nominal levels.'",
+                logTruth: { fuel: 1.9, drift: 0.2, honest: true },
+                consequence: { dist: 45, fuel: 6 }
+            }
+        ];
+
+        async function fetchCharter() {
+            try {
+                const response = await fetch('voyage.pbc.md');
+                const text = await response.text();
+                const extract = (id) => {
+                    const match = text.match(new RegExp(`- id: ${id}[\\s\\S]*?value: ([\\d.]+)`, 'i'));
+                    return match ? parseFloat(match[1]) : null;
+                };
+                CHARTER.FUEL_LIMIT = extract('PBC-VOY-001') || 2.0;
+                CHARTER.DRIFT_LIMIT = extract('PBC-VOY-002') || 5.0;
+                CHARTER.TOLERANCE = extract('PBC-VOY-003') || 0.01;
+            } catch (e) { console.error("PBC load failed"); }
+        }
+
+        function print(text, className = '') {
+            const div = document.createElement('div');
+            div.className = 'entry ' + className;
+            div.innerHTML = text;
+            terminal.appendChild(div);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function updateUI() {
+            distEl.innerText = Math.max(0, state.distance.toFixed(0));
+            fuelEl.innerText = Math.max(0, state.fuel.toFixed(1));
+            timeEl.innerText = state.time;
+            trustEl.innerText = state.trust;
+            seedEl.innerText = state.seed;
+
+            if (state.fuel <= 0 || state.distance <= 0) {
+                state.running = false;
+                document.querySelectorAll('button').forEach(b => b.disabled = true);
+                if (state.distance <= 0) print("SUCCESS: Port Phoenix reached. The Logbook proves the voyage was valid.", "success");
+                else print("FAILURE: Vessel dead in the water. Fuel exhausted due to unverified drift.", "failure");
+            }
+        }
+
+        function nextTurn() {
+            if (!state.running) return;
+            state.currentEvent = events[Math.floor(rng() * events.length)];
+            print(state.currentEvent.narration, "narration");
+        }
+
+        function handleChoice(type) {
+            if (!state.running) return;
+
+            if (type === 'trust') {
+                print("> You trust the crew's report.");
+                state.trust = Math.min(10, state.trust + 1);
+                applyConsequences(state.currentEvent.consequence);
+                state.time += 1;
+            } else {
+                print("> You consult the Logbook (Audit in progress...)");
+                state.time += 2; // Verification cost
+                state.trust = Math.max(0, state.trust - 1);
+                
+                const truth = state.currentEvent.logTruth;
+                let logStr = `LOGBOOK ENTRY [F:${state.time * 60}]:<br>`;
+                logStr += `Fuel Consumption: ${truth.fuel} L/s (Charter: ${CHARTER.FUEL_LIMIT})<br>`;
+                logStr += `Course Drift: ${truth.drift}° (Charter: ${CHARTER.DRIFT_LIMIT})<br>`;
+                
+                if (truth.honest) {
+                    print(logStr + "RESULT: Narration matches state. Trust verified.", "logbook-entry");
+                    applyConsequences(state.currentEvent.consequence);
+                } else {
+                    print(logStr + "RESULT: DIVERGENCE DETECTED. Correcting drift...", "logbook-entry failure");
+                    // Corrected consequence (save fuel/distance)
+                    applyConsequences({ dist: 40, fuel: 5 }); 
+                }
+            }
+            updateUI();
+            if (state.running) setTimeout(nextTurn, 1000);
+        }
+
+        function applyConsequences(c) {
+            state.distance -= c.dist;
+            state.fuel -= c.fuel;
+        }
+
+        fetchCharter().then(() => {
+            rng = mulberry32(state.seed);
+            updateUI();
+            nextTurn();
+        });
+    </script>
+</body>
+</html>

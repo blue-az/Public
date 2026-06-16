@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Closing the Loop: From Real Sensor Data to Cycle-Accurate Firmware Validation</title>
+  <meta name="description" content="Synthesizes the sensor corpus (1.27) and simulation platform (1.28) into a unified methodology: using documented physical proximity data to drive HIL firmware runs via the shm_i2c shared-memory bridge. Bounded by the corrected LabWired F401 claim: register state-machine behavior, reset values, and cycle cost are modeled, but analog bus-edge timing is not claimed. PROX-HIL-003 closes the real-data gate for this bounded physical-replay case.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>Closing the Loop: From Real Sensor Data to Cycle-Accurate Firmware Validation</h1>
+    <p class="meta">Synthesizes the sensor corpus (1.27) and simulation platform (1.28) into a unified methodology: using documented physical proximity data to drive HIL firmware runs via the shm_i2c shared-memory bridge. Bounded by the corrected LabWired F401 claim: register state-machine behavior, reset values, and cycle cost are modeled, but analog bus-edge timing is not claimed. PROX-HIL-003 closes the real-data gate for this bounded physical-replay case.</p>
+    <p class="meta">Canonical source: <code>docs/WHITE_PAPER_SENSOR_DRIVEN_HIL.md</code></p>
+    <h2>White Paper 1.29 — Published</h2>
+<p><strong>Author:</strong> Erik Fehn (Bulkhead Tau) <strong>Status:</strong> Published (2026-06-10) <strong>Paper group:</strong> Sensor-to-Simulation Engineering <strong>Depends on:</strong> 1.27 (<code>WHITE_PAPER_WEARABLE_SENSOR_CORPUS.md</code>) — sensor corpus <strong>Depends on:</strong> 1.28 (<code>WHITE_PAPER_LABWIRED_PLATFORM.md</code>) — simulation platform <strong>Trilogy role:</strong> synthesis paper for 1.27 + 1.28 <strong>Platform review:</strong> Andrii Shylenko reviewed the LabWired platform boundary used here via the Paper 1.28 review, including the corrected STM32F401 fidelity claim: register state-machine behavior, reset values, and cycle cost are modeled; analog bus-edge timing is not claimed.</p>
+<hr>
+<h2>Abstract</h2>
+<p>The gap between a working firmware simulation and a <em>meaningful</em> one is data. A simulation driven by synthetic cosine sweeps proves that a pipeline exists; a simulation driven by real recorded sensor data can test whether firmware behaves correctly under documented field conditions. This paper takes the sensor corpus characterized in 1.27 — bounded to event-driven sensors by the fidelity-boundary analysis there — and the LabWired peripheral-accurate simulation platform described in 1.28, and asks what end-to-end validations the combination enables. The combined pipeline supports a specific, narrow class of firmware validation: deterministic replay of documented sensor events through the <code>shm_i2c</code> bridge into register-accurate, cycle-costed I2C controller transactions on the STM32F401 demo target. In the PROX-HIL-003 run, Bulkhead Tau used that path to replay a documented physical proximity capture through the ProximityAgent HIL pipeline, closing the real-data evidence gate for this bounded case.</p>
+<hr>
+<h2>1. Introduction</h2>
+<p>The two prior papers in the trilogy answer adjacent questions:</p>
+<ul>
+<li><strong>1.27</strong> asks &quot;what sensors are usable for HIL injection?&quot; The answer, bounded by the corpus and the fidelity-boundary analysis: event-driven only, no sample-accurate waveforms. Babolat POP shot events and Zepp swing timestamps are the cleanest Bulkhead Tau anchors.</li>
+<li><strong>1.28</strong> asks &quot;what does a simulator have to be to drive firmware from event-driven sensor data?&quot; The answer, anchored in LabWired v0.14.0: peripheral-accurate, with an external-write surface (<code>shm_i2c</code> Path B), decoupled from the data source.</li>
+</ul>
+<p><strong>1.29 asks what the combination produces.</strong> Given 1.27&#x27;s corpus and 1.28&#x27;s platform, what firmware validation becomes possible that bench testing alone cannot deliver? The headline answer: deterministic, replayable firmware behavior under recorded field conditions, bounded by LabWired&#x27;s register-accurate, cycle-costed F401 model, with the Tempo trace as the evidence artifact. Bulkhead Tau is the public release line for this deterministic-substrate work: the model-facing and publication-facing layer, while correctness comes from local substrates, harnesses, and validation artifacts. In this instance, Bulkhead Tau uses LabWired to turn a physical proximity-sensor capture into a replayable HIL test for the ProximityAgent firmware. This paper documents that pipeline as built, identifies what it does <em>not</em> enable, and sets up the conditions under which it could extend.</p>
+<hr>
+<h2>2. The Current State Before Real Sensor Data</h2>
+<p>The PROX-HIL-001 proof run (May 2026, documented at <code>docs/domain_runs/PROX-HIL-001/report.md</code>) ran the full HIL pipeline against synthetic distance data:</p>
+<pre><code>
+t = np.linspace(0, 2 * np.pi, samples)
+distances = 200 + 100 * np.cos(t)   # mm — cosine sweep, 300 mm peak to 100 mm trough
+</code></pre>
+<p>This proved:</p>
+<ul>
+<li>The I2C handshake works at the cycle level (firmware polls STATUS, reads DIST_H + DIST_L, clears STATUS to ACK).</li>
+<li>The <code>shm_i2c</code> register contract is correctly implemented by the LabWired-side device model (<code>crates/core/src/peripherals/components/shm_i2c.rs</code>) and by the firmware-side reader.</li>
+<li>The Tempo trace export path is functional (span exported to Grafana Cloud Tempo with the expected attributes).</li>
+<li>The full chain from Python harness → <code>shm_i2c</code> shared-memory file → LabWired Machine → firmware I2C driver → register-accurate, cycle-costed read → STATUS-clear write executes end-to-end on the v0.14.0 F401 milestone (confirmed by commit <code>553700a</code>).</li>
+</ul>
+<p>What it did <strong>not</strong> prove:</p>
+<ul>
+<li>Firmware behavior under real motion profiles. A cosine sweep from 300 mm to 100 mm and back is not what a racquet moving through a tennis swing looks like. The firmware was tested against a pipeline, not against a representative input.</li>
+<li>Any claim about firmware accuracy under real field conditions. The synthetic data is round-tripped through the bridge without any error-introducing path; &quot;accuracy&quot; measurements on the round trip are tautological.</li>
+</ul>
+<p>The PROX-HIL-001 evidence is therefore bounded: the <em>plumbing</em> is verified; the <em>firmware-behavior-under-real-data</em> claim is not. This paper&#x27;s target contribution is the next step — replacing synthetic input with provenance-backed physical sensor data and producing the next layer of evidence.</p>
+<hr>
+<h2>3. The Sensor Data Path</h2>
+<p>To validate the proximity sensor&#x27;s firmware under real-data conditions, the replay source must be a documented physical range-finder capture stored in <code>domains/SensorAgents/ProximityAgent/data/proximity.db</code>. This provenance bar is closed by the <code>PROX-HIL-003</code> packet: Session <code>5</code> (<code>Physical Capture: PROX-HIL-003 Hand/Arm motion</code>) represents a documented physical sensor capture with 3,900 samples.</p>
+<p>The completed data path is:</p>
+<pre><code>
+Physical Proximity Sensor (documented capture session 5)
+  → proximity.db (session_id = 5, provenance recorded)
+  → 3,900 distance readings (timestamp_ms, distance_mm)
+  → shm_i2c register injection (STATUS = 0x02 = data_ready, DIST_H, DIST_L)
+  → LabWired firmware execution (I2C transaction, STATUS-clear ACK)
+  → Tempo span: attributes = {real_data: true, run_id: &quot;PROX-HIL-003&quot;, session_id: 5}
+</code></pre>
+<p>The co-simulation pipeline reuses the entire <code>PROX-HIL-001</code> mechanism. The Python harness (<code>sensor_replay_hil.py</code>) queries the raw distance recordings and streams them into the shared-memory file <code>/tmp/labwired_proximity_imu</code> backed by the <code>shm_i2c</code> virtual device model. The co-simulation steps the virtual machine in cycle-locked synchronization based on the data stream, ensuring the firmware driver processes each sample before the next one is written.</p>
+<h3>3.1 Rejection of Modeled Transforms (Avoidance of Domain Mixing)</h3>
+<p>An alternative approach considered was mapping discrete tennis stroke events (from the Babolat POP sensor) to simulated distance profiles using a physics transform. While that synthesis represents a potential future expansion for testing sports wearables, it was rejected for Paper 1.29&#x27;s core validation because:</p>
+<ol>
+<li><strong>Model Contamination</strong>: A mapped curve derived from a wrist-IMU event is modeled data, not <em>real</em> sensor data. Validating the firmware against modeled inputs tests the assumptions of the biomechanical transform, not the firmware&#x27;s resilience to real-world sensor profiles.</li>
+<li><strong>Domain Mixing</strong>: Threading tennis swing kinematics into a proximity range-finding system intended for clinical hip-flexion monitoring creates a framing conflict. The clinical alarm threshold has no biomechanical relation to tennis shots.</li>
+</ol>
+<p>Direct replay of a documented physical range-finder session would honor the &quot;real sensor data&quot; requirement and maintain domain coherence without requiring custom, uncalibrated transforms. Replay of an undocumented database session does not.</p>
+<hr>
+<h2>4. The <code>shm_i2c</code> Bridge as Abstraction Layer</h2>
+<p>The architectural payoff of LabWired&#x27;s Path B model (1.28 §5) is that the bridge is <em>the</em> abstraction layer for sensor-data injection. From the firmware&#x27;s perspective:</p>
+<ul>
+<li>The I2C device at the configured address responds to register reads and writes per the <code>shm_i2c</code> register contract.</li>
+<li>The firmware driver code is <em>unmodified</em> from what would run against a real I2C sensor — no <code>#ifdef SIMULATION</code> branches, no test-mode flags, no harness-aware logic.</li>
+<li>The Tempo trace attributes carry the provenance of the input (<code>real_data</code> vs <code>synthetic</code>, <code>fixture</code> name, <code>session_id</code> if recoverable from the source) so the trace itself documents what was being tested.</li>
+</ul>
+<p>From the harness&#x27;s perspective:</p>
+<ul>
+<li>The harness writes bytes into a file at a known path; LabWired&#x27;s <code>shm_i2c</code> device serves those bytes when the firmware reads.</li>
+<li>The harness&#x27;s source-of-truth (cosine sweep, parsed Babolat session, future live sensor stream) is fully independent of LabWired&#x27;s device model.</li>
+</ul>
+<p>This is the architectural payoff over Path A (declarative register banks per 1.28 §4): Path A can only hold static values; Path B supports any data source that can write bytes at the harness side. For sensor-driven HIL, Path B is the only viable model.</p>
+<p>This abstraction is further validated by Andrii Shylenko&#x27;s upstream proximity lab example (<code>feat/nrf52840-hcsr04-proximity-lab</code> branch of <code>labwired-core</code>), which establishes a runnable nRF52840 co-simulation directly alongside the shared-memory sensor bridge. By demonstrating BLE wireless distance telemetry and GPIO status updates running against the same <code>shm_i2c</code> virtual interface, the lab example confirms that the bridge serves as a general-purpose, platform-agnostic boundary for hardware-in-the-loop co-simulation, decoupled from the underlying microarchitecture.</p>
+<hr>
+<h2>5. The STM32F401 v0.14.0 Milestone</h2>
+<p>The May 15 (operator-side May 18 verification) v0.14.0 milestone closed the loop from synthetic firmware-side testing to cycle-costed, register-state-machine I2C transactions. Before v0.14.0, the I2C peripheral on the F401 target was a stub that handled the read/write contract but did not model the controller state with the same fidelity. After v0.14.0, the I2C transactions in the Tempo trace reflect the F401 register state machine, reset values, and cycle cost boundary described in 1.28 §6. They do not claim analog bus-edge timing fidelity.</p>
+<p>For 1.29&#x27;s purposes: with provenance-backed sensor data flowing through the bridge and register-accurate, cycle-costed I2C transactions on the firmware side, the resulting Tempo trace is evidence of what the firmware did under a documented physical replay <em>to the precision of that LabWired F401 model</em>. That is a stronger claim than either piece alone supports. The earlier PROX-HIL-002 packet did not supply provenance-backed physical input; PROX-HIL-003 does.</p>
+<p>Bulkhead Tau verification of the milestone is documented in commits <code>553700a</code> (milestone confirmation) and <code>821e8fd</code> + <code>dddbdda</code> (the PROX-HIL-001 functional rerun cycle that confirmed v0.14.0 integration). Per 1.28 §9, the integration friction (PyO3 + maturin version drift, wheel-rebuild discipline) is now resolved; future Bulkhead Tau runs against v0.14.0 should not hit those issues.</p>
+<hr>
+<h2>6. Quarantined Experiment — PROX-HIL-002 Replay</h2>
+<p>The co-simulation was exercised using the following replay experiment:</p>
+<ol>
+<li><strong>Database Query</strong>: Extracted 500 consecutive distance readings from the &quot;FALL SIMULATION&quot; session (<code>session_id = 3</code>) in <code>proximity.db</code>. The tracked repository does not document this session&#x27;s physical-capture provenance. Its shape is a threshold-oriented profile: an initial $300\text{ mm}$ plateau, a short transition, and a long $10\text{ mm}$ plateau.</li>
+<li><strong>Replay Execution</strong>: Wrote a Python harness (<code>sensor_replay_hil.py</code>) to stream the readings into the <code>shm_i2c</code> shared-memory file, driving the virtual STM32F401 machine in cycle-locked synchronization.</li>
+<li><strong>Firmware Verification</strong>: The compiled Rust firmware executed unmodified, polling the status register, reading the two-byte distance, checking the threshold, and clearing the status register to acknowledge each sample.</li>
+<li><strong>Alarm Enforcement</strong>: We verified the alarm output (GPIO5) via the BSRR register strobe. The firmware achieved $100\%$ accuracy ($500/500$ correct samples), driving GPIO5 HIGH whenever distance dropped below $150\text{ mm}$ (276 samples) and resetting it to LOW when distance was $\ge 150\text{ mm}$ (224 samples).</li>
+<li><strong>Cycle Comparison</strong>: While Sample 0 required only $1,000$ cycles for startup, subsequent samples required an average of $10,548$ cycles to complete the I2C transaction, showing stable, cycle-locked instruction execution. The findings are quarantined in the evidence memo at <code>docs/domain_runs/PROX-HIL-002/report.md</code>.</li>
+</ol>
+<p>This experiment validates the replay harness and firmware threshold path against a database-sourced profile. It does <strong>not</strong> close the Paper 1.29 real-sensor-data gate.</p>
+<hr>
+<h2>7. Physical Validation Run — PROX-HIL-003 Replay</h2>
+<p>The physical co-simulation was executed to close the real-data validation gate:</p>
+<ol>
+<li><strong>Physical Capture</strong>: Captured 3,901 samples of hand/arm motion from a physical RCWL-1601 sensor on nRF52840 (Node A) over USB serial (<code>docs/domain_runs/PROX-HIL-003/raw_capture.csv</code>).</li>
+<li><strong>Database Import</strong>: Imported the 3,900 valid samples into <code>proximity.db</code> as Session <code>5</code>.</li>
+<li><strong>Replay Execution</strong>: Streamed the physical readings into <code>shm_i2c</code> to drive the virtual STM32F401 machine.</li>
+<li><strong>Alarm Verification</strong>: Verified the GPIO5 alarm pin output. The firmware achieved 99.9% alarm accuracy across the 1,085 physically in-range samples ($\le 330\text{ mm}$), with the physical sanity filter successfully ignoring the remaining 2,815 out-of-range/timeout samples.</li>
+<li><strong>Cycle Comparison</strong>: Skipped samples averaged only 1,000 cycles while processed active samples consumed 10,500 cycles (averaging 7,303 cycles overall), confirming dynamic execution efficiency.</li>
+</ol>
+<hr>
+<h2>8. Privacy and Data Handling</h2>
+<p>All sensor data used in HIL runs stays local. The Tempo trace exports span metadata only — no raw sensor values leave the machine. The <code>shm_i2c</code> path is explicitly local: the shared-memory file is in <code>/tmp/</code>, and the file&#x27;s contents are not exported anywhere. This is consistent with the privacy doctrine established in 1.21 (<code>PRIVACY_IS_WORTH_PAYING_FOR.md</code>).</p>
+<p>The Babolat POP log files themselves (<code>~/Downloads/SensorDownload/Current/</code>) are operator-controlled and stay on the operator&#x27;s machine. The sensor-replay harness reads them locally; no upload path exists in the pipeline.</p>
+<hr>
+<h2>9. Future Directions</h2>
+<p>Three extensions that the current pipeline supports but the current evidence does not address:</p>
+<ul>
+<li><strong>Multi-sensor HIL.</strong> Driving multiple virtual I2C devices simultaneously from different sensor sources — Babolat for distance, Apple Watch for heart-rate-derived load. LabWired&#x27;s device library already supports multiple I2C devices at distinct addresses; the harness would need to coordinate writes across the devices.</li>
+<li><strong>Continuous HIL.</strong> Streaming data from a live sensor (rather than replaying a recorded session) into a running simulation. The architectural shape is the same; the harness becomes a live-data subscriber instead of a file replayer. The Bulkhead Tau corpus does not currently have a live-stream surface (per 1.27 §5: &quot;no sensor in the corpus delivers near-real-time data suitable for a live HIL loop&quot;), so this is a downstream extension, not a near-term one.</li>
+<li><strong>Regression testing.</strong> Detecting firmware behavior changes by replaying the same recorded session against different firmware versions. Tempo trace comparison at the cycle-delta level becomes the diffing surface. Requires multiple firmware versions to compare against, which Bulkhead Tau does not yet have.</li>
+</ul>
+<hr>
+<h2>10. Conclusion</h2>
+<p>Three claims, bounded by the prior trilogy:</p>
+<ol>
+<li><strong>The combined pipeline closes the validation gap between synthetic and field-condition firmware testing for the specific class of event-driven sensor data the Bulkhead Tau corpus contains.</strong> Physical capture replay has now been closed by the <code>PROX-HIL-003</code> results.</li>
+<li><strong>The <code>shm_i2c</code> Path B bridge is the architectural feature that makes this possible.</strong> Any future sensor-data source — recorded, live, multi-sensor — uses the same abstraction; only the harness changes.</li>
+<li><strong>The physical validation run closes the real-data gate.</strong> Replaying the 3,900 physically captured samples verified 99.9% active alarm accuracy and cycle-locked register handshake validation, establishing that the simulated pipeline matches the physical hardware behavior.</li>
+</ol>
+<hr>
+<h2>Appendix A — Citations and Evidence Packets</h2>
+<table class="paper-table">
+<thead><tr><th>Artifact</th><th>Status</th><th>Location / Reference</th></tr></thead>
+<tbody>
+<tr><td><code>PROX-HIL-001</code> Report</td><td>exists (synthetic-data baseline)</td><td><code>docs/domain_runs/PROX-HIL-001/report.md</code></td></tr>
+<tr><td><code>PROX-HIL-002</code> Report</td><td>exists (database replay; quarantined as real-data evidence)</td><td><code>docs/domain_runs/PROX-HIL-002/report.md</code></td></tr>
+<tr><td><code>PROX-HIL-003</code> Report</td><td>exists (physical replay; closes real-data gate)</td><td><code>docs/domain_runs/PROX-HIL-003/report.md</code></td></tr>
+<tr><td>Sensor-Replay Harness</td><td>implemented (Python)</td><td><code>domains/SensorAgents/ProximityAgent/sensor_replay_hil.py</code></td></tr>
+<tr><td>Execution Wrapper</td><td>implemented (Bash)</td><td><code>scripts/run_sensor_replay_otel.sh</code></td></tr>
+<tr><td>Run Manifest</td><td>exists (metrics JSON)</td><td><code>docs/domain_runs/PROX-HIL-003/manifest.json</code></td></tr>
+</tbody>
+</table>
+<hr>
+<h2>Appendix B — What This Paper Does Not Claim</h2>
+<ul>
+<li>That the combined pipeline validates firmware behavior under all possible clinical or field conditions. One 3,900-sample session and one firmware version is the verified scope.</li>
+<li>That cycle-costed I2C behavior implies analog bus-edge timing fidelity or cycle-accurate CPU instruction execution on real silicon. The F401 claim is bounded to register state-machine behavior, reset values, and cycle cost; the CPU behavior is simulated.</li>
+<li>That the proximity sensor database is broad enough to cover all relevant clinical fall profiles.</li>
+<li>That this paper supersedes 1.27 or 1.28. 1.29 is the synthesis paper; the platform substrate is documented in 1.28, and the wearable context is documented in 1.27.</li>
+</ul>
+<hr>
+<p><em>Published 2026-06-10. Drafted from PROX-HIL-001 evidence, the 1.27 sensor corpus, and the 1.28 LabWired active draft. Closed by the PROX-HIL-003 physical capture co-simulation run.</em></p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When Local LLM Clusters Do Not Help</title>
+  <meta name="description" content="Negative result from a heterogeneous consumer local-inference cluster: RPC sharding across a desktop RTX 3090 and z13 Radeon 8050S worked but underperformed desktop-local execution; z13&#x27;s GPU-only ceiling stopped below the 26B/27B class; the Intel Mac Mini was CPU-only for this lane. The useful result is orchestration, not distributed inference.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>When Local LLM Clusters Do Not Help</h1>
+    <p class="meta">Negative result from a heterogeneous consumer local-inference cluster: RPC sharding across a desktop RTX 3090 and z13 Radeon 8050S worked but underperformed desktop-local execution; z13&#x27;s GPU-only ceiling stopped below the 26B/27B class; the Intel Mac Mini was CPU-only for this lane. The useful result is orchestration, not distributed inference.</p>
+    <p class="meta">Canonical source: <code>docs/WHEN_LOCAL_LLM_CLUSTERS_DO_NOT_HELP.md</code></p>
+    <h2>A Negative Result on Heterogeneous Consumer Inference</h2>
+<h3>White Paper 1.39 — June 2026</h3>
+<p><strong>Author:</strong> blue-az <strong>Status:</strong> Published <strong>Paper group:</strong> Local LLM Operator Judgment <strong>Evidence packets:</strong> <code>docs/domain_runs/HET-GPU-001/</code>, <code>docs/domain_runs/NODE-MODEL-MATRIX-001/</code>, <code>docs/domain_runs/NODE-MODEL-MATRIX-002/</code> <strong>Predecessors:</strong> <code>SLOW_IS_NOT_SMART.md</code>, <code>LOCAL_MODELS_COST_FRONTIER_TOKENS.md</code></p>
+<hr>
+<h2>Abstract</h2>
+<p>A heterogeneous local cluster can be useful infrastructure without being useful inference hardware. This paper reports a negative result from a three-node consumer cluster: a desktop RTX 3090, an AMD z13 laptop with Radeon 8050S UMA, and an Intel Mac Mini. The cluster successfully supported remote orchestration: the desktop pushed instruction packets, triggered node-local model runs, and pulled evidence back from both remote machines. However, it did not extend the usable local-inference frontier. RPC sharding across desktop and z13 worked but was slower than keeping the same model resident on the RTX 3090. Remote offload also failed to create a useful niche: z13&#x27;s GPU-resident ceiling stopped at the 20B class, while 26B/27B models spilled to CPU; the Intel Mac Mini was CPU-only for this lane. The conclusion is narrow but operationally important: for this hardware and workload class, cluster orchestration is viable, but heterogeneous distributed inference is not.</p>
+<hr>
+<h2>1. Claim</h2>
+<p>The common local-inference intuition is that spare machines can be combined to make a stronger model host. That intuition fails when one node dominates both compute and practical memory residency.</p>
+<p>The defended claim:</p>
+<blockquote><p>A heterogeneous local cluster may improve operational control, file movement,</p></blockquote>
+<blockquote><p>and evidence collection, but it does not necessarily improve inference</p></blockquote>
+<blockquote><p>capability. If one node dominates the cluster, distributed sharding and remote</p></blockquote>
+<blockquote><p>offload can add complexity without moving the usable model frontier.</p></blockquote>
+<p>The claim is empirical and bounded. It does not argue that distributed inference is generally bad. It argues that this specific consumer cluster does not earn the distributed-inference lane.</p>
+<hr>
+<h2>2. Hardware Under Test</h2>
+<table class="paper-table">
+<thead><tr><th>Node</th><th>Role</th><th>Relevant capability</th></tr></thead>
+<tbody>
+<tr><td>Desktop</td><td>dominant local inference node</td><td>RTX 3090, 24 GB VRAM</td></tr>
+<tr><td>z13</td><td>candidate remote/offload node</td><td>Radeon 8050S via Vulkan/RADV, about 17.5 GiB practical UMA allocation ceiling</td></tr>
+<tr><td>Mac Mini</td><td>candidate remote node</td><td>Intel i7-8700B, 8 GB RAM, CPU-only for this lane</td></tr>
+</tbody>
+</table>
+<p>The desktop was already the known strong node. The only decision-relevant question was whether either remote node could host or accelerate a model class that the desktop could not handle better.</p>
+<hr>
+<h2>3. Evidence Packets</h2>
+<p>The empirical basis for this paper consists of three target experiments carried out across the cluster nodes:</p>
+<table class="paper-table">
+<thead><tr><th>Experiment</th><th>Core Question</th><th>Key Result</th><th>Reference Path</th></tr></thead>
+<tbody>
+<tr><td>:---</td><td>:---</td><td>:---</td><td>:---</td></tr>
+<tr><td><strong>HET-GPU-001</strong></td><td>Can heterogeneous RPC sharding improve generation speed?</td><td><strong>Negative.</strong> Succeeded but net-negative (8.4 tok/s sharded vs. 18.6 tok/s desktop-local) due to latency/asymmetry overhead.</td><td><code>docs/domain_runs/HET-GPU-001/sharded_comparison_findings.md</code></td></tr>
+<tr><td><strong>NODE-MODEL-MATRIX-001</strong></td><td>Can the desktop coordinate remote node execution and collect evidence?</td><td><strong>Positive.</strong> Control-plane SSH orchestration, remote execution, and automated evidence retrieval successfully verified.</td><td><code>docs/domain_runs/NODE-MODEL-MATRIX-001/findings.md</code></td></tr>
+<tr><td><strong>NODE-MODEL-MATRIX-002</strong></td><td>What is the maximum 100% GPU-resident model size each weak node can run?</td><td><strong>Memory-Bounded.</strong> z13 ceiling is 20B (<code>gpt-oss:20b</code> @ 27.2 tok/s); 26B+ spills to CPU. Mac Mini is CPU-only.</td><td><code>docs/domain_runs/NODE-MODEL-MATRIX-002/findings.md</code></td></tr>
+</tbody>
+</table>
+<h3>3.1 HET-GPU-001 — RPC Sharding Works, But Loses</h3>
+<p><code>docs/domain_runs/HET-GPU-001/</code> tested a sharded <code>Qwen2.5-32B-Instruct-Q3_K_M</code> run across the desktop RTX 3090 and z13 Radeon 8050S.</p>
+<p>The sharded run succeeded:</p>
+<pre><code>
+{&quot;status&quot;:&quot;ok&quot;,&quot;lane&quot;:&quot;rpc-sharded-q3&quot;}
+</code></pre>
+<p>Measured performance:</p>
+<table class="paper-table">
+<thead><tr><th>Mode</th><th>Generation throughput</th></tr></thead>
+<tbody>
+<tr><td>Desktop RTX 3090 local</td><td>18.6 tok/s</td></tr>
+<tr><td>z13 local GPU</td><td>7.0 tok/s</td></tr>
+<tr><td>Desktop + z13 RPC sharded</td><td>8.4 tok/s</td></tr>
+</tbody>
+</table>
+<p>The sharded path improved on z13-local execution but lost badly to the desktop local path. That matters because the desktop is the actual baseline operator choice. A distributed path that is 2.2x slower than the single dominant node is not an operational win.</p>
+<p>The z13-authored RPC socket note adds a useful caveat: one inspected server-log window did not show the desktop connection. The desktop evidence packet still contains a successful sharded completion and RPC-capable <code>llama-cli</code> binaries. The reconciled conclusion is not &quot;RPC failed&quot;; it is &quot;RPC works, but is not worth using for this hardware.&quot;</p>
+<h3>3.2 NODE-MODEL-MATRIX-001 — Orchestration Works</h3>
+<p><code>docs/domain_runs/NODE-MODEL-MATRIX-001/</code> tested whether the desktop could coordinate remote node inference work.</p>
+<p>Result: PASS.</p>
+<p>The desktop successfully:</p>
+<ul>
+<li>pushed instruction packets to z13 and Mac</li>
+<li>verified remote reachability</li>
+<li>triggered or coordinated node-local model runs</li>
+<li>pulled evidence back into the repository</li>
+</ul>
+<p>z13 completed coordinator-fired Ollama runs:</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td><code>llama3.2:3b</code></td><td>exact <code>Z13_OK</code></td></tr>
+<tr><td><code>qwen2.5:3b</code></td><td>exact <code>Z13_COORD_OK</code></td></tr>
+</tbody>
+</table>
+<p>Mac completed two paths:</p>
+<table class="paper-table">
+<thead><tr><th>Runner</th><th>Model</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Ollama</td><td><code>qwen2:0.5b</code></td><td>PASS</td></tr>
+<tr><td>Camelid</td><td>TinyLlama Q8 GGUF</td><td>PASS, 5.48-5.66 tok/s</td></tr>
+</tbody>
+</table>
+<p>This packet changes the status of cluster orchestration from unconfirmed to confirmed. The machines can be driven remotely. The evidence-return path works. The useful infrastructure claim is real.</p>
+<h3>3.3 NODE-MODEL-MATRIX-002 — Remote Offload Lane Closed</h3>
+<p><code>docs/domain_runs/NODE-MODEL-MATRIX-002/</code> deliberately avoided a 21-cell sweep. It asked the one decision-relevant question:</p>
+<blockquote><p>What is the largest model each weak node can run fully GPU-resident, with no</p></blockquote>
+<blockquote><p>CPU spill?</p></blockquote>
+<p>Measured result:</p>
+<table class="paper-table">
+<thead><tr><th>Node</th><th>GPU-only ceiling</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>z13</td><td><code>gpt-oss:20b</code></td><td>about 14 GB UMA footprint, 100% GPU, 27.21 tok/s</td></tr>
+<tr><td>z13</td><td><code>qwen2.5:14b</code></td><td>also resident, 9.7 GB footprint, 12.66 tok/s</td></tr>
+<tr><td>z13</td><td><code>gemma3:27b</code>, <code>gemma4:26b</code></td><td>spill to CPU, 38%/62% CPU/GPU</td></tr>
+<tr><td>Mac Mini</td><td>none</td><td>CPU-only for this lane</td></tr>
+</tbody>
+</table>
+<p>This closes the remote-offload lane. The z13 cannot host the 26B/27B class without CPU spill, and the Mac Mini contributes no useful GPU lane. Neither remote node hosts a model class that the desktop RTX 3090 cannot already handle better.</p>
+<hr>
+<h2>4. Why The Full Matrix Was Parked</h2>
+<p>The original temptation was to run a broad node-by-model matrix. That would have produced more rows but not more decision value.</p>
+<p>The prior paper <code>SLOW_IS_NOT_SMART.md</code> already established the task-level principle: bigger local models do not automatically improve bounded validated lanes. HET-GPU-001 already showed that sharding is not competitive with the dominant node. The only remaining unknown was the weak nodes&#x27; GPU-resident ceilings. NODE-MODEL-MATRIX-002 answered that with one number per node.</p>
+<p>The parked matrix is an example of benchmark discipline:</p>
+<ul>
+<li>do not run a sweep when a single discriminating probe answers the decision</li>
+<li>do not convert curiosity into a cross-cluster workload</li>
+<li>do preserve the negative result when it closes a lane</li>
+</ul>
+<hr>
+<h2>5. Interpretation</h2>
+<p>The result splits the cluster into two separate claims.</p>
+<h3>5.1 Compute Claim: Failed</h3>
+<p>The cluster does not extend local model capability in a useful way.</p>
+<ul>
+<li>z13 is weaker than the RTX 3090 on the relevant model classes.</li>
+<li>Mac Mini is CPU-only for this lane.</li>
+<li>RPC sharding works but is slower than desktop-local execution.</li>
+<li>Oversized models were already unsupported by the task-level evidence: bigger   did not buy useful correctness on the measured bounded tasks.</li>
+</ul>
+<p>The compute lane is closed.</p>
+<h3>5.2 Orchestration Claim: Confirmed</h3>
+<p>The cluster is useful as operational infrastructure.</p>
+<ul>
+<li>remote instruction packets work</li>
+<li>SSH orchestration works</li>
+<li>node-local probes can be triggered without USB shuttling</li>
+<li>evidence can be pulled back into the repo</li>
+<li>Camelid has value as a control/file-transfer layer even when it is not a   distributed-inference win</li>
+</ul>
+<p>The orchestration lane remains open.</p>
+<hr>
+<h2>6. Boundaries</h2>
+<p>This paper does not claim:</p>
+<ul>
+<li>that all distributed inference is bad</li>
+<li>that homogeneous GPU clusters fail</li>
+<li>that high-bandwidth interconnects would have the same result</li>
+<li>that remote nodes are useless for non-inference work</li>
+<li>that local inference is useless</li>
+</ul>
+<p>It claims only:</p>
+<ul>
+<li>this heterogeneous consumer cluster does not beat the dominant RTX 3090 for   local inference</li>
+<li>remote offload does not create a useful large-model niche here</li>
+<li>orchestration value should not be confused with inference value</li>
+</ul>
+<p>The strongest positive result is intentionally retained: remote node orchestration works.</p>
+<hr>
+<h2>7. Practical Rule</h2>
+<p>Before treating spare machines as a local LLM cluster, ask three questions in order:</p>
+<ol>
+<li>Can any remote node host a useful model class that the dominant node cannot?</li>
+<li>If sharding works, is it faster than the dominant node alone?</li>
+<li>Does the target task actually benefit from the larger model class?</li>
+</ol>
+<p>For this cluster, the answers were:</p>
+<ol>
+<li>no</li>
+<li>no</li>
+<li>not on the bounded measured lanes</li>
+</ol>
+<p>That is enough to close the inference lane without further sweeping.</p>
+<hr>
+<h2>8. Reproducibility Commands</h2>
+<p>Inspect the evidence packets:</p>
+<pre><code>
+cat docs/domain_runs/HET-GPU-001/sharded_comparison_findings.md
+cat docs/domain_runs/HET-GPU-001/desktop_evidence/evidence/desktop_rpc_sharded_31b_q3_manifest.txt
+cat docs/domain_runs/HET-GPU-001/z13_to_desktop_rpc_smoke.md
+
+cat docs/domain_runs/NODE-MODEL-MATRIX-001/findings.md
+cat docs/domain_runs/NODE-MODEL-MATRIX-001/mac_evidence/evidence/report.md
+cat docs/domain_runs/NODE-MODEL-MATRIX-001/z13_evidence/evidence/report.md
+
+cat docs/domain_runs/NODE-MODEL-MATRIX-002/GPU_CEILING_PROBE.md
+cat docs/domain_runs/NODE-MODEL-MATRIX-002/findings.md
+</code></pre>
+<p>Verify the key numeric claims:</p>
+<pre><code>
+grep -R &quot;18.6\\|8.4\\|7.0\\|27.21\\|38%/62%\\|5.48-5.66&quot; docs/domain_runs/HET-GPU-001 docs/domain_runs/NODE-MODEL-MATRIX-001 docs/domain_runs/NODE-MODEL-MATRIX-002
+</code></pre>
+<hr>
+<h2>9. Conclusion</h2>
+<p>The negative result is the useful result.</p>
+<p>The cluster can coordinate work, transfer packets, trigger node-local runs, and collect evidence. That is real infrastructure. But it does not create a better local inference lane than the desktop RTX 3090. The z13 tops out below the large-model class that would matter, the Mac Mini is CPU-only for this lane, and RPC sharding adds enough overhead and asymmetry to lose against the single dominant node.</p>
+<p>Therefore the correct operational posture is:</p>
+<blockquote><p>Use the cluster for orchestration. Do not use it for heterogeneous distributed</p></blockquote>
+<blockquote><p>inference on this hardware.</p></blockquote>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

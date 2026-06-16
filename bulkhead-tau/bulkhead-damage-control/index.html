@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulkhead τ Damage Control</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a192f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+            color: #64ffda;
+        }
+        #main-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        #game-container {
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 2px solid #112240;
+        }
+        canvas {
+            display: block;
+            background-color: #0d2538;
+        }
+        #ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            pointer-events: none;
+            width: 100%;
+        }
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        #message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(10, 25, 47, 0.9);
+            padding: 20px;
+            border: 1px solid #64ffda;
+            display: none;
+            z-index: 100;
+        }
+        button {
+            background: transparent;
+            border: 1px solid #64ffda;
+            color: #64ffda;
+            padding: 10px 20px;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+        
+        .side-panel {
+            width: 300px;
+            background: #112240;
+            border: 1px solid #233554;
+            padding: 20px;
+            display: none;
+        }
+        h2 {
+            font-size: 18px;
+            border-bottom: 1px solid #233554;
+            padding-bottom: 10px;
+            margin-top: 0;
+            color: #ccd6f6;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .stat-val {
+            color: #64ffda;
+        }
+        .charter-rule {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #0a192f;
+            border-left: 3px solid #64ffda;
+        }
+        .rule-id {
+            font-size: 10px;
+            color: #8892b0;
+        }
+        .rule-text {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .tamper-control {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed #f44336;
+        }
+        .mode-button-group {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .mode-btn {
+            flex: 1;
+            font-size: 10px;
+            padding: 5px;
+        }
+        .mode-btn.active {
+            background: #64ffda;
+            color: #0a192f;
+        }
+        #mode-toggle {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+        .compartment-status {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-layout">
+        <div id="engine-panel" class="side-panel">
+            <h2>LOGBOOK & ENGINE</h2>
+            <div class="stat-row"><span>Frame:</span> <span id="frameVal" class="stat-val">0</span></div>
+            <div class="stat-row"><span>Seed:</span> <span id="seedVal" class="stat-val">---</span></div>
+            <div class="stat-row"><span>Flooded:</span> <span id="floodCount" class="stat-val">0</span>/3</div>
+            <div id="logbook-entries" style="font-size: 10px; height: 150px; overflow-y: auto; margin-top: 10px; border: 1px solid #233554; padding: 5px;">
+                <!-- Logs here -->
+            </div>
+            <button id="replayBtn" onclick="replayLogbook()" style="width: 100%; margin-top: 10px;">REPLAY LOGBOOK</button>
+        </div>
+
+        <div id="game-container">
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+            <div id="ui-overlay">
+                <div class="score">Survivals: <span id="scoreVal">0</span></div>
+                <div id="activeModeDisplay" style="font-size: 10px; margin-top: 5px; color: #8892b0;">CORE ENGINE ACTIVE</div>
+            </div>
+            <div id="message">
+                <h1 id="msgTitle">VESSEL SUNK</h1>
+                <p id="msgText">Containment failed. Critical core flooded.</p>
+                <button onclick="resetGame()">RESET ENGINE</button>
+            </div>
+        </div>
+
+        <div id="charter-panel" class="side-panel">
+            <h2>CHARTER (PBC)</h2>
+            <div id="charterStatus" style="font-size: 10px; color: #8892b0; margin-bottom: 10px;">Source: damage-control.pbc.md</div>
+            <div class="charter-rule">
+                <div class="rule-id">DC-RUL-001</div>
+                <div class="rule-text">Spread Rate: <span id="spreadVal">---</span> vol/f</div>
+            </div>
+            <div class="charter-rule">
+                <div class="rule-id">DC-RUL-002</div>
+                <div class="rule-text">Seal Time: <span id="sealVal">---</span> frames</div>
+            </div>
+            
+            <div class="tamper-control">
+                <div style="font-size: 12px; color: #f44336; margin-bottom: 5px;">ARCHITECTURE TOGGLE</div>
+                <div class="mode-button-group">
+                    <button id="vibeBtn" class="mode-btn" onclick="setEnforcement(false)">VIBE (Ungoverned)</button>
+                    <button id="bulkheadBtn" class="mode-btn active" onclick="setEnforcement(true)">BULKHEAD (Governed)</button>
+                </div>
+                <div id="violationWarning" style="color: #f44336; font-size: 10px; margin-top: 10px; display: none;">
+                    ⚠️ POLICY: CASCADING FAILURE
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mode-toggle">
+        <button id="toggleBtn" onclick="toggleMode()">SWITCH TO EDUCATIONAL MODE</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('scoreVal');
+        const messageEl = document.getElementById('message');
+        const frameValEl = document.getElementById('frameVal');
+        const seedValEl = document.getElementById('seedVal');
+        const floodCountEl = document.getElementById('floodCount');
+        const logbookEl = document.getElementById('logbook-entries');
+        const spreadValEl = document.getElementById('spreadVal');
+        const sealValEl = document.getElementById('sealVal');
+        const violationWarning = document.getElementById('violationWarning');
+        const enginePanel = document.getElementById('engine-panel');
+        const charterPanel = document.getElementById('charter-panel');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const vibeBtn = document.getElementById('vibeBtn');
+        const bulkheadBtn = document.getElementById('bulkheadBtn');
+        const activeModeDisplay = document.getElementById('activeModeDisplay');
+
+        // Charter Constants - LOADED FROM PBC
+        let CHARTER = {
+            SPREAD_RATE: 0.05,
+            SEAL_DURATION: 180,
+            MAX_FLOODS: 3,
+            CRITICAL_COMPARTMENT: "Engine Room",
+            COMPARTMENTS: ["Tennis Agent", "GPS Oracle", "Water Report", "Proximity Sensor", "Engine Room"],
+            DAMAGE_FREQUENCY: 600
+        };
+
+        let state = {
+            compartments: [],
+            bulkheads: [],
+            score: 0,
+            frame: 0,
+            seed: Math.floor(Math.random() * 100000),
+            running: false,
+            educationalMode: false,
+            bulkheadEnforcement: true,
+            inputHistory: [], // Logbook: {frame, bulkheadIndex}
+            isReplaying: false,
+            replayIndex: 0
+        };
+
+        let rng;
+
+        function mulberry32(a) {
+            return function() {
+                var t = a += 0x6D2B79F5;
+                t = Math.imul(t ^ t >>> 15, t | 1);
+                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+
+        async function fetchCharter() {
+            try {
+                const response = await fetch('damage-control.pbc.md');
+                const text = await response.text();
+                
+                const extractValue = (ruleId, key) => {
+                    const regex = new RegExp(`- id: ${ruleId}[\\s\\S]*?${key}: ([\\d.-]+|"[^"]+"|\\[[^\\]]+\\])`, 'i');
+                    const match = text.match(regex);
+                    if (!match) return null;
+                    let val = match[1];
+                    if (val.startsWith('"')) return val.replace(/"/g, '');
+                    if (val.startsWith('[')) return JSON.parse(val.replace(/'/g, '"'));
+                    return parseFloat(val);
+                };
+
+                CHARTER.SPREAD_RATE = extractValue('DC-RUL-001', 'value') || CHARTER.SPREAD_RATE;
+                CHARTER.SEAL_DURATION = extractValue('DC-RUL-002', 'value') || CHARTER.SEAL_DURATION;
+                CHARTER.MAX_FLOODS = extractValue('DC-RUL-003', 'value') || CHARTER.MAX_FLOODS;
+                CHARTER.CRITICAL_COMPARTMENT = extractValue('DC-RUL-004', 'value') || CHARTER.CRITICAL_COMPARTMENT;
+                CHARTER.COMPARTMENTS = extractValue('DC-RUL-005', 'value') || CHARTER.COMPARTMENTS;
+                CHARTER.DAMAGE_FREQUENCY = extractValue('DC-RUL-006', 'value') || CHARTER.DAMAGE_FREQUENCY;
+
+                spreadValEl.innerText = CHARTER.SPREAD_RATE;
+                sealValEl.innerText = CHARTER.SEAL_DURATION;
+                
+                document.getElementById('charterStatus').innerText = "Source: damage-control.pbc.md (LIVE)";
+                document.getElementById('charterStatus').style.color = "#64ffda";
+            } catch (e) {
+                console.error("PBC Fetch failed:", e);
+                document.getElementById('charterStatus').innerText = "Source: hardcoded (FETCH FAILED)";
+            }
+        }
+
+        function initRNG() {
+            rng = mulberry32(state.seed);
+        }
+
+        function toggleMode() {
+            state.educationalMode = !state.educationalMode;
+            enginePanel.style.display = state.educationalMode ? 'block' : 'none';
+            charterPanel.style.display = state.educationalMode ? 'block' : 'none';
+            toggleBtn.innerText = state.educationalMode ? 'SWITCH TO PLAYABLE MODE' : 'SWITCH TO EDUCATIONAL MODE';
+        }
+
+        function setEnforcement(enabled) {
+            state.bulkheadEnforcement = enabled;
+            bulkheadBtn.classList.toggle('active', enabled);
+            vibeBtn.classList.toggle('active', !enabled);
+            activeModeDisplay.innerText = enabled ? "BULKHEAD ENGINE ACTIVE (GOVERNED)" : "VIBE ENGINE ACTIVE (UNGOVERNED)";
+            activeModeDisplay.style.color = enabled ? "#64ffda" : "#f44336";
+        }
+
+        function addLog(msg) {
+            const div = document.createElement('div');
+            div.innerText = `[F:${state.frame}] ${msg}`;
+            logbookEl.prepend(div);
+        }
+
+        function replayLogbook() {
+            if (state.inputHistory.length === 0) return;
+            state.isReplaying = true;
+            state.replayIndex = 0;
+            const savedHistory = [...state.inputHistory];
+            resetGame(true);
+            state.inputHistory = savedHistory;
+            addLog("REPLAYING LOGBOOK... (PROVING DETERMINISM)");
+        }
+
+        function resetGame(keepHistory = false) {
+            state.frame = 0;
+            state.score = 0;
+            if (!keepHistory) {
+                state.inputHistory = [];
+                state.seed = Math.floor(Math.random() * 100000);
+            }
+            initRNG();
+            
+            state.compartments = CHARTER.COMPARTMENTS.map(name => ({
+                name,
+                floodLevel: 0,
+                activeLeak: false,
+                isEngineRoom: name === CHARTER.CRITICAL_COMPARTMENT
+            }));
+
+            state.bulkheads = [];
+            for (let i = 0; i < state.compartments.length - 1; i++) {
+                state.bulkheads.push({
+                    state: 'OPEN',
+                    sealProgress: 0
+                });
+            }
+
+            state.running = true;
+            messageEl.style.display = 'none';
+            logbookEl.innerHTML = '';
+            addLog("Vessel underway. Engine Room secure.");
+            requestAnimationFrame(gameLoop);
+        }
+
+        function handleAction(index) {
+            if (!state.running) {
+                resetGame();
+                return;
+            }
+            if (state.bulkheads[index] && state.bulkheads[index].state === 'OPEN') {
+                state.bulkheads[index].state = 'SEALING';
+                state.inputHistory.push({ frame: state.frame, index });
+                addLog(`Sealing Bulkhead ${index + 1}...`);
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key >= '1' && e.key <= '4') handleAction(parseInt(e.key) - 1);
+            if (e.code === 'Space' && !state.running) resetGame();
+        });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!state.running) {
+                resetGame();
+                return;
+            }
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const compWidth = canvas.width / state.compartments.length;
+            const doorIndex = Math.floor((x + compWidth/2) / compWidth) - 1;
+            if (doorIndex >= 0 && doorIndex < state.bulkheads.length) {
+                handleAction(doorIndex);
+            }
+        });
+
+        function update() {
+            if (!state.running) return;
+
+            state.frame++;
+
+            // Replay Logic
+            if (state.isReplaying) {
+                while (state.replayIndex < state.inputHistory.length && state.inputHistory[state.replayIndex].frame === state.frame) {
+                    const action = state.inputHistory[state.replayIndex];
+                    handleAction(action.index);
+                    state.replayIndex++;
+                }
+            }
+
+            // Damage Events
+            if (state.frame % CHARTER.DAMAGE_FREQUENCY === 0) {
+                const candidates = state.compartments.filter(c => !c.isEngineRoom && !c.activeLeak);
+                if (candidates.length > 0) {
+                    const victim = candidates[Math.floor(rng() * candidates.length)];
+                    victim.activeLeak = true;
+                    addLog(`LEAK DETECTED: ${victim.name}`);
+                } else {
+                    state.score++;
+                    scoreEl.innerText = state.score;
+                    addLog("Wave survived. System holding.");
+                }
+            }
+
+            // Flood Dynamics
+            state.compartments.forEach(c => {
+                if (c.activeLeak) {
+                    c.floodLevel += 0.001; // Base leak rate
+                }
+            });
+
+            // Spread & Sealing
+            state.bulkheads.forEach((b, i) => {
+                if (b.state === 'SEALING') {
+                    b.sealProgress++;
+                    if (b.sealProgress >= CHARTER.SEAL_DURATION) {
+                        b.state = 'CLOSED';
+                        addLog(`Bulkhead ${i+1} SEALED.`);
+                    }
+                }
+
+                // If VIBE mode, doors don't actually block water (or they block instantly?)
+                // Spec says: "Vibe build: doors don't seal (or there are none), one leak floods the whole hull"
+                const isEffectivelyOpen = !state.bulkheadEnforcement || b.state !== 'CLOSED';
+
+                if (isEffectivelyOpen) {
+                    const left = state.compartments[i];
+                    const right = state.compartments[i+1];
+                    const diff = left.floodLevel - right.floodLevel;
+                    if (Math.abs(diff) > 0.01) {
+                        const transfer = diff * CHARTER.SPREAD_RATE;
+                        left.floodLevel -= transfer;
+                        right.floodLevel += transfer;
+                    }
+                }
+            });
+
+            // Constraints
+            state.compartments.forEach(c => {
+                c.floodLevel = Math.max(0, Math.min(1, c.floodLevel));
+                if (c.isEngineRoom && c.floodLevel > 0) {
+                    gameOver("CRITICAL FAILURE", `${c.name} flooded. System lost.`);
+                }
+            });
+
+            const fullyFlooded = state.compartments.filter(c => c.floodLevel >= 0.99).length;
+            floodCountEl.innerText = fullyFlooded;
+            if (fullyFlooded >= CHARTER.MAX_FLOODS) {
+                gameOver("VESSEL SUNK", `Containment lost in ${fullyFlooded} compartments.`);
+            }
+
+            // Instrumentation
+            if (state.educationalMode) {
+                frameValEl.innerText = state.frame;
+                seedValEl.innerText = state.seed;
+            }
+        }
+
+        function gameOver(title, text) {
+            state.running = false;
+            document.getElementById('msgTitle').innerText = title;
+            document.getElementById('msgText').innerText = text;
+            messageEl.style.display = 'block';
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const compWidth = canvas.width / state.compartments.length;
+            
+            // Draw Compartments
+            state.compartments.forEach((c, i) => {
+                const x = i * compWidth;
+                
+                // Background
+                ctx.fillStyle = c.isEngineRoom ? '#1a3a3a' : '#0d2538';
+                ctx.fillRect(x, 50, compWidth, 300);
+                
+                // Water
+                ctx.fillStyle = '#0077be';
+                const h = 300 * c.floodLevel;
+                ctx.fillRect(x, 350 - h, compWidth, h);
+                
+                // Border
+                ctx.strokeStyle = '#233554';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, 50, compWidth, 300);
+                
+                // Label
+                ctx.fillStyle = '#64ffda';
+                ctx.font = '10px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText(c.name, x + compWidth/2, 370);
+                
+                if (c.activeLeak) {
+                    ctx.fillStyle = '#f44336';
+                    ctx.fillText("⚠ LEAK", x + compWidth/2, 45);
+                }
+            });
+
+            // Draw Bulkheads
+            state.bulkheads.forEach((b, i) => {
+                const x = (i + 1) * compWidth;
+                
+                if (b.state === 'OPEN') {
+                    ctx.strokeStyle = '#64ffda';
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.moveTo(x, 50);
+                    ctx.lineTo(x, 350);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                } else if (b.state === 'SEALING') {
+                    ctx.strokeStyle = '#ffca28';
+                    ctx.lineWidth = 4;
+                    const progress = b.sealProgress / CHARTER.SEAL_DURATION;
+                    ctx.beginPath();
+                    ctx.moveTo(x, 350);
+                    ctx.lineTo(x, 350 - (300 * progress));
+                    ctx.stroke();
+                } else {
+                    ctx.strokeStyle = '#64ffda';
+                    ctx.lineWidth = 6;
+                    ctx.beginPath();
+                    ctx.moveTo(x, 50);
+                    ctx.lineTo(x, 350);
+                    ctx.stroke();
+                }
+                
+                // Interaction Hint
+                ctx.fillStyle = '#8892b0';
+                ctx.font = '12px Courier New';
+                ctx.fillText(`[${i+1}]`, x, 30);
+            });
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            if (state.running) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function showSplash() {
+            ctx.fillStyle = '#64ffda';
+            ctx.font = '30px Courier New';
+            ctx.textAlign = 'center';
+            ctx.fillText('BULKHEAD \u03C4 DAMAGE CONTROL', canvas.width/2, canvas.height/2 - 40);
+            ctx.font = '16px Courier New';
+            ctx.fillText('CONTAIN THE FAILURE', canvas.width/2, canvas.height/2);
+            ctx.fillText('PRESS SPACE TO COMMENCE PATROL', canvas.width/2, canvas.height/2 + 60);
+            ctx.font = '12px Courier New';
+            ctx.fillText('Keys 1-4 to seal bulkheads', canvas.width/2, canvas.height/2 + 100);
+        }
+
+        fetchCharter().then(() => {
+            showSplash();
+        });
+    </script>
+</body>
+</html>
