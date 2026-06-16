@@ -79,7 +79,7 @@
             <div>Distance: <span id="distVal" class="stat-val">1000</span>nm</div>
             <div>Fuel: <span id="fuelVal" class="stat-val">100</span>%</div>
             <div>Time: <span id="timeVal" class="stat-val">0</span>h</div>
-            <div>Trust: <span id="trustVal" class="stat-val">5</span>/10</div>
+            <div>Vigilance: <span id="vigilanceVal" class="stat-val">5</span>/10</div>
         </div>
         <div id="terminal">
             <div class="entry">*** BULKHEAD τ: VOYAGE ENGINE INITIALIZED ***</div>
@@ -89,6 +89,7 @@
         <div id="choices">
             <button id="btn-trust" onclick="handleChoice('trust')">TRUST NARRATION</button>
             <button id="btn-verify" onclick="handleChoice('verify')">VERIFY AT LOGBOOK</button>
+            <button id="btn-replay" onclick="replayVoyage()" style="display: none;">REPLAY VOYAGE (SAME SEED)</button>
         </div>
         <div id="charter-view">Charter: voyage.pbc.md | Deterministic Seed: <span id="seedVal">---</span></div>
     </div>
@@ -98,7 +99,7 @@
         const distEl = document.getElementById('distVal');
         const fuelEl = document.getElementById('fuelVal');
         const timeEl = document.getElementById('timeVal');
-        const trustEl = document.getElementById('trustVal');
+        const vigilanceEl = document.getElementById('vigilanceVal');
         const seedEl = document.getElementById('seedVal');
 
         let CHARTER = {
@@ -111,7 +112,7 @@
             distance: 1000,
             fuel: 100,
             time: 0,
-            trust: 5,
+            vigilance: 5,
             seed: Math.floor(Math.random() * 100000),
             running: true,
             currentEvent: null
@@ -176,12 +177,14 @@
             distEl.innerText = Math.max(0, state.distance.toFixed(0));
             fuelEl.innerText = Math.max(0, state.fuel.toFixed(1));
             timeEl.innerText = state.time;
-            trustEl.innerText = state.trust;
+            vigilanceEl.innerText = state.vigilance;
             seedEl.innerText = state.seed;
 
             if (state.fuel <= 0 || state.distance <= 0) {
                 state.running = false;
-                document.querySelectorAll('button').forEach(b => b.disabled = true);
+                document.getElementById('btn-trust').style.display = 'none';
+                document.getElementById('btn-verify').style.display = 'none';
+                document.getElementById('btn-replay').style.display = 'inline-block';
                 if (state.distance <= 0) print("SUCCESS: Port Phoenix reached. The Logbook proves the voyage was valid.", "success");
                 else print("FAILURE: Vessel dead in the water. Fuel exhausted due to unverified drift.", "failure");
             }
@@ -198,13 +201,13 @@
 
             if (type === 'trust') {
                 print("> You trust the crew's report.");
-                state.trust = Math.min(10, state.trust + 1);
+                state.vigilance = Math.max(0, state.vigilance - 1);
                 applyConsequences(state.currentEvent.consequence);
                 state.time += 1;
             } else {
                 print("> You consult the Logbook (Audit in progress...)");
                 state.time += 2; // Verification cost
-                state.trust = Math.max(0, state.trust - 1);
+                state.vigilance = Math.min(10, state.vigilance + 1);
                 
                 const truth = state.currentEvent.logTruth;
                 let logStr = `LOGBOOK ENTRY [F:${state.time * 60}]:<br>`;
@@ -227,6 +230,26 @@
         function applyConsequences(c) {
             state.distance -= c.dist;
             state.fuel -= c.fuel;
+        }
+
+        function replayVoyage() {
+            state.distance = 1000;
+            state.fuel = 100;
+            state.time = 0;
+            state.vigilance = 5;
+            state.running = true;
+
+            document.getElementById('btn-trust').style.display = 'inline-block';
+            document.getElementById('btn-verify').style.display = 'inline-block';
+            document.getElementById('btn-replay').style.display = 'none';
+
+            terminal.innerHTML = '<div class="entry">*** BULKHEAD τ: VOYAGE ENGINE INITIALIZED ***</div>' +
+                                 '<div class="entry">Welcome, Captain. Your OpenClaw crew is at the helm. Destination: Port Phoenix.</div>' +
+                                 '<div class="entry">Remember: The crew narrates the story. The Logbook records the truth.</div>';
+
+            rng = mulberry32(state.seed);
+            updateUI();
+            nextTurn();
         }
 
         fetchCharter().then(() => {
