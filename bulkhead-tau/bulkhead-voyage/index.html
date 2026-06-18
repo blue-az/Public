@@ -78,44 +78,48 @@
         <div id="stats">
             <div>Distance: <span id="distVal" class="stat-val">1000</span>nm</div>
             <div>Fuel: <span id="fuelVal" class="stat-val">100</span>%</div>
-            <div>Time: <span id="timeVal" class="stat-val">0</span>h</div>
-            <div>Vigilance: <span id="vigilanceVal" class="stat-val">5</span>/10</div>
+            <div>Seed: <span id="seedVal" class="stat-val">---</span></div>
         </div>
         <div id="terminal">
             <div class="entry">*** BULKHEAD τ: VOYAGE ENGINE INITIALIZED ***</div>
-            <div class="entry">Welcome, Captain. Your OpenClaw crew is at the helm. Destination: Port Phoenix.</div>
-            <div class="entry">Remember: The crew narrates the story. The Logbook records the truth.</div>
+            <div class="entry" style="color: #8892b0;">
+                The OpenClaw crew narrates each leg. The Logbook holds what actually happened — but auditing it <strong>costs fuel.</strong> Trust the crew and you sail free, but their optimism hides drift that burns fuel you don't have. Audit everything and you'll run dry on audits before you reach port. Reach Port Phoenix by checking the reports worth checking — and learning which ones those are.
+            </div>
         </div>
         <div id="choices">
             <button id="btn-trust" onclick="handleChoice('trust')">TRUST NARRATION</button>
-            <button id="btn-verify" onclick="handleChoice('verify')">VERIFY AT LOGBOOK</button>
+            <button id="btn-verify" onclick="handleChoice('verify')">VERIFY AT LOGBOOK (Costs 4% Fuel)</button>
             <button id="btn-replay" onclick="replayVoyage()" style="display: none;">REPLAY VOYAGE (SAME SEED)</button>
         </div>
-        <div id="charter-view">Charter: voyage.pbc.md | Deterministic Seed: <span id="seedVal">---</span></div>
+        <div id="charter-view">Charter: voyage.pbc.md | Audit Rule: PBC-VOY-004</div>
     </div>
 
     <script>
         const terminal = document.getElementById('terminal');
         const distEl = document.getElementById('distVal');
         const fuelEl = document.getElementById('fuelVal');
-        const timeEl = document.getElementById('timeVal');
-        const vigilanceEl = document.getElementById('vigilanceVal');
         const seedEl = document.getElementById('seedVal');
 
         let CHARTER = {
             FUEL_LIMIT: 2.0,
             DRIFT_LIMIT: 5.0,
-            TOLERANCE: 0.01
+            TOLERANCE: 0.01,
+            AUDIT_COST: 4.0
         };
 
         let state = {
             distance: 1000,
             fuel: 100,
-            time: 0,
-            vigilance: 5,
             seed: Math.floor(Math.random() * 100000),
             running: true,
-            currentEvent: null
+            currentEvent: null,
+            inputHistory: [],
+            isReplaying: false,
+            replayIndex: 0,
+            auditsPerformed: 0,
+            liesCaught: 0,
+            auditsWasted: 0,
+            fuelSpentOnAudits: 0
         };
 
         let rng;
@@ -129,25 +133,77 @@
         }
 
         const events = [
-            {
-                narration: "Helm: 'Current holding steady. We've picked up a following wind. Speed +2kts.'",
-                logTruth: { fuel: 1.5, drift: 0.5, honest: true },
-                consequence: { dist: 50, fuel: 5 }
-            },
+            // Lies (overconfident/boastful)
             {
                 narration: "Mate: 'Fuel injectors optimized. Consumption down by 15%.'",
-                logTruth: { fuel: 2.5, drift: 1.0, honest: false }, // Lies: Actually over limit
-                consequence: { dist: 40, fuel: 12 } 
+                logTruth: { fuel: 2.8, drift: 1.0, honest: false },
+                consequence: { dist: 100, fuel: 8 },
+                lieConsequence: { dist: 100, fuel: 25 },
+                correctConsequence: { dist: 100, fuel: 8 }
             },
             {
-                narration: "Helm: 'Slight course correction for a swell. Bearing held within 2 degrees.'",
-                logTruth: { fuel: 1.8, drift: 8.5, honest: false }, // Lies: Significant drift
-                consequence: { dist: 30, fuel: 8 }
+                narration: "Helm: 'Slight swell detected, but autopilot holds perfectly on course. Zero drift.'",
+                logTruth: { fuel: 1.8, drift: 7.8, honest: false },
+                consequence: { dist: 80, fuel: 5 },
+                lieConsequence: { dist: 80, fuel: 20 },
+                correctConsequence: { dist: 80, fuel: 5 }
             },
             {
-                narration: "Engineering: 'Routine maintenance complete. Efficiency at nominal levels.'",
-                logTruth: { fuel: 1.9, drift: 0.2, honest: true },
-                consequence: { dist: 45, fuel: 6 }
+                narration: "Engineering: 'Injector cycles calibrated to peak efficiency. All metrics green.'",
+                logTruth: { fuel: 2.6, drift: 0.5, honest: false },
+                consequence: { dist: 110, fuel: 6 },
+                lieConsequence: { dist: 110, fuel: 22 },
+                correctConsequence: { dist: 110, fuel: 6 }
+            },
+            {
+                narration: "Helm: 'Strong following wind pushes us. Speeding up by 25% with no extra load.'",
+                logTruth: { fuel: 1.5, drift: 8.5, honest: false },
+                consequence: { dist: 130, fuel: 4 },
+                lieConsequence: { dist: 130, fuel: 18 },
+                correctConsequence: { dist: 130, fuel: 4 }
+            },
+            {
+                narration: "Crew: 'Engine harmonics tuned. Sailing at peak performance.'",
+                logTruth: { fuel: 2.4, drift: 0.8, honest: false },
+                consequence: { dist: 90, fuel: 5 },
+                lieConsequence: { dist: 90, fuel: 16 },
+                correctConsequence: { dist: 90, fuel: 5 }
+            },
+            // Honest (boring/mundane/hedged)
+            {
+                narration: "Helm: 'Minor swell. Adjusting bearing slightly to hold course.'",
+                logTruth: { fuel: 1.8, drift: 1.2, honest: true },
+                consequence: { dist: 90, fuel: 8 },
+                lieConsequence: { dist: 90, fuel: 8 },
+                correctConsequence: { dist: 90, fuel: 8 }
+            },
+            {
+                narration: "Engineering: 'Routine filter cleanup complete. Efficiency nominal.'",
+                logTruth: { fuel: 1.5, drift: 0.2, honest: true },
+                consequence: { dist: 85, fuel: 7 },
+                lieConsequence: { dist: 85, fuel: 7 },
+                correctConsequence: { dist: 85, fuel: 7 }
+            },
+            {
+                narration: "Mate: 'Standard transit check. Stabilizers running at baseline load.'",
+                logTruth: { fuel: 1.9, drift: 2.1, honest: true },
+                consequence: { dist: 95, fuel: 9 },
+                lieConsequence: { dist: 95, fuel: 9 },
+                correctConsequence: { dist: 95, fuel: 9 }
+            },
+            {
+                narration: "Engineering: 'Minor injector cleaning. Normal fuel consumption maintained.'",
+                logTruth: { fuel: 1.7, drift: 0.4, honest: true },
+                consequence: { dist: 75, fuel: 6 },
+                lieConsequence: { dist: 75, fuel: 6 },
+                correctConsequence: { dist: 75, fuel: 6 }
+            },
+            {
+                narration: "Helm: 'Routine steering test. Deviations well within specs.'",
+                logTruth: { fuel: 1.6, drift: 1.5, honest: true },
+                consequence: { dist: 80, fuel: 7 },
+                lieConsequence: { dist: 80, fuel: 7 },
+                correctConsequence: { dist: 80, fuel: 7 }
             }
         ];
 
@@ -162,6 +218,7 @@
                 CHARTER.FUEL_LIMIT = extract('PBC-VOY-001') || 2.0;
                 CHARTER.DRIFT_LIMIT = extract('PBC-VOY-002') || 5.0;
                 CHARTER.TOLERANCE = extract('PBC-VOY-003') || 0.01;
+                CHARTER.AUDIT_COST = extract('PBC-VOY-004') || 4.0;
             } catch (e) { console.error("PBC load failed"); }
         }
 
@@ -176,8 +233,6 @@
         function updateUI() {
             distEl.innerText = Math.max(0, state.distance.toFixed(0));
             fuelEl.innerText = Math.max(0, state.fuel.toFixed(1));
-            timeEl.innerText = state.time;
-            vigilanceEl.innerText = state.vigilance;
             seedEl.innerText = state.seed;
 
             if (state.fuel <= 0 || state.distance <= 0) {
@@ -185,8 +240,21 @@
                 document.getElementById('btn-trust').style.display = 'none';
                 document.getElementById('btn-verify').style.display = 'none';
                 document.getElementById('btn-replay').style.display = 'inline-block';
-                if (state.distance <= 0) print("SUCCESS: Port Phoenix reached. The Logbook proves the voyage was valid.", "success");
-                else print("FAILURE: Vessel dead in the water. Fuel exhausted due to unverified drift.", "failure");
+                
+                if (state.distance <= 0 && state.fuel > 0) {
+                    print("SUCCESS: Port Phoenix reached! The Logbook confirms a valid, calibrated voyage.", "success");
+                } else {
+                    print("FAILURE: Vessel dead in the water. Fuel exhausted due to poor verification triage.", "failure");
+                }
+
+                // Print end of voyage scorecard
+                let scoreStr = "<br>*** VOYAGE REPORT (PBC AUDIT LEDGER) ***<br>";
+                scoreStr += `Total Legs Traveled: ${state.inputHistory.length}<br>`;
+                scoreStr += `Audits Performed: ${state.auditsPerformed}<br>`;
+                scoreStr += `Lies Caught: ${state.liesCaught}<br>`;
+                scoreStr += `Audits Wasted: ${state.auditsWasted}<br>`;
+                scoreStr += `Fuel Spent on Audits: ${state.fuelSpentOnAudits.toFixed(1)}%<br>`;
+                print(scoreStr, "logbook-entry");
             }
         }
 
@@ -199,32 +267,53 @@
         function handleChoice(type) {
             if (!state.running) return;
 
+            if (!state.isReplaying) {
+                state.inputHistory.push(type);
+            }
+
             if (type === 'trust') {
                 print("> You trust the crew's report.");
-                state.vigilance = Math.max(0, state.vigilance - 1);
-                applyConsequences(state.currentEvent.consequence);
-                state.time += 1;
-            } else {
-                print("> You consult the Logbook (Audit in progress...)");
-                state.time += 2; // Verification cost
-                state.vigilance = Math.min(10, state.vigilance + 1);
-                
                 const truth = state.currentEvent.logTruth;
-                let logStr = `LOGBOOK ENTRY [F:${state.time * 60}]:<br>`;
-                logStr += `Fuel Consumption: ${truth.fuel} L/s (Charter: ${CHARTER.FUEL_LIMIT})<br>`;
-                logStr += `Course Drift: ${truth.drift}° (Charter: ${CHARTER.DRIFT_LIMIT})<br>`;
                 
                 if (truth.honest) {
-                    print(logStr + "RESULT: Narration matches state. Trust verified.", "logbook-entry");
+                    // Correct, no extra damage
                     applyConsequences(state.currentEvent.consequence);
                 } else {
-                    print(logStr + "RESULT: DIVERGENCE DETECTED. Correcting drift...", "logbook-entry failure");
-                    // Corrected consequence (save fuel/distance)
-                    applyConsequences({ dist: 40, fuel: 5 }); 
+                    // Ate the lie, apply hidden penalty
+                    print("SYSTEM DRIFT: Unverified report caused hidden fuel depletion.", "failure");
+                    applyConsequences(state.currentEvent.lieConsequence);
+                }
+            } else {
+                print("> You consult the Logbook (Audit in progress...)");
+                // Deduct audit cost in fuel
+                state.fuel -= CHARTER.AUDIT_COST;
+                state.auditsPerformed++;
+                state.fuelSpentOnAudits += CHARTER.AUDIT_COST;
+
+                const truth = state.currentEvent.logTruth;
+                let logStr = `LOGBOOK ENTRY:<br>`;
+                logStr += `Fuel Consumption: ${truth.fuel} L/s (Charter Limit: ${CHARTER.FUEL_LIMIT})<br>`;
+                logStr += `Course Drift: ${truth.drift}° (Charter Limit: ${CHARTER.DRIFT_LIMIT})<br>`;
+                
+                if (truth.honest) {
+                    print(logStr + "RESULT: Narration matches state. Audit revealed no discrepancy.", "logbook-entry");
+                    state.auditsWasted++;
+                    applyConsequences(state.currentEvent.consequence);
+                } else {
+                    print(logStr + "RESULT: DIVERGENCE DETECTED. Correcting drift and fuel flow...", "logbook-entry failure");
+                    state.liesCaught++;
+                    applyConsequences(state.currentEvent.correctConsequence); 
                 }
             }
             updateUI();
-            if (state.running) setTimeout(nextTurn, 1000);
+            
+            if (state.running) {
+                if (state.isReplaying) {
+                    setTimeout(runReplayStep, 1000);
+                } else {
+                    setTimeout(nextTurn, 500);
+                }
+            }
         }
 
         function applyConsequences(c) {
@@ -232,24 +321,55 @@
             state.fuel -= c.fuel;
         }
 
-        function replayVoyage() {
+        function runReplayStep() {
+            if (!state.isReplaying || state.replayIndex >= state.inputHistory.length) {
+                state.isReplaying = false;
+                return;
+            }
+            const choice = state.inputHistory[state.replayIndex];
+            state.replayIndex++;
+            handleChoice(choice);
+        }
+
+        function resetGame(keepHistory = false) {
             state.distance = 1000;
             state.fuel = 100;
-            state.time = 0;
-            state.vigilance = 5;
             state.running = true;
+            state.isReplaying = false;
+            state.replayIndex = 0;
+            state.auditsPerformed = 0;
+            state.liesCaught = 0;
+            state.auditsWasted = 0;
+            state.fuelSpentOnAudits = 0;
+            
+            if (!keepHistory) {
+                state.inputHistory = [];
+                state.seed = Math.floor(Math.random() * 100000);
+            }
 
             document.getElementById('btn-trust').style.display = 'inline-block';
             document.getElementById('btn-verify').style.display = 'inline-block';
             document.getElementById('btn-replay').style.display = 'none';
 
             terminal.innerHTML = '<div class="entry">*** BULKHEAD τ: VOYAGE ENGINE INITIALIZED ***</div>' +
-                                 '<div class="entry">Welcome, Captain. Your OpenClaw crew is at the helm. Destination: Port Phoenix.</div>' +
-                                 '<div class="entry">Remember: The crew narrates the story. The Logbook records the truth.</div>';
+                                 '<div class="entry" style="color: #8892b0;">' +
+                                 'The OpenClaw crew narrates each leg. The Logbook holds what actually happened — but auditing it <strong>costs fuel.</strong> Trust the crew and you sail free, but their optimism hides drift that burns fuel you don't have. Audit everything and you\'ll run dry on audits before you reach port. Reach Port Phoenix by checking the reports worth checking — and learning which ones those are.' +
+                                 '</div>';
 
             rng = mulberry32(state.seed);
             updateUI();
             nextTurn();
+        }
+
+        function replayVoyage() {
+            if (state.inputHistory.length === 0) return;
+            const savedHistory = [...state.inputHistory];
+            resetGame(true);
+            state.inputHistory = savedHistory;
+            state.isReplaying = true;
+            state.replayIndex = 0;
+            print("REPLAYING VOYAGE LOG... (PROVING DETERMINISM)");
+            setTimeout(runReplayStep, 1000);
         }
 
         fetchCharter().then(() => {

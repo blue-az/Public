@@ -43,6 +43,12 @@ This charter defines the operational boundaries for the autonomous helm (OpenCla
   value: 0.01
   unit: ratio
 - id: PBC-VOY-004
+  name: Audit Cost
+  rule: Verifying a crew report at the Logbook consumes a fixed cost of 4.0% fuel.
+  trust: trusted
+  value: 4.0
+  unit: percent
+- id: PBC-VOY-005
   name: Deterministic Logbook
   rule: Every state change, crew report, and sensor reading must be recorded as an append-only, seed-replayable event.
   trust: trusted
