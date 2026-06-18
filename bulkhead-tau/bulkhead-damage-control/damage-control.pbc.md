@@ -35,8 +35,8 @@ This charter defines the behavior contract for the Bulkhead Damage Control game.
   trust: trusted
   value: 180
 - id: DC-RUL-003
-  name: Max Floods Lose Threshold
-  rule: The vessel sinks if 3 or more compartments reach 1.0 (100%) flood volume.
+  name: Operational Score Threshold
+  rule: (RETIRED AS LOSS CONDITION) Tracks the number of operational (dry) compartments.
   trust: trusted
   value: 3
 - id: DC-RUL-004
@@ -46,15 +46,20 @@ This charter defines the behavior contract for the Bulkhead Damage Control game.
   value: "Engine Room"
 - id: DC-RUL-005
   name: Compartment Layout
-  rule: The vessel consists of 5 linear compartments, ordered bow-to-stern — Tennis Agent, GPS Oracle, Water Report, Proximity Sensor, Engine Room.
+  rule: The vessel consists of 5 linear compartments in the following order: Tennis Agent, GPS Oracle, Water Report, Proximity Sensor, Engine Room.
   trust: trusted
   value: ["Tennis Agent", "GPS Oracle", "Water Report", "Proximity Sensor", "Engine Room"]
 - id: DC-RUL-006
   name: Damage Event Frequency
-  rule: A new damage event (leak) occurs every 600 frames (10 seconds) in a random non-Engine-Room compartment.
+  rule: A new damage event (leak) occurs every 600 frames (10 seconds at 60Hz).
   trust: trusted
   value: 600
 - id: DC-RUL-007
+  name: Waves to Win
+  rule: Reach this number of damage waves with the Engine Room dry to achieve a successful voyage.
+  trust: trusted
+  value: 8
+- id: DC-RUL-008
   name: Deterministic Execution
   rule: The engine must produce identical outcomes given the same initial seed and input sequence (Logbook-ready).
   trust: trusted
