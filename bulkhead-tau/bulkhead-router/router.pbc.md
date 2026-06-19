@@ -52,6 +52,10 @@ This charter defines the Data Boundary for ship ingress. Untrusted data packets 
   name: Deterministic Packet Stream
   rule: Packet generation and outcomes must be deterministic for the same seed and same input sequence.
   trust: trusted
+- id: PBC-RTR-008
+  name: Runtime Validation
+  rule: Route outcomes must be computed from the packet fields at decision time, not from a hidden precomputed poison flag.
+  trust: trusted
 ```
 
 ## Allowlist Definitions
@@ -76,7 +80,7 @@ trust: trusted
 - Valid packet + Wrong lane: Integrity damage, log 'MISROUTE'.
 - Poisoned packet + Quarantine: Score increase, log 'QUARANTINED' with rule ID.
 - Poisoned packet + Subsystem: Large integrity damage, log 'SCHEMA BREACH'.
-- Valid packet + Quarantine: Throughput penalty, log 'FALSE POSITIVE'.
+- Valid packet + Quarantine: Throughput and minor integrity penalty, log 'FALSE POSITIVE'.
 ```
 
 ## Provenance

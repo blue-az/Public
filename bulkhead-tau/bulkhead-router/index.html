@@ -93,6 +93,15 @@
         .packet-field { font-size: 12px; margin-bottom: 5px; }
         .field-label { color: var(--text-muted); margin-right: 5px; }
         .field-val { color: var(--text); }
+        .packet-hint {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #233554;
+            color: var(--text-muted);
+            font-size: 10px;
+            line-height: 1.4;
+        }
+        .packet-hint strong { color: var(--primary); }
 
         #lanes {
             flex-grow: 1;
@@ -200,6 +209,11 @@
             margin-bottom: 20px;
         }
         .btn:hover { filter: brightness(1.2); }
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
 
         .hidden { display: none !important; }
 
@@ -251,11 +265,11 @@
             text-align: left;
             color: var(--primary);
             border-bottom: 1px solid #233554;
-            padding-bottom: 5px;
+            padding: 0 8px 5px 0;
             font-size: 10px;
         }
         .rules-table td {
-            padding: 6px 0;
+            padding: 6px 8px 6px 0;
             border-bottom: 1px solid rgba(35, 53, 84, 0.3);
         }
         .key-badge {
@@ -405,7 +419,7 @@
                         <li>Each packet on the left has fields: <code>TYPE</code>, <code>SUM</code>, <code>PRIO</code>, <code>TTL</code>, <code>DATA</code>.</li>
                         <li>If a packet is <strong>VALID</strong>, route it to its matching subsystem lane.</li>
                         <li>If a packet violates <strong>ANY</strong> schema rule, route it to <strong>QUARANTINE</strong>.</li>
-                        <li><strong>Safe Strategy:</strong> Quarantining a valid packet only costs score (-25 throughput). Routing a poisoned packet to a subsystem deals a massive <strong>-25% Hull Integrity</strong> hit. When in doubt, quarantine!</li>
+                        <li><strong>Tradeoff:</strong> Quarantine stops poisoned packets, but false positives now cost throughput and hull integrity. Validate first; quarantine only when a rule fails.</li>
                     </ul>
                 </div>
                 <div class="instruction-column">
@@ -457,7 +471,8 @@
                 <div><code>LIFE_SUPPORT</code>: <code>oxygen_mix:nominal</code>, <code>scrubber:on</code>, <code>pressure_check</code>, <code>filter_cycle</code></div>
             </div>
             
-            <button class="btn" onclick="startGame()">Engage Router</button>
+            <button class="btn" id="start-btn" onclick="startGame()">Engage Router</button>
+            <button class="btn btn-secondary hidden" id="replay-btn" onclick="replayLastRun()">Replay Same Inputs</button>
         </div>
     </div>
 
@@ -493,7 +508,12 @@
             lastTime: 0,
             packetQueue: [],
             currentTimer: 0,
-            maxTimer: 0
+            maxTimer: 0,
+            inputHistory: [],
+            replaying: false,
+            replayChoices: [],
+            replayIndex: 0,
+            lastRun: null
         };
 
         // Seedable RNG
@@ -522,43 +542,60 @@
             for(let i=0; i<4; i++) checksum += "0123456789ABCDEF"[Math.floor(rng() * 16)];
             let payload = ALLOWLIST[type][Math.floor(rng() * ALLOWLIST[type].length)];
 
-            let poisonRule = null;
-
             if (isPoison) {
                 const roll = rng();
                 if (roll < 0.2) {
                     type = ["ROOT", "ADMIN", "WEAPONS", "EXTERNAL"][Math.floor(rng() * 4)];
-                    poisonRule = "PBC-RTR-001 known destination";
                 } else if (roll < 0.4) {
                     checksum = ["bad", "123", "F-F", "ABCDE"][Math.floor(rng() * 4)];
-                    poisonRule = "PBC-RTR-002 checksum shape";
                 } else if (roll < 0.6) {
-                    ttl = [0, 10, 99][Math.floor(rng() * 3)];
-                    poisonRule = "PBC-RTR-003 ttl range";
+                    ttl = [0, 10, "forever"][Math.floor(rng() * 3)];
                 } else if (roll < 0.8) {
-                    priority = [0, 6, 9][Math.floor(rng() * 3)];
-                    poisonRule = "PBC-RTR-004 priority range";
+                    priority = [0, 6, "urgent"][Math.floor(rng() * 3)];
                 } else {
                     const payloads = ["../../admin", "injector_trim:DROP", "eval(alert)", "fuel_mix:rich; override"];
                     payload = payloads[Math.floor(rng() * payloads.length)];
-                    poisonRule = "PBC-RTR-005 payload not allowlisted";
                 }
             }
 
-            return { type, priority, checksum, ttl, payload, poisonRule };
+            return { type, priority, checksum, ttl, payload };
+        }
+
+        function validatePacket(packet) {
+            if (!ALLOWLIST[packet.type]) {
+                return { valid: false, rule: "PBC-RTR-001", reason: "unknown destination" };
+            }
+            if (!/^[0-9A-F]{4}$/.test(packet.checksum)) {
+                return { valid: false, rule: "PBC-RTR-002", reason: "checksum shape" };
+            }
+            if (!Number.isInteger(packet.ttl) || packet.ttl < 1 || packet.ttl > 9) {
+                return { valid: false, rule: "PBC-RTR-003", reason: "ttl range" };
+            }
+            if (!Number.isInteger(packet.priority) || packet.priority < 1 || packet.priority > 5) {
+                return { valid: false, rule: "PBC-RTR-004", reason: "priority range" };
+            }
+            if (!ALLOWLIST[packet.type].includes(packet.payload)) {
+                return { valid: false, rule: "PBC-RTR-005", reason: `payload not allowlisted for ${packet.type}` };
+            }
+            return { valid: true, rule: null, reason: "valid" };
         }
 
         // GAME LOOP
-        function startGame() {
+        function startGame(options = {}) {
             state.running = true;
             state.integrity = 100;
             state.throughput = 0;
             state.quarantine = 0;
             state.wave = 1;
             state.packetsCleared = 0;
+            state.seed = options.seed ?? Math.floor(Math.random() * 100000);
             state.packetQueue = [];
             state.accumulator = 0;
             state.lastTime = performance.now();
+            state.inputHistory = [];
+            state.replaying = !!options.replayChoices;
+            state.replayChoices = options.replayChoices || [];
+            state.replayIndex = 0;
             
             document.getElementById('overlay').classList.add('hidden');
             document.getElementById('audit-log').innerHTML = "";
@@ -567,6 +604,10 @@
             for(let i=0; i<3; i++) state.packetQueue.push(generatePacket());
             renderQueue();
             resetTimer();
+            if (state.replaying) {
+                addLog(`REPLAY started for seed ${state.seed}.`, "ROUTED");
+                scheduleReplayStep();
+            }
             requestAnimationFrame(gameLoop);
         }
 
@@ -575,7 +616,7 @@
                 state.maxTimer = 0;
                 state.currentTimer = 0;
             } else {
-                state.maxTimer = CHARTER.TIMERS[state.wave];
+                state.maxTimer = state.replaying ? 0 : CHARTER.TIMERS[state.wave];
                 state.currentTimer = state.maxTimer;
             }
         }
@@ -620,32 +661,58 @@
 
         function endGame(msg, win=false) {
             state.running = false;
+            const completedChoices = state.replaying ? state.replayChoices : state.inputHistory;
+            state.lastRun = {
+                seed: state.seed,
+                choices: [...completedChoices],
+                result: win ? "win" : "loss"
+            };
             document.getElementById('overlay').classList.remove('hidden');
             document.getElementById('overlay-title').innerText = win ? "STATION SECURED" : "ROUTING FAILURE";
             document.getElementById('overlay-desc').innerText = msg;
-            document.querySelector('#overlay .btn').innerText = "Restart Simulation";
+            document.getElementById('start-btn').innerText = "New Seed";
+            document.getElementById('replay-btn').classList.toggle('hidden', completedChoices.length === 0);
         }
 
-        function route(lane) {
+        function replayLastRun() {
+            if (!state.lastRun || state.lastRun.choices.length === 0) return;
+            startGame({ seed: state.lastRun.seed, replayChoices: state.lastRun.choices });
+        }
+
+        function scheduleReplayStep() {
+            if (!state.replaying || !state.running) return;
+            if (state.replayIndex >= state.replayChoices.length) return;
+            window.setTimeout(() => {
+                if (!state.replaying || !state.running) return;
+                route(state.replayChoices[state.replayIndex], true);
+                state.replayIndex++;
+                scheduleReplayStep();
+            }, 220);
+        }
+
+        function route(lane, fromReplay = false) {
             if (!state.running || state.packetQueue.length === 0) return;
             const packet = state.packetQueue.shift();
-            const isPoison = !!packet.poisonRule;
+            const validation = validatePacket(packet);
+            const isPoison = !validation.valid;
             let isCorrect = false;
+            if (!fromReplay) state.inputHistory.push(lane);
 
             if (lane === "QUARANTINE") {
                 if (isPoison) {
                     state.quarantine++;
                     state.throughput += 50;
-                    addLog(`[QUARANTINE] ${packet.poisonRule} blocked.`, "QUARANTINE");
+                    addLog(`[QUARANTINE] ${validation.rule} ${validation.reason} blocked.`, "QUARANTINE");
                     isCorrect = true;
                 } else {
-                    state.throughput -= 25;
-                    addLog(`[FALSE POSITIVE] Valid ${packet.type} packet quarantined.`, "POSITIVE");
+                    state.throughput -= 50;
+                    state.integrity -= 3;
+                    addLog(`[FALSE POSITIVE] Valid ${packet.type} packet quarantined. Throughput -50, integrity -3%.`, "POSITIVE");
                 }
             } else {
                 if (isPoison) {
                     state.integrity -= 25;
-                    addLog(`[SCHEMA BREACH] ${packet.poisonRule} hit ${lane}!`, "BREACH");
+                    addLog(`[SCHEMA BREACH] ${validation.rule} ${validation.reason} hit ${lane}!`, "BREACH");
                 } else if (lane === packet.type) {
                     state.throughput += 100;
                     state.integrity = Math.min(100, state.integrity + 1);
@@ -680,12 +747,17 @@
             state.packetQueue.forEach((p, i) => {
                 const card = document.createElement('div');
                 card.className = `packet-card ${i === 0 ? 'active' : ''}`;
+                const knownType = ALLOWLIST[p.type];
+                const allowlistHint = knownType
+                    ? `<strong>${p.type} DATA:</strong> ${ALLOWLIST[p.type].join(', ')}`
+                    : `<strong>UNKNOWN TYPE:</strong> route to quarantine`;
                 card.innerHTML = `
                     <div class="packet-field"><span class="field-label">TYPE:</span><span class="field-val">${p.type}</span></div>
                     <div class="packet-field"><span class="field-label">PRIO:</span><span class="field-val">${p.priority}</span></div>
                     <div class="packet-field"><span class="field-label">SUM:</span><span class="field-val">${p.checksum}</span></div>
                     <div class="packet-field"><span class="field-label">TTL:</span><span class="field-val">${p.ttl}</span></div>
                     <div class="packet-field"><span class="field-label">DATA:</span><span class="field-val">${p.payload}</span></div>
+                    ${i === 0 ? `<div class="packet-hint">${allowlistHint}<br>Check SUM=4 uppercase hex, PRIO=1-5, TTL=1-9.</div>` : ''}
                 `;
                 container.appendChild(card);
             });
@@ -736,6 +808,6 @@
 
         initRNG();
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.6</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.7</div>
 </body>
 </html>
