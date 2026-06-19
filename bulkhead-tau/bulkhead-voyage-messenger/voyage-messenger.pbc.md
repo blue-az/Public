@@ -60,6 +60,12 @@ description: Over time, systems decay. Warnings slow transit velocity down.
 trust: trusted
 ```
 
+```pbc:outcomes
+- Undetected decay accumulates and reduces transit velocity.
+- A decaying system raises a warning that the operator must triage.
+- Decay left uncalibrated past its ground-truth boundary fails the voyage.
+```
+
 ```pbc:behavior
 id: VM-BHV-002
 name: Audit Decision
