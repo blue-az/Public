@@ -168,11 +168,12 @@
             background: rgba(10, 25, 47, 0.95);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             z-index: 100;
             text-align: center;
-            padding: 40px;
+            padding: 40px 20px;
+            overflow-y: auto;
         }
 
         .btn {
@@ -185,11 +186,116 @@
             font-weight: bold;
             cursor: pointer;
             border-radius: 4px;
-            margin-top: 20px;
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
         .btn:hover { filter: brightness(1.2); }
 
         .hidden { display: none !important; }
+
+        /* Instructions & UI enhancements */
+        .instructions-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .instruction-column {
+            background: rgba(17, 34, 64, 0.5);
+            border: 1px solid #233554;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .instruction-header {
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #233554;
+            padding-bottom: 5px;
+        }
+        .instruction-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .instruction-list li {
+            margin-bottom: 8px;
+        }
+        .instruction-list strong {
+            color: var(--text);
+        }
+        .rules-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .rules-table th {
+            text-align: left;
+            color: var(--primary);
+            border-bottom: 1px solid #233554;
+            padding-bottom: 5px;
+            font-size: 10px;
+        }
+        .rules-table td {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(35, 53, 84, 0.3);
+        }
+        .key-badge {
+            background: #233554;
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-family: monospace;
+            margin-right: 4px;
+        }
+        .allowlist-box {
+            background: rgba(2, 12, 27, 0.4);
+            border: 1px solid #233554;
+            border-radius: 4px;
+            padding: 10px 15px;
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .allowlist-box strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+        details {
+            border: 1px solid #233554;
+            background: rgba(2, 12, 27, 0.4);
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin-top: 10px;
+            font-size: 11px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        details[open] {
+            border-color: var(--primary);
+        }
+        summary {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: bold;
+            outline: none;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -250,13 +356,97 @@
             <div id="sidebar">
                 <div style="font-size: 12px; color: var(--primary); text-transform: uppercase;">Audit Log</div>
                 <div id="audit-log"></div>
+                
+                <details>
+                    <summary>SYSTEM SCHEMA RULES</summary>
+                    <div style="color: var(--text-muted); margin: 5px 0 8px 0; font-size: 10px; line-height: 1.4;">
+                        Quarantine packets violating any of these:
+                    </div>
+                    <ul style="padding-left: 15px; margin: 0 0 10px 0; line-height: 1.4; color: var(--text);">
+                        <li><strong>TYPE:</strong> ENGINE, BRIDGE, COMMS, or LIFE_SUPPORT.</li>
+                        <li><strong>SUM:</strong> Exactly 4 uppercase hex characters.</li>
+                        <li><strong>PRIO:</strong> Integer from 1 through 5.</li>
+                        <li><strong>TTL:</strong> Integer from 1 through 9.</li>
+                        <li><strong>DATA:</strong> Must match subsystem allowlist.</li>
+                    </ul>
+                    <div style="color: var(--primary); font-weight: bold; margin-bottom: 5px; font-size: 10px; letter-spacing: 0.5px;">ALLOWLIST:</div>
+                    <ul style="padding-left: 15px; margin: 0; line-height: 1.4; font-size: 9.5px; color: var(--text);">
+                        <li><strong>ENGINE:</strong> injector_trim:+1/+2, coolant_pump:on, fuel_mix:lean</li>
+                        <li><strong>BRIDGE:</strong> course_hold:on, rudder_trim:-1/+1, bearing_sync</li>
+                        <li><strong>COMMS:</strong> ping:harbor, sync:beacon, antenna_gain:+1, packet_ack</li>
+                        <li><strong>LIFE_SUPPORT:</strong> oxygen_mix:nominal, scrubber:on, pressure_check, filter_cycle</li>
+                    </ul>
+                </details>
+                
                 <div id="charter-status" style="font-size: 10px; color: var(--text-muted); padding-top: 5px;">Charter: router.pbc.md (LIVE) <span style="color: var(--primary);">✓ pbc-spec validated</span></div>
             </div>
         </div>
 
         <div id="overlay">
-            <h1 id="overlay-title" style="color: var(--primary); letter-spacing: 5px;">BULKHEAD τ: ROUTER</h1>
-            <p id="overlay-desc" style="max-width: 600px; line-height: 1.6;">Validate incoming datagrams against the Data Boundary. Route poisoned packets to Quarantine. Do not breach the hull.</p>
+            <h1 id="overlay-title" style="color: var(--primary); letter-spacing: 5px; margin-top: 0; margin-bottom: 10px;">BULKHEAD τ: ROUTER</h1>
+            <p id="overlay-desc" style="max-width: 650px; line-height: 1.5; font-size: 13px; color: var(--text-muted); margin-bottom: 25px; margin-top: 0;">
+                Validate incoming datagrams against the Data Boundary. Route poisoned packets to Quarantine to prevent critical system breaches. Do not let corrupted data breach the subsystems.
+            </p>
+            
+            <div class="instructions-container">
+                <div class="instruction-column">
+                    <h3 class="instruction-header">HOW TO PLAY</h3>
+                    <ul class="instruction-list">
+                        <li>Each packet on the left has fields: <code>TYPE</code>, <code>SUM</code>, <code>PRIO</code>, <code>TTL</code>, <code>DATA</code>.</li>
+                        <li>If a packet is <strong>VALID</strong>, route it to its matching subsystem lane.</li>
+                        <li>If a packet violates <strong>ANY</strong> schema rule, route it to <strong>QUARANTINE</strong>.</li>
+                        <li><strong>Safe Strategy:</strong> Quarantining a valid packet only costs score (-25 throughput). Routing a poisoned packet to a subsystem deals a massive <strong>-25% Hull Integrity</strong> hit. When in doubt, quarantine!</li>
+                    </ul>
+                </div>
+                <div class="instruction-column">
+                    <h3 class="instruction-header">SCHEMA RULES & KEYBOARD CONTROLS</h3>
+                    <table class="rules-table">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Valid Rule</th>
+                                <th>Action / Key</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>TYPE</code></td>
+                                <td>ENGINE, BRIDGE, COMMS, LIFE_SUPPORT</td>
+                                <td><span class="key-badge">1</span> ENGINE</td>
+                            </tr>
+                            <tr>
+                                <td><code>SUM</code></td>
+                                <td>Exactly 4 uppercase hex characters (0-9, A-F)</td>
+                                <td><span class="key-badge">2</span> BRIDGE</td>
+                            </tr>
+                            <tr>
+                                <td><code>PRIO</code></td>
+                                <td>Integer from 1 through 5</td>
+                                <td><span class="key-badge">3</span> COMMS</td>
+                            </tr>
+                            <tr>
+                                <td><code>TTL</code></td>
+                                <td>Integer from 1 through 9</td>
+                                <td><span class="key-badge">4</span> LIFE SUPPORT</td>
+                            </tr>
+                            <tr>
+                                <td><code>DATA</code></td>
+                                <td>Must match subsystem's allowlist (see below)</td>
+                                <td><span class="key-badge">Q</span> QUARANTINE</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="allowlist-box">
+                <strong>Payload Allowlists (Violators are Poison):</strong>
+                <div style="margin-bottom: 3px;"><code>ENGINE</code>: <code>injector_trim:+1</code>, <code>injector_trim:+2</code>, <code>coolant_pump:on</code>, <code>fuel_mix:lean</code></div>
+                <div style="margin-bottom: 3px;"><code>BRIDGE</code>: <code>course_hold:on</code>, <code>rudder_trim:-1</code>, <code>rudder_trim:+1</code>, <code>bearing_sync</code></div>
+                <div style="margin-bottom: 3px;"><code>COMMS</code>: <code>ping:harbor</code>, <code>sync:beacon</code>, <code>antenna_gain:+1</code>, <code>packet_ack</code></div>
+                <div><code>LIFE_SUPPORT</code>: <code>oxygen_mix:nominal</code>, <code>scrubber:on</code>, <code>pressure_check</code>, <code>filter_cycle</code></div>
+            </div>
+            
             <button class="btn" onclick="startGame()">Engage Router</button>
         </div>
     </div>
@@ -529,6 +719,6 @@
 
         initRNG();
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.4</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.5</div>
 </body>
 </html>
