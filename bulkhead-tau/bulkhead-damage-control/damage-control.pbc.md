@@ -14,10 +14,7 @@ anchor: damage-control-v3
 
 # Bulkhead Damage Control v3 — Ship Damage-Control Behavior Contract
 
-A redesign so the game reads and plays like real ship damage control. v2 fixed
-winnability and the lesson (containment = sacrifice a compartment to save the
-core), but it stayed confusing because the ship metaphor was abstracted away —
-vertical columns, water from nowhere, walls that slowly "draw." v3 restores the
+A redesign so the game reads and plays like real ship damage control. v3 restores the
 metaphor so the mechanics explain themselves: a hull with compartments, a visible
 breach, watertight doors you race to close, and the sacrifice that keeps the ship
 afloat. Everyone already holds the "ship is flooding, close the doors, save the
@@ -51,7 +48,7 @@ engine room" mental model — v3 just uses it. When v3 ships it replaces
   rule: Water must enter a compartment only through a visible hull breach caused by a damage event, never from an unseen source.
   trust: trusted
   spread_rate: 0.05
-  damage_frequency: 600
+  damage_frequency: 300
 - id: DC3-RUL-003
   name: Watertight Doors
   rule: Adjacent compartments are separated by watertight doors that block flooding only while fully closed.
@@ -75,7 +72,7 @@ engine room" mental model — v3 just uses it. When v3 ships it replaces
   name: Win And Score
   rule: The player wins by surviving the target number of breaches with the Engine Room dry, and score is the count of compartments kept operational.
   trust: provisional
-  waves_to_win: 8
+  waves_to_win: 4
 ```
 
 ## Behaviors

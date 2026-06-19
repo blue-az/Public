@@ -147,7 +147,7 @@
             <h2>LOGBOOK & ENGINE</h2>
             <div class="stat-row"><span>Tick:</span> <span id="frameVal" class="stat-val">0</span></div>
             <div class="stat-row"><span>Seed:</span> <span id="seedVal" class="stat-val">---</span></div>
-            <div class="stat-row"><span>Wave:</span> <span id="waveVal" class="stat-val">0</span>/<span id="targetWaveVal">8</span></div>
+            <div class="stat-row"><span>Wave:</span> <span id="waveVal" class="stat-val">0</span>/<span id="targetWaveVal">4</span></div>
             <div id="logbook-entries" style="font-size: 10px; height: 150px; overflow-y: auto; margin-top: 10px; border: 1px solid #233554; padding: 5px;">
                 <!-- Logs here -->
             </div>
@@ -157,7 +157,7 @@
         <div id="game-container">
             <canvas id="gameCanvas" width="800" height="400"></canvas>
             <div id="ui-overlay">
-                <div class="score">Breaches Survived: <span id="scoreVal">0</span> / <span id="targetScoreVal">8</span></div>
+                <div class="score">Breaches Survived: <span id="scoreVal">0</span> / <span id="targetScoreVal">4</span></div>
                 <div id="activeModeDisplay" style="font-size: 10px; margin-top: 5px; color: #8892b0;">CORE ENGINE ACTIVE</div>
             </div>
             <div id="message">
@@ -233,8 +233,8 @@
             SEAL_DURATION: 180,
             CRITICAL_COMPARTMENT: "Engine Room",
             COMPARTMENTS: ["Tennis Agent", "GPS Oracle", "Water Report", "Proximity Sensor", "Engine Room"],
-            DAMAGE_FREQUENCY: 600,
-            WAVES_TO_WIN: 8,
+            DAMAGE_FREQUENCY: 300,
+            WAVES_TO_WIN: 4,
             SILL_HEIGHT: 0.25
         };
 
@@ -465,12 +465,12 @@
                 }
             }
 
-            // Damage Events (Breaches)
-            if (state.ticks % CHARTER.DAMAGE_FREQUENCY === 0) {
+            // Damage Events (Breaches) - Start at tick 60, then every DAMAGE_FREQUENCY ticks
+            if (state.ticks === 60 || (state.ticks > 60 && (state.ticks - 60) % CHARTER.DAMAGE_FREQUENCY === 0)) {
                 state.wavesSurvived++;
                 scoreEl.innerText = state.wavesSurvived;
                 
-                if (state.wavesSurvived >= CHARTER.WAVES_TO_WIN) {
+                if (state.wavesSurvived > CHARTER.WAVES_TO_WIN) {
                     winGame();
                     return;
                 }
@@ -508,6 +508,15 @@
             state.compartments.forEach((c, idx) => {
                 if (state.pumpingCompartment !== idx && c.patchProgress > 0) {
                     c.patchProgress = Math.max(0, c.patchProgress - 2);
+                }
+            });
+
+            // Isolated Compartment Instantly Fills (DC3-RUL-005)
+            state.compartments.forEach((c, idx) => {
+                if (isCompartmentIsolated(idx) && c.floodLevel > 0) {
+                    c.floodLevel = 1.0;
+                    c.activeLeak = false;
+                    c.patchProgress = 0;
                 }
             });
 
@@ -834,7 +843,7 @@
             ctx.fillText('Click & hold a compartment to PATCH leaks and PUMP water.', canvas.width/2, canvas.height/2 + 25);
             ctx.fillText('Seal watertight doors (Keys 1-4 or click doors) to isolate flooding.', canvas.width/2, canvas.height/2 + 45);
             ctx.fillText('Sealing off a flooding compartment is a SACRIFICE (lost offline).', canvas.width/2, canvas.height/2 + 65);
-            ctx.fillText('Survive 8 waves with the Engine Room dry to win.', canvas.width/2, canvas.height/2 + 85);
+            ctx.fillText('Survive 4 waves with the Engine Room dry to win.', canvas.width/2, canvas.height/2 + 85);
             
             ctx.fillStyle = '#64ffda';
             ctx.font = '16px Courier New';
@@ -845,6 +854,6 @@
             showSplash();
         });
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.4</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.5</div>
 </body>
 </html>
