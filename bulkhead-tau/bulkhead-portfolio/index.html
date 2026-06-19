@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulkhead τ: Portfolio Options Trader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050c18;
+            --surface: rgba(17, 34, 64, 0.85);
+            --border: #233554;
+            --primary: #64ffda;
+            --primary-glow: rgba(100, 255, 218, 0.3);
+            --danger: #ff5252;
+            --danger-glow: rgba(255, 82, 82, 0.3);
+            --warning: #ffd740;
+            --warning-glow: rgba(255, 215, 64, 0.3);
+            --text: #ccd6f6;
+            --text-muted: #8892b0;
+            --accent: #00ccff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(10, 25, 50, 0.4) 0px, transparent 50%),
+                radial-gradient(at 50% 0%, rgba(2, 12, 27, 0.6) 0px, transparent 50%);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 25px;
+            background: rgba(5, 12, 24, 0.85);
+            border-bottom: 2px solid var(--border);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .title-brand {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        #dashboard-stats {
+            display: flex;
+            gap: 25px;
+            font-size: 0.9rem;
+        }
+
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .stat-value.up { color: var(--primary); }
+        .stat-value.down { color: var(--danger); }
+        .stat-value.warn { color: var(--warning); }
+
+        #workspace {
+            display: flex;
+            flex-grow: 1;
+            height: calc(100vh - 60px);
+            position: relative;
+        }
+
+        #left-col {
+            width: 380px;
+            border-right: 2px solid var(--border);
+            background: rgba(7, 18, 36, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        #center-col {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at center, #091a32 0%, #030810 100%);
+            padding: 15px;
+            overflow-y: auto;
+            gap: 15px;
+        }
+
+        #right-col {
+            width: 380px;
+            border-left: 2px solid var(--border);
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+        }
+
+        .section-header {
+            padding: 12px 15px;
+            background: rgba(29, 45, 80, 0.4);
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            text-align: left;
+        }
+
+        .list-table th, .list-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(35, 53, 84, 0.4);
+        }
+
+        .list-table th {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .list-table tr:hover td {
+            background: rgba(100, 255, 218, 0.04);
+        }
+
+        .list-table tr.selected td {
+            background: rgba(100, 255, 218, 0.08);
+            border-left: 2px solid var(--primary);
+        }
+
+        .option-chain-container {
+            flex-grow: 1;
+            background: #01060f;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow-y: auto;
+            max-height: 250px;
+        }
+
+        canvas#payoffCanvas {
+            background: #020710;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            display: block;
+            width: 100%;
+            height: 220px;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.05);
+        }
+
+        .trade-controls {
+            background: rgba(11, 26, 48, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        select, input, button {
+            background: #020710;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 12px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 5px var(--primary-glow);
+        }
+
+        button.btn-action {
+            border-color: var(--primary);
+            color: var(--primary);
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        button.btn-action:hover {
+            background: var(--primary);
+            color: #050c18;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        button.btn-action:disabled {
+            border-color: var(--border);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        #console-container {
+            height: 140px;
+            background: #020710;
+            border-top: 2px solid var(--border);
+            padding: 10px 15px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #audit-console {
+            flex-grow: 1;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 3px;
+        }
+
+        .console-line {
+            padding: 1px 4px;
+            border-radius: 2px;
+            border-left: 2px solid var(--text-muted);
+        }
+        .line-system { color: var(--warning); border-left-color: var(--warning); }
+        .line-trade { color: var(--accent); border-left-color: var(--accent); }
+        .line-audit { color: var(--primary); border-left-color: var(--primary); }
+        .line-error { color: var(--danger); font-weight: bold; border-left-color: var(--danger); }
+        .line-news { color: #fff; font-style: italic; border-left-color: var(--text); }
+
+        details {
+            border: 1px solid var(--border);
+            background: rgba(5, 12, 24, 0.4);
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin: 10px 15px;
+            font-size: 0.7rem;
+        }
+        details[open] { border-color: var(--primary); }
+        summary {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            outline: none;
+        }
+
+        #modal-screen {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5, 12, 24, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .screen-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+        .screen-title.success { color: var(--primary); text-shadow: 0 0 20px var(--primary-glow); }
+        .screen-title.failure { color: var(--danger); text-shadow: 0 0 20px var(--danger-glow); }
+
+        .screen-desc {
+            max-width: 550px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.85rem;
+        }
+
+        .stat-details {
+            background: rgba(2, 7, 16, 0.8);
+            border: 1px dashed var(--primary);
+            padding: 15px;
+            border-radius: 6px;
+            max-width: 480px;
+            width: 100%;
+            text-align: left;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text);
+            margin: 10px 0;
+        }
+
+        .badge {
+            font-size: 0.65rem;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .badge.level1 { background: rgba(100, 255, 218, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+        .badge.level2 { background: rgba(0, 204, 255, 0.15); color: var(--accent); border: 1px solid var(--accent); }
+        .badge.level3 { background: rgba(255, 215, 64, 0.15); color: var(--warning); border: 1px solid var(--warning); }
+
+        /* Animation utilities */
+        .shake { animation: shake-anim 0.3s ease-in-out; }
+        @keyframes shake-anim {
+            0%, 100% { transform: translate(0, 0); }
+            20%, 60% { transform: translate(-4px, 2px); }
+            40%, 80% { transform: translate(4px, -2px); }
+        }
+        .flash-red { animation: flash-red-anim 0.4s ease-out; }
+        @keyframes flash-red-anim {
+            0% { box-shadow: inset 0 0 80px rgba(255, 82, 82, 0.5); }
+            100% { box-shadow: inset 0 0 0px rgba(255, 82, 82, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="title-brand">BULKHEAD τ: <span style="color: var(--primary)">OPTIONS TRADER</span></div>
+        <div id="dashboard-stats">
+            <div class="stat-box">
+                <span class="stat-label">Net Asset Value</span>
+                <span id="nav-val" class="stat-value up">$100,000.00</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Cash Balance</span>
+                <span id="cash-val" class="stat-value">$100,000.00</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Delta / Theta</span>
+                <span id="greeks-val" class="stat-value">0.00 / 0.00</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">HHI Concentration</span>
+                <span id="hhi-val" class="stat-value">0.00</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Option Tier</span>
+                <span id="tier-badge" class="badge level1">LEVEL 1</span>
+            </div>
+            <div class="stat-box" style="align-items: flex-end;">
+                <span id="seed-val" style="color: var(--text-muted); font-size: 0.7rem;">SEED: ---</span>
+                <span id="mute-toggle" style="cursor: pointer; font-size: 0.7rem; color: var(--primary); text-decoration: underline;" onclick="toggleAudio()">AUDIO: OFF</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Workspace -->
+    <div id="workspace">
+
+        <!-- Modals -->
+        <div id="modal-screen">
+            <div class="screen-title success" id="modal-title">Trading Desk Ingress</div>
+            <div class="screen-desc" id="modal-desc">Simulate a derivatives broker job. Grow your capital, hedge risk, and unlock options tiers while respecting Wash Sale tax laws and sector concentration limits.</div>
+            <div class="stat-details" id="scorecard-area" style="display: none;"></div>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-action" id="modal-btn" onclick="startNewGame(false)" style="padding: 12px 35px; font-size: 0.9rem;">Engage Market</button>
+                <button class="btn-action" id="replay-btn" onclick="startNewGame(true)" style="padding: 12px 35px; font-size: 0.9rem; border-color: var(--warning); color: var(--warning); display: none;">Replay Session</button>
+            </div>
+        </div>
+
+        <!-- Left Col: Market Board & Orders -->
+        <div id="left-col">
+            <div class="section-header">Tickers & Market Watch</div>
+            <table class="list-table" id="market-table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Price</th>
+                        <th>Chg</th>
+                        <th>IV</th>
+                        <th>Sector</th>
+                    </tr>
+                </thead>
+                <tbody id="market-body">
+                    <!-- Tickers populated by JS -->
+                </tbody>
+            </table>
+
+            <div class="section-header">
+                <span>Select Strategy & Leg</span>
+                <span id="selected-ticker-lbl" style="color:#fff;">PHOX</span>
+            </div>
+            
+            <div style="padding: 15px; display: flex; flex-direction: column; gap: 12px;">
+                <div class="control-row">
+                    <span class="stat-label">Strategy</span>
+                    <select id="strategy-select" style="width: 160px;" onchange="updateOptionsChain()">
+                        <option value="cc">Covered Call (Lvl 1)</option>
+                        <option value="csp">Cash-Secured Put (Lvl 1)</option>
+                        <option value="long-call">Long Call (Lvl 2)</option>
+                        <option value="long-put">Long Put (Lvl 2)</option>
+                        <option value="bull-spread">Bull Call Spread (Lvl 3)</option>
+                        <option value="bear-spread">Bear Put Spread (Lvl 3)</option>
+                    </select>
+                </div>
+                
+                <span class="stat-label">Option Chain (Days to Exp: 5)</span>
+                <div class="option-chain-container">
+                    <table class="list-table" id="chain-table" style="font-size: 0.7rem;">
+                        <thead>
+                            <tr>
+                                <th>Strike</th>
+                                <th>Bid / Ask</th>
+                                <th>Delta</th>
+                                <th>Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="chain-body">
+                            <!-- Options Chain strikes populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="trade-controls">
+                    <div class="control-row">
+                        <span class="stat-label" id="legs-info-lbl">Legs: CC Strike $105 Call</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="stat-label">Contracts (x100 shares)</span>
+                        <input type="number" id="trade-qty" value="1" min="1" max="100" style="width: 60px; text-align: center;" onchange="updatePayoffGraph()">
+                    </div>
+                    <div class="control-row">
+                        <span class="stat-label" id="cost-premium-lbl">Est. Premium: +$240.00</span>
+                        <button class="btn-action" id="execute-btn" onclick="executeOrder()">Submit Trade</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Col: Payoff Graph & Day Controls -->
+        <div id="center-col">
+            <div class="section-header" style="background:transparent; border:none; padding:0;">
+                <span>Derivatives Risk Payoff Curve</span>
+                <span id="payoff-desc-lbl" style="font-size:0.75rem; color: var(--text-muted);">P&L profile at Expiration</span>
+            </div>
+            
+            <canvas id="payoffCanvas" width="550" height="220"></canvas>
+
+            <div class="control-row" style="background: rgba(11,26,48,0.3); border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-top: auto; justify-content: space-between;">
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px;">TIMELINE CONTROL</div>
+                    <div style="font-size: 1.1rem; font-weight: bold; color: #fff;" id="day-txt">Day 1 of 30</div>
+                </div>
+                <button class="btn-action" style="padding: 10px 25px;" id="next-day-btn" onclick="nextDay()">Next Market Day (Space)</button>
+            </div>
+        </div>
+
+        <!-- Right Col: Portfolio Ledger & Specs -->
+        <div id="right-col">
+            <div class="section-header">Portfolio Inventory</div>
+            <div style="flex-grow: 1; overflow-y: auto;">
+                <table class="list-table" id="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Qty</th>
+                            <th>Avg Cost</th>
+                            <th>Current Value</th>
+                            <th>P&L</th>
+                            <th>Delta / Theta</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-body">
+                        <!-- Positions populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <details open>
+                <summary>Supervisor Compliance Spec</summary>
+                <div style="color: var(--text-muted); margin: 5px 0 8px 0; font-size: 0.65rem; line-height: 1.4;">
+                    Derivative boundaries must be enforced manually to preserve regulatory authorization.
+                </div>
+                <ul style="padding-left: 12px; margin: 0 0 10px 0; line-height: 1.4; color: var(--text); font-size: 0.65rem;">
+                    <li><strong>PBC-PRT-001 (Tiers):</strong> Level 2 (Long Option buying) requires NAV &ge; $105,000. Level 3 (Spreads) requires NAV &ge; $110,000.</li>
+                    <li><strong>PBC-PRT-002 (HHI Sector):</strong> Tech/Biotech/Consumer concentration $HHI = \sum w_i^2$ must remain &le; 0.50. High HHI alerts warnings; >3 days triggers margin liquidation.</li>
+                    <li><strong>PBC-PRT-003 (Wash Sale):</strong> Repurchasing stock within 3 days of selling it at a loss incurs a $1,000 regulatory tax fine.</li>
+                    <li><strong>PBC-PRT-004 (Margin Call):</strong> Over-allocating cash into collateral requirements triggers liquidations on assignment.</li>
+                </ul>
+            </details>
+
+            <!-- Bottom Console -->
+            <div id="console-container">
+                <div id="audit-console">
+                    <!-- Log entries -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Web Audio Synthesizer Class for sound effects
+        class AudioSynth {
+            constructor() {
+                this.ctx = null;
+                this.muted = true;
+            }
+            init() {
+                if (!this.ctx && !this.muted) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+            playClick() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.005, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.05);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.05);
+            }
+            playSuccess() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                osc.frequency.setValueAtTime(1046.50, now + 0.24); // C6
+                gain.gain.setValueAtTime(0.02, now);
+                gain.gain.linearRampToValueAtTime(0.02, now + 0.3);
+                gain.gain.linearRampToValueAtTime(0, now + 0.45);
+                osc.start();
+                osc.stop(now + 0.45);
+            }
+            playFailure() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.linearRampToValueAtTime(90, now + 0.4);
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.4);
+                osc.start();
+                osc.stop(now + 0.4);
+            }
+            playWarning() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(320, now);
+                osc.frequency.setValueAtTime(220, now + 0.15);
+                gain.gain.setValueAtTime(0.03, now);
+                gain.gain.linearRampToValueAtTime(0.03, now + 0.3);
+                gain.gain.linearRampToValueAtTime(0, now + 0.35);
+                osc.start();
+                osc.stop(now + 0.35);
+            }
+        }
+
+        const sfx = new AudioSynth();
+        function toggleAudio() {
+            sfx.muted = !sfx.muted;
+            const btn = document.getElementById('mute-toggle');
+            if (sfx.muted) {
+                btn.innerText = "AUDIO: OFF";
+            } else {
+                btn.innerText = "AUDIO: ON";
+                sfx.init();
+            }
+        }
+
+        // Standard Normal Distribution CDF approximation for Black-Scholes
+        function stdNormCDF(x) {
+            const b1 =  0.319381530;
+            const b2 = -0.356563782;
+            const b3 =  1.781477937;
+            const b4 = -1.821255978;
+            const b5 =  1.330274429;
+            const p  =  0.2316419;
+            const c  =  0.39894228;
+            if (x >= 0.0) {
+                let k = 1.0 / (1.0 + p * x);
+                return 1.0 - c * Math.exp(-x * x / 2.0) * k *
+                    (k * (k * (k * (k * b5 + b4) + b3) + b2) + b1);
+            } else {
+                let k = 1.0 / (1.0 - p * x);
+                return c * Math.exp(-x * x / 2.0) * k *
+                    (k * (k * (k * (k * b5 + b4) + b3) + b2) + b1);
+            }
+        }
+
+        // Standard Normal PDF
+        function stdNormPDF(x) {
+            return Math.exp(-x * x / 2.0) / Math.sqrt(2.0 * Math.PI);
+        }
+
+        // Black-Scholes Option Pricing Engine (Greeks: Delta, Theta)
+        // S = stock price, K = strike price, T = time to exp in years, r = risk-free rate, sigma = volatility
+        function priceOption(S, K, T, r, sigma, isCall = true) {
+            if (T <= 0.0001) {
+                return {
+                    price: isCall ? Math.max(0, S - K) : Math.max(0, K - S),
+                    delta: isCall ? (S >= K ? 1.0 : 0.0) : (S < K ? -1.0 : 0.0),
+                    theta: 0.0
+                };
+            }
+
+            const d1 = (Math.log(S / K) + (r + (sigma * sigma) / 2.0) * T) / (sigma * Math.sqrt(T));
+            const d2 = d1 - sigma * Math.sqrt(T);
+
+            const nd1 = stdNormCDF(d1);
+            const nd2 = stdNormCDF(d2);
+            const nnd1 = stdNormCDF(-d1);
+            const nnd2 = stdNormCDF(-d2);
+            
+            const pdfd1 = stdNormPDF(d1);
+
+            let price, delta, theta;
+            if (isCall) {
+                price = S * nd1 - K * Math.exp(-r * T) * nd2;
+                delta = nd1;
+                // daily theta decay
+                theta = (-S * pdfd1 * sigma / (2.0 * Math.sqrt(T)) - r * K * Math.exp(-r * T) * nd2) / 365.0;
+            } else {
+                price = K * Math.exp(-r * T) * nnd2 - S * nnd1;
+                delta = nd1 - 1.0;
+                theta = (-S * pdfd1 * sigma / (2.0 * Math.sqrt(T)) + r * K * Math.exp(-r * T) * nnd2) / 365.0;
+            }
+
+            return { price: Math.max(0.01, price), delta, theta };
+        }
+
+        // Game State Variables
+        let state = {
+            day: 1,
+            cash: 100000.0,
+            nav: 100000.0,
+            seed: 0,
+            running: false,
+            selectedTicker: 'PHOX',
+            selectedStrategy: 'cc',
+            level: 1,
+            hhi: 0.0,
+            hhiViolationDays: 0,
+            tradeHistory: [], // For deterministic replay tracking
+            isReplaying: false,
+            replayIndex: 0,
+            
+            // Tax Loss Harvesting Wash Sale logs
+            // entries like: { ticker: 'PHOX', day: 5, lossAmount: 400 }
+            lossHarvestLog: [],
+            
+            // Replay Logs
+            recordedDecays: [], // tracks stock prices & volatility per day for reproducibility
+            
+            // Core portfolios
+            // Shares: { PHOX: { qty: 100, cost: 100 } }
+            // Options: { id: { ticker, strike, qty, isCall, isShort, type, premiumPaid, dayBought, expDay } }
+            portfolio: {
+                shares: {
+                    PHOX: { qty: 0, cost: 0 },
+                    ZTNS: { qty: 0, cost: 0 },
+                    GMIN: { qty: 0, cost: 0 }
+                },
+                options: []
+            }
+        };
+
+        // Market Data
+        const TICKERS = {
+            PHOX: { name: 'Phoenix Corp', sector: 'Tech', price: 100.0, basePrice: 100.0, iv: 0.25, dailyChg: 0.0, history: [100.0] },
+            ZTNS: { name: 'Zenith Tennis', sector: 'Biotech', price: 50.0, basePrice: 50.0, iv: 0.45, dailyChg: 0.0, history: [50.0] },
+            GMIN: { name: 'Garmin Health', sector: 'Consumer', price: 80.0, basePrice: 80.0, iv: 0.15, dailyChg: 0.0, history: [80.0] }
+        };
+
+        const RISK_FREE_RATE = 0.04;
+        let rng;
+
+        // Mulberry32 RNG
+        function mulberry32(a) {
+            return function() {
+                var t = a += 0x6D2B79F5;
+                t = Math.imul(t ^ t >>> 15, t | 1);
+                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+
+        // Gaussian Random Number using Box-Muller transform
+        function randomNormal() {
+            let u = 0, v = 0;
+            while(u === 0) u = rng();
+            while(v === 0) v = rng();
+            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+        }
+
+        // Interactive Payoff Canvas Graph variables
+        const canvas = document.getElementById('payoffCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Setup the workspace
+        function setupGame() {
+            state.seed = Math.floor(Math.random() * 90000) + 10000;
+            document.getElementById('seed-val').innerText = `SEED: ${state.seed}`;
+            document.getElementById('modal-title').innerText = `Brokerage Terminal Online`;
+            document.getElementById('modal-desc').innerText = `Adhere to PBC specifications. Grow capital without breaching concentration boundaries or wash sales.`;
+            document.getElementById('scorecard-area').style.display = 'none';
+            document.getElementById('replay-btn').style.display = 'none';
+            document.getElementById('modal-screen').style.display = 'flex';
+        }
+
+        function startNewGame(replay = false) {
+            if (!replay) {
+                state.seed = Math.floor(Math.random() * 90000) + 10000;
+                state.tradeHistory = [];
+                state.recordedDecays = [];
+                state.isReplaying = false;
+            } else {
+                state.isReplaying = true;
+                state.replayIndex = 0;
+            }
+
+            rng = mulberry32(state.seed);
+            state.day = 1;
+            state.cash = 100000.0;
+            state.nav = 100000.0;
+            state.level = 1;
+            state.hhi = 0.0;
+            state.hhiViolationDays = 0;
+            state.lossHarvestLog = [];
+            state.running = true;
+
+            // Initialize tickers
+            Object.keys(TICKERS).forEach(ticker => {
+                const t = TICKERS[ticker];
+                t.price = t.basePrice;
+                t.dailyChg = 0.0;
+                t.history = [t.price];
+            });
+
+            // Initialize Portfolio with 100 shares of PHOX
+            state.portfolio.shares.PHOX = { qty: 100, cost: 100.0 };
+            state.portfolio.shares.ZTNS = { qty: 0, cost: 0 };
+            state.portfolio.shares.GMIN = { qty: 0, cost: 0 };
+            state.portfolio.options = [];
+
+            // Record initial day state for replay
+            recordDayState();
+
+            document.getElementById('modal-screen').style.display = 'none';
+            document.getElementById('audit-console').innerHTML = '';
+            document.getElementById('seed-val').innerText = `SEED: ${state.seed}`;
+
+            logConsole(`BROKER UP-LINK ESTABLISHED. CASH: $100,000.00`, 'info');
+            logConsole(`CONTRACT PBC-PORTFOLIO CHARTER LOADED.`, 'audit');
+            if (state.isReplaying) {
+                logConsole(`REPLAYING SESSION...`, 'system');
+            }
+
+            // UI updates
+            updateUI();
+            updateOptionsChain();
+            buildMarketWatchTable();
+            updatePayoffGraph();
+            sfx.playSuccess();
+        }
+
+        // Daily random walks & news events logging
+        function recordDayState() {
+            if (!state.isReplaying) {
+                const prices = {};
+                const ivs = {};
+                Object.keys(TICKERS).forEach(t => {
+                    prices[t] = TICKERS[t].price;
+                    ivs[t] = TICKERS[t].iv;
+                });
+                state.recordedDecays.push({ day: state.day, prices, ivs });
+            }
+        }
+
+        function logConsole(message, type = 'info') {
+            const container = document.getElementById('audit-console');
+            const div = document.createElement('div');
+            div.className = `console-line line-${type}`;
+            div.innerText = `[Day ${state.day}] ${message}`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function buildMarketWatchTable() {
+            const body = document.getElementById('market-body');
+            body.innerHTML = '';
+            
+            Object.keys(TICKERS).forEach(ticker => {
+                const t = TICKERS[ticker];
+                const tr = document.createElement('tr');
+                if (state.selectedTicker === ticker) tr.className = 'selected';
+                tr.onclick = () => {
+                    sfx.playClick();
+                    state.selectedTicker = ticker;
+                    document.getElementById('selected-ticker-lbl').innerText = ticker;
+                    buildMarketWatchTable();
+                    updateOptionsChain();
+                };
+
+                const changeClass = t.dailyChg >= 0 ? 'up' : 'down';
+                const sign = t.dailyChg >= 0 ? '+' : '';
+                tr.innerHTML = `
+                    <td style="font-weight: bold; color: var(--accent);">${ticker}</td>
+                    <td>$${t.price.toFixed(2)}</td>
+                    <td class="stat-value ${changeClass}">${sign}${t.dailyChg.toFixed(1)}%</td>
+                    <td>${(t.iv * 100).toFixed(0)}%</td>
+                    <td style="color: var(--text-muted);">${t.sector}</td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        // Calculate option chains based on Black-Scholes
+        function updateOptionsChain() {
+            const ticker = state.selectedTicker;
+            const price = TICKERS[ticker].price;
+            const iv = TICKERS[ticker].iv;
+            
+            // Choose 5 strikes centered around stock price
+            const strikeInterval = ticker === 'ZTNS' ? 5 : 10;
+            const atmStrike = Math.round(price / strikeInterval) * strikeInterval;
+            const strikes = [
+                atmStrike - strikeInterval * 2,
+                atmStrike - strikeInterval,
+                atmStrike,
+                atmStrike + strikeInterval,
+                atmStrike + strikeInterval * 2
+            ];
+
+            const body = document.getElementById('chain-body');
+            body.innerHTML = '';
+
+            strikes.forEach(strike => {
+                if (strike <= 0) return;
+                
+                // Expiry is 5 days (5/365 of a year)
+                const T = 5.0 / 365.0;
+                
+                // Price Call & Put
+                const callInfo = priceOption(price, strike, T, RISK_FREE_RATE, iv, true);
+                const putInfo = priceOption(price, strike, T, RISK_FREE_RATE, iv, false);
+
+                // Add Call row
+                const trCall = createChainRow(strike, callInfo, true);
+                body.appendChild(trCall);
+
+                // Add Put row
+                const trPut = createChainRow(strike, putInfo, false);
+                body.appendChild(trPut);
+            });
+
+            updatePayoffGraph();
+        }
+
+        function createChainRow(strike, info, isCall) {
+            const tr = document.createElement('tr');
+            const typeStr = isCall ? 'CALL' : 'PUT';
+            const actionLabel = `SEL`;
+            
+            tr.innerHTML = `
+                <td style="font-weight:bold;">$${strike}</td>
+                <td>$${(info.price * 0.98).toFixed(2)} / $${(info.price * 1.02).toFixed(2)}</td>
+                <td style="color: ${info.delta >= 0 ? 'var(--primary)' : 'var(--danger)'}">${info.delta.toFixed(2)}</td>
+                <td style="color: ${isCall ? 'var(--accent)' : 'var(--warning)'}">${typeStr}</td>
+                <td><button class="btn-action" style="padding: 2px 6px; font-size: 0.65rem;" onclick="selectChainLeg(${strike}, ${isCall}, ${info.price})">Select</button></td>
+            `;
+            return tr;
+        }
+
+        // Active leg selection
+        let activeLeg = null; // { strike, isCall, estPrice }
+
+        function selectChainLeg(strike, isCall, priceVal) {
+            sfx.playClick();
+            activeLeg = { strike, isCall, price: priceVal };
+            
+            const strat = document.getElementById('strategy-select').value;
+            let stratName = "";
+            let premiumEst = 0;
+            
+            if (strat === 'cc') {
+                stratName = `Covered Call Leg: Short $${strike} Call`;
+                premiumEst = priceVal; // selling premium
+            } else if (strat === 'csp') {
+                stratName = `Cash-Secured Put Leg: Short $${strike} Put`;
+                premiumEst = priceVal;
+            } else if (strat === 'long-call') {
+                stratName = `Long Call Leg: Buy $${strike} Call`;
+                premiumEst = -priceVal; // buying premium costs cash
+            } else if (strat === 'long-put') {
+                stratName = `Long Put Leg: Buy $${strike} Put`;
+                premiumEst = -priceVal;
+            } else if (strat === 'bull-spread') {
+                // Bull call spread: Buy strike, sell strike + interval
+                const interval = state.selectedTicker === 'ZTNS' ? 5 : 10;
+                stratName = `Bull Call Spread: Long $${strike} C, Short $${strike + interval} C`;
+                // estimate spread price
+                const shortCallInfo = priceOption(TICKERS[state.selectedTicker].price, strike + interval, 5.0/365.0, RISK_FREE_RATE, TICKERS[state.selectedTicker].iv, true);
+                premiumEst = -(priceVal - shortCallInfo.price);
+            } else if (strat === 'bear-spread') {
+                // Bear put spread: Buy strike, sell strike - interval
+                const interval = state.selectedTicker === 'ZTNS' ? 5 : 10;
+                stratName = `Bear Put Spread: Long $${strike} P, Short $${strike - interval} P`;
+                const shortPutInfo = priceOption(TICKERS[state.selectedTicker].price, strike - interval, 5.0/365.0, RISK_FREE_RATE, TICKERS[state.selectedTicker].iv, false);
+                premiumEst = -(priceVal - shortPutInfo.price);
+            }
+
+            document.getElementById('legs-info-lbl').innerText = stratName;
+            const qty = parseInt(document.getElementById('trade-qty').value) || 1;
+            const totalPremium = premiumEst * qty * 100;
+            
+            const isCredit = totalPremium >= 0;
+            document.getElementById('cost-premium-lbl').innerText = `${isCredit ? 'Est. Credit' : 'Est. Cost'}: $${Math.abs(totalPremium).toFixed(2)}`;
+            
+            updatePayoffGraph();
+        }
+
+        // Draw Options Payoff chart relative to underlying price
+        function updatePayoffGraph() {
+            if (!activeLeg) {
+                // Draw empty grid
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = '#233554';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height/2);
+                ctx.lineTo(canvas.width, canvas.height/2);
+                ctx.stroke();
+                
+                ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                ctx.font = '10px monospace';
+                ctx.fillText("Select an option leg to view risk payoff profile.", 30, canvas.height/2 - 10);
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const ticker = state.selectedTicker;
+            const stockPrice = TICKERS[ticker].price;
+            const strike = activeLeg.strike;
+            const strat = document.getElementById('strategy-select').value;
+            const qty = parseInt(document.getElementById('trade-qty').value) || 1;
+            
+            // X range: stock prices from strike * 0.7 to strike * 1.3
+            const minX = strike * 0.75;
+            const maxX = strike * 1.25;
+            
+            const points = [];
+            const T = 5.0/365.0;
+
+            // Calculate options parameters for spread calculations
+            let shortStrike = strike;
+            let longStrike = strike;
+            const interval = ticker === 'ZTNS' ? 5 : 10;
+            
+            if (strat === 'bull-spread') {
+                shortStrike = strike + interval;
+            } else if (strat === 'bear-spread') {
+                shortStrike = strike - interval;
+            }
+
+            for (let x = minX; x <= maxX; x += (maxX - minX) / 100) {
+                let pnl = 0;
+                
+                if (strat === 'cc') {
+                    // Long stock + Short Call
+                    const stockPnl = (x - stockPrice);
+                    const callValAtExp = Math.max(0, x - strike);
+                    const shortCallPnl = activeLeg.price - callValAtExp;
+                    pnl = (stockPnl + shortCallPnl) * qty * 100;
+                } else if (strat === 'csp') {
+                    // Cash secured Put (selling put)
+                    const putValAtExp = Math.max(0, strike - x);
+                    pnl = (activeLeg.price - putValAtExp) * qty * 100;
+                } else if (strat === 'long-call') {
+                    // Buying Call
+                    const callValAtExp = Math.max(0, x - strike);
+                    pnl = (callValAtExp - activeLeg.price) * qty * 100;
+                } else if (strat === 'long-put') {
+                    // Buying Put
+                    const putValAtExp = Math.max(0, strike - x);
+                    pnl = (putValAtExp - activeLeg.price) * qty * 100;
+                } else if (strat === 'bull-spread') {
+                    // Buy Strike, Sell Strike + Interval
+                    const longCallVal = Math.max(0, x - strike);
+                    const shortCallVal = Math.max(0, x - shortStrike);
+                    const spreadCost = activeLeg.price - priceOption(stockPrice, shortStrike, T, RISK_FREE_RATE, TICKERS[ticker].iv, true).price;
+                    pnl = (longCallVal - shortCallVal - spreadCost) * qty * 100;
+                } else if (strat === 'bear-spread') {
+                    // Buy Strike, Sell Strike - Interval
+                    const longPutVal = Math.max(0, strike - x);
+                    const shortPutVal = Math.max(0, shortStrike - x);
+                    const spreadCost = activeLeg.price - priceOption(stockPrice, shortStrike, T, RISK_FREE_RATE, TICKERS[ticker].iv, false).price;
+                    pnl = (longPutVal - shortPutVal - spreadCost) * qty * 100;
+                }
+
+                points.push({ x: x, y: pnl });
+            }
+
+            // Find min/max y for scaling
+            let minY = Math.min(...points.map(p => p.y));
+            let maxY = Math.max(...points.map(p => p.y));
+            if (minY === maxY) {
+                minY -= 100;
+                maxY += 100;
+            }
+            // Give some padding
+            const yRange = maxY - minY;
+            minY -= yRange * 0.1;
+            maxY += yRange * 0.1;
+
+            // Mapping functions
+            const mapX = (xVal) => ((xVal - minX) / (maxX - minX)) * canvas.width;
+            const mapY = (yVal) => canvas.height - ((yVal - minY) / (maxY - minY)) * canvas.height;
+
+            // Draw Grid Lines & Axes
+            ctx.strokeStyle = '#112240';
+            ctx.lineWidth = 1;
+            for (let gridX = minX; gridX <= maxX; gridX += (maxX - minX) / 5) {
+                ctx.beginPath();
+                ctx.moveTo(mapX(gridX), 0);
+                ctx.lineTo(mapX(gridX), canvas.height);
+                ctx.stroke();
+            }
+            
+            // X-Axis (y=0 line)
+            ctx.strokeStyle = '#233554';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, mapY(0));
+            ctx.lineTo(canvas.width, mapY(0));
+            ctx.stroke();
+
+            // Draw Payoff Curve Line
+            ctx.strokeStyle = varColor('--primary');
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = varColor('--primary');
+            ctx.shadowBlur = 6;
+            ctx.beginPath();
+            ctx.moveTo(mapX(points[0].x), mapY(points[0].y));
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(mapX(points[i].x), mapY(points[i].y));
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0; // reset
+
+            // Highlight Stock price vertical line
+            ctx.strokeStyle = '#00ccff';
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(mapX(stockPrice), 0);
+            ctx.lineTo(mapX(stockPrice), canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw Labels
+            ctx.fillStyle = '#8892b0';
+            ctx.font = '9px monospace';
+            ctx.fillText(`Stock $${stockPrice.toFixed(1)}`, mapX(stockPrice) + 4, 15);
+            ctx.fillText(`Max P: +$${Math.max(...points.map(p => p.y)).toFixed(0)}`, 10, 20);
+            ctx.fillText(`Max L: -$${Math.abs(Math.min(...points.map(p => p.y))).toFixed(0)}`, 10, canvas.height - 10);
+            
+            // Draw Strike marker line
+            ctx.strokeStyle = '#ffd740';
+            ctx.setLineDash([2, 4]);
+            ctx.beginPath();
+            ctx.moveTo(mapX(strike), 0);
+            ctx.lineTo(mapX(strike), canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#ffd740';
+            ctx.fillText(`Strike $${strike}`, mapX(strike) - 20, canvas.height/2 + 25);
+        }
+
+        // Executing Options Order & Checking Constraints
+        function executeOrder() {
+            if (!state.running || !activeLeg) return;
+
+            const ticker = state.selectedTicker;
+            const price = TICKERS[ticker].price;
+            const strike = activeLeg.strike;
+            const strat = document.getElementById('strategy-select').value;
+            const qty = parseInt(document.getElementById('trade-qty').value) || 1;
+
+            // Enforce options tier limits
+            // PBC-PRT-001 Verification
+            if (strat === 'long-call' || strat === 'long-put') {
+                if (state.level < 2) {
+                    logConsole(`[RULE BREACH] Long option trading blocked. Insufficient options tier Level ${state.level}. Unlocks at NAV >= $105,000.`, 'error');
+                    sfx.playFailure();
+                    return;
+                }
+            } else if (strat === 'bull-spread' || strat === 'bear-spread') {
+                if (state.level < 3) {
+                    logConsole(`[RULE BREACH] Spreads trading blocked. Insufficient options tier Level ${state.level}. Unlocks at NAV >= $110,000.`, 'error');
+                    sfx.playFailure();
+                    return;
+                }
+            }
+
+            // Calculations for spreads
+            const T = 5.0/365.0;
+            const interval = ticker === 'ZTNS' ? 5 : 10;
+            let spreadPremium = activeLeg.price;
+
+            if (strat === 'bull-spread') {
+                const shortCallVal = priceOption(price, strike + interval, T, RISK_FREE_RATE, TICKERS[ticker].iv, true).price;
+                spreadPremium = activeLeg.price - shortCallVal; // net debit
+            } else if (strat === 'bear-spread') {
+                const shortPutVal = priceOption(price, strike - interval, T, RISK_FREE_RATE, TICKERS[ticker].iv, false).price;
+                spreadPremium = activeLeg.price - shortPutVal; // net debit
+            }
+
+            // Collateral calculations & covered position check
+            if (strat === 'cc') {
+                // Covered call requires owning 100 shares of stock per short call contract
+                const ownedQty = state.portfolio.shares[ticker]?.qty || 0;
+                // Count calls already shorted
+                const currentShortCalls = state.portfolio.options.filter(o => o.ticker === ticker && o.isCall && o.isShort).reduce((acc, curr) => acc + curr.qty, 0);
+                
+                if (ownedQty < (currentShortCalls + qty) * 100) {
+                    logConsole(`[RULE BREACH] Short call is naked. Enforce Covered Call boundary (requires 100 shares of ${ticker} stock).`, 'error');
+                    sfx.playFailure();
+                    return;
+                }
+            } else if (strat === 'csp') {
+                // Cash secured Put requires holding cash collateral equivalent to strike * qty * 100
+                const collateralReq = strike * qty * 100;
+                if (state.cash < collateralReq) {
+                    logConsole(`[RULE BREACH] Insufficient cash collateral to underwrite short put contract (requires $${collateralReq.toFixed(2)}).`, 'error');
+                    sfx.playFailure();
+                    return;
+                }
+            }
+
+            // Calculate cost or credit
+            let totalCost = 0;
+            let isCredit = true;
+            if (strat === 'long-call' || strat === 'long-put' || strat === 'bull-spread' || strat === 'bear-spread') {
+                totalCost = spreadPremium * qty * 100; // net debit
+                isCredit = false;
+            } else {
+                totalCost = -spreadPremium * qty * 100; // net credit
+                isCredit = true;
+            }
+
+            if (!isCredit && state.cash < totalCost) {
+                logConsole(`[ERROR] Insufficient cash balance to purchase options contracts.`, 'error');
+                sfx.playFailure();
+                return;
+            }
+
+            if (!state.isReplaying) {
+                state.tradeHistory.push({
+                    day: state.day,
+                    ticker,
+                    strat,
+                    strike,
+                    qty,
+                    price: spreadPremium,
+                    type: activeLeg.isCall ? 'call' : 'put'
+                });
+            } else {
+                state.replayIndex++;
+            }
+
+            // Apply trade
+            state.cash -= totalCost;
+            
+            // Push contract position
+            const expDay = state.day + 5 - ((state.day - 1) % 5); // next assignment checkpoint
+            state.portfolio.options.push({
+                id: Math.floor(Math.random()*100000),
+                ticker,
+                strike,
+                qty,
+                isCall: activeLeg.isCall,
+                isShort: (strat === 'cc' || strat === 'csp'),
+                type: strat,
+                premium: spreadPremium,
+                dayBought: state.day,
+                expDay: expDay
+            });
+
+            logConsole(`ORDER FILLED: ${isCredit ? 'Sold' : 'Bought'} ${qty}x ${ticker} $${strike} ${activeLeg.isCall ? 'Calls' : 'Puts'} for $${Math.abs(totalCost).toFixed(2)}`, 'trade');
+            sfx.playSuccess();
+            
+            updateUI();
+            updateOptionsChain();
+            buildInventoryTable();
+        }
+
+        // Stock Trading (Buy / Sell)
+        function tradeStock(ticker, action) {
+            if (!state.running) return;
+            const price = TICKERS[ticker].price;
+
+            if (action === 'buy') {
+                if (state.cash < price * 100) {
+                    logConsole(`[ERROR] Insufficient cash to buy 100 shares of ${ticker}.`, 'error');
+                    sfx.playFailure();
+                    return;
+                }
+
+                // Check Wash Sale Boundary (PBC-PRT-003)
+                const recentLoss = state.lossHarvestLog.find(l => l.ticker === ticker && (state.day - l.day) <= 3);
+                if (recentLoss) {
+                    state.cash -= 1000.0; // deduct fine
+                    logConsole(`[WASH SALE BREACH] Repurchased ${ticker} within 3 days of harvesting loss (Day ${recentLoss.day}). Penalized $1,000 regulatory fine.`, 'error');
+                    sfx.playFailure();
+                    triggerDamageVisuals();
+                }
+
+                if (!state.isReplaying) {
+                    state.tradeHistory.push({ day: state.day, ticker, action: 'buy_stock', qty: 100, price });
+                } else {
+                    state.replayIndex++;
+                }
+
+                const current = state.portfolio.shares[ticker];
+                const totalCost = (current.qty * current.cost) + (price * 100);
+                current.qty += 100;
+                current.cost = totalCost / current.qty;
+                state.cash -= price * 100;
+
+                logConsole(`STOCK BOUGHT: 100 shares of ${ticker} at $${price.toFixed(2)}`, 'trade');
+                sfx.playSuccess();
+            } else {
+                const current = state.portfolio.shares[ticker];
+                if (current.qty < 100) {
+                    logConsole(`[ERROR] No stock shares available to liquidate.`, 'error');
+                    sfx.playFailure();
+                    return;
+                }
+
+                // Check if this sale is at a loss (for Tax Loss harvesting check)
+                const isLoss = price < current.cost;
+                if (isLoss) {
+                    const lossAmount = (current.cost - price) * 100;
+                    state.lossHarvestLog.push({ ticker, day: state.day, lossAmount });
+                    logConsole(`TAX HARVEST: Realized capital loss of -$${lossAmount.toFixed(2)} on ${ticker}.`, 'audit');
+                }
+
+                if (!state.isReplaying) {
+                    state.tradeHistory.push({ day: state.day, ticker, action: 'sell_stock', qty: 100, price });
+                } else {
+                    state.replayIndex++;
+                }
+
+                current.qty -= 100;
+                if (current.qty === 0) current.cost = 0;
+                state.cash += price * 100;
+
+                logConsole(`STOCK SOLD: 100 shares of ${ticker} at $${price.toFixed(2)}`, 'trade');
+                sfx.playSuccess();
+            }
+
+            updateUI();
+            updateOptionsChain();
+            buildInventoryTable();
+        }
+
+        // Close option position early
+        function closeOptionEarly(optionId) {
+            if (!state.running) return;
+            const optIdx = state.portfolio.options.findIndex(o => o.id === optionId);
+            if (optIdx === -1) return;
+            const opt = state.portfolio.options[optIdx];
+            
+            // Calculate current pricing
+            const T = (opt.expDay - state.day) / 365.0;
+            const price = TICKERS[opt.ticker].price;
+            const iv = TICKERS[opt.ticker].iv;
+            const isCall = opt.isCall;
+
+            const currentPrice = priceOption(price, opt.strike, T, RISK_FREE_RATE, iv, isCall).price;
+            const closingCost = currentPrice * opt.qty * 100;
+
+            if (opt.isShort) {
+                // Short position requires buying back (costs cash)
+                if (state.cash < closingCost) {
+                    logConsole(`[ERROR] Insufficient cash to buy back short contracts.`, 'error');
+                    sfx.playFailure();
+                    return;
+                }
+                state.cash -= closingCost;
+                logConsole(`POSITION CLOSED: Bought back short ${opt.qty}x ${opt.ticker} $${opt.strike} ${isCall ? 'Calls' : 'Puts'} for $${closingCost.toFixed(2)}`, 'trade');
+            } else {
+                // Long position is sold (receives cash)
+                state.cash += closingCost;
+                logConsole(`POSITION CLOSED: Sold long ${opt.qty}x ${opt.ticker} $${opt.strike} ${isCall ? 'Calls' : 'Puts'} for $${closingCost.toFixed(2)}`, 'trade');
+            }
+
+            if (!state.isReplaying) {
+                state.tradeHistory.push({ day: state.day, action: 'close_option', optionId });
+            } else {
+                state.replayIndex++;
+            }
+
+            state.portfolio.options.splice(optIdx, 1);
+            sfx.playSuccess();
+            
+            updateUI();
+            updateOptionsChain();
+            buildInventoryTable();
+        }
+
+        function triggerDamageVisuals() {
+            document.body.classList.add('shake');
+            document.body.classList.add('flash-red');
+            setTimeout(() => {
+                document.body.classList.remove('shake');
+                document.body.classList.remove('flash-red');
+            }, 400);
+        }
+
+        // State Update & GUI Metrics Sync
+        function updateUI() {
+            // Calculate Net Asset Value (NAV)
+            let stockValue = 0;
+            Object.keys(TICKERS).forEach(ticker => {
+                stockValue += (state.portfolio.shares[ticker].qty * TICKERS[ticker].price);
+            });
+
+            let optionsValue = 0;
+            let portfolioDelta = 0;
+            let portfolioTheta = 0;
+
+            state.portfolio.options.forEach(opt => {
+                const T = (opt.expDay - state.day) / 365.0;
+                const bs = priceOption(TICKERS[opt.ticker].price, opt.strike, T, RISK_FREE_RATE, TICKERS[opt.ticker].iv, opt.isCall);
+                
+                const multiplier = opt.isShort ? -1 : 1;
+                optionsValue += (bs.price * opt.qty * 100 * multiplier);
+                portfolioDelta += (bs.delta * opt.qty * 100 * multiplier);
+                portfolioTheta += (bs.theta * opt.qty * 100 * multiplier);
+            });
+
+            state.nav = state.cash + stockValue + optionsValue;
+
+            // Calculate HHI Concentration Index (PBC-PRT-002)
+            // Weight of sectors: Tech (PHOX), Biotech (ZTNS), Consumer (GMIN)
+            const phoxW = (state.portfolio.shares.PHOX.qty * TICKERS.PHOX.price) / (state.nav || 1);
+            const ztnsW = (state.portfolio.shares.ZTNS.qty * TICKERS.ZTNS.price) / (state.nav || 1);
+            const gminW = (state.portfolio.shares.GMIN.qty * TICKERS.GMIN.price) / (state.nav || 1);
+            
+            state.hhi = (phoxW * phoxW) + (ztnsW * ztnsW) + (gminW * gminW);
+
+            // Update UI elements
+            const navEl = document.getElementById('nav-val');
+            navEl.innerText = `$${state.nav.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            navEl.className = state.nav >= 100000 ? 'stat-value up' : 'stat-value down';
+
+            document.getElementById('cash-val').innerText = `$${state.cash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('greeks-val').innerText = `${portfolioDelta.toFixed(0)} / ${portfolioTheta.toFixed(0)}`;
+            
+            const hhiEl = document.getElementById('hhi-val');
+            hhiEl.innerText = state.hhi.toFixed(3);
+            hhiEl.className = state.hhi > 0.50 ? 'stat-value warn' : 'stat-value';
+
+            // Unlock option tiers
+            if (state.nav >= 110000.0) {
+                state.level = 3;
+                const badge = document.getElementById('tier-badge');
+                badge.innerText = "LEVEL 3";
+                badge.className = "badge level3";
+            } else if (state.nav >= 105000.0) {
+                state.level = 2;
+                const badge = document.getElementById('tier-badge');
+                badge.innerText = "LEVEL 2";
+                badge.className = "badge level2";
+            } else {
+                state.level = 1;
+                const badge = document.getElementById('tier-badge');
+                badge.innerText = "LEVEL 1";
+                badge.className = "badge level1";
+            }
+        }
+
+        function buildInventoryTable() {
+            const body = document.getElementById('inventory-body');
+            body.innerHTML = '';
+
+            // Render stock positions
+            Object.keys(TICKERS).forEach(ticker => {
+                const share = state.portfolio.shares[ticker];
+                if (share.qty === 0) return;
+
+                const currentVal = share.qty * TICKERS[ticker].price;
+                const costVal = share.qty * share.cost;
+                const pnl = currentVal - costVal;
+                const pnlClass = pnl >= 0 ? 'up' : 'down';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:bold; color: var(--accent);">${ticker}</td>
+                    <td>${share.qty} sh</td>
+                    <td>$${share.cost.toFixed(2)}</td>
+                    <td>$${currentVal.toFixed(2)}</td>
+                    <td class="stat-value ${pnlClass}">$${pnl.toFixed(2)}</td>
+                    <td>${share.qty} / 0.00</td>
+                    <td style="display:flex; gap: 4px;">
+                        <button class="btn-action" style="padding: 2px 6px; font-size: 0.65rem;" onclick="tradeStock('${ticker}', 'buy')">Buy</button>
+                        <button class="btn-action" style="padding: 2px 6px; font-size: 0.65rem; border-color: var(--danger); color: var(--danger);" onclick="tradeStock('${ticker}', 'sell')">Sell</button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+
+            // Render Option Positions
+            state.portfolio.options.forEach(opt => {
+                const T = (opt.expDay - state.day) / 365.0;
+                const bs = priceOption(TICKERS[opt.ticker].price, opt.strike, T, RISK_FREE_RATE, TICKERS[opt.ticker].iv, opt.isCall);
+                
+                const multiplier = opt.isShort ? -1 : 1;
+                const val = bs.price * opt.qty * 100;
+                const cost = opt.premium * opt.qty * 100;
+                const pnl = (bs.price - opt.premium) * opt.qty * 100 * multiplier;
+                
+                const pnlClass = pnl >= 0 ? 'up' : 'down';
+                const sign = opt.isShort ? '-' : '+';
+                const label = `${sign}${opt.qty}x $${opt.strike} ${opt.isCall ? 'C' : 'P'} (Day ${opt.expDay})`;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color:#fff;">${opt.ticker}</td>
+                    <td style="font-size:0.6rem; color: var(--text-muted);">${label}</td>
+                    <td>$${(opt.premium * opt.qty * 100).toFixed(0)}</td>
+                    <td>$${val.toFixed(2)}</td>
+                    <td class="stat-value ${pnlClass}">$${pnl.toFixed(2)}</td>
+                    <td>${(bs.delta * opt.qty * 100 * multiplier).toFixed(0)} / ${(bs.theta * opt.qty * 100 * multiplier).toFixed(0)}</td>
+                    <td><button class="btn-action" style="padding: 2px 6px; font-size: 0.65rem; border-color: var(--danger); color: var(--danger);" onclick="closeOptionEarly(${opt.id})">Close</button></td>
+                `;
+                body.appendChild(tr);
+            });
+
+            // If empty
+            const totalItems = Object.keys(TICKERS).filter(t => state.portfolio.shares[t].qty > 0).length + state.portfolio.options.length;
+            if (totalItems === 0) {
+                body.innerHTML = `<tr><td colspan="7" style="color: var(--text-muted); text-align:center;">No stock or options assets currently in portfolio ledger.</td></tr>`;
+            }
+        }
+
+        // Daily random walks, news generation, and option assignments
+        function nextDay() {
+            if (!state.running) return;
+
+            if (state.day >= 30) {
+                endGame(true);
+                return;
+            }
+
+            state.day++;
+            document.getElementById('day-txt').innerText = `Day ${state.day} of 30`;
+
+            // Daily Random Walk of stock prices
+            let prices = {};
+            let ivs = {};
+
+            if (state.isReplaying && state.replayIndex < state.recordedDecays.length) {
+                const hist = state.recordedDecays[state.day - 1];
+                prices = hist.prices;
+                ivs = hist.ivs;
+            } else {
+                // News headlines selection
+                const headlines = [
+                    { msg: "Federal Reserve hints at rate freeze. Markets hold stable.", drift: 0.005, vol: 0.0 },
+                    { msg: "Tech sector index surges on AI chip demand reports.", ticker: 'PHOX', drift: 0.04, vol: 0.02 },
+                    { msg: "PHOX hit with patent litigation breach. Volatility surges.", ticker: 'PHOX', drift: -0.06, vol: 0.08 },
+                    { msg: "FDA announces expedited review pipeline for Zenith tennis sensor drug trials.", ticker: 'ZTNS', drift: 0.08, vol: 0.04 },
+                    { msg: "ZTNS trial data reports inconclusive drift results. Panic selling.", ticker: 'ZTNS', drift: -0.12, vol: 0.12 },
+                    { msg: "Garmin updates outdoor fitness watch catalogs. Consumer sales stable.", ticker: 'GMIN', drift: 0.015, vol: -0.02 },
+                    { msg: "Global logistics slowdown delays component imports. General market dip.", drift: -0.02, vol: 0.03 }
+                ];
+                
+                let selectedNews = headlines[Math.floor(rng() * headlines.length)];
+                logConsole(`[NEWS] ${selectedNews.msg}`, 'news');
+
+                Object.keys(TICKERS).forEach(ticker => {
+                    const t = TICKERS[ticker];
+                    
+                    // Box-Muller random walk
+                    const epsilon = randomNormal();
+                    let drift = 0.0008; // slight positive bias
+                    let newsChg = 0;
+                    
+                    if (selectedNews.ticker === ticker) {
+                        newsChg = selectedNews.drift;
+                        t.iv = Math.max(0.05, Math.min(1.0, t.iv + selectedNews.vol));
+                    } else if (!selectedNews.ticker) {
+                        newsChg = selectedNews.drift;
+                        t.iv = Math.max(0.05, Math.min(1.0, t.iv + selectedNews.vol));
+                    }
+
+                    // Stock price adjustment
+                    const priceChg = drift + newsChg + t.iv * (epsilon / Math.sqrt(252));
+                    const newPrice = Math.max(5.0, t.price * (1.0 + priceChg));
+                    
+                    t.dailyChg = ((newPrice - t.price) / t.price) * 100;
+                    t.price = newPrice;
+                    t.history.push(newPrice);
+
+                    prices[ticker] = t.price;
+                    ivs[ticker] = t.iv;
+                });
+            }
+
+            // Sync simulation prices
+            Object.keys(TICKERS).forEach(t => {
+                TICKERS[t].price = prices[t];
+                TICKERS[t].iv = ivs[t];
+            });
+
+            // Write state logs
+            recordDayState();
+
+            // Enforce HHI Concentration penalty check (PBC-PRT-002)
+            if (state.hhi > 0.50) {
+                state.hhiViolationDays++;
+                logConsole(`[WARNING] PBC-PRT-002: Sector concentration HHI exceed limit of 0.50 (Current: ${state.hhi.toFixed(2)}). Day ${state.hhiViolationDays}/3 of breach.`, 'system');
+                sfx.playWarning();
+                if (state.hhiViolationDays >= 3) {
+                    liquidatePositions();
+                }
+            } else {
+                state.hhiViolationDays = 0;
+            }
+
+            // Expiration assignments evaluation (Every 5 days)
+            if (state.day % 5 === 1) {
+                evaluateExpirations();
+            }
+
+            // Margin check
+            if (state.cash < 0) {
+                logConsole(`[MARGIN CALL] Cash balance is negative ($${state.cash.toFixed(2)}). Liquidate stock to restore balance.`, 'error');
+                sfx.playWarning();
+                triggerDamageVisuals();
+            }
+
+            updateUI();
+            updateOptionsChain();
+            buildMarketWatchTable();
+            buildInventoryTable();
+        }
+
+        // HHI Violation Liquidation
+        function liquidatePositions() {
+            logConsole(`[LIQUIDATION TRIGGERED] Concentration limit violated for 3 consecutive days. Clearing largest position.`, 'error');
+            triggerDamageVisuals();
+            sfx.playFailure();
+            
+            // Find largest stock holding
+            let maxTicker = null;
+            let maxVal = 0;
+            Object.keys(TICKERS).forEach(t => {
+                const val = state.portfolio.shares[t].qty * TICKERS[t].price;
+                if (val > maxVal) {
+                    maxVal = val;
+                    maxTicker = t;
+                }
+            });
+
+            if (maxTicker) {
+                const qty = state.portfolio.shares[maxTicker].qty;
+                const price = TICKERS[maxTicker].price;
+                state.cash += qty * price;
+                state.portfolio.shares[maxTicker] = { qty: 0, cost: 0 };
+                logConsole(`LIQUIDATED: Sold all ${qty} shares of ${maxTicker} at market price $${price.toFixed(2)}.`, 'system');
+            }
+            state.hhiViolationDays = 0;
+        }
+
+        // Evaluate expirations on options contracts (PBC-PRT-002 / Black-Scholes boundaries)
+        function evaluateExpirations() {
+            const expContracts = state.portfolio.options.filter(o => o.expDay === state.day);
+            if (expContracts.length === 0) return;
+
+            logConsole(`--- EXPIRATION ASSIGNMENT CHECK ---`, 'audit');
+
+            expContracts.forEach(opt => {
+                const stockPrice = TICKERS[opt.ticker].price;
+                const strike = opt.strike;
+                const isITM = opt.isCall ? (stockPrice > strike) : (stockPrice < strike);
+                
+                if (isITM) {
+                    if (opt.isShort) {
+                        // Short option assigned
+                        if (opt.isCall) {
+                            // Short Call assigned: must sell stock at strike price
+                            const sharesOwned = state.portfolio.shares[opt.ticker].qty;
+                            if (sharesOwned >= opt.qty * 100) {
+                                state.portfolio.shares[opt.ticker].qty -= opt.qty * 100;
+                                state.cash += strike * opt.qty * 100;
+                                logConsole(`ASSIGNED: Short Call assigned. Sold ${opt.qty * 100} shares of ${opt.ticker} at strike $${strike}.`, 'system');
+                            } else {
+                                // Naked assignment: force stock repurchase at current price, then sell at strike
+                                const loss = (stockPrice - strike) * opt.qty * 100;
+                                state.cash -= loss;
+                                logConsole(`NAKED ASSIGNMENT: Short Call assigned. Forced stock repurchase of ${opt.ticker} at $${stockPrice.toFixed(2)} to deliver strike $${strike}. Net Loss: -$${loss.toFixed(2)}`, 'error');
+                                triggerDamageVisuals();
+                            }
+                        } else {
+                            // Short Put assigned: must buy stock at strike price
+                            const cost = strike * opt.qty * 100;
+                            state.cash -= cost;
+                            const currentShares = state.portfolio.shares[opt.ticker];
+                            const totalCost = (currentShares.qty * currentShares.cost) + cost;
+                            currentShares.qty += opt.qty * 100;
+                            currentShares.cost = totalCost / currentShares.qty;
+                            logConsole(`ASSIGNED: Short Put assigned. Bought ${opt.qty * 100} shares of ${opt.ticker} at strike $${strike}.`, 'system');
+                        }
+                    } else {
+                        // Long option exercised for cash
+                        const intrinsic = opt.isCall ? (stockPrice - strike) : (strike - stockPrice);
+                        const payout = intrinsic * opt.qty * 100;
+                        state.cash += payout;
+                        logConsole(`EXERCISED: Long Option exercised. Collected $${payout.toFixed(2)} intrinsic value on ${opt.ticker} $${strike}.`, 'system');
+                    }
+                } else {
+                    // Option expires out of the money
+                    logConsole(`EXPIRED: Option contract ${opt.ticker} $${strike} ${opt.isCall ? 'Call' : 'Put'} expired worthless. realized 100% gains.`, 'approve');
+                }
+            });
+
+            // Filter out expired options
+            state.portfolio.options = state.portfolio.options.filter(o => o.expDay !== state.day);
+            sfx.playSuccess();
+        }
+
+        // Win/Loss Screen modal triggering
+        function endGame(won) {
+            state.running = false;
+            
+            const titleEl = document.getElementById('modal-title');
+            const descEl = document.getElementById('modal-desc');
+            
+            const success = state.nav >= 115000.0;
+            titleEl.innerText = success ? "MISSION COMPLETED" : "BROKER DE-AUTH";
+            titleEl.className = success ? "screen-title success" : "screen-title failure";
+            
+            descEl.innerText = success ? 
+                `Congratulations! You successfully traded options derivatives, grew capital beyond the $115,000 threshold, and respected all PBC concentration and wash sale rules.` :
+                `Trading session terminated. You failed to reach the $115,000 targets or breached safety boundaries.`;
+
+            // Scorecard reporting
+            const scorecardEl = document.getElementById('scorecard-area');
+            
+            // Calculate final trade count
+            const stockTrades = state.tradeHistory.filter(t => t.action).length;
+            const optionTrades = state.tradeHistory.filter(t => t.strat).length;
+            const totalWashSales = state.lossHarvestLog.length;
+
+            scorecardEl.innerHTML = `
+                <strong>TRADING AUDIT LEDGER:</strong><br>
+                • Final Net Asset Value: $${state.nav.toLocaleString('en-US', { minimumFractionDigits: 2 })}<br>
+                • Stock Trades Executed: ${stockTrades}<br>
+                • Options Underwritten: ${optionTrades}<br>
+                • Wash Sale Violations: ${totalWashSales}<br>
+                • Cash harvested via Tax Loss: $${state.lossHarvestLog.reduce((acc, curr) => acc + curr.lossAmount, 0).toFixed(2)}<br>
+                • Peak Options Approval Level: Level ${state.level}
+            `;
+            scorecardEl.style.display = 'block';
+
+            document.getElementById('replay-btn').style.display = state.tradeHistory.length > 0 ? 'inline-block' : 'none';
+            document.getElementById('modal-btn').innerText = "Engage New Desk";
+            document.getElementById('modal-screen').style.display = 'flex';
+            
+            if (success) sfx.playSuccess();
+            else sfx.playFailure();
+        }
+
+        function varColor(name) {
+            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        }
+
+        window.addEventListener('keydown', e => {
+            if (e.key === ' ' || e.code === 'Space') {
+                if (['INPUT', 'SELECT', 'BUTTON'].includes(document.activeElement.tagName)) return;
+                e.preventDefault();
+                nextDay();
+            }
+            if (e.key === 'Enter') {
+                if (['INPUT', 'SELECT', 'BUTTON'].includes(document.activeElement.tagName)) return;
+                e.preventDefault();
+                executeOrder();
+            }
+        });
+
+        setupGame();
+    </script>
+    <div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.1</div>
+</body>
+</html>
