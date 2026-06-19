@@ -622,6 +622,7 @@
             fuel: 100.0,
             drift: 0.0,
             signal: 100.0,
+            velocity: 120,
             seed: 0,
             running: false,
             playerX: 400,
@@ -724,6 +725,7 @@
             state.fuel = 100.0;
             state.drift = 0.0;
             state.signal = 100.0;
+            state.velocity = 120;
             state.playerX = 400;
             state.playerY = 300;
             state.playerDir = 'down';
@@ -849,11 +851,12 @@
                 if (state.signal < 30.0) penalty += 1;
 
                 if (penalty === 0) {
-                    state.distance = Math.max(0, state.distance - 120);
+                    state.velocity = 120;
                 } else {
                     // Slowed speed due to system warnings
-                    state.distance = Math.max(0, state.distance - (120 - (penalty * 30)));
+                    state.velocity = 120 - (penalty * 30);
                 }
+                state.distance = Math.max(0, state.distance - state.velocity);
 
                 // Check PBC Boundaries with Edge-Triggered Alarms
                 // PBC-MSG-001: Fuel warning
@@ -996,9 +999,105 @@
             }
         }
 
+        // Draw real-time blueprint voyage track HUD
+        function drawNavigationHUD() {
+            if (!state.running) return;
+
+            const startX = 100;
+            const startY = 480;
+            const endY = 120;
+            const trackHeight = startY - endY;
+            
+            const progress = Math.min(1.0, Math.max(0.0, (5000 - state.distance) / 5000));
+            const currentY = startY - (progress * trackHeight);
+
+            // Draw track line (dashed blueprint blue)
+            ctx.strokeStyle = 'rgba(0, 204, 255, 0.15)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX, endY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw start node (DEPARTURE VECTOR)
+            ctx.fillStyle = 'rgba(0, 204, 255, 0.4)';
+            ctx.beginPath();
+            ctx.arc(startX, startY, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = 'rgba(0, 204, 255, 0.3)';
+            ctx.font = '800 0.65rem "Outfit", sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText("DEP. VECTOR", startX - 12, startY + 3);
+
+            // Draw end node (PORT PHOENIX waypoint)
+            const pulsePP = 1.0 + 0.15 * Math.sin(Date.now() / 200);
+            ctx.fillStyle = 'rgba(100, 255, 218, 0.5)';
+            ctx.beginPath();
+            ctx.arc(startX, endY, 5 * pulsePP, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(100, 255, 218, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(startX, endY, 12 * pulsePP, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.fillStyle = '#64ffda';
+            ctx.font = '800 0.75rem "Outfit", sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText("PORT PHOENIX", startX - 12, endY + 3);
+
+            // Draw ship marker
+            ctx.save();
+            ctx.translate(startX, currentY);
+
+            // Glowing engine tail flame (pulsing)
+            const flamePulse = 1.0 + 0.3 * Math.sin(Date.now() / 80);
+            const flameGrad = ctx.createLinearGradient(0, 0, 0, 15);
+            flameGrad.addColorStop(0, 'rgba(0, 204, 255, 0.8)');
+            flameGrad.addColorStop(1, 'rgba(0, 204, 255, 0)');
+            ctx.fillStyle = flameGrad;
+            ctx.beginPath();
+            ctx.moveTo(-3, 4);
+            ctx.lineTo(0, 4 + 10 * flamePulse);
+            ctx.lineTo(3, 4);
+            ctx.closePath();
+            ctx.fill();
+
+            // Ship vector silhouette icon
+            ctx.fillStyle = '#0cf';
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, -8);
+            ctx.lineTo(5, 5);
+            ctx.lineTo(0, 2);
+            ctx.lineTo(-5, 5);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.restore();
+
+            // Telemetry text
+            ctx.fillStyle = '#ccd6f6';
+            ctx.font = '700 0.65rem "Outfit", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`${state.velocity.toFixed(0)} m/s`, startX + 12, currentY - 4);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.fillText(`${state.distance.toFixed(0)}m REM`, startX + 12, currentY + 6);
+        }
+
         // Draw Ship and Blueprint Layout
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw navigation track HUD
+            drawNavigationHUD();
 
             // Draw Background Grid
             ctx.strokeStyle = 'rgba(0, 204, 255, 0.04)';
@@ -1189,6 +1288,6 @@
         setupGame();
         requestAnimationFrame(gameLoop);
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.4</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.5</div>
 </body>
 </html>
