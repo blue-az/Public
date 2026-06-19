@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulkhead τ: Veto</title>
+    <style>
+        :root {
+            --bg: #0a192f;
+            --surface: #112240;
+            --primary: #64ffda;
+            --danger: #f44336;
+            --warning: #ffca28;
+            --text: #ccd6f6;
+            --text-muted: #8892b0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #game-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        #header {
+            padding: 15px 20px;
+            background: var(--surface);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #233554;
+        }
+
+        #stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-val { color: var(--primary); font-weight: bold; }
+
+        canvas {
+            background: #020c1b;
+            cursor: crosshair;
+        }
+
+        #sidebar {
+            width: 320px;
+            background: var(--surface);
+            border-left: 2px solid #233554;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        #logbook-header {
+            padding: 15px;
+            background: #1d2d50;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        #proposal-queue {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .proposal-card {
+            background: var(--bg);
+            border: 1px solid #233554;
+            padding: 12px;
+            border-radius: 4px;
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .proposal-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .proposal-desc {
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .proposal-type {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .type-structural { background: rgba(244, 67, 54, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .type-routine { background: rgba(100, 255, 218, 0.1); color: var(--primary); border: 1px solid var(--primary); }
+
+        .timer-bar-bg {
+            height: 4px;
+            background: #233554;
+            width: 100%;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: var(--warning);
+            width: 100%;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+            transition: filter 0.2s;
+        }
+
+        .btn:hover { filter: brightness(1.2); }
+        .btn-approve { background: var(--primary); color: var(--bg); }
+        .btn-veto { background: var(--danger); color: white; }
+
+        #overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 25, 47, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+        }
+
+        .hidden { display: none !important; }
+        
+        h1 { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div style="position: fixed; top: 15px; right: 340px; font-family: monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="veto.pbc.md" target="_blank" style="color: #64ffda; text-decoration: none;">view charter &rarr;</a></div>
+
+    <div id="game-container">
+        <div id="header">
+            <div>BULKHEAD τ: <span style="color: var(--primary)">VETO</span></div>
+            <div id="stats">
+                <div>INTEGRITY: <span id="integrity-val" class="stat-val">100%</span></div>
+                <div>MISSION PROGRESS: <span id="progress-val" class="stat-val">0%</span></div>
+            </div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="overlay">
+            <h1 id="overlay-title">SYSTEMS INITIALIZED</h1>
+            <p id="overlay-desc">Autonomous Crew Online. Stand by for Supervision.</p>
+            <button class="btn btn-approve" id="start-btn" style="padding: 15px 40px; font-size: 16px;">Engage Supervisor Mode</button>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <div id="logbook-header">Supervisor Audit Queue</div>
+        <div id="proposal-queue">
+            <!-- Proposals appear here -->
+        </div>
+        <div id="charter-status" style="font-size: 10px; color: var(--text-muted); padding: 10px; border-top: 1px solid #233554;">Charter: veto.pbc.md (LIVE) <span style="color: var(--primary);">✓ pbc-spec validated</span></div>
+    </div>
+
+    <script>
+        // CONFIG
+        const CHARTER = {
+            INTEGRITY_MAX: 100,
+            PROGRESS_GOAL: 5000,
+            TIMESTEP: 1000 / 60,
+            PROPOSAL_COUNTDOWN: 5000, // 5 seconds to audit
+            DECAY_CHANCE: 0.005,
+            CREW_SPEED: 2.5
+        };
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const integrityEl = document.getElementById('integrity-val');
+        const progressEl = document.getElementById('progress-val');
+        const queueEl = document.getElementById('proposal-queue');
+        const startBtn = document.getElementById('start-btn');
+        const overlay = document.getElementById('overlay');
+
+        function resize() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight - 65; // height - header
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // GAME STATE
+        let state = {
+            running: false,
+            integrity: 100,
+            progress: 0,
+            frame: 0,
+            accumulator: 0,
+            lastTime: 0,
+            systems: [
+                { id: 'engine', name: 'Engine Core', x: 150, y: 150, health: 100, type: 'ROUTINE' },
+                { id: 'life', name: 'Life Support', x: 150, y: 450, health: 100, type: 'CRITICAL' },
+                { id: 'nav', name: 'Navigation', x: 650, y: 150, health: 100, type: 'ROUTINE' },
+                { id: 'comms', name: 'Comms Array', x: 650, y: 450, health: 100, type: 'CRITICAL' }
+            ],
+            crew: { x: 400, y: 300, targetId: null, taskProgress: 0 },
+            proposals: []
+        };
+
+        const PROPOSAL_TEMPLATES = [
+            { desc: "Replace thermal coupling", structural: false, healthGain: 20, damage: 0 },
+            { desc: "Purge coolant lines", structural: false, healthGain: 20, damage: 0 },
+            { desc: "Overclock core injectors", structural: true, healthGain: 40, damage: 25, warning: "Risks structural fracture." },
+            { desc: "Vent emergency oxygen to boosters", structural: true, healthGain: 10, damage: 30, warning: "Violates life-support boundary." },
+            { desc: "Bypass safety interlocks", structural: true, healthGain: 50, damage: 40, warning: "High risk of containment failure." }
+        ];
+
+        // Seed random generator (Mulberry32)
+        let seed = Math.floor(Math.random() * 100000);
+        function mulberry32(a) {
+            return function() {
+                var t = a += 0x6D2B79F5;
+                t = Math.imul(t ^ t >>> 15, t | 1);
+                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+        let rng = mulberry32(seed);
+
+        // INPUTS
+        startBtn.onclick = () => {
+            overlay.classList.add('hidden');
+            state.running = true;
+        };
+
+        function resetGame(msg) {
+            state.running = false;
+            document.getElementById('overlay-title').innerText = "VETO SESSION ENDED";
+            document.getElementById('overlay-desc').innerText = msg;
+            startBtn.innerText = "Restart Simulation";
+            overlay.classList.remove('hidden');
+            
+            // Reset core stats
+            state.integrity = 100;
+            state.progress = 0;
+            state.proposals = [];
+            queueEl.innerHTML = '';
+            state.systems.forEach(s => s.health = 100);
+        }
+
+        // LOGIC
+        function update() {
+            if (!state.running) return;
+            state.frame++;
+
+            // System Decay
+            state.systems.forEach(s => {
+                if (rng() < CHARTER.DECAY_CHANCE) {
+                    s.health = Math.max(0, s.health - (rng() * 10 + 5));
+                }
+            });
+
+            // Progress (based on system health)
+            let avgHealth = state.systems.reduce((a, b) => a + b.health, 0) / state.systems.length;
+            if (avgHealth > 50) {
+                state.progress += (avgHealth / 100) * 2;
+            }
+
+            if (state.progress >= CHARTER.PROGRESS_GOAL) {
+                resetGame("Mission Accomplished. Safe boundaries maintained.");
+            }
+
+            if (state.integrity <= 0) {
+                resetGame("Boundary Failure. Unauthorized autonomous actions breached containment.");
+            }
+
+            // Crew AI
+            if (!state.crew.targetId) {
+                // Find weakest system
+                let weakest = [...state.systems].sort((a,b) => a.health - b.health)[0];
+                if (weakest.health < 90) state.crew.targetId = weakest.id;
+            } else {
+                let target = state.systems.find(s => s.id === state.crew.targetId);
+                let dx = target.x - state.crew.x;
+                let dy = target.y - state.crew.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+
+                if (dist > 5) {
+                    state.crew.x += (dx/dist) * CHARTER.CREW_SPEED;
+                    state.crew.y += (dy/dist) * CHARTER.CREW_SPEED;
+                } else {
+                    // At target, generate proposal
+                    createProposal(target);
+                    state.crew.targetId = null;
+                }
+            }
+
+            // Update Proposal Timers
+            state.proposals.forEach(p => {
+                p.timeLeft -= CHARTER.TIMESTEP;
+                if (p.timeLeft <= 0 && !p.handled) {
+                    autoApply(p);
+                }
+            });
+            state.proposals = state.proposals.filter(p => !p.handled);
+        }
+
+        function createProposal(system) {
+            let template = PROPOSAL_TEMPLATES[Math.floor(rng() * PROPOSAL_TEMPLATES.length)];
+            // Bias towards routine fixes if health is high
+            if (system.health > 70 && template.structural) {
+                template = PROPOSAL_TEMPLATES[0];
+            }
+
+            let proposal = {
+                id: Date.now() + Math.random(),
+                systemName: system.name,
+                systemId: system.id,
+                desc: template.desc,
+                structural: template.structural,
+                healthGain: template.healthGain,
+                damage: template.damage,
+                warning: template.warning,
+                timeLeft: CHARTER.PROPOSAL_COUNTDOWN,
+                handled: false
+            };
+
+            state.proposals.push(proposal);
+            renderProposalCard(proposal);
+        }
+
+        function renderProposalCard(p) {
+            const card = document.createElement('div');
+            card.className = 'proposal-card';
+            card.id = `prop-${p.id}`;
+            card.innerHTML = `
+                <div class="proposal-title">
+                    <span>${p.systemName}</span>
+                    <span>AGENT PROPOSAL</span>
+                </div>
+                <div class="proposal-desc">${p.desc}</div>
+                <div class="proposal-type ${p.structural ? 'type-structural' : 'type-routine'}">
+                    ${p.structural ? 'STRUCTURAL / CRITICAL' : 'ROUTINE MAINTENANCE'}
+                </div>
+                ${p.warning ? `<div style="color: var(--danger); font-size: 10px; margin-bottom: 8px;">⚠ ${p.warning}</div>` : ''}
+                <div class="timer-bar-bg"><div class="timer-bar" id="timer-${p.id}"></div></div>
+                <div class="card-actions">
+                    <button class="btn btn-veto" onclick="vetoProposal(${p.id})">Veto</button>
+                    <button class="btn btn-approve" onclick="approveProposal(${p.id})">Approve</button>
+                </div>
+            `;
+            queueEl.appendChild(card);
+        }
+
+        window.approveProposal = (id) => {
+            let p = state.proposals.find(prop => prop.id === id);
+            if (!p) return;
+            p.handled = true;
+            let system = state.systems.find(s => s.id === p.systemId);
+            system.health = Math.min(100, system.health + p.healthGain);
+            
+            if (p.structural) {
+                state.integrity -= p.damage;
+            }
+            
+            document.getElementById(`prop-${id}`).remove();
+        };
+
+        window.vetoProposal = (id) => {
+            let p = state.proposals.find(prop => prop.id === id);
+            if (!p) return;
+            p.handled = true;
+            document.getElementById(`prop-${id}`).remove();
+        };
+
+        function autoApply(p) {
+            p.handled = true;
+            let system = state.systems.find(s => s.id === p.systemId);
+            system.health = Math.min(100, system.health + p.healthGain);
+            
+            // Auto-applying a structural change is much more damaging
+            if (p.structural) {
+                state.integrity -= (p.damage * 1.5);
+            } else {
+                // Routine auto-apply is fine, just like standard agent tools
+            }
+            
+            let el = document.getElementById(`prop-${p.id}`);
+            if (el) el.remove();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Ship Background
+            ctx.strokeStyle = '#233554';
+            ctx.setLineDash([5, 5]);
+            ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
+            ctx.setLineDash([]);
+
+            // Draw Systems
+            state.systems.forEach(s => {
+                // Connection lines to crew
+                if (state.crew.targetId === s.id) {
+                    ctx.strokeStyle = 'rgba(100, 255, 218, 0.2)';
+                    ctx.beginPath();
+                    ctx.moveTo(state.crew.x, state.crew.y);
+                    ctx.lineTo(s.x, s.y);
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle = s.health < 30 ? '#f44336' : (s.health < 70 ? '#ffca28' : '#64ffda');
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, 25, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = 'white';
+                ctx.font = '12px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText(s.name, s.x, s.y + 45);
+                ctx.fillText(`${Math.floor(s.health)}%`, s.x, s.y + 5);
+            });
+
+            // Draw Crew
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#64ffda';
+            ctx.fillStyle = '#64ffda';
+            ctx.beginPath();
+            ctx.arc(state.crew.x, state.crew.y, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Update UI
+            integrityEl.innerText = `${Math.floor(state.integrity)}%`;
+            progressEl.innerText = `${Math.floor((state.progress / CHARTER.PROGRESS_GOAL) * 100)}%`;
+            
+            state.proposals.forEach(p => {
+                let timerBar = document.getElementById(`timer-${p.id}`);
+                if (timerBar) {
+                    timerBar.style.width = `${(p.timeLeft / CHARTER.PROPOSAL_COUNTDOWN) * 100}%`;
+                }
+            });
+        }
+
+        function gameLoop(timestamp) {
+            if (!state.lastTime) state.lastTime = timestamp;
+            let deltaTime = timestamp - state.lastTime;
+            state.lastTime = timestamp;
+
+            if (deltaTime > 250) deltaTime = 250;
+            state.accumulator += deltaTime;
+
+            while (state.accumulator >= CHARTER.TIMESTEP) {
+                update();
+                state.accumulator -= CHARTER.TIMESTEP;
+            }
+
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        requestAnimationFrame(gameLoop);
+    </script>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.4</div>
+</body>
+</html>

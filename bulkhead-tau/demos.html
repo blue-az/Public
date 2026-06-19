@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulkhead τ — Demos Shelf</title>
+    <style>
+        body {
+            background-color: #0a192f;
+            color: #64ffda;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        #shelf {
+            max-width: 900px;
+            width: 100%;
+            background: #112240;
+            border: 2px solid #233554;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        header {
+            border-bottom: 2px solid #64ffda;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+        h1 { margin: 0; font-size: 2.5rem; letter-spacing: 2px; }
+        .subtitle { color: #8892b0; font-size: 0.9rem; margin-top: 5px; }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .game-card {
+            background: #0a192f;
+            border: 1px solid #233554;
+            padding: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-card:hover {
+            border-color: #64ffda;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.1);
+        }
+        .game-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; color: #ccd6f6; }
+        .game-desc { color: #8892b0; font-size: 0.85rem; line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
+        .boundary-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            background: rgba(100, 255, 218, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .btn-launch {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #64ffda;
+            border: 1px solid #64ffda;
+            padding: 12px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-launch:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.75rem;
+            color: #495670;
+            text-align: center;
+            border-top: 1px solid #233554;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="shelf">
+        <header>
+            <h1>BULKHEAD τ</h1>
+            <div class="subtitle">Boundary Series — Deterministic Demos & Educational Demos</div>
+        </header>
+
+        <div class="game-grid">
+            <!-- Game 1: Flappy -->
+            <div class="game-card">
+                <div class="boundary-tag">Upper Boundary: Charter</div>
+                <div class="game-title">Bulkhead Flappy</div>
+                <div class="game-desc">
+                    Stay within the safe envelope defined by the pbc.md charter. 
+                    Demonstrates real-time contract enforcement and deterministic replay.
+                </div>
+                <a href="bulkhead-flappy/index.html" class="btn-launch">LAUNCH GAME</a>
+            </div>
+
+            <!-- Game 2: Damage Control -->
+            <div class="game-card">
+                <div class="boundary-tag">Mid Boundary: Policy</div>
+                <div class="game-title">Damage Control</div>
+                <div class="game-desc">
+                    Isolate cascading failures. Seal bulkhead doors to contain flooding to individual domains. 
+                    Demonstrates the containment thesis of Bulkhead τ.
+                </div>
+                <a href="bulkhead-damage-control/index.html" class="btn-launch">LAUNCH GAME</a>
+            </div>
+
+            <!-- Game 3: Voyage -->
+            <div class="game-card">
+                <div class="boundary-tag">Lower Boundary: Logbook</div>
+                <div class="game-title">Bulkhead Voyage</div>
+                <div class="game-desc">
+                    Audit the autonomous crew. Cross-check verbal narration against the append-only Logbook.
+                    "Trust the validator, not the vibe" made playable.
+                </div>
+                <a href="bulkhead-voyage/index.html" class="btn-launch">LAUNCH GAME</a>
+            </div>
+
+            <!-- Game 4: Messenger -->
+            <div class="game-card">
+                <div class="boundary-tag">Physical Verification</div>
+                <div class="game-title">Messenger</div>
+                <div class="game-desc">
+                    2D ship-walk exploration. Resolve system decay by physically attending consoles.
+                    Demonstrates the anti-hallucination property of direct substrate interaction.
+                </div>
+                <a href="bulkhead-messenger/index.html" class="btn-launch">LAUNCH GAME</a>
+            </div>
+
+            <!-- Game 5: Router -->
+            <div class="game-card">
+                <div class="boundary-tag">Data Boundary: Schema</div>
+                <div class="game-title">Router</div>
+                <div class="game-desc">
+                    Route incoming packets to the correct systems while rejecting poisoned packets that violate the schema boundary.
+                </div>
+                <a href="bulkhead-router/index.html" class="btn-launch">LAUNCH GAME</a>
+            </div>
+
+            <!-- Game 6: Veto -->
+            <div class="game-card">
+                <div class="boundary-tag">Supervisor: HIL</div>
+                <div class="game-title">Veto</div>
+                <div class="game-desc">
+                    Follow an autonomous crew making repairs and veto the bad ones before they auto-apply and breach the hull.
+                </div>
+                <a href="bulkhead-veto/index.html" class="btn-launch">LAUNCH GAME</a>
+            </div>
+        </div>
+
+        <footer>
+            Project Phoenix // Bulkhead τ Release Line 2026<br>
+            Deterministic authority through grounded substrates.
+        </footer>
+    </div>
+<script>
+/* Auto rev + charter dashboard: each card shows its game's live #bt-rev and a link to its charter. System, not manual. */
+document.querySelectorAll('.game-card').forEach(async card => {
+  const link = card.querySelector('a.btn-launch');
+  if (!link) return;
+  const href = link.getAttribute('href');
+  const tag = document.createElement('div');
+  tag.style.cssText = 'font-size:0.72rem;color:#8892b0;font-family:monospace;margin-top:8px;';
+  tag.textContent = 'rev …';
+  link.insertAdjacentElement('beforebegin', tag);
+  try {
+    const r = await fetch(href, {cache:'no-store'});
+    const m = (await r.text()).match(/id="bt-rev"[^>]*>([^<]+)</);
+    tag.textContent = m ? ('rev ' + m[1].trim()) : 'rev —';
+  } catch (e) { tag.textContent = 'rev —'; }
+});
+</script>
+</body>
+</html>

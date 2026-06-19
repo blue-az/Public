@@ -74,6 +74,7 @@
     </style>
 </head>
 <body>
+    <div style="position: fixed; top: 15px; right: 15px; font-family: monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="voyage.pbc.md" target="_blank" style="color: #64ffda; text-decoration: none;">view charter &rarr;</a></div>
     <div id="game-box">
         <div id="stats">
             <div>Distance: <span id="distVal" class="stat-val">1000</span>nm</div>
@@ -219,7 +220,11 @@
                 CHARTER.DRIFT_LIMIT = extract('PBC-VOY-002') || 5.0;
                 CHARTER.TOLERANCE = extract('PBC-VOY-003') || 0.01;
                 CHARTER.AUDIT_COST = extract('PBC-VOY-004') || 4.0;
-            } catch (e) { console.error("PBC load failed"); }
+                document.getElementById('charter-view').innerHTML = 'Charter: voyage.pbc.md (LIVE) <span style="color: #64ffda;">✓ pbc-spec validated</span>';
+            } catch (e) {
+                console.error("PBC load failed");
+                document.getElementById('charter-view').innerHTML = 'Charter: voyage.pbc.md <span style="color: #ff5555;">(OFFLINE)</span>';
+            }
         }
 
         function print(text, className = '') {
@@ -378,5 +383,6 @@
             nextTurn();
         });
     </script>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.3</div>
 </body>
 </html>

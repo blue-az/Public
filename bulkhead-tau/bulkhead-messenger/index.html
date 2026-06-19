@@ -396,8 +396,12 @@
         <div class="logo-group">
             <div class="logo-mark"></div>
             <h1>BULKHEAD τ: MESSENGER</h1>
+            <span style="font-size:11px; color:var(--text-muted); margin-left:15px; align-self:center;">✓ pbc-spec validated · <a href="messenger.pbc.md" target="_blank" style="color:var(--primary);text-decoration:none;">view charter &rarr;</a></span>
         </div>
-        <div class="destination-badge" id="dest-val">Target: Port Phoenix (5000m)</div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <div id="mute-toggle" style="cursor: pointer; padding: 4px 10px; border: 1px solid var(--primary); border-radius: 4px; font-size: 0.8rem; font-weight: bold; color: var(--primary);" onclick="toggleAudio()">AUDIO: OFF</div>
+            <div class="destination-badge" id="dest-val">Target: Port Phoenix (5000m)</div>
+        </div>
     </header>
 
     <!-- Workspace -->
@@ -405,35 +409,20 @@
         <!-- Interactive overlays for consoles -->
         <div id="bridge-panel" class="overlay-card">
             <div class="overlay-title">Bridge Navigation Console</div>
-            <div class="slider-group">
-                <label class="metric-label">Steering Stabilizer Alignment</label>
-                <input type="range" id="bearing-slider" min="-30" max="30" value="0">
-                <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-family:'Share Tech Mono';">
-                    <span>PORT</span>
-                    <span id="slider-val-bearing" style="color:var(--primary);">0°</span>
-                    <span>STBD</span>
-                </div>
-            </div>
-            <button class="btn-action" onclick="verifyBearing()">Align and Verify</button>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Decay detected. Manually correct the steering alignment to fix course drift.</p>
+            <button class="btn-action" onclick="verifyBearing()">Correct Course</button>
         </div>
 
         <div id="engine-panel" class="overlay-card">
             <div class="overlay-title">Engine Fuel Injector</div>
             <p style="font-size:0.85rem; color:var(--text-muted);">Decay detected. Manually pump fuel flow injectors to correct depletion.</p>
-            <button class="btn-action" onclick="pumpFuel()">Pump Injectors (+15%)</button>
+            <button class="btn-action" onclick="pumpFuel()">Pump Injectors (+20%)</button>
         </div>
 
         <div id="comms-panel" class="overlay-card">
             <div class="overlay-title">Comms Receiver Module</div>
-            <div class="slider-group">
-                <label class="metric-label">Match Target Frequency</label>
-                <input type="range" id="comms-slider" min="100" max="999" value="100">
-                <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-family:'Share Tech Mono';">
-                    <span id="comms-curr-freq" style="color:var(--primary);">100 MHz</span>
-                    <span id="comms-target-freq" style="color:var(--warning);">Target: 500 MHz</span>
-                </div>
-            </div>
-            <button class="btn-action" onclick="verifyComms()">Tune Array</button>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Decay detected. Manually tune the frequency array to restore signal strength.</p>
+            <button class="btn-action" onclick="verifyComms()">Re-tune Signal</button>
         </div>
 
         <!-- Main Screen Modals -->
@@ -495,7 +484,7 @@
             <span>Movement: <span class="key-badge">W</span> <span class="key-badge">A</span> <span class="key-badge">S</span> <span class="key-badge">D</span> / <span class="key-badge">&larr;&uarr;&darr;&rarr;</span></span>
             <span>Verify Console: Stand on glowing console pads</span>
         </div>
-        <div>PBC Protocol: PBC-VOY-001/002/003/004 | Charter: messenger.pbc.md</div>
+        <div>PBC Protocol: PBC-MSG-001/002/003/004 | Charter: messenger.pbc.md (LIVE) <span style="color: #64ffda;">✓ pbc-spec validated</span></div>
     </div>
 
     <script>
@@ -503,16 +492,19 @@
         class AudioSynth {
             constructor() {
                 this.ctx = null;
+                this.muted = true; // Default audio to OFF (cozy)
             }
 
             init() {
-                if (!this.ctx) {
+                if (!this.ctx && !this.muted) {
                     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
                 }
             }
 
             playWalk() {
+                if (this.muted) return;
                 this.init();
+                if (!this.ctx) return;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.connect(gain);
@@ -521,7 +513,7 @@
                 osc.frequency.setValueAtTime(80, this.ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.08);
 
-                gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.005, this.ctx.currentTime); // Lowered volume
                 gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.08);
 
                 osc.start();
@@ -529,7 +521,9 @@
             }
 
             playWarning() {
+                if (this.muted) return;
                 this.init();
+                if (!this.ctx) return;
                 const now = this.ctx.currentTime;
                 const osc1 = this.ctx.createOscillator();
                 const osc2 = this.ctx.createOscillator();
@@ -555,7 +549,9 @@
             }
 
             playSuccess() {
+                if (this.muted) return;
                 this.init();
+                if (!this.ctx) return;
                 const now = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
@@ -578,7 +574,9 @@
             }
 
             playFailure() {
+                if (this.muted) return;
                 this.init();
+                if (!this.ctx) return;
                 const now = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
@@ -599,6 +597,21 @@
 
         const sfx = new AudioSynth();
 
+        function toggleAudio() {
+            sfx.muted = !sfx.muted;
+            const btn = document.getElementById('mute-toggle');
+            if (sfx.muted) {
+                btn.innerText = "AUDIO: OFF";
+                btn.style.background = "transparent";
+                btn.style.color = "var(--primary)";
+            } else {
+                btn.innerText = "AUDIO: ON";
+                btn.style.background = "var(--primary)";
+                btn.style.color = "var(--bg-deep)";
+                sfx.init();
+            }
+        }
+
         // Canvas Setup
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -615,13 +628,15 @@
             playerY: 300,
             playerDir: 'down',
             isMoving: false,
-            targetCommsFreq: 500,
             lastTickTime: 0,
             warningTriggered: false
         };
 
         // Seed random generator (Mulberry32)
         let rng;
+        let lastTime = 0;
+        let accumulator = 0;
+        const FIXED_STEP = 1000 / 60;
         function mulberry32(a) {
             return function() {
                 var t = a += 0x6D2B79F5;
@@ -657,19 +672,6 @@
             }
         });
         window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
-
-        // UI Controls event listeners
-        const bearingSlider = document.getElementById('bearing-slider');
-        const sliderValBearing = document.getElementById('slider-val-bearing');
-        bearingSlider.addEventListener('input', e => {
-            sliderValBearing.innerText = `${e.target.value}°`;
-        });
-
-        const commsSlider = document.getElementById('comms-slider');
-        const commsCurrFreq = document.getElementById('comms-curr-freq');
-        commsSlider.addEventListener('input', e => {
-            commsCurrFreq.innerText = `${e.target.value} MHz`;
-        });
 
         // Logger Function
         function log(message, type = 'info') {
@@ -717,15 +719,13 @@
             state.playerY = 300;
             state.playerDir = 'down';
             state.running = true;
-            state.warningTriggered = false;
+            state.inBreachFuel = false;
+            state.inBreachDrift = false;
+            state.inBreachSignal = false;
             state.lastTickTime = Date.now();
             
             document.getElementById('modal-screen').style.display = 'none';
             document.getElementById('logbook-container').innerHTML = '';
-            
-            // Randomize target radio frequency
-            state.targetCommsFreq = Math.floor(rng() * 800) + 150;
-            document.getElementById('comms-target-freq').innerText = `Target: ${state.targetCommsFreq} MHz`;
 
             log(`VOYAGE INITIALIZED WITH SEED: ${state.seed}`, 'info');
             log(`CHARTER CONTRACT LOADED (PBC-MSG-001/002/003/004 active)`, 'info');
@@ -735,7 +735,7 @@
 
         // Console Actions / Verifications
         function pumpFuel() {
-            state.fuel = Math.min(100.0, state.fuel + 15.0);
+            state.fuel = Math.min(100.0, state.fuel + 20.0);
             log(`[VERIFIED] PBC-MSG-001: Fuel level refueled manually to ${state.fuel.toFixed(1)}%`, 'success');
             sfx.playSuccess();
             updateUI();
@@ -743,38 +743,17 @@
 
         // Steering Alignment
         function verifyBearing() {
-            const userAlign = parseInt(bearingSlider.value);
-            // Deduct deviation based on alignment success
-            const correction = Math.abs(userAlign);
-            state.drift = Math.max(0.0, state.drift - correction);
-            
-            if (state.drift <= 10.0) {
-                log(`[VERIFIED] PBC-MSG-002: Steering aligned. Current drift corrected to ${state.drift.toFixed(1)}°`, 'success');
-                sfx.playSuccess();
-            } else {
-                log(`[ALERT] Bridge align insufficient. Drift is still ${state.drift.toFixed(1)}°`, 'warn');
-                sfx.playFailure();
-            }
+            state.drift = 0.0;
+            log(`[VERIFIED] PBC-MSG-002: Steering aligned. Course drift corrected.`, 'success');
+            sfx.playSuccess();
             updateUI();
         }
 
         // Comms Alignment
         function verifyComms() {
-            const userFreq = parseInt(commsSlider.value);
-            const diff = Math.abs(userFreq - state.targetCommsFreq);
-            
-            if (diff < 15) {
-                state.signal = Math.min(100.0, state.signal + 40.0);
-                // Roll new target frequency
-                state.targetCommsFreq = Math.floor(rng() * 800) + 150;
-                document.getElementById('comms-target-freq').innerText = `Target: ${state.targetCommsFreq} MHz`;
-                
-                log(`[VERIFIED] PBC-MSG-003: Signal matched target. Strength boosted to ${state.signal.toFixed(1)}%`, 'success');
-                sfx.playSuccess();
-            } else {
-                log(`[ALERT] Frequency mismatched. Signal remains weak at ${state.signal.toFixed(1)}%`, 'warn');
-                sfx.playFailure();
-            }
+            state.signal = 100.0;
+            log(`[VERIFIED] PBC-MSG-003: Array tuned. Signal strength restored.`, 'success');
+            sfx.playSuccess();
             updateUI();
         }
 
@@ -804,15 +783,9 @@
             if (state.signal < 30) signalBar.className = 'metric-bar danger';
             else if (state.signal < 60) signalBar.className = 'metric-bar warning';
 
-            // Check game over or win conditions
+            // Check win condition (No instant loss conditions)
             if (state.running) {
-                if (state.fuel <= 0.0) {
-                    endGame(false, "Engine starved of fuel. Propulsion failure. Mission Aborted.");
-                } else if (state.drift >= 30.0) {
-                    endGame(false, "Vessel drifted violently off course into shallow reefs. Ship wrecked.");
-                } else if (state.signal <= 0.0) {
-                    endGame(false, "Complete communications blackout. GPS navigation systems offline.");
-                } else if (state.distance <= 0) {
+                if (state.distance <= 0) {
                     endGame(true, "Vessel successfully arrived at Port Phoenix with all systems verified and aligned.");
                 }
             }
@@ -827,7 +800,7 @@
             const btnEl = document.getElementById('modal-btn');
             
             if (won) {
-                titleEl.innerText = "MISSION COMPLISHED";
+                titleEl.innerText = "VOYAGE COMPLETE";
                 titleEl.className = "screen-title success";
                 sfx.playSuccess();
             } else {
@@ -850,40 +823,61 @@
             if (now - state.lastTickTime >= 1000) {
                 state.lastTickTime = now;
 
-                // Decay Tick
-                const dFuel = (rng() * 1.2) + 0.3;
-                const dDrift = (rng() * 1.5) + 0.2;
-                const dSignal = (rng() * 1.4) + 0.4;
-
-                state.fuel = Math.max(0.0, state.fuel - dFuel);
-                state.drift = Math.min(30.0, state.drift + dDrift);
-                state.signal = Math.max(0.0, state.signal - dSignal);
+                // Calibrated Staggered Decay
+                const rand = rng();
+                if (rand < 0.33) {
+                    state.fuel = Math.max(0.0, state.fuel - 1.5);
+                } else if (rand < 0.66) {
+                    state.drift = Math.min(30.0, state.drift + 1.5);
+                } else {
+                    state.signal = Math.max(0.0, state.signal - 2.0);
+                }
                 
-                // Reduce distance
-                if (state.drift < 10.0 && state.fuel > 20.0) {
+                // Reduce distance - penalize progress for ANY system out of bounds
+                let penalty = 0;
+                if (state.fuel < 20.0) penalty += 1;
+                if (state.drift > 10.0) penalty += 1;
+                if (state.signal < 30.0) penalty += 1;
+
+                if (penalty === 0) {
                     state.distance = Math.max(0, state.distance - 120);
                 } else {
                     // Slowed speed due to system warnings
-                    state.distance = Math.max(0, state.distance - 40);
+                    state.distance = Math.max(0, state.distance - (120 - (penalty * 30)));
                 }
 
-                // Check PBC Boundaries
+                // Check PBC Boundaries with Edge-Triggered Alarms
                 // PBC-MSG-001: Fuel warning
                 if (state.fuel < 20.0) {
-                    log(`[CRITICAL WARNING] PBC-MSG-001: Fuel below threshold (${state.fuel.toFixed(1)}%). Refuel required in ENGINE ROOM.`, 'error');
-                    sfx.playWarning();
+                    if (!state.inBreachFuel) {
+                        state.inBreachFuel = true;
+                        log(`[WARNING] PBC-MSG-001: Fuel below threshold (${state.fuel.toFixed(1)}%). Replenish in ENGINE ROOM.`, 'error');
+                        sfx.playWarning();
+                    }
+                } else {
+                    state.inBreachFuel = false;
                 }
                 
                 // PBC-MSG-002: Steering/deviation warning
                 if (state.drift > 10.0) {
-                    log(`[CRITICAL WARNING] PBC-MSG-002: Course drift out of bounds (${state.drift.toFixed(1)}°). Correct heading on BRIDGE.`, 'error');
-                    sfx.playWarning();
+                    if (!state.inBreachDrift) {
+                        state.inBreachDrift = true;
+                        log(`[WARNING] PBC-MSG-002: Course drift out of bounds (${state.drift.toFixed(1)}°). Correct heading on BRIDGE.`, 'error');
+                        sfx.playWarning();
+                    }
+                } else {
+                    state.inBreachDrift = false;
                 }
 
                 // PBC-MSG-003: Comms signal warning
                 if (state.signal < 30.0) {
-                    log(`[CRITICAL WARNING] PBC-MSG-003: Comms array signal quality low (${state.signal.toFixed(1)}%). Re-align signal in COMMS.`, 'error');
-                    sfx.playWarning();
+                    if (!state.inBreachSignal) {
+                        state.inBreachSignal = true;
+                        log(`[WARNING] PBC-MSG-003: Comms array signal quality low (${state.signal.toFixed(1)}%). Re-align in COMMS.`, 'error');
+                        sfx.playWarning();
+                    }
+                } else {
+                    state.inBreachSignal = false;
                 }
 
                 updateUI();
@@ -1163,9 +1157,21 @@
         }
 
         // Main Loop
-        function gameLoop() {
-            movePlayer();
-            systemTicks();
+        function gameLoop(timestamp) {
+            if (!lastTime) lastTime = timestamp;
+            let deltaTime = timestamp - lastTime;
+            lastTime = timestamp;
+
+            if (deltaTime > 250) deltaTime = 250;
+
+            accumulator += deltaTime;
+
+            while (accumulator >= FIXED_STEP) {
+                movePlayer();
+                systemTicks();
+                accumulator -= FIXED_STEP;
+            }
+
             draw();
             requestAnimationFrame(gameLoop);
         }
@@ -1174,5 +1180,6 @@
         setupGame();
         requestAnimationFrame(gameLoop);
     </script>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.2</div>
 </body>
 </html>

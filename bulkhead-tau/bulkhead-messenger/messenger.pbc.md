@@ -1,9 +1,9 @@
 ---
 id: pbc-messenger-core
-title: Bulkhead τ Messenger — Behavior Contract
+title: Bulkhead τ Messenger — Behavior Contract (v2)
 context: messenger-game
 status: draft
-updated: 2026-06-16
+updated: 2026-06-17
 tags:
   - game
   - educational
@@ -13,38 +13,38 @@ anchor: messenger-core
 
 # Bulkhead τ Messenger — Behavior Contract
 
-This charter defines the operational constraints and physical verification protocols for Bulkhead Messenger. Real-time telemetry is streamed to the Logbook sidebar, but corrective action requires physical attendance by the operator.
+This charter defines the operational constraints for Bulkhead Messenger. Real-time telemetry is streamed to the Logbook sidebar. Corrective action requires physical attendance by the operator, but the vessel's voyage is prioritized as a stable, low-stress transit.
 
 ## Scope
 
 - Engine fuel levels and efficiency (Engine Room)
 - Navigation bearing and course drift (Bridge)
-- Comms/Radio signal integrity and message dispatch (Radio Room)
+- Comms/Radio signal integrity (Radio Room)
 
 ## Rules
 
 ```pbc:rules
 - id: PBC-MSG-001
   name: Engine Fuel Warning Threshold
-  rule: Fuel levels must remain above 20.0% to avoid propulsion failure.
+  rule: Fuel levels below 20.0% signal a need for replenishment. Depleted fuel slows transit speed but does not result in loss.
   trust: trusted
   value: 20.0
   unit: percent
 - id: PBC-MSG-002
   name: Course Drift Limit
-  rule: Vessel bearing must deviate no more than 10.0 degrees from the charted course.
+  rule: Vessel bearing should deviate no more than 10.0 degrees. Higher drift slows progress as the navigator corrects the arc.
   trust: trusted
   value: 10.0
   unit: degrees
 - id: PBC-MSG-003
   name: Comms Signal Quality
-  rule: Comms array signal quality must remain above 30.0% for stable transmissions.
+  rule: Comms array signal quality should remain above 30.0%. Poor signal reduces the efficiency of port-arrival handshakes.
   trust: trusted
   value: 30.0
   unit: percent
 - id: PBC-MSG-004
-  name: Physical Attendance Protocol
-  rule: Audited alarms can only be cleared by direct physical console interaction, preventing remote-clearing hallucinations.
+  name: Calibrated Decay
+  rule: Ship systems decay at a slow, staggered rate to ensure operator attention is focused on one maintenance task at a time.
   trust: trusted
 ```
 
@@ -54,20 +54,36 @@ This charter defines the operational constraints and physical verification proto
 id: MSG-BHV-001
 name: System Decay
 actor: ship-systems
-description: Over time, ship systems decay (fuel depletes, course drifts, radio frequency drifts).
+description: Over time, ship systems decay at a calibrated, non-punishing rate.
 trust: trusted
+```
+
+```pbc:outcomes
+- System metrics (fuel level, bearing alignment, comms signal quality) slowly degrade over time.
+```
 ```
 
 ```pbc:behavior
 id: MSG-BHV-002
 name: Physical Verification
 actor: player
-description: The sailor walks to the corresponding console to perform verification and resolve the warning.
+description: The operator walks to the corresponding console to perform a single-click verification and resolve the warning.
 trust: trusted
 ```
 
 ```pbc:outcomes
-- If fuel < 20%, course drift > 10°, or radio signal < 30%, a warning is appended to the Logbook.
-- Standing inside the station's zone allows console access to correct the state.
-- Successful verification resets the system state and logs a 'VERIFIED' event in the Logbook.
+- Warnings (fuel < 20%, drift > 10°, signal < 30%) trigger a single edge-triggered alarm and a log entry.
+- Out-of-bounds systems reduce distance covered per tick.
+- Correcting systems restores full transit speed.
+```
+
+## Provenance
+
+```pbc:provenance
+- ref: docs/BULKHEAD_MESSENGER_REDESIGN.md
+  confidence: verified
+  note: Redesign notes for the Messenger exploration containment demo.
+- ref: bulkhead-messenger/index.html
+  confidence: verified
+  note: The Engine Room (game) implements explore-walk and console verification.
 ```

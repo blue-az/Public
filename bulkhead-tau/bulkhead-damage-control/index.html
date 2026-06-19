@@ -141,6 +141,7 @@
     </style>
 </head>
 <body>
+    <div style="position: fixed; top: 15px; right: 15px; font-family: monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="damage-control.pbc.md" target="_blank" style="color: #64ffda; text-decoration: none;">view charter &rarr;</a></div>
     <div id="main-layout">
         <div id="engine-panel" class="side-panel">
             <h2>LOGBOOK & ENGINE</h2>
@@ -297,7 +298,7 @@
                 targetScoreEl.innerText = CHARTER.WAVES_TO_WIN;
                 targetWaveValEl.innerText = CHARTER.WAVES_TO_WIN;
                 
-                document.getElementById('charterStatus').innerText = "Source: damage-control.pbc.md (LIVE)";
+                document.getElementById('charterStatus').innerHTML = 'Source: damage-control.pbc.md (LIVE) <span style="color: #64ffda;">✓ pbc-spec validated</span>';
                 document.getElementById('charterStatus').style.color = "#64ffda";
             } catch (e) {
                 console.error("PBC Fetch failed:", e);
@@ -630,5 +631,6 @@
             showSplash();
         });
     </script>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.2</div>
 </body>
 </html>

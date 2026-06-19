@@ -61,7 +61,7 @@ id: VOY-BHV-001
 name: Helm Adjustment
 actor: crew
 description: The autonomous crew adjusts injectors or bearing to maintain the Bridge course.
-trust: untrusted
+trust: provisional
 ```
 
 ```pbc:outcomes
@@ -81,4 +81,15 @@ trust: trusted
 ```pbc:outcomes
 - Comparing CLAIM to STATE reveals a 'DIVERGENCE' if discrepancy > 0.01 (PBC-VOY-003).
 - Finding a DIVERGENCE earns verification points and prevents catastrophic failure.
+```
+
+## Provenance
+
+```pbc:provenance
+- ref: docs/BULKHEAD_VOYAGE_OUTLINE.md
+  confidence: verified
+  note: Outline spec for the Voyage simulation demo.
+- ref: bulkhead-voyage/index.html
+  confidence: verified
+  note: The Engine Room (game) parses these constants at runtime via regex.
 ```

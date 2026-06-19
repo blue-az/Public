@@ -46,7 +46,7 @@ This charter defines the behavior contract for the Bulkhead Damage Control game.
   value: "Engine Room"
 - id: DC-RUL-005
   name: Compartment Layout
-  rule: The vessel consists of 5 linear compartments in the following order: Tennis Agent, GPS Oracle, Water Report, Proximity Sensor, Engine Room.
+  rule: "The vessel consists of 5 linear compartments in the following order: Tennis Agent, GPS Oracle, Water Report, Proximity Sensor, Engine Room."
   trust: trusted
   value: ["Tennis Agent", "GPS Oracle", "Water Report", "Proximity Sensor", "Engine Room"]
 - id: DC-RUL-006

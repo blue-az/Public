@@ -88,3 +88,14 @@ trust: trusted
 - Vessel position Y increases by velocity.
 - Bulkhead position X decreases by 3 (FLOW_SPEED).
 ```
+
+## Provenance
+
+```pbc:provenance
+- ref: docs/BULKHEAD_FLAPPY_REQUIREMENTS.md
+  confidence: verified
+  note: Requirements spec for the Flappy containment demo.
+- ref: bulkhead-flappy/index.html
+  confidence: verified
+  note: The Engine Room (game) parses these constants at runtime via regex.
+```
