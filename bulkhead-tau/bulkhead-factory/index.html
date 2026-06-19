@@ -432,7 +432,7 @@
 <body>
     <div id="ambient-glow"></div>
     <div id="top-info">
-        ✓ pbc-spec validated · <a href="../domains/PPR_Agent/PPR_Agent.pbc.md" target="_blank">view charter &rarr;</a>
+        ✓ pbc-spec validated · <a href="PPR_Agent.pbc.md" target="_blank">view charter &rarr;</a>
     </div>
 
     <div id="main-layout">
@@ -447,6 +447,11 @@
                         <button id="vibeBtn" class="mode-btn" onclick="setBuildMode(false)">VIBE</button>
                         <button id="bulkheadBtn" class="mode-btn active" onclick="setBuildMode(true)">BULKHEAD</button>
                     </div>
+                </div>
+                <div style="font-size: 9px; color: #8892b0; margin-top: 10px; line-height: 1.35; border-left: 2px solid var(--theme-color); padding-left: 8px;">
+                    <strong>Verification Principle:</strong><br>
+                    • <strong>Bulkhead Build</strong>: Actively checks incoming devices against specs and intercepts defects at the scanner boundary.<br>
+                    • <strong>Vibe Build</strong>: Bypasses quality validation. Defective devices ship undetected, leading to delayed clinical recalls and severe score penalties.
                 </div>
             </div>
 
@@ -535,8 +540,15 @@
     <!-- Splash Screen Config Setup -->
     <div id="splash-screen">
         <div id="splash-content">
-            <h1>BULKHEAD τ — FACTORY SIMULATOR</h1>
+            <h1>BULKHEAD σ — FACTORY SIMULATOR</h1>
             <div class="splash-subtitle">Deterministic Device Manufacturing Pipeline (PPR_Agent Domain)</div>
+
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 30px; text-align: left; font-size: 0.88rem; line-height: 1.45; color: #ccd6f6;">
+                <strong style="color: var(--theme-color); font-family: 'Share Tech Mono', monospace; font-size: 1rem; display: block; margin-bottom: 6px;">🎯 THE POINT of the simulation</strong>
+                This simulator illustrates the difference between unchecked LLM/development execution (Vibe) and strictly verified constraints (Bulkhead). 
+                As CRM devices move along the conveyor, assemble their components matching the specifications listed in the active charter. 
+                Running in <strong>Bulkhead Mode</strong> verifies and intercepts defects at the scanner gate. Running in <strong>Vibe Mode</strong> bypasses checks, resulting in delayed product recalls that deduct revenue.
+            </div>
 
             <h3 style="font-family: 'Share Tech Mono', monospace; text-align: left; margin-bottom: 15px;">1. SELECT HISTORICAL VENDOR</h3>
             <div class="setup-grid">
