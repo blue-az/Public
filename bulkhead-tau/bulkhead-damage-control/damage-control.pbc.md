@@ -1,107 +1,136 @@
 ---
-id: pbc-damage-control-core
-title: Bulkhead Damage Control — Playable Core Charter
+id: pbc-damage-control-v3
+title: Bulkhead Damage Control v3 — Ship Damage-Control Behavior Contract
 context: damage-control-game
 status: draft
-updated: 2026-06-15
+updated: 2026-06-18
 tags:
   - game
   - educational
   - bulkhead-tau
-anchor: damage-control-core
+  - redesign
+anchor: damage-control-v3
 ---
 
-# Bulkhead Damage Control — Playable Core Charter
+# Bulkhead Damage Control v3 — Ship Damage-Control Behavior Contract
 
-This charter defines the behavior contract for the Bulkhead Damage Control game. The Engine Room must provably enforce these constants and behaviors.
+A redesign so the game reads and plays like real ship damage control. v2 fixed
+winnability and the lesson (containment = sacrifice a compartment to save the
+core), but it stayed confusing because the ship metaphor was abstracted away —
+vertical columns, water from nowhere, walls that slowly "draw." v3 restores the
+metaphor so the mechanics explain themselves: a hull with compartments, a visible
+breach, watertight doors you race to close, and the sacrifice that keeps the ship
+afloat. Everyone already holds the "ship is flooding, close the doors, save the
+engine room" mental model — v3 just uses it. When v3 ships it replaces
+`bulkhead-damage-control/damage-control.pbc.md` as the game's charter.
 
 ## Scope
 
-- Hull compartments and bulkhead doors
-- Flood dynamics and spread
-- Sealing mechanics and containment rules
+- The vessel rendered as a recognizable ship (hull cross-section, waterline, keel compartments)
+- Breaches as the visible source of flooding
+- Watertight doors and the timed race to close them
+- Containment as sacrifice (a sealed compartment is lost)
+- Win and loss anchored on the critical core (Engine Room)
+
+## Non-goals
+
+- New domains or compartments beyond the existing set
+- Changing the boundary lesson (still containment)
+- Multiplayer or persistence
 
 ## Rules
 
 ```pbc:rules
-- id: DC-RUL-001
-  name: Flood Spread Rate
-  rule: Water spreads to an adjacent compartment through an OPEN bulkhead door at a rate of 0.05 volume units per frame (60fps).
+- id: DC3-RUL-001
+  name: Ship Cross-Section
+  rule: The vessel must render as a recognizable hull cross-section with a waterline and compartments along the keel, not abstract columns.
   trust: trusted
-  value: 0.05
-- id: DC-RUL-002
-  name: Seal Duration
-  rule: Sealing a bulkhead door takes exactly 180 frames (3 seconds at 60fps).
+  compartments: ["Tennis Agent", "GPS Oracle", "Water Report", "Proximity Sensor", "Engine Room"]
+- id: DC3-RUL-002
+  name: Visible Breach Is The Source
+  rule: Water must enter a compartment only through a visible hull breach caused by a damage event, never from an unseen source.
   trust: trusted
-  value: 180
-- id: DC-RUL-003
-  name: Operational Score Threshold
-  rule: (RETIRED AS LOSS CONDITION) Tracks the number of operational (dry) compartments.
+  spread_rate: 0.05
+  damage_frequency: 600
+- id: DC3-RUL-003
+  name: Watertight Doors
+  rule: Adjacent compartments are separated by watertight doors that block flooding only while fully closed.
   trust: trusted
-  value: 3
-- id: DC-RUL-004
-  name: Critical Compartment
-  rule: The Engine Room must remain at 0.0 flood volume. Any flooding in the Engine Room results in an immediate loss.
+  sill: 0.25
+- id: DC3-RUL-004
+  name: Seal Race
+  rule: Closing a door takes time; if water rises above the door sill before it closes the flood spills to the next compartment, otherwise it is contained.
   trust: trusted
-  value: "Engine Room"
-- id: DC-RUL-005
-  name: Compartment Layout
-  rule: "The vessel consists of 5 linear compartments in the following order: Tennis Agent, GPS Oracle, Water Report, Proximity Sensor, Engine Room."
+  seal_duration: 180
+- id: DC3-RUL-005
+  name: Sealing Sacrifices The Compartment
+  rule: A sealed-off flooded compartment is lost for the rest of the run and cannot be reopened or used.
   trust: trusted
-  value: ["Tennis Agent", "GPS Oracle", "Water Report", "Proximity Sensor", "Engine Room"]
-- id: DC-RUL-006
-  name: Damage Event Frequency
-  rule: A new damage event (leak) occurs every 600 frames (10 seconds at 60Hz).
+- id: DC3-RUL-006
+  name: Core Loss Condition
+  rule: The ship founders the moment the Engine Room takes any water.
   trust: trusted
-  value: 600
-- id: DC-RUL-007
-  name: Waves to Win
-  rule: Reach this number of damage waves with the Engine Room dry to achieve a successful voyage.
-  trust: trusted
-  value: 8
-- id: DC-RUL-008
-  name: Deterministic Execution
-  rule: The engine must produce identical outcomes given the same initial seed and input sequence (Logbook-ready).
-  trust: trusted
+  critical_compartment: "Engine Room"
+- id: DC3-RUL-007
+  name: Win And Score
+  rule: The player wins by surviving the target number of breaches with the Engine Room dry, and score is the count of compartments kept operational.
+  trust: provisional
+  waves_to_win: 8
 ```
 
 ## Behaviors
 
 ```pbc:behavior
-id: DC-BHV-001
-name: Seal Bulkhead
-actor: operator
-description: The operator initiates the sealing of a bulkhead door.
+id: DC3-BHV-001
+name: Hull Breach
+actor: environment
+description: A damage event punches a visible hole in a compartment hull and water begins entering from it.
 trust: trusted
 ```
 
 ```pbc:outcomes
-- Bulkhead door state enters 'SEALING' mode.
-- Door is fully 'CLOSED' after 180 frames (SEAL_DURATION).
-- While 'SEALING' or 'OPEN', water can still pass.
-- Once 'CLOSED', water flow between compartments is blocked.
+- A breach is drawn at a real location on the hull and water rises from that hole.
+- The player can see which compartment is taking on water and from where.
 ```
 
 ```pbc:behavior
-id: DC-BHV-002
-name: Flood Propagation
-actor: engine_room
-description: The engine updates flood levels and spreads water through open doors.
+id: DC3-BHV-002
+name: Seal A Door
+actor: player
+description: The player closes a watertight door against a rising flood.
 trust: trusted
 ```
 
 ```pbc:outcomes
-- If a compartment has water and an adjacent bulkhead is 'OPEN', water volume transfers at 0.05 (SPREAD_RATE) until levels equalize.
-- Compartment flood level increases by 0.01 per frame if it has an active leak.
+- Closing before the water tops the sill contains the flood to that compartment.
+- Closing too late lets the flood spill into the adjacent compartment.
+- The closing animation reads as a watertight door, not a wall drawing upward.
+```
+
+```pbc:behavior
+id: DC3-BHV-003
+name: Sacrifice To Save The Core
+actor: player
+description: The player seals off flooding compartments to keep water away from the Engine Room.
+trust: provisional
+```
+
+```pbc:outcomes
+- A sealed compartment floods fully but is contained and counted as sacrificed.
+- Sealing every compartment is not viable because each seal loses that compartment.
+- The run is won when the Engine Room stays dry through the target number of breaches.
 ```
 
 ## Provenance
 
 ```pbc:provenance
-- ref: docs/BULKHEAD_DAMAGE_CONTROL_REQUIREMENTS.md
+- ref: docs/BULKHEAD_DAMAGE_CONTROL_REDESIGN.md
   confidence: verified
-  note: Requirements spec for the damage-control containment demo; defines the compartment-as-domain / bulkhead-as-policy-boundary mapping the game enacts.
+  note: The v2 containment redesign this builds on.
 - ref: bulkhead-damage-control/index.html
   confidence: verified
-  note: The Engine Room (game) parses these constants at runtime via regex; sealed bulkheads provably block flood spread and a seeded input log replays bit-identical (verified by code inspection 2026-06-15).
+  note: The current game whose abstract presentation v3 replaces with a ship.
+- ref: docs/bulkhead-pbc-visibility.pbc.md
+  confidence: verified
+  note: v3 inherits the always-visible validation badge and rev requirements.
 ```

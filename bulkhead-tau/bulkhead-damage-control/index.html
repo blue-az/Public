@@ -29,7 +29,7 @@
         }
         canvas {
             display: block;
-            background-color: #0d2538;
+            background-color: #0a1424;
         }
         #ui-overlay {
             position: absolute;
@@ -157,7 +157,7 @@
         <div id="game-container">
             <canvas id="gameCanvas" width="800" height="400"></canvas>
             <div id="ui-overlay">
-                <div class="score">Waves: <span id="scoreVal">0</span> / <span id="targetScoreVal">8</span></div>
+                <div class="score">Breaches Survived: <span id="scoreVal">0</span> / <span id="targetScoreVal">8</span></div>
                 <div id="activeModeDisplay" style="font-size: 10px; margin-top: 5px; color: #8892b0;">CORE ENGINE ACTIVE</div>
             </div>
             <div id="message">
@@ -172,15 +172,15 @@
             <h2>CHARTER (PBC)</h2>
             <div id="charterStatus" style="font-size: 10px; color: #8892b0; margin-bottom: 10px;">Source: damage-control.pbc.md</div>
             <div class="charter-rule">
-                <div class="rule-id">DC-RUL-001</div>
+                <div class="rule-id">DC3-RUL-002</div>
                 <div class="rule-text">Spread Rate: <span id="spreadVal">---</span> vol/tick</div>
             </div>
             <div class="charter-rule">
-                <div class="rule-id">DC-RUL-002</div>
+                <div class="rule-id">DC3-RUL-004</div>
                 <div class="rule-text">Seal Time: <span id="sealVal">---</span> ticks</div>
             </div>
             <div class="charter-rule">
-                <div class="rule-id">DC-RUL-007</div>
+                <div class="rule-id">DC3-RUL-007</div>
                 <div class="rule-text">Waves to Win: <span id="winWavesVal">---</span></div>
             </div>
             
@@ -231,12 +231,18 @@
         let CHARTER = {
             SPREAD_RATE: 0.05,
             SEAL_DURATION: 180,
-            MAX_FLOODS: 3,
             CRITICAL_COMPARTMENT: "Engine Room",
             COMPARTMENTS: ["Tennis Agent", "GPS Oracle", "Water Report", "Proximity Sensor", "Engine Room"],
             DAMAGE_FREQUENCY: 600,
-            WAVES_TO_WIN: 8
+            WAVES_TO_WIN: 8,
+            SILL_HEIGHT: 0.25
         };
+
+        // Layout Constants
+        const COMP_START_X = 100;
+        const COMP_WIDTH = 120;
+        const COMP_Y = 120;
+        const COMP_HEIGHT = 220;
 
         // Fixed Timestep Simulation
         const TICKS_PER_SECOND = 60;
@@ -276,21 +282,22 @@
                 const text = await response.text();
                 
                 const extractValue = (ruleId, key) => {
-                    const regex = new RegExp(`- id: ${ruleId}[\\s\\S]*?${key}: ([\\d.-]+|"[^"]+"|\\[[^\\]]+\\])`, 'i');
+                    const regex = new RegExp(`- id: ${ruleId}[\\s\\S]*?${key}: ([\\d.-]+|"[^"]+"|\\s*\\[[^\\]]+\\])`, 'i');
                     const match = text.match(regex);
                     if (!match) return null;
-                    let val = match[1];
+                    let val = match[1].trim();
                     if (val.startsWith('"')) return val.replace(/"/g, '');
                     if (val.startsWith('[')) return JSON.parse(val.replace(/'/g, '"'));
                     return parseFloat(val);
                 };
 
-                CHARTER.SPREAD_RATE = extractValue('DC-RUL-001', 'value') || CHARTER.SPREAD_RATE;
-                CHARTER.SEAL_DURATION = extractValue('DC-RUL-002', 'value') || CHARTER.SEAL_DURATION;
-                CHARTER.CRITICAL_COMPARTMENT = extractValue('DC-RUL-004', 'value') || CHARTER.CRITICAL_COMPARTMENT;
-                CHARTER.COMPARTMENTS = extractValue('DC-RUL-005', 'value') || CHARTER.COMPARTMENTS;
-                CHARTER.DAMAGE_FREQUENCY = extractValue('DC-RUL-006', 'value') || CHARTER.DAMAGE_FREQUENCY;
-                CHARTER.WAVES_TO_WIN = extractValue('DC-RUL-007', 'value') || CHARTER.WAVES_TO_WIN;
+                CHARTER.SPREAD_RATE = extractValue('DC3-RUL-002', 'spread_rate') || CHARTER.SPREAD_RATE;
+                CHARTER.SEAL_DURATION = extractValue('DC3-RUL-004', 'seal_duration') || CHARTER.SEAL_DURATION;
+                CHARTER.CRITICAL_COMPARTMENT = extractValue('DC3-RUL-006', 'critical_compartment') || CHARTER.CRITICAL_COMPARTMENT;
+                CHARTER.COMPARTMENTS = extractValue('DC3-RUL-001', 'compartments') || CHARTER.COMPARTMENTS;
+                CHARTER.DAMAGE_FREQUENCY = extractValue('DC3-RUL-002', 'damage_frequency') || CHARTER.DAMAGE_FREQUENCY;
+                CHARTER.WAVES_TO_WIN = extractValue('DC3-RUL-007', 'waves_to_win') || CHARTER.WAVES_TO_WIN;
+                CHARTER.SILL_HEIGHT = extractValue('DC3-RUL-003', 'sill') || CHARTER.SILL_HEIGHT;
 
                 spreadValEl.innerText = CHARTER.SPREAD_RATE;
                 sealValEl.innerText = CHARTER.SEAL_DURATION;
@@ -377,7 +384,7 @@
                 if (!state.isReplaying) {
                     state.inputHistory.push({ tick: state.ticks, index });
                 }
-                addLog(`Sealing Bulkhead ${index + 1}...`);
+                addLog(`Sealing door ${index + 1}...`);
             }
         }
 
@@ -393,10 +400,17 @@
             }
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
-            const compWidth = canvas.width / state.compartments.length;
-            const doorIndex = Math.floor((x + compWidth/2) / compWidth) - 1;
-            if (doorIndex >= 0 && doorIndex < state.bulkheads.length) {
-                handleAction(doorIndex);
+            
+            let clickedDoorIndex = -1;
+            for (let i = 0; i < state.bulkheads.length; i++) {
+                const doorX = COMP_START_X + (i + 1) * COMP_WIDTH;
+                if (Math.abs(x - doorX) < 30) {
+                    clickedDoorIndex = i;
+                    break;
+                }
+            }
+            if (clickedDoorIndex !== -1) {
+                handleAction(clickedDoorIndex);
             }
         });
 
@@ -426,7 +440,7 @@
                 }
             }
 
-            // Damage Events
+            // Damage Events (Breaches)
             if (state.ticks % CHARTER.DAMAGE_FREQUENCY === 0) {
                 state.wavesSurvived++;
                 scoreEl.innerText = state.wavesSurvived;
@@ -440,26 +454,26 @@
                 if (candidates.length > 0) {
                     const victim = candidates[Math.floor(rng() * candidates.length)];
                     victim.activeLeak = true;
-                    addLog(`LEAK DETECTED: ${victim.name}`);
+                    addLog(`BREACH DETECTED: ${victim.name}`);
                 } else {
-                    addLog("Wave survived. System holding.");
+                    addLog("Wave survived. Hull boundaries holding.");
                 }
             }
 
-            // Flood Dynamics
+            // Flood Dynamics (DC3-RUL-002)
             state.compartments.forEach(c => {
                 if (c.activeLeak) {
                     c.floodLevel += 0.001; // Base leak rate per tick
                 }
             });
 
-            // Spread & Sealing
+            // Spread & Sealing (DC3-RUL-003, DC3-RUL-004)
             state.bulkheads.forEach((b, i) => {
                 if (b.state === 'SEALING') {
                     b.sealProgress++;
                     if (b.sealProgress >= CHARTER.SEAL_DURATION) {
                         b.state = 'CLOSED';
-                        addLog(`Bulkhead ${i+1} SEALED.`);
+                        addLog(`Door ${i+1} CLOSED.`);
                     }
                 }
 
@@ -468,11 +482,16 @@
                 if (isEffectivelyOpen) {
                     const left = state.compartments[i];
                     const right = state.compartments[i+1];
-                    const diff = left.floodLevel - right.floodLevel;
-                    if (Math.abs(diff) > 0.01) {
-                        const transfer = diff * CHARTER.SPREAD_RATE;
+                    
+                    // Sill check: Spills to next compartment only if it rises above the sill (0.25)
+                    if (left.floodLevel > CHARTER.SILL_HEIGHT && left.floodLevel > right.floodLevel) {
+                        const transfer = (left.floodLevel - Math.max(right.floodLevel, CHARTER.SILL_HEIGHT)) * CHARTER.SPREAD_RATE;
                         left.floodLevel -= transfer;
                         right.floodLevel += transfer;
+                    } else if (right.floodLevel > CHARTER.SILL_HEIGHT && right.floodLevel > left.floodLevel) {
+                        const transfer = (right.floodLevel - Math.max(left.floodLevel, CHARTER.SILL_HEIGHT)) * CHARTER.SPREAD_RATE;
+                        right.floodLevel -= transfer;
+                        left.floodLevel += transfer;
                     }
                 }
             });
@@ -481,7 +500,7 @@
             state.compartments.forEach(c => {
                 c.floodLevel = Math.max(0, Math.min(1, c.floodLevel));
                 if (c.isEngineRoom && c.floodLevel > 0) {
-                    gameOver("CRITICAL FAILURE", `${c.name} flooded. System lost.`);
+                    gameOver("CRITICAL FAILURE", `${c.name} flooded. Vessel foundered.`);
                 }
             });
 
@@ -498,7 +517,7 @@
             const operational = state.compartments.filter(c => c.floodLevel < 0.05).length;
             document.getElementById('msgTitle').innerText = "VOYAGE COMPLETE";
             document.getElementById('msgTitle').style.color = "#64ffda";
-            document.getElementById('msgText').innerText = "The Engine Room remained dry. Failures contained.";
+            document.getElementById('msgText').innerText = "Engine Room secured. Ship returned to port.";
             document.getElementById('finalScore').innerText = `OPERATIONAL DOMAINS: ${operational} / ${state.compartments.length}`;
             messageEl.style.display = 'block';
         }
@@ -512,81 +531,191 @@
             messageEl.style.display = 'block';
         }
 
+        function drawShipHull() {
+            // Draw sky background
+            ctx.fillStyle = '#0a1424';
+            ctx.fillRect(0, 0, canvas.width, 180);
+            
+            // Draw ocean background
+            ctx.fillStyle = '#08172c';
+            ctx.fillRect(0, 180, canvas.width, 220);
+            
+            // Draw animated waves outside the ship
+            ctx.fillStyle = '#0e2646';
+            ctx.beginPath();
+            ctx.moveTo(0, 180);
+            const waveFreq = 0.02;
+            const waveAmp = 4;
+            const waveTime = state.ticks * 0.05;
+            for (let x = 0; x <= canvas.width; x += 10) {
+                const y = 180 + Math.sin(x * waveFreq + waveTime) * waveAmp;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(canvas.width, 400);
+            ctx.lineTo(0, 400);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw Ship Hull Profile
+            ctx.fillStyle = '#172a45';
+            ctx.strokeStyle = '#233554';
+            ctx.lineWidth = 4;
+            
+            ctx.beginPath();
+            ctx.moveTo(40, 100); // Bow deck
+            ctx.lineTo(90, 350); // Bow keel
+            ctx.lineTo(710, 350); // Stern keel
+            ctx.lineTo(760, 100); // Stern deck
+            ctx.lineTo(40, 100);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Waterline marker on the hull
+            ctx.strokeStyle = '#38b2ac';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(40, 180);
+            ctx.lineTo(760, 180);
+            ctx.stroke();
+        }
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            const compWidth = canvas.width / state.compartments.length;
+            // Draw primary ship structure
+            drawShipHull();
             
             // Draw Compartments
             state.compartments.forEach((c, i) => {
-                const x = i * compWidth;
+                const x = COMP_START_X + i * COMP_WIDTH;
                 
-                // Background
-                ctx.fillStyle = c.isEngineRoom ? '#1a3a3a' : '#0d2538';
-                ctx.fillRect(x, 50, compWidth, 300);
+                // Compartment Background
+                ctx.fillStyle = c.isEngineRoom ? '#0b3535' : '#0d1f33';
+                ctx.fillRect(x, COMP_Y, COMP_WIDTH, COMP_HEIGHT);
                 
-                // Water
-                ctx.fillStyle = '#0077be';
-                const h = 300 * c.floodLevel;
-                ctx.fillRect(x, 350 - h, compWidth, h);
+                // Water inside
+                if (c.floodLevel > 0) {
+                    ctx.fillStyle = '#005f9e';
+                    const h = COMP_HEIGHT * c.floodLevel;
+                    ctx.fillRect(x, COMP_Y + COMP_HEIGHT - h, COMP_WIDTH, h);
+                }
                 
-                // Border
+                // Visible Hull Breach (DC3-RUL-002)
+                if (c.activeLeak) {
+                    const bx = x + COMP_WIDTH / 2;
+                    const by = COMP_Y + COMP_HEIGHT;
+                    
+                    ctx.strokeStyle = '#ff3333';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(bx - 15, by);
+                    ctx.lineTo(bx - 5, by - 8);
+                    ctx.lineTo(bx + 5, by - 4);
+                    ctx.lineTo(bx + 15, by);
+                    ctx.stroke();
+                    
+                    // Crack glow
+                    ctx.strokeStyle = 'rgba(255, 50, 50, 0.4)';
+                    ctx.lineWidth = 8;
+                    ctx.stroke();
+                    
+                    // Bubble animation
+                    ctx.fillStyle = 'rgba(100, 200, 255, 0.6)';
+                    const bubbleTime = state.ticks * 0.2;
+                    for (let p = 0; p < 4; p++) {
+                        const px = bx + Math.sin(bubbleTime + p * 2) * 10;
+                        const py = by - ((state.ticks + p * 40) % 100) * (c.floodLevel + 0.1) * 0.5;
+                        if (py > COMP_Y + COMP_HEIGHT - (COMP_HEIGHT * c.floodLevel)) {
+                            ctx.beginPath();
+                            ctx.arc(px, py, 2 + p % 3, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                }
+                
+                // Compartment Borders
                 ctx.strokeStyle = '#233554';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(x, 50, compWidth, 300);
+                ctx.strokeRect(x, COMP_Y, COMP_WIDTH, COMP_HEIGHT);
                 
-                // Label
-                ctx.fillStyle = '#64ffda';
+                // Compartment Labels
+                ctx.fillStyle = '#ccd6f6';
                 ctx.font = '10px Courier New';
                 ctx.textAlign = 'center';
-                ctx.fillText(c.name, x + compWidth/2, 370);
+                ctx.fillText(c.name, x + COMP_WIDTH/2, COMP_Y + COMP_HEIGHT + 15);
 
-                // Status Label
+                // Sacrificed Status (DC3-RUL-005)
                 const isSealedOff = (i < state.bulkheads.length && state.bulkheads[i].state === 'CLOSED') || (i > 0 && state.bulkheads[i-1].state === 'CLOSED');
-                
                 if (c.floodLevel > 0.05) {
                     if (isSealedOff && !c.isEngineRoom) {
-                        ctx.fillStyle = '#8892b0';
-                        ctx.fillText("CONTAINED", x + compWidth/2, 45);
+                        ctx.fillStyle = 'rgba(244, 67, 54, 0.15)';
+                        ctx.fillRect(x, COMP_Y, COMP_WIDTH, COMP_HEIGHT);
+                        
+                        ctx.strokeStyle = 'rgba(244, 67, 54, 0.2)';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        for (let offset = -COMP_HEIGHT; offset < COMP_WIDTH; offset += 15) {
+                            ctx.moveTo(x + Math.max(0, offset), COMP_Y + Math.max(0, -offset));
+                            ctx.lineTo(x + Math.min(COMP_WIDTH, COMP_HEIGHT + offset), COMP_Y + Math.min(COMP_HEIGHT, COMP_WIDTH - offset));
+                        }
+                        ctx.stroke();
+                        
+                        ctx.fillStyle = '#f44336';
+                        ctx.font = 'bold 10px Courier New';
+                        ctx.fillText("SACRIFICED", x + COMP_WIDTH/2, COMP_Y + 20);
                     } else {
                         ctx.fillStyle = '#f44336';
-                        ctx.fillText("⚠ FLOODING", x + compWidth/2, 45);
+                        ctx.font = 'bold 10px Courier New';
+                        ctx.fillText("⚠ FLOODING", x + COMP_WIDTH/2, COMP_Y + 20);
                     }
                 }
             });
 
-            // Draw Bulkheads
+            // Draw Bulkhead Doors (DC3-RUL-003, DC3-RUL-004)
             state.bulkheads.forEach((b, i) => {
-                const x = (i + 1) * compWidth;
+                const x = COMP_START_X + (i + 1) * COMP_WIDTH;
                 
+                // Door Sill
+                const sillY = COMP_Y + COMP_HEIGHT - (COMP_HEIGHT * CHARTER.SILL_HEIGHT);
+                ctx.fillStyle = '#233554';
+                ctx.fillRect(x - 4, sillY, 8, COMP_Y + COMP_HEIGHT - sillY);
+                
+                // Frame outline above sill
+                ctx.strokeStyle = '#1f2d3d';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x - 6, COMP_Y, 12, sillY - COMP_Y);
+                
+                // Door sliding block
+                const doorwayHeight = sillY - COMP_Y;
                 if (b.state === 'OPEN') {
                     ctx.strokeStyle = '#64ffda';
-                    ctx.setLineDash([5, 5]);
+                    ctx.setLineDash([4, 4]);
                     ctx.beginPath();
-                    ctx.moveTo(x, 50);
-                    ctx.lineTo(x, 350);
+                    ctx.moveTo(x, COMP_Y);
+                    ctx.lineTo(x, sillY);
                     ctx.stroke();
                     ctx.setLineDash([]);
                 } else if (b.state === 'SEALING') {
-                    ctx.strokeStyle = '#ffca28';
-                    ctx.lineWidth = 4;
                     const progress = b.sealProgress / CHARTER.SEAL_DURATION;
+                    const doorHeight = doorwayHeight * progress;
+                    
+                    ctx.fillStyle = '#ffca28';
+                    ctx.fillRect(x - 4, COMP_Y, 8, doorHeight);
+                    
+                    ctx.fillStyle = state.ticks % 20 < 10 ? '#ffca28' : '#332200';
                     ctx.beginPath();
-                    ctx.moveTo(x, 350);
-                    ctx.lineTo(x, 350 - (300 * progress));
-                    ctx.stroke();
-                } else {
-                    ctx.strokeStyle = '#64ffda';
-                    ctx.lineWidth = 6;
-                    ctx.beginPath();
-                    ctx.moveTo(x, 50);
-                    ctx.lineTo(x, 350);
-                    ctx.stroke();
+                    ctx.arc(x, COMP_Y - 8, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (b.state === 'CLOSED') {
+                    ctx.fillStyle = '#64ffda';
+                    ctx.fillRect(x - 5, COMP_Y, 10, doorwayHeight);
                 }
                 
                 ctx.fillStyle = '#8892b0';
-                ctx.font = '12px Courier New';
-                ctx.fillText(`[${i+1}]`, x, 30);
+                ctx.font = '10px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText(`[${i+1}]`, x, COMP_Y - 12);
             });
         }
 
@@ -607,30 +736,37 @@
         }
 
         function showSplash() {
+            drawShipHull();
+            
+            ctx.fillStyle = 'rgba(10, 25, 47, 0.85)';
+            ctx.fillRect(50, 60, 700, 280);
+            ctx.strokeStyle = '#233554';
+            ctx.strokeRect(50, 60, 700, 280);
+            
             ctx.fillStyle = '#64ffda';
             ctx.font = '30px Courier New';
             ctx.textAlign = 'center';
-            ctx.fillText('BULKHEAD \u03C4 DAMAGE CONTROL', canvas.width/2, canvas.height/2 - 100);
+            ctx.fillText('BULKHEAD \u03C4 DAMAGE CONTROL', canvas.width/2, canvas.height/2 - 70);
             
             ctx.font = '14px Courier New';
-            ctx.fillText('LEAKS CAN\'T BE FIXED - ONLY CONTAINED.', canvas.width/2, canvas.height/2 - 60);
-            ctx.fillText('PROTECT THE ENGINE ROOM AT ALL COSTS.', canvas.width/2, canvas.height/2 - 40);
+            ctx.fillText('LEAKS CAN\'T BE FIXED - ONLY CONTAINED.', canvas.width/2, canvas.height/2 - 30);
+            ctx.fillText('PROTECT THE ENGINE ROOM AT ALL COSTS.', canvas.width/2, canvas.height/2 - 10);
             
             ctx.fillStyle = '#8892b0';
             ctx.font = '12px Courier New';
-            ctx.fillText('Seal bulkheads (Keys 1-4) to wall off flooding.', canvas.width/2, canvas.height/2 + 10);
-            ctx.fillText('A sealed-off compartment is a SACRIFICE, not a loss.', canvas.width/2, canvas.height/2 + 30);
-            ctx.fillText('Survive 8 waves with the core dry to win.', canvas.width/2, canvas.height/2 + 50);
+            ctx.fillText('Seal watertight doors (Keys 1-4) to wall off flooding.', canvas.width/2, canvas.height/2 + 30);
+            ctx.fillText('A sealed-off compartment is a SACRIFICE, not a loss.', canvas.width/2, canvas.height/2 + 50);
+            ctx.fillText('Survive 8 waves with the Engine Room dry to win.', canvas.width/2, canvas.height/2 + 70);
             
             ctx.fillStyle = '#64ffda';
             ctx.font = '16px Courier New';
-            ctx.fillText('PRESS SPACE TO COMMENCE PATROL', canvas.width/2, canvas.height/2 + 100);
+            ctx.fillText('PRESS SPACE TO COMMENCE PATROL', canvas.width/2, canvas.height/2 + 110);
         }
 
         fetchCharter().then(() => {
             showSplash();
         });
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.2</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.3</div>
 </body>
 </html>
