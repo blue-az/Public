@@ -688,15 +688,24 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // Check inside walkable regions
-        function isPointWalkable(x, y, radius = 8) {
+        // Check if a single pixel is inside any walkable region
+        function isInsideUnion(x, y) {
             for (let room of walkableRegions) {
-                if (x - radius >= room.x && x + radius <= room.x + room.w &&
-                    y - radius >= room.y && y + radius <= room.y + room.h) {
+                if (x >= room.x && x <= room.x + room.w &&
+                    y >= room.y && y <= room.y + room.h) {
                     return true;
                 }
             }
             return false;
+        }
+
+        // Check inside walkable regions (allowing transition overlap)
+        function isPointWalkable(x, y, radius = 8) {
+            return isInsideUnion(x, y) &&
+                   isInsideUnion(x - radius, y) &&
+                   isInsideUnion(x + radius, y) &&
+                   isInsideUnion(x, y - radius) &&
+                   isInsideUnion(x, y + radius);
         }
 
         // Initialize / Restart Game
@@ -823,14 +832,14 @@
             if (now - state.lastTickTime >= 1000) {
                 state.lastTickTime = now;
 
-                // Calibrated Staggered Decay
+                // Calibrated Staggered Decay (Balanced for active gameplay)
                 const rand = rng();
                 if (rand < 0.33) {
-                    state.fuel = Math.max(0.0, state.fuel - 1.5);
+                    state.fuel = Math.max(0.0, state.fuel - 4.0);
                 } else if (rand < 0.66) {
-                    state.drift = Math.min(30.0, state.drift + 1.5);
+                    state.drift = Math.min(30.0, state.drift + 2.0);
                 } else {
-                    state.signal = Math.max(0.0, state.signal - 2.0);
+                    state.signal = Math.max(0.0, state.signal - 5.0);
                 }
                 
                 // Reduce distance - penalize progress for ANY system out of bounds
@@ -1180,6 +1189,6 @@
         setupGame();
         requestAnimationFrame(gameLoop);
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.3</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.4</div>
 </body>
 </html>
