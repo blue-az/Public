@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulkhead τ Flappy</title>
+    <title>Bulkhead τ Flappy Ship</title>
     <style>
         body {
             margin: 0;
@@ -165,6 +165,7 @@
 
         <div id="game-container">
             <canvas id="gameCanvas" width="480" height="640"></canvas>
+            <button id="btnReverse" style="position: absolute; bottom: 20px; right: 20px; z-index: 99; font-size: 11px; padding: 8px 14px; background: rgba(10, 25, 47, 0.85); border: 1px solid #64ffda; color: #64ffda; cursor: pointer; display: none;" onmouseover="this.style.background='rgba(100, 255, 218, 0.15)'" onmouseout="this.style.background='rgba(10, 25, 47, 0.85)'">REVERSE CURRENT [Shift]</button>
             <div id="ui-overlay">
                 <div class="score">Cleared: <span id="scoreVal">0</span></div>
                 <div id="activeModeDisplay" style="font-size: 10px; margin-top: 5px; color: #8892b0;">CORE ENGINE ACTIVE</div>
@@ -182,7 +183,7 @@
             <div id="charterStatus" style="font-size: 10px; color: #8892b0; margin-bottom: 10px;">Source: flappy.pbc.md</div>
             <div class="charter-rule">
                 <div class="rule-id">FLPY-RUL-001</div>
-                <div class="rule-text">Gravity Constant: <span id="gravityVal">---</span></div>
+                <div class="rule-text">Current Constant: <span id="gravityVal">---</span></div>
             </div>
             <div class="charter-rule">
                 <div class="rule-id">FLPY-RUL-003</div>
@@ -191,10 +192,10 @@
             
             <div class="tamper-control">
                 <div style="font-size: 12px; color: #f44336; margin-bottom: 5px;">TAMPER DEMO</div>
-                <div style="font-size: 9px; color: #8892b0; margin-bottom: 10px; line-height: 1.3;">Drag gravity past the charter range (0.15 to 0.40): Bulkhead mode rejects it (snaps back), while Vibe mode accepts the violation.</div>
+                <div style="font-size: 9px; color: #8892b0; margin-bottom: 10px; line-height: 1.3;">Drag current past the charter range (0.15 to 0.40 in magnitude): Bulkhead mode rejects it (snaps back), while Vibe mode accepts the violation. [SHIFT / R] reverses current.</div>
                 
-                <label style="font-size: 11px;">Vessel Gravity:</label>
-                <input type="range" id="gravitySlider" min="0.05" max="0.60" step="0.01" value="0.25">
+                <label style="font-size: 11px;">Vessel Current:</label>
+                <input type="range" id="gravitySlider" min="-0.60" max="0.60" step="0.01" value="0.25">
                 
                 <div class="mode-button-group">
                     <button id="vibeBtn" class="mode-btn" onclick="setEnforcement(false)">VIBE BUILD</button>
@@ -238,10 +239,11 @@
         const bulkheadBtn = document.getElementById('bulkheadBtn');
         const replayStatus = document.getElementById('replayStatus');
         const activeModeDisplay = document.getElementById('activeModeDisplay');
+        const btnReverse = document.getElementById('btnReverse');
 
         // Charter Constants - LOADED FROM PBC
         let CHARTER = {
-            GRAVITY: 0.25,
+            CURRENT: 0.25,
             THRUST_IMPULSE: -5,
             GAP_HEIGHT: 160,
             SCROLL_SPEED: 3,
@@ -250,8 +252,8 @@
             VESSEL_WIDTH: 40,
             VESSEL_HEIGHT: 30,
             BOUNDARY_BUFFER: 0,
-            GRAVITY_MIN: 0.15,
-            GRAVITY_MAX: 0.40
+            CURRENT_MIN: 0.15,
+            CURRENT_MAX: 0.40
         };
 
         let state = {
@@ -263,9 +265,9 @@
             seed: 12345,
             running: false,
             educationalMode: false,
-            tamperGravity: 0.25,
+            tamperCurrent: 0.25,
             bulkheadEnforcement: true,
-            inputHistory: [], // Logbook: recorded frame numbers of thrust
+            inputHistory: [], // Logbook: recorded inputs ({frame, action})
             isReplaying: false,
             replayIndex: 0
         };
@@ -297,18 +299,18 @@
                     return match ? parseFloat(match[1]) : null;
                 };
 
-                CHARTER.GRAVITY = extractValue('FLPY-RUL-001', 'value') || CHARTER.GRAVITY;
-                CHARTER.GRAVITY_MIN = extractValue('FLPY-RUL-001', 'min') || CHARTER.GRAVITY_MIN;
-                CHARTER.GRAVITY_MAX = extractValue('FLPY-RUL-001', 'max') || CHARTER.GRAVITY_MAX;
+                CHARTER.CURRENT = extractValue('FLPY-RUL-001', 'value') || CHARTER.CURRENT;
+                CHARTER.CURRENT_MIN = extractValue('FLPY-RUL-001', 'min') || CHARTER.CURRENT_MIN;
+                CHARTER.CURRENT_MAX = extractValue('FLPY-RUL-001', 'max') || CHARTER.CURRENT_MAX;
                 CHARTER.THRUST_IMPULSE = extractValue('FLPY-RUL-002', 'value') || CHARTER.THRUST_IMPULSE;
                 CHARTER.GAP_HEIGHT = extractValue('FLPY-RUL-003', 'value') || CHARTER.GAP_HEIGHT;
                 CHARTER.SCROLL_SPEED = extractValue('FLPY-RUL-004', 'value') || CHARTER.SCROLL_SPEED;
                 CHARTER.OBSTACLE_SPACING = extractValue('FLPY-RUL-005', 'value') || CHARTER.OBSTACLE_SPACING;
 
-                gravityValEl.innerText = CHARTER.GRAVITY.toFixed(2);
+                gravityValEl.innerText = CHARTER.CURRENT.toFixed(2);
                 gapValEl.innerText = CHARTER.GAP_HEIGHT;
-                state.tamperGravity = CHARTER.GRAVITY;
-                gravitySlider.value = CHARTER.GRAVITY;
+                state.tamperCurrent = CHARTER.CURRENT;
+                gravitySlider.value = CHARTER.CURRENT;
                 
                 document.getElementById('charterStatus').innerHTML = 'Source: flappy.pbc.md (LIVE) <span style="color: #64ffda;">✓ pbc-spec validated</span>';
                 document.getElementById('charterStatus').style.color = "#64ffda";
@@ -363,18 +365,20 @@
         }
 
         gravitySlider.addEventListener('input', (e) => {
-            state.tamperGravity = parseFloat(e.target.value);
-            gravityValEl.innerText = state.tamperGravity.toFixed(2);
+            state.tamperCurrent = parseFloat(e.target.value);
+            gravityValEl.innerText = state.tamperCurrent.toFixed(2);
         });
 
         function createBulkhead(x) {
             const minGapY = 100;
             const maxGapY = canvas.height - 100 - CHARTER.GAP_HEIGHT;
             const gapY = minGapY + (rng() * (maxGapY - minGapY));
+            const type = rng() < 0.5 ? 'PBC' : 'BT';
             return {
                 x: x,
                 gapY: gapY,
-                passed: false
+                passed: false,
+                type: type
             };
         }
 
@@ -397,6 +401,7 @@
             ];
             state.running = true;
             messageEl.style.display = 'none';
+            btnReverse.style.display = 'block';
             scoreEl.innerText = state.score;
             requestAnimationFrame(gameLoop);
         }
@@ -405,19 +410,39 @@
             if (!state.running) {
                 resetGame();
             } else if (!state.isReplaying) {
-                state.vesselV = CHARTER.THRUST_IMPULSE;
-                state.inputHistory.push(state.frame);
+                const thrustDir = state.tamperCurrent < 0 ? 1 : -1;
+                state.vesselV = thrustDir * Math.abs(CHARTER.THRUST_IMPULSE);
+                state.inputHistory.push({ frame: state.frame, action: 'thrust' });
+            }
+        }
+
+        function reverseCurrent() {
+            if (!state.running) return;
+            state.tamperCurrent = -state.tamperCurrent;
+            gravitySlider.value = state.tamperCurrent;
+            if (state.educationalMode) {
+                gravityValEl.innerText = state.tamperCurrent.toFixed(2);
+            }
+            if (!state.isReplaying) {
+                state.inputHistory.push({ frame: state.frame, action: 'reverse' });
             }
         }
 
         window.addEventListener('keydown', (e) => {
             if (e.code === 'Space' || e.code === 'ArrowUp') handleInput();
+            if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.key.toLowerCase() === 'shift' || e.key.toLowerCase() === 'r') {
+                reverseCurrent();
+            }
         });
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             handleInput();
         });
         canvas.addEventListener('mousedown', handleInput);
+        btnReverse.onclick = (e) => {
+            e.stopPropagation();
+            reverseCurrent();
+        };
 
         function update() {
             if (!state.running) return;
@@ -426,22 +451,31 @@
 
             // Logbook Replay Logic
             if (state.isReplaying) {
-                if (state.replayIndex < state.inputHistory.length && state.inputHistory[state.replayIndex] === state.frame) {
-                    state.vesselV = CHARTER.THRUST_IMPULSE;
+                while (state.replayIndex < state.inputHistory.length && state.inputHistory[state.replayIndex].frame === state.frame) {
+                    const input = state.inputHistory[state.replayIndex];
+                    if (input.action === 'thrust') {
+                        const thrustDir = state.tamperCurrent < 0 ? 1 : -1;
+                        state.vesselV = thrustDir * Math.abs(CHARTER.THRUST_IMPULSE);
+                    } else if (input.action === 'reverse') {
+                        state.tamperCurrent = -state.tamperCurrent;
+                        gravitySlider.value = state.tamperCurrent;
+                    }
                     state.replayIndex++;
                 }
                 if (state.replayIndex >= state.inputHistory.length && state.inputHistory.length > 0) {
-                    // Replay finished
+                    state.isReplaying = false;
+                    replayStatus.style.display = 'none';
                 }
             }
             
             // Physics ENFORCEMENT
-            let effectiveGravity = state.tamperGravity;
+            let effectiveCurrent = state.tamperCurrent;
             
             if (state.bulkheadEnforcement) {
-                // Rule Enforcement: Refuse out-of-contract value
-                if (effectiveGravity < CHARTER.GRAVITY_MIN || effectiveGravity > CHARTER.GRAVITY_MAX) {
-                    effectiveGravity = CHARTER.GRAVITY; // Revert to Charter base
+                const mag = Math.abs(effectiveCurrent);
+                if (mag < CHARTER.CURRENT_MIN || mag > CHARTER.CURRENT_MAX) {
+                    const sign = effectiveCurrent < 0 ? -1 : 1;
+                    effectiveCurrent = sign * CHARTER.CURRENT;
                     violationWarning.style.display = 'block';
                     gravityValEl.style.color = '#f44336';
                 } else {
@@ -449,17 +483,16 @@
                     gravityValEl.style.color = '#64ffda';
                 }
             } else {
-                // Vibe Build: silent acceptance of drift/tamper
                 violationWarning.style.display = 'none';
                 gravityValEl.style.color = '#64ffda';
             }
 
-            state.vesselV += effectiveGravity;
+            state.vesselV += effectiveCurrent;
             state.vesselY += state.vesselV;
 
             // Collision: Boundaries
             if (state.vesselY < 0 || state.vesselY + CHARTER.VESSEL_HEIGHT > canvas.height) {
-                gameOver("BOUNDARY VIOLATION", "Vessel left the safe channel.");
+                gameOver("SYSTEM CONTAINMENT FAILURE", "Vessel drifted outside the safe vertical channel.");
             }
 
             // Bulkheads
@@ -469,7 +502,11 @@
                 // Collision: Bulkhead walls
                 if (CHARTER.VESSEL_X + CHARTER.VESSEL_WIDTH > b.x && CHARTER.VESSEL_X < b.x + 50) {
                     if (state.vesselY < b.gapY || state.vesselY + CHARTER.VESSEL_HEIGHT > b.gapY + CHARTER.GAP_HEIGHT) {
-                        gameOver("CHARTER VIOLATION", "Vessel hit bulkhead structure.");
+                        if (b.type === 'PBC') {
+                            gameOver("PBC CONTRACT BREACH", "Static contract violation. Vessel strayed from defined policy envelope.");
+                        } else {
+                            gameOver("BT RUNTIME DRIFT", "Dynamic execution failure. Vessel drifted outside Bulkhead Tau safety boundaries.");
+                        }
                     }
                 }
 
@@ -500,9 +537,60 @@
 
         function gameOver(title, text) {
             state.running = false;
+            btnReverse.style.display = 'none';
+            
+            // Save score
+            const isNewHigh = saveHighScore(state.score, state.seed);
+            
             document.getElementById('msgTitle').innerText = title;
-            document.getElementById('msgText').innerText = text;
+            let finalMsg = text + `\n\nScore: ${state.score}`;
+            if (isNewHigh) {
+                finalMsg += "\n🎉 NEW HIGH SCORE! 🎉";
+            }
+            
+            document.getElementById('msgText').innerText = finalMsg;
             messageEl.style.display = 'block';
+        }
+
+        // LOCAL HIGH SCORES
+        function getHighScores() {
+            try {
+                const raw = localStorage.getItem('bulkhead-flappy-highscores');
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveHighScore(score, seed) {
+            if (score <= 0) return false;
+            let scores = getHighScores();
+            const newEntry = { score, seed, date: Date.now() };
+            scores.push(newEntry);
+            scores.sort((a, b) => b.score - a.score);
+            scores = scores.slice(0, 5);
+            try {
+                localStorage.setItem('bulkhead-flappy-highscores', JSON.stringify(scores));
+            } catch (e) {}
+            return scores.some(entry => entry.date === newEntry.date);
+        }
+
+        function drawHighScores(yStart) {
+            const scores = getHighScores();
+            if (scores.length === 0) return;
+
+            ctx.fillStyle = 'rgba(100, 255, 218, 0.4)';
+            ctx.font = '800 12px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('--- LOCAL HIGH SCORES ---', canvas.width/2, yStart);
+            
+            ctx.fillStyle = '#ccd6f6';
+            ctx.font = '11px monospace';
+            scores.forEach((entry, index) => {
+                const y = yStart + 20 + (index * 16);
+                const rankText = `${index + 1}. Score: ${entry.score} (Seed: ${entry.seed})`;
+                ctx.fillText(rankText, canvas.width/2, y);
+            });
         }
 
         /**
@@ -523,22 +611,28 @@
 
             // Draw Bulkheads
             state.bulkheads.forEach(b => {
-                ctx.fillStyle = '#455a64'; // Metal gray
-                // Upper wall
+                // Main metal structures
+                ctx.fillStyle = b.type === 'PBC' ? '#007bb5' : '#7b1fa2'; // Cyan vs Purple
                 ctx.fillRect(b.x, 0, 50, b.gapY);
-                // Lower wall
                 ctx.fillRect(b.x, b.gapY + CHARTER.GAP_HEIGHT, 50, canvas.height - (b.gapY + CHARTER.GAP_HEIGHT));
-                
-                // Gap highlights (The Safe Envelope)
-                ctx.strokeStyle = '#64ffda';
-                ctx.setLineDash([5, 5]);
+
+                // Safe envelope borders
+                ctx.strokeStyle = b.type === 'PBC' ? '#00e5ff' : '#d500f9';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([6, 4]);
                 ctx.strokeRect(b.x, b.gapY, 50, CHARTER.GAP_HEIGHT);
                 ctx.setLineDash([]);
+
+                // Gate Type label
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '800 12px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(b.type, b.x + 25, b.gapY - 15);
+                ctx.fillText(b.type, b.x + 25, b.gapY + CHARTER.GAP_HEIGHT + 25);
             });
 
             // Draw Vessel (Tug)
             ctx.fillStyle = '#64ffda';
-            // Simple boat shape
             const x = CHARTER.VESSEL_X;
             const y = state.vesselY;
             const w = CHARTER.VESSEL_WIDTH;
@@ -556,6 +650,47 @@
             // Cabin
             ctx.fillStyle = '#0a192f';
             ctx.fillRect(x + 5, y + 5, w/2, h/2);
+
+            // Draw Current Vector HUD on Canvas
+            ctx.fillStyle = 'rgba(10, 25, 47, 0.85)';
+            ctx.fillRect(15, 80, 50, 120);
+            ctx.strokeStyle = 'rgba(0, 204, 255, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(15, 80, 50, 120);
+
+            // Label
+            ctx.fillStyle = 'rgba(0, 204, 255, 0.6)';
+            ctx.font = '800 8px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('CURRENT', 40, 95);
+
+            // Value
+            ctx.fillStyle = state.tamperCurrent < 0 ? '#ff3b30' : '#64ffda';
+            ctx.font = '800 10px monospace';
+            ctx.fillText(`${state.tamperCurrent < 0 ? 'UP' : 'DN'}`, 40, 110);
+            ctx.font = '800 9px monospace';
+            ctx.fillText(`${Math.abs(state.tamperCurrent).toFixed(2)}`, 40, 125);
+
+            // Arrow
+            ctx.strokeStyle = state.tamperCurrent < 0 ? '#ff3b30' : '#64ffda';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            if (state.tamperCurrent < 0) {
+                // Point Up
+                ctx.moveTo(40, 175);
+                ctx.lineTo(40, 145);
+                ctx.lineTo(36, 152);
+                ctx.moveTo(40, 145);
+                ctx.lineTo(44, 152);
+            } else {
+                // Point Down
+                ctx.moveTo(40, 145);
+                ctx.lineTo(40, 175);
+                ctx.lineTo(36, 168);
+                ctx.moveTo(40, 175);
+                ctx.lineTo(44, 168);
+            }
+            ctx.stroke();
         }
 
         function gameLoop(timestamp) {
@@ -582,13 +717,37 @@
 
         // Splash screen state
         function showSplash() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw channel grid
+            ctx.strokeStyle = '#112240';
+            ctx.lineWidth = 2;
+            for(let i=0; i<canvas.height; i+=40) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+
             ctx.fillStyle = '#64ffda';
-            ctx.font = '30px Courier New';
+            ctx.font = '24px monospace';
             ctx.textAlign = 'center';
-            ctx.fillText('BULKHEAD \u03C4 FLAPPY', canvas.width/2, canvas.height/2 - 40);
-            ctx.font = '16px Courier New';
-            ctx.fillText('ENFORCE THE CHARTER', canvas.width/2, canvas.height/2);
-            ctx.fillText('PRESS SPACE TO ENGAGE ENGINE', canvas.width/2, canvas.height/2 + 60);
+            ctx.fillText('BULKHEAD \u03C4 FLAPPY SHIP', canvas.width/2, canvas.height/2 - 80);
+            
+            ctx.fillStyle = '#ccd6f6';
+            ctx.font = '13px monospace';
+            ctx.fillText('ENFORCE THE CHARTER', canvas.width/2, canvas.height/2 - 40);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.font = '11px monospace';
+            ctx.fillText('[SPACE / TAP] - Thrust opposite to Current', canvas.width/2, canvas.height/2 - 5);
+            ctx.fillText('[SHIFT / R] - Reverse Current direction', canvas.width/2, canvas.height/2 + 15);
+            
+            ctx.fillStyle = '#64ffda';
+            ctx.font = '12px monospace';
+            ctx.fillText('PRESS SPACE TO ENGAGE ENGINE', canvas.width/2, canvas.height/2 + 55);
+
+            drawHighScores(canvas.height/2 + 110);
         }
 
         // ENTRY POINT
@@ -597,6 +756,6 @@
             showSplash();
         });
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.3</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.4</div>
 </body>
 </html>

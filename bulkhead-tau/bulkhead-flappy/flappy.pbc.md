@@ -1,6 +1,6 @@
 ---
 id: pbc-flappy-core
-title: Bulkhead Flappy — Playable Core Charter
+title: Bulkhead Flappy Ship — Playable Core Charter
 context: flappy-game
 status: draft
 updated: 2026-06-12
@@ -8,16 +8,17 @@ tags:
   - game
   - educational
   - bulkhead-tau
+  - flappy-ship
 anchor: flappy-core
 ---
 
-# Bulkhead Flappy — Playable Core Charter
+# Bulkhead Flappy Ship — Playable Core Charter
 
-This charter defines the behavior contract for the Bulkhead Flappy game. The Engine Room must provably enforce these constants and behaviors.
+This charter defines the behavior contract for the Bulkhead Flappy Ship game. The Engine Room must provably enforce these constants and behaviors.
 
 ## Scope
 
-- Vessel physics (gravity, thrust)
+- Vessel physics (current acceleration, thrust)
 - Obstacle generation and movement (bulkheads)
 - Collision and scoring rules
 
@@ -25,8 +26,8 @@ This charter defines the behavior contract for the Bulkhead Flappy game. The Eng
 
 ```pbc:rules
 - id: FLPY-RUL-001
-  name: Gravity Constant
-  rule: The vessel is subject to a constant downward acceleration. Base value is 0.25; acceptable operational range is 0.15 to 0.40.
+  name: Current Constant
+  rule: The vessel is subject to a constant current acceleration. Base value is 0.25; acceptable operational range is 0.15 to 0.40 in magnitude (positive or negative).
   trust: trusted
   value: 0.25
   min: 0.15
@@ -37,7 +38,7 @@ This charter defines the behavior contract for the Bulkhead Flappy game. The Eng
   trust: trusted
 - id: FLPY-RUL-002
   name: Thrust Impulse
-  rule: A user input triggers an immediate upward velocity change of -5 pixels per frame.
+  rule: A user input triggers an immediate velocity change of 5 pixels per frame opposite to the current direction.
   trust: trusted
   value: -5
 - id: FLPY-RUL-003
@@ -67,12 +68,12 @@ This charter defines the behavior contract for the Bulkhead Flappy game. The Eng
 id: FLPY-BHV-001
 name: Vessel Thrust
 actor: pilot
-description: The pilot applies thrust to counteract gravity.
+description: The pilot applies thrust to counteract the current.
 trust: trusted
 ```
 
 ```pbc:outcomes
-- Vessel velocity is set to -5 (THRUST_IMPULSE).
+- Vessel velocity is set to 5 in direction opposite to current.
 ```
 
 ```pbc:behavior
@@ -84,7 +85,7 @@ trust: trusted
 ```
 
 ```pbc:outcomes
-- Vessel velocity increases by 0.25 (GRAVITY).
+- Vessel velocity increases by 0.25 (CURRENT).
 - Vessel position Y increases by velocity.
 - Bulkhead position X decreases by 3 (FLOW_SPEED).
 ```
@@ -97,5 +98,5 @@ trust: trusted
   note: Requirements spec for the Flappy containment demo.
 - ref: bulkhead-flappy/index.html
   confidence: verified
-  note: The Engine Room (game) parses these constants at runtime via regex.
+  note: The Engine Room (game) parses these constants at runtime.
 ```
