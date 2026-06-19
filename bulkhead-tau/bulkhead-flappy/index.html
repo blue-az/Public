@@ -5,17 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulkhead τ Flappy Ship</title>
     <style>
+        :root {
+            --blue-accent: #38bdf8;
+            --orange-accent: #f97316;
+            --theme-color: #38bdf8; /* dynamic base theme, defaults to blue */
+            --theme-color-rgb: 56, 189, 248;
+        }
         body {
             margin: 0;
             padding: 0;
-            background-color: #0a192f;
+            background-color: #070d19;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
             font-family: 'Courier New', Courier, monospace;
-            color: #64ffda;
+            color: var(--theme-color);
+            transition: color 0.3s ease;
         }
         #main-layout {
             display: flex;
@@ -24,12 +31,13 @@
         }
         #game-container {
             position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            border: 2px solid #112240;
+            box-shadow: 0 0 25px rgba(0,0,0,0.6);
+            border: 2px solid var(--theme-color);
+            transition: border-color 0.3s ease;
         }
         canvas {
             display: block;
-            background-color: #0d2538; /* Deep water */
+            background-color: #0b1329; /* Deep water */
         }
         #ui-overlay {
             position: absolute;
@@ -48,54 +56,65 @@
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            background: rgba(10, 25, 47, 0.9);
-            padding: 20px;
-            border: 1px solid #64ffda;
+            background: rgba(7, 13, 25, 0.95);
+            padding: 25px;
+            border: 1px solid var(--theme-color);
             display: none;
             z-index: 100;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            transition: border-color 0.3s ease;
         }
         button {
             background: transparent;
-            border: 1px solid #64ffda;
-            color: #64ffda;
+            border: 1px solid var(--theme-color);
+            color: var(--theme-color);
             padding: 10px 20px;
             font-family: inherit;
             cursor: pointer;
             margin-top: 10px;
+            font-weight: bold;
+            transition: all 0.2s ease;
         }
         button:hover {
-            background: rgba(100, 255, 218, 0.1);
+            background: rgba(var(--theme-color-rgb), 0.15);
+            box-shadow: 0 0 10px rgba(var(--theme-color-rgb), 0.3);
         }
         
         /* Educational Mode Panels */
         .side-panel {
             width: 300px;
-            background: #112240;
-            border: 1px solid #233554;
+            background: #0f172a;
+            border: 1px solid var(--theme-color);
             padding: 20px;
             display: none; /* Hidden by default (Playable Mode) */
+            transition: border-color 0.3s ease;
         }
         h2 {
             font-size: 18px;
-            border-bottom: 1px solid #233554;
+            border-bottom: 1px solid var(--theme-color);
             padding-bottom: 10px;
             margin-top: 0;
             color: #ccd6f6;
+            transition: border-bottom-color 0.3s ease;
         }
         .stat-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
             font-size: 14px;
+            color: #8892b0;
         }
         .stat-val {
-            color: #64ffda;
+            color: var(--theme-color);
+            font-weight: bold;
+            transition: color 0.3s ease;
         }
         .charter-rule {
             margin-bottom: 15px;
             padding: 10px;
-            background: #0a192f;
-            border-left: 3px solid #64ffda;
+            background: #070d19;
+            border-left: 3px solid var(--theme-color);
+            transition: border-left-color 0.3s ease;
         }
         .rule-id {
             font-size: 10px;
@@ -104,6 +123,7 @@
         .rule-text {
             font-size: 12px;
             margin-top: 5px;
+            color: #ccd6f6;
         }
         .tamper-control {
             margin-top: 20px;
@@ -121,11 +141,13 @@
             padding: 5px;
         }
         .mode-btn.active {
-            background: #64ffda;
-            color: #0a192f;
+            background: var(--theme-color);
+            color: #070d19;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         input[type=range] {
             width: 100%;
+            accent-color: var(--theme-color);
         }
         .violation-flag {
             color: #f44336;
@@ -148,7 +170,7 @@
     </style>
 </head>
 <body>
-    <div style="position: fixed; top: 15px; right: 15px; font-family: monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="flappy.pbc.md" target="_blank" style="color: #64ffda; text-decoration: none;">view charter &rarr;</a></div>
+    <div style="position: fixed; top: 15px; right: 15px; font-family: monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="flappy.pbc.md" target="_blank" style="color: var(--theme-color); text-decoration: none;">view charter &rarr;</a></div>
     <div id="main-layout">
         <!-- Engine Room Panel -->
         <div id="engine-panel" class="side-panel">
@@ -165,7 +187,6 @@
 
         <div id="game-container">
             <canvas id="gameCanvas" width="480" height="640"></canvas>
-            <button id="btnReverse" style="position: absolute; bottom: 20px; right: 20px; z-index: 99; font-size: 11px; padding: 8px 14px; background: rgba(10, 25, 47, 0.85); border: 1px solid #64ffda; color: #64ffda; cursor: pointer; display: none;" onmouseover="this.style.background='rgba(100, 255, 218, 0.15)'" onmouseout="this.style.background='rgba(10, 25, 47, 0.85)'">REVERSE CURRENT [Shift]</button>
             <div id="ui-overlay">
                 <div class="score">Cleared: <span id="scoreVal">0</span></div>
                 <div id="activeModeDisplay" style="font-size: 10px; margin-top: 5px; color: #8892b0;">CORE ENGINE ACTIVE</div>
@@ -173,7 +194,7 @@
             <div id="message">
                 <h1 id="msgTitle">CHARTER VIOLATION</h1>
                 <p id="msgText">Vessel collision detected.</p>
-                <button onclick="resetGame()">RESET ENGINE</button>
+                <button onclick="goToSplash()">RESET ENGINE</button>
             </div>
         </div>
 
@@ -239,7 +260,10 @@
         const bulkheadBtn = document.getElementById('bulkheadBtn');
         const replayStatus = document.getElementById('replayStatus');
         const activeModeDisplay = document.getElementById('activeModeDisplay');
-        const btnReverse = document.getElementById('btnReverse');
+
+        // Color Constants (Vibrant Blue & Orange)
+        const COLOR_BLUE = '#38bdf8';
+        const COLOR_ORANGE = '#f97316';
 
         // Charter Constants - LOADED FROM PBC
         let CHARTER = {
@@ -266,6 +290,7 @@
             running: false,
             educationalMode: false,
             tamperCurrent: 0.25,
+            selectedCurrentDirection: 'down',
             bulkheadEnforcement: true,
             inputHistory: [], // Logbook: recorded inputs ({frame, action})
             isReplaying: false,
@@ -312,8 +337,8 @@
                 state.tamperCurrent = CHARTER.CURRENT;
                 gravitySlider.value = CHARTER.CURRENT;
                 
-                document.getElementById('charterStatus').innerHTML = 'Source: flappy.pbc.md (LIVE) <span style="color: #64ffda;">✓ pbc-spec validated</span>';
-                document.getElementById('charterStatus').style.color = "#64ffda";
+                document.getElementById('charterStatus').innerHTML = 'Source: flappy.pbc.md (LIVE) <span style="color: var(--theme-color);">✓ pbc-spec validated</span>';
+                document.getElementById('charterStatus').style.color = "var(--theme-color)";
             } catch (e) {
                 console.error("PBC Fetch failed, using fallback:", e);
                 document.getElementById('charterStatus').innerText = "Source: hardcoded (FETCH FAILED)";
@@ -343,13 +368,21 @@
                 bulkheadBtn.classList.add('active');
                 vibeBtn.classList.remove('active');
                 activeModeDisplay.innerText = "BULKHEAD ENGINE ACTIVE (GATED)";
-                activeModeDisplay.style.color = "#64ffda";
+                activeModeDisplay.style.color = "var(--theme-color)";
             } else {
                 vibeBtn.classList.add('active');
                 bulkheadBtn.classList.remove('active');
                 activeModeDisplay.innerText = "VIBE ENGINE ACTIVE (UNGUARDED)";
                 activeModeDisplay.style.color = "#f44336";
             }
+        }
+
+        function updateThemeColor() {
+            const isUp = state.selectedCurrentDirection === 'up';
+            const color = isUp ? COLOR_ORANGE : COLOR_BLUE;
+            const rgb = isUp ? '249, 115, 22' : '56, 189, 248';
+            document.documentElement.style.setProperty('--theme-color', color);
+            document.documentElement.style.setProperty('--theme-color-rgb', rgb);
         }
 
         function replayLogbook() {
@@ -366,7 +399,11 @@
 
         gravitySlider.addEventListener('input', (e) => {
             state.tamperCurrent = parseFloat(e.target.value);
+            // Sync slider sign to direction selection
+            state.selectedCurrentDirection = state.tamperCurrent < 0 ? 'up' : 'down';
             gravityValEl.innerText = state.tamperCurrent.toFixed(2);
+            updateThemeColor();
+            showSplash();
         });
 
         function createBulkhead(x) {
@@ -393,6 +430,25 @@
                 replayStatus.style.display = 'none';
             }
             state.replayIndex = 0;
+            
+            // Disable gravity slider during gameplay
+            gravitySlider.disabled = true;
+
+            // Set current based on selection and preserve slider magnitude if tampered
+            let mag = Math.abs(state.tamperCurrent);
+            if (state.bulkheadEnforcement) {
+                // Bulkhead build snaps magnitude back to charter range if invalid
+                if (mag < CHARTER.CURRENT_MIN || mag > CHARTER.CURRENT_MAX) {
+                    mag = CHARTER.CURRENT;
+                }
+            }
+            state.tamperCurrent = state.selectedCurrentDirection === 'up' ? -mag : mag;
+            gravitySlider.value = state.tamperCurrent;
+            if (state.educationalMode) {
+                gravityValEl.innerText = state.tamperCurrent.toFixed(2);
+            }
+
+            updateThemeColor();
             initRNG(); 
             state.bulkheads = [
                 createBulkhead(canvas.width + 200),
@@ -401,48 +457,80 @@
             ];
             state.running = true;
             messageEl.style.display = 'none';
-            btnReverse.style.display = 'block';
             scoreEl.innerText = state.score;
             requestAnimationFrame(gameLoop);
         }
 
+        function goToSplash() {
+            messageEl.style.display = 'none';
+            gravitySlider.disabled = false;
+            updateThemeColor();
+            showSplash();
+        }
+
         function handleInput() {
             if (!state.running) {
-                resetGame();
+                if (messageEl.style.display === 'block') {
+                    goToSplash();
+                } else {
+                    resetGame();
+                }
             } else if (!state.isReplaying) {
+                // Thrust opposite to current direction
                 const thrustDir = state.tamperCurrent < 0 ? 1 : -1;
                 state.vesselV = thrustDir * Math.abs(CHARTER.THRUST_IMPULSE);
                 state.inputHistory.push({ frame: state.frame, action: 'thrust' });
             }
         }
 
-        function reverseCurrent() {
-            if (!state.running) return;
-            state.tamperCurrent = -state.tamperCurrent;
-            gravitySlider.value = state.tamperCurrent;
-            if (state.educationalMode) {
-                gravityValEl.innerText = state.tamperCurrent.toFixed(2);
-            }
-            if (!state.isReplaying) {
-                state.inputHistory.push({ frame: state.frame, action: 'reverse' });
-            }
-        }
-
         window.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' || e.code === 'ArrowUp') handleInput();
+            if (e.code === 'Space' || e.code === 'ArrowUp') {
+                handleInput();
+            }
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.key.toLowerCase() === 'shift' || e.key.toLowerCase() === 'r') {
-                reverseCurrent();
+                // Current toggle is only option before playing (on splash screen), not during active flight or gameover overlays
+                if (!state.running && messageEl.style.display !== 'block') {
+                    state.selectedCurrentDirection = state.selectedCurrentDirection === 'down' ? 'up' : 'down';
+                    updateThemeColor();
+                    showSplash();
+                }
             }
         });
+        
+        const handleMouseOrTouchSelect = (clientX, clientY) => {
+            if (!state.running && messageEl.style.display !== 'block') {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = clientX - rect.left;
+                const mouseY = clientY - rect.top;
+                
+                const yBox = canvas.height/2 + 5;
+                if (mouseY >= yBox && mouseY <= yBox + 30) {
+                    if (mouseX >= 100 && mouseX <= 220) {
+                        state.selectedCurrentDirection = 'down';
+                        updateThemeColor();
+                        showSplash();
+                        return true;
+                    } else if (mouseX >= 260 && mouseX <= 380) {
+                        state.selectedCurrentDirection = 'up';
+                        updateThemeColor();
+                        showSplash();
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            handleInput();
+            const touch = e.touches[0];
+            const processed = handleMouseOrTouchSelect(touch.clientX, touch.clientY);
+            if (!processed) handleInput();
         });
-        canvas.addEventListener('mousedown', handleInput);
-        btnReverse.onclick = (e) => {
-            e.stopPropagation();
-            reverseCurrent();
-        };
+        canvas.addEventListener('mousedown', (e) => {
+            const processed = handleMouseOrTouchSelect(e.clientX, e.clientY);
+            if (!processed) handleInput();
+        });
 
         function update() {
             if (!state.running) return;
@@ -480,11 +568,11 @@
                     gravityValEl.style.color = '#f44336';
                 } else {
                     violationWarning.style.display = 'none';
-                    gravityValEl.style.color = '#64ffda';
+                    gravityValEl.style.color = 'var(--theme-color)';
                 }
             } else {
                 violationWarning.style.display = 'none';
-                gravityValEl.style.color = '#64ffda';
+                gravityValEl.style.color = 'var(--theme-color)';
             }
 
             state.vesselV += effectiveCurrent;
@@ -537,13 +625,14 @@
 
         function gameOver(title, text) {
             state.running = false;
-            btnReverse.style.display = 'none';
+            gravitySlider.disabled = false;
             
-            // Save score
-            const isNewHigh = saveHighScore(state.score, state.seed);
+            // Save score based on active direction
+            const dir = state.tamperCurrent < 0 ? 'up' : 'down';
+            const isNewHigh = saveHighScore(state.score, state.seed, dir);
             
             document.getElementById('msgTitle').innerText = title;
-            let finalMsg = text + `\n\nScore: ${state.score}`;
+            let finalMsg = text + `\n\nScore: ${state.score} (${dir.toUpperCase()} current)`;
             if (isNewHigh) {
                 finalMsg += "\n🎉 NEW HIGH SCORE! 🎉";
             }
@@ -553,44 +642,61 @@
         }
 
         // LOCAL HIGH SCORES
-        function getHighScores() {
+        function getHighScores(dir) {
             try {
-                const raw = localStorage.getItem('bulkhead-flappy-highscores');
+                const raw = localStorage.getItem(`bulkhead-flappy-highscores-${dir}`);
                 return raw ? JSON.parse(raw) : [];
             } catch (e) {
                 return [];
             }
         }
 
-        function saveHighScore(score, seed) {
+        function saveHighScore(score, seed, dir) {
             if (score <= 0) return false;
-            let scores = getHighScores();
+            let scores = getHighScores(dir);
             const newEntry = { score, seed, date: Date.now() };
             scores.push(newEntry);
             scores.sort((a, b) => b.score - a.score);
             scores = scores.slice(0, 5);
             try {
-                localStorage.setItem('bulkhead-flappy-highscores', JSON.stringify(scores));
+                localStorage.setItem(`bulkhead-flappy-highscores-${dir}`, JSON.stringify(scores));
             } catch (e) {}
             return scores.some(entry => entry.date === newEntry.date);
         }
 
         function drawHighScores(yStart) {
-            const scores = getHighScores();
-            if (scores.length === 0) return;
-
-            ctx.fillStyle = 'rgba(100, 255, 218, 0.4)';
-            ctx.font = '800 12px monospace';
+            // Draw Blue Leaderboard (Down Current)
+            const scoresDown = getHighScores('down');
+            ctx.fillStyle = COLOR_BLUE;
+            ctx.font = '800 11px monospace';
             ctx.textAlign = 'center';
-            ctx.fillText('--- LOCAL HIGH SCORES ---', canvas.width/2, yStart);
+            ctx.fillText('--- DOWN CURRENT (BLUE) ---', 130, yStart);
             
             ctx.fillStyle = '#ccd6f6';
-            ctx.font = '11px monospace';
-            scores.forEach((entry, index) => {
-                const y = yStart + 20 + (index * 16);
-                const rankText = `${index + 1}. Score: ${entry.score} (Seed: ${entry.seed})`;
-                ctx.fillText(rankText, canvas.width/2, y);
-            });
+            ctx.font = '10px monospace';
+            if (scoresDown.length === 0) {
+                ctx.fillText('No scores yet', 130, yStart + 20);
+            } else {
+                scoresDown.forEach((entry, index) => {
+                    ctx.fillText(`${index + 1}. Score: ${entry.score} (Seed: ${entry.seed})`, 130, yStart + 20 + (index * 15));
+                });
+            }
+
+            // Draw Orange Leaderboard (Up Current)
+            const scoresUp = getHighScores('up');
+            ctx.fillStyle = COLOR_ORANGE;
+            ctx.font = '800 11px monospace';
+            ctx.fillText('--- UP CURRENT (ORANGE) ---', 350, yStart);
+            
+            ctx.fillStyle = '#ccd6f6';
+            ctx.font = '10px monospace';
+            if (scoresUp.length === 0) {
+                ctx.fillText('No scores yet', 350, yStart + 20);
+            } else {
+                scoresUp.forEach((entry, index) => {
+                    ctx.fillText(`${index + 1}. Score: ${entry.score} (Seed: ${entry.seed})`, 350, yStart + 20 + (index * 15));
+                });
+            }
         }
 
         /**
@@ -611,14 +717,14 @@
 
             // Draw Bulkheads
             state.bulkheads.forEach(b => {
-                // Main metal structures
-                ctx.fillStyle = b.type === 'PBC' ? '#007bb5' : '#7b1fa2'; // Cyan vs Purple
+                // Main metal structures (Blue for PBC, Orange for BT)
+                ctx.fillStyle = b.type === 'PBC' ? '#004e7c' : '#8c3a00';
                 ctx.fillRect(b.x, 0, 50, b.gapY);
                 ctx.fillRect(b.x, b.gapY + CHARTER.GAP_HEIGHT, 50, canvas.height - (b.gapY + CHARTER.GAP_HEIGHT));
 
                 // Safe envelope borders
-                ctx.strokeStyle = b.type === 'PBC' ? '#00e5ff' : '#d500f9';
-                ctx.lineWidth = 2;
+                ctx.strokeStyle = b.type === 'PBC' ? COLOR_BLUE : COLOR_ORANGE;
+                ctx.lineWidth = 2.5;
                 ctx.setLineDash([6, 4]);
                 ctx.strokeRect(b.x, b.gapY, 50, CHARTER.GAP_HEIGHT);
                 ctx.setLineDash([]);
@@ -631,8 +737,8 @@
                 ctx.fillText(b.type, b.x + 25, b.gapY + CHARTER.GAP_HEIGHT + 25);
             });
 
-            // Draw Vessel (Tug)
-            ctx.fillStyle = '#64ffda';
+            // Draw Vessel (Tug) - Colors match selected current direction
+            ctx.fillStyle = state.tamperCurrent < 0 ? COLOR_ORANGE : COLOR_BLUE;
             const x = CHARTER.VESSEL_X;
             const y = state.vesselY;
             const w = CHARTER.VESSEL_WIDTH;
@@ -648,31 +754,31 @@
             ctx.fill();
             
             // Cabin
-            ctx.fillStyle = '#0a192f';
+            ctx.fillStyle = '#070d19';
             ctx.fillRect(x + 5, y + 5, w/2, h/2);
 
             // Draw Current Vector HUD on Canvas
-            ctx.fillStyle = 'rgba(10, 25, 47, 0.85)';
+            ctx.fillStyle = 'rgba(7, 13, 25, 0.9)';
             ctx.fillRect(15, 80, 50, 120);
-            ctx.strokeStyle = 'rgba(0, 204, 255, 0.2)';
+            ctx.strokeStyle = state.tamperCurrent < 0 ? 'rgba(249, 115, 22, 0.3)' : 'rgba(56, 189, 248, 0.3)';
             ctx.lineWidth = 1;
             ctx.strokeRect(15, 80, 50, 120);
 
             // Label
-            ctx.fillStyle = 'rgba(0, 204, 255, 0.6)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
             ctx.font = '800 8px monospace';
             ctx.textAlign = 'center';
             ctx.fillText('CURRENT', 40, 95);
 
             // Value
-            ctx.fillStyle = state.tamperCurrent < 0 ? '#ff3b30' : '#64ffda';
+            ctx.fillStyle = state.tamperCurrent < 0 ? COLOR_ORANGE : COLOR_BLUE;
             ctx.font = '800 10px monospace';
             ctx.fillText(`${state.tamperCurrent < 0 ? 'UP' : 'DN'}`, 40, 110);
             ctx.font = '800 9px monospace';
             ctx.fillText(`${Math.abs(state.tamperCurrent).toFixed(2)}`, 40, 125);
 
-            // Arrow
-            ctx.strokeStyle = state.tamperCurrent < 0 ? '#ff3b30' : '#64ffda';
+            // Arrow (Blue for Down, Orange for Up)
+            ctx.strokeStyle = state.tamperCurrent < 0 ? COLOR_ORANGE : COLOR_BLUE;
             ctx.lineWidth = 2.5;
             ctx.beginPath();
             if (state.tamperCurrent < 0) {
@@ -729,33 +835,61 @@
                 ctx.stroke();
             }
 
-            ctx.fillStyle = '#64ffda';
-            ctx.font = '24px monospace';
+            const currentThemeColor = state.selectedCurrentDirection === 'up' ? COLOR_ORANGE : COLOR_BLUE;
+
+            ctx.fillStyle = currentThemeColor;
+            ctx.font = '22px monospace';
             ctx.textAlign = 'center';
-            ctx.fillText('BULKHEAD \u03C4 FLAPPY SHIP', canvas.width/2, canvas.height/2 - 80);
+            ctx.fillText('BULKHEAD \u03C4 FLAPPY SHIP', canvas.width/2, canvas.height/2 - 90);
             
             ctx.fillStyle = '#ccd6f6';
-            ctx.font = '13px monospace';
-            ctx.fillText('ENFORCE THE CHARTER', canvas.width/2, canvas.height/2 - 40);
-            
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.font = '11px monospace';
-            ctx.fillText('[SPACE / TAP] - Thrust opposite to Current', canvas.width/2, canvas.height/2 - 5);
-            ctx.fillText('[SHIFT / R] - Reverse Current direction', canvas.width/2, canvas.height/2 + 15);
-            
-            ctx.fillStyle = '#64ffda';
             ctx.font = '12px monospace';
-            ctx.fillText('PRESS SPACE TO ENGAGE ENGINE', canvas.width/2, canvas.height/2 + 55);
+            ctx.fillText('ENFORCE THE CHARTER', canvas.width/2, canvas.height/2 - 60);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.font = '10px monospace';
+            ctx.fillText('[SPACE / TAP] - Thrust opposite to Current', canvas.width/2, canvas.height/2 - 35);
+            ctx.fillText('[SHIFT / CLICK / R] - Toggle Current Direction', canvas.width/2, canvas.height/2 - 20);
 
-            drawHighScores(canvas.height/2 + 110);
+            // Draw current selection boxes
+            const yBox = canvas.height/2 + 5;
+            
+            // DOWN Box (Blue)
+            ctx.fillStyle = state.selectedCurrentDirection === 'down' ? COLOR_BLUE : 'rgba(255,255,255,0.05)';
+            ctx.fillRect(100, yBox, 120, 30);
+            ctx.strokeStyle = COLOR_BLUE;
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(100, yBox, 120, 30);
+            
+            ctx.fillStyle = state.selectedCurrentDirection === 'down' ? '#070d19' : '#ccd6f6';
+            ctx.font = '800 11px monospace';
+            ctx.fillText('DOWN CURRENT', 160, yBox + 18);
+
+            // UP Box (Orange)
+            ctx.fillStyle = state.selectedCurrentDirection === 'up' ? COLOR_ORANGE : 'rgba(255,255,255,0.05)';
+            ctx.fillRect(260, yBox, 120, 30);
+            ctx.strokeStyle = COLOR_ORANGE;
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(260, yBox, 120, 30);
+            
+            ctx.fillStyle = state.selectedCurrentDirection === 'up' ? '#070d19' : '#ccd6f6';
+            ctx.font = '800 11px monospace';
+            ctx.fillText('UP CURRENT', 320, yBox + 18);
+            
+            ctx.fillStyle = currentThemeColor;
+            ctx.font = '11px monospace';
+            ctx.fillText('PRESS SPACE TO ENGAGE ENGINE', canvas.width/2, yBox + 50);
+
+            drawHighScores(yBox + 80);
         }
 
         // ENTRY POINT
         fetchCharter().then(() => {
+            updateThemeColor();
             initRNG();
             showSplash();
         });
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.4</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.5</div>
 </body>
 </html>
