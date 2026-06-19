@@ -316,6 +316,33 @@
         }
 
         .hidden { display: none !important; }
+
+        .proposal-card.active-target {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.25) !important;
+            transform: scale(1.02);
+            transition: all 0.2s;
+        }
+
+        details {
+            border: 1px solid var(--border);
+            background: rgba(5, 12, 24, 0.4);
+            border-radius: 4px;
+            padding: 8px 10px;
+            transition: border-color 0.3s;
+        }
+        details[open] {
+            border-color: var(--primary);
+        }
+        summary {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: bold;
+            outline: none;
+            user-select: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         
         h1 { 
             color: var(--primary); 
@@ -395,6 +422,25 @@
         <div id="proposal-queue">
             <!-- Proposals appear here -->
         </div>
+
+        <details style="margin: 0 15px 15px 15px; font-size: 11px;">
+            <summary>SUPERVISOR CHARTER SPEC</summary>
+            <div style="color: var(--text-muted); margin: 5px 0 8px 0; font-size: 10px; line-height: 1.4;">
+                Audit autonomous crew proposals under PBC-VET-001/002:
+            </div>
+            <ul style="padding-left: 15px; margin: 0 0 10px 0; line-height: 1.4; color: var(--text);">
+                <li><strong>ROUTINE MAINTENANCE:</strong> Safe to approve. Restores health. No integrity cost.</li>
+                <li><strong>GOOD STRUCTURAL REPAIRS:</strong> Low damage, high health gain. Approved tradeoff.</li>
+                <li><strong>BAD STRUCTURAL REPAIRS:</strong> High damage, breach risk. <strong>MUST VETO</strong> to protect hull.</li>
+                <li><strong>Timer Gating (5s):</strong> Unaudited proposals auto-apply, causing severe unauthorized breach damage!</li>
+            </ul>
+            <div style="color: var(--primary); font-weight: bold; margin-bottom: 5px; font-size: 10px; letter-spacing: 0.5px;">CONTROLS:</div>
+            <div style="color: var(--text); font-size: 10px; line-height: 1.5; padding-left: 5px;">
+                • Click Approve/Veto, or use:<br>
+                • <kbd style="background:#233554; padding:1px 4px; border-radius:2px; font-weight:bold; color:var(--primary);">Space</kbd> / <kbd style="background:#233554; padding:1px 4px; border-radius:2px; font-weight:bold; color:var(--primary);">A</kbd> — Approve top card<br>
+                • <kbd style="background:#233554; padding:1px 4px; border-radius:2px; font-weight:bold; color:var(--primary);">Escape</kbd> / <kbd style="background:#233554; padding:1px 4px; border-radius:2px; font-weight:bold; color:var(--primary);">V</kbd> — Veto top card
+            </div>
+        </details>
         
         <!-- Scrolling Console for Audit Log -->
         <div id="console-container">
@@ -437,6 +483,20 @@
         }
         window.addEventListener('resize', resize);
         resize();
+
+        window.addEventListener('keydown', e => {
+            if (!state.running || state.proposals.length === 0) return;
+            const activeProp = state.proposals[0];
+            if (!activeProp) return;
+
+            if (e.key === ' ' || e.key === 'a' || e.key === 'A') {
+                e.preventDefault();
+                approveProposal(activeProp.id);
+            } else if (e.key === 'Escape' || e.key === 'v' || e.key === 'V') {
+                e.preventDefault();
+                vetoProposal(activeProp.id);
+            }
+        });
 
         // GAME STATE
         let state = {
@@ -837,7 +897,7 @@
             integrityEl.innerText = `${Math.floor(state.integrity)}%`;
             progressEl.innerText = `${Math.min(100, Math.floor((state.progress / CHARTER.PROGRESS_GOAL) * 100))}%`;
             
-            state.proposals.forEach(p => {
+            state.proposals.forEach((p, index) => {
                 let timerBar = document.getElementById(`timer-${p.id}`);
                 if (timerBar) {
                     const ratio = p.timeLeft / CHARTER.PROPOSAL_COUNTDOWN;
@@ -850,6 +910,16 @@
                         timerBar.style.backgroundColor = varColor('--warning');
                     } else {
                         timerBar.style.backgroundColor = varColor('--primary');
+                    }
+                }
+
+                // Highlight target card
+                let card = document.getElementById(`prop-${p.id}`);
+                if (card) {
+                    if (index === 0) {
+                        card.classList.add('active-target');
+                    } else {
+                        card.classList.remove('active-target');
                     }
                 }
             });
@@ -879,6 +949,6 @@
 
         requestAnimationFrame(gameLoop);
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.5</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.6</div>
 </body>
 </html>
