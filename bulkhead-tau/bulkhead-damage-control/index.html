@@ -262,7 +262,8 @@
             inputHistory: [], // Logbook: {tick, index}
             isReplaying: false,
             replayIndex: 0,
-            isGameOver: false
+            isGameOver: false,
+            pumpingCompartment: -1 // -1 or index of compartment being patched/pumped
         };
 
         let rng;
@@ -338,10 +339,17 @@
             logbookEl.prepend(div);
         }
 
+        function isCompartmentIsolated(idx) {
+            const leftClosed = (idx === 0 || state.bulkheads[idx-1].state === 'CLOSED');
+            const rightClosed = (idx === state.compartments.length - 1 || state.bulkheads[idx].state === 'CLOSED');
+            return leftClosed && rightClosed;
+        }
+
         function resetGame(keepHistory = false) {
             state.ticks = 0;
             state.wavesSurvived = 0;
             state.isGameOver = false;
+            state.pumpingCompartment = -1;
             if (!keepHistory) {
                 state.inputHistory = [];
                 state.seed = Math.floor(Math.random() * 100000);
@@ -354,6 +362,7 @@
                 name,
                 floodLevel: 0,
                 activeLeak: false,
+                patchProgress: 0,
                 isEngineRoom: name === CHARTER.CRITICAL_COMPARTMENT
             }));
 
@@ -409,9 +418,25 @@
                     break;
                 }
             }
+            
             if (clickedDoorIndex !== -1) {
                 handleAction(clickedDoorIndex);
+            } else {
+                const compIndex = Math.floor((x - COMP_START_X) / COMP_WIDTH);
+                if (compIndex >= 0 && compIndex < state.compartments.length) {
+                    if (!isCompartmentIsolated(compIndex)) {
+                        state.pumpingCompartment = compIndex;
+                    }
+                }
             }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            state.pumpingCompartment = -1;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            state.pumpingCompartment = -1;
         });
 
         function replayLogbook() {
@@ -450,7 +475,7 @@
                     return;
                 }
 
-                const candidates = state.compartments.filter(c => !c.isEngineRoom && !c.activeLeak);
+                const candidates = state.compartments.filter(c => !c.isEngineRoom && !c.activeLeak && !isCompartmentIsolated(CHARTER.COMPARTMENTS.indexOf(c.name)));
                 if (candidates.length > 0) {
                     const victim = candidates[Math.floor(rng() * candidates.length)];
                     victim.activeLeak = true;
@@ -459,6 +484,32 @@
                     addLog("Wave survived. Hull boundaries holding.");
                 }
             }
+
+            // Pumping & Patching Logic
+            if (state.pumpingCompartment !== -1) {
+                const c = state.compartments[state.pumpingCompartment];
+                if (!isCompartmentIsolated(state.pumpingCompartment)) {
+                    if (c.activeLeak) {
+                        c.patchProgress = (c.patchProgress || 0) + 1;
+                        if (c.patchProgress >= 120) { // 2 seconds at 60fps
+                            c.activeLeak = false;
+                            c.patchProgress = 0;
+                            addLog(`Breach patched in ${c.name}.`);
+                        }
+                    } else if (c.floodLevel > 0) {
+                        c.floodLevel = Math.max(0, c.floodLevel - 0.005); // active pump drainage
+                    }
+                } else {
+                    state.pumpingCompartment = -1;
+                }
+            }
+
+            // Decay patch progress if not actively patching
+            state.compartments.forEach((c, idx) => {
+                if (state.pumpingCompartment !== idx && c.patchProgress > 0) {
+                    c.patchProgress = Math.max(0, c.patchProgress - 2);
+                }
+            });
 
             // Flood Dynamics (DC3-RUL-002)
             state.compartments.forEach(c => {
@@ -645,8 +696,34 @@
                 ctx.textAlign = 'center';
                 ctx.fillText(c.name, x + COMP_WIDTH/2, COMP_Y + COMP_HEIGHT + 15);
 
+                // Patching / Pumping overlays
+                if (c.activeLeak && c.patchProgress > 0) {
+                    const progress = c.patchProgress / 120;
+                    ctx.fillStyle = '#ffca28';
+                    ctx.fillRect(x + 10, COMP_Y - 25, COMP_WIDTH - 20, 6);
+                    ctx.strokeStyle = '#233554';
+                    ctx.strokeRect(x + 10, COMP_Y - 25, COMP_WIDTH - 20, 6);
+                    
+                    ctx.fillStyle = '#ffca28';
+                    ctx.font = '9px Courier New';
+                    ctx.textAlign = 'center';
+                    ctx.fillText("PATCHING...", x + COMP_WIDTH/2, COMP_Y - 30);
+                } else if (state.pumpingCompartment === i && !c.activeLeak && c.floodLevel > 0) {
+                    ctx.fillStyle = '#64ffda';
+                    ctx.font = 'bold 9px Courier New';
+                    ctx.textAlign = 'center';
+                    ctx.fillText("PUMPING", x + COMP_WIDTH/2, COMP_Y - 30);
+                    
+                    ctx.strokeStyle = 'rgba(100, 255, 218, 0.4)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(x + COMP_WIDTH/2, COMP_Y + COMP_HEIGHT);
+                    ctx.lineTo(x + COMP_WIDTH/2, COMP_Y + COMP_HEIGHT - (COMP_HEIGHT * c.floodLevel));
+                    ctx.stroke();
+                }
+
                 // Sacrificed Status (DC3-RUL-005)
-                const isSealedOff = (i < state.bulkheads.length && state.bulkheads[i].state === 'CLOSED') || (i > 0 && state.bulkheads[i-1].state === 'CLOSED');
+                const isSealedOff = isCompartmentIsolated(i);
                 if (c.floodLevel > 0.05) {
                     if (isSealedOff && !c.isEngineRoom) {
                         ctx.fillStyle = 'rgba(244, 67, 54, 0.15)';
@@ -749,18 +826,19 @@
             ctx.fillText('BULKHEAD \u03C4 DAMAGE CONTROL', canvas.width/2, canvas.height/2 - 70);
             
             ctx.font = '14px Courier New';
-            ctx.fillText('LEAKS CAN\'T BE FIXED - ONLY CONTAINED.', canvas.width/2, canvas.height/2 - 30);
+            ctx.fillText('BREACHES CAN BE PATCHED & WATER PUMPED OUT!', canvas.width/2, canvas.height/2 - 30);
             ctx.fillText('PROTECT THE ENGINE ROOM AT ALL COSTS.', canvas.width/2, canvas.height/2 - 10);
             
             ctx.fillStyle = '#8892b0';
             ctx.font = '12px Courier New';
-            ctx.fillText('Seal watertight doors (Keys 1-4) to wall off flooding.', canvas.width/2, canvas.height/2 + 30);
-            ctx.fillText('A sealed-off compartment is a SACRIFICE, not a loss.', canvas.width/2, canvas.height/2 + 50);
-            ctx.fillText('Survive 8 waves with the Engine Room dry to win.', canvas.width/2, canvas.height/2 + 70);
+            ctx.fillText('Click & hold a compartment to PATCH leaks and PUMP water.', canvas.width/2, canvas.height/2 + 25);
+            ctx.fillText('Seal watertight doors (Keys 1-4 or click doors) to isolate flooding.', canvas.width/2, canvas.height/2 + 45);
+            ctx.fillText('Sealing off a flooding compartment is a SACRIFICE (lost offline).', canvas.width/2, canvas.height/2 + 65);
+            ctx.fillText('Survive 8 waves with the Engine Room dry to win.', canvas.width/2, canvas.height/2 + 85);
             
             ctx.fillStyle = '#64ffda';
             ctx.font = '16px Courier New';
-            ctx.fillText('PRESS SPACE TO COMMENCE PATROL', canvas.width/2, canvas.height/2 + 110);
+            ctx.fillText('PRESS SPACE TO COMMENCE PATROL', canvas.width/2, canvas.height/2 + 115);
         }
 
         fetchCharter().then(() => {
