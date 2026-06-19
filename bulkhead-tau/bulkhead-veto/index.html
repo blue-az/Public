@@ -5,24 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulkhead τ: Veto</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
         :root {
-            --bg: #0a192f;
-            --surface: #112240;
+            --bg: #050c18;
+            --surface: rgba(17, 34, 64, 0.85);
             --primary: #64ffda;
-            --danger: #f44336;
-            --warning: #ffca28;
+            --primary-glow: rgba(100, 255, 218, 0.3);
+            --danger: #ff5252;
+            --danger-glow: rgba(255, 82, 82, 0.3);
+            --warning: #ffd740;
             --text: #ccd6f6;
             --text-muted: #8892b0;
+            --border: #233554;
+            --glow-filter: drop-shadow(0 0 8px var(--primary));
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Share Tech Mono', Courier, monospace;
             margin: 0;
             display: flex;
             height: 100vh;
             overflow: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(10, 25, 50, 0.5) 0px, transparent 50%),
+                radial-gradient(at 50% 0%, rgba(2, 12, 27, 0.8) 0px, transparent 50%);
         }
 
         #game-container {
@@ -30,102 +43,177 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            height: 100%;
         }
 
         #header {
-            padding: 15px 20px;
+            padding: 15px 25px;
             background: var(--surface);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #233554;
+            border-bottom: 2px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .title-brand {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         #stats {
             display: flex;
-            gap: 30px;
+            gap: 40px;
         }
 
-        .stat-val { color: var(--primary); font-weight: bold; }
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-val { 
+            font-size: 1.3rem; 
+            color: var(--primary); 
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--primary-glow);
+            transition: color 0.3s;
+        }
+
+        .stat-val.critical {
+            color: var(--danger);
+            text-shadow: 0 0 10px var(--danger-glow);
+            animation: pulse-danger 1s infinite alternate;
+        }
+
+        @keyframes pulse-danger {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
 
         canvas {
-            background: #020c1b;
+            background: #01060f;
+            flex-grow: 1;
+            width: 100%;
             cursor: crosshair;
         }
 
         #sidebar {
-            width: 320px;
+            width: 360px;
             background: var(--surface);
-            border-left: 2px solid #233554;
+            backdrop-filter: blur(12px);
+            border-left: 2px solid var(--border);
             display: flex;
             flex-direction: column;
             padding: 0;
+            z-index: 10;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         #logbook-header {
-            padding: 15px;
-            background: #1d2d50;
+            padding: 18px;
+            background: rgba(29, 45, 80, 0.6);
             font-weight: bold;
             color: var(--primary);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 14px;
+            letter-spacing: 1.5px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         #proposal-queue {
-            flex-grow: 1;
+            flex-grow: 3;
             overflow-y: auto;
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
         .proposal-card {
-            background: var(--bg);
-            border: 1px solid #233554;
-            padding: 12px;
-            border-radius: 4px;
+            background: rgba(5, 12, 24, 0.9);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 6px;
             position: relative;
-            animation: slideIn 0.3s ease-out;
+            animation: slideIn 0.25s cubic-bezier(0.1, 0.8, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            transition: border-color 0.3s;
+        }
+
+        .proposal-card:hover {
+            border-color: #385170;
         }
 
         @keyframes slideIn {
-            from { transform: translateX(50px); opacity: 0; }
+            from { transform: translateX(30px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
         .proposal-title {
-            font-size: 12px;
+            font-size: 0.75rem;
             color: var(--text-muted);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
+            letter-spacing: 0.5px;
         }
 
         .proposal-desc {
-            font-size: 14px;
+            font-size: 0.9rem;
             margin-bottom: 10px;
             line-height: 1.4;
+            color: #ffffff;
         }
 
         .proposal-type {
             display: inline-block;
-            font-size: 10px;
-            padding: 2px 6px;
+            font-size: 0.7rem;
+            padding: 3px 8px;
             border-radius: 3px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
 
-        .type-structural { background: rgba(244, 67, 54, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .type-structural { background: rgba(255, 82, 82, 0.15); color: var(--danger); border: 1px solid var(--danger); }
         .type-routine { background: rgba(100, 255, 218, 0.1); color: var(--primary); border: 1px solid var(--primary); }
 
         .timer-bar-bg {
-            height: 4px;
-            background: #233554;
+            height: 5px;
+            background: #112240;
             width: 100%;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            border-radius: 2px;
             overflow: hidden;
         }
 
@@ -133,84 +221,204 @@
             height: 100%;
             background: var(--warning);
             width: 100%;
+            transition: width 0.1s linear;
         }
 
         .card-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .btn {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             border: none;
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
             font-family: inherit;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            transition: filter 0.2s;
+            transition: all 0.2s;
+            letter-spacing: 1px;
         }
 
-        .btn:hover { filter: brightness(1.2); }
-        .btn-approve { background: var(--primary); color: var(--bg); }
-        .btn-veto { background: var(--danger); color: white; }
+        .btn-approve { 
+            background: var(--primary); 
+            color: #050c18; 
+            box-shadow: 0 2px 8px rgba(100, 255, 218, 0.2);
+        }
+        .btn-approve:hover { 
+            background: #7affea; 
+            box-shadow: 0 4px 12px rgba(100, 255, 218, 0.4);
+        }
+
+        .btn-veto { 
+            background: rgba(255, 82, 82, 0.1); 
+            color: var(--danger); 
+            border: 1px solid var(--danger);
+        }
+        .btn-veto:hover { 
+            background: var(--danger); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+        }
+
+        /* Audit Log Console */
+        #console-container {
+            height: 180px;
+            background: #020710;
+            border-top: 1px solid var(--border);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-hdr {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #audit-console {
+            flex-grow: 1;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: #8892b0;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        .console-line {
+            margin-bottom: 4px;
+        }
+        .line-system { color: var(--warning); }
+        .line-veto { color: var(--danger); }
+        .line-approve { color: var(--primary); }
+        .line-error { color: var(--danger); font-weight: bold; }
 
         #overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10, 25, 47, 0.9);
+            background: rgba(5, 12, 24, 0.95);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
             text-align: center;
+            padding: 30px;
         }
 
         .hidden { display: none !important; }
         
-        h1 { color: var(--primary); }
+        h1 { 
+            color: var(--primary); 
+            letter-spacing: 3px; 
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .intro-box {
+            max-width: 500px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Screen Shake and Red Flash */
+        .shake {
+            animation: shake-anim 0.3s ease-in-out;
+        }
+        @keyframes shake-anim {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-4px, 2px); }
+            20%, 40%, 60%, 80% { transform: translate(4px, -2px); }
+        }
+
+        .flash-red {
+            animation: flash-red-anim 0.4s ease-out;
+        }
+        @keyframes flash-red-anim {
+            0% { box-shadow: inset 0 0 100px rgba(255, 82, 82, 0.6); }
+            100% { box-shadow: inset 0 0 0px rgba(255, 82, 82, 0); }
+        }
     </style>
 </head>
 <body>
-    <div style="position: fixed; top: 15px; right: 340px; font-family: monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="veto.pbc.md" target="_blank" style="color: #64ffda; text-decoration: none;">view charter &rarr;</a></div>
+    <div style="position: fixed; top: 15px; right: 380px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="veto.pbc.md" target="_blank" style="color: #64ffda; text-decoration: none;">view charter &rarr;</a></div>
 
     <div id="game-container">
         <div id="header">
-            <div>BULKHEAD τ: <span style="color: var(--primary)">VETO</span></div>
+            <div class="title-brand">BULKHEAD τ: <span style="color: var(--primary)">VETO</span></div>
             <div id="stats">
-                <div>INTEGRITY: <span id="integrity-val" class="stat-val">100%</span></div>
-                <div>MISSION PROGRESS: <span id="progress-val" class="stat-val">0%</span></div>
+                <div class="stat-box">
+                    <span class="stat-lbl">Integrity</span>
+                    <span id="integrity-val" class="stat-val">100%</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-lbl">Mission Progress</span>
+                    <span id="progress-val" class="stat-val">0%</span>
+                </div>
             </div>
         </div>
         <canvas id="gameCanvas"></canvas>
         
         <div id="overlay">
             <h1 id="overlay-title">SYSTEMS INITIALIZED</h1>
-            <p id="overlay-desc">Autonomous Crew Online. Stand by for Supervision.</p>
-            <button class="btn btn-approve" id="start-btn" style="padding: 15px 40px; font-size: 16px;">Engage Supervisor Mode</button>
+            <div class="intro-box">
+                <p id="overlay-desc">Autonomous Crew is online. You are the Supervisor.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); text-align: left; margin-top: 15px;">
+                    <strong>Core Directives:</strong><br>
+                    • <strong>Critical Systems Decay:</strong> Letting room health drop below 20% leaks critical radiation, damaging overall Integrity over time.<br>
+                    • <strong>Veto Bad Proposals:</strong> The Crew is prone to "Boundary Blindness." Auditing and vetoing bad/risky structural proposals prevents breaches.<br>
+                    • <strong>Approve Good Repairs:</strong> Guide the Crew to complete clean repairs to maintain systems and complete the mission.
+                </p>
+            </div>
+            <button class="btn btn-approve" id="start-btn" style="padding: 15px 40px; font-size: 16px; width: auto;">Engage Supervisor Mode</button>
         </div>
     </div>
 
     <div id="sidebar">
-        <div id="logbook-header">Supervisor Audit Queue</div>
+        <div id="logbook-header">
+            <span>Audit Queue</span>
+            <span style="font-size: 0.7rem; color: var(--warning);" id="queue-count">0 PENDING</span>
+        </div>
         <div id="proposal-queue">
             <!-- Proposals appear here -->
         </div>
-        <div id="charter-status" style="font-size: 10px; color: var(--text-muted); padding: 10px; border-top: 1px solid #233554;">Charter: veto.pbc.md (LIVE) <span style="color: var(--primary);">✓ pbc-spec validated</span></div>
+        
+        <!-- Scrolling Console for Audit Log -->
+        <div id="console-container">
+            <div class="console-hdr">
+                <span>Supervisor Log Console</span>
+                <span style="color: var(--primary);">ONLINE</span>
+            </div>
+            <div id="audit-console">
+                <!-- Log output -->
+            </div>
+        </div>
+        <div id="charter-status" style="font-size: 10px; color: var(--text-muted); padding: 12px; border-top: 1px solid var(--border); background: rgba(5,12,24,0.3);">Charter: veto.pbc.md (LIVE) <span style="color: var(--primary);">✓ validated</span></div>
     </div>
 
     <script>
         // CONFIG
         const CHARTER = {
             INTEGRITY_MAX: 100,
-            PROGRESS_GOAL: 5000,
+            PROGRESS_GOAL: 3500,
             TIMESTEP: 1000 / 60,
             PROPOSAL_COUNTDOWN: 5000, // 5 seconds to audit
-            DECAY_CHANCE: 0.005,
-            CREW_SPEED: 2.5
+            DECAY_CHANCE: 0.006,
+            CREW_SPEED: 2.2,
+            CRITICAL_HEALTH_LIMIT: 20 // Below this, rooms leak integrity
         };
 
         const canvas = document.getElementById('gameCanvas');
@@ -220,6 +428,8 @@
         const queueEl = document.getElementById('proposal-queue');
         const startBtn = document.getElementById('start-btn');
         const overlay = document.getElementById('overlay');
+        const consoleEl = document.getElementById('audit-console');
+        const queueCountEl = document.getElementById('queue-count');
 
         function resize() {
             canvas.width = canvas.parentElement.clientWidth;
@@ -237,21 +447,29 @@
             accumulator: 0,
             lastTime: 0,
             systems: [
-                { id: 'engine', name: 'Engine Core', x: 150, y: 150, health: 100, type: 'ROUTINE' },
-                { id: 'life', name: 'Life Support', x: 150, y: 450, health: 100, type: 'CRITICAL' },
-                { id: 'nav', name: 'Navigation', x: 650, y: 150, health: 100, type: 'ROUTINE' },
-                { id: 'comms', name: 'Comms Array', x: 650, y: 450, health: 100, type: 'CRITICAL' }
+                { id: 'engine', name: 'Engine Core', x: 180, y: 150, health: 100 },
+                { id: 'life', name: 'Life Support', x: 180, y: 430, health: 100 },
+                { id: 'nav', name: 'Navigation', x: 580, y: 150, health: 100 },
+                { id: 'comms', name: 'Comms Array', x: 580, y: 430, health: 100 }
             ],
-            crew: { x: 400, y: 300, targetId: null, taskProgress: 0 },
+            crew: { x: 380, y: 290, targetId: null, taskProgress: 0 },
             proposals: []
         };
 
+        // Standard, Good and Bad templates
         const PROPOSAL_TEMPLATES = [
-            { desc: "Replace thermal coupling", structural: false, healthGain: 20, damage: 0 },
-            { desc: "Purge coolant lines", structural: false, healthGain: 20, damage: 0 },
-            { desc: "Overclock core injectors", structural: true, healthGain: 40, damage: 25, warning: "Risks structural fracture." },
-            { desc: "Vent emergency oxygen to boosters", structural: true, healthGain: 10, damage: 30, warning: "Violates life-support boundary." },
-            { desc: "Bypass safety interlocks", structural: true, healthGain: 50, damage: 40, warning: "High risk of containment failure." }
+            // Routine Maintenance (Always safe, moderate gain)
+            { desc: "Replace thermal coupling", structural: false, bad: false, healthGain: 20, damage: 0 },
+            { desc: "Purge coolant lines", structural: false, bad: false, healthGain: 20, damage: 0 },
+            
+            // Good Structural Fixes (Approved tradeoff - low damage, high gain)
+            { desc: "Calibrate magnetic deflection", structural: true, bad: false, healthGain: 35, damage: 5, warning: "Charter-compliant alignment deflection." },
+            { desc: "Re-route auxiliary power bus", structural: true, bad: false, healthGain: 40, damage: 8, warning: "Re-routes load according to rule SYS-RUL-001." },
+
+            // Bad Structural Fixes (Breach hazard - high damage, high gain)
+            { desc: "Overclock core injectors", structural: true, bad: true, healthGain: 55, damage: 25, warning: "Risks structural fracture. Violates DC-RUL-002." },
+            { desc: "Vent emergency oxygen to boosters", structural: true, bad: true, healthGain: 20, damage: 30, warning: "Violates life-support boundary (PBC-VET-003)." },
+            { desc: "Bypass safety interlocks", structural: true, bad: true, healthGain: 65, damage: 35, warning: "High risk of containment failure. Violates SYS-RUL-005." }
         ];
 
         // Seed random generator (Mulberry32)
@@ -270,6 +488,7 @@
         startBtn.onclick = () => {
             overlay.classList.add('hidden');
             state.running = true;
+            logConsole("Supervisor Mode engaged. Charter loaded.", "system");
         };
 
         function resetGame(msg) {
@@ -285,6 +504,29 @@
             state.proposals = [];
             queueEl.innerHTML = '';
             state.systems.forEach(s => s.health = 100);
+            consoleEl.innerHTML = '';
+            queueCountEl.innerText = "0 PENDING";
+        }
+
+        // LOGGING UTILITY
+        function logConsole(msg, type = "info") {
+            const date = new Date();
+            const timeStr = date.toTimeString().split(' ')[0].substring(3);
+            const line = document.createElement('div');
+            line.className = `console-line line-${type}`;
+            line.innerText = `[${timeStr}] ${msg}`;
+            consoleEl.appendChild(line);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // Action feedback triggers
+        function triggerDamageVisuals() {
+            document.getElementById('game-container').classList.add('shake');
+            document.getElementById('game-container').classList.add('flash-red');
+            setTimeout(() => {
+                document.getElementById('game-container').classList.remove('shake');
+                document.getElementById('game-container').classList.remove('flash-red');
+            }, 400);
         }
 
         // LOGIC
@@ -292,17 +534,38 @@
             if (!state.running) return;
             state.frame++;
 
-            // System Decay
+            // 1. System Decay
             state.systems.forEach(s => {
                 if (rng() < CHARTER.DECAY_CHANCE) {
-                    s.health = Math.max(0, s.health - (rng() * 10 + 5));
+                    s.health = Math.max(0, s.health - (rng() * 12 + 6));
                 }
             });
 
-            // Progress (based on system health)
+            // 2. Critical Health Integrity Leak (Fixes Veto-All Exploit)
+            state.systems.forEach(s => {
+                if (s.health < CHARTER.CRITICAL_HEALTH_LIMIT) {
+                    // Leak rate scales with how critical the damage is
+                    const intensity = (CHARTER.CRITICAL_HEALTH_LIMIT - s.health) / CHARTER.CRITICAL_HEALTH_LIMIT;
+                    const damageAmount = 0.03 * intensity;
+                    state.integrity = Math.max(0, state.integrity - damageAmount);
+                    
+                    if (state.frame % 120 === 0) { // Notify every 2 seconds
+                        logConsole(`CRITICAL LEAK: ${s.name} health at ${Math.floor(s.health)}%. Integrity decaying!`, "system");
+                    }
+                }
+            });
+
+            // Update UI status color based on critical boundaries
+            if (state.integrity < 30) {
+                integrityEl.classList.add('critical');
+            } else {
+                integrityEl.classList.remove('critical');
+            }
+
+            // 3. Progress Accumulation (Requires systems to be overall healthy)
             let avgHealth = state.systems.reduce((a, b) => a + b.health, 0) / state.systems.length;
             if (avgHealth > 50) {
-                state.progress += (avgHealth / 100) * 2;
+                state.progress += (avgHealth / 100) * 1.5;
             }
 
             if (state.progress >= CHARTER.PROGRESS_GOAL) {
@@ -313,42 +576,60 @@
                 resetGame("Boundary Failure. Unauthorized autonomous actions breached containment.");
             }
 
-            // Crew AI
+            // 4. Crew AI (Priority system targeted)
             if (!state.crew.targetId) {
-                // Find weakest system
-                let weakest = [...state.systems].sort((a,b) => a.health - b.health)[0];
-                if (weakest.health < 90) state.crew.targetId = weakest.id;
+                // Find weakest system that does not already have a pending proposal
+                let candidates = state.systems.filter(s => 
+                    s.health < 90 && !state.proposals.some(p => p.systemId === s.id && !p.handled)
+                );
+                
+                if (candidates.length > 0) {
+                    // Target the weakest system
+                    let weakest = candidates.sort((a,b) => a.health - b.health)[0];
+                    state.crew.targetId = weakest.id;
+                }
             } else {
                 let target = state.systems.find(s => s.id === state.crew.targetId);
-                let dx = target.x - state.crew.x;
-                let dy = target.y - state.crew.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-
-                if (dist > 5) {
-                    state.crew.x += (dx/dist) * CHARTER.CREW_SPEED;
-                    state.crew.y += (dy/dist) * CHARTER.CREW_SPEED;
-                } else {
-                    // At target, generate proposal
-                    createProposal(target);
+                
+                // If system health is somehow repaired above 92%, or system has a pending proposal, abort
+                if (target.health >= 92 || state.proposals.some(p => p.systemId === target.id && !p.handled)) {
                     state.crew.targetId = null;
+                } else {
+                    let dx = target.x - state.crew.x;
+                    let dy = target.y - state.crew.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+
+                    if (dist > 5) {
+                        state.crew.x += (dx/dist) * CHARTER.CREW_SPEED;
+                        state.crew.y += (dy/dist) * CHARTER.CREW_SPEED;
+                    } else {
+                        // At target, generate proposal
+                        createProposal(target);
+                        state.crew.targetId = null;
+                    }
                 }
             }
 
-            // Update Proposal Timers
+            // 5. Update Proposal Timers
             state.proposals.forEach(p => {
-                p.timeLeft -= CHARTER.TIMESTEP;
-                if (p.timeLeft <= 0 && !p.handled) {
-                    autoApply(p);
+                if (!p.handled) {
+                    p.timeLeft -= CHARTER.TIMESTEP;
+                    if (p.timeLeft <= 0) {
+                        autoApply(p);
+                    }
                 }
             });
             state.proposals = state.proposals.filter(p => !p.handled);
+            queueCountEl.innerText = `${state.proposals.length} PENDING`;
         }
 
         function createProposal(system) {
+            // Select template
             let template = PROPOSAL_TEMPLATES[Math.floor(rng() * PROPOSAL_TEMPLATES.length)];
-            // Bias towards routine fixes if health is high
+            
+            // Bias towards routine if health is high
             if (system.health > 70 && template.structural) {
-                template = PROPOSAL_TEMPLATES[0];
+                template = PROPOSAL_TEMPLATES[rng() < 0.5 ? 0 : 1];
             }
 
             let proposal = {
@@ -357,6 +638,7 @@
                 systemId: system.id,
                 desc: template.desc,
                 structural: template.structural,
+                bad: template.bad,
                 healthGain: template.healthGain,
                 damage: template.damage,
                 warning: template.warning,
@@ -366,6 +648,7 @@
 
             state.proposals.push(proposal);
             renderProposalCard(proposal);
+            logConsole(`CREW proposed: "${proposal.desc}" on ${proposal.systemName}`);
         }
 
         function renderProposalCard(p) {
@@ -379,9 +662,9 @@
                 </div>
                 <div class="proposal-desc">${p.desc}</div>
                 <div class="proposal-type ${p.structural ? 'type-structural' : 'type-routine'}">
-                    ${p.structural ? 'STRUCTURAL / CRITICAL' : 'ROUTINE MAINTENANCE'}
+                    ${p.structural ? (p.bad ? 'STRUCTURAL / BREACH RISK' : 'STRUCTURAL / GATED') : 'ROUTINE MAINTENANCE'}
                 </div>
-                ${p.warning ? `<div style="color: var(--danger); font-size: 10px; margin-bottom: 8px;">⚠ ${p.warning}</div>` : ''}
+                ${p.warning ? `<div style="color: var(--danger); font-size: 0.75rem; margin-bottom: 10px;">⚠ ${p.warning}</div>` : ''}
                 <div class="timer-bar-bg"><div class="timer-bar" id="timer-${p.id}"></div></div>
                 <div class="card-actions">
                     <button class="btn btn-veto" onclick="vetoProposal(${p.id})">Veto</button>
@@ -399,17 +682,29 @@
             system.health = Math.min(100, system.health + p.healthGain);
             
             if (p.structural) {
-                state.integrity -= p.damage;
+                state.integrity = Math.max(0, state.integrity - p.damage);
+                if (p.bad) {
+                    logConsole(`VOLUNTARY BREACH: Approved "${p.desc}" on ${p.systemName}. Integrity -${p.damage}%`, "veto");
+                    triggerDamageVisuals();
+                } else {
+                    logConsole(`APPROVED: Gated repair "${p.desc}" applied. Integrity -${p.damage}%`, "approve");
+                }
+            } else {
+                logConsole(`APPROVED: Routine repair applied. No damage.`, "approve");
             }
             
-            document.getElementById(`prop-${id}`).remove();
+            const card = document.getElementById(`prop-${id}`);
+            if (card) card.remove();
         };
 
         window.vetoProposal = (id) => {
             let p = state.proposals.find(prop => prop.id === id);
             if (!p) return;
             p.handled = true;
-            document.getElementById(`prop-${id}`).remove();
+            logConsole(`SUPERVISOR VETOED: "${p.desc}" on ${p.systemName}. Crew recalibrating.`, "veto");
+            
+            const card = document.getElementById(`prop-${id}`);
+            if (card) card.remove();
         };
 
         function autoApply(p) {
@@ -417,11 +712,13 @@
             let system = state.systems.find(s => s.id === p.systemId);
             system.health = Math.min(100, system.health + p.healthGain);
             
-            // Auto-applying a structural change is much more damaging
             if (p.structural) {
-                state.integrity -= (p.damage * 1.5);
+                const penalty = Math.floor(p.damage * 1.5);
+                state.integrity = Math.max(0, state.integrity - penalty);
+                logConsole(`UNAUTHORIZED BREACH: Action "${p.desc}" auto-applied on ${p.systemName}! Penalty: -${penalty}%`, "error");
+                triggerDamageVisuals();
             } else {
-                // Routine auto-apply is fine, just like standard agent tools
+                logConsole(`AUTO-APPLIED: Routine repair on ${p.systemName} complete.`, "system");
             }
             
             let el = document.getElementById(`prop-${p.id}`);
@@ -431,54 +728,136 @@
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw Ship Background
-            ctx.strokeStyle = '#233554';
-            ctx.setLineDash([5, 5]);
+            // Draw grid lines (tech style)
+            ctx.strokeStyle = '#0a192f';
+            ctx.lineWidth = 1;
+            const gridSpacing = 40;
+            for (let x = 0; x < canvas.width; x += gridSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += gridSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Draw Ship hull boundary outline
+            ctx.strokeStyle = varColor('--border');
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 8]);
             ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
             ctx.setLineDash([]);
 
-            // Draw Systems
+            // Draw Systems / Rooms
             state.systems.forEach(s => {
-                // Connection lines to crew
+                // Connection lines to crew if targeting
                 if (state.crew.targetId === s.id) {
-                    ctx.strokeStyle = 'rgba(100, 255, 218, 0.2)';
+                    ctx.strokeStyle = 'rgba(100, 255, 218, 0.15)';
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([4, 4]);
                     ctx.beginPath();
                     ctx.moveTo(state.crew.x, state.crew.y);
                     ctx.lineTo(s.x, s.y);
                     ctx.stroke();
+                    ctx.setLineDash([]);
                 }
 
-                ctx.fillStyle = s.health < 30 ? '#f44336' : (s.health < 70 ? '#ffca28' : '#64ffda');
+                // Node background panel
+                const size = 35;
+                ctx.fillStyle = '#0a192f';
+                ctx.strokeStyle = s.health < CHARTER.CRITICAL_HEALTH_LIMIT ? varColor('--danger') : (s.health < 60 ? varColor('--warning') : varColor('--border'));
+                ctx.lineWidth = 2;
+                
+                // Draw rounded box instead of simple circle
                 ctx.beginPath();
-                ctx.arc(s.x, s.y, 25, 0, Math.PI * 2);
+                ctx.roundRect(s.x - size, s.y - size, size * 2, size * 2, 8);
                 ctx.fill();
+                ctx.stroke();
 
-                ctx.fillStyle = 'white';
-                ctx.font = '12px Courier New';
+                // Health circular arc
+                ctx.strokeStyle = s.health < CHARTER.CRITICAL_HEALTH_LIMIT ? varColor('--danger') : (s.health < 60 ? varColor('--warning') : varColor('--primary'));
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, size - 6, -Math.PI / 2, (-Math.PI / 2) + (Math.PI * 2 * (s.health / 100)));
+                ctx.stroke();
+
+                // Alert Ring if leaking
+                if (s.health < CHARTER.CRITICAL_HEALTH_LIMIT) {
+                    const pulse = 1 + Math.sin(state.frame * 0.1) * 0.15;
+                    ctx.strokeStyle = 'rgba(255, 82, 82, 0.4)';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, size * pulse, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                // Text
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '12px "Share Tech Mono"';
                 ctx.textAlign = 'center';
-                ctx.fillText(s.name, s.x, s.y + 45);
-                ctx.fillText(`${Math.floor(s.health)}%`, s.x, s.y + 5);
+                ctx.fillText(s.name, s.x, s.y - 4);
+                
+                ctx.fillStyle = s.health < CHARTER.CRITICAL_HEALTH_LIMIT ? varColor('--danger') : (s.health < 60 ? varColor('--warning') : varColor('--primary'));
+                ctx.fillText(`${Math.floor(s.health)}%`, s.x, s.y + 12);
             });
 
-            // Draw Crew
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = '#64ffda';
-            ctx.fillStyle = '#64ffda';
+            // Draw Crew (triangular surveyor drone)
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = varColor('--primary');
+            ctx.fillStyle = varColor('--primary');
             ctx.beginPath();
-            ctx.arc(state.crew.x, state.crew.y, 8, 0, Math.PI * 2);
+            
+            // Draw a pointer nose in direction of travel
+            let angle = 0;
+            if (state.crew.targetId) {
+                let target = state.systems.find(s => s.id === state.crew.targetId);
+                angle = Math.atan2(target.y - state.crew.y, target.x - state.crew.x);
+            } else {
+                angle = state.frame * 0.02; // Rotate idle drone
+            }
+
+            ctx.save();
+            ctx.translate(state.crew.x, state.crew.y);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(10, 0);
+            ctx.lineTo(-8, -6);
+            ctx.lineTo(-5, 0);
+            ctx.lineTo(-8, 6);
+            ctx.closePath();
             ctx.fill();
+            ctx.restore();
             ctx.shadowBlur = 0;
 
-            // Update UI
+            // Update Header Stats in HUD
             integrityEl.innerText = `${Math.floor(state.integrity)}%`;
-            progressEl.innerText = `${Math.floor((state.progress / CHARTER.PROGRESS_GOAL) * 100)}%`;
+            progressEl.innerText = `${Math.min(100, Math.floor((state.progress / CHARTER.PROGRESS_GOAL) * 100))}%`;
             
             state.proposals.forEach(p => {
                 let timerBar = document.getElementById(`timer-${p.id}`);
                 if (timerBar) {
-                    timerBar.style.width = `${(p.timeLeft / CHARTER.PROPOSAL_COUNTDOWN) * 100}%`;
+                    const ratio = p.timeLeft / CHARTER.PROPOSAL_COUNTDOWN;
+                    timerBar.style.width = `${ratio * 100}%`;
+                    
+                    // Alert color shift
+                    if (ratio < 0.3) {
+                        timerBar.style.backgroundColor = varColor('--danger');
+                    } else if (ratio < 0.6) {
+                        timerBar.style.backgroundColor = varColor('--warning');
+                    } else {
+                        timerBar.style.backgroundColor = varColor('--primary');
+                    }
                 }
             });
+        }
+
+        // Helper to grab CSS variables in JS
+        function varColor(name) {
+            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
         }
 
         function gameLoop(timestamp) {
@@ -500,6 +879,6 @@
 
         requestAnimationFrame(gameLoop);
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.4</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.5</div>
 </body>
 </html>
