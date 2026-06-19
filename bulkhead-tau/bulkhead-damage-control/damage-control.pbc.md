@@ -58,7 +58,7 @@ engine room" mental model — v3 just uses it. When v3 ships it replaces
   name: Seal Race
   rule: Closing a door takes time; if water rises above the door sill before it closes the flood spills to the next compartment, otherwise it is contained.
   trust: trusted
-  seal_duration: 180
+  seal_duration: 60
 - id: DC3-RUL-005
   name: Sealing Sacrifices The Compartment
   rule: A sealed-off flooded compartment is lost for the rest of the run and cannot be reopened or used.
