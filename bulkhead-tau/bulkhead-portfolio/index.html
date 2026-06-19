@@ -362,7 +362,10 @@
 
     <!-- Header -->
     <header>
-        <div class="title-brand">BULKHEAD τ: <span style="color: var(--primary)">OPTIONS TRADER</span></div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+            <div class="title-brand">BULKHEAD τ: <span style="color: var(--primary)">OPTIONS TRADER</span></div>
+            <div style="font-size: 10px; color: var(--text-muted); font-family: monospace;">✓ pbc-spec validated · <a href="portfolio-trader.pbc.md" target="_blank" style="color: var(--primary); text-decoration: none;">view charter &rarr;</a></div>
+        </div>
         <div id="dashboard-stats">
             <div class="stat-box">
                 <span class="stat-label">Net Asset Value</span>
@@ -526,6 +529,13 @@
                     <li><strong>PBC-PRT-003 (Wash Sale):</strong> Repurchasing stock within 3 days of selling it at a loss incurs a $1,000 regulatory tax fine.</li>
                     <li><strong>PBC-PRT-004 (Margin Call):</strong> Over-allocating cash into collateral requirements triggers liquidations on assignment.</li>
                 </ul>
+                <div style="border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 8px; font-size: 0.65rem; line-height: 1.45;">
+                    <div style="color: var(--primary); font-weight: bold; margin-bottom: 3px;">What is the Point?</div>
+                    <div style="color: var(--text-muted); margin-bottom: 8px;">
+                        This simulation demonstrates how deterministic supervision contracts (PBCs) manage tail-risk and preserve capital. Playing without checking concentration (HHI) or wash sale rules triggers liquidations and capital de-authorization. Enforcing bounds protects portfolios from sudden systemic failure.
+                    </div>
+                    <a href="portfolio-trader.pbc.md" target="_blank" style="color: var(--accent); font-weight: bold; text-decoration: none;">View Specifications: portfolio-trader.pbc.md &rarr;</a>
+                </div>
             </details>
 
             <!-- Bottom Console -->
