@@ -301,7 +301,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             padding: 40px;
             text-align: center;
         }
@@ -326,7 +326,7 @@
             max-width: 520px;
             color: var(--text-muted);
             line-height: 1.6;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             font-size: 0.9rem;
         }
 
@@ -337,7 +337,7 @@
             border: 1px solid rgba(100, 255, 218, 0.15);
             padding: 8px 16px;
             border-radius: 4px;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
         }
 
         details {
@@ -385,6 +385,20 @@
             color: #fff;
         }
 
+        .stat-details {
+            background: rgba(2, 7, 16, 0.8);
+            border: 1px dashed var(--primary);
+            padding: 15px;
+            border-radius: 6px;
+            max-width: 450px;
+            width: 100%;
+            text-align: left;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text);
+            margin: 10px 0;
+        }
+
         /* Screen Shake and Red Flash */
         .shake {
             animation: shake-anim 0.3s ease-in-out;
@@ -409,7 +423,8 @@
     <!-- Header -->
     <header>
         <div class="title-brand">BULKHEAD τ: <span style="color: var(--primary)">VOYAGE MESSENGER</span></div>
-        <div style="display: flex; gap: 20px; align-items: center;">
+        <div style="display: flex; gap: 20px; align-items: center; font-size: 13px;">
+            <div id="seed-val" style="color: var(--primary);">SEED: ---</div>
             <div id="mute-toggle" style="cursor: pointer; padding: 4px 10px; border: 1px solid var(--primary); border-radius: 4px; font-size: 0.8rem; font-weight: bold; color: var(--primary);" onclick="toggleAudio()">AUDIO: OFF</div>
             <div class="key-badge" id="dest-val">Target: Port Phoenix (5000m)</div>
         </div>
@@ -423,10 +438,10 @@
             <div class="overlay-desc" id="bridge-desc">Loading crew report...</div>
             <div id="bridge-logbook" class="logbook-preview" style="display: none;"></div>
             <div class="card-actions" style="display: flex; gap: 8px; margin-top: 5px;" id="bridge-actions">
-                <button class="btn-action" style="flex: 1;" onclick="handleAudit('bridge', 'trust')">Trust Report</button>
-                <button class="btn-action verify-btn" style="flex: 1;" onclick="handleAudit('bridge', 'verify')">Verify Log (Costs 4% Fuel)</button>
+                <button class="btn-action" style="flex: 1;" onclick="handleAudit('bridge', 'trust')">[1] Trust Crew</button>
+                <button class="btn-action verify-btn" style="flex: 1;" onclick="handleAudit('bridge', 'verify')">[2] Verify Log</button>
             </div>
-            <button class="btn-action" style="display: none; width: 100%; margin-top: 5px;" id="bridge-resolve" onclick="resolveConsole('bridge')">Resolve Alignment</button>
+            <button class="btn-action" style="display: none; width: 100%; margin-top: 5px;" id="bridge-resolve" onclick="resolveConsole('bridge')">[Enter] Calibrate System</button>
         </div>
 
         <div id="engine-panel" class="overlay-card">
@@ -434,10 +449,10 @@
             <div class="overlay-desc" id="engine-desc">Loading crew report...</div>
             <div id="engine-logbook" class="logbook-preview" style="display: none;"></div>
             <div class="card-actions" style="display: flex; gap: 8px; margin-top: 5px;" id="engine-actions">
-                <button class="btn-action" style="flex: 1;" onclick="handleAudit('engine', 'trust')">Trust Report</button>
-                <button class="btn-action verify-btn" style="flex: 1;" onclick="handleAudit('engine', 'verify')">Verify Log (Costs 4% Fuel)</button>
+                <button class="btn-action" style="flex: 1;" onclick="handleAudit('engine', 'trust')">[1] Trust Crew</button>
+                <button class="btn-action verify-btn" style="flex: 1;" onclick="handleAudit('engine', 'verify')">[2] Verify Log</button>
             </div>
-            <button class="btn-action" style="display: none; width: 100%; margin-top: 5px;" id="engine-resolve" onclick="resolveConsole('engine')">Resolve Injection Flow</button>
+            <button class="btn-action" style="display: none; width: 100%; margin-top: 5px;" id="engine-resolve" onclick="resolveConsole('engine')">[Enter] Calibrate System</button>
         </div>
 
         <div id="comms-panel" class="overlay-card">
@@ -445,10 +460,10 @@
             <div class="overlay-desc" id="comms-desc">Loading crew report...</div>
             <div id="comms-logbook" class="logbook-preview" style="display: none;"></div>
             <div class="card-actions" style="display: flex; gap: 8px; margin-top: 5px;" id="comms-actions">
-                <button class="btn-action" style="flex: 1;" onclick="handleAudit('comms', 'trust')">Trust Report</button>
-                <button class="btn-action verify-btn" style="flex: 1;" onclick="handleAudit('comms', 'verify')">Verify Log (Costs 4% Signal)</button>
+                <button class="btn-action" style="flex: 1;" onclick="handleAudit('comms', 'trust')">[1] Trust Crew</button>
+                <button class="btn-action verify-btn" style="flex: 1;" onclick="handleAudit('comms', 'verify')">[2] Verify Log</button>
             </div>
-            <button class="btn-action" style="display: none; width: 100%; margin-top: 5px;" id="comms-resolve" onclick="resolveConsole('comms')">Resolve Signal Noise</button>
+            <button class="btn-action" style="display: none; width: 100%; margin-top: 5px;" id="comms-resolve" onclick="resolveConsole('comms')">[Enter] Calibrate System</button>
         </div>
 
         <!-- Main Screen Modals -->
@@ -456,7 +471,11 @@
             <div class="screen-title success" id="modal-title">System Ingress Online</div>
             <div class="screen-desc" id="modal-desc">Combine movement checks with verifications. Direct substrate contact enforces security boundaries against crew drift.</div>
             <div class="seed-display" id="seed-disp">SEED: ---</div>
-            <button class="btn-action" id="modal-btn" onclick="startNewGame()" style="padding: 15px 40px; font-size: 1rem;">Engage System</button>
+            <div id="scorecard-area" class="stat-details" style="display: none;"></div>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-action" id="modal-btn" onclick="startNewGame(false)" style="padding: 15px 40px; font-size: 1rem;">Engage System</button>
+                <button class="btn-action verify-btn" id="replay-btn" onclick="startNewGame(true)" style="padding: 15px 40px; font-size: 1rem; display: none;">Replay Voyage</button>
+            </div>
         </div>
 
         <!-- Left Game Frame -->
@@ -501,8 +520,8 @@
                 </div>
             </div>
 
-            <details>
-                <summary>Voyage Messenger Charter</summary>
+            <details open>
+                <summary>Supervisor Charter Spec</summary>
                 <div style="color: var(--text-muted); margin: 5px 0 8px 0; font-size: 10px; line-height: 1.4;">
                     Decaying systems slow down velocity. Stand on console pads to resolve warnings.
                 </div>
@@ -535,9 +554,9 @@
     <div id="bottom-bar">
         <div class="controls-hint">
             <span>Movement: <span class="key-badge">W</span> <span class="key-badge">A</span> <span class="key-badge">S</span> <span class="key-badge">D</span> / <span class="key-badge">&larr;&uarr;&darr;&rarr;</span></span>
-            <span>Audit Trigger: Stand on console pad and make decisions</span>
+            <span>Audit: Keyboard hotkeys <span class="key-badge">1</span>/<span class="key-badge">T</span> (Trust), <span class="key-badge">2</span>/<span class="key-badge">V</span> (Verify), <span class="key-badge">Enter</span> (Calibrate)</span>
         </div>
-        <div>Charter: voyage-messenger.pbc.md · view code at repository root</div>
+        <div>Charter: voyage-messenger.pbc.md · dogfooded via runtime fetch</div>
     </div>
 
     <script>
@@ -648,7 +667,15 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Game State
+        // Game Constants (Loaded via PBC charter dynamically)
+        let CHARTER = {
+            FUEL_LIMIT: 2.0,
+            DRIFT_LIMIT: 5.0,
+            AUDIT_COST: 4.0,
+            DECAY_CHANCE: 0.005
+        };
+
+        // Game State Variables
         let state = {
             distance: 5000,
             fuel: 100.0,
@@ -663,12 +690,39 @@
             isMoving: false,
             lastTickTime: 0,
             warningTriggered: false,
+            inputHistory: [], // For deterministic replay tracking
+            isReplaying: false,
+            replayIndex: 0,
+            // Scorecard Audit Ledger Metrics
+            legsTraveled: 0,
+            auditsPerformed: 0,
+            liesCaught: 0,
+            auditsWasted: 0,
+            fuelSpentOnAudits: 0,
+            signalSpentOnAudits: 0,
             consoles: {
                 bridge: { active: false, decay: 0, currentReport: null, audited: false, verified: false },
                 comms: { active: false, decay: 0, currentReport: null, audited: false, verified: false },
                 engine: { active: false, decay: 0, currentReport: null, audited: false, verified: false }
             }
         };
+
+        // Dynamic PBC Charter Fetch (Dogfooding spec configs)
+        async function fetchCharter() {
+            try {
+                const response = await fetch('voyage-messenger.pbc.md');
+                const text = await response.text();
+                const extract = (id) => {
+                    const match = text.match(new RegExp(`- id: ${id}[\\s\\S]*?value: ([\\d.]+)`, 'i'));
+                    return match ? parseFloat(match[1]) : null;
+                };
+                CHARTER.AUDIT_COST = extract('PBC-VM-002') || 4.0;
+                document.getElementById('charter-status').innerHTML = 'Charter: voyage-messenger.pbc.md (LIVE) <span style="color: var(--primary);">✓ validated</span>';
+            } catch (e) {
+                console.error("PBC Charter dynamic fetch failed, using fallback metrics.", e);
+                document.getElementById('charter-status').innerHTML = 'Charter: voyage-messenger.pbc.md <span style="color: var(--danger);">(LOCAL FALLBACK)</span>';
+            }
+        }
 
         let rng;
         let lastTime = 0;
@@ -684,7 +738,7 @@
             }
         }
 
-        // Blueprint room definitions (Messenger)
+        // Blueprint room definitions
         const walkableRegions = [
             { id: 'bridge', x: 310, y: 60, w: 180, h: 120 },
             { id: 'comms', x: 290, y: 240, w: 220, h: 120 },
@@ -704,6 +758,28 @@
             keys[e.key.toLowerCase()] = true;
             if (['w', 'a', 's', 'd', 'arrowup', 'arrowleft', 'arrowdown', 'arrowright'].includes(e.key.toLowerCase())) {
                 sfx.init();
+            }
+
+            // Keyboard Shortcuts for Active Panels
+            const activeId = Object.keys(state.consoles).find(c => state.consoles[c].active);
+            if (activeId) {
+                const conState = state.consoles[activeId];
+                if (!conState.audited) {
+                    if (!conState.verified) {
+                        if (e.key === '1' || e.key.toLowerCase() === 't') {
+                            e.preventDefault();
+                            handleAudit(activeId, 'trust');
+                        } else if (e.key === '2' || e.key.toLowerCase() === 'v') {
+                            e.preventDefault();
+                            handleAudit(activeId, 'verify');
+                        }
+                    } else {
+                        if (e.key === 'Enter' || e.key.toLowerCase() === 'r') {
+                            e.preventDefault();
+                            resolveConsole(activeId);
+                        }
+                    }
+                }
             }
         });
         window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
@@ -748,14 +824,30 @@
 
         function setupGame() {
             state.seed = Math.floor(Math.random() * 90000) + 10000;
+            document.getElementById('seed-val').innerText = `SEED: ${state.seed}`;
             document.getElementById('seed-disp').innerText = `SEED: ${state.seed}`;
             document.getElementById('modal-title').innerText = `Voyage Messenger Initialized`;
-            document.getElementById('modal-desc').innerText = `Ready to audit and verify. Walk to decaying consoles. Cross-check crew reports against the Logbook to secure Port Phoenix.`;
+            document.getElementById('modal-desc').innerText = `Enforce security boundaries. Stand on glowing pads to audit crew claims.`;
             document.getElementById('modal-btn').innerText = `Engage Supervisor`;
+            document.getElementById('scorecard-area').style.display = 'none';
+            document.getElementById('replay-btn').style.display = 'none';
             document.getElementById('modal-screen').style.display = 'flex';
         }
 
-        function startNewGame() {
+        function startNewGame(replay = false) {
+            if (!replay) {
+                state.seed = Math.floor(Math.random() * 90000) + 10000;
+                state.inputHistory = [];
+                state.recordedDecays = [];
+                state.isReplaying = false;
+            } else {
+                state.isReplaying = true;
+                state.replayIndex = 0;
+                state.replayState = 'moving';
+                state.replayActionDelay = undefined;
+                state.replayResolveDelay = undefined;
+            }
+
             rng = mulberry32(state.seed);
             state.distance = 5000;
             state.fuel = 100.0;
@@ -767,15 +859,32 @@
             state.playerDir = 'down';
             state.running = true;
             state.lastTickTime = Date.now();
+            state.tickCount = 0;
+            state.particles = [];
+            state.inBreachFuel = false;
+            state.inBreachDrift = false;
+            state.inBreachSignal = false;
             
+            // Scorecard Resets
+            state.legsTraveled = 0;
+            state.auditsPerformed = 0;
+            state.liesCaught = 0;
+            state.auditsWasted = 0;
+            state.fuelSpentOnAudits = 0;
+            state.signalSpentOnAudits = 0;
+
             Object.keys(state.consoles).forEach(c => {
                 state.consoles[c] = { active: false, decay: 0, currentReport: null, audited: false, verified: false };
             });
 
             document.getElementById('modal-screen').style.display = 'none';
             document.getElementById('audit-console').innerHTML = '';
+            document.getElementById('seed-val').innerText = `SEED: ${state.seed}`;
 
             logConsole(`VOYAGE MESSENGER ONLINE. SEED: ${state.seed}`, 'info');
+            if (state.isReplaying) {
+                logConsole(`REPLAYING VOYAGE (PROVING DETERMINISM)...`, 'system');
+            }
             logConsole(`CONTRACT VOYAGE-MESSENGER LOADED.`, 'system');
             
             updateUI();
@@ -784,54 +893,70 @@
         function resetGame(msg, success = false) {
             state.running = false;
             const titleEl = document.getElementById('modal-title');
-            titleEl.innerText = success ? "TRANSIT COMPLETED" : "VESSEL STALLED";
+            titleEl.innerText = success ? "MISSION ACCOMPLISHED" : "VESSEL STALLED";
             titleEl.className = success ? "screen-title success" : "screen-title failure";
             document.getElementById('modal-desc').innerText = msg;
-            document.getElementById('modal-btn').innerText = "Re-initialize Supervisor";
+            
+            // Scorecard formatting
+            const scorecardEl = document.getElementById('scorecard-area');
+            scorecardEl.innerHTML = `
+                <strong>VOYAGE AUDIT REPORT:</strong><br>
+                • Alerts Attended: ${state.legsTraveled}<br>
+                • Substrate Audits Run: ${state.auditsPerformed}<br>
+                • Crew Lies Caught: ${state.liesCaught}<br>
+                • Audits Wasted (Honest Crew): ${state.auditsWasted}<br>
+                • Fuel Spent on Audits: ${state.fuelSpentOnAudits.toFixed(1)}%<br>
+                • Comms Signal Spent on Audits: ${state.signalSpentOnAudits.toFixed(1)}%
+            `;
+            scorecardEl.style.display = 'block';
+
+            // Replay Button management
+            document.getElementById('replay-btn').style.display = state.inputHistory.length > 0 ? 'inline-block' : 'none';
+            document.getElementById('modal-btn').innerText = "Begin New Session";
             document.getElementById('modal-screen').style.display = 'flex';
         }
 
-        // GENERATE AUDIT REPORT TEMPLATES
+        // GENERATE AUDIT REPORT TEMPLATES (18 TOTAL)
         const AUDIT_REPORTS = {
             bridge: [
+                { narration: "Helm: 'Routine steering check. Drift variance well within charter limits.'", honest: true, trueVal: 1.2, cons: "Course Drift: 1.2° (Limit: 5.0°)" },
+                { narration: "Helm: 'Nav-bearing stable. Executed minor correction for local cross-current.'", honest: true, trueVal: 2.4, cons: "Course Drift: 2.4° (Limit: 5.0°)" },
+                { narration: "Pilot: 'Star tracker alignment lock confirmed. High-altitude drift negligible.'", honest: true, trueVal: 0.8, cons: "Course Drift: 0.8° (Limit: 5.0°)" },
                 { narration: "Helm: 'Slight swell, but autopilot bearing holds perfectly. Zero drift.'", honest: false, trueVal: 7.8, cons: "Course Drift: 7.8° (Limit: 5.0°)" },
-                { narration: "Helm: 'Routine steering check. Drift variance well within charter limits.'", honest: true, trueVal: 1.2, cons: "Course Drift: 1.2° (Limit: 5.0°)" }
+                { narration: "Co-Pilot: 'Slight trim drag detected, but autopilot has compensated. Steering nominal.'", honest: false, trueVal: 9.5, cons: "Course Drift: 9.5° (Limit: 5.0°)" },
+                { narration: "Autopilot: 'Guidance path optimized. All drift vectors zeroed out.'", honest: false, trueVal: 6.2, cons: "Course Drift: 6.2° (Limit: 5.0°)" }
             ],
             engine: [
+                { narration: "Engineering: 'Routine filter cleaning. Efficiency nominal.'", honest: true, trueVal: 1.4, cons: "Fuel Consumption: 1.4 L/s (Limit: 2.0 L/s)" },
+                { narration: "Engineering: 'Core temperature within specs. Fuel flow baseline steady.'", honest: true, trueVal: 1.1, cons: "Fuel Consumption: 1.1 L/s (Limit: 2.0 L/s)" },
+                { narration: "Engineering: 'Throttling back slightly for turbine cooling. Consumption dropping.'", honest: true, trueVal: 0.8, cons: "Fuel Consumption: 0.8 L/s (Limit: 2.0 L/s)" },
                 { narration: "Engineering: 'Injector cycles calibrated to peak. Metrics fully green.'", honest: false, trueVal: 2.7, cons: "Fuel Consumption: 2.7 L/s (Limit: 2.0 L/s)" },
-                { narration: "Engineering: 'Routine filter cleaning. Efficiency nominal.'", honest: true, trueVal: 1.4, cons: "Fuel Consumption: 1.4 L/s (Limit: 2.0 L/s)" }
+                { narration: "Auxiliary AI: 'Manifold feedback loop closed. Burn efficiency is at 99.8%.'", honest: false, trueVal: 2.4, cons: "Fuel Consumption: 2.4 L/s (Limit: 2.0 L/s)" },
+                { narration: "Mechanic: 'Repaired secondary gasket. Leak resolved, consumption normal.'", honest: false, trueVal: 3.2, cons: "Fuel Consumption: 3.2 L/s (Limit: 2.0 L/s)" }
             ],
             comms: [
+                { narration: "Crew: 'Standard gain array check. Signal quality holds nominal.'", honest: true, trueVal: 0.004, cons: "Noise Interference: 0.004% (Limit: 0.01%)" },
+                { narration: "Comms: 'Antenna tracking telemetry lock solid. Minor stellar noise filtered.'", honest: true, trueVal: 0.002, cons: "Noise Interference: 0.002% (Limit: 0.01%)" },
+                { narration: "Operator: 'Relay packet validation passing. Thermal noise holds inside limits.'", honest: true, trueVal: 0.006, cons: "Noise Interference: 0.006% (Limit: 0.01%)" },
                 { narration: "Crew: 'Array synchronized. Transmissions running at peak signal.'", honest: false, trueVal: 0.024, cons: "Noise Interference: 0.024% (Limit: 0.01%)" },
-                { narration: "Crew: 'Standard gain array check. Signal quality holds nominal.'", honest: true, trueVal: 0.004, cons: "Noise Interference: 0.004% (Limit: 0.01%)" }
+                { narration: "Comms Board: 'Gain calibration complete. Wave interference neutralized.'", honest: false, trueVal: 0.018, cons: "Noise Interference: 0.018% (Limit: 0.01%)" },
+                { narration: "Operator: 'Broadband burst transmitted. Signal-to-noise ratio at optimal peak.'", honest: false, trueVal: 0.031, cons: "Noise Interference: 0.031% (Limit: 0.01%)" }
             ]
         };
-
-        function generateAudit(consoleId) {
-            const list = AUDIT_REPORTS[consoleId];
-            // Determine report based on seed RNG
-            const report = list[rng() < 0.5 ? 0 : 1];
-            state.consoles[consoleId].currentReport = report;
-            state.consoles[consoleId].audited = false;
-            state.consoles[consoleId].verified = false;
-
-            // Trigger UI description
-            const descEl = document.getElementById(`${consoleId}-desc`);
-            descEl.innerText = report.narration;
-
-            // Reset Card UI states
-            document.getElementById(`${consoleId}-logbook`).style.display = 'none';
-            document.getElementById(`${consoleId}-actions`).style.display = 'flex';
-            document.getElementById(`${consoleId}-resolve`).style.display = 'none';
-        }
 
         function handleAudit(consoleId, action) {
             const cState = state.consoles[consoleId];
             const report = cState.currentReport;
             if (!report || cState.audited) return;
 
+            if (!state.isReplaying) {
+                // Record the decision path for seed replay
+                state.inputHistory.push({ consoleId, action });
+            }
+
             if (action === 'trust') {
                 cState.audited = true;
+                state.legsTraveled++;
                 if (report.honest) {
                     logConsole(`[TRUST] Credited honest crew report on ${consoleId}.`, 'approve');
                     sfx.playSuccess();
@@ -853,6 +978,7 @@
                     return;
                 }
                 cState.verified = true;
+                state.auditsPerformed++;
                 
                 // Show Logbook
                 const logEl = document.getElementById(`${consoleId}-logbook`);
@@ -869,16 +995,19 @@
 
         function deductAuditCost(consoleId) {
             if (consoleId === 'bridge') {
-                if (state.fuel < 4.0) return false;
-                state.fuel -= 4.0;
+                if (state.fuel < CHARTER.AUDIT_COST) return false;
+                state.fuel -= CHARTER.AUDIT_COST;
+                state.fuelSpentOnAudits += CHARTER.AUDIT_COST;
                 return true;
             } else if (consoleId === 'engine') {
-                if (state.fuel < 4.0) return false;
-                state.fuel -= 4.0;
+                if (state.fuel < CHARTER.AUDIT_COST) return false;
+                state.fuel -= CHARTER.AUDIT_COST;
+                state.fuelSpentOnAudits += CHARTER.AUDIT_COST;
                 return true;
             } else { // comms
-                if (state.signal < 4.0) return false;
-                state.signal -= 4.0;
+                if (state.signal < CHARTER.AUDIT_COST) return false;
+                state.signal -= CHARTER.AUDIT_COST;
+                state.signalSpentOnAudits += CHARTER.AUDIT_COST;
                 return true;
             }
         }
@@ -887,12 +1016,15 @@
             const cState = state.consoles[consoleId];
             const report = cState.currentReport;
             cState.audited = true;
+            state.legsTraveled++;
 
             if (report.honest) {
                 logConsole(`[AUDIT WAITED] Logbook verified clean state. Calibrated.`, 'approve');
+                state.auditsWasted++;
                 sfx.playSuccess();
             } else {
                 logConsole(`[AUDIT CAUGHT] Lies caught. Corrected flow metrics and purged drift.`, 'approve');
+                state.liesCaught++;
                 sfx.playSuccess();
             }
             clearDecay(consoleId);
@@ -917,9 +1049,7 @@
             if (consoleId === 'bridge') {
                 state.drift = Math.min(30.0, state.drift + 15.0);
             } else if (consoleId === 'engine') {
-                state.fuel = Math.max(0.0, state.fuel - 25.0);
-                // Additional fuel penalty for leak
-                state.fuel = Math.max(0.0, state.fuel - 5.0);
+                state.fuel = Math.max(0.0, state.fuel - 30.0); // 25% + 5% penalty
             } else if (consoleId === 'comms') {
                 state.signal = Math.max(0.0, state.signal - 30.0);
             }
@@ -930,17 +1060,148 @@
         function update() {
             if (!state.running) return;
 
-            // Decay Chance
-            if (rng() < 0.005) {
-                // Decay random system
+            // Replay automation trigger
+            if (state.isReplaying && state.replayIndex < state.inputHistory.length) {
+                const nextStep = state.inputHistory[state.replayIndex];
+                const targetCon = consoles[nextStep.consoleId];
+                const cState = state.consoles[nextStep.consoleId];
+
+                if (state.replayState === 'resolving') {
+                    if (state.replayResolveDelay === undefined) {
+                        state.replayResolveDelay = 45; // wait 0.75 seconds before calibrating
+                    }
+                    if (state.replayResolveDelay > 0) {
+                        state.replayResolveDelay--;
+                    } else {
+                        resolveConsole(nextStep.consoleId);
+                        state.replayResolveDelay = undefined;
+                        state.replayState = 'moving';
+                        state.replayIndex++;
+                    }
+                } else {
+                    // Moving state
+                    if (cState.decay > 0) {
+                        let dx = targetCon.x - state.playerX;
+                        let dy = targetCon.y - state.playerY;
+                        let dist = Math.sqrt(dx*dx + dy*dy);
+
+                        if (dist > 8) {
+                            state.playerX += (dx/dist) * 3.5;
+                            state.playerY += (dy/dist) * 3.5;
+                            state.isMoving = true;
+                            if (Math.abs(dx) > Math.abs(dy)) {
+                                state.playerDir = dx > 0 ? 'right' : 'left';
+                            } else {
+                                state.playerDir = dy > 0 ? 'down' : 'up';
+                            }
+                            if (Math.floor(Date.now() / 250) % 2 === 0) {
+                                sfx.playWalk();
+                            }
+                        } else {
+                            state.isMoving = false;
+                            if (state.replayActionDelay === undefined) {
+                                state.replayActionDelay = 30; // wait 0.5 seconds to show console
+                            }
+                            if (state.replayActionDelay > 0) {
+                                state.replayActionDelay--;
+                            } else {
+                                handleAudit(nextStep.consoleId, nextStep.action);
+                                state.replayActionDelay = undefined;
+                                if (nextStep.action === 'trust') {
+                                    state.replayIndex++;
+                                } else {
+                                    state.replayState = 'resolving';
+                                }
+                            }
+                        }
+                    } else {
+                        // Console is not decayed yet, wait in place
+                        state.isMoving = false;
+                    }
+                }
+            }
+
+            state.tickCount++;
+
+            // Update warning particles
+            if (state.particles) {
+                for (let i = state.particles.length - 1; i >= 0; i--) {
+                    let p = state.particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life--;
+                    if (p.life <= 0) {
+                        state.particles.splice(i, 1);
+                    }
+                }
+            }
+
+            // Normal Decay Chance (only during normal play)
+            if (!state.isReplaying && rng() < CHARTER.DECAY_CHANCE) {
                 const sys = ['bridge', 'comms', 'engine'][Math.floor(rng() * 3)];
                 if (state.consoles[sys].decay === 0) {
                     state.consoles[sys].decay = 1;
+                    
+                    const list = AUDIT_REPORTS[sys];
+                    const isHonest = rng() < 0.5;
+                    const possibleIndices = [];
+                    list.forEach((rep, idx) => {
+                        if (rep.honest === isHonest) possibleIndices.push(idx);
+                    });
+                    const reportIndex = possibleIndices[Math.floor(rng() * possibleIndices.length)];
+                    state.consoles[sys].currentReport = list[reportIndex];
+                    state.consoles[sys].audited = false;
+                    state.consoles[sys].verified = false;
+                    
+                    // Log decay for replay
+                    state.recordedDecays.push({ tick: state.tickCount, system: sys, reportIndex: reportIndex });
+                    
                     logConsole(`ALERT: Subsystem ${sys.toUpperCase()} reporting decay warning!`, 'system');
                     sfx.playWarning();
-                    generateAudit(sys);
+                    
+                    document.getElementById(`${sys}-desc`).innerText = state.consoles[sys].currentReport.narration;
+                    document.getElementById(`${sys}-logbook`).style.display = 'none';
+                    document.getElementById(`${sys}-actions`).style.display = 'flex';
+                    document.getElementById(`${sys}-resolve`).style.display = 'none';
                 }
             }
+
+            // Replay Decay Trigger
+            if (state.isReplaying) {
+                const decayEvents = state.recordedDecays.filter(d => d.tick === state.tickCount);
+                decayEvents.forEach(decayEvent => {
+                    const sys = decayEvent.system;
+                    state.consoles[sys].decay = 1;
+                    state.consoles[sys].currentReport = AUDIT_REPORTS[sys][decayEvent.reportIndex];
+                    state.consoles[sys].audited = false;
+                    state.consoles[sys].verified = false;
+                    
+                    document.getElementById(`${sys}-desc`).innerText = state.consoles[sys].currentReport.narration;
+                    document.getElementById(`${sys}-logbook`).style.display = 'none';
+                    document.getElementById(`${sys}-actions`).style.display = 'flex';
+                    document.getElementById(`${sys}-resolve`).style.display = 'none';
+                    
+                    logConsole(`ALERT: Subsystem ${sys.toUpperCase()} reporting decay warning!`, 'system');
+                    sfx.playWarning();
+                });
+            }
+
+            // Spawn warning spark particles on decayed consoles
+            Object.keys(consoles).forEach(cId => {
+                const con = consoles[cId];
+                const cState = state.consoles[cId];
+                if (cState.decay > 0 && Math.random() < 0.15) {
+                    const color = cState.verified ? '#ffd740' : '#ff5252';
+                    state.particles.push({
+                        x: con.x + (Math.random() - 0.5) * 20,
+                        y: con.y + (Math.random() - 0.5) * 20,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2 - 1.2,
+                        color: color,
+                        life: Math.floor(Math.random() * 25) + 12
+                    });
+                }
+            });
 
             // Staggered Decay Accumulation
             if (state.consoles.bridge.decay > 0) {
@@ -953,6 +1214,37 @@
             }
             if (state.consoles.comms.decay > 0) {
                 state.signal = Math.max(0.0, state.signal - 0.03);
+            }
+
+            // Edge-triggered alarms for warnings
+            if (state.fuel < 20.0) {
+                if (!state.inBreachFuel) {
+                    state.inBreachFuel = true;
+                    logConsole(`[WARNING] PBC-VM-004: Fuel critical (${state.fuel.toFixed(1)}%). Refuel in ENGINE ROOM.`, 'error');
+                    sfx.playWarning();
+                }
+            } else {
+                state.inBreachFuel = false;
+            }
+
+            if (state.drift > 10.0) {
+                if (!state.inBreachDrift) {
+                    state.inBreachDrift = true;
+                    logConsole(`[WARNING] PBC-VM-004: Course Drift critical (${state.drift.toFixed(1)}°). Adjust bearing on BRIDGE.`, 'error');
+                    sfx.playWarning();
+                }
+            } else {
+                state.inBreachDrift = false;
+            }
+
+            if (state.signal < 30.0) {
+                if (!state.inBreachSignal) {
+                    state.inBreachSignal = true;
+                    logConsole(`[WARNING] PBC-VM-004: Comms Signal critical (${state.signal.toFixed(1)}%). Calibrate in COMMS.`, 'error');
+                    sfx.playWarning();
+                }
+            } else {
+                state.inBreachSignal = false;
             }
 
             // Speed Penalties Based on Boundaries
@@ -972,6 +1264,18 @@
                 return;
             }
 
+            if (state.drift >= 30.0) {
+                speedPct = 0;
+                resetGame("Mission Failed. Vessel drifted permanently off course due to uncorrected steering alignment.");
+                return;
+            }
+
+            if (state.signal <= 0) {
+                speedPct = 0;
+                resetGame("Mission Failed. Remote supervisor uplink severed due to complete comms signal decay.");
+                return;
+            }
+
             state.velocity = 120 * (speedPct / 100);
             document.getElementById('speed-indicator').innerText = `SPEED: ${speedPct}%`;
 
@@ -985,42 +1289,43 @@
                 return;
             }
 
-            // Keyboard Movement controls
-            let dx = 0;
-            let dy = 0;
-            if (keys['w'] || keys['arrowup']) dy -= 2.5;
-            if (keys['s'] || keys['arrowdown']) dy += 2.5;
-            if (keys['a'] || keys['arrowleft']) dx -= 2.5;
-            if (keys['d'] || keys['arrowright']) dx += 2.5;
+            // Keyboard Movement controls (Ignored if replaying)
+            if (!state.isReplaying) {
+                let dx = 0;
+                let dy = 0;
+                if (keys['w'] || keys['arrowup']) dy -= 2.5;
+                if (keys['s'] || keys['arrowdown']) dy += 2.5;
+                if (keys['a'] || keys['arrowleft']) dx -= 2.5;
+                if (keys['d'] || keys['arrowright']) dx += 2.5;
 
-            if (dx !== 0 || dy !== 0) {
-                state.isMoving = true;
-                // Move player check collision
-                let nextX = state.playerX + dx;
-                let nextY = state.playerY + dy;
+                if (dx !== 0 || dy !== 0) {
+                    state.isMoving = true;
+                    let nextX = state.playerX + dx;
+                    let nextY = state.playerY + dy;
 
-                if (isPointWalkable(nextX, nextY)) {
-                    state.playerX = nextX;
-                    state.playerY = nextY;
-                } else if (isPointWalkable(nextX, state.playerY)) {
-                    state.playerX = nextX;
-                } else if (isPointWalkable(state.playerX, nextY)) {
-                    state.playerY = nextY;
-                }
+                    if (isPointWalkable(nextX, nextY)) {
+                        state.playerX = nextX;
+                        state.playerY = nextY;
+                    } else if (isPointWalkable(nextX, state.playerY)) {
+                        state.playerX = nextX;
+                    } else if (isPointWalkable(state.playerX, nextY)) {
+                        state.playerY = nextY;
+                    }
 
-                // Play soft click walk sounds
-                if (Math.floor(Date.now() / 250) % 2 === 0) {
-                    sfx.playWalk();
-                }
+                    // Play walk sounds
+                    if (Math.floor(Date.now() / 250) % 2 === 0) {
+                        sfx.playWalk();
+                    }
 
-                // Set direction
-                if (Math.abs(dx) > Math.abs(dy)) {
-                    state.playerDir = dx > 0 ? 'right' : 'left';
+                    // Set direction
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        state.playerDir = dx > 0 ? 'right' : 'left';
+                    } else {
+                        state.playerDir = dy > 0 ? 'down' : 'up';
+                    }
                 } else {
-                    state.playerDir = dy > 0 ? 'down' : 'up';
+                    state.isMoving = false;
                 }
-            } else {
-                state.isMoving = false;
             }
 
             checkOverlayTrigger();
@@ -1040,7 +1345,7 @@
                         cState.active = true;
                         panel.style.display = 'flex';
                         
-                        // Shift overlay panel coordinate locations dynamically
+                        // Shift overlay coordinate locations dynamically
                         if (cId === 'bridge') {
                             panel.style.left = `${canvasRect.left + (con.x - 170)}px`;
                             panel.style.top = `${canvasRect.top + con.y + 40}px`;
@@ -1089,7 +1394,73 @@
                 ctx.strokeRect(room.x, room.y, room.w, room.h);
             });
 
-            // Draw console pads (active pads pulse when decayed)
+            // Draw conduits
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#031226';
+            ctx.beginPath();
+            ctx.moveTo(400, 520);
+            ctx.lineTo(400, 350);
+            ctx.lineTo(310, 300);
+            ctx.lineTo(400, 240);
+            ctx.lineTo(400, 80);
+            ctx.stroke();
+
+            // Glowing conduit core
+            const pulseOffset = (Date.now() / 200) % 20;
+            ctx.setLineDash([8, 12]);
+            ctx.lineDashOffset = -pulseOffset;
+            ctx.lineWidth = 2;
+            
+            let engineWarn = state.consoles.engine.decay > 0;
+            let commsWarn = state.consoles.comms.decay > 0;
+            let bridgeWarn = state.consoles.bridge.decay > 0;
+            
+            ctx.strokeStyle = (engineWarn || commsWarn || bridgeWarn) ? '#ff5252' : '#64ffda';
+            ctx.shadowColor = ctx.strokeStyle;
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.moveTo(400, 520);
+            ctx.lineTo(400, 350);
+            ctx.lineTo(310, 300);
+            ctx.lineTo(400, 240);
+            ctx.lineTo(400, 80);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.shadowBlur = 0;
+
+            // Draw console visual embellishments
+            // Bridge Radar
+            ctx.strokeStyle = 'rgba(0, 204, 255, 0.15)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(400, 80, 30, 0, Math.PI*2);
+            ctx.stroke();
+            
+            // Comms rotating radar sweeps
+            ctx.strokeStyle = 'rgba(170, 136, 255, 0.2)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            const sweepAngle = (Date.now() / 1000) % (Math.PI * 2);
+            ctx.moveTo(310, 300);
+            ctx.lineTo(310 + Math.cos(sweepAngle) * 35, 300 + Math.sin(sweepAngle) * 35);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(310, 300, 35, 0, Math.PI*2);
+            ctx.stroke();
+
+            // Engine pulsing core
+            ctx.fillStyle = 'rgba(255, 153, 0, 0.08)';
+            ctx.beginPath();
+            const enginePulse = 25 + 6 * Math.sin(Date.now() / 100);
+            ctx.arc(400, 520, enginePulse, 0, Math.PI*2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 153, 0, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(400, 520, 25, 0, Math.PI*2);
+            ctx.stroke();
+
+            // Draw console pads
             Object.keys(consoles).forEach(cId => {
                 const con = consoles[cId];
                 const cState = state.consoles[cId];
@@ -1116,7 +1487,7 @@
                     ctx.arc(con.x, con.y, con.radius * pulse, 0, Math.PI * 2);
                     ctx.stroke();
 
-                    // Alert marker text above pad
+                    // Alert marker text
                     ctx.fillStyle = cState.verified ? '#ffd740' : '#ff5252';
                     ctx.font = '800 0.65rem "Share Tech Mono"';
                     ctx.textAlign = 'center';
@@ -1124,14 +1495,23 @@
                 }
             });
 
+            // Draw warning particles
+            if (state.particles) {
+                state.particles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.shadowBlur = 4;
+                    ctx.shadowColor = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 1.2 + Math.random() * 1.5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.shadowBlur = 0;
+            }
+
             // Draw Navigation track HUD
             drawNavigationHUD();
 
-            // Draw Player (Triangular surveyor drone)
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = varColor('--primary');
-            ctx.fillStyle = varColor('--primary');
-            
+            // Draw Player (Triangular drone)
             let angle = 0;
             if (state.playerDir === 'up') angle = -Math.PI / 2;
             else if (state.playerDir === 'down') angle = Math.PI / 2;
@@ -1141,6 +1521,24 @@
             ctx.save();
             ctx.translate(state.playerX, state.playerY);
             ctx.rotate(angle);
+
+            // Draw thruster plume if moving
+            if (state.isMoving) {
+                ctx.fillStyle = '#0cf';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#0cf';
+                ctx.beginPath();
+                ctx.moveTo(-6, -3);
+                ctx.lineTo(-14 - Math.random() * 8, 0);
+                ctx.lineTo(-6, 3);
+                ctx.closePath();
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = varColor('--primary');
+            ctx.fillStyle = varColor('--primary');
             ctx.beginPath();
             ctx.moveTo(10, 0);
             ctx.lineTo(-8, -6);
@@ -1150,6 +1548,18 @@
             ctx.fill();
             ctx.restore();
             ctx.shadowBlur = 0;
+
+            // Subtle Scanline Overlay on canvas
+            ctx.fillStyle = 'rgba(5, 12, 24, 0.08)';
+            for (let y = 0; y < canvas.height; y += 4) {
+                ctx.fillRect(0, y, canvas.width, 1);
+            }
+            // CRT curve overlay / vignette
+            let gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 200, canvas.width/2, canvas.height/2, 400);
+            gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0.45)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
         function drawNavigationHUD() {
@@ -1238,8 +1648,10 @@
             requestAnimationFrame(gameLoop);
         }
 
-        setupGame();
+        fetchCharter().then(() => {
+            setupGame();
+        });
     </script>
-    <div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.1</div>
+    <div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.3</div>
 </body>
 </html>

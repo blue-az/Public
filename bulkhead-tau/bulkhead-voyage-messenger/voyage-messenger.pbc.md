@@ -39,7 +39,7 @@ This charter defines the operational constraints for Bulkhead Voyage-Messenger. 
   trust: provisional
 - id: PBC-VM-004
   name: Speed Enforcement Boundary
-  rule: System warning states (Fuel < 20%, Drift > 10°, Signal < 30%) degrade transit speed. Transit halts if fuel is completely exhausted.
+  rule: System warning states (Fuel < 20%, Drift > 10°, Signal < 30%) degrade transit speed. Transit halts if fuel is exhausted, drift reaches 30°, or signal drops to 0%.
   trust: trusted
 ```
 
