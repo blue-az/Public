@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When Tokens Are Plentiful, Supervision Becomes the Bottleneck (Under Coarse Quota Regimes)</title>
+  <meta name="description" content="DRAFT. Auto-ethnographic finding from the Bulkhead tau game build: under coarse, turn-limited quota regimes, implementation tokens are abundant but barely register on coarse meters, so the binding constraint shifts to human supervision, specification clarity, and verification. Per-segment token deltas audited against measurement_result.md.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · active draft</div>
+    <h1>When Tokens Are Plentiful, Supervision Becomes the Bottleneck (Under Coarse Quota Regimes)</h1>
+    <p class="meta">DRAFT. Auto-ethnographic finding from the Bulkhead tau game build: under coarse, turn-limited quota regimes, implementation tokens are abundant but barely register on coarse meters, so the binding constraint shifts to human supervision, specification clarity, and verification. Per-segment token deltas audited against measurement_result.md.</p>
+    <p class="meta">Canonical source: <code>docs/WHEN_TOKENS_ARE_PLENTIFUL_SUPERVISION_BECOMES_THE_BOTTLENECK.md</code></p>
+    <p><strong>Date:</strong> 2026-06-18 <strong>Project:</strong> Phoenix / Bulkhead τ <strong>Domain:</strong> AGY-GEMINI-QUOTA-001 <strong>Status:</strong> DRAFT (Analysis Complete)</p>
+<h2>Abstract</h2>
+<p>This paper analyzes the operational dynamics of multi-agent development under the specific coarse quota regimes of the late-Gemini CLI transition. Using the Bulkhead τ game suite as a testbed, we demonstrate that while raw model implementation capacity appears effectively limitless on visible percentage meters, the true bottleneck remains the human-supervised &quot;command and control&quot; layer. Operational evidence suggests that in environments with abundant but opaque implementation tokens, scarcity shifts to specification clarity, role discipline, and the cognitive cost of verification — a dynamic we term the <strong>agentic overhang</strong>: implementation throughput that outruns the human&#x27;s capacity to direct and audit it.</p>
+<h2>1. Operational Context</h2>
+<p>Project Phoenix utilizes a multi-model stack (Claude Code, Antigravity CLI, Gemini CLI, Codex) for both production agents and development assistance. In measurement run AGY-GEMINI-QUOTA-001, we assigned Antigravity (Agy) as the <strong>Supervisor</strong> and Gemini as the <strong>Implementer</strong>. The goal was to measure the &quot;cost&quot; of large game redesigns and repo-wide synchronization tasks when implementation capacity is high but visibility is low.</p>
+<h2>2. Measurement Method</h2>
+<p>We tracked two distinct metrics, prioritizing the former as the &quot;ground truth&quot;:</p>
+<ol>
+<li><strong>Hidden Activity (Primary):</strong> Cumulative request counts, input/output tokens, and tool calls (via <code>/stats</code>).</li>
+<li><strong>Visible Meter Signal (Secondary/Deceptive):</strong> The coarse percentage-based &quot;fuel gauge&quot; provided by tool interfaces.</li>
+</ol>
+<h2>3. Evidence Segments</h2>
+<h3>3.1 Damage Control Redesign (High Activity, Coarse Signal)</h3>
+<p>Gemini implemented a large-scale redesign of the Damage Control game.</p>
+<ul>
+<li><strong>Hidden Activity (Primary):</strong> +9 <code>gemini-3-flash-preview</code> requests; ~806k total input tokens.</li>
+<li><strong>Visible Meter Signal:</strong> Gemini read 11% at sampling — no movement resolvable at the meter&#x27;s granularity for this segment.</li>
+<li><strong>Supervisor Overhead:</strong> Agy consumed 3% visible quota; required 6 additional human reviews.</li>
+<li><strong>Finding:</strong> ~0.8M tokens of activity produced no resolvable change on the coarse Gemini meter, shifting the perceived &quot;cost&quot; entirely to the supervisor lane.</li>
+</ul>
+<h3>3.2 Protocol Failure Case Study: Voyage v2 (Role Contamination)</h3>
+<p>Intended as a split-lane task, Agy (Supervisor) implemented the code directly due to a handoff ambiguity.</p>
+<ul>
+<li><strong>Result:</strong> Agy spent 5% visible quota performing the work Gemini was assigned.</li>
+<li><strong>Lesson:</strong> This segment represents a failure in protocol rather than clean data. It illustrates that role ambiguity leads to &quot;supervisor leakage,&quot; where the more expensive supervisor quota is wasted on tasks meant for the implementation lane.</li>
+</ul>
+<h3>3.3 Messenger Cozy Redesign (The Verification Floor)</h3>
+<p>A small behavioral redesign of Messenger was tasked to Gemini.</p>
+<ul>
+<li><strong>Hidden Activity:</strong> +2.4M total input tokens (includes +1.9M <code>gemini-3.1-pro-preview</code> for verification).</li>
+<li><strong>Visible Meter Signal:</strong> Gemini still read 11% at sampling — below the meter&#x27;s resolution for this segment.</li>
+<li><strong>Supervisor Overhead:</strong> Agy consumed 6% visible quota.</li>
+<li><strong>Finding:</strong> Even small edit surfaces trigger high-capability verification lanes, consuming significant tokens (~2.4M) that registered on the supervisor&#x27;s meter but not the implementer&#x27;s coarse one.</li>
+</ul>
+<h3>3.4 Autonomous Repo Sync (Scaling the Implementer)</h3>
+<p>Gemini performed a multi-file sync and alignment pass across five games.</p>
+<ul>
+<li><strong>Hidden Activity:</strong> +1.6M total input tokens (includes +1.3M <code>gemini-3-flash-preview</code> delta).</li>
+<li><strong>External QA Cost:</strong> 3% Claude quota (for a single critical correction).</li>
+<li><strong>Finding:</strong> Implementation scaling is limited only by human-initiated QA and playtest verification, not by the implementer&#x27;s turn capacity.</li>
+</ul>
+<h3>3.5 Router Implementation (The Granularity Contrast)</h3>
+<p>Codex wrote the spec; Gemini implemented.</p>
+<ul>
+<li><strong>Plan Activity (Codex):</strong> 7% visible quota (Spec) + 6% (Recording).</li>
+<li><strong>Build Activity (Gemini):</strong> +19 requests (~929k tokens); no resolvable meter movement at sampling.</li>
+<li><strong>Finding:</strong> Planning registers on visible meters while implementation barely does under this regime. The perception that planning is more expensive is an artifact of meter granularity, not actual token cost (the build consumed nearly 1M tokens).</li>
+</ul>
+<h2>4. Findings</h2>
+<h3>4.1 Deception of the Coarse Meter</h3>
+<p>Visible % meters are untrustworthy and non-comparable. Gemini&#x27;s visible quota moved only ~15% in total across the entire effort, and read a static 11% through several large implementation segments — far too coarse to attribute or compare the roughly 5.85 million input tokens of measured activity (the sum of the audited per-segment deltas: §3.1 ~0.8M + §3.3 ~2.4M + §3.4 ~1.6M + §3.5 ~0.9M). Sampling of the meter also lapsed once attention shifted to capturing token-level stats, so even the ~15% figure is an approximate ceiling, not a per-segment signal. (Single-session cumulative token totals are larger but are not directly comparable across sessions, per the measurement notes.) Relying on these meters for &quot;cost&quot; analysis invites the false conclusion that implementation is nearly free, when it is merely under-resolved.</p>
+<h3>4.2 The Supervision &amp; Verification Bottleneck (the Agentic Overhang)</h3>
+<p>We term this dynamic the <strong>agentic overhang</strong> — by analogy to the established <em>capability overhang</em> (latent model capability that outruns our ability to elicit it), the agentic overhang is implementation throughput that outruns our ability to <em>direct and audit</em> it. Agents work at high volume continuously, but high-bandwidth human auditing has not caught up: a five-file refactor takes the model seconds to propose and the human many minutes of deep focus to be <em>sure</em> no subtle defect was introduced — making the operator the <strong>synchronous step in an otherwise asynchronous system</strong>. The phenomenon itself is widely recognized in practice (the &quot;human-oversight bottleneck&quot; / &quot;speed gap&quot;); the <em>agentic overhang</em> label (after capability overhang) is our framing for it, not yet established terminology. In this regime the binding constraints shift to:</p>
+<ul>
+<li><strong>Human Attention:</strong> Reviewing batch changes for &quot;fun&quot; and &quot;feel,&quot; which automated syntax checks do not capture.</li>
+<li><strong>Operational Visibility:</strong> The cognitive load of tracking ~5.85M tokens of hidden implementation activity across multiple tools.</li>
+<li><strong>Specification Clarity:</strong> The &quot;Plan&quot; phase consumes visible supervisor budget and human coordination time, making it the perceived bottleneck even when the &quot;Build&quot; phase consumes more total tokens.</li>
+</ul>
+<h2>4.3 Large Batches &gt; Tiny Tasks</h2>
+<p>Under coarse quota regimes, large bounded tasks are more efficient. Small turns burn human coordination bandwidth and supervisor quota without significantly reducing implementation risk, as the implementer&#x27;s capacity to &quot;fix&quot; its own large batches barely registers on the coarse visible meter.</p>
+<h2>5. Failure Modes</h2>
+<ul>
+<li><strong>Implementation Leakage:</strong> Without hard-gated roles, supervisors will perform implementation directly, wasting high-visibility quota on low-visibility tasks.</li>
+<li><strong>The &quot;Verify-by-Running&quot; Trap:</strong> Code-running verification confirmed syntax and state changes but failed to catch if games were &quot;pleasant&quot; or &quot;fair.&quot; Physical playtesting remains the only valid verification for game balance.</li>
+</ul>
+<h2>6. Operating Rules for Abundant Tokens</h2>
+<ol>
+<li><strong>Prefer Batching:</strong> Group related implementation tasks into large instruction blocks to minimize human/supervisor review cycles.</li>
+<li><strong>Hard-Gate Roles:</strong> Supervisors must be forbidden from editing code to preserve their high-visibility quota for orchestration.</li>
+<li><strong>Trust Stats, Not Meters:</strong> Only <code>/stats</code> (token/req counts) provide a valid ground truth for activity.</li>
+<li><strong>Assume High Hidden Cost:</strong> Treat a small or static meter reading as uninformative — a coarse meter under-resolves and lags true activity, so flat ≠ free.</li>
+</ol>
+<h2>7. Limitations</h2>
+<ul>
+<li><strong>Regime Specificity:</strong> These findings are unique to the coarse, turn-limited transition period of the Gemini CLI and may not apply to fine-grained usage-based APIs.</li>
+<li><strong>Sample Size:</strong> Limited to five game surfaces in a single development session.</li>
+</ul>
+<h2>8. Conclusion</h2>
+<p>The transition to a supervision-scarce environment requires shifting engineering focus from &quot;token efficiency&quot; to &quot;attention efficiency.&quot; When implementation activity is high but barely registers on coarse meters, the highest-ROI activities are precise specification, rigorous role boundaries, and final human playtesting.</p>
+<hr>
+<h3>Provenance</h3>
+<p><em>Captured at completion of paper drafting.</em></p>
+<ul>
+<li><strong>Session ID:</strong> ddbe24eb-9961-434b-8382-69420812f469</li>
+<li><strong>Tool calls:</strong> 10 (9 successful, 1 failed)</li>
+<li><strong>User agreement:</strong> 100.0% (9 reviewed)</li>
+<li><strong>Drafting activity:</strong> Paper creation and two subsequent logical/numerical refactors.</li>
+<li><strong>Visible Gemini Quota:</strong> ~11% during early sampling; ~15% used in total across all work. The meter was sampled sparsely once token-level capture began, so per-segment readings are approximate.</li>
+</ul>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

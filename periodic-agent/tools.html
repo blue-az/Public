@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Periodic Agent | Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <span class="badge">Tool Registry</span>
+      <h1>Deterministic Tools</h1>
+      <p class="subtitle">Canonical endpoints for PeriodicAgent.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a class="active" href="tools.html">Tools</a>
+      <a href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="section">
+      <h2>V1: Foundation Tools</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>lookup_by_symbol</h3>
+          <p>Returns element metadata including atomic number, mass, and category for a given symbol (e.g., "He").</p>
+        </article>
+        <article class="card">
+          <h3>list_by_category</h3>
+          <p>Filters the periodic table by chemical category (e.g., "noble gas").</p>
+        </article>
+        <article class="card">
+          <h3>list_by_period</h3>
+          <p>Returns all elements belonging to a specific period (1-7).</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Sample Invocation</h2>
+      <pre>lookup_by_symbol(symbol="Au")
+list_by_category(category="alkali metal")
+list_by_period(period=1)</pre>
+    </section>
+
+    <footer class="footer">
+      <p>Project Phoenix · Periodic Agent Tools</p>
+      <p><a href="https://proto.efehnconsulting.com/periodic-agent/">proto.efehnconsulting.com/periodic-agent/</a></p>
+    </footer>
+  </div>
+</body>
+</html>

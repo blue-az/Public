@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Periodic Agent | Project Phoenix Prototype</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body onload="initSite('index')">
+  <div class="page">
+    <header class="header">
+      <span class="badge">PeriodicAgent Prototype</span>
+      <h1>Periodic Table Agent</h1>
+      <p class="subtitle">A Project Phoenix domain for querying chemical element data from deterministic substrates.</p>
+    </header>
+
+    <nav class="nav">
+      <a class="active" href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section id="stats-grid" class="stats">
+      <!-- Injected by app.js: Total Elements, Categories, Periods, Standard -->
+    </section>
+
+    <section class="section">
+      <h2>Overview</h2>
+      <p>The Periodic Agent domain provides a bounded, deterministic view of the chemical elements. It demonstrates the Project Phoenix principles of data-anchored tools and precise attribute retrieval. By grounding lookups in a verified CSV substrate, the agent avoids common hallucination patterns found in general-purpose LLMs regarding physical constants and atomic properties.</p>
+    </section>
+
+    <section class="section">
+      <h2>Highlights</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Deterministic Retrieval</h3>
+          <p>Atomic mass, numbers, and categories are anchored to frozen data, not model weights.</p>
+        </article>
+        <article class="card">
+          <h3>Categorical Filtering</h3>
+          <p>High-precision filtering by group, period, and category (e.g., noble gases, alkali metals).</p>
+        </article>
+        <article class="card">
+          <h3>Symbol Precision</h3>
+          <p>Case-sensitive symbol matching ensures reliable resolution of element metadata.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Project Phoenix · Periodic Agent Prototype</p>
+      <p><a href="https://proto.efehnconsulting.com/periodic-agent/">proto.efehnconsulting.com/periodic-agent/</a></p>
+    </footer>
+  </div>
+</body>
+</html>

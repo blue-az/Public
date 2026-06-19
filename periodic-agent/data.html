@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Periodic Agent | Data</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body onload="initSite('data')">
+  <div class="page">
+    <header class="header">
+      <span class="badge">Substrate Inventory</span>
+      <h1>Core Data</h1>
+      <p class="subtitle">Deterministic CSV substrates and lineage metadata.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a class="active" href="data.html">Data</a>
+      <a href="variations.html">Variations</a>
+    </nav>
+
+    <section class="section">
+      <h2>Element Inventory</h2>
+      <div style="overflow-x: auto;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>Mass</th>
+              <th>Category</th>
+              <th>Phase (STP)</th>
+            </tr>
+          </thead>
+          <tbody id="element-body">
+            <!-- Injected by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Substrate Lineage</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Type</th>
+            <th>Authority</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>elements.csv</td>
+            <td>Substrate</td>
+            <td>IUPAC / Wikipedia</td>
+            <td>Primary Lookup Source</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="footer">
+      <p>Project Phoenix · Periodic Agent Data</p>
+      <p><a href="https://proto.efehnconsulting.com/periodic-agent/">proto.efehnconsulting.com/periodic-agent/</a></p>
+    </footer>
+  </div>
+</body>
+</html>
