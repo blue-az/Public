@@ -599,6 +599,22 @@
         let currentYear = 2020;
         let selectedCategory = "ALL";
         let minVolume = 0;
+        let datasetMinYear = 2008;
+        let datasetMaxYear = 2024;
+
+        // Helper to resolve CSS variables in Canvas context
+        function getThemeColor(varName) {
+            const fallbacks = {
+                '--abt-color': '#06b6d4',
+                '--bsx-color': '#a855f7',
+                '--mdt-color': '#f97316',
+                '--text-main': '#f8fafc',
+                '--text-muted': '#94a3b8'
+            };
+            const style = getComputedStyle(document.documentElement);
+            const val = style.getPropertyValue(varName).trim();
+            return val || fallbacks[varName] || '#ffffff';
+        }
         
         // Sorting and Pagination
         let sortField = "i";
@@ -703,15 +719,15 @@
             if (db.length > 0) {
                 // Find min/max years dynamically
                 let years = db.map(d => d.y);
-                let minYear = Math.min(...years);
-                let maxYear = Math.max(...years);
+                datasetMinYear = Math.min(...years);
+                datasetMaxYear = Math.max(...years);
                 
                 const slider = document.getElementById('yearSlider');
-                slider.min = minYear;
-                slider.max = maxYear;
-                document.getElementById('lblMinYear').innerText = minYear;
+                slider.min = datasetMinYear;
+                slider.max = datasetMaxYear;
+                document.getElementById('lblMinYear').innerText = datasetMinYear;
                 
-                slider.value = Math.min(Math.max(slider.value, minYear), maxYear);
+                slider.value = Math.min(Math.max(slider.value, datasetMinYear), datasetMaxYear);
                 updateYearLabel(slider.value);
             }
             
@@ -789,9 +805,9 @@
                 hhi = (shareABT * shareABT) + (shareBSX * shareBSX) + (shareMDT * shareMDT);
 
                 shares = [
-                    { name: 'Abbott', val: abtTotal, share: shareABT, color: 'var(--abt-color)' },
-                    { name: 'Boston Scientific', val: bsxTotal, share: shareBSX, color: 'var(--bsx-color)' },
-                    { name: 'Medtronic', val: mdtTotal, share: shareMDT, color: 'var(--mdt-color)' }
+                    { name: 'Abbott', val: abtTotal, share: shareABT, color: getThemeColor('--abt-color') },
+                    { name: 'Boston Scientific', val: bsxTotal, share: shareBSX, color: getThemeColor('--bsx-color') },
+                    { name: 'Medtronic', val: mdtTotal, share: shareMDT, color: getThemeColor('--mdt-color') }
                 ];
                 shares.sort((a,b) => b.val - a.val);
                 
@@ -934,7 +950,7 @@
                 ctx.beginPath();
                 ctx.arc(w/2, h/2 - 10, 60, 0, Math.PI*2);
                 ctx.fill();
-                ctx.fillStyle = 'var(--text-muted)';
+                ctx.fillStyle = getThemeColor('--text-muted');
                 ctx.font = '10px monospace';
                 ctx.textAlign = 'center';
                 ctx.fillText('NO DATA FOR SELECTION', w/2, h/2 - 10);
@@ -957,7 +973,7 @@
                 
                 ctx.fillStyle = s.color;
                 ctx.fill();
-                ctx.strokeStyle = 'var(--bg-dark)';
+                ctx.strokeStyle = getThemeColor('--bg-dark');
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
@@ -974,12 +990,12 @@
             ctx.stroke();
 
             // Total text in center
-            ctx.fillStyle = 'var(--text-main)';
+            ctx.fillStyle = getThemeColor('--text-main');
             ctx.font = 'bold 9px sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('TOTAL', centerX, centerY - 4);
             ctx.font = 'bold 8px monospace';
-            ctx.fillStyle = 'var(--abt-color)';
+            ctx.fillStyle = getThemeColor('--abt-color');
             
             let totalText = formatNumber(totalVal);
             if (totalVal >= 1000000) totalText = (totalVal / 1000000).toFixed(2) + 'M';
@@ -994,11 +1010,11 @@
                 ctx.fillStyle = s.color;
                 ctx.fillRect(legendX, legendY, 10, 10);
                 
-                ctx.fillStyle = 'var(--text-main)';
+                ctx.fillStyle = getThemeColor('--text-main');
                 ctx.font = 'bold 9px sans-serif';
                 ctx.fillText(s.name.split(' ')[0], legendX + 16, legendY + 9);
                 
-                ctx.fillStyle = 'var(--text-muted)';
+                ctx.fillStyle = getThemeColor('--text-muted');
                 ctx.font = '9px monospace';
                 ctx.fillText(`${(s.share * 100).toFixed(1)}%`, legendX + 75, legendY + 9);
                 
@@ -1017,12 +1033,12 @@
             const h = trendCanvas.clientHeight;
             ctx.clearRect(0, 0, w, h);
 
-            document.getElementById('lblTrendTitle').innerText = `YoY ${selectedCategory === 'ALL' ? 'Overall' : selectedCategory} Implant Trend (2008 - 2024)`;
+            document.getElementById('lblTrendTitle').innerText = `YoY ${selectedCategory === 'ALL' ? 'Overall' : selectedCategory} Implant Trend (${datasetMinYear} - ${datasetMaxYear})`;
 
             // Aggregate data by year & vendor
             let yearsMap = {};
             // Init empty years
-            for(let y=2008; y<=2024; y++) {
+            for(let y = datasetMinYear; y <= datasetMaxYear; y++) {
                 yearsMap[y] = { ABT: 0, BSX: 0, MDT: 0, Total: 0 };
             }
 
@@ -1035,7 +1051,7 @@
 
             // Find max value to scale chart Y-axis
             let maxVal = 100000;
-            for(let y=2008; y<=2024; y++) {
+            for(let y = datasetMinYear; y <= datasetMaxYear; y++) {
                 let maxSegment = Math.max(yearsMap[y].ABT, yearsMap[y].BSX, yearsMap[y].MDT);
                 if (maxSegment > maxVal) maxVal = maxSegment;
             }
@@ -1055,7 +1071,7 @@
 
             // Draw horizontal grid lines
             ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-            ctx.fillStyle = 'var(--text-muted)';
+            ctx.fillStyle = getThemeColor('--text-muted');
             ctx.font = '8px monospace';
             ctx.textAlign = 'right';
             const steps = 4;
@@ -1076,9 +1092,10 @@
 
             // Draw years labels (X-Axis)
             ctx.textAlign = 'center';
-            const yearRange = 2024 - 2008;
-            for (let i = 0; i <= yearRange; i += 4) {
-                let y = 2008 + i;
+            const yearRange = Math.max(1, datasetMaxYear - datasetMinYear);
+            const step = yearRange <= 4 ? 1 : (yearRange <= 8 ? 2 : 4);
+            for (let i = 0; i <= yearRange; i += step) {
+                let y = datasetMinYear + i;
                 let gx = paddingLeft + (i / yearRange) * graphW;
                 ctx.fillText(y, gx, h - 12);
             }
@@ -1087,8 +1104,8 @@
             const drawVendorLine = (vendorKey, color) => {
                 ctx.beginPath();
                 for (let i = 0; i <= yearRange; i++) {
-                    let y = 2008 + i;
-                    let val = yearsMap[y][vendorKey];
+                    let y = datasetMinYear + i;
+                    let val = yearsMap[y] ? yearsMap[y][vendorKey] : 0;
                     let gx = paddingLeft + (i / yearRange) * graphW;
                     let gy = paddingTop + graphH - (val / maxVal) * graphH;
                     
@@ -1101,8 +1118,8 @@
 
                 // Draw circles at each point
                 for (let i = 0; i <= yearRange; i++) {
-                    let y = 2008 + i;
-                    let val = yearsMap[y][vendorKey];
+                    let y = datasetMinYear + i;
+                    let val = yearsMap[y] ? yearsMap[y][vendorKey] : 0;
                     let gx = paddingLeft + (i / yearRange) * graphW;
                     let gy = paddingTop + graphH - (val / maxVal) * graphH;
                     
@@ -1123,9 +1140,9 @@
             };
 
             // Draw line for active vendors
-            drawVendorLine('ABT', 'var(--abt-color)');
-            drawVendorLine('BSX', 'var(--bsx-color)');
-            drawVendorLine('MDT', 'var(--mdt-color)');
+            drawVendorLine('ABT', getThemeColor('--abt-color'));
+            drawVendorLine('BSX', getThemeColor('--bsx-color'));
+            drawVendorLine('MDT', getThemeColor('--mdt-color'));
         }
 
         // Initialization
