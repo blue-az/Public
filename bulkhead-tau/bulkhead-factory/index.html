@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulkhead τ rev 2 — CRM Market Share Analyst Desk</title>
+    <title>Bulkhead τ — CRM Market Share Analyst Desk</title>
     <style>
         :root {
             --abt-color: #06b6d4;
@@ -281,7 +281,7 @@
         /* Bottom Row - Data Table & Spec Sheet */
         #bottom-grid {
             display: grid;
-            grid-template-columns: 1.6fr 1fr;
+            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
             gap: 20px;
             align-items: start;
         }
@@ -452,7 +452,7 @@
     <div id="ambient-glow"></div>
     <header>
         <div class="logo-section">
-            <h1>BULKHEAD τ <span style="font-size: 0.9rem; font-family: var(--font-mono); font-weight: normal; margin-left: 5px; color: var(--abt-color); -webkit-text-fill-color: var(--abt-color);">rev 2</span></h1>
+            <h1>BULKHEAD τ</h1>
             <p>CRM Device Market Share Analyst Desk</p>
         </div>
         <div id="spec-status" class="spec-badge">
@@ -915,7 +915,7 @@
                         <td><span class="tag-vendor vendor-${item.v}">${item.v}</span></td>
                         <td>${item.c}</td>
                         <td style="font-weight: 500;">${item.f}</td>
-                        <td style="font-family: monospace;">${item.m}</td>
+                        <td style="font-family: monospace; word-break: break-all;">${item.m}</td>
                         <td style="text-align: right; font-family: var(--font-mono); font-weight: bold; color: var(--abt-color);">${formatNumber(item.i)}</td>
                     `;
                     tbody.appendChild(tr);
