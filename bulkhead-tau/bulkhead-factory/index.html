@@ -262,10 +262,19 @@
         }
 
         canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            flex-grow: 1;
-            min-height: 0; /* Allow flex shrinking */
+            height: 100%;
             display: block;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            flex-grow: 1;
+            min-height: 0;
+            width: 100%;
         }
 
         /* Bottom Row - Data Table & Spec Sheet */
@@ -442,7 +451,7 @@
     <div id="ambient-glow"></div>
     <header>
         <div class="logo-section">
-            <h1>BULKHEAD τ <span style="font-size: 0.9rem; opacity: 0.5; font-family: var(--font-mono); font-weight: normal; margin-left: 5px;">rev 2</span></h1>
+            <h1>BULKHEAD τ <span style="font-size: 0.9rem; font-family: var(--font-mono); font-weight: normal; margin-left: 5px; color: var(--abt-color); -webkit-text-fill-color: var(--abt-color);">rev 2</span></h1>
             <p>CRM Device Market Share Analyst Desk</p>
         </div>
         <div id="spec-status" class="spec-badge">
@@ -533,13 +542,17 @@
                     <div class="chart-header">
                         <h2 id="lblShareTitle">Market Share Breakdown (2020)</h2>
                     </div>
-                    <canvas id="shareCanvas"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="shareCanvas"></canvas>
+                    </div>
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
                         <h2 id="lblTrendTitle">YoY Category Implant Trend (2008 - 2024)</h2>
                     </div>
-                    <canvas id="trendCanvas"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="trendCanvas"></canvas>
+                    </div>
                 </div>
             </div>
 
