@@ -3,1367 +3,1132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulkhead τ — Factory Simulator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>Bulkhead τ rev 2 — CRM Market Share Analyst Desk</title>
     <style>
         :root {
-            --abt-color: #38bdf8;
+            --abt-color: #06b6d4;
             --bsx-color: #a855f7;
             --mdt-color: #f97316;
-            --theme-color: #38bdf8; /* dynamic based on active vendor */
-            --theme-color-rgb: 56, 189, 248;
-            --bg-dark: #070d19;
-            --panel-bg: rgba(15, 23, 42, 0.75);
+            --bg-dark: #090e17;
+            --panel-bg: rgba(17, 24, 39, 0.75);
             --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-mono: 'Share Tech Mono', 'Noto Sans Mono', 'Liberation Mono', monospace;
         }
 
         body {
             margin: 0;
             padding: 0;
             background-color: var(--bg-dark);
-            color: #f8fafc;
-            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            font-family: 'Outfit', system-ui, -apple-system, sans-serif;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             height: 100vh;
             overflow: hidden;
-            transition: background 0.5s ease;
         }
 
-        /* Ambient Glow based on Vendor */
+        /* Ambient background glow */
         #ambient-glow {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(var(--theme-color-rgb), 0.08) 0%, rgba(7, 13, 25, 0) 70%);
+            width: 90vw;
+            height: 90vh;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.03) 0%, rgba(168, 85, 247, 0.02) 40%, rgba(9, 14, 23, 0) 70%);
             z-index: -1;
             pointer-events: none;
-            transition: background 0.5s ease;
         }
 
-        #main-layout {
+        /* Header block */
+        header {
             display: flex;
-            gap: 20px;
-            max-width: 1200px;
-            width: 95vw;
-            height: 90vh;
-            align-items: stretch;
-            position: relative;
-        }
-
-        /* Panels sharing glassmorphism properties */
-        .side-panel {
-            width: 320px;
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-top: 3px solid var(--theme-color);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-            transition: border-top-color 0.5s ease;
-        }
-
-        #game-workspace {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            height: 100%;
-        }
-
-        #canvas-container {
-            flex-grow: 1;
-            position: relative;
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        h2 {
-            margin-top: 0;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.3rem;
-            letter-spacing: 1px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(10, 16, 30, 0.8);
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-            color: #f8fafc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            backdrop-filter: blur(10px);
         }
 
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-        }
-
-        .stat-label {
-            color: #94a3b8;
-        }
-
-        .stat-value {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.05rem;
-            color: var(--theme-color);
-            font-weight: bold;
-            transition: color 0.5s ease;
-        }
-
-        /* Blueprints detail */
-        .blueprint-card {
-            background: rgba(0,0,0,0.2);
-            border-left: 3px solid var(--theme-color);
-            border-radius: 4px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-            transition: border-left-color 0.5s ease;
-        }
-
-        .blueprint-title {
-            font-weight: bold;
-            color: #f8fafc;
-            margin-bottom: 4px;
-        }
-
-        .blueprint-parts {
-            color: #94a3b8;
-            font-family: monospace;
-            font-size: 0.78rem;
-        }
-
-        /* Action HUD Buttons */
-        #hud-controls {
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-around;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .action-button {
-            flex-grow: 1;
-            background: rgba(var(--theme-color-rgb), 0.05);
-            border: 1px solid var(--theme-color);
-            color: var(--theme-color);
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1rem;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
-        .action-button:hover {
-            background: rgba(var(--theme-color-rgb), 0.18);
-            box-shadow: 0 0 15px rgba(var(--theme-color-rgb), 0.35);
-        }
-
-        .action-key {
-            font-size: 0.7rem;
-            opacity: 0.6;
-        }
-
-        button.mode-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: #94a3b8;
-            padding: 6px 12px;
-            font-size: 0.75rem;
-            font-family: 'Share Tech Mono', monospace;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-
-        button.mode-btn.active {
-            background: var(--theme-color);
-            border-color: var(--theme-color);
-            color: #070d19;
-            font-weight: bold;
-        }
-
-        /* Settings configuration screen (Splash Overlay) */
-        #splash-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(7, 13, 25, 0.95);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            box-sizing: border-box;
-            border-radius: 12px;
-        }
-
-        #splash-content {
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
-        }
-
-        h1 {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 2.8rem;
-            margin: 0 0 10px 0;
+        .logo-section h1 {
+            margin: 0;
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
             letter-spacing: 2px;
-            background: linear-gradient(90deg, #38bdf8 0%, #f97316 100%);
+            background: linear-gradient(90deg, var(--abt-color) 0%, var(--bsx-color) 50%, var(--mdt-color) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .splash-subtitle {
-            color: #94a3b8;
-            font-size: 1rem;
-            margin-bottom: 40px;
+        .logo-section p {
+            margin: 2px 0 0 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .setup-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .setup-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .setup-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .setup-card.active.abt { border-color: var(--abt-color); background: rgba(56, 189, 248, 0.05); color: var(--abt-color); }
-        .setup-card.active.bsx { border-color: var(--bsx-color); background: rgba(168, 85, 247, 0.05); color: var(--bsx-color); }
-        .setup-card.active.mdt { border-color: var(--mdt-color); background: rgba(249, 115, 22, 0.05); color: var(--mdt-color); }
-
-        .setup-card h3 {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.5rem;
-            margin: 0 0 5px 0;
-        }
-
-        .setup-card p {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin: 0;
-        }
-
-        .slider-section {
-            width: 100%;
-            margin-bottom: 30px;
-            text-align: left;
-        }
-
-        .slider-header {
-            display: flex;
-            justify-content: space-between;
-            font-family: 'Share Tech Mono', monospace;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        input[type=range] {
-            width: 100%;
-            accent-color: var(--theme-color);
-        }
-
-        .start-btn {
-            background: var(--theme-color);
-            color: #070d19;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.3rem;
-            font-weight: bold;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 20px rgba(var(--theme-color-rgb), 0.3);
-        }
-
-        .start-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(var(--theme-color-rgb), 0.55);
-        }
-
-        /* Leaderboards side-by-side */
-        .leaderboards-container {
-            display: flex;
-            gap: 30px;
-            width: 100%;
-            margin-top: 40px;
-            text-align: left;
-        }
-
-        .leaderboard-column {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px;
-        }
-
-        .leaderboard-column h4 {
-            margin: 0 0 10px 0;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.95rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
-        }
-
-        .leaderboard-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-family: monospace;
-            font-size: 0.8rem;
-        }
-
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
-        }
-
-        /* Message Overlays */
-        #game-over-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(7, 13, 25, 0.95);
-            border: 1px solid var(--theme-color);
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            z-index: 500;
-            display: none;
-            max-width: 450px;
-            width: 90%;
-            box-shadow: 0 0 35px rgba(0,0,0,0.8);
-        }
-
-        #game-over-overlay h3 {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.8rem;
-            margin: 0 0 15px 0;
-            color: var(--theme-color);
-        }
-
-        #game-over-text {
-            color: #ccd6f6;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            white-space: pre-line;
-        }
-
-        .replay-banner {
-            background: rgba(255, 202, 40, 0.12);
-            border: 1px solid #ffca28;
-            color: #ffca28;
-            padding: 8px;
+        .spec-badge {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid var(--abt-color);
+            color: var(--abt-color);
+            padding: 6px 12px;
             border-radius: 4px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-            display: none;
-            text-align: center;
-            margin-bottom: 10px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Top Bar Info */
-        #top-info {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-family: monospace;
-            font-size: 11px;
-            color: #64748b;
-            z-index: 999;
+        /* Dashboard layout */
+        #main-container {
+            display: flex;
+            flex-grow: 1;
+            height: calc(100vh - 70px);
+            overflow: hidden;
         }
-        
-        #top-info a {
-            color: var(--theme-color);
-            text-decoration: none;
+
+        /* Sidebar Filters */
+        #sidebar {
+            width: 280px;
+            border-right: 1px solid var(--border-color);
+            background: rgba(10, 16, 30, 0.4);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .filter-section h3 {
+            margin: 0 0 12px 0;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            border-left: 3px solid var(--abt-color);
+            padding-left: 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .checkbox-label:hover {
+            color: var(--text-main);
+        }
+
+        .checkbox-label input {
+            accent-color: var(--abt-color);
+        }
+
+        select {
+            width: 100%;
+            background: #0f172a;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        select:focus {
+            border-color: var(--abt-color);
+        }
+
+        /* Year Range Input */
+        .year-selector-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .year-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            flex-grow: 1;
+            accent-color: var(--abt-color);
+        }
+
+        /* Content Area */
+        #content-area {
+            flex-grow: 1;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        /* KPI Panel */
+        #kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .kpi-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .kpi-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--abt-color);
+        }
+
+        /* Chart Block */
+        #charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+            height: 340px; /* Fixed height to prevent canvas height feedback loops */
+        }
+
+        .chart-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .chart-header h2 {
+            margin: 0;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: var(--text-main);
+        }
+
+        canvas {
+            width: 100%;
+            flex-grow: 1;
+            min-height: 0; /* Allow flex shrinking */
+            display: block;
+        }
+
+        /* Bottom Row - Data Table & Spec Sheet */
+        #bottom-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* Data Table container */
+        .table-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 250px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .search-wrapper input:focus {
+            border-color: var(--abt-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        th {
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--border-color);
+            padding: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            color: var(--text-main);
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Vendor styling tags */
+        .tag-vendor {
+            font-family: var(--font-mono);
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+        }
+        .vendor-ABT { background: rgba(6, 182, 212, 0.1); color: var(--abt-color); }
+        .vendor-BSX { background: rgba(168, 85, 247, 0.1); color: var(--bsx-color); }
+        .vendor-MDT { background: rgba(249, 115, 22, 0.1); color: var(--mdt-color); }
+
+        .pagination-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .pagination-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pagination-btns button {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btns button:hover:not(:disabled) {
+            border-color: var(--abt-color);
+            color: var(--abt-color);
+        }
+
+        .pagination-btns button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Spec panel */
+        .spec-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        .spec-card h2 {
+            margin: 0;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .rule-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--abt-color);
+            border-radius: 4px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+        }
+
+        .rule-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-family: var(--font-mono);
+        }
+
+        .rule-body {
+            color: var(--text-muted);
+            line-height: 1.35;
         }
     </style>
 </head>
 <body>
     <div id="ambient-glow"></div>
-    <div id="top-info">
-        ✓ pbc-spec validated · <a href="PPR_Agent.pbc.md" target="_blank">view charter &rarr;</a>
-    </div>
+    <header>
+        <div class="logo-section">
+            <h1>BULKHEAD τ <span style="font-size: 0.9rem; opacity: 0.5; font-family: var(--font-mono); font-weight: normal; margin-left: 5px;">rev 2</span></h1>
+            <p>CRM Device Market Share Analyst Desk</p>
+        </div>
+        <div id="spec-status" class="spec-badge">
+            📡 loading domain spec...
+        </div>
+    </header>
 
-    <div id="main-layout">
-        <!-- Settings/Config Panel (left) -->
-        <div class="side-panel">
-            <h2>FACTORY ENGINE</h2>
-            
-            <div style="margin-bottom: 20px;">
-                <div class="stat-row">
-                    <span class="stat-label">Verification Build:</span>
-                    <div>
-                        <button id="vibeBtn" class="mode-btn" onclick="setBuildMode(false)">VIBE</button>
-                        <button id="bulkheadBtn" class="mode-btn active" onclick="setBuildMode(true)">BULKHEAD</button>
+    <div id="main-container">
+        <!-- Sidebar filters -->
+        <aside id="sidebar">
+            <div class="filter-section">
+                <h3>VENDORS</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chkABT" checked onchange="applyFilters()">
+                        <span style="color: var(--abt-color); font-weight: bold;">ABBOTT (ABT)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chkBSX" checked onchange="applyFilters()">
+                        <span style="color: var(--bsx-color); font-weight: bold;">BOSTON SCIENTIFIC (BSX)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chkMDT" checked onchange="applyFilters()">
+                        <span style="color: var(--mdt-color); font-weight: bold;">MEDTRONIC (MDT)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>DEVICE CATEGORY</h3>
+                <select id="categorySelector" onchange="applyFilters()">
+                    <option value="ALL">ALL CATEGORIES</option>
+                    <option value="Pacemaker">Pacemaker</option>
+                    <option value="ICD">ICD</option>
+                    <option value="CRT-D">CRT-D</option>
+                    <option value="CRT-P">CRT-P</option>
+                    <option value="S-ICD">S-ICD</option>
+                    <option value="TPS">TPS / Leadless</option>
+                </select>
+            </div>
+
+            <div class="filter-section year-selector-container">
+                <h3>ANALYSIS YEAR</h3>
+                <div class="year-header">
+                    <span id="lblMinYear">2008</span>
+                    <span id="yearDisplay" style="color: var(--abt-color); font-weight: bold; font-family: var(--font-mono);">2020</span>
+                </div>
+                <div class="slider-wrapper">
+                    <input type="range" id="yearSlider" min="2008" max="2024" value="2020" step="1" oninput="updateYearLabel(this.value)" onchange="applyFilters()">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>MIN VOLUME GATING</h3>
+                <div class="year-header" style="margin-bottom: 5px;">
+                    <span>Implants &ge;</span>
+                    <span id="volumeDisplay" style="color: var(--abt-color); font-family: var(--font-mono);">0</span>
+                </div>
+                <input type="range" id="volumeSlider" min="0" max="50000" value="0" step="1000" oninput="updateVolumeLabel(this.value)" onchange="applyFilters()">
+            </div>
+        </aside>
+
+        <!-- Main content panel -->
+        <main id="content-area">
+            <!-- KPI Display -->
+            <div id="kpi-row">
+                <div class="kpi-card">
+                    <span class="kpi-label">Total Implants</span>
+                    <span id="kpiTotalImplants" class="kpi-value">0</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-label">Market Concentration (HHI)</span>
+                    <span id="kpiHHI" class="kpi-value">0.00</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-label">Concentration Status</span>
+                    <span id="kpiHHIStatus" class="kpi-value" style="font-size: 1.1rem; align-self: flex-start; margin-top: 5px;">--</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-label">Market Leader</span>
+                    <span id="kpiLeader" class="kpi-value">--</span>
+                </div>
+            </div>
+
+            <!-- Charts visualization -->
+            <div id="charts-row">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 id="lblShareTitle">Market Share Breakdown (2020)</h2>
+                    </div>
+                    <canvas id="shareCanvas"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 id="lblTrendTitle">YoY Category Implant Trend (2008 - 2024)</h2>
+                    </div>
+                    <canvas id="trendCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Lower details - Table & Specs -->
+            <div id="bottom-grid">
+                <!-- Device Details Table -->
+                <div class="table-card">
+                    <div class="table-controls">
+                        <h2 style="margin:0; font-family: var(--font-mono); font-size: 1.1rem; letter-spacing: 1px;">DEVICE MODELS</h2>
+                        <div class="search-wrapper">
+                            <input type="text" id="searchInput" placeholder="Search Model or Family..." oninput="handleSearch()">
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="deviceTable">
+                            <thead>
+                                <tr>
+                                    <th onclick="handleSort('v')">Vendor</th>
+                                    <th onclick="handleSort('c')">Category</th>
+                                    <th onclick="handleSort('f')">Family</th>
+                                    <th onclick="handleSort('m')">Model</th>
+                                    <th onclick="handleSort('i')" style="text-align: right;">Implants</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading database...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-row">
+                        <span id="tableSummary">Showing 0-0 of 0 models</span>
+                        <div class="pagination-btns">
+                            <button id="btnPrevPage" onclick="changePage(-1)" disabled>&larr; Prev</button>
+                            <button id="btnNextPage" onclick="changePage(1)" disabled>Next &rarr;</button>
+                        </div>
                     </div>
                 </div>
-                <div style="font-size: 9px; color: #8892b0; margin-top: 10px; line-height: 1.35; border-left: 2px solid var(--theme-color); padding-left: 8px;">
-                    <strong>Verification Principle:</strong><br>
-                    • <strong>Bulkhead Build</strong>: Actively checks incoming devices against specs and intercepts defects at the scanner boundary.<br>
-                    • <strong>Vibe Build</strong>: Bypasses quality validation. Defective devices ship undetected, leading to delayed clinical recalls and severe score penalties.
+
+                <!-- Specs panel (PPR_Agent.pbc.md parser) -->
+                <div class="spec-card">
+                    <h2>PPR_AGENT DOMAIN CHARTER</h2>
+                    <div id="specStatus" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">Source: PPR_Agent.pbc.md</div>
+                    <div id="rulesContainer">
+                        <div style="color: var(--text-muted); font-size: 0.85rem;">Parsing specification file...</div>
+                    </div>
                 </div>
             </div>
-
-            <h2>MONITOR RUNS</h2>
-            <div style="flex-grow: 1;">
-                <div class="stat-row">
-                    <span class="stat-label">Conveyor Frame:</span>
-                    <span id="frameVal" class="stat-value">0</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Active Seed:</span>
-                    <span id="seedVal" class="stat-value">12345</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Sim Time Remaining:</span>
-                    <span id="timeVal" class="stat-value">60.0s</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Devices Shipped:</span>
-                    <span id="shippedVal" class="stat-value">0</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Defects Recycled:</span>
-                    <span id="recycledVal" class="stat-value">0</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Product Recalls:</span>
-                    <span id="recallsVal" class="stat-value" style="color: #f44336;">0</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Actual Yield Rate:</span>
-                    <span id="yieldVal" class="stat-value">100.0%</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Revenue Generated:</span>
-                    <span id="revVal" class="stat-value">$0.00M</span>
-                </div>
-            </div>
-
-            <button id="replayBtn" onclick="replayRun()" style="width: 100%; background: transparent; border: 1px solid var(--theme-color); color: var(--theme-color); font-family: 'Share Tech Mono', monospace; padding: 10px; cursor: pointer; border-radius: 6px;">REPLAY RUN</button>
-        </div>
-
-        <!-- Center Workspace containing Canvas & HUD -->
-        <div id="game-workspace">
-            <div id="canvas-container">
-                <div id="replayBanner" class="replay-banner">PROVING REPLAY LOGBOOK DETERMINISM...</div>
-                <canvas id="factoryCanvas"></canvas>
-                
-                <!-- Game Over Overlay -->
-                <div id="game-over-overlay">
-                    <h3 id="overlayTitle">RUN FINISHED</h3>
-                    <div id="game-over-text">Summary of run stats...</div>
-                    <button onclick="goToSplash()" style="background: var(--theme-color); color: #070d19; border: none; padding: 10px 25px; font-family: 'Share Tech Mono', monospace; font-size: 1rem; cursor: pointer; font-weight: bold; border-radius: 6px;">RETURN TO CONSOLE</button>
-                </div>
-            </div>
-
-            <!-- Assembly Controls HUD -->
-            <div id="hud-controls">
-                <button class="action-button" onclick="injectComponent('battery')">
-                    <span>🔋 BATTERY</span>
-                    <span class="action-key">[1]</span>
-                </button>
-                <button class="action-button" onclick="injectComponent('capacitor')">
-                    <span>⚡ CAPACITOR</span>
-                    <span class="action-key">[2]</span>
-                </button>
-                <button class="action-button" onclick="injectComponent('sensor')">
-                    <span>🧠 SENSOR</span>
-                    <span class="action-key">[3]</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Blueprints Panel (right) -->
-        <div class="side-panel">
-            <h2>PBC BLUEPRINTS</h2>
-            <div id="blueprints-container" style="flex-grow: 1; overflow-y: auto;">
-                <div style="color: #64748b; font-size: 0.9rem; text-align: center; margin-top: 40px;">Select vendor to load historical device blueprints.</div>
-            </div>
-            <div style="font-size: 0.72rem; color: #64748b; border-top: 1px solid var(--border-color); padding-top: 10px; line-height: 1.4;">
-                Blueprints are parsed live from historical database queries. Builds must align to specifications or fail verification.
-            </div>
-        </div>
-    </div>
-
-    <!-- Splash Screen Config Setup -->
-    <div id="splash-screen">
-        <div id="splash-content">
-            <h1>BULKHEAD σ — FACTORY SIMULATOR</h1>
-            <div class="splash-subtitle">Deterministic Device Manufacturing Pipeline (PPR_Agent Domain)</div>
-
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 30px; text-align: left; font-size: 0.88rem; line-height: 1.45; color: #ccd6f6;">
-                <strong style="color: var(--theme-color); font-family: 'Share Tech Mono', monospace; font-size: 1rem; display: block; margin-bottom: 6px;">🎯 THE POINT of the simulation</strong>
-                This simulator illustrates the difference between unchecked LLM/development execution (Vibe) and strictly verified constraints (Bulkhead). 
-                As CRM devices move along the conveyor, assemble their components matching the specifications listed in the active charter. 
-                Running in <strong>Bulkhead Mode</strong> verifies and intercepts defects at the scanner gate. Running in <strong>Vibe Mode</strong> bypasses checks, resulting in delayed product recalls that deduct revenue.
-            </div>
-
-            <h3 style="font-family: 'Share Tech Mono', monospace; text-align: left; margin-bottom: 15px;">1. SELECT HISTORICAL VENDOR</h3>
-            <div class="setup-grid">
-                <div id="card-ABT" class="setup-card active abt" onclick="selectVendor('ABT')">
-                    <h3>ABBOTT</h3>
-                    <p>Cardio Resynchronization</p>
-                </div>
-                <div id="card-BSX" class="setup-card bsx" onclick="selectVendor('BSX')">
-                    <h3>BOSTON SCIENTIFIC</h3>
-                    <p>Subcutaneous Defibrillation</p>
-                </div>
-                <div id="card-MDT" class="setup-card mdt" onclick="selectVendor('MDT')">
-                    <h3>MEDTRONIC</h3>
-                    <p>TPS Leadless Technology</p>
-                </div>
-            </div>
-
-            <div class="slider-section">
-                <div class="slider-header">
-                    <span>2. SELECT OPERATIONAL YEAR</span>
-                    <span id="yearDisplay" style="color: var(--theme-color);">2020</span>
-                </div>
-                <input type="range" id="yearSlider" min="2008" max="2024" step="1" value="2020" oninput="updateYear(this.value)">
-            </div>
-
-            <div class="slider-section">
-                <div class="slider-header">
-                    <span>3. TIMEFRAME DURATION</span>
-                    <span id="timeDisplay" style="color: var(--theme-color);">60s</span>
-                </div>
-                <input type="range" id="timeSlider" min="30" max="180" step="30" value="60" oninput="updateTimeframe(this.value)">
-            </div>
-
-            <button class="start-btn" onclick="startSimulation()">ENGAGE FACTORY LINE</button>
-
-            <!-- Leaderboards -->
-            <div class="leaderboards-container">
-                <div class="leaderboard-column" style="border-top: 2px solid var(--abt-color);">
-                    <h4 style="color: var(--abt-color);">🏆 BULKHEAD LEADERBOARD (GOVERNED)</h4>
-                    <ul id="leaderboard-bulkhead" class="leaderboard-list">
-                        <li class="leaderboard-item"><span>1. No runs yet</span><span>--</span></li>
-                    </ul>
-                </div>
-                <div class="leaderboard-column" style="border-top: 2px solid var(--mdt-color);">
-                    <h4 style="color: var(--mdt-color);">🏆 VIBE LEADERBOARD (UNGUARDED)</h4>
-                    <ul id="leaderboard-vibe" class="leaderboard-list">
-                        <li class="leaderboard-item"><span>1. No runs yet</span><span>--</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        </main>
     </div>
 
     <script>
-        // Web Audio Synthesizer Engine
-        const AudioEngine = {
-            ctx: null,
-            init() {
-                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-            },
-            playBeep() {
-                try {
-                    if (!this.ctx) this.init();
-                    let osc = this.ctx.createOscillator();
-                    let gain = this.ctx.createGain();
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc.frequency.setValueAtTime(750, this.ctx.currentTime);
-                    gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
-                    osc.start();
-                    osc.stop(this.ctx.currentTime + 0.08);
-                } catch(e){}
-            },
-            playLaser() {
-                try {
-                    if (!this.ctx) this.init();
-                    let osc = this.ctx.createOscillator();
-                    let gain = this.ctx.createGain();
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc.frequency.setValueAtTime(1400, this.ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(400, this.ctx.currentTime + 0.2);
-                    gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.2);
-                    osc.start();
-                    osc.stop(this.ctx.currentTime + 0.2);
-                } catch(e){}
-            },
-            playBuzzer() {
-                try {
-                    if (!this.ctx) this.init();
-                    let osc = this.ctx.createOscillator();
-                    let gain = this.ctx.createGain();
-                    osc.type = 'sawtooth';
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc.frequency.setValueAtTime(120, this.ctx.currentTime);
-                    gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
-                    osc.start();
-                    osc.stop(this.ctx.currentTime + 0.35);
-                } catch(e){}
-            },
-            playChime() {
-                try {
-                    if (!this.ctx) this.init();
-                    let now = this.ctx.currentTime;
-                    let osc1 = this.ctx.createOscillator();
-                    let osc2 = this.ctx.createOscillator();
-                    let gain = this.ctx.createGain();
-                    osc1.connect(gain);
-                    osc2.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc1.frequency.setValueAtTime(523.25, now);
-                    osc2.frequency.setValueAtTime(659.25, now + 0.06);
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-                    osc1.start();
-                    osc1.stop(now + 0.25);
-                    osc2.start(now + 0.06);
-                    osc2.stop(now + 0.25);
-                } catch(e){}
-            }
-        };
-
-        const canvas = document.getElementById('factoryCanvas');
-        const ctx = canvas.getContext('2d');
-        const frameValEl = document.getElementById('frameVal');
-        const seedValEl = document.getElementById('seedVal');
-        const timeValEl = document.getElementById('timeVal');
-        const shippedValEl = document.getElementById('shippedVal');
-        const recycledValEl = document.getElementById('recycledVal');
-        const recallsValEl = document.getElementById('recallsVal');
-        const yieldValEl = document.getElementById('yieldVal');
-        const revValEl = document.getElementById('revVal');
-        const blueprintsContainer = document.getElementById('blueprints-container');
-        const gameOverOverlay = document.getElementById('game-over-overlay');
-        const gameOverText = document.getElementById('game-over-text');
-        const splashScreen = document.getElementById('splash-screen');
-        const replayBanner = document.getElementById('replayBanner');
-
-        // Color Accents mapping
-        const ACCENT_COLORS = {
-            'ABT': '#38bdf8',
-            'BSX': '#a855f7',
-            'MDT': '#f97316'
-        };
-        const ACCENT_RGB = {
-            'ABT': '56, 189, 248',
-            'BSX': '168, 85, 247',
-            'MDT': '249, 115, 22'
-        };
-
-        let allDevices = [];
-        let activeBlueprints = [];
-        let simulationConfig = {
-            vendor: 'ABT',
-            year: 2020,
-            duration: 60
-        };
-
-        let state = {
-            frame: 0,
-            seed: 12345,
-            running: false,
-            timeRemaining: 60,
-            shipped: 0,
-            recycled: 0,
-            recalls: 0,
-            revenue: 0,
-            totalCreated: 0,
-            devices: [], // Moving devices on conveyor
-            bulkheadEnforcement: true,
-            selectedActiveDeviceIndex: 0, // Conveyor item targeted for key input
-            inputHistory: [], // Logbook replay tracking
-            isReplaying: false,
-            replayIndex: 0
-        };
-
-        let rng;
-        let lastTime = 0;
-        let accumulator = 0;
-        const FIXED_STEP = 1000 / 60;
+        // State manager
+        let db = [];
+        let filteredData = [];
+        let currentYear = 2020;
+        let selectedCategory = "ALL";
+        let minVolume = 0;
         
-        // Spawn rates based on year and model volume
-        let spawnInterval = 120; // Spawn new device every 120 frames (~2 seconds)
-        let lastSpawnFrame = 0;
+        // Sorting and Pagination
+        let sortField = "i";
+        let sortDirection = -1; // descending initially
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let searchQuery = "";
 
-        // Seedable RNG
-        function mulberry32(a) {
-            return function() {
-                var t = a += 0x6D2B79F5;
-                t = Math.imul(t ^ t >>> 15, t | 1);
-                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        const shareCanvas = document.getElementById('shareCanvas');
+        const trendCanvas = document.getElementById('trendCanvas');
+
+        // Formats numbers with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Sidebar slider values
+        function updateYearLabel(val) {
+            currentYear = parseInt(val);
+            document.getElementById('yearDisplay').innerText = val;
+        }
+
+        function updateVolumeLabel(val) {
+            minVolume = parseInt(val);
+            document.getElementById('volumeDisplay').innerText = formatNumber(val);
+        }
+
+        // Fetch PPR_Agent.pbc.md specifications
+        async function fetchSpecifications() {
+            try {
+                const response = await fetch('PPR_Agent.pbc.md');
+                const text = await response.text();
+                
+                const rulesRegex = /- id: (PPR-RUL-\d+)[\s\S]*?name: ([\s\S]*?)rule: ([\s\S]*?)(?=- id|```|##)/g;
+                let match;
+                let rulesHTML = '';
+                
+                while ((match = rulesRegex.exec(text)) !== null) {
+                    const ruleId = match[1].trim();
+                    const name = match[2].replace(/\n/g, '').trim();
+                    const ruleText = match[3].replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+                    
+                    rulesHTML += `
+                        <div class="rule-item">
+                            <div class="rule-header">
+                                <span>${name}</span>
+                                <span style="color: var(--abt-color);">${ruleId}</span>
+                            </div>
+                            <div class="rule-body">${ruleText}</div>
+                        </div>
+                    `;
+                }
+
+                if (rulesHTML === '') {
+                    rulesHTML = '<div style="color: var(--text-muted); font-size: 0.85rem;">Charter rules parsed, but empty.</div>';
+                }
+
+                document.getElementById('rulesContainer').innerHTML = rulesHTML;
+                document.getElementById('spec-status').innerHTML = '✓ PPR_Agent Domain Specs Loaded';
+                document.getElementById('spec-status').style.borderColor = 'var(--abt-color)';
+                document.getElementById('spec-status').style.color = 'var(--abt-color)';
+                document.getElementById('spec-status').style.background = 'rgba(6, 182, 212, 0.1)';
+            } catch (e) {
+                console.error("Failed fetching specification file:", e);
+                document.getElementById('rulesContainer').innerHTML = '<div style="color: #ef4444; font-size: 0.85rem;">Specification parser offline.</div>';
+                document.getElementById('spec-status').innerHTML = '⚠ PPR_Agent Domain Specs Offline';
+                document.getElementById('spec-status').style.borderColor = '#ef4444';
+                document.getElementById('spec-status').style.color = '#ef4444';
+                document.getElementById('spec-status').style.background = 'rgba(239, 68, 68, 0.1)';
             }
         }
 
-        // Load devices database output
+        // Load devices database
         async function loadDatabase() {
+            let loadedFile = 'devices.json';
+            let payload = null;
             try {
                 const r = await fetch('devices.json');
-                allDevices = await r.json();
+                if (!r.ok) throw new Error(`HTTP error! status: ${r.status}`);
+                payload = await r.json();
             } catch (e) {
-                console.warn("Failed loading database, using static fallback.");
-                allDevices = [
-                    {"v":"ABT","y":2020,"c":"CRT-D","f":"Accent","m":"3107-36","i":663,"r":3.5},
-                    {"v":"ABT","y":2020,"c":"Pacemaker","f":"Promote","m":"PM1110","i":1200,"r":5.2},
-                    {"v":"BSX","y":2020,"c":"S-ICD","f":"Emblem","m":"A209","i":450,"r":12.5},
-                    {"v":"MDT","y":2020,"c":"TPS","f":"Micra","m":"MC1VR01","i":3200,"r":28.0}
-                ];
-            }
-            populateYearRange();
-            renderLeaderboards();
-        }
-
-        function populateYearRange() {
-            // Find min/max years in loaded data
-            let years = allDevices.map(d => d.y);
-            let minYear = Math.min(...years);
-            let maxYear = Math.max(...years);
-            const slider = document.getElementById('yearSlider');
-            slider.min = minYear;
-            slider.max = maxYear;
-            slider.value = Math.min(Math.max(slider.value, minYear), maxYear);
-            updateYear(slider.value);
-        }
-
-        function selectVendor(vendor) {
-            simulationConfig.vendor = vendor;
-            // Remove active classes
-            document.querySelectorAll('.setup-card').forEach(c => c.classList.remove('active'));
-            // Add active class
-            document.getElementById(`card-${vendor}`).classList.add('active');
-            
-            // Set dynamic CSS properties
-            document.documentElement.style.setProperty('--theme-color', ACCENT_COLORS[vendor]);
-            document.documentElement.style.setProperty('--theme-color-rgb', ACCENT_RGB[vendor]);
-            
-            updateYear(simulationConfig.year);
-        }
-
-        function updateYear(val) {
-            simulationConfig.year = parseInt(val);
-            document.getElementById('yearDisplay').innerText = val;
-            
-            // Render Blueprints sidebar
-            renderBlueprints();
-        }
-
-        function updateTimeframe(val) {
-            simulationConfig.duration = parseInt(val);
-            document.getElementById('timeDisplay').innerText = val + 's';
-        }
-
-        function renderBlueprints() {
-            // Get unique categories for this vendor and year
-            const filtered = allDevices.filter(d => d.v === simulationConfig.vendor && d.y === simulationConfig.year);
-            // Grab top 4 categories/models
-            activeBlueprints = [];
-            
-            const categories = [...new Set(filtered.map(d => d.c))].slice(0, 4);
-            
-            if (categories.length === 0) {
-                blueprintsContainer.innerHTML = `<div style="color: #64748b; font-size: 0.9rem; text-align: center; margin-top: 40px;">No historical data for ${simulationConfig.vendor} in ${simulationConfig.year}.</div>`;
-                return;
-            }
-
-            blueprintsContainer.innerHTML = '';
-            categories.forEach(cat => {
-                // Find top model in this category
-                const models = filtered.filter(d => d.c === cat);
-                models.sort((a,b) => b.i - a.i);
-                const topModel = models[0];
-
-                let parts = [];
-                if (cat === 'CRT-D') parts = ['🔋 Battery', '⚡ Capacitor', '🧠 Sensor'];
-                else if (cat === 'ICD' || cat === 'S-ICD') parts = ['🔋 Battery', '⚡ Capacitor'];
-                else if (cat === 'Pacemaker') parts = ['🔋 Battery', '🧠 Sensor'];
-                else if (cat === 'TPS') parts = ['🔋 Battery', '🧠 Sensor'];
-                else parts = ['🔋 Battery', '⚡ Capacitor', '🧠 Sensor'];
-
-                activeBlueprints.push({
-                    category: cat,
-                    family: topModel.f,
-                    model: topModel.m,
-                    parts: parts.map(p => p.split(' ')[1].toLowerCase()), // ['battery', 'capacitor', 'sensor']
-                    implants: topModel.i,
-                    revenue: topModel.r || (topModel.i * 0.005) // fallback rev
-                });
-
-                const div = document.createElement('div');
-                div.className = 'blueprint-card';
-                div.innerHTML = `
-                    <div class="blueprint-title">${cat} (${topModel.f})</div>
-                    <div style="font-size: 0.78rem; color: #ccd6f6; margin-bottom: 4px;">Model: ${topModel.m}</div>
-                    <div class="blueprint-parts">Requires: ${parts.join(', ')}</div>
-                    <div style="font-size: 0.72rem; color: #64748b; margin-top: 4px;">Target Volume: ${topModel.i.toLocaleString()} units</div>
-                `;
-                blueprintsContainer.appendChild(div);
-            });
-        }
-
-        function setBuildMode(enabled) {
-            state.bulkheadEnforcement = enabled;
-            document.getElementById('bulkheadBtn').classList.toggle('active', enabled);
-            document.getElementById('vibeBtn').classList.toggle('active', !enabled);
-        }
-
-        function startSimulation() {
-            AudioEngine.init();
-            splashScreen.style.display = 'none';
-            gameOverOverlay.style.display = 'none';
-            
-            state.frame = 0;
-            state.seed = Math.floor(Math.random() * 90000) + 10000;
-            state.running = true;
-            state.timeRemaining = simulationConfig.duration;
-            state.shipped = 0;
-            state.recycled = 0;
-            state.recalls = 0;
-            state.revenue = 0;
-            state.totalCreated = 0;
-            state.devices = [];
-            state.inputHistory = [];
-            state.isReplaying = false;
-            
-            // Sync values to UI
-            updateUI();
-            resizeCanvas();
-
-            rng = mulberry32(state.seed);
-            lastTime = performance.now();
-            accumulator = 0;
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        function replayRun() {
-            if (state.inputHistory.length === 0) return;
-            
-            state.isReplaying = true;
-            state.replayIndex = 0;
-            replayBanner.style.display = 'block';
-            
-            // Reset simulation values using saved seed
-            state.frame = 0;
-            state.running = true;
-            state.timeRemaining = simulationConfig.duration;
-            state.shipped = 0;
-            state.recycled = 0;
-            state.recalls = 0;
-            state.revenue = 0;
-            state.totalCreated = 0;
-            state.devices = [];
-            
-            updateUI();
-            rng = mulberry32(state.seed);
-            lastTime = performance.now();
-            accumulator = 0;
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        function injectComponent(part) {
-            if (!state.running || state.isReplaying) return;
-            
-            // Log input for replay determinism
-            state.inputHistory.push({ frame: state.frame, action: 'inject', part: part });
-            applyPartToActiveDevice(part);
-        }
-
-        function applyPartToActiveDevice(part) {
-            // Find first device on conveyor belt that is still "assembling" and needs this component
-            const target = state.devices.find(d => d.status === 'assembling' && d.x < canvas.width * 0.7);
-            if (target) {
-                const reqIdx = target.blueprint.parts.indexOf(part);
-                if (reqIdx !== -1 && !target.partsAdded.includes(part)) {
-                    target.partsAdded.push(part);
-                    AudioEngine.playBeep();
-                    
-                    // Trigger robotic arm punch effect
-                    target.pulseScale = 1.25;
-                    
-                    // Check if fully assembled
-                    if (target.partsAdded.length === target.blueprint.parts.length) {
-                        target.status = 'assembled';
-                    }
-                } else {
-                    // Applied wrong component or duplicate -> becomes defective
-                    target.status = 'defective';
-                    target.partsAdded.push(part); // track wrong parts too
-                    AudioEngine.playBuzzer();
+                console.warn("Failed loading devices.json, trying devices_published.json...");
+                try {
+                    const r = await fetch('devices_published.json');
+                    if (!r.ok) throw new Error(`HTTP error! status: ${r.status}`);
+                    payload = await r.json();
+                    loadedFile = 'devices_published.json';
+                } catch (err) {
+                    console.error("Failed loading database, using empty dataset:", err);
+                    payload = { mode: 'none', devices: [] };
+                    loadedFile = 'none';
                 }
             }
-        }
 
-        window.addEventListener('keydown', (e) => {
-            if (e.key === '1') injectComponent('battery');
-            if (e.key === '2') injectComponent('capacitor');
-            if (e.key === '3') injectComponent('sensor');
-        });
-
-        function resizeCanvas() {
-            const container = document.getElementById('canvas-container');
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-
-        function updateUI() {
-            frameValEl.innerText = state.frame;
-            seedValEl.innerText = state.seed;
-            timeValEl.innerText = state.timeRemaining.toFixed(1) + 's';
-            shippedValEl.innerText = state.shipped;
-            recycledValEl.innerText = state.recycled;
-            recallsValEl.innerText = state.recalls;
-            revValEl.innerText = `$${state.revenue.toFixed(2)}M`;
-            
-            let totalProcessed = state.shipped + state.recycled + state.recalls;
-            let yieldVal = totalProcessed === 0 ? 100 : (state.shipped / (state.shipped + state.recalls)) * 100;
-            yieldValEl.innerText = yieldVal.toFixed(1) + '%';
-        }
-
-        // Spawns a device box from the selected blueprints pool
-        function spawnDevice() {
-            if (activeBlueprints.length === 0) return;
-            
-            // Choose a blueprint based on RNG
-            const bpIdx = Math.floor(rng() * activeBlueprints.length);
-            const bp = activeBlueprints[bpIdx];
-            
-            // Randomly insert a manufacturing defect chance (15% base rate)
-            const isDefectiveDefault = rng() < 0.15;
-
-            state.devices.push({
-                id: state.totalCreated++,
-                blueprint: bp,
-                x: -60,
-                y: canvas.height * 0.55,
-                width: 75,
-                height: 55,
-                partsAdded: isDefectiveDefault ? ['contaminant'] : [], // pre-contaminated defects!
-                status: isDefectiveDefault ? 'defective' : 'assembling',
-                pulseScale: 1.0,
-                scanProgress: 0
-            });
-        }
-
-        function updateSimulation() {
-            if (!state.running) return;
-
-            state.frame++;
-            state.timeRemaining -= 1/60;
-            if (state.timeRemaining <= 0) {
-                state.timeRemaining = 0;
-                finishRun();
-                return;
+            db = payload.devices || [];
+            const isFull = (payload.mode === 'full');
+            const subTitle = document.querySelector('.logo-section p');
+            if (subTitle) {
+                subTitle.innerText = `CRM Device Market Share Analyst Desk (${isFull ? 'Full Offline' : 'Published'} Dataset)`;
             }
 
-            // Logbook Replay playback
-            if (state.isReplaying) {
-                while (state.replayIndex < state.inputHistory.length && state.inputHistory[state.replayIndex].frame === state.frame) {
-                    const input = state.inputHistory[state.replayIndex];
-                    if (input.action === 'inject') {
-                        applyPartToActiveDevice(input.part);
-                    }
-                    state.replayIndex++;
-                }
+            if (db.length > 0) {
+                // Find min/max years dynamically
+                let years = db.map(d => d.y);
+                let minYear = Math.min(...years);
+                let maxYear = Math.max(...years);
                 
-                if (state.replayIndex >= state.inputHistory.length && state.inputHistory.length > 0) {
-                    state.isReplaying = false;
-                    replayBanner.style.display = 'none';
-                }
+                const slider = document.getElementById('yearSlider');
+                slider.min = minYear;
+                slider.max = maxYear;
+                document.getElementById('lblMinYear').innerText = minYear;
+                
+                slider.value = Math.min(Math.max(slider.value, minYear), maxYear);
+                updateYearLabel(slider.value);
             }
+            
+            applyFilters();
+            fetchSpecifications();
+        }
 
-            // Spawning Logic
-            if (state.frame - lastSpawnFrame >= spawnInterval) {
-                spawnDevice();
-                lastSpawnFrame = state.frame;
-            }
+        // Apply filters toggled in Sidebar
+        function applyFilters() {
+            const chkABT = document.getElementById('chkABT').checked;
+            const chkBSX = document.getElementById('chkBSX').checked;
+            const chkMDT = document.getElementById('chkMDT').checked;
+            selectedCategory = document.getElementById('categorySelector').value;
 
-            // Move devices on conveyor belt
-            const speed = 2.2;
-            const qcGateX = canvas.width * 0.72;
+            // Step 1: Filter entire database down to matching criteria
+            filteredData = db.filter(item => {
+                // Vendor match
+                if (item.v === 'ABT' && !chkABT) return false;
+                if (item.v === 'BSX' && !chkBSX) return false;
+                if (item.v === 'MDT' && !chkMDT) return false;
 
-            state.devices.forEach((d, index) => {
-                // Return to scale
-                d.pulseScale += (1.0 - d.pulseScale) * 0.15;
-
-                // Move device towards shipping or QC
-                if (d.x < qcGateX - d.width/2) {
-                    d.x += speed;
-                } else if (d.x >= qcGateX - d.width/2 && d.x < qcGateX + 10) {
-                    // Scanning state inside Quality Control Gate
-                    d.scanProgress += 0.05;
-                    if (d.scanProgress >= 1.0) {
-                        d.scanProgress = 1.0;
-                        
-                        // Verification check
-                        if (state.bulkheadEnforcement) {
-                            // Bulkhead Build actively intercepts and rejects defects
-                            if (d.status === 'defective' || d.partsAdded.length !== d.blueprint.parts.length) {
-                                d.status = 'rejected';
-                                AudioEngine.playBuzzer();
-                            } else {
-                                d.status = 'verified';
-                                AudioEngine.playLaser();
-                            }
-                        } else {
-                            // Vibe Build accepts everything without verification
-                            d.status = d.status === 'assembled' ? 'verified' : 'passed-defect';
-                            AudioEngine.playLaser();
-                        }
-                        
-                        // Advance past the gate
-                        d.x += 12; 
+                // Category match
+                if (selectedCategory !== 'ALL') {
+                    if (selectedCategory === 'TPS') {
+                        if (item.c !== 'TPS' && item.c !== 'Leadless Pacemaker') return false;
+                    } else if (item.c !== selectedCategory) {
+                        return false;
                     }
+                }
+
+                // Volume threshold gate
+                if (item.i < minVolume) return false;
+
+                return true;
+            });
+
+            currentPage = 1;
+            renderKPIs();
+            renderTable();
+            renderCharts();
+        }
+
+        function renderKPIs() {
+            // KPIs are computed specifically for the Selected Year (like a slice dashboard)
+            const yearSlice = filteredData.filter(d => d.y === currentYear);
+            
+            // Total Implants in year slice
+            let total = 0;
+            let abtTotal = 0;
+            let bsxTotal = 0;
+            let mdtTotal = 0;
+            let uniqueModels = yearSlice.length;
+
+            yearSlice.forEach(d => {
+                total += d.i;
+                if (d.v === 'ABT') abtTotal += d.i;
+                else if (d.v === 'BSX') bsxTotal += d.i;
+                else if (d.v === 'MDT') mdtTotal += d.i;
+            });
+
+            document.getElementById('kpiTotalImplants').innerText = formatNumber(total);
+
+            // Compute Market Shares & HHI
+            let hhi = 0.0;
+            let shares = [];
+            let leaderName = '--';
+            let maxShare = 0;
+
+            if (total > 0) {
+                let shareABT = abtTotal / total;
+                let shareBSX = bsxTotal / total;
+                let shareMDT = mdtTotal / total;
+
+                // HHI is sum of squared percentage shares
+                hhi = (shareABT * shareABT) + (shareBSX * shareBSX) + (shareMDT * shareMDT);
+
+                shares = [
+                    { name: 'Abbott', val: abtTotal, share: shareABT, color: 'var(--abt-color)' },
+                    { name: 'Boston Scientific', val: bsxTotal, share: shareBSX, color: 'var(--bsx-color)' },
+                    { name: 'Medtronic', val: mdtTotal, share: shareMDT, color: 'var(--mdt-color)' }
+                ];
+                shares.sort((a,b) => b.val - a.val);
+                
+                leaderName = `${shares[0].name} (${(shares[0].share * 100).toFixed(1)}%)`;
+            }
+
+            document.getElementById('kpiHHI').innerText = hhi.toFixed(3);
+            document.getElementById('kpiLeader').innerText = leaderName;
+
+            // Concentration scale text matching antitrust standards
+            let hhiStatus = 'Competitive';
+            let hhiColor = '#10b981';
+            if (hhi > 0.25) {
+                hhiStatus = 'Highly Concentrated';
+                hhiColor = '#ef4444';
+            } else if (hhi > 0.15) {
+                hhiStatus = 'Moderately Concentrated';
+                hhiColor = '#f59e0b';
+            } else if (total === 0) {
+                hhiStatus = '--';
+                hhiColor = 'var(--text-muted)';
+            }
+            
+            const hhiEl = document.getElementById('kpiHHIStatus');
+            hhiEl.innerText = hhiStatus;
+            hhiEl.style.color = hhiColor;
+
+            // Store year-slice shares on window for chart renderer to grab
+            window.activeMarketShares = shares;
+        }
+
+        // Search text handler
+        function handleSearch() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            currentPage = 1;
+            renderTable();
+        }
+
+        // Header click sorting
+        function handleSort(field) {
+            if (sortField === field) {
+                sortDirection *= -1; // toggle direction
+            } else {
+                sortField = field;
+                sortDirection = field === 'i' ? -1 : 1; // default desc for implants, asc for text
+            }
+            renderTable();
+        }
+
+        function renderTable() {
+            // Apply year filter & text search to table list
+            let tableData = filteredData.filter(d => d.y === currentYear);
+            
+            if (searchQuery) {
+                tableData = tableData.filter(d => 
+                    d.m.toLowerCase().includes(searchQuery) || 
+                    d.f.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            // Sort data
+            tableData.sort((a, b) => {
+                let valA = a[sortField];
+                let valB = b[sortField];
+                
+                if (typeof valA === 'string') {
+                    return valA.localeCompare(valB) * sortDirection;
                 } else {
-                    // Advance to end of belt
-                    d.x += speed;
+                    return (valA - valB) * sortDirection;
                 }
             });
 
-            // Process devices that reach the end of the line
-            for (let i = state.devices.length - 1; i >= 0; i--) {
-                const d = state.devices[i];
-                if (d.x > canvas.width) {
-                    if (d.status === 'verified') {
-                        // Successful ship!
-                        state.shipped++;
-                        state.revenue += d.blueprint.revenue;
-                        AudioEngine.playChime();
-                    } else if (d.status === 'passed-defect') {
-                        // Shipped defective model in Vibe mode!
-                        state.recalls++;
-                        // Immediate financial recall penalty ($5.0M recall costs)
-                        state.revenue = Math.max(0, state.revenue - 5.0);
-                        AudioEngine.playBuzzer();
-                    } else if (d.status === 'rejected') {
-                        // Defect caught and recycled safely
-                        state.recycled++;
-                    } else {
-                        // Unassembled or default defective
-                        state.recycled++;
-                    }
-                    
-                    state.devices.splice(i, 1);
-                }
+            // Pagination window slice
+            const totalItems = tableData.length;
+            const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+            currentPage = Math.min(currentPage, totalPages);
+            
+            const startIdx = (currentPage - 1) * itemsPerPage;
+            const endIdx = Math.min(startIdx + itemsPerPage, totalItems);
+            const paginatedItems = tableData.slice(startIdx, endIdx);
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (paginatedItems.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No records matching filters and query.</td></tr>';
+            } else {
+                paginatedItems.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><span class="tag-vendor vendor-${item.v}">${item.v}</span></td>
+                        <td>${item.c}</td>
+                        <td style="font-weight: 500;">${item.f}</td>
+                        <td style="font-family: monospace;">${item.m}</td>
+                        <td style="text-align: right; font-family: var(--font-mono); font-weight: bold; color: var(--abt-color);">${formatNumber(item.i)}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             }
 
-            if (state.frame % 10 === 0) {
-                updateUI();
-            }
+            // Update Pagination display
+            document.getElementById('tableSummary').innerText = totalItems > 0 
+                ? `Showing ${startIdx + 1}-${endIdx} of ${totalItems} models` 
+                : 'Showing 0 models';
+                
+            document.getElementById('btnPrevPage').disabled = (currentPage === 1);
+            document.getElementById('btnNextPage').disabled = (currentPage === totalPages);
         }
 
-        // Draw Conveyor belt and machinery on canvas
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function changePage(direction) {
+            currentPage += direction;
+            renderTable();
+        }
 
-            // Draw Background grid lines
-            ctx.strokeStyle = '#1e293b';
-            ctx.lineWidth = 1;
-            for(let x=0; x<canvas.width; x+=50) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
-                ctx.stroke();
-            }
-            for(let y=0; y<canvas.height; y+=50) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
-                ctx.stroke();
-            }
+        // Render Canvas Charts
+        function renderCharts() {
+            renderPieChart();
+            renderTrendChart();
+        }
 
-            // Draw Conveyor Belt Bed
-            const beltY = canvas.height * 0.58;
-            const beltHeight = 16;
-            ctx.fillStyle = '#1e293b';
-            ctx.fillRect(0, beltY, canvas.width, beltHeight);
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect(0, beltY + 2, canvas.width, beltHeight - 4);
+        function renderPieChart() {
+            const ctx = shareCanvas.getContext('2d');
+            
+            // Adjust canvas resolution dynamically
+            shareCanvas.width = shareCanvas.clientWidth * 2;
+            shareCanvas.height = shareCanvas.clientHeight * 2;
+            ctx.scale(2, 2);
 
-            // Rollers
-            ctx.fillStyle = '#64748b';
-            for (let rx = 15; rx < canvas.width; rx += 45) {
+            const w = shareCanvas.clientWidth;
+            const h = shareCanvas.clientHeight;
+            ctx.clearRect(0, 0, w, h);
+
+            document.getElementById('lblShareTitle').innerText = `Market Share Breakdown (${selectedCategory} - ${currentYear})`;
+
+            const shares = window.activeMarketShares || [];
+            let totalVal = shares.reduce((acc, s) => acc + s.val, 0);
+
+            if (totalVal === 0) {
+                ctx.fillStyle = 'rgba(255,255,255,0.1)';
                 ctx.beginPath();
-                ctx.arc(rx, beltY + beltHeight/2, 6, 0, Math.PI * 2);
+                ctx.arc(w/2, h/2 - 10, 60, 0, Math.PI*2);
                 ctx.fill();
-                ctx.strokeStyle = '#020617';
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
+                ctx.fillStyle = 'var(--text-muted)';
+                ctx.font = '10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('NO DATA FOR SELECTION', w/2, h/2 - 10);
+                return;
             }
 
-            // Draw Quality Control laser scanner gate
-            const gateX = canvas.width * 0.72;
-            const gateWidth = 40;
-            ctx.fillStyle = '#1e293b';
-            ctx.fillRect(gateX - gateWidth/2, beltY - 90, gateWidth, 90);
-            
-            // Scanner Frame outline
-            ctx.strokeStyle = '#475569';
-            ctx.lineWidth = 3;
-            ctx.strokeRect(gateX - gateWidth/2, beltY - 90, gateWidth, 90);
-            
-            // Gate Label
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = '800 8px monospace';
-            ctx.textAlign = 'center';
-            ctx.fillText('VERIFY', gateX, beltY - 95);
+            // Draw segmented circle
+            let currentAngle = -0.5 * Math.PI; // start at top center
+            const centerX = w * 0.35;
+            const centerY = h / 2 - 10;
+            const radius = Math.min(w, h) * 0.28;
 
-            // Draw robotic arm
-            const armBaseX = canvas.width * 0.35;
-            const armBaseY = beltY - 100;
-            ctx.strokeStyle = '#334155';
-            ctx.lineWidth = 6;
+            shares.forEach(s => {
+                if (s.share === 0) return;
+                const angle = s.share * 2 * Math.PI;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + angle);
+                ctx.closePath();
+                
+                ctx.fillStyle = s.color;
+                ctx.fill();
+                ctx.strokeStyle = 'var(--bg-dark)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                currentAngle += angle;
+            });
+
+            // Draw center cutout for a modern donut chart feel
+            ctx.fillStyle = '#0a101e';
             ctx.beginPath();
-            ctx.moveTo(armBaseX, armBaseY);
-            // Dynamic pivot arm animation based on inputs
-            let armOffset = Math.sin(state.frame * 0.05) * 5;
-            ctx.lineTo(armBaseX + 15, armBaseY + 40 + armOffset);
+            ctx.arc(centerX, centerY, radius * 0.55, 0, Math.PI*2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+            ctx.lineWidth = 1;
             ctx.stroke();
 
-            // Draw Device Boxes
-            state.devices.forEach(d => {
-                ctx.save();
-                ctx.translate(d.x + d.width/2, d.y + d.height/2);
-                ctx.scale(d.pulseScale, d.pulseScale);
-                
-                // Card background
-                ctx.fillStyle = 'rgba(30, 41, 59, 0.95)';
-                ctx.fillRect(-d.width/2, -d.height/2, d.width, d.height);
-                
-                // Border depends on state
-                let borderColor = '#64748b';
-                if (d.status === 'assembled') borderColor = '#10b981';
-                else if (d.status === 'defective') borderColor = '#f44336';
-                else if (d.status === 'verified') borderColor = 'var(--theme-color)';
-                else if (d.status === 'rejected') borderColor = '#ffca28';
-                
-                ctx.strokeStyle = borderColor;
-                ctx.lineWidth = 2;
-                ctx.strokeRect(-d.width/2, -d.height/2, d.width, d.height);
+            // Total text in center
+            ctx.fillStyle = 'var(--text-main)';
+            ctx.font = 'bold 9px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('TOTAL', centerX, centerY - 4);
+            ctx.font = 'bold 8px monospace';
+            ctx.fillStyle = 'var(--abt-color)';
+            
+            let totalText = formatNumber(totalVal);
+            if (totalVal >= 1000000) totalText = (totalVal / 1000000).toFixed(2) + 'M';
+            ctx.fillText(totalText, centerX, centerY + 8);
 
-                // Label model text
-                ctx.fillStyle = '#ffffff';
+            // Draw custom legend on right
+            const legendX = w * 0.65;
+            let legendY = h/2 - (shares.length * 20) / 2;
+            
+            ctx.textAlign = 'left';
+            shares.forEach(s => {
+                ctx.fillStyle = s.color;
+                ctx.fillRect(legendX, legendY, 10, 10);
+                
+                ctx.fillStyle = 'var(--text-main)';
                 ctx.font = 'bold 9px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText(d.blueprint.model, 0, -12);
-
-                // Draw circles for needed components
-                const circleRadius = 6;
-                const gap = 16;
-                const totalWidth = (d.blueprint.parts.length - 1) * gap;
-                const startX = -totalWidth / 2;
-
-                d.blueprint.parts.forEach((part, pidx) => {
-                    const cx = startX + pidx * gap;
-                    const cy = 6;
-
-                    // Fill if component has been added
-                    const isAdded = d.partsAdded.includes(part);
-                    if (isAdded) {
-                        if (part === 'battery') ctx.fillStyle = '#10b981'; // Green
-                        else if (part === 'capacitor') ctx.fillStyle = '#f59e0b'; // Amber
-                        else ctx.fillStyle = '#3b82f6'; // Blue
-                    } else {
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-                    }
-                    
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, circleRadius, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                });
-
-                // Status text at bottom of box
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = '700 7px monospace';
-                ctx.fillText(d.status.toUpperCase(), 0, 22);
-
-                ctx.restore();
-
-                // Draw scanning laser inside gate
-                if (d.x >= gateX - d.width/2 && d.x < gateX + 10) {
-                    ctx.save();
-                    ctx.strokeStyle = state.bulkheadEnforcement ? 'var(--theme-color)' : '#f44336';
-                    ctx.lineWidth = 2;
-                    ctx.shadowBlur = 8;
-                    ctx.shadowColor = ctx.strokeStyle;
-                    
-                    ctx.beginPath();
-                    ctx.moveTo(d.x, beltY - 90);
-                    ctx.lineTo(d.x, beltY);
-                    ctx.stroke();
-                    ctx.restore();
-                }
+                ctx.fillText(s.name.split(' ')[0], legendX + 16, legendY + 9);
+                
+                ctx.fillStyle = 'var(--text-muted)';
+                ctx.font = '9px monospace';
+                ctx.fillText(`${(s.share * 100).toFixed(1)}%`, legendX + 75, legendY + 9);
+                
+                legendY += 20;
             });
         }
 
-        function gameLoop(timestamp) {
-            if (!lastTime) lastTime = timestamp;
-            let deltaTime = timestamp - lastTime;
-            lastTime = timestamp;
-
-            if (deltaTime > 250) deltaTime = 250;
-            accumulator += deltaTime;
-
-            while (accumulator >= FIXED_STEP) {
-                updateSimulation();
-                accumulator -= FIXED_STEP;
-            }
-
-            draw();
-
-            if (state.running) {
-                requestAnimationFrame(gameLoop);
-            }
-        }
-
-        function finishRun() {
-            state.running = false;
+        function renderTrendChart() {
+            const ctx = trendCanvas.getContext('2d');
             
-            // Save run score
-            const isNewHigh = saveHighScore(state.revenue, state.seed, state.bulkheadEnforcement);
+            trendCanvas.width = trendCanvas.clientWidth * 2;
+            trendCanvas.height = trendCanvas.clientHeight * 2;
+            ctx.scale(2, 2);
+
+            const w = trendCanvas.clientWidth;
+            const h = trendCanvas.clientHeight;
+            ctx.clearRect(0, 0, w, h);
+
+            document.getElementById('lblTrendTitle').innerText = `YoY ${selectedCategory === 'ALL' ? 'Overall' : selectedCategory} Implant Trend (2008 - 2024)`;
+
+            // Aggregate data by year & vendor
+            let yearsMap = {};
+            // Init empty years
+            for(let y=2008; y<=2024; y++) {
+                yearsMap[y] = { ABT: 0, BSX: 0, MDT: 0, Total: 0 };
+            }
+
+            filteredData.forEach(d => {
+                if (yearsMap[d.y] !== undefined) {
+                    yearsMap[d.y][d.v] += d.i;
+                    yearsMap[d.y].Total += d.i;
+                }
+            });
+
+            // Find max value to scale chart Y-axis
+            let maxVal = 100000;
+            for(let y=2008; y<=2024; y++) {
+                let maxSegment = Math.max(yearsMap[y].ABT, yearsMap[y].BSX, yearsMap[y].MDT);
+                if (maxSegment > maxVal) maxVal = maxSegment;
+            }
+            maxVal += maxVal * 0.1; // 10% padding
+
+            const paddingLeft = 50;
+            const paddingRight = 20;
+            const paddingTop = 20;
+            const paddingBottom = 30;
             
-            // Render leaderboard values
-            renderLeaderboards();
+            const graphW = w - paddingLeft - paddingRight;
+            const graphH = h - paddingTop - paddingBottom;
 
-            document.getElementById('overlayTitle').innerText = "PRODUCTION CYCLE FINISHED";
+            // Draw axis borders
+            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+            ctx.strokeRect(paddingLeft, paddingTop, graphW, graphH);
+
+            // Draw horizontal grid lines
+            ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+            ctx.fillStyle = 'var(--text-muted)';
+            ctx.font = '8px monospace';
+            ctx.textAlign = 'right';
+            const steps = 4;
             
-            let summary = `Vendor: ${simulationConfig.vendor} (${simulationConfig.year})\n`;
-            summary += `Build: ${state.bulkheadEnforcement ? 'BULKHEAD (Governed)' : 'VIBE (Ungoverned)'}\n`;
-            summary += `-------------------------------\n`;
-            summary += `Devices Shipped: ${state.shipped}\n`;
-            summary += `Defects Recycled: ${state.recycled}\n`;
-            summary += `Product Recalls: ${state.recalls}\n`;
-            summary += `Yield Rate: ${yieldValEl.innerText}\n`;
-            summary += `Final Revenue: $${state.revenue.toFixed(2)}M\n`;
-            
-            if (isNewHigh) {
-                summary += `\n🎉 NEW HIGH SCORE RECORDED! 🎉`;
+            for(let i=0; i<=steps; i++) {
+                let val = (i / steps) * maxVal;
+                let gy = paddingTop + graphH - (i / steps) * graphH;
+                ctx.beginPath();
+                ctx.moveTo(paddingLeft, gy);
+                ctx.lineTo(paddingLeft + graphW, gy);
+                ctx.stroke();
+
+                let dispText = formatNumber(Math.round(val));
+                if (val >= 1000000) dispText = (val / 1000000).toFixed(1) + 'M';
+                else if (val >= 1000) dispText = Math.round(val / 1000) + 'k';
+                ctx.fillText(dispText, paddingLeft - 8, gy + 3);
             }
 
-            gameOverText.innerText = summary;
-            gameOverOverlay.style.display = 'block';
-        }
-
-        function goToSplash() {
-            gameOverOverlay.style.display = 'none';
-            splashScreen.style.display = 'flex';
-            renderLeaderboards();
-        }
-
-        // Leaderboards localStorage syncing
-        function getHighScores(mode) {
-            try {
-                const raw = localStorage.getItem(`bulkhead-factory-highscores-${mode}`);
-                return raw ? JSON.parse(raw) : [];
-            } catch (e) {
-                return [];
-            }
-        }
-
-        function saveHighScore(score, seed, bulkheadMode) {
-            if (score <= 0) return false;
-            const mode = bulkheadMode ? 'bulkhead' : 'vibe';
-            let scores = getHighScores(mode);
-            const newEntry = { score, seed, vendor: simulationConfig.vendor, year: simulationConfig.year, date: Date.now() };
-            scores.push(newEntry);
-            scores.sort((a, b) => b.score - a.score);
-            scores = scores.slice(0, 5);
-            try {
-                localStorage.setItem(`bulkhead-factory-highscores-${mode}`, JSON.stringify(scores));
-            } catch (e) {}
-            return scores.some(entry => entry.date === newEntry.date);
-        }
-
-        function renderLeaderboards() {
-            // Bulkhead
-            const bulkheadList = document.getElementById('leaderboard-bulkhead');
-            const bScores = getHighScores('bulkhead');
-            bulkheadList.innerHTML = '';
-            if (bScores.length === 0) {
-                bulkheadList.innerHTML = '<li class="leaderboard-item"><span>1. No runs yet</span><span>--</span></li>';
-            } else {
-                bScores.forEach((entry, idx) => {
-                    const li = document.createElement('li');
-                    li.className = 'leaderboard-item';
-                    li.innerHTML = `<span>${idx + 1}. ${entry.vendor} (${entry.year})</span><span>$${entry.score.toFixed(2)}M</span>`;
-                    bulkheadList.appendChild(li);
-                });
+            // Draw years labels (X-Axis)
+            ctx.textAlign = 'center';
+            const yearRange = 2024 - 2008;
+            for (let i = 0; i <= yearRange; i += 4) {
+                let y = 2008 + i;
+                let gx = paddingLeft + (i / yearRange) * graphW;
+                ctx.fillText(y, gx, h - 12);
             }
 
-            // Vibe
-            const vibeList = document.getElementById('leaderboard-vibe');
-            const vScores = getHighScores('vibe');
-            vibeList.innerHTML = '';
-            if (vScores.length === 0) {
-                vibeList.innerHTML = '<li class="leaderboard-item"><span>1. No runs yet</span><span>--</span></li>';
-            } else {
-                vScores.forEach((entry, idx) => {
-                    const li = document.createElement('li');
-                    li.className = 'leaderboard-item';
-                    li.innerHTML = `<span>${idx + 1}. ${entry.vendor} (${entry.year})</span><span>$${entry.score.toFixed(2)}M</span>`;
-                    vibeList.appendChild(li);
-                });
-            }
+            // Draw line helpers
+            const drawVendorLine = (vendorKey, color) => {
+                ctx.beginPath();
+                for (let i = 0; i <= yearRange; i++) {
+                    let y = 2008 + i;
+                    let val = yearsMap[y][vendorKey];
+                    let gx = paddingLeft + (i / yearRange) * graphW;
+                    let gy = paddingTop + graphH - (val / maxVal) * graphH;
+                    
+                    if (i === 0) ctx.moveTo(gx, gy);
+                    else ctx.lineTo(gx, gy);
+                }
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw circles at each point
+                for (let i = 0; i <= yearRange; i++) {
+                    let y = 2008 + i;
+                    let val = yearsMap[y][vendorKey];
+                    let gx = paddingLeft + (i / yearRange) * graphW;
+                    let gy = paddingTop + graphH - (val / maxVal) * graphH;
+                    
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.arc(gx, gy, 2.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Highlight selected year
+                    if (y === currentYear) {
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.arc(gx, gy, 4.5, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+                }
+            };
+
+            // Draw line for active vendors
+            drawVendorLine('ABT', 'var(--abt-color)');
+            drawVendorLine('BSX', 'var(--bsx-color)');
+            drawVendorLine('MDT', 'var(--mdt-color)');
         }
 
-        // Initialize Database loading
+        // Initialization
         loadDatabase();
     </script>
 </body>
