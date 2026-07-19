@@ -29,6 +29,25 @@
             gap: 20px;
             align-items: flex-start;
         }
+        #center-col {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 484px; /* match game-container (480px canvas + 2px border each side) */
+        }
+        #controls-panel {
+            background: #0f172a;
+            border: 1px solid var(--theme-color);
+            padding: 14px 18px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        #controls-panel label {
+            color: #8892b0;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
         #game-container {
             position: relative;
             box-shadow: 0 0 25px rgba(0,0,0,0.6);
@@ -125,7 +144,42 @@
             margin-top: 5px;
             color: #ccd6f6;
         }
+        @keyframes crashShake {
+            0%, 100% { transform: translate(0, 0); }
+            15% { transform: translate(-5px, 3px); }
+            30% { transform: translate(5px, -3px); }
+            45% { transform: translate(-4px, -2px); }
+            60% { transform: translate(4px, 2px); }
+            75% { transform: translate(-2px, 1px); }
+        }
+        #game-container.crash-fx { animation: crashShake 0.4s ease-in-out; }
+        @keyframes crashFlash { 0% { opacity: 0.55; } 100% { opacity: 0; } }
+        #crashFlash {
+            position: absolute;
+            inset: 0;
+            background: #f44336;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 90;
+        }
+        #crashFlash.fire { animation: crashFlash 0.4s ease-out; }
+        .input-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 11px;
+            color: #8892b0;
+            cursor: pointer;
+        }
+        .switch { position: relative; width: 34px; height: 18px; flex: 0 0 auto; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .switch .slider { position: absolute; inset: 0; background: #233554; border-radius: 18px; transition: .2s; }
+        .switch .slider:before { content: ''; position: absolute; height: 14px; width: 14px; left: 2px; top: 2px; background: #8892b0; border-radius: 50%; transition: .2s; }
+        .switch input:checked + .slider { background: var(--theme-color); }
+        .switch input:checked + .slider:before { transform: translateX(16px); background: #070d19; }
         .tamper-control {
+            display: none;
             margin-top: 20px;
             padding: 15px;
             border: 1px dashed #f44336;
@@ -162,15 +216,116 @@
             font-size: 14px;
             display: none;
         }
-        #mode-toggle {
+        .replay-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 18px;
+        }
+        .replay-actions button {
+            width: 100%;
+            margin-top: 0;
+            padding: 9px 8px;
+            font-size: 10px;
+        }
+        .engine-note {
+            margin: 14px 0 0;
+            font-size: 10px;
+            line-height: 1.4;
+            color: #8892b0;
+        }
+        .gauge-row {
+            margin-top: 12px;
+        }
+        .gauge-card {
+            background: #070d19;
+            border: 1px solid #233554;
+            padding: 10px;
+        }
+        .gauge-card canvas {
+            width: 100%;
+            height: auto;
+            background: transparent;
+        }
+        .gauge-label {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            color: #ccd6f6;
+            text-align: center;
+            margin-top: 4px;
+            min-height: 24px;
+            line-height: 1.3;
+        }
+        #winSignal {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            top: 92px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            z-index: 90;
+            border: 1px solid #22c55e;
+            color: #22c55e;
+            background: rgba(7, 13, 25, 0.92);
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 0 18px rgba(34, 197, 94, 0.35);
+        }
+        .party-screen {
+            border-color: #22c55e !important;
+            box-shadow: 0 0 28px rgba(34, 197, 94, 0.45) !important;
+        }
+        .party-screen h1 {
+            color: #22c55e;
+            margin-top: 0;
+        }
+        .tamper-control {
+            display: none;
+        }
+        #mode-toggle {
+            position: fixed;
+            right: 15px;
+            bottom: 15px;
+            z-index: 9999;
+        }
+        @media (max-width: 1250px) {
+            body {
+                align-items: flex-start;
+                padding-top: 18px;
+                box-sizing: border-box;
+            }
+            #main-layout {
+                transform: scale(0.82);
+                transform-origin: top center;
+            }
+        }
+        @media (max-width: 1050px) {
+            #main-layout {
+                transform: scale(0.70);
+            }
+        }
+        @media (max-width: 900px) {
+            #main-layout {
+                transform: scale(0.64);
+            }
+        }
+        /* Short viewports (e.g. ROG Flow Z13): top-align so gameplay never clips, and scale to fit height. */
+        @media (max-height: 900px) {
+            body {
+                align-items: flex-start;
+                padding-top: 10px;
+                box-sizing: border-box;
+            }
+            #main-layout {
+                transform: scale(0.85);
+                transform-origin: top center;
+            }
         }
     </style>
 </head>
 <body>
-    <div style="position: fixed; top: 15px; right: 15px; font-family: monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="flappy.pbc.md" target="_blank" style="color: var(--theme-color); text-decoration: none;">view charter &rarr;</a></div>
+    <div style="position: fixed; top: 15px; right: 15px; font-family: monospace; font-size: 11px; color: #8892b0; z-index: 9999;">✓ pbc-spec validated · <a href="flappy.pbc.md" target="_blank" style="color: var(--theme-color); text-decoration: none;">view charter &rarr;</a> · <a href="https://github.com/blue-az/bulkhead-flappy" target="_blank" rel="noopener" style="color: var(--theme-color); text-decoration: none;">source repo &rarr;</a></div>
     <div id="main-layout">
         <!-- Engine Room Panel -->
         <div id="engine-panel" class="side-panel">
@@ -180,22 +335,80 @@
             <div class="stat-row"><span>Vessel Y:</span> <span id="yVal" class="stat-val">0</span></div>
             <div class="stat-row"><span>Vessel V:</span> <span id="vVal" class="stat-val">0</span></div>
             <div class="stat-row"><span>Inputs:</span> <span id="inputCount" class="stat-val">0</span></div>
+            <div class="stat-row"><span>SPACE:</span> <span id="spaceCount" class="stat-val">0</span></div>
             
-            <button id="replayBtn" onclick="replayLogbook()" style="width: 100%; margin-top: 20px;">REPLAY LOGBOOK</button>
+            <div class="replay-actions">
+                <button id="replayLastBtn" onclick="replayStoredRun('last')">REPLAY LAST RUN</button>
+                <button id="replayBestBtn" onclick="replayStoredRun('best')">REPLAY BEST RUN</button>
+            </div>
+            <label class="input-toggle">
+                <span class="switch"><input type="checkbox" id="showInputsToggle" checked><span class="slider"></span></span>
+                <span>Show captain's inputs (SPACE) in replay</span>
+            </label>
             <div id="replayStatus" class="replay-tag" style="text-align: center; margin-top: 10px;">PROVING LOGBOOK...</div>
+            <div id="logbookSummary" class="engine-note">Logbook stores last and best runs separately for each current direction.</div>
+            <div id="residualBox" style="margin-top:14px; border-top:1px solid #233554; padding-top:10px;">
+                <div style="font-size:11px; color:#ccd6f6; font-weight:bold; margin-bottom:6px;">RESIDUALS · gate clearance</div>
+                <canvas id="residualChart" width="260" height="84" style="width:100%; display:block; background:#070d19; border:1px solid #233554;"></canvas>
+                <div id="residualReadout" class="engine-note" style="margin-top:6px;">Clear a gate to log clearance. Replay reproduces the exact same series — the Logbook, with error bars.</div>
+                <div style="display:flex; justify-content:space-between; align-items:baseline; margin:14px 0 6px;">
+                    <span style="font-size:11px; color:#ccd6f6; font-weight:bold;">RESIDUALS · histogram</span>
+                    <span id="histReadout" style="font-size:10px; color:#8892b0;">clear a gate to log</span>
+                </div>
+                <canvas id="residualHist" width="260" height="126" style="width:100%; display:block; background:#070d19; border:1px solid #233554;"></canvas>
+            </div>
         </div>
 
+        <div id="center-col">
         <div id="game-container">
             <canvas id="gameCanvas" width="480" height="640"></canvas>
+            <div id="crashFlash"></div>
             <div id="ui-overlay">
-                <div class="score">Cleared: <span id="scoreVal">0</span></div>
+                <div class="score">Gate: <span id="scoreVal">0 / 10</span></div>
                 <div id="activeModeDisplay" style="font-size: 10px; margin-top: 5px; color: #8892b0;">CORE ENGINE ACTIVE</div>
             </div>
+            <div id="winSignal">PORT SIGNAL: DESTINATION REACHED</div>
             <div id="message">
                 <h1 id="msgTitle">CHARTER VIOLATION</h1>
                 <p id="msgText">Vessel collision detected.</p>
                 <button onclick="goToSplash()">RESET ENGINE</button>
             </div>
+            <div id="intro" onclick="handleInput()" style="position:absolute; inset:0; background:rgba(5,12,24,0.97); color:#ccd6f6; display:flex; flex-direction:column; justify-content:center; padding:30px; box-sizing:border-box; z-index:110; font-family:'Courier New',monospace; cursor:pointer; text-align:center;">
+                <h1 style="font-size:1.4rem; margin:0 0 18px; color:var(--theme-color);">BULKHEAD &tau; · FLAPPY SHIP</h1>
+                <p style="font-size:0.85rem; line-height:1.5; margin:0 0 24px; color:#8892b0;">The PBC charter declares the rules; Bulkhead &tau; enforces them.</p>
+                <p style="font-size:0.95rem; line-height:1.6; margin:0 0 10px;">Thrust against the current. Clear every gate to reach port.</p>
+                <p style="font-size:0.95rem; line-height:1.6; margin:0 0 24px; color:var(--theme-color);">Too hard? Tune the dials below — wider gates, gentler current, shorter trip.</p>
+                <p style="font-size:0.82rem; line-height:1.5; margin:0 0 20px; color:#f97316;">UP current is trickier: the same thrust rhythm feels inverted, so try DOWN first.</p>
+                <div style="font-size:1rem; color:var(--theme-color);">▶ Press SPACE to begin</div>
+            </div>
+        </div>
+        <div id="controls-panel">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;">
+                <span style="font-size:13px; color:#ccd6f6; font-weight:bold;">MISSION CONTROLS</span>
+                <span style="font-size:10px; color:#8892b0;">tune until you can win</span>
+            </div>
+            <div style="display:flex; gap:20px;">
+                <div style="flex:1;">
+                    <label>Gate width: <span id="easyGapVal" class="stat-val">160</span>px</label>
+                    <input type="range" id="easyGapSlider" min="160" max="320" step="10" value="160">
+                </div>
+                <div style="flex:1;">
+                    <label>Current: <span id="currentStrengthVal" class="stat-val">0.25</span></label>
+                    <input type="range" id="currentStrengthSlider" min="0.15" max="0.40" step="0.01" value="0.25">
+                </div>
+                <div style="flex:1;">
+                    <label>Distance: <span id="gatesToWinVal" class="stat-val">10</span> gates</label>
+                    <input type="range" id="gatesToWinSlider" min="5" max="30" step="1" value="10">
+                </div>
+            </div>
+            <div style="margin-top:16px; border-top:1px solid #233554; padding-top:12px;">
+                <div style="font-size:15px; color:#ccd6f6; font-weight:bold; letter-spacing:0.5px; margin-bottom:6px;">DIFFICULTY</div>
+                <div style="font-size:10px; color:#8892b0; margin-bottom:10px; line-height:1.35;">Vertical swing between gates: low = gates stay level (easy); high = extreme up/down jumps (hardest).</div>
+                <label>Swing: <span id="difficultyVal" class="stat-val">50</span>%</label>
+                <input type="range" id="difficultySlider" min="0" max="100" step="5" value="50">
+                <div style="font-size:12px; color:#8892b0; margin-top:10px;">Thrusts (SPACE): <span id="thrustCount" class="stat-val">0</span></div>
+            </div>
+        </div>
         </div>
 
         <!-- Charter Panel -->
@@ -210,7 +423,10 @@
                 <div class="rule-id">FLPY-RUL-003</div>
                 <div class="rule-text">Safe Envelope: <span id="gapVal">---</span>px</div>
             </div>
-            
+            <div class="charter-rule">
+                <div class="rule-id">FLPY-RUL-007</div>
+                <div class="rule-text">Destination: <span id="destinationVal">---</span> gates</div>
+            </div>
             <div class="tamper-control">
                 <div style="font-size: 12px; color: #f44336; margin-bottom: 5px;">TAMPER DEMO</div>
                 <div style="font-size: 9px; color: #8892b0; margin-bottom: 10px; line-height: 1.3;">Drag current past the charter range (0.15 to 0.40 in magnitude): Bulkhead mode rejects it (snaps back), while Vibe mode accepts the violation. [SHIFT / R] reverses current.</div>
@@ -225,6 +441,17 @@
 
                 <div id="violationWarning" class="violation-flag">
                     ⚠️ CHARTER BREACH REJECTED
+                </div>
+            </div>
+
+            <div class="gauge-row">
+                <div class="gauge-card">
+                    <canvas id="accuracyGauge" width="260" height="118"></canvas>
+                    <div id="accuracyGaugeLabel" class="gauge-label">ACCURACY · awaiting gate</div>
+                </div>
+                <div class="gauge-card" style="margin-top:12px;">
+                    <canvas id="difficultyGauge" width="260" height="118"></canvas>
+                    <div id="difficultyGaugeLabel" class="gauge-label">DIFFICULTY · harbor calm</div>
                 </div>
             </div>
         </div>
@@ -249,17 +476,75 @@
         const yValEl = document.getElementById('yVal');
         const vValEl = document.getElementById('vVal');
         const inputCountEl = document.getElementById('inputCount');
+        const spaceCountEl = document.getElementById('spaceCount');
+        const thrustCountEl = document.getElementById('thrustCount');
+        function syncSpaceCount() {
+            const n = state.spacePressCount;
+            if (spaceCountEl) spaceCountEl.textContent = n;
+            if (thrustCountEl) thrustCountEl.textContent = n;
+        }
         const gravityValEl = document.getElementById('gravityVal');
         const gapValEl = document.getElementById('gapVal');
+        const destinationValEl = document.getElementById('destinationVal');
         const gravitySlider = document.getElementById('gravitySlider');
+        const easyGapSlider = document.getElementById('easyGapSlider');
+        const easyGapValEl = document.getElementById('easyGapVal');
+        const currentStrengthSlider = document.getElementById('currentStrengthSlider');
+        const currentStrengthValEl = document.getElementById('currentStrengthVal');
+        const gatesToWinSlider = document.getElementById('gatesToWinSlider');
+        const gatesToWinValEl = document.getElementById('gatesToWinVal');
+        const introEl = document.getElementById('intro');
+        if (easyGapSlider) easyGapSlider.addEventListener('input', (e) => {
+            easyGapValEl.innerText = e.target.value;
+            if (!state.running) state.activeGap = parseInt(e.target.value);
+            renderGauges();
+        });
+        if (gatesToWinSlider) gatesToWinSlider.addEventListener('input', (e) => {
+            gatesToWinValEl.innerText = e.target.value;
+            if (!state.running) state.gatesToWin = parseInt(e.target.value);
+            renderGauges();
+        });
+        const difficultySlider = document.getElementById('difficultySlider');
+        const difficultyValEl = document.getElementById('difficultyVal');
+        if (difficultySlider) difficultySlider.addEventListener('input', (e) => {
+            if (difficultyValEl) difficultyValEl.innerText = e.target.value;
+            if (!state.running) state.difficulty = parseInt(e.target.value) / 100;
+        });
+        if (currentStrengthSlider) currentStrengthSlider.addEventListener('input', (e) => {
+            const mag = parseFloat(e.target.value);
+            currentStrengthValEl.innerText = mag.toFixed(2);
+            // Apply within the legal charter range, preserving the chosen direction
+            state.tamperCurrent = state.selectedCurrentDirection === 'up' ? -mag : mag;
+            if (gravitySlider) { gravitySlider.value = state.tamperCurrent; gravityValEl.innerText = state.tamperCurrent.toFixed(2); }
+            updateThemeColor();
+            updateLogbookSummary();
+            renderGauges();
+            showSplash();
+        });
         const violationWarning = document.getElementById('violationWarning');
         const enginePanel = document.getElementById('engine-panel');
+        const residualChart = document.getElementById('residualChart');
+        const rctx = residualChart ? residualChart.getContext('2d') : null;
+        const residualReadout = document.getElementById('residualReadout');
+        const residualHist = document.getElementById('residualHist');
+        const hctx = residualHist ? residualHist.getContext('2d') : null;
+        const histReadout = document.getElementById('histReadout');
+        const accuracyGauge = document.getElementById('accuracyGauge');
+        const accuracyCtx = accuracyGauge ? accuracyGauge.getContext('2d') : null;
+        const accuracyGaugeLabel = document.getElementById('accuracyGaugeLabel');
+        const difficultyGauge = document.getElementById('difficultyGauge');
+        const difficultyCtx = difficultyGauge ? difficultyGauge.getContext('2d') : null;
+        const difficultyGaugeLabel = document.getElementById('difficultyGaugeLabel');
+        const showInputsToggle = document.getElementById('showInputsToggle');
+        if (showInputsToggle) showInputsToggle.addEventListener('change', (e) => { state.showReplayInputs = e.target.checked; });
         const charterPanel = document.getElementById('charter-panel');
         const toggleBtn = document.getElementById('toggleBtn');
         const vibeBtn = document.getElementById('vibeBtn');
         const bulkheadBtn = document.getElementById('bulkheadBtn');
         const replayStatus = document.getElementById('replayStatus');
+        const logbookSummary = document.getElementById('logbookSummary');
         const activeModeDisplay = document.getElementById('activeModeDisplay');
+        const winSignal = document.getElementById('winSignal');
 
         // Color Constants (Vibrant Blue & Orange)
         const COLOR_BLUE = '#38bdf8';
@@ -277,13 +562,19 @@
             VESSEL_HEIGHT: 30,
             BOUNDARY_BUFFER: 0,
             CURRENT_MIN: 0.15,
-            CURRENT_MAX: 0.40
+            CURRENT_MAX: 0.40,
+            GATES_TO_WIN: 10,
+            GATES_TO_WIN_MIN: 5,
+            GATES_TO_WIN_MAX: 30
         };
 
         let state = {
             vesselY: 320,
             vesselV: 0,
             bulkheads: [],
+            nextGateNumber: 1,
+            finishLineX: null,
+            transitionSwings: [],
             score: 0,
             frame: 0,
             seed: 12345,
@@ -293,8 +584,17 @@
             selectedCurrentDirection: 'down',
             bulkheadEnforcement: true,
             inputHistory: [], // Logbook: recorded inputs ({frame, action})
+            spacePressCount: 0,
             isReplaying: false,
-            replayIndex: 0
+            replayIndex: 0,
+            replayLabel: '',
+            activeReplayLog: null,
+            activeGap: 160,
+            gatesToWin: 10,
+            difficulty: 0.5,  // gate-to-gate vertical swing: 0 = gates stay level (easy), 1 = full-range swings (hardest)
+            residuals: [],  // per-gate clearance: vessel-center minus gate-center at each pass
+            showReplayInputs: true,  // show the captain's thrust commands during replay (log review)
+            thrustFlash: 0           // frames remaining to light the SPACE indicator after a replayed thrust
         };
 
         let rng;
@@ -324,21 +624,45 @@
                     return match ? parseFloat(match[1]) : null;
                 };
 
-                CHARTER.CURRENT = extractValue('FLPY-RUL-001', 'value') || CHARTER.CURRENT;
+                // Capture raw parse of the core rules to detect a fetched-but-malformed charter
+                const _rawCurrent = extractValue('FLPY-RUL-001', 'value');
+                const _rawGap = extractValue('FLPY-RUL-003', 'value');
+                const _rawGates = extractValue('FLPY-RUL-007', 'value');
+                const charterParsed = (_rawCurrent !== null && _rawGap !== null && _rawGates !== null);
+
+                CHARTER.CURRENT = _rawCurrent || CHARTER.CURRENT;
                 CHARTER.CURRENT_MIN = extractValue('FLPY-RUL-001', 'min') || CHARTER.CURRENT_MIN;
                 CHARTER.CURRENT_MAX = extractValue('FLPY-RUL-001', 'max') || CHARTER.CURRENT_MAX;
                 CHARTER.THRUST_IMPULSE = extractValue('FLPY-RUL-002', 'value') || CHARTER.THRUST_IMPULSE;
-                CHARTER.GAP_HEIGHT = extractValue('FLPY-RUL-003', 'value') || CHARTER.GAP_HEIGHT;
+                CHARTER.GAP_HEIGHT = _rawGap || CHARTER.GAP_HEIGHT;
                 CHARTER.SCROLL_SPEED = extractValue('FLPY-RUL-004', 'value') || CHARTER.SCROLL_SPEED;
                 CHARTER.OBSTACLE_SPACING = extractValue('FLPY-RUL-005', 'value') || CHARTER.OBSTACLE_SPACING;
+                CHARTER.GATES_TO_WIN = _rawGates || CHARTER.GATES_TO_WIN;
+                CHARTER.GATES_TO_WIN_MIN = extractValue('FLPY-RUL-007', 'min') || CHARTER.GATES_TO_WIN_MIN;
+                CHARTER.GATES_TO_WIN_MAX = extractValue('FLPY-RUL-007', 'max') || CHARTER.GATES_TO_WIN_MAX;
 
                 gravityValEl.innerText = CHARTER.CURRENT.toFixed(2);
                 gapValEl.innerText = CHARTER.GAP_HEIGHT;
+                destinationValEl.innerText = CHARTER.GATES_TO_WIN;
                 state.tamperCurrent = CHARTER.CURRENT;
                 gravitySlider.value = CHARTER.CURRENT;
+                if (gatesToWinSlider) {
+                    gatesToWinSlider.min = CHARTER.GATES_TO_WIN_MIN;
+                    gatesToWinSlider.max = CHARTER.GATES_TO_WIN_MAX;
+                    gatesToWinSlider.value = CHARTER.GATES_TO_WIN;
+                    gatesToWinValEl.innerText = CHARTER.GATES_TO_WIN;
+                }
                 
-                document.getElementById('charterStatus').innerHTML = 'Source: flappy.pbc.md (LIVE) <span style="color: var(--theme-color);">✓ pbc-spec validated</span>';
-                document.getElementById('charterStatus').style.color = "var(--theme-color)";
+                const _cs = document.getElementById('charterStatus');
+                if (charterParsed) {
+                    _cs.innerHTML = 'Source: flappy.pbc.md (LIVE) <span style="color: var(--theme-color);">✓ pbc-spec validated</span>';
+                    _cs.style.color = "var(--theme-color)";
+                } else {
+                    // Charter fetched but rules did not parse — surface it instead of silently running on fallback (on-thesis for an enforcement demo)
+                    _cs.innerHTML = '⚠ flappy.pbc.md present but did NOT parse — running on FALLBACK values';
+                    _cs.style.color = "#f44336";
+                    console.warn("Charter body did not parse; using fallback constants.");
+                }
             } catch (e) {
                 console.error("PBC Fetch failed, using fallback:", e);
                 document.getElementById('charterStatus').innerText = "Source: hardcoded (FETCH FAILED)";
@@ -355,6 +679,8 @@
                 enginePanel.style.display = 'block';
                 charterPanel.style.display = 'block';
                 toggleBtn.innerText = 'SWITCH TO PLAYABLE MODE';
+                updateLogbookSummary();
+                renderResiduals();
             } else {
                 enginePanel.style.display = 'none';
                 charterPanel.style.display = 'none';
@@ -385,15 +711,209 @@
             document.documentElement.style.setProperty('--theme-color-rgb', rgb);
         }
 
-        function replayLogbook() {
-            if (state.inputHistory.length === 0) return;
-            
-            // Logbook Protocol: reset state, keep history, engage replay
+        function selectedRunDirection() {
+            return state.selectedCurrentDirection === 'up' ? 'up' : 'down';
+        }
+
+        function currentDirection() {
+            return state.tamperCurrent < 0 ? 'up' : 'down';
+        }
+
+        function cloneInputs(inputs) {
+            return (inputs || []).map(input => ({ frame: input.frame, action: input.action }));
+        }
+
+        function cloneResiduals(residuals) {
+            return (residuals || []).map(r => ({
+                gate: r.gate,
+                residual: r.residual,
+                type: r.type,
+                crash: !!r.crash
+            }));
+        }
+
+        function cloneNumbers(values) {
+            return (values || []).map(v => Number(v)).filter(v => Number.isFinite(v));
+        }
+
+        function clamp01(value) {
+            return Math.max(0, Math.min(1, value));
+        }
+
+        function clearanceBound() {
+            return Math.max(1, state.activeGap / 2 - CHARTER.VESSEL_HEIGHT / 2);
+        }
+
+        function clearedResiduals() {
+            return state.residuals.filter(r => !r.crash);
+        }
+
+        function averageResidualRatio() {
+            const cleared = clearedResiduals();
+            if (!cleared.length) return null;
+            const avgAbs = cleared.reduce((sum, r) => sum + Math.abs(r.residual), 0) / cleared.length;
+            return clamp01(avgAbs / clearanceBound());
+        }
+
+        function difficultyRatio() {
+            const swings = cloneNumbers(state.transitionSwings);
+            const maxSwing = swings.length ? Math.max.apply(null, swings) : 0;
+            const avgSwing = swings.length ? swings.reduce((a, b) => a + b, 0) / swings.length : 0;
+            const swingHard = clamp01(maxSwing / Math.max(1, state.activeGap * 1.05));
+            const avgHard = clamp01(avgSwing / Math.max(1, state.activeGap * 0.75));
+            const currentHard = clamp01((Math.abs(state.tamperCurrent) - CHARTER.CURRENT_MIN) / (CHARTER.CURRENT_MAX - CHARTER.CURRENT_MIN));
+            const upPenalty = selectedRunDirection() === 'up' ? 0.16 : 0;
+            return clamp01(swingHard * 0.56 + avgHard * 0.22 + currentHard * 0.14 + upPenalty);
+        }
+
+        function logbookKey(dir, slot) {
+            return `bulkhead-flappy-run-${dir}-${slot}`;
+        }
+
+        function getStoredRun(dir, slot) {
+            try {
+                const raw = localStorage.getItem(logbookKey(dir, slot));
+                if (!raw) return null;
+                const run = JSON.parse(raw);
+                if (!run || !Array.isArray(run.inputs)) return null;
+                return run;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function saveStoredRun(dir, slot, run) {
+            try {
+                localStorage.setItem(logbookKey(dir, slot), JSON.stringify(run));
+            } catch (e) {}
+        }
+
+        function isBetterRun(candidate, incumbent) {
+            if (!candidate || candidate.score <= 0) return false;
+            return !incumbent || candidate.score > incumbent.score ||
+                (candidate.score === incumbent.score && candidate.finalFrame < incumbent.finalFrame);
+        }
+
+        function buildRunSnapshot(outcome) {
+            const dir = selectedRunDirection();
+            return {
+                version: 1,
+                direction: dir,
+                score: state.score,
+                outcome: outcome,
+                seed: state.seed,
+                current: state.tamperCurrent,
+                bulkheadEnforcement: state.bulkheadEnforcement,
+                activeGap: state.activeGap,
+                gatesToWin: state.gatesToWin,
+                difficulty: state.difficulty,
+                inputs: cloneInputs(state.inputHistory),
+                spacePressCount: state.spacePressCount,
+                residuals: cloneResiduals(state.residuals),
+                transitionSwings: cloneNumbers(state.transitionSwings),
+                finalFrame: state.frame
+            };
+        }
+
+        function persistAttempt(outcome = 'in-progress') {
+            if (state.isReplaying) return;
+            const run = buildRunSnapshot(outcome);
+            saveStoredRun(run.direction, 'last', run);
+            const best = getStoredRun(run.direction, 'best');
+            if (isBetterRun(run, best)) {
+                saveStoredRun(run.direction, 'best', run);
+            }
+            updateLogbookSummary();
+        }
+
+        function recordRun(outcome) {
+            if (state.isReplaying) return;
+            const run = buildRunSnapshot(outcome);
+            saveStoredRun(run.direction, 'last', run);
+
+            if (isBetterRun(run, getStoredRun(run.direction, 'best'))) {
+                saveStoredRun(run.direction, 'best', run);
+            }
+            updateLogbookSummary();
+        }
+
+        function formatRun(run) {
+            if (!run) return 'none';
+            const status = run.outcome === 'in-progress' ? 'live' : run.outcome;
+            return `${run.score}/${run.gatesToWin} gates, ${run.inputs.length} inputs, ${status}`;
+        }
+
+        function updateLogbookSummary() {
+            const dir = selectedRunDirection();
+            const label = dir === 'up' ? 'UP' : 'DOWN';
+            const last = getStoredRun(dir, 'last');
+            const best = getStoredRun(dir, 'best');
+            if (logbookSummary) {
+                logbookSummary.innerText = `${label} current logbook - last: ${formatRun(last)}; best: ${formatRun(best)}.`;
+            }
+        }
+
+        function applyRunSnapshot(run) {
+            state.seed = run.seed;
+            state.selectedCurrentDirection = run.direction;
+            state.tamperCurrent = run.current;
+            setEnforcement(run.bulkheadEnforcement !== false);
+            state.activeGap = run.activeGap;
+            state.gatesToWin = run.gatesToWin;
+            state.difficulty = Number.isFinite(run.difficulty) ? run.difficulty : 0.5;
+            state.inputHistory = cloneInputs(run.inputs);
+            state.spacePressCount = Number.isFinite(run.spacePressCount) ? run.spacePressCount : state.inputHistory.length;
+            state.residuals = cloneResiduals(run.residuals);
+            state.transitionSwings = cloneNumbers(run.transitionSwings);
+
+            if (easyGapSlider) {
+                easyGapSlider.value = run.activeGap;
+                easyGapValEl.innerText = run.activeGap;
+            }
+            if (gatesToWinSlider) {
+                gatesToWinSlider.value = run.gatesToWin;
+                gatesToWinValEl.innerText = run.gatesToWin;
+            }
+            if (difficultySlider) {
+                difficultySlider.value = Math.round(state.difficulty * 100);
+                if (difficultyValEl) difficultyValEl.innerText = Math.round(state.difficulty * 100);
+            }
+            if (currentStrengthSlider) {
+                currentStrengthSlider.value = Math.abs(run.current).toFixed(2);
+                currentStrengthValEl.innerText = Math.abs(run.current).toFixed(2);
+            }
+            gravitySlider.value = run.current;
+            gravityValEl.innerText = run.current.toFixed(2);
+            updateThemeColor();
+            updateLogbookSummary();
+            renderResiduals();
+        }
+
+        function replayStoredRun(slot) {
+            if (state.running) {
+                if (logbookSummary) {
+                    logbookSummary.innerText = 'Finish or reset the active run before replaying a logbook entry.';
+                }
+                return;
+            }
+
+            const dir = selectedRunDirection();
+            const run = getStoredRun(dir, slot);
+            if (!run) {
+                if (logbookSummary) {
+                    logbookSummary.innerText = `No ${slot} run recorded for ${dir.toUpperCase()} current yet.`;
+                }
+                return;
+            }
+
             state.isReplaying = true;
             state.replayIndex = 0;
+            state.replayLabel = `${slot.toUpperCase()} ${dir.toUpperCase()}`;
+            state.activeReplayLog = run;
             replayStatus.style.display = 'block';
+            replayStatus.innerText = `REPLAYING ${state.replayLabel} RUN...`;
             
-            // Re-use current seed to prove determinism
+            applyRunSnapshot(run);
             resetGame(true);
         }
 
@@ -402,37 +922,111 @@
             // Sync slider sign to direction selection
             state.selectedCurrentDirection = state.tamperCurrent < 0 ? 'up' : 'down';
             gravityValEl.innerText = state.tamperCurrent.toFixed(2);
+            // Mirror to the main Current dial when the value is inside the legal range
+            const mag = Math.abs(state.tamperCurrent);
+            if (currentStrengthSlider && mag >= CHARTER.CURRENT_MIN && mag <= CHARTER.CURRENT_MAX) {
+                currentStrengthSlider.value = mag;
+                currentStrengthValEl.innerText = mag.toFixed(2);
+            }
             updateThemeColor();
+            updateLogbookSummary();
+            renderGauges();
             showSplash();
         });
 
-        function createBulkhead(x) {
+        function setControlsEnabled(enabled) {
+            [easyGapSlider, currentStrengthSlider, gatesToWinSlider].forEach(s => { if (s) s.disabled = !enabled; });
+        }
+
+        function updateScoreDisplay() {
+            scoreEl.innerText = state.score + ' / ' + state.gatesToWin;
+        }
+
+        function createBulkhead(x, gateNumber, prevGapY) {
             const minGapY = 100;
-            const maxGapY = canvas.height - 100 - CHARTER.GAP_HEIGHT;
-            const gapY = minGapY + (rng() * (maxGapY - minGapY));
+            const maxGapY = canvas.height - 100 - state.activeGap;
+            const range = maxGapY - minGapY;
+            let gapY;
+            if (prevGapY === null || prevGapY === undefined) {
+                gapY = minGapY + range * 0.5;  // first gate centered
+            } else {
+                // Difficulty dial sets the max vertical swing from the previous gate:
+                // 0 -> gates stay at the same level (easy); 1 -> can swing the full range (hardest).
+                const maxDelta = state.difficulty * range;
+                gapY = prevGapY + (rng() * 2 - 1) * maxDelta;
+                gapY = Math.max(minGapY, Math.min(maxGapY, gapY));
+            }
             const type = rng() < 0.5 ? 'PBC' : 'BT';
             return {
                 x: x,
                 gapY: gapY,
                 passed: false,
-                type: type
+                type: type,
+                gateNumber: gateNumber
             };
+        }
+
+        function appendNextGate(x) {
+            if (state.nextGateNumber > state.gatesToWin) return false;
+            const previous = state.bulkheads.length ? state.bulkheads[state.bulkheads.length - 1] : null;
+            const gate = createBulkhead(x, state.nextGateNumber, previous ? previous.gapY : null);
+            if (previous) {
+                const prevCenter = previous.gapY + state.activeGap / 2;
+                const nextCenter = gate.gapY + state.activeGap / 2;
+                state.transitionSwings.push(Math.abs(nextCenter - prevCenter));
+            }
+            state.bulkheads.push(gate);
+            state.nextGateNumber++;
+            renderGauges();
+            return true;
+        }
+
+        function initializeCourse() {
+            state.bulkheads = [];
+            state.nextGateNumber = 1;
+            state.finishLineX = null;
+            state.transitionSwings = [];
+
+            let nextX = canvas.width + 200;
+            const visibleGateCount = Math.min(3, state.gatesToWin);
+            for (let i = 0; i < visibleGateCount; i++) {
+                appendNextGate(nextX);
+                nextX += CHARTER.OBSTACLE_SPACING;
+            }
+            if (state.nextGateNumber > state.gatesToWin) {
+                state.finishLineX = nextX + 80;
+            }
         }
 
         function resetGame(keepHistory = false) {
             state.vesselY = 320;
             state.vesselV = 0;
+            state.bulkheads = [];
+            state.nextGateNumber = 1;
+            state.finishLineX = null;
+            state.transitionSwings = [];
             state.score = 0;
             state.frame = 0;
+            state.residuals = [];
+            lastTime = 0;
+            accumulator = 0;
             if (!keepHistory) {
                 state.inputHistory = [];
+                state.spacePressCount = 0;
                 state.isReplaying = false;
+                state.replayLabel = '';
+                state.activeReplayLog = null;
                 replayStatus.style.display = 'none';
+                // Freeze difficulty dials at new-game start so the run (and its replay) stay deterministic
+                state.activeGap = (easyGapSlider && parseInt(easyGapSlider.value)) || CHARTER.GAP_HEIGHT;
+                state.gatesToWin = (gatesToWinSlider && parseInt(gatesToWinSlider.value)) || CHARTER.GATES_TO_WIN;
+                state.difficulty = difficultySlider ? parseInt(difficultySlider.value) / 100 : 0.5;
             }
             state.replayIndex = 0;
-            
-            // Disable gravity slider during gameplay
+
+            // Disable tuning controls during gameplay (they apply to the next run only)
             gravitySlider.disabled = true;
+            setControlsEnabled(false);
 
             // Set current based on selection and preserve slider magnitude if tampered
             let mag = Math.abs(state.tamperCurrent);
@@ -450,25 +1044,33 @@
 
             updateThemeColor();
             initRNG(); 
-            state.bulkheads = [
-                createBulkhead(canvas.width + 200),
-                createBulkhead(canvas.width + 200 + CHARTER.OBSTACLE_SPACING),
-                createBulkhead(canvas.width + 200 + CHARTER.OBSTACLE_SPACING * 2)
-            ];
+            initializeCourse();
             state.running = true;
             messageEl.style.display = 'none';
-            scoreEl.innerText = state.score;
+            messageEl.classList.remove('party-screen');
+            if (winSignal) winSignal.style.display = 'none';
+            if (introEl) introEl.style.display = 'none';
+            updateScoreDisplay();
+            inputCountEl.innerText = '0';
+            syncSpaceCount();
+            renderResiduals();
+            persistAttempt();
             requestAnimationFrame(gameLoop);
         }
 
         function goToSplash() {
             messageEl.style.display = 'none';
+            messageEl.classList.remove('party-screen');
             gravitySlider.disabled = false;
+            setControlsEnabled(true);
+            if (winSignal) winSignal.style.display = 'none';
             updateThemeColor();
+            updateLogbookSummary();
             showSplash();
         }
 
         function handleInput() {
+            if (introEl && introEl.style.display !== 'none') { introEl.style.display = 'none'; return; }
             if (!state.running) {
                 if (messageEl.style.display === 'block') {
                     goToSplash();
@@ -480,11 +1082,18 @@
                 const thrustDir = state.tamperCurrent < 0 ? 1 : -1;
                 state.vesselV = thrustDir * Math.abs(CHARTER.THRUST_IMPULSE);
                 state.inputHistory.push({ frame: state.frame, action: 'thrust' });
+                inputCountEl.innerText = state.inputHistory.length;
+                syncSpaceCount();
+                persistAttempt();
             }
         }
 
         window.addEventListener('keydown', (e) => {
             if (e.code === 'Space' || e.code === 'ArrowUp') {
+                if (e.code === 'Space') {
+                    state.spacePressCount++;
+                    if (spaceCountEl) spaceCountEl.innerText = state.spacePressCount;
+                }
                 handleInput();
             }
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.key.toLowerCase() === 'shift' || e.key.toLowerCase() === 'r') {
@@ -492,6 +1101,7 @@
                 if (!state.running && messageEl.style.display !== 'block') {
                     state.selectedCurrentDirection = state.selectedCurrentDirection === 'down' ? 'up' : 'down';
                     updateThemeColor();
+                    updateLogbookSummary();
                     showSplash();
                 }
             }
@@ -508,11 +1118,13 @@
                     if (mouseX >= 100 && mouseX <= 220) {
                         state.selectedCurrentDirection = 'down';
                         updateThemeColor();
+                        updateLogbookSummary();
                         showSplash();
                         return true;
                     } else if (mouseX >= 260 && mouseX <= 380) {
                         state.selectedCurrentDirection = 'up';
                         updateThemeColor();
+                        updateLogbookSummary();
                         showSplash();
                         return true;
                     }
@@ -532,6 +1144,206 @@
             if (!processed) handleInput();
         });
 
+        function gaugeColor(value) {
+            if (value < 0.35) return '#22c55e';
+            if (value < 0.68) return '#ffca28';
+            return '#f44336';
+        }
+
+        function drawGauge(gctx, value, label, detail) {
+            if (!gctx) return;
+            const W = gctx.canvas.width;
+            const H = gctx.canvas.height;
+            const cx = W / 2;
+            const cy = H - 14;
+            const radius = Math.min(W / 2 - 18, H - 34);
+            const start = Math.PI;
+            const end = Math.PI * 2;
+            const clamped = value === null ? 0 : clamp01(value);
+            const angle = start + (end - start) * clamped;
+
+            gctx.clearRect(0, 0, W, H);
+            gctx.lineCap = 'round';
+            gctx.lineWidth = 7;
+            gctx.strokeStyle = 'rgba(35,53,84,0.95)';
+            gctx.beginPath();
+            gctx.arc(cx, cy, radius, start, end);
+            gctx.stroke();
+
+            const segments = [
+                ['#22c55e', 0, 0.35],
+                ['#ffca28', 0.35, 0.68],
+                ['#f44336', 0.68, 1]
+            ];
+            segments.forEach(([color, a, b]) => {
+                gctx.strokeStyle = color;
+                gctx.beginPath();
+                gctx.arc(cx, cy, radius, start + (end - start) * a, start + (end - start) * b);
+                gctx.stroke();
+            });
+
+            gctx.strokeStyle = value === null ? '#8892b0' : gaugeColor(clamped);
+            gctx.lineWidth = 2.5;
+            gctx.beginPath();
+            gctx.moveTo(cx, cy);
+            gctx.lineTo(cx + Math.cos(angle) * (radius - 7), cy + Math.sin(angle) * (radius - 7));
+            gctx.stroke();
+            gctx.fillStyle = '#ccd6f6';
+            gctx.beginPath();
+            gctx.arc(cx, cy, 4, 0, Math.PI * 2);
+            gctx.fill();
+
+            gctx.fillStyle = '#8892b0';
+            gctx.font = '800 8px monospace';
+            gctx.textAlign = 'center';
+            gctx.fillText(label, cx, 12);
+            gctx.fillStyle = value === null ? '#8892b0' : gaugeColor(clamped);
+            gctx.font = '800 10px monospace';
+            gctx.fillText(detail, cx, 28);
+            gctx.fillStyle = '#8892b0';
+            gctx.font = '7px monospace';
+            gctx.fillText('LOW', cx - radius + 12, cy + 10);
+            gctx.fillText('HIGH', cx + radius - 14, cy + 10);
+        }
+
+        function renderGauges() {
+            const acc = averageResidualRatio();
+            const cleared = clearedResiduals();
+            const accuracyDetail = acc === null ? 'NO FIX' : `${Math.round((1 - acc) * 100)}%`;
+            drawGauge(accuracyCtx, acc, 'ACCURACY', accuracyDetail);
+            if (accuracyGaugeLabel) {
+                if (acc === null) {
+                    accuracyGaugeLabel.innerText = 'ACCURACY · awaiting gate';
+                } else {
+                    const colorName = acc < 0.35 ? 'green water' : acc < 0.68 ? 'yellow watch' : 'red close calls';
+                    const avgPx = cleared.reduce((sum, r) => sum + Math.abs(r.residual), 0) / cleared.length;
+                    accuracyGaugeLabel.innerText = `ACCURACY · ${colorName} · avg ${avgPx.toFixed(1)}px`;
+                }
+            }
+
+            const diff = difficultyRatio();
+            const diffDetail = diff < 0.35 ? 'CALM' : diff < 0.68 ? 'CHOP' : 'GALE';
+            drawGauge(difficultyCtx, diff, 'TRANSITIONS', diffDetail);
+            if (difficultyGaugeLabel) {
+                const swings = cloneNumbers(state.transitionSwings);
+                const maxSwing = swings.length ? Math.max.apply(null, swings) : 0;
+                difficultyGaugeLabel.innerText = `DIFFICULTY · ${diffDetail.toLowerCase()} · max swing ${maxSwing.toFixed(0)}px`;
+            }
+        }
+
+        // "Stars and bars" histogram of gate-clearance residuals: each bin across the
+        // safe envelope (±collision bound) is a row whose bar is built from ★ glyphs,
+        // one per gate that landed in that bin. Fills in dynamically as gates clear.
+        function renderResidualHistogram() {
+            if (!hctx) return;
+            const res = state.residuals;
+            const W = residualHist.width, H = residualHist.height;
+            hctx.clearRect(0, 0, W, H);
+            const bound = clearanceBound();
+            const NB = 7;                               // bins spanning -bound..+bound
+            const counts = new Array(NB).fill(0);
+            const crashCounts = new Array(NB).fill(0);
+            res.forEach(r => {
+                let idx = Math.floor((r.residual + bound) / (2 * bound) * NB);
+                idx = Math.max(0, Math.min(NB - 1, idx));
+                if (r.crash) crashCounts[idx]++; else counts[idx]++;
+            });
+            const themeCol = state.tamperCurrent < 0 ? '#f97316' : '#38bdf8';
+            const labelW = 48, starW = 9, rowH = H / NB;
+            const maxStars = Math.max(1, Math.floor((W - labelW - 6) / starW));
+            hctx.font = '11px "Courier New", monospace';
+            hctx.textBaseline = 'middle';
+            for (let i = 0; i < NB; i++) {              // row 0 = most negative (above center)
+                const lo = -bound + (2 * bound) * i / NB;
+                const hi = -bound + (2 * bound) * (i + 1) / NB;
+                const y = rowH * (i + 0.5);
+                const centerBin = lo < 0 && hi > 0;
+                hctx.fillStyle = centerBin ? '#ccd6f6' : '#8892b0';
+                hctx.textAlign = 'right';
+                hctx.fillText(`${lo >= 0 ? '+' : ''}${lo.toFixed(0)}`, labelW - 4, y);
+                const total = counts[i] + crashCounts[i];
+                const drawN = Math.min(total, maxStars);
+                hctx.textAlign = 'left';
+                let sx = labelW;
+                for (let s = 0; s < drawN; s++) {
+                    hctx.fillStyle = s >= counts[i] ? '#f44336' : themeCol;  // crashes drawn last, red
+                    hctx.fillText('★', sx, y);
+                    sx += starW;
+                }
+                if (total > drawN) { hctx.fillStyle = '#8892b0'; hctx.fillText(' +' + (total - drawN), sx, y); }
+            }
+            if (histReadout) {
+                const cleared = res.filter(r => !r.crash).length;
+                histReadout.innerText = res.length ? `${cleared} / ${state.gatesToWin} gates · ${NB} bins` : 'clear a gate to log';
+            }
+        }
+
+        function renderResiduals() {
+            const res = state.residuals;
+            if (inputCountEl) inputCountEl.innerText = state.inputHistory.length;
+            if (spaceCountEl) spaceCountEl.innerText = state.spacePressCount;
+            if (rctx) {
+                const W = residualChart.width, H = residualChart.height, mid = H / 2, pad = 8;
+                const usable = mid - pad;
+                // off-center distance at which the vessel would graze a gate edge (the collision boundary)
+                const bound = Math.max(1, state.activeGap / 2 - CHARTER.VESSEL_HEIGHT / 2);
+                rctx.clearRect(0, 0, W, H);
+                // gate edges (collision) in red; perfect-center line dashed
+                rctx.strokeStyle = 'rgba(244,67,54,0.55)'; rctx.lineWidth = 1;
+                rctx.beginPath(); rctx.moveTo(0, pad); rctx.lineTo(W, pad); rctx.moveTo(0, H - pad); rctx.lineTo(W, H - pad); rctx.stroke();
+                rctx.strokeStyle = 'rgba(136,146,176,0.5)'; rctx.setLineDash([4, 3]);
+                rctx.beginPath(); rctx.moveTo(0, mid); rctx.lineTo(W, mid); rctx.stroke(); rctx.setLineDash([]);
+                if (res.length) {
+                    const themeCol = state.tamperCurrent < 0 ? '#f97316' : '#38bdf8';
+                    const n = res.length, stepX = n > 1 ? (W - 12) / (n - 1) : 0;
+                    const yOf = r => Math.max(2, Math.min(H - 2, mid + (r.residual / bound) * usable));
+                    rctx.strokeStyle = 'rgba(136,146,176,0.6)'; rctx.lineWidth = 1; rctx.beginPath();
+                    res.forEach((r, i) => { const x = 6 + i * stepX, y = yOf(r); i ? rctx.lineTo(x, y) : rctx.moveTo(x, y); });
+                    rctx.stroke();
+                    res.forEach((r, i) => {
+                        const x = 6 + i * stepX, y = yOf(r);
+                        if (r.crash) {
+                            // breach: an X, clamped beyond the red edge line
+                            rctx.strokeStyle = '#f44336'; rctx.lineWidth = 1.8;
+                            rctx.beginPath();
+                            rctx.moveTo(x - 3.5, y - 3.5); rctx.lineTo(x + 3.5, y + 3.5);
+                            rctx.moveTo(x + 3.5, y - 3.5); rctx.lineTo(x - 3.5, y + 3.5);
+                            rctx.stroke();
+                        } else {
+                            rctx.fillStyle = Math.abs(r.residual) > 0.8 * bound ? '#f44336' : themeCol;
+                            rctx.beginPath(); rctx.arc(x, y, 2.6, 0, Math.PI * 2); rctx.fill();
+                        }
+                    });
+                }
+            }
+            if (residualReadout) {
+                if (!res.length) {
+                    residualReadout.innerText = 'Clear a gate to log clearance. Replay reproduces the exact same series — the Logbook, with error bars.';
+                } else {
+                    const bound = Math.max(1, state.activeGap / 2 - CHARTER.VESSEL_HEIGHT / 2);
+                    const cleared = res.filter(r => !r.crash);
+                    const crash = res.find(r => r.crash);
+                    let msg;
+                    if (cleared.length) {
+                        const vals = cleared.map(r => r.residual);
+                        const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+                        const sd = Math.sqrt(vals.reduce((a, b) => a + (b - mean) * (b - mean), 0) / vals.length);
+                        const tightest = Math.max(0, bound - Math.max.apply(null, vals.map(Math.abs)));
+                        msg = `${cleared.length} gates · avg off-center ${mean >= 0 ? '+' : ''}${mean.toFixed(1)}px · σ ${sd.toFixed(1)}px · tightest ${tightest.toFixed(1)}px`;
+                    } else {
+                        msg = 'no gates cleared';
+                    }
+                    if (crash) {
+                        const over = (Math.abs(crash.residual) - bound).toFixed(0);
+                        msg += ` · ✗ BREACH at gate ${crash.gate} (${over}px past the edge)`;
+                    }
+                    residualReadout.innerText = msg;
+                }
+            }
+            renderResidualHistogram();
+            renderGauges();
+        }
+
         function update() {
             if (!state.running) return;
 
@@ -544,15 +1356,12 @@
                     if (input.action === 'thrust') {
                         const thrustDir = state.tamperCurrent < 0 ? 1 : -1;
                         state.vesselV = thrustDir * Math.abs(CHARTER.THRUST_IMPULSE);
+                        state.thrustFlash = 9;  // light the SPACE indicator for the log reviewer
                     } else if (input.action === 'reverse') {
                         state.tamperCurrent = -state.tamperCurrent;
                         gravitySlider.value = state.tamperCurrent;
                     }
                     state.replayIndex++;
-                }
-                if (state.replayIndex >= state.inputHistory.length && state.inputHistory.length > 0) {
-                    state.isReplaying = false;
-                    replayStatus.style.display = 'none';
                 }
             }
             
@@ -588,8 +1397,12 @@
                 b.x -= CHARTER.SCROLL_SPEED;
 
                 // Collision: Bulkhead walls
-                if (CHARTER.VESSEL_X + CHARTER.VESSEL_WIDTH > b.x && CHARTER.VESSEL_X < b.x + 50) {
-                    if (state.vesselY < b.gapY || state.vesselY + CHARTER.VESSEL_HEIGHT > b.gapY + CHARTER.GAP_HEIGHT) {
+                if (state.running && CHARTER.VESSEL_X + CHARTER.VESSEL_WIDTH > b.x && CHARTER.VESSEL_X < b.x + 50) {
+                    if (state.vesselY < b.gapY || state.vesselY + CHARTER.VESSEL_HEIGHT > b.gapY + state.activeGap) {
+                        // Crash residual: the breach point, logged outside the envelope (plotted as an X).
+                        const residual = (state.vesselY + CHARTER.VESSEL_HEIGHT / 2) - (b.gapY + state.activeGap / 2);
+                        state.residuals.push({ gate: state.score + 1, residual: residual, type: b.type, crash: true });
+                        renderResiduals();
                         if (b.type === 'PBC') {
                             gameOver("PBC CONTRACT BREACH", "Static contract violation. Vessel strayed from defined policy envelope.");
                         } else {
@@ -599,18 +1412,36 @@
                 }
 
                 // Score
-                if (!b.passed && b.x + 50 < CHARTER.VESSEL_X) {
+                if (state.running && !b.passed && b.x + 50 < CHARTER.VESSEL_X) {
                     b.passed = true;
                     state.score++;
-                    scoreEl.innerText = state.score;
+                    updateScoreDisplay();
+                    // Residual = how far off the safe-envelope center the vessel cleared this gate.
+                    const residual = (state.vesselY + CHARTER.VESSEL_HEIGHT / 2) - (b.gapY + state.activeGap / 2);
+                    state.residuals.push({ gate: state.score, residual: residual, type: b.type });
+                    renderResiduals();
+                    persistAttempt();
                 }
             });
 
+            if (state.finishLineX !== null) {
+                state.finishLineX -= CHARTER.SCROLL_SPEED;
+            }
+
+            // Win: destination reached at the finish line after the final configured gate.
+            if (state.running && state.score >= state.gatesToWin && state.finishLineX !== null && state.finishLineX < CHARTER.VESSEL_X) {
+                gameWin();
+                return;
+            }
+
             // Cycle bulkheads
-            if (state.bulkheads[0].x < -60) {
+            if (state.bulkheads.length > 0 && state.bulkheads[0].x < -60) {
                 state.bulkheads.shift();
-                const lastX = state.bulkheads[state.bulkheads.length - 1].x;
-                state.bulkheads.push(createBulkhead(lastX + CHARTER.OBSTACLE_SPACING));
+                const lastGateX = state.bulkheads.length > 0 ? state.bulkheads[state.bulkheads.length - 1].x : canvas.width;
+                const nextX = lastGateX + CHARTER.OBSTACLE_SPACING;
+                if (!appendNextGate(nextX) && state.finishLineX === null) {
+                    state.finishLineX = nextX + 80;
+                }
             }
 
             // Instrumentation Update
@@ -620,16 +1451,65 @@
                 yValEl.innerText = state.vesselY.toFixed(1);
                 vValEl.innerText = state.vesselV.toFixed(2);
                 inputCountEl.innerText = state.inputHistory.length;
+                syncSpaceCount();
             }
         }
 
-        function gameOver(title, text) {
+        function gameWin() {
+            const wasReplaying = state.isReplaying;
             state.running = false;
             gravitySlider.disabled = false;
+            setControlsEnabled(true);
+
+            const dir = selectedRunDirection();
+            recordRun('win');
+            if (!wasReplaying) {
+                saveHighScore(state.score, state.seed, dir);
+            }
+            if (wasReplaying) {
+                state.isReplaying = false;
+                state.replayLabel = '';
+                state.activeReplayLog = null;
+                replayStatus.style.display = 'none';
+            }
+            if (winSignal) winSignal.style.display = 'block';
+
+            messageEl.classList.add('party-screen');
+            document.getElementById('msgTitle').innerText = "PORT PARTY";
+            let finalMsg = `DESTINATION REACHED\n\nThe finish line is clear. Charter held for all ${state.gatesToWin} gates.`;
+            if (!state.educationalMode) {
+                finalMsg += "\n\nNow flip to Educational Mode (bottom-right) to see the charter and engine that ran it.";
+            }
+            document.getElementById('msgText').innerText = finalMsg;
+            messageEl.style.display = 'block';
+        }
+
+        function triggerCrashFx() {
+            const gc = document.getElementById('game-container');
+            const flash = document.getElementById('crashFlash');
+            if (gc) { gc.classList.remove('crash-fx'); void gc.offsetWidth; gc.classList.add('crash-fx'); setTimeout(() => gc.classList.remove('crash-fx'), 450); }
+            if (flash) { flash.classList.remove('fire'); void flash.offsetWidth; flash.classList.add('fire'); setTimeout(() => flash.classList.remove('fire'), 450); }
+        }
+
+        function gameOver(title, text) {
+            const wasReplaying = state.isReplaying;
+            state.running = false;
+            triggerCrashFx();
+            gravitySlider.disabled = false;
+            setControlsEnabled(true);
             
             // Save score based on active direction
-            const dir = state.tamperCurrent < 0 ? 'up' : 'down';
-            const isNewHigh = saveHighScore(state.score, state.seed, dir);
+            const dir = selectedRunDirection();
+            recordRun('loss');
+            const isNewHigh = wasReplaying ? false : saveHighScore(state.score, state.seed, dir);
+            if (wasReplaying) {
+                state.isReplaying = false;
+                state.replayLabel = '';
+                state.activeReplayLog = null;
+                replayStatus.style.display = 'none';
+            }
+            if (winSignal) winSignal.style.display = 'none';
+            messageEl.classList.remove('party-screen');
             
             document.getElementById('msgTitle').innerText = title;
             let finalMsg = text + `\n\nScore: ${state.score} (${dir.toUpperCase()} current)`;
@@ -720,13 +1600,13 @@
                 // Main metal structures (Blue for PBC, Orange for BT)
                 ctx.fillStyle = b.type === 'PBC' ? '#004e7c' : '#8c3a00';
                 ctx.fillRect(b.x, 0, 50, b.gapY);
-                ctx.fillRect(b.x, b.gapY + CHARTER.GAP_HEIGHT, 50, canvas.height - (b.gapY + CHARTER.GAP_HEIGHT));
+                ctx.fillRect(b.x, b.gapY + state.activeGap, 50, canvas.height - (b.gapY + state.activeGap));
 
                 // Safe envelope borders
                 ctx.strokeStyle = b.type === 'PBC' ? COLOR_BLUE : COLOR_ORANGE;
                 ctx.lineWidth = 2.5;
                 ctx.setLineDash([6, 4]);
-                ctx.strokeRect(b.x, b.gapY, 50, CHARTER.GAP_HEIGHT);
+                ctx.strokeRect(b.x, b.gapY, 50, state.activeGap);
                 ctx.setLineDash([]);
 
                 // Gate Type label
@@ -734,8 +1614,33 @@
                 ctx.font = '800 12px monospace';
                 ctx.textAlign = 'center';
                 ctx.fillText(b.type, b.x + 25, b.gapY - 15);
-                ctx.fillText(b.type, b.x + 25, b.gapY + CHARTER.GAP_HEIGHT + 25);
+                ctx.fillText(b.type, b.x + 25, b.gapY + state.activeGap + 25);
+                ctx.fillStyle = '#ccd6f6';
+                ctx.font = '800 9px monospace';
+                ctx.fillText(`${b.gateNumber}/${state.gatesToWin}`, b.x + 25, b.gapY + state.activeGap / 2);
             });
+
+            if (state.finishLineX !== null) {
+                const finishX = state.finishLineX;
+                ctx.strokeStyle = '#22c55e';
+                ctx.lineWidth = 4;
+                ctx.setLineDash([10, 8]);
+                ctx.beginPath();
+                ctx.moveTo(finishX, 0);
+                ctx.lineTo(finishX, canvas.height);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = 'rgba(7, 13, 25, 0.9)';
+                ctx.fillRect(finishX - 55, 18, 110, 28);
+                ctx.strokeStyle = '#22c55e';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(finishX - 55, 18, 110, 28);
+                ctx.fillStyle = '#22c55e';
+                ctx.font = '800 10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('FINISH LINE', finishX, 36);
+            }
 
             // Draw Vessel (Tug) - Colors match selected current direction
             ctx.fillStyle = state.tamperCurrent < 0 ? COLOR_ORANGE : COLOR_BLUE;
@@ -797,6 +1702,25 @@
                 ctx.lineTo(44, 168);
             }
             ctx.stroke();
+
+            // Replay input log — the captain's thrust commands (SPACE), lit as the Logbook replays.
+            if (state.isReplaying && state.showReplayInputs) {
+                const themeCol = state.tamperCurrent < 0 ? COLOR_ORANGE : COLOR_BLUE;
+                const lit = state.thrustFlash > 0;
+                const kw = 130, kh = 26, kx = (canvas.width - kw) / 2, ky = canvas.height - 46;
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = themeCol;
+                ctx.fillStyle = lit ? themeCol : 'rgba(7,13,25,0.85)';
+                ctx.beginPath();
+                if (ctx.roundRect) ctx.roundRect(kx, ky, kw, kh, 5); else ctx.rect(kx, ky, kw, kh);
+                ctx.fill();
+                ctx.stroke();
+                ctx.fillStyle = lit ? '#070d19' : themeCol;
+                ctx.font = '800 12px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(lit ? '⬆ THRUST' : 'SPACE', canvas.width / 2, ky + 17);
+                if (state.thrustFlash > 0) state.thrustFlash--;
+            }
         }
 
         function gameLoop(timestamp) {
@@ -850,6 +1774,11 @@
             ctx.font = '10px monospace';
             ctx.fillText('[SPACE / TAP] - Thrust opposite to Current', canvas.width/2, canvas.height/2 - 35);
             ctx.fillText('[SHIFT / CLICK / R] - Toggle Current Direction', canvas.width/2, canvas.height/2 - 20);
+            if (state.selectedCurrentDirection === 'up') {
+                ctx.fillStyle = COLOR_ORANGE;
+                ctx.font = '800 10px monospace';
+                ctx.fillText('UP CURRENT IS TRICKIER - TRY DOWN FIRST', canvas.width/2, canvas.height/2 - 4);
+            }
 
             // Draw current selection boxes
             const yBox = canvas.height/2 + 5;
@@ -886,10 +1815,12 @@
         // ENTRY POINT
         fetchCharter().then(() => {
             updateThemeColor();
+            updateLogbookSummary();
             initRNG();
             showSplash();
         });
     </script>
-<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.5</div>
+<div id="bt-rev" style="position:fixed;bottom:4px;right:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.65;z-index:9999;pointer-events:none;">v0.9.2</div>
+<a href="manual.html" style="position:fixed;bottom:4px;left:6px;font-family:monospace;font-size:10px;color:#8892b0;opacity:0.7;z-index:9999;text-decoration:none;">&#128214; Owner's Manual</a>
 </body>
 </html>

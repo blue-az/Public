@@ -60,6 +60,13 @@ This charter defines the behavior contract for the Bulkhead Flappy Ship game. Th
   name: Collision Boundary
   rule: Collision occurs if the vessel bounding box intersects a bulkhead structure or leaves the vertical channel (0 to 640 pixels).
   trust: trusted
+- id: FLPY-RUL-007
+  name: Destination Gate Count
+  rule: A run ends in success after the configured number of gates is cleared. The default destination is 10 gates; the playable charter range is 5 to 30 gates.
+  trust: trusted
+  value: 10
+  min: 5
+  max: 30
 ```
 
 ## Behaviors
