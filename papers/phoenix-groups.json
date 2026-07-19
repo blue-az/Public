@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-07-19T20:55:01.721702+00:00",
+  "generated_at": "2026-07-19T23:27:37.126527+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -264,6 +264,22 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/encoding-converts-synthesis-into-lookup.md",
           "publish": true,
           "summary": "Encoding a multi-repo system's architecture as loadable repository facts (glossary, boundaries doc, explicit non-claims) converts cold-start map recovery from synthesis into lookup: a 31B tool-using local agent and a 14B model reading a pre-injected funnel both recovered a real system's boundary map, with all failures traced to one-line documentation gaps rather than model limits. The paper states its own evidentiary limit plainly: the 14B run's answer text and prompt-fit are machine-verified from raw JSON, while the 31B run's per-probe answer text is narration-sourced only (tool-use trace and serving config are independently verified via an audit log and a systemd journal, but no chat transcript exists on disk)."
+        },
+        {
+          "id": "grok-built-into-operator",
+          "title": "Grok Built Into Operator By Leaving Residue",
+          "source_path": "docs/GROK_BUILT_INTO_OPERATOR.md",
+          "track": "paper",
+          "paper_number": "1.41",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "grok-built-into-operator",
+          "proto_output_path": "bulkhead-tau/generated-papers/grok-built-into-operator.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/grok-built-into-operator.md",
+          "publish": true,
+          "summary": "A governance case study on admitting a new frontier coding harness as a peer through evidence rather than brand rank: xAI's Grok CLI was registered as a peer harness in Operator (commit 2b46544, authored by the operator, not Grok), then tested empirically. One Grok session produced two independently verified git commits -- one of which added the repo's own 'recover the map / calibrate / leave residue' audit-protocol language and was independently used as core evidence by a separate governance paper packaged the same day -- plus a standalone analytical artifact with a real product finding. The same session also produced a genuine, documented miss (a proposed analysis format that ignored an established protocol document) and one open rubric criterion. The paper states plainly that every artifact traces to a single session and does not generalize to a comparative reliability claim against other harnesses in this repository."
         }
       ]
     },

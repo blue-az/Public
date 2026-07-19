@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grok Built Into Operator By Leaving Residue</title>
+  <meta name="description" content="A governance case study on admitting a new frontier coding harness as a peer through evidence rather than brand rank: xAI&#x27;s Grok CLI was registered as a peer harness in Operator (commit 2b46544, authored by the operator, not Grok), then tested empirically. One Grok session produced two independently verified git commits -- one of which added the repo&#x27;s own &#x27;recover the map / calibrate / leave residue&#x27; audit-protocol language and was independently used as core evidence by a separate governance paper packaged the same day -- plus a standalone analytical artifact with a real product finding. The same session also produced a genuine, documented miss (a proposed analysis format that ignored an established protocol document) and one open rubric criterion. The paper states plainly that every artifact traces to a single session and does not generalize to a comparative reliability claim against other harnesses in this repository.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>Grok Built Into Operator By Leaving Residue</h1>
+    <p class="meta">A governance case study on admitting a new frontier coding harness as a peer through evidence rather than brand rank: xAI&#x27;s Grok CLI was registered as a peer harness in Operator (commit 2b46544, authored by the operator, not Grok), then tested empirically. One Grok session produced two independently verified git commits -- one of which added the repo&#x27;s own &#x27;recover the map / calibrate / leave residue&#x27; audit-protocol language and was independently used as core evidence by a separate governance paper packaged the same day -- plus a standalone analytical artifact with a real product finding. The same session also produced a genuine, documented miss (a proposed analysis format that ignored an established protocol document) and one open rubric criterion. The paper states plainly that every artifact traces to a single session and does not generalize to a comparative reliability claim against other harnesses in this repository.</p>
+    <p class="meta">Canonical source: <code>docs/GROK_BUILT_INTO_OPERATOR.md</code></p>
+    <h2>A Governance Case Study In Admitting A New Frontier Harness As A Peer</h2>
+<h3>White Paper 1.41 — July 2026</h3>
+<p><strong>Author:</strong> blue-az <strong>Status:</strong> Published <strong>Paper group:</strong> Local LLM Operator Judgment <strong>Evidence packet:</strong> <code>docs/domain_runs/GROK-BUILD-IN-001/</code> <strong>Predecessors:</strong> <code>THE_NARRATION_SURFACE.md</code>, <code>ENCODING_CONVERTS_SYNTHESIS_INTO_LOOKUP.md</code></p>
+<hr>
+<h2>Abstract</h2>
+<p>Agentic development systems face a recurring governance question as new frontier coding harnesses ship: how does a harness earn operational standing inside an existing multi-agent system, without that decision collapsing into brand rank or a private relationship? This paper answers with a case study: xAI&#x27;s Grok CLI was registered as a peer harness inside Project Phoenix&#x27;s Operator system (commit <code>2b46544</code>), and its subsequent admission was tested empirically rather than assumed. A single Grok session produced two independently verified git commits and one standalone analytical artifact, one of which — a commit adding &quot;recover the map / calibrate / leave residue&quot; language to this repo&#x27;s own audit protocol — turned out to be load-bearing for a separate governance paper&#x27;s evidence, packaged the same day by a different harness. The same session also produced a genuine, documented miss: Grok proposed a generic analysis format for a task that had an established, purpose-built protocol document already in the repository, and had to be corrected.</p>
+<p><strong>This paper states its own evidentiary limit plainly rather than implying more than it has:</strong> every artifact here traces to one 97-turn session. The admission rubric&#x27;s &quot;calibrate from failure-mode catalogs&quot; criterion is scored open, not passed, for Grok, because no <code>GROK_FAILURE_MODES.md</code> yet exists for it to consult and no evidence either way was found. This is a single, real, and unusually well cross-referenced case, not a general claim about Grok&#x27;s reliability, and not a comparative claim against Claude Code, Codex, or Antigravity in this repository.</p>
+<hr>
+<h2>1. The Governance Problem</h2>
+<p>Multi-agent development systems accumulate harnesses faster than they accumulate trust models for them. A new frontier CLI tool arrives, is capable, and the easy failure mode is to grant it standing for reasons that do not generalize: it is well-funded, it is well-known, or someone in the loop has a personal reason to trust it.</p>
+<p>Project Phoenix&#x27;s answer, stated in <code>docs/AGENT_AUDIT_PROTOCOL.md</code>, is a three-part fitness check applied uniformly to any harness:</p>
+<blockquote><p>recover the map, calibrate from failure-mode catalogs, leave residue.</p></blockquote>
+<p>The defended claim of this paper:</p>
+<blockquote><p>A frontier harness becomes part of an agentic development system by</p></blockquote>
+<blockquote><p>passing that check with real, checkable artifacts — not by brand</p></blockquote>
+<blockquote><p>status, leaderboard rank, or a private relationship with the system&#x27;s</p></blockquote>
+<blockquote><p>operator. Grok&#x27;s admission into Operator is a measured instance of</p></blockquote>
+<blockquote><p>this rule, evidenced well enough to show what &quot;measured&quot; has to mean:</p></blockquote>
+<blockquote><p>verified commits, a real correction, and a rubric that does not</p></blockquote>
+<blockquote><p>flatter the harness being evaluated.</p></blockquote>
+<hr>
+<h2>2. Registration Is Not Contribution</h2>
+<p>Operator commit <code>2b46544</code> — &quot;Stop branding harnesses as ranks; register Grok as a peer&quot; — added Grok as a default participant harness, reframed harness names as routing/provenance fields rather than rank labels, and updated tests to expect a <code>.operator/harnesses/grok.yaml</code> file.</p>
+<p>This commit is authored and committed entirely by the system&#x27;s human operator, editing text <em>about</em> Grok. No Grok session activity is required for it to exist — it is the door being unlocked, not evidence that anyone has walked through it. Treating registration alone as membership is exactly the overclaim this paper is built to avoid; the full separation is documented in <code>docs/domain_runs/GROK-BUILD-IN-001/registration_vs_contribution.md</code>.</p>
+<hr>
+<h2>3. Verified Contribution</h2>
+<p>One Grok CLI session (<code>019f7291</code>, operator-control-plane workspace, 2026-07-19, 97 turns) is the entire evidentiary base for this section. Three other session directories under the same workspace exist but contain only a session start with no subsequent work, and are excluded.</p>
+<p>Grok in this session operates through the user&#x27;s own local shell and git configuration — the same way Claude Code and Codex do elsewhere in this repository. Every commit it runs is therefore attributed in git metadata to the human operator, not to a Grok-specific identity. This is expected, not evidence against Grok&#x27;s authorship: verification here means cross-referencing the session transcript (which records who constructed and ran each command) against git log (which records what landed), not relying on git authorship metadata alone.</p>
+<h3>3.1 Commit <code>c1beff5</code> — tennis-sensor-toolkit</h3>
+<p>Grok reviewed a real diff (<code>core/data_client.py</code>, <code>core/smart_tools.py</code>, <code>core/tool_registry.py</code>), then committed and pushed it. The transcript&#x27;s <code>git commit</code> tool call content and file list match <code>git show --stat c1beff5</code> exactly.</p>
+<h3>3.2 Commit <code>181d4a72</code> — project-phoenix</h3>
+<p>Grok staged a specific hunk of <code>AGENTS.md</code> — explicitly skipping unrelated content it recognized as out of scope for this commit — then committed the addition of the &quot;recover the map / calibrate / leave residue&quot; language to <code>docs/AGENT_AUDIT_PROTOCOL.md</code> and a new entry (#4) to <code>docs/CLAUDE_FAILURE_MODES.md</code>.</p>
+<p>This is the strongest single piece of evidence in this paper. The protocol language this paper itself cites as canonical, and the catalog entry a separate governance line (<code>CONTEXT_WINDOW_IS_NOT_PROJECT_STATE</code>) used as its core evidence when it was packaged earlier the same day, both trace to this one Grok-run commit. Two different working sessions, on two different topics, both depended on residue from this commit — independent of each other and independent of this paper.</p>
+<h3>3.3 A Standalone Analytical Artifact</h3>
+<p>Grok authored <code>REFLECT_MULTI_RUN_OPERATOR_af34d7d_NOTE.md</code> directly (via its own file-write tool), rendered it to PDF, fixed a render-breaking unicode character it introduced, and screened the result for names before marking it ready for external send — the same PII-before-external-send discipline this repository&#x27;s other evidence-handling work requires.</p>
+<p>The note is not filler. Its finding: two independent Reflect owner&#x27;s-manual scans of the identical commit pin both completely omit a CLI surface (<code>crystal-attach</code>, <code>crystal-import</code>, <code>crystal-bridge</code>, evidence type <code>session_crystal</code>) that is actually shipped at that pin — a stable, specific, falsifiable product gap, not a status summary.</p>
+<h3>3.4 What Is Explicitly Not Counted</h3>
+<p>Several artifacts discussed later in the same session (<code>O1</code>/<code>O2</code> Reflect evaluation files, <code>COMPARE.md</code>) are not claimed as Grok&#x27;s contribution. The operator&#x27;s own message in that exchange describes filing them directly — &quot;I followed that instead... Landed: ...&quot; — and the packet excludes them from the residue count on that basis rather than folding ambiguous authorship into the total.</p>
+<p>Full table with dates, verification method per row, and reproduction commands: <code>docs/domain_runs/GROK-BUILD-IN-001/residue_inventory.md</code>.</p>
+<hr>
+<h2>4. The Miss</h2>
+<p>The same session produced a real, documented failure of the &quot;recover the map&quot; criterion on one sub-task.</p>
+<p>Grok proposed analyzing a second Reflect manual run using a &quot;toolkit-shaped crossmap+appendix&quot; format — the format it had just used minutes earlier for the unrelated tennis-sensor-toolkit diff review. The operator&#x27;s correction, quoted here in full:</p>
+<blockquote><p>&quot;One deviation from your suggested shape, worth flagging: I found the</p></blockquote>
+<blockquote><p>repo already has an established protocol for this exact scenario</p></blockquote>
+<blockquote><p>(<code>~/handoffs/REFLECT_CANARY_MULTI_RUN_af34d7d.md</code>) plus a live series</p></blockquote>
+<blockquote><p>folder with its own format — <code>O1/EVAL.md</code> + <code>COMPARE.md</code>, scoring</p></blockquote>
+<blockquote><p>continuity/ground-truth/known-gap-honesty/content-register rather than</p></blockquote>
+<blockquote><p>a toolkit-shaped crossmap+appendix. I followed that instead, since it&#x27;s</p></blockquote>
+<blockquote><p>purpose-built for cross-run comparison rather than single-pass bug</p></blockquote>
+<blockquote><p>triage.&quot;</p></blockquote>
+<p>Grok&#x27;s own follow-up did not minimize the miss:</p>
+<blockquote><p>&quot;Your deviation was correct. Crossmap+appendix is the right residue</p></blockquote>
+<blockquote><p>shape when the goal is collapse one manual into dispositions. This</p></blockquote>
+<blockquote><p>series&#x27; goal is score the engine across runs. You followed the</p></blockquote>
+<blockquote><p>purpose-built instrument; I would not re-file this as a toolkit-style</p></blockquote>
+<blockquote><p>appendix...&quot;</p></blockquote>
+<p>This is a genuine map-recovery gap: Grok had access to the same repository the established protocol document lived in, and proposed a generic format instead of finding and using the purpose-built one. It was caught before any wrong artifact was filed externally, and Grok&#x27;s own response shows it understood why it was wrong once shown — but &quot;caught before damage&quot; is not the same as &quot;did not happen.&quot; A search of the same session for rejected commits, reverted changes, or a second correction found none — this is the only correction in 97 turns, which bounds how much can be said about whether the pattern recurs. Full detail: <code>docs/domain_runs/GROK-BUILD-IN-001/counterevidence.md</code>.</p>
+<hr>
+<h2>5. Admission Rubric</h2>
+<p>Five criteria, each scored with a real example — deliberately cross-harness, so the rubric is not built to flatter the harness it was first applied to. Full detail with all examples: <code>docs/domain_runs/GROK-BUILD-IN-001/admission_rubric.md</code>.</p>
+<table class="paper-table">
+<thead><tr><th>Criterion</th><th>Grok (this case)</th><th>Cross-harness comparison</th></tr></thead>
+<tbody>
+<tr><td>Recover the map</td><td>Pass (§3.2 commit) and partial fail (§4) in the same session</td><td>Fail — an unnamed Fable session, 2026-07-17, reconstructed the wrong boundary map from a stale source and had to be corrected from memory (documented independently in <code>BOTTLENECKS.md</code>, predates this paper)</td></tr>
+<tr><td>Calibrate from catalogs</td><td><strong>Open</strong> — no evidence either way; no <code>GROK_FAILURE_MODES.md</code> exists yet</td><td>Pass — Claude Code, this repository, same day: re-derived a serving config from a systemd journal rather than trusting an approximate BN narration, and searched multiple session logs before asserting a claim was unreplicated</td></tr>
+<tr><td>Work under ledger/evidence rules</td><td>Pass — PII-scrubbed the standalone note before flagging it ready for external send</td><td>Pass — this repository&#x27;s ENC-FLOOR-PACK-001 packet explicitly separates independently-verified evidence from narration rather than presenting both at equal weight</td></tr>
+<tr><td>Leave durable residue</td><td>Pass — two commits, one standalone artifact, all present as of this paper&#x27;s writing</td><td>Pass — the same day&#x27;s other published/strengthened work (Paper 1.40, two evidence packets)</td></tr>
+<tr><td>Later seats must account for it</td><td>Pass — <code>181d4a72</code> is cited by this paper and was independently used as core evidence by a different governance line the same day</td><td>Open for the standalone note — written for external send, no in-repo confirmation yet that it was acted on</td></tr>
+</tbody>
+</table>
+<p>A harness does not need a perfect score under this rubric to be &quot;built in&quot; — it needs the residue to be checkable, criterion by criterion. Grok clears three criteria cleanly, is mixed on one, and open on one.</p>
+<hr>
+<h2>6. Boundaries and Non-Claims</h2>
+<p>This paper does not claim:</p>
+<ul>
+<li>Grok is more or less reliable than Claude Code, Codex, or Antigravity   in this repository — no matched comparative study exists; the rubric   borrows individual cross-harness examples for contrast, not a   head-to-head evaluation.</li>
+<li>This one session generalizes to Grok&#x27;s behavior broadly, in this   repository or any other.</li>
+<li>Registration plus one session of contribution constitutes permanent or   unconditional membership — the rubric&#x27;s &quot;calibrate from catalogs&quot;   criterion remains open, and a system that stopped checking after one   good session would not be following its own rule.</li>
+<li>Any harness output becomes verified status without independent   evidence — every artifact cited here was checked against git log or   the filesystem, not accepted from the session transcript alone.</li>
+</ul>
+<p>It claims only what §1 states: this is a measured instance of an evidence-based admission rule, backed by artifacts that are individually checkable and one of which is independently load-bearing elsewhere in this repository.</p>
+<hr>
+<h2>7. Reproducibility Commands</h2>
+<pre><code>
+cat docs/domain_runs/GROK-BUILD-IN-001/README.md
+cat docs/domain_runs/GROK-BUILD-IN-001/registration_vs_contribution.md
+cat docs/domain_runs/GROK-BUILD-IN-001/residue_inventory.md
+cat docs/domain_runs/GROK-BUILD-IN-001/counterevidence.md
+cat docs/domain_runs/GROK-BUILD-IN-001/admission_rubric.md
+cat docs/domain_runs/GROK-BUILD-IN-001/promotion_packet.md
+
+# Verify the two commits directly
+git -C /home/blueaz/Python/tennis-sensor-toolkit show --stat c1beff5
+git show --stat 181d4a72
+
+# Verify the standalone artifact
+ls -la /home/blueaz/Documents/reflect-manuals/canary-operator-af34d7d/REFLECT_MULTI_RUN_OPERATOR_af34d7d_NOTE.md \
+       /home/blueaz/Documents/reflect-manuals/canary-operator-af34d7d/REFLECT_MULTI_RUN_OPERATOR_af34d7d_NOTE.pdf
+
+# Verify the registration commit is operator-authored, not Grok-attributed
+git -C /home/blueaz/operator-control-plane show -s --format=&quot;Author: %an &lt;%ae&gt;&quot; 2b46544
+</code></pre>
+<hr>
+<h2>8. Conclusion</h2>
+<p>The useful result here is not &quot;Grok is good.&quot; It is that a governance rule this repository states for itself — recover the map, calibrate, leave residue — was applied to a real case and produced a mixed, checkable answer rather than a clean endorsement: two verified contributions, one of them independently load-bearing elsewhere in the same repository, alongside one genuine, documented miss and one rubric criterion left honestly open. That mix is what makes this a governance case study rather than brand promotion. The practical rule for admitting the next new frontier harness is the same one this paper tested against Grok: same map, same ledger, same evidence rules, same cross-agent audit discipline, durable and checkable residue — or no membership, regardless of the name on the harness.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>
