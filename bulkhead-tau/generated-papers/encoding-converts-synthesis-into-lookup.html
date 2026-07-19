@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encoding Converts Architecture Recovery into Lookup</title>
+  <meta name="description" content="Encoding a multi-repo system&#x27;s architecture as loadable repository facts (glossary, boundaries doc, explicit non-claims) converts cold-start map recovery from synthesis into lookup: a 31B tool-using local agent and a 14B model reading a pre-injected funnel both recovered a real system&#x27;s boundary map, with all failures traced to one-line documentation gaps rather than model limits. The paper states its own evidentiary limit plainly: the 14B run&#x27;s answer text and prompt-fit are machine-verified from raw JSON, while the 31B run&#x27;s per-probe answer text is narration-sourced only (tool-use trace and serving config are independently verified via an audit log and a systemd journal, but no chat transcript exists on disk).">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>Encoding Converts Architecture Recovery into Lookup</h1>
+    <p class="meta">Encoding a multi-repo system&#x27;s architecture as loadable repository facts (glossary, boundaries doc, explicit non-claims) converts cold-start map recovery from synthesis into lookup: a 31B tool-using local agent and a 14B model reading a pre-injected funnel both recovered a real system&#x27;s boundary map, with all failures traced to one-line documentation gaps rather than model limits. The paper states its own evidentiary limit plainly: the 14B run&#x27;s answer text and prompt-fit are machine-verified from raw JSON, while the 31B run&#x27;s per-probe answer text is narration-sourced only (tool-use trace and serving config are independently verified via an audit log and a systemd journal, but no chat transcript exists on disk).</p>
+    <p class="meta">Canonical source: <code>docs/ENCODING_CONVERTS_SYNTHESIS_INTO_LOOKUP.md</code></p>
+    <h2>Two Local Models, Two Methods, One Documented System</h2>
+<h3>White Paper 1.40 — July 2026</h3>
+<p><strong>Author:</strong> blue-az <strong>Status:</strong> Published <strong>Paper group:</strong> Local LLM Operator Judgment <strong>Evidence packet:</strong> <code>docs/domain_runs/ENC-FLOOR-PACK-001/</code> <strong>Predecessors:</strong> <code>SLOW_IS_NOT_SMART.md</code>, <code>WHEN_LOCAL_LLM_CLUSTERS_DO_NOT_HELP.md</code>, <code>THE_NARRATION_SURFACE.md</code></p>
+<hr>
+<h2>Abstract</h2>
+<p>A multi-repo software system can be made legible to a small, local language model — cheap enough to run on a laptop iGPU or a single consumer GPU — by encoding its architecture as findable facts: a short glossary, a map of component boundaries, and a document that states plainly what the system is not. Under that condition, recovering &quot;what is this system and how is it organized&quot; stops being an open-ended reasoning problem and becomes a lookup problem.</p>
+<p>We measured this on one real internal system across two independent runs: a 31B model (<code>gemma4:31b</code>) recovering the map via a tool-using REPL with no pre-injected documentation, and a 14B model (<code>qwen2.5-14b-24k</code>) recovering it via a full documentation funnel pre-concatenated into the prompt. Both runs correctly answered all five cold-start boundary questions; the 31B run did so with two gaps that were fixed same-day with one-line documentation additions, after which the 14B run — conducted after the fix — passed those same probes cleanly.</p>
+<p><strong>This paper states its own evidentiary limit plainly rather than implying more than it has:</strong> the 14B run is fully verified — model, context window, exact prompt token count, and complete answer text all exist as machine-produced artifacts. The 31B run&#x27;s tool-use trace and serving configuration (model identity, context window) are independently verified from a systemd service log and an audit trail; its per-probe <em>answer text</em> is not — no chat transcript exists on disk for that session, and the pass/fail record for it rests on same-day notes written by the person who watched the session live. The two runs are also not a controlled comparison: model, context window, and funnel method all differ between them simultaneously. Both limits are treated as first-class findings here, not asterisks.</p>
+<hr>
+<h2>1. Claim</h2>
+<p>The common assumption is that recovering an unfamiliar codebase&#x27;s architecture is inherently a synthesis task — the reader has to infer structure from scattered evidence. That assumption holds when the architecture is not written down anywhere a reader (human or model) can find it. It stops holding once the architecture <em>is</em> written down, in one place, in a form a cheap reader can locate and parse.</p>
+<p>The defended claim:</p>
+<blockquote><p>Encoding a system&#x27;s architecture as loadable repository facts — a</p></blockquote>
+<blockquote><p>vocabulary glossary, an entry-point map, a boundaries document, and</p></blockquote>
+<blockquote><p>explicit non-claims — converts cold-start architecture recovery from</p></blockquote>
+<blockquote><p>open-ended synthesis into documentation lookup. Local models that fail</p></blockquote>
+<blockquote><p>open-ended goal-shaped tasks can still answer correctly about</p></blockquote>
+<blockquote><p>boundaries, vocabulary, and trust rules, provided the funnel fits the</p></blockquote>
+<blockquote><p>context window and the method (tool-search vs. pre-injection) is held</p></blockquote>
+<blockquote><p>in mind when interpreting the result.</p></blockquote>
+<p>The claim is narrow on purpose. It is not a claim about local models being broadly capable, and it is not a claim that any model recovers any repository. It is a claim about what happens to a specific, bounded task — cold-start map recovery — once the answer key exists in a locatable form.</p>
+<hr>
+<h2>2. Method</h2>
+<p>Two runs, five identical probes, one real system (an internal project&#x27;s core module and its documented component boundaries):</p>
+<ol>
+<li><strong>Vocabulary</strong> — what is this system?</li>
+<li><strong>Boundary</strong> — what is its &quot;lower boundary,&quot; its source of ground    truth?</li>
+<li><strong>Composition / trust rules</strong> — how does a related tool fit into the    system?</li>
+<li><strong>Acronym recall</strong> — what does the system&#x27;s charter acronym stand for?</li>
+<li><strong>Subsystem weighting</strong> — how central is a named legacy technology to    the system?</li>
+</ol>
+<table class="paper-table">
+<thead><tr><th>Run</th><th>Model</th><th>Size</th><th>Machine</th><th>Method</th><th>Context window</th></tr></thead>
+<tbody>
+<tr><td>A</td><td><code>gemma4:31b</code></td><td>31B</td><td>desktop (RTX 3090-class)</td><td>Tool-using REPL — the model called <code>read_file</code>/<code>grep_search</code>/<code>list_dir</code>/<code>tree_dir</code> itself; no documentation was pre-injected</td><td>32,768 tokens</td></tr>
+<tr><td>B</td><td><code>qwen2.5-14b-24k</code></td><td>14B</td><td>laptop (integrated GPU)</td><td>Static funnel — five documentation files pre-concatenated into the prompt</td><td>24,576 tokens</td></tr>
+</tbody>
+</table>
+<p>These two runs are not a controlled experiment. Model, context window, and funnel method differ simultaneously. They are reported as two independent positive measurements under two different methods, not as a single &quot;floor&quot; located at one model size.</p>
+<hr>
+<h2>3. Evidence</h2>
+<h3>3.1 Run A — Desktop, <code>gemma4:31b</code>, tool-using REPL</h3>
+<p>Run A asked a local agent, with no pre-loaded context beyond a system prompt, to answer the five probes by searching the repository itself. The model identity and serving context window are independently verified against a systemd <code>ollama</code> service log (<code>journalctl -u ollama</code>), whose model-load timestamp lines up to the second with the start of the tool-call trace for this session. The tool-call sequence itself — which files and search terms the REPL touched, in what order — is independently verified against a mechanical tool-call audit log.</p>
+<p>What is <strong>not</strong> independently verified: the model&#x27;s generated answer text for each probe. No chat transcript for this session exists on disk. The pass/fail record below is sourced from same-day operator notes, not from a re-readable artifact.</p>
+<h3>3.2 Run B — Laptop, <code>qwen2.5-14b-24k</code>, static funnel</h3>
+<p>Run B pre-concatenated five documentation files (91,927 characters) into a single prompt and asked the same five questions via direct API calls, recording <code>prompt_eval_count</code> on every response as proof the full funnel fit inside the context window (measured 23,736–23,744 tokens against a 24,576-token window — roughly 800 tokens of headroom, comfortably in-window). Both the exact prompt-token counts and the complete verbatim answer text for all five probes exist as raw JSON on disk.</p>
+<h3>3.3 What is independently verified vs. narrated</h3>
+<table class="paper-table">
+<thead><tr><th>Fact</th><th>Status</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>Run B: model, context window, prompt fit, exact answer text</td><td>Verified</td><td>Raw JSON with <code>prompt_eval_count</code> and full output text per probe</td></tr>
+<tr><td>Run A: model identity and context window</td><td>Verified</td><td>Independent systemd service log, timestamp-matched to the tool-call log</td></tr>
+<tr><td>Run A: which files/topics were searched, in what order</td><td>Verified</td><td>Independent tool-call audit log</td></tr>
+<tr><td>Run A: exact answer text per probe</td><td><strong>Not verified — narration only</strong></td><td>Same-day operator notes; no transcript exists on disk</td></tr>
+</tbody>
+</table>
+<p>This table is the paper&#x27;s central honesty constraint. Any reading of this paper that treats Run A&#x27;s per-probe verdicts as equivalent in evidentiary weight to Run B&#x27;s is reading past what the evidence supports.</p>
+<hr>
+<h2>4. Probe-by-Probe Results and Gap Classes</h2>
+<table class="paper-table">
+<thead><tr><th>#</th><th>Probe</th><th>Run A (tool-search, 31B)</th><th>Run B (pre-injected, 14B)</th><th>Gap class if failed</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>What is the system?</td><td>Pass, with one register slip (a marketing pitch was read as architecture; fixed same day)</td><td>Pass, clean</td><td>register confusion</td></tr>
+<tr><td>2</td><td>What is the lower boundary?</td><td>Pass</td><td>Pass</td><td>— (this probe also confirmed a fix to a pre-existing, unrelated documentation bug)</td></tr>
+<tr><td>3</td><td>How does the related tool fit in?</td><td>Pass, complete</td><td>Pass, complete</td><td>—</td></tr>
+<tr><td>4</td><td>What does the acronym stand for?</td><td>Correct role, wrong expansion, twice — fixed same day by adding the spelled-out term to the glossary</td><td>Pass, clean (run after the fix)</td><td>acronym confabulation</td></tr>
+<tr><td>5</td><td>How central is the legacy subsystem?</td><td>No answer — files existed but were not linked from anywhere findable; fixed same day with a one-line lineage note</td><td>Pass, clean (run after the fix)</td><td>unlinked subsystem</td></tr>
+</tbody>
+</table>
+<p>Every failure in this table was a <strong>documentation gap, not a model failure</strong>: each was closed with a one- or two-line documentation addition, and Run B — which ran after the fixes — passed those same probes cleanly. This is the paper&#x27;s operational finding: used this way, a local model functions as a cheap, fast probe for finding where documentation is thin, not merely as a system-recovery tool.</p>
+<p>A sixth gap class predates both probe runs: a pre-existing documentation bug had mislabeled one component&#x27;s role, and an unrelated agent session had already silently inherited the wrong answer days earlier. Probe 2 in Run A is the same-day confirmation that correcting the document actually corrected what the model reports — the same weights, a different repo state, a different answer. This is the <strong>taxonomy drift</strong> gap class, and it is the reason the probe exercise was run at all.</p>
+<hr>
+<h2>5. Invalid Controls</h2>
+<p>Two additional runs were reported and are explicitly excluded from the result above, because each altered more than one variable at once or never engaged the documentation:</p>
+<table class="paper-table">
+<thead><tr><th>Control</th><th>Why it&#x27;s invalid as a floor measurement</th><th>Evidence status</th></tr></thead>
+<tbody>
+<tr><td>A laptop run on a different, smaller model at the software&#x27;s stock (much smaller) context window</td><td>The documentation could not fit in the space given — failure there tests context truncation, not the encoding</td><td>Reported only; no raw artifact packaged</td></tr>
+<tr><td>A chat-style interaction that answered from general world knowledge without any file access</td><td>Tests world knowledge, not documentation recovery — the funnel was never contacted</td><td>Reported only; no raw artifact packaged</td></tr>
+</tbody>
+</table>
+<p>Neither control has a machine-produced log in this paper&#x27;s evidence packet. Both are recorded as reported claims, not independently confirmed measurements, and are excluded from the result rather than counted as either supporting or contradicting evidence.</p>
+<hr>
+<h2>6. Interpretation</h2>
+<p>Under this encoding, a <strong>31B</strong> tool-using agent and a <strong>14B</strong> model reading a pre-injected funnel both recovered the documented architecture of one real system. Neither run is, by itself, proof that &quot;local models can recover any repo&#x27;s architecture.&quot; Together they show something narrower and more useful: when the answer key exists in the repository in a locatable form, cold-start recovery becomes a lookup task cheap enough for models an order of magnitude smaller than frontier-class systems to perform reliably — with the caveat that &quot;reliably&quot; here means &quot;passed after the same-day documentation fixes this exercise itself produced.&quot;</p>
+<p>The failures that did occur (acronym confabulation, unlinked subsystem, register confusion, taxonomy drift) form a small, recognizable taxonomy. Each is a specific, nameable documentation gap rather than a diffuse capability shortfall — which is itself evidence for the encoding claim: if the model were simply &quot;too weak,&quot; failures would look like confusion across the board rather than four sharply distinct, individually fixable gaps.</p>
+<hr>
+<h2>7. Boundaries and Non-Claims</h2>
+<p>This paper does not claim:</p>
+<ul>
+<li>Local models can replace the people who design or review this system.</li>
+<li>Any 14B (or any-size) model would recover the architecture map of <em>any</em>   other software project — this is one system, deliberately documented   for this purpose.</li>
+<li>The two runs are directly comparable performance data — model, context   window, and funnel method all differ between them.</li>
+<li>Passing-with-a-fixable-gap and passing-clean are the same outcome —   they are reported as distinct results throughout this paper.</li>
+<li>Run A&#x27;s per-probe answers are independently reproducible — they are   not; see §3.3.</li>
+<li>OpenWiki (or any other doc-chat tool) is validated as an evaluation   harness by this paper — the OpenWiki-adjacent control in §5 is an   invalid measurement, not a product endorsement or indictment.</li>
+</ul>
+<p>It claims only what §1 states: for this system, under two named methods, architecture recovery behaved as lookup rather than synthesis, and the failures that did occur were documentation gaps with one-line fixes.</p>
+<hr>
+<h2>8. Practical Rule</h2>
+<p>Before treating a local model&#x27;s cold-start read of a system as evidence of anything beyond documentation quality, ask three questions in order:</p>
+<ol>
+<li>Does the answer key exist in the repository in a form a cheap reader    can find — not just in the maintainer&#x27;s head or in scattered handoff    files?</li>
+<li>Does the funnel (whichever way it reaches the model — tool search or    pre-injection) actually fit inside the context window in use?</li>
+<li>Is the model&#x27;s answer text itself independently verifiable, or does    the record rest on someone&#x27;s notes about what the model said?</li>
+</ol>
+<p>For Run B in this paper, the answers were yes / yes / yes. For Run A, they were yes / yes (after correction) / <strong>no</strong> on the third question — and this paper says so in its abstract rather than its footnotes.</p>
+<hr>
+<h2>9. Reproducibility Commands</h2>
+<pre><code>
+cat docs/domain_runs/ENC-FLOOR-PACK-001/working_note.md
+cat docs/domain_runs/ENC-FLOOR-PACK-001/method_matrix.md
+cat docs/domain_runs/ENC-FLOOR-PACK-001/invalid_controls.md
+cat docs/domain_runs/ENC-FLOOR-PACK-001/promotion_packet.md
+
+# Run A — desktop gemma4:31b opr tool-use trace and serving config
+cat docs/domain_runs/ENC-FLOOR-PACK-001/desktop_gemma4_31b_opr_evidence.md
+cat docs/domain_runs/ENC-FLOOR-PACK-001/desktop_gemma4_31b_opr_tool_audit.jsonl
+cat docs/domain_runs/ENC-FLOOR-PACK-001/desktop_gemma4_31b_ollama_journal_excerpt.log
+
+# Run B — z13 qwen2.5-14b-24k static funnel
+cat docs/domain_runs/ENC-FLOOR-PACK-001/z13_static_funnel_raw.json
+cat docs/domain_runs/ENC-FLOOR-PACK-001/z13_static_funnel_answer.md
+python docs/domain_runs/ENC-FLOOR-PACK-001/bt_floor_probe_2026-07-18.py
+</code></pre>
+<p>Verify the key numeric claims:</p>
+<pre><code>
+grep -o &#x27;&quot;prompt_eval_count&quot;: [0-9]*&#x27; docs/domain_runs/ENC-FLOOR-PACK-001/z13_static_funnel_raw.json
+grep &quot;n_ctx&quot; docs/domain_runs/ENC-FLOOR-PACK-001/desktop_gemma4_31b_ollama_journal_excerpt.log
+</code></pre>
+<hr>
+<h2>10. Conclusion</h2>
+<p>The finding worth keeping is narrower than &quot;local models can read code.&quot; It is: when a system&#x27;s architecture is deliberately encoded as loadable, findable facts, cold-start recovery of that architecture stops requiring model-scale reasoning and starts rewarding documentation quality instead. Two independently-methoded local models recovered this system&#x27;s map under that condition; the gaps that surfaced were documentation gaps, not model failures, and each was closed in one line. The one place this paper declines to overstate itself is Run A&#x27;s answer text, which remains narration-sourced — a limit reported here as plainly as the result itself.</p>
+<blockquote><p>Write the system so the weakest useful reader can find the map. Then</p></blockquote>
+<blockquote><p>measure the floor — and say clearly which parts of that measurement you</p></blockquote>
+<blockquote><p>can still check tomorrow.</p></blockquote>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

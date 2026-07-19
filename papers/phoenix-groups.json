@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-06-16T06:15:16.586284+00:00",
+  "generated_at": "2026-07-19T20:55:01.721702+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -216,6 +216,54 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/when-local-llm-clusters-do-not-help.md",
           "publish": true,
           "summary": "Negative result from a heterogeneous consumer local-inference cluster: RPC sharding across a desktop RTX 3090 and z13 Radeon 8050S worked but underperformed desktop-local execution; z13's GPU-only ceiling stopped below the 26B/27B class; the Intel Mac Mini was CPU-only for this lane. The useful result is orchestration, not distributed inference."
+        },
+        {
+          "id": "dedicated-vs-unified-memory",
+          "title": "Dedicated 24 GB Beats Unified 27 GB: The Capacity Trap in Local Inference",
+          "source_path": "docs/DEDICATED_VS_UNIFIED_MEMORY.md",
+          "track": "paper",
+          "paper_number": "",
+          "lifecycle": "active draft",
+          "publication_status": "private",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "dedicated-vs-unified-memory",
+          "proto_output_path": "bulkhead-tau/generated-papers/dedicated-vs-unified-memory.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/dedicated-vs-unified-memory.md",
+          "publish": false,
+          "summary": "DRAFT. Head-to-head local-inference hardware note comparing a 24 GB RTX 3090 desktop against a 27 GB Strix Halo unified-memory laptop. The capacity result is the lead: the larger shared-memory label hides a smaller GPU-resident default ceiling and can invite dense-model spill to 5.4 tok/s. The speed result is conditional: the desktop is about 2x faster when capped at 200 W, but about 3.5x faster at 300 W measured warm and multi-prompt (matching the 3.66x bandwidth ratio), correcting the initial reading that the bandwidth spec was oversold. Multi-prompt variance pass completed 2026-07-05 (n=6/cell): revealed ~9% laptop thermal throttle and cold-start optimism in the single-prompt laptop numbers; gate closed, publication-ready pending decision."
+        },
+        {
+          "id": "supervision-bottleneck",
+          "title": "When Tokens Are Plentiful, Supervision Becomes the Bottleneck (Under Coarse Quota Regimes)",
+          "source_path": "docs/WHEN_TOKENS_ARE_PLENTIFUL_SUPERVISION_BECOMES_THE_BOTTLENECK.md",
+          "track": "paper",
+          "paper_number": "",
+          "lifecycle": "active draft",
+          "publication_status": "private",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "supervision-bottleneck",
+          "proto_output_path": "bulkhead-tau/generated-papers/supervision-bottleneck.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/supervision-bottleneck.md",
+          "publish": true,
+          "summary": "DRAFT. Auto-ethnographic finding from the Bulkhead tau game build: under coarse, turn-limited quota regimes, implementation tokens are abundant but barely register on coarse meters, so the binding constraint shifts to human supervision, specification clarity, and verification. Per-segment token deltas audited against measurement_result.md."
+        },
+        {
+          "id": "encoding-converts-synthesis-into-lookup",
+          "title": "Encoding Converts Architecture Recovery into Lookup",
+          "source_path": "docs/ENCODING_CONVERTS_SYNTHESIS_INTO_LOOKUP.md",
+          "track": "paper",
+          "paper_number": "1.40",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "encoding-converts-synthesis-into-lookup",
+          "proto_output_path": "bulkhead-tau/generated-papers/encoding-converts-synthesis-into-lookup.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/encoding-converts-synthesis-into-lookup.md",
+          "publish": true,
+          "summary": "Encoding a multi-repo system's architecture as loadable repository facts (glossary, boundaries doc, explicit non-claims) converts cold-start map recovery from synthesis into lookup: a 31B tool-using local agent and a 14B model reading a pre-injected funnel both recovered a real system's boundary map, with all failures traced to one-line documentation gaps rather than model limits. The paper states its own evidentiary limit plainly: the 14B run's answer text and prompt-fit are machine-verified from raw JSON, while the 31B run's per-probe answer text is narration-sourced only (tool-use trace and serving config are independently verified via an audit log and a systemd journal, but no chat transcript exists on disk)."
         }
       ]
     },
