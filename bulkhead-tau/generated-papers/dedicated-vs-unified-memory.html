@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dedicated 24 GB Beats Unified 27 GB: The Capacity Trap in Local Inference</title>
+  <meta name="description" content="Head-to-head local-inference hardware measurement comparing a 24 GB RTX 3090 desktop against a 27 GB Strix Halo unified-memory laptop. The capacity result is the lead: the larger shared-memory label hides a smaller GPU-resident default ceiling and can invite dense-model spill to 5.4 tok/s. The speed result is conditional: the desktop is about 2x faster when capped at 200 W, but about 3.5x faster at 300 W measured warm and multi-prompt (matching the 3.66x bandwidth ratio). A 2026-07-20 realistic-context residency confirmation (Section 12, num_ctx 8192, gemma4:26b/31b, GPU residency verified per cell via ollama ps) widened the measured desktop advantage to 3.7-4.9x and found the laptop spill ratio largely context-length-insensitive at these model sizes; the full power x context matrix remains unmeasured under residency confirmation and is out of scope for this freeze.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>Dedicated 24 GB Beats Unified 27 GB: The Capacity Trap in Local Inference</h1>
+    <p class="meta">Head-to-head local-inference hardware measurement comparing a 24 GB RTX 3090 desktop against a 27 GB Strix Halo unified-memory laptop. The capacity result is the lead: the larger shared-memory label hides a smaller GPU-resident default ceiling and can invite dense-model spill to 5.4 tok/s. The speed result is conditional: the desktop is about 2x faster when capped at 200 W, but about 3.5x faster at 300 W measured warm and multi-prompt (matching the 3.66x bandwidth ratio). A 2026-07-20 realistic-context residency confirmation (Section 12, num_ctx 8192, gemma4:26b/31b, GPU residency verified per cell via ollama ps) widened the measured desktop advantage to 3.7-4.9x and found the laptop spill ratio largely context-length-insensitive at these model sizes; the full power x context matrix remains unmeasured under residency confirmation and is out of scope for this freeze.</p>
+    <p class="meta">Canonical source: <code>docs/DEDICATED_VS_UNIFIED_MEMORY.md</code></p>
+    <p><strong>Status:</strong> active draft <strong>Date:</strong> 2026-07-04 (updated 2026-07-20, Section 12) <strong>Project:</strong> Project Phoenix / Bulkhead Tau <strong>Publication posture:</strong> paper-grade draft. Multi-prompt variance pass completed 2026-07-05 (Section 10); the core numbers are now variance-backed and the gate is closed. A realistic-context residency confirmation (Section 12) was folded in 2026-07-20 — it widens the desktop&#x27;s measured advantage on gemma4:26b/31b and flags that some earlier power-sweep numbers may not have been confirmed GPU-resident. Not yet frozen, pending a publication decision.</p>
+<h2>Abstract</h2>
+<p>Local LLM hardware is often compared by the largest advertised memory number: 24 GB dedicated VRAM, 27 GB unified memory, 64 GB system RAM, and so on. That comparison hides the two variables that matter operationally: how much memory the accelerator can actually address, and how fast the accelerator can read and compute through the model once it is resident.</p>
+<p>This paper reports a head-to-head local-inference measurement between a desktop RTX 3090 with 24 GB dedicated GDDR6X and a Strix Halo laptop with 27 GB shared LPDDR5X. The laptop is not a weak opponent: it is a best-case x86 unified-memory machine for local LLM work. Even so, the dedicated card wins on both dimensions that matter. It can keep larger practical models fully resident, and it runs fit-both models much faster.</p>
+<p>The result is sharper because the measurement corrected the interpretation repeatedly, then confirmed it. The datasheet suggested that the desktop should be roughly 3.6x faster from memory bandwidth alone. A first 200 W desktop run measured only about 2x and made the bandwidth story look oversold. A later 300 W run measured roughly 3x, showing that the 200 W result was a power-state artifact, not a refutation of the spec-sheet physics. Finally, a multi-prompt variance pass with the laptop measured warm rather than cold moved the dense ratio to about 3.5x, within a few percent of the 3.66x bandwidth prediction — the spec was not oversold at all; the early undershoots were stacked measurement artifacts. The final claim is therefore not a clean slogan. It is conditional and more useful:</p>
+<blockquote><p>Dedicated memory beats larger unified memory, but the size of the win depends</p></blockquote>
+<blockquote><p>on power state, model architecture, and whether the model spills.</p></blockquote>
+<h2>1. Question</h2>
+<p>The motivating question is simple:</p>
+<blockquote><p>Is a 27 GB unified-memory laptop a better local-inference machine than a</p></blockquote>
+<blockquote><p>24 GB dedicated-GPU desktop?</p></blockquote>
+<p>The naive answer is yes. Twenty-seven is larger than twenty-four, and unified memory is marketed as a way to make the whole system memory pool available to the accelerator.</p>
+<p>The measured answer is no. The larger sticker number is the trap. The laptop&#x27;s GPU-addressable allocation is much smaller than the advertised shared-memory pool under its default configuration, and when models spill past that boundary, throughput collapses. The desktop&#x27;s 24 GB is smaller on the label but more useful in practice because it is dedicated, high-bandwidth accelerator memory.</p>
+<p>This is a capacity paper and a speed paper. The capacity result is the lead: larger nominal unified memory can invite users to load models that run, but run badly. The speed result explains why: dedicated accelerator memory and adequate power keep the model on the fast path.</p>
+<h2>2. Hardware</h2>
+<table class="paper-table">
+<thead><tr><th></th><th>Desktop</th><th>Laptop</th></tr></thead>
+<tbody>
+<tr><td>Accelerator</td><td>NVIDIA RTX 3090</td><td>AMD Ryzen AI MAX 390 / Radeon 8050S</td></tr>
+<tr><td>Memory label</td><td>24 GB dedicated GDDR6X</td><td>27 GB shared LPDDR5X</td></tr>
+<tr><td>Approx. bandwidth</td><td>936 GB/s</td><td>256 GB/s</td></tr>
+<tr><td>GPU-addressable in tested default</td><td>24 GB</td><td>about 18 GB (4 GB VRAM + 13.8 GB GTT)</td></tr>
+<tr><td>Power state tested</td><td>200 W and 300 W</td><td>default laptop power state</td></tr>
+</tbody>
+</table>
+<p>The laptop is the strongest fair opponent for the claim. Strix Halo is designed for exactly this class of local workload: a large integrated GPU, a wide memory interface, and a unified pool intended to avoid the small-VRAM constraint of typical laptop GPUs. If the dedicated-vs-unified claim survives here, it is not merely beating a weak integrated GPU.</p>
+<h2>3. Measurement Path</h2>
+<p>The important methodological detail is that the conclusion moved as evidence improved.</p>
+<p>First, the datasheet intuition predicted a large desktop win. The RTX 3090&#x27;s 936 GB/s memory bandwidth is about 3.66x the laptop&#x27;s 256 GB/s LPDDR5X bandwidth.</p>
+<p>Second, the first head-to-head run was performed with the desktop card capped at 200 W for PSU safety. That run showed a smaller gap: roughly 1.6x to 2.2x on models that fit both machines. The provisional interpretation was that the bandwidth ratio overstated the real-world advantage.</p>
+<p>Third, the desktop was tested again at 300 W. That run moved the ratios to 3.20x on the dense 14B model and 2.96x on the MoE model. The corrected interpretation is that the 200 W cap compressed the desktop&#x27;s advantage. The spec sheet was not exactly the answer, but it was directionally vindicated once the card was allowed to operate near its real efficiency point.</p>
+<p>That arc matters. The paper does not ask the reader to trust a single after-the-fact story. It shows the story changing under measurement:</p>
+<pre><code>
+datasheet prediction -&gt; capped undershoot -&gt; uncapped vindication -&gt; variance-backed confirmation
+3.66x bandwidth      -&gt; about 2x measured -&gt; about 3x measured    -&gt; about 3.5x (dense, warm, n=6)
+</code></pre>
+<h2>4. Fit-Both Results</h2>
+<p>These rows compare models that fit on both machines without intentional CPU spill on the laptop. Rates are generation throughput in tokens per second from one warmed prompt per cell.</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Architecture</th><th>Size</th><th>Laptop iGPU</th><th>3090 at 200 W</th><th>3090 at 300 W</th><th>Ratio at 200 W</th><th>Ratio at 300 W</th></tr></thead>
+<tbody>
+<tr><td>qwen2.5-14b</td><td>dense</td><td>9 GB</td><td>20.5</td><td>33.8</td><td>65.5</td><td>1.65x</td><td>3.20x</td></tr>
+<tr><td>gpt-oss</td><td>MoE</td><td>13 GB</td><td>39.7</td><td>88.6</td><td>117.5</td><td>2.23x</td><td>2.96x</td></tr>
+</tbody>
+</table>
+<p>The qwen row is a throughput comparison, not a quality comparison: the desktop ran <code>qwen2.5-coder:14b</code> while the laptop ran <code>qwen2.5:14b</code>. They are the same architecture and size class, so the row is still useful for hardware throughput, but it should not be read as a byte-identical model comparison. The gpt-oss and gemma rows used matching model IDs on both machines.</p>
+<p>The fit-both result has two readings.</p>
+<p>At 200 W, the desktop still wins even while constrained: 1.65x on the dense model and 2.23x on the MoE model. That is the everyday, PSU-safe result for this workstation.</p>
+<p>At 300 W, the desktop moves close to the bandwidth intuition: 3.20x on dense qwen2.5-14b and 2.96x on gpt-oss. The gap does not exactly equal the 3.66x bandwidth ratio because inference throughput is not a pure bandwidth benchmark. But the corrected result is much closer to the spec-sheet prediction than the first capped run suggested.</p>
+<h2>5. Spill Results</h2>
+<p>The capacity trap appears when the laptop is allowed to load models that exceed its practical GPU-resident ceiling. These runs use the desktop at 200 W.</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Architecture</th><th>Size</th><th>Desktop</th><th>Laptop</th><th>Ratio</th><th>Laptop state</th></tr></thead>
+<tbody>
+<tr><td>gemma4:26b</td><td>MoE</td><td>17 GB</td><td>89.2</td><td>28.3</td><td>3.15x</td><td>spills 33% CPU</td></tr>
+<tr><td>gemma4:31b</td><td>dense</td><td>19 GB</td><td>14.3</td><td>5.4</td><td>2.64x</td><td>spills 44% CPU</td></tr>
+</tbody>
+</table>
+<p>The dense spill row is the headline failure. The laptop can be made to run a 19 GB dense model, but it runs at 5.4 tok/s. That is not a useful victory for the larger memory label. It is the hardware equivalent of passing a load test by falling onto the slow path.</p>
+<p>The MoE spill row is more forgiving. gemma4:26b spills 33% to CPU but still generates 28.3 tok/s. That is slower than the desktop by 3.15x, but it remains usable. The likely explanation is architectural: inactive experts are less frequently read, so CPU-resident weights hurt less than they do in a dense model where every token touches the whole active weight path.</p>
+<p>The operational lesson is not &quot;spill is always fatal.&quot; It is narrower and more actionable:</p>
+<blockquote><p>Spill severity is architecture-dependent. Dense spill is catastrophic; MoE</p></blockquote>
+<blockquote><p>spill can degrade gracefully.</p></blockquote>
+<p>These rows predate the <code>num_ctx 8192</code> GPU-residency fix (Section 12) and did not log <code>ollama ps</code> residency confirmation for the desktop side. Section 12 re-runs both models with residency verified per cell; the laptop&#x27;s spill percentage barely moves, but the desktop numbers come in higher, widening these ratios.</p>
+<h2>6. Power Scaling</h2>
+<p>The desktop power sweep explains why the first speed conclusion was wrong. The card was not merely memory-bound at 200 W. Dense inference was strongly compute-bound under the cap.</p>
+<table class="paper-table">
+<thead><tr><th>Power</th><th>gemma4:26b MoE</th><th>gemma4:31b dense</th></tr></thead>
+<tbody>
+<tr><td>200 W</td><td>89.8</td><td>14.1</td></tr>
+<tr><td>250 W</td><td>97.8</td><td>23.5</td></tr>
+<tr><td>300 W</td><td>101.8</td><td>30.8</td></tr>
+<tr><td>350 W</td><td>99.9</td><td>31.7</td></tr>
+<tr><td>200 W to peak</td><td>+13%</td><td>+124%</td></tr>
+</tbody>
+</table>
+<p>The dense model more than doubled from 200 W to peak. That is the mechanism behind the corrected interpretation: the 200 W desktop was artificially starved. The laptop did not close the physical gap; the desktop cap hid it.</p>
+<p>The MoE row is different. gemma4:26b gained only about 13% and then plateaued. But this does not justify the blanket claim that MoE is power-insensitive: gpt-oss improved from 88.6 tok/s at 200 W to 117.5 tok/s at 300 W, a 33% gain. The better rule is that power elasticity is model- and architecture-dependent, with dense models in this set showing the strongest response.</p>
+<p>The 300 W row is also the practical efficiency knee. Moving from 300 W to 350 W bought essentially nothing in this measurement.</p>
+<p>This sweep did not confirm GPU residency per row. Section 12&#x27;s 220 W, <code>num_ctx 8192</code> run measured gemma4:31b at 18.1 tok/s with 100% GPU residency verified via <code>ollama ps</code> — higher than this table&#x27;s 200 W entry (14.1 tok/s) despite the lower power cap. The likely explanation is that some cells in this sweep were partially CPU-spilling without anyone checking; see Section 12 for the caveat on how much weight the 200–350 W numbers above should carry as a &quot;GPU-only&quot; baseline.</p>
+<h2>7. Findings</h2>
+<h3>Finding 1: Capacity Is Not The Advertised Memory Number</h3>
+<p>The laptop&#x27;s 27 GB shared-memory label did not behave like 27 GB of useful GPU memory. Under the tested default split, the iGPU had about 18 GB addressable before spill. The desktop&#x27;s 24 GB dedicated VRAM was smaller on the label and larger in the operational sense that matters: it stayed on the accelerator.</p>
+<p>This is the capacity trap. The larger number encourages a user to try larger models. Some of those models load. The failure is that loading is mistaken for running well.</p>
+<h3>Finding 2: Dedicated Memory Wins Even When Power-Capped</h3>
+<p>At 200 W, the 3090 beat the laptop by 1.65x to 2.23x on fit-both models and by 2.64x to 3.15x on spill rows. That is the conservative desktop result because the card is being held below its normal operating envelope.</p>
+<p>This matters for real operators. A marginal PSU or thermal limit can compress the desktop advantage, but it did not reverse it.</p>
+<h3>Finding 3: At Real Power, The Desktop Moves Back Toward The Spec Ratio</h3>
+<p>At 300 W, the desktop reached 3.20x on dense qwen2.5-14b and 2.96x on gpt-oss in the single-prompt pass. The variance pass (Section 10) later refined these to 3.54x and 3.15x once the laptop was measured warm — even closer to the 3.66x bandwidth ratio. Either way, the numbers are close enough to change the interpretation. The first 200 W result was not evidence that the bandwidth story was fake. It was evidence that the desktop card was capped.</p>
+<p>This is the paper&#x27;s most important correction. The measurement does not dunk on the spec sheet. It shows where the spec sheet is conditional.</p>
+<h3>Finding 4: Architecture Can Dominate Hardware</h3>
+<p>On the same desktop at 200 W, gemma4:26b generated about 89 tok/s while gemma4:31b generated about 14 tok/s. That is a roughly 6x swing on the same machine from model architecture and serving behavior alone.</p>
+<p>This limits the hardware conclusion. Hardware comparisons are meaningful only when the model is held constant or when the model differences are explicitly part of the claim. Mixing dense and MoE rows into one generic &quot;hardware speed&quot; number would be misleading.</p>
+<h2>8. Relationship To HET-GPU-001</h2>
+<p>This paper pairs with HET-GPU-001, the earlier distributed sharding result. In that run, a desktop RTX 3090 plus z13 Radeon 8050S RPC shard generated 8.4 tok/s on Qwen2.5-32B Q3, while the desktop alone generated 18.6 tok/s. The cluster worked, but it was slower than the dominant node.</p>
+<p>Together the two results form a local-inference hardware pattern:</p>
+<table class="paper-table">
+<thead><tr><th>Intuition</th><th>Measured result</th></tr></thead>
+<tbody>
+<tr><td>Add another node to increase capability</td><td>Heterogeneous sharding worked but slowed generation when one node dominated</td></tr>
+<tr><td>Buy the larger unified-memory number</td><td>The larger nominal pool spilled and crawled on dense models</td></tr>
+<tr><td>Use the spec sheet as the whole answer</td><td>The spec was directionally right only after power state was controlled</td></tr>
+</tbody>
+</table>
+<p>The unifying claim is not anti-laptop or anti-cluster. It is anti-sticker-spec. Local inference is governed by residency, bandwidth, power state, architecture, and synchronization costs. The shopping number is only one input.</p>
+<h2>9. Proof Boundary</h2>
+<p>This paper supports a bounded claim:</p>
+<blockquote><p>On the tested consumer local-inference setup, a 24 GB dedicated RTX 3090 is a</p></blockquote>
+<blockquote><p>better practical local LLM accelerator than a 27 GB Strix Halo unified-memory</p></blockquote>
+<blockquote><p>laptop for the measured model classes.</p></blockquote>
+<p>It does not prove:</p>
+<ul>
+<li>that all dedicated GPUs beat all unified-memory systems</li>
+<li>that Strix Halo is a bad local-inference platform</li>
+<li>that 300 W is the correct operating point for every 3090</li>
+<li>that MoE spill always remains usable</li>
+<li>that the measured ratios will hold across every prompt shape or context size</li>
+<li>that the qwen row is a byte-identical model comparison; it is an   architecture-and-size-class throughput comparison</li>
+</ul>
+<p>It does show:</p>
+<ul>
+<li>the laptop&#x27;s default GPU-addressable memory ceiling was below its advertised   shared-memory label</li>
+<li>dense spill produced an operationally poor 5.4 tok/s result</li>
+<li>the desktop won at both 200 W and 300 W</li>
+<li>the 300 W result moved the speed gap back toward the bandwidth ratio</li>
+<li>model architecture changed both absolute throughput and spill severity</li>
+</ul>
+<h2>10. Multi-Prompt Variance Pass (2026-07-05, gate closed)</h2>
+<p>The promotion gate — multiple prompts and warm runs per cell — has now been run: three prompts (technical, narrative, historical) times two warm runs, six samples per cell. It did three things: tightened the fit-both numbers with real variance, corrected the laptop numbers downward, and surfaced a thermal effect the single-prompt runs had hidden.</p>
+<h3>Desktop variance (n=6, tokens/sec)</h3>
+<table class="paper-table">
+<thead><tr><th>Power</th><th>qwen2.5-coder:14b dense</th><th>gpt-oss MoE</th></tr></thead>
+<tbody>
+<tr><td>200 W</td><td>31.8 (30.9-32.9)</td><td>78.9 (73.6-82.0)</td></tr>
+<tr><td>300 W</td><td>62.3 (61.8-62.6)</td><td>115.4 (111.8-117.1)</td></tr>
+</tbody>
+</table>
+<p>Desktop variance is small — within about +/-5%, and under +/-1.5% at 300 W. One correction falls out: the single-prompt gpt-oss 200 W value (88.6, Section 4) was above even the six-run maximum (82.0). The honest mean is 78.9; the single &quot;engine&quot; prompt simply generated faster than average.</p>
+<h3>Laptop variance and thermal throttling (n=6)</h3>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>mean</th><th>range</th><th>note</th></tr></thead>
+<tbody>
+<tr><td>qwen2.5:14b dense</td><td>17.6</td><td>16.9-18.5</td><td>throttles with temperature</td></tr>
+<tr><td>gpt-oss MoE</td><td>36.6</td><td>35.9-37.2</td><td>measured already warm, stable</td></tr>
+</tbody>
+</table>
+<p>The dense laptop run, taken from cold, throttled monotonically as the chip heated:</p>
+<pre><code>
+18.53@42C  18.06@49C  17.99@50C  17.17@52C  16.94@52C  16.92@52C
+</code></pre>
+<p>That is about a 9% decline from the first run to steady state — a real thin-laptop thermal effect, not measurement noise. The consequence is that the Section 4 single-prompt laptop numbers were cold-start optimistic: qwen2.5:14b read 20.5 on a cold first run but settles near 17.6 warm, and gpt-oss read 39.7 cold versus 36.6 warm. A laptop under sustained load is slower than a cold spot-check suggests; the desktop, capped and cooled, showed no such drift.</p>
+<h3>Corrected fit-both ratios (robust warm means)</h3>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>laptop warm</th><th>3090 @200W</th><th>3090 @300W</th><th>ratio @200W</th><th>ratio @300W</th></tr></thead>
+<tbody>
+<tr><td>qwen2.5-14b dense</td><td>17.6</td><td>31.8</td><td>62.3</td><td>1.81x</td><td>3.54x</td></tr>
+<tr><td>gpt-oss MoE</td><td>36.6</td><td>78.9</td><td>115.4</td><td>2.16x</td><td>3.15x</td></tr>
+</tbody>
+</table>
+<p>With rigorous means the 300 W dense ratio is 3.54x — within a few percent of the 3.66x bandwidth ratio. The bandwidth intuition was not oversold; the earlier undershoots were a power-cap artifact on the desktop and a cold-start artifact on the laptop, stacked. Cleaned up, the spec-sheet prediction essentially lands.</p>
+<h3>Gate status</h3>
+<p>The multi-prompt variance gate is <strong>closed</strong>. The one remaining optional item is the BIOS UMA/GTT split sweep on the laptop, which — as noted above — would not change the LPDDR5X bandwidth or the fit-both speed comparison; it could only reduce spill on some rows. The small reproducibility runner this section once called for now exists (Section 12) and was used for a realistic-context residency confirmation on gemma4:26b/31b — but the core numbers here predate that confirmation and are now variance-backed rather than residency-verified. The paper is publication-ready on the variance question; Section 12 opens a narrower, separate question about whether the desktop&#x27;s earlier power-sweep numbers under-reported due to unconfirmed residency.</p>
+<h2>11. Reproducibility Notes</h2>
+<p>Primary local artifacts:</p>
+<ul>
+<li><code>docs/DEDICATED_VS_UNIFIED_MEMORY.md</code></li>
+<li><code>docs/domain_runs/HET-GPU-001/sharded_comparison_findings.md</code></li>
+<li><code>docs/domain_runs/NODE-MODEL-MATRIX-002/findings.md</code></li>
+<li><code>docs/domain_runs/GEMMA4-CTX8192-3090-VS-Z13-001/findings.md</code></li>
+</ul>
+<p>Useful inspection commands:</p>
+<pre><code>
+cat docs/DEDICATED_VS_UNIFIED_MEMORY.md
+cat docs/domain_runs/HET-GPU-001/sharded_comparison_findings.md
+cat docs/domain_runs/NODE-MODEL-MATRIX-002/findings.md
+cat docs/domain_runs/GEMMA4-CTX8192-3090-VS-Z13-001/findings.md
+</code></pre>
+<p>The reproducibility runner this section previously called for now exists: <code>docs/domain_runs/GEMMA4-CTX8192-3090-VS-Z13-001/instructions.md</code> records prompt, model ID, machine, power state, <code>ollama ps</code> residency, token rate, and raw log path for each trial (see Section 12). It covers gemma4:26b/31b only, at one context length and one desktop power point — not the full matrix this paper&#x27;s earlier sections span (200–350 W, multiple models). That broader residency-confirmed re-measurement across power states is explicitly out of scope for this freeze; Section 12&#x27;s proof boundary states that limit directly rather than implying full coverage.</p>
+<h2>12. Realistic-Context Residency Confirmation (num_ctx 8192, 2026-07-20)</h2>
+<p>Sections 5 and 6 report gemma4:26b/31b throughput and spill state, but neither logged GPU-residency confirmation per row, and neither pinned context length. This section closes that gap on two models: <code>gemma4:26b</code> (MoE, 17 GB) and <code>gemma4:31b</code> (dense, 19 GB), run with <code>num_ctx 8192</code> pinned explicitly on every call — the setting separately established (2026-06-24) as necessary for <code>gemma4:31b</code> to reach 100% GPU residency on the desktop — and with <code>ollama ps</code> residency checked after every load, not assumed.</p>
+<p>The desktop ran at 220 W, not 300 W. <code>gemma4:26b</code> is the exact model that caused CRASH-20260502-01 at 330 W (Section 2 hardware note); 220 W is this rig&#x27;s verified-stable floor, so this run stayed there rather than default to the 320 W doctrine now in force for other workloads. The ratios below are therefore not directly comparable to the 300 W rows in Sections 4–6 on power alone — they isolate the residency-confirmation and context-length variables instead.</p>
+<p>Byte-identical model files were used on both machines (Ollama IDs <code>5571076f3d70</code> / <code>6316f0629137</code> match on desktop and laptop). Each cell is 3 API calls (<code>temperature 0</code>, <code>num_predict 256</code>); run 1 includes model load, runs 2–3 are warm and reported as the mean below. Zero errors, zero crashes, across all 12 calls.</p>
+<table class="paper-table">
+<thead><tr><th>Model</th><th>Desktop @ 220W</th><th>Laptop</th><th>Ratio</th><th>Desktop residency</th><th>Laptop residency</th></tr></thead>
+<tbody>
+<tr><td>gemma4:26b (MoE)</td><td>91.4 tok/s</td><td>18.8 tok/s</td><td>4.86x</td><td>100% GPU</td><td>38%/62% CPU/GPU</td></tr>
+<tr><td>gemma4:31b (dense)</td><td>18.1 tok/s</td><td>4.9 tok/s</td><td>3.72x</td><td>100% GPU</td><td>45%/55% CPU/GPU</td></tr>
+</tbody>
+</table>
+<h3>Finding: the laptop&#x27;s spill split is largely context-length-insensitive</h3>
+<p>The pre-registered risk was that pinning <code>num_ctx 8192</code> — larger than whatever context Sections 5&#x27;s laptop numbers used — would push the laptop further into CPU spill, since its ~17.5 GiB UMA ceiling is already tight. That did not happen in any meaningful way: <code>gemma4:26b</code> spills 38% CPU here versus 33% recorded earlier (NODE-MODEL-MATRIX-002); <code>gemma4:31b</code> spills 45% versus 44% (Section 5). An 8192-token KV cache is small relative to a 17–19 GB model&#x27;s weight footprint, so at these model sizes, context length up to 8192 tokens is not what drives the capacity trap — weight size is.</p>
+<h3>Finding: the gap widened because the desktop got faster, not because the laptop got slower</h3>
+<p>Given the laptop barely moved, the wider ratios here (4.86x / 3.72x) versus Section 5&#x27;s 200 W spill-table ratios (3.15x / 2.64x) are most likely explained by the desktop side. Section 5&#x27;s numbers predate the <code>num_ctx 8192</code> fix and never logged <code>ollama ps</code> residency — it is plausible they were partially CPU-spilling without anyone confirming otherwise at the time. This run is the first in this paper to state desktop GPU residency as a verified fact per cell rather than an assumption. If that explanation is right, Sections 5 and 6&#x27;s desktop numbers understate its realistic-context ceiling, and the 3.7–4.9x range here is the more honest one to carry forward. This is flagged as the most likely explanation, not a proven mechanism — the earlier runs cannot be retroactively checked for residency; they simply didn&#x27;t log it.</p>
+<h3>Proof boundary</h3>
+<p>This section shows:</p>
+<ul>
+<li>gemma4:26b/31b at 4.86x/3.72x on this rig, <code>num_ctx 8192</code>, with both   desktop residency and laptop spill percentage directly verified per cell</li>
+<li>the laptop&#x27;s spill ratio is largely context-length-insensitive across the   range tested (Sections 5/NODE-MODEL-MATRIX-002&#x27;s context → 8192) for these   two model sizes</li>
+<li>the full 12-call pass completed with zero errors or crashes, including on   the desktop at 220 W running the model with a prior crash history at 330 W</li>
+</ul>
+<p>It does not show:</p>
+<ul>
+<li>that Sections 5–6&#x27;s desktop numbers were definitely under-residency — that   is the best available explanation given the evidence, not a confirmed one</li>
+<li>results at any power point other than 220 W, or any context length other   than 8192 — the full 200–350 W × context matrix has not been re-run with   residency confirmed</li>
+<li>anything about a real NVIDIA DGX Spark — the laptop remains a unified-memory   architecture stand-in, not a benchmarked Spark</li>
+</ul>
+<p>Full evidence: <code>docs/domain_runs/GEMMA4-CTX8192-3090-VS-Z13-001/</code> (raw API responses, <code>ollama ps</code> captures, and <code>findings.md</code> for both machines).</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>
