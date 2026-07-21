@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphify&#x27;s Reduction Ratio Tracks Graph Density, Not Code Quality</title>
+  <meta name="description" content="Two intuitive hypotheses about what a code-graph tool&#x27;s token-reduction ratio measures -- modularity, then raw corpus size -- were each proposed from limited evidence and each falsified by a real contrasting corpus chosen specifically to test them. A third hypothesis, graph density (edges per node, inverse), fit the falsified hypotheses&#x27; data retrospectively, was confirmed by an exact independent reproduction of a previously unverified number, then tested predictively twice: once on a corpus later retracted as flagship evidence after its provenance turned out to be uncertain (likely an old coding-eval submission), once on a corpus chosen because its author could vouch for it. Both predictions were directionally correct; the second missed its predicted magnitude by roughly 5x, which the paper treats as the most interesting open question rather than smoothing over -- the true relationship may be closer to a power law than linear. A secondary finding: the provenance error in the first predictive corpus was caught by the author reviewing results, not by any automated check, and is reported as part of the method rather than edited out.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>Graphify&#x27;s Reduction Ratio Tracks Graph Density, Not Code Quality</h1>
+    <p class="meta">Two intuitive hypotheses about what a code-graph tool&#x27;s token-reduction ratio measures -- modularity, then raw corpus size -- were each proposed from limited evidence and each falsified by a real contrasting corpus chosen specifically to test them. A third hypothesis, graph density (edges per node, inverse), fit the falsified hypotheses&#x27; data retrospectively, was confirmed by an exact independent reproduction of a previously unverified number, then tested predictively twice: once on a corpus later retracted as flagship evidence after its provenance turned out to be uncertain (likely an old coding-eval submission), once on a corpus chosen because its author could vouch for it. Both predictions were directionally correct; the second missed its predicted magnitude by roughly 5x, which the paper treats as the most interesting open question rather than smoothing over -- the true relationship may be closer to a power law than linear. A secondary finding: the provenance error in the first predictive corpus was caught by the author reviewing results, not by any automated check, and is reported as part of the method rather than edited out.</p>
+    <p class="meta">Canonical source: <code>docs/GRAPHIFY_REDUCTION_TRACKS_DENSITY.md</code></p>
+    <p><strong>Status:</strong> active draft <strong>Date:</strong> 2026-07-20 <strong>Project:</strong> Project Phoenix / Bulkhead Tau <strong>Publication posture:</strong> paper-grade draft. Both falsification rounds and both predictive tests are complete; the functional form of the density-reduction relationship is not yet fit to anything and is stated as an open question, not a finding.</p>
+<h2>Abstract</h2>
+<p><code>graphify</code> is a code-graph tool that scopes an AI assistant&#x27;s context to a single node&#x27;s neighborhood instead of a whole repository, reporting a token-reduction ratio for that scoping. The natural reading of a high or low ratio is that it says something about the codebase — that a low ratio means a monolithic file needing decomposition, or that a high ratio means a well-factored one. Neither reading survived contact with a real contrasting corpus.</p>
+<p>This paper reports five rounds of measurement against six real codebases. The first hypothesis — low ratio flags a monolithic file — was proposed from one corpus and falsified by a second, genuinely modular one that scored almost identically. The second hypothesis — the ratio tracks raw graph size — fit three points cleanly and was falsified by a fourth, smaller corpus that produced the highest ratio measured. The third hypothesis — the ratio tracks graph density (edges per node), inversely — fit all four points retrospectively, was confirmed by an exact independent reproduction of a previously reported-only number, and was then tested predictively twice: once on a corpus later retracted for uncertain provenance, once on a corpus chosen specifically because its author could vouch for it. Both predictions were directionally correct. The second one missed its predicted magnitude by roughly 5x, which is itself informative: it suggests the true relationship is closer to a power law than the roughly linear shape the first four points implied, a question this paper leaves open rather than answers.</p>
+<p>A secondary and unplanned finding came from the process itself: a predictive corpus was chosen, run, and written up as flagship evidence before its provenance was checked, and only caught because the paper&#x27;s author flagged an unfamiliar codebase in the results. That correction — a falsification loop catching its own methodology, not just its hypotheses — is reported here as a first-class part of the result, not edited away.</p>
+<h2>1. Question</h2>
+<p>The motivating question:</p>
+<blockquote><p>Does <code>graphify</code>&#x27;s reported token-reduction ratio measure something about</p></blockquote>
+<blockquote><p>a codebase&#x27;s quality or structure — or does it measure something else</p></blockquote>
+<blockquote><p>entirely?</p></blockquote>
+<p>The naive answer is that it measures quality: a tool built to compress context by exploiting modular structure should reward codebases that have more of that structure to exploit. A low ratio would then be a legitimate &quot;this file needs splitting&quot; signal, and a high ratio a legitimate &quot;this is well-factored&quot; signal.</p>
+<p>The measured answer is that it measures neither reliably. It measures graph density — a real, mechanistically sensible property, but one that correlates with modularity and code quality only loosely, and that can be driven low by a single large file or high by a scattered collection of independent scripts regardless of whether either is &quot;good&quot; code.</p>
+<h2>2. Method</h2>
+<p>The tool is <code>Evaluation/graphify_compare.py</code>, a loose utility script (not part of any tracked repo) that wraps the <code>graphify</code> library (<code>pip install graphifyy</code>, pinned at <code>0.9.22</code> for every run in this paper). It performs one real graph load per run and calls <code>analyze.god_nodes()</code>, <code>benchmark.run_benchmark()</code>, and <code>serve._find_node()</code> directly against the library — it does not scrape CLI stdout, and this was confirmed by reading the script before trusting any of its output.</p>
+<p>Every run in the &quot;independently run/re-run&quot; column below was executed in an isolated Python venv (<code>python3 -m venv</code>, <code>pip install graphifyy networkx</code>) separate from any project venv, with numbers read directly off the generated HTML/JSON output — never copied from a prior report. Rows marked &quot;reported only&quot; were not independently verified at the time and are labeled as such throughout.</p>
+<h2>3. Measurement Path</h2>
+<p>The important methodological fact is that the working hypothesis changed three times, and each change came from running the tool against a new corpus, not from reasoning about it in advance.</p>
+<pre><code>
+modularity hypothesis -&gt; falsified by ppr-agent
+size hypothesis       -&gt; fit n=3, falsified by YieldModel
+density hypothesis    -&gt; fit n=4 retrospectively, confirmed by exact re-run
+                       -&gt; predicted correctly on Algos (retracted: provenance)
+                       -&gt; predicted direction correctly on Sensors/ (magnitude missed 5x)
+</code></pre>
+<h3>3.1 Modularity (falsified)</h3>
+<p>The first run, <code>operator-control-plane</code> — <code>Evaluation/operator</code> and its supporting specs/tests/scripts, scoped per <code>Evaluation/CLAUDE.md</code>&#x27;s own definition of the control plane — produced 183 nodes, 449 edges, 3.1x reduction. <code>operator</code> is a single ~4,700-line file, so the natural reading was that a low ratio reflects a lack of module boundaries to exploit.</p>
+<p><code>ppr-agent</code> — a genuinely modular codebase (9 files across 4 directories, largest file 730 lines, the substrate behind Paper 1.18) — was run as the contrasting test the modularity hypothesis needed. It scored 3.6x: barely above <code>operator</code>&#x27;s ratio, not the high ratio a modular codebase should have produced if modularity were the driver.</p>
+<h3>3.2 Size (falsified)</h3>
+<p>With the modularity story broken, the three points collected so far (operator 180 nodes/3.1x, ppr-agent 271 nodes/3.6x, <code>graphify/extractors/</code> 424 nodes/5.8x, reported only) tracked node count monotonically. <code>YieldModel</code> — an 18-file, 8-directory codebase unrelated to either <code>graphify</code> or <code>operator</code> — was run as the test this hypothesis needed: a corpus with fewer nodes than any prior run. It produced 150 nodes and 7.2x reduction — the highest ratio measured to that point, on the smallest graph. Node count does not explain the data.</p>
+<h3>3.3 Density (fit retrospectively, then confirmed, then predicted)</h3>
+<p>Graph density — edges divided by nodes — fit the three points that had edge counts (<code>operator</code> 2.48/3.1x, <code>ppr-agent</code> 1.82/3.6x, <code>YieldModel</code> 1.42/7.2x), inversely and monotonically. The <code>graphify/extractors/</code> row had been reported-only since the first round; independently re-running it from the installed <code>graphifyy==0.9.22</code> package&#x27;s own source reproduced the originally reported numbers exactly (424 nodes, 5.8x, <code>_read_text()</code> at degree 71 — no gap, unlike <code>operator-control-plane</code>&#x27;s small unresolved one) and supplied the missing edge count: 733, density 1.73. That point slotted in cleanly between <code>ppr-agent</code> and <code>YieldModel</code> on the same curve, confirming density retrospectively at n=4.</p>
+<p>A retrospective fit is weaker evidence than a prediction. <code>Algos/</code> — an 8-file collection whose imports were grepped before graphify ran and found to have zero local cross-file references anywhere — was predicted, in writing, before running: lower density and higher reduction than <code>YieldModel</code>. It landed at density 0.99 (lowest measured) and reduction 14.4x (highest measured), extending the curve rather than breaking it.</p>
+<h3>3.4 The provenance correction</h3>
+<p><code>Algos/</code> was chosen for its structural property alone. Its provenance was not checked before it became the paper&#x27;s flagship predictive evidence. When the results were reviewed, the author of this codebase flagged <code>Algos/</code> as unfamiliar — an empty sibling directory named <code>hopcroft-dfa-erik-600c</code> matches a downloaded coding-assessment submission naming pattern (problem name / username / hash), and the accompanying README reads as generically templated rather than personally authored.</p>
+<p>The measurement itself was not in question — the numbers were real and independently produced. What was in question was whether a corpus of uncertain, possibly non-representative origin should anchor a stub&#x27;s central predictive claim. It should not, and this paper retracts <code>Algos/</code> as flagship evidence while keeping its numbers in the record. The lesson — check a corpus&#x27;s provenance before choosing it, not after being asked to — is recorded here as a first-class part of the method, not an embarrassing footnote removed from the final draft.</p>
+<h3>3.5 A harder, replacement prediction</h3>
+<p><code>Sensors/ZeppU</code> — real personal tennis and golf sensor-analysis code — was chosen as the replacement specifically because its author could vouch for it. Its structure was read before running: every <code>main.py</code> in seven subdirectories imports its own sibling <code>wrangle.py</code>; none cross subdirectories. That is real coupling, unlike <code>Algos/</code>&#x27;s zero, but fragmented into small isolated pairs — a harder, mid-range prediction than <code>Algos/</code>&#x27;s extreme one. The prediction, stated before running: density between <code>Algos</code> (0.99) and <code>YieldModel</code> (1.42); reduction between <code>YieldModel</code> (7.2x) and <code>Algos</code> (14.4x).</p>
+<p><code>ZeppU</code> alone produced a graph too small for <code>graphify</code> to find a god node at all — 21 nodes, 7 edges, and an outright error rather than a number. This is a real negative result: <code>graphify</code>&#x27;s benchmark step appears to need a minimum amount of code structure to function, and short, flat, procedural data-wrangling scripts can fall under that floor. The scope was widened to the whole <code>Sensors/</code> tree (36 files across six sibling sensor projects, same &quot;many small independent modules&quot; character, more code mass): 66 nodes, 38 edges.</p>
+<p>Density landed at 0.58 — sparser than predicted, correct direction, extending the record. Reduction landed at 72.1x — also correct direction, but roughly 5x past the top of the predicted 7–14x range. The relationship survived a second predictive test in direction. It did not survive in magnitude, and that gap is the paper&#x27;s most interesting open finding: a comparatively small drop in density (0.99 to 0.58) produced a disproportionately large jump in reduction (14.4x to 72.1x), which reads as evidence for a non-linear, plausibly power-law-shaped relationship rather than the roughly linear one the first four points suggested.</p>
+<h2>4. Results</h2>
+<table class="paper-table">
+<thead><tr><th>Corpus</th><th>Nodes</th><th>Edges</th><th>Density (e/n)</th><th>Reduction</th><th>Evidence status</th></tr></thead>
+<tbody>
+<tr><td>Sensors/ (widened from ZeppU)</td><td>66</td><td>38</td><td>0.58</td><td>72.1x</td><td>Predicted direction correct, magnitude exceeded prediction</td></tr>
+<tr><td>Algos</td><td>104</td><td>103</td><td>0.99</td><td>14.4x</td><td>Predicted correctly, retracted as flagship — uncertain provenance</td></tr>
+<tr><td>YieldModel</td><td>150</td><td>213</td><td>1.42</td><td>7.2x</td><td>Independently run</td></tr>
+<tr><td>graphify/extractors/</td><td>424</td><td>733</td><td>1.73</td><td>5.8x</td><td>Independently run, exact match to reported</td></tr>
+<tr><td>ppr-agent</td><td>271</td><td>492</td><td>1.82</td><td>3.6x</td><td>Independently run</td></tr>
+<tr><td>operator-control-plane</td><td>180</td><td>446</td><td>2.48</td><td>3.1x</td><td>Independently re-run, small unresolved gap vs. reported</td></tr>
+</tbody>
+</table>
+<p>All six order monotonically by density, including the retracted <code>Algos</code> row. God nodes across the six runs: <code>serve_hist()</code> (a real rendering function), <code>hopcroft_minimize()</code> (a real, on-topic algorithm function), <code>render_era()</code> (a real, specific report function), <code>_read_text()</code> (a real low-level utility, informative in its own right as a god node), <code>PlanBuilder</code> (a real core class), and <code>TestOperatorCLI</code> (a test class outranking <code>operator</code>&#x27;s own entry point — the one case where the auto-picked &quot;explain&quot; target was arguably the wrong thing to surface by default).</p>
+<h2>5. Findings</h2>
+<h3>Finding 1: Two Intuitive Hypotheses, Two Falsifications</h3>
+<p>Modularity and raw node count both looked like clean, sufficient explanations when tested against fewer than four corpora each. Both broke immediately against a real, deliberately chosen contrasting corpus. A hypothesis that fits every point it has been shown is not evidence of correctness; it is evidence that not enough contrasting points have been tried yet.</p>
+<h3>Finding 2: Density Direction Confirmed Twice, Magnitude Confirmed Once</h3>
+<p>Density predicted the correct direction on two separate corpora chosen in advance for a specific structural property, not selected after seeing a result. On the harder of the two predictions (<code>Sensors/</code>, a mid-range target rather than an extreme one), the direction held but the magnitude missed by roughly 5x — evidence the relationship is real but its exact shape is not yet known.</p>
+<h3>Finding 3: A Codebase Too Sparse to Analyze Is a Real Failure Mode</h3>
+<p><code>Sensors/ZeppU</code> alone produced no god node and no benchmark number at all. Short, flat, function-poor procedural scripts can fall under whatever minimum-structure threshold <code>graphify</code>&#x27;s benchmark step requires. This is useful operational knowledge independent of the density question: pointing <code>graphify</code> at a small, script-heavy directory may fail outright rather than report a low but valid number.</p>
+<h3>Finding 4: Evidence Provenance Is Part of the Measurement, Not a Footnote</h3>
+<p>A predictive corpus was run, written up, and treated as the paper&#x27;s strongest evidence before its origin was checked. The correction — flagged by the paper&#x27;s own author reviewing the result, not caught by any automated check — is preserved in this paper rather than quietly edited out. A falsification loop that only ever falsifies its hypotheses and never its own procedural shortcuts is missing half the discipline it&#x27;s supposed to have.</p>
+<h2>6. Proof Boundary</h2>
+<p>This paper supports:</p>
+<blockquote><p><code>graphify</code>&#x27;s reduction ratio correlates with graph density (edges per</p></blockquote>
+<blockquote><p>node), inversely, confirmed by two independent advance predictions on</p></blockquote>
+<blockquote><p>two different real codebases — one later retracted from flagship status</p></blockquote>
+<blockquote><p>for provenance reasons, one confirmed in direction on a codebase the</p></blockquote>
+<blockquote><p>author could vouch for.</p></blockquote>
+<p>It does not show:</p>
+<ul>
+<li>the exact functional form of the density-reduction relationship (linear,   power-law, or otherwise) — six points establish monotonic ordering, not   a fitted curve</li>
+<li>that density is the <em>only</em> variable that matters — confounds with   language, file-length distribution, or <code>graphify</code>&#x27;s own extraction   heuristics have not been ruled out</li>
+<li>that <code>graphify/extractors/</code>, being the tool&#x27;s own source, is a neutral   comparison point even after independent confirmation</li>
+<li>that the minimum-structure floor <code>Sensors/ZeppU</code> fell under is   reproducible or well-characterized — it happened once</li>
+<li>that this generalizes beyond the six codebases measured, five of them   Python, all from one operator&#x27;s personal and professional repositories</li>
+</ul>
+<p>It does show:</p>
+<ul>
+<li>two prior, intuitive hypotheses (modularity, raw size) both failed real   falsification tests</li>
+<li>density held direction across both predictive tests attempted</li>
+<li>an exact independent reproduction of a previously unverified number   (<code>graphify/extractors/</code>, 424/5.8x/degree 71, no gap)</li>
+<li>a real negative result (<code>Sensors/ZeppU</code> alone, too sparse to analyze)</li>
+<li>a documented, self-caught provenance error in the measurement process   itself</li>
+</ul>
+<h2>7. Reproducibility Notes</h2>
+<p>Primary local artifacts:</p>
+<ul>
+<li><code>docs/GRAPHIFY_REDUCTION_TRACKS_DENSITY.md</code> (this paper)</li>
+<li><code>Evaluation/graphify_compare.py</code> (the tool)</li>
+</ul>
+<pre><code>
+# isolated verification venv
+python3 -m venv /tmp/graphify_verify_venv
+/tmp/graphify_verify_venv/bin/pip install graphifyy networkx  # graphifyy==0.9.22 at time of writing
+
+cd /home/blueaz/Python/Evaluation
+/tmp/graphify_verify_venv/bin/python3 graphify_compare.py \
+  --files operator EXECUTOR_IDENTITY_SPEC.md USAGE_AUTOIMPORT_SPEC.md VERIFIED_BY_GUARD_SPEC.md \
+    tests enforce_identity_setup.sh enforce_workspace_permissions.sh run_dbb_benchmark.sh run_validators_DBB001a.sh \
+  --base /home/blueaz/Python/Evaluation --label operator-control-plane
+
+cd /home/blueaz/Python/ppr-agent
+/tmp/graphify_verify_venv/bin/python3 /home/blueaz/Python/Evaluation/graphify_compare.py \
+  --files charter core desk tests --base /home/blueaz/Python/ppr-agent --label ppr-agent
+
+/tmp/graphify_verify_venv/bin/python3 /home/blueaz/Python/Evaluation/graphify_compare.py \
+  /home/blueaz/Python/YieldModel --label yieldmodel
+
+/tmp/graphify_verify_venv/bin/python3 /home/blueaz/Python/Evaluation/graphify_compare.py \
+  /tmp/graphify_verify_venv/lib/python3.13/site-packages/graphify/extractors --label graphify-extractors
+
+# retracted flagship (provenance uncertain) -- kept for completeness, not re-recommended
+/tmp/graphify_verify_venv/bin/python3 /home/blueaz/Python/Evaluation/graphify_compare.py \
+  /home/blueaz/Python/Algos --label algos
+
+# replacement predictive test -- ZeppU alone errors (too sparse), Sensors/ widened succeeds
+/tmp/graphify_verify_venv/bin/python3 /home/blueaz/Python/Evaluation/graphify_compare.py \
+  /home/blueaz/Python/Sensors/ZeppU --label zeppu   # -&gt; error: no god node found
+
+/tmp/graphify_verify_venv/bin/python3 /home/blueaz/Python/Evaluation/graphify_compare.py \
+  /home/blueaz/Python/Sensors --label sensors
+</code></pre>
+<p>The next reproducibility artifact, if this line gets more investment, is a third advance prediction that commits to a magnitude range rather than a direction alone, and a rough functional-form fit (power law is the natural first candidate) across the six density/reduction points now in hand.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

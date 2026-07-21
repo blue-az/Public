@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-07-20T17:54:29.652542+00:00",
+  "generated_at": "2026-07-21T12:01:14.664228+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -280,6 +280,22 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/grok-built-into-operator.md",
           "publish": true,
           "summary": "A governance case study on admitting a new frontier coding harness as a peer through evidence rather than brand rank: xAI's Grok CLI was registered as a peer harness in Operator (commit 2b46544, authored by the operator, not Grok), then tested empirically. One Grok session produced two independently verified git commits -- one of which added the repo's own 'recover the map / calibrate / leave residue' audit-protocol language and was independently used as core evidence by a separate governance paper packaged the same day -- plus a standalone analytical artifact with a real product finding. The same session also produced a genuine, documented miss (a proposed analysis format that ignored an established protocol document) and one open rubric criterion. The paper states plainly that every artifact traces to a single session and does not generalize to a comparative reliability claim against other harnesses in this repository."
+        },
+        {
+          "id": "graphify-reduction-tracks-density",
+          "title": "Graphify's Reduction Ratio Tracks Graph Density, Not Code Quality",
+          "source_path": "docs/GRAPHIFY_REDUCTION_TRACKS_DENSITY.md",
+          "track": "paper",
+          "paper_number": "1.43",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "confirmed",
+          "public_slug": "graphify-reduction-tracks-density",
+          "proto_output_path": "bulkhead-tau/generated-papers/graphify-reduction-tracks-density.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/graphify-reduction-tracks-density.md",
+          "publish": true,
+          "summary": "Two intuitive hypotheses about what a code-graph tool's token-reduction ratio measures -- modularity, then raw corpus size -- were each proposed from limited evidence and each falsified by a real contrasting corpus chosen specifically to test them. A third hypothesis, graph density (edges per node, inverse), fit the falsified hypotheses' data retrospectively, was confirmed by an exact independent reproduction of a previously unverified number, then tested predictively twice: once on a corpus later retracted as flagship evidence after its provenance turned out to be uncertain (likely an old coding-eval submission), once on a corpus chosen because its author could vouch for it. Both predictions were directionally correct; the second missed its predicted magnitude by roughly 5x, which the paper treats as the most interesting open question rather than smoothing over -- the true relationship may be closer to a power law than linear. A secondary finding: the provenance error in the first predictive corpus was caught by the author reviewing results, not by any automated check, and is reported as part of the method rather than edited out."
         }
       ]
     },
