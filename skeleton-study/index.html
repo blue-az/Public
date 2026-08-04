@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skeleton Study — Serve Motion, Tracked From Video</title>
+<meta name="description" content="A serve reduced to tracked joints on an open field — the same pose data as the video overlay, presented as an isolated motion study.">
+<style>
+  :root {
+    --void: #0a0b0d;
+    --panel: #17181c;
+    --panel-2: #1d1f24;
+    --ink: #eef0f2;
+    --ink-dim: #8b8e95;
+    --ink-faint: #4c4f56;
+    --amber: #ffcf5c;
+    --cyan: #5ce0ff;
+    --hairline: rgba(238, 240, 242, 0.09);
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", "JetBrains Mono", "Roboto Mono", monospace;
+    --sans: -apple-system, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  :root[data-theme="light"] {
+    --void: #f1f1ef;
+    --panel: #ffffff;
+    --panel-2: #f9f9f7;
+    --ink: #15161a;
+    --ink-dim: #55585f;
+    --ink-faint: #9a9da3;
+    --amber: #a3690a;
+    --cyan: #0b7fa0;
+    --hairline: rgba(21, 22, 26, 0.12);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --void: #f1f1ef;
+      --panel: #ffffff;
+      --panel-2: #f9f9f7;
+      --ink: #15161a;
+      --ink-dim: #55585f;
+      --ink-faint: #9a9da3;
+      --amber: #a3690a;
+      --cyan: #0b7fa0;
+      --hairline: rgba(21, 22, 26, 0.12);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--void);
+    color: var(--ink);
+    font-family: var(--sans);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0.85rem;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+  }
+
+  .bar a { color: var(--amber); text-decoration: none; }
+  .bar a:hover { text-decoration: underline; }
+  .bar .dim { color: var(--ink-faint); }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    font-weight: 750;
+    letter-spacing: -0.01em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  h1 .cyan { color: var(--cyan); }
+
+  .dek {
+    margin: 0.5rem 0 0;
+    max-width: 62ch;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink-dim);
+  }
+
+  .stage {
+    position: relative;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .stage-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: var(--amber);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.85;
+  }
+
+  .stage-corner.tl { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+  .stage-corner.tr { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+  .stage-corner.bl { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+  .stage-corner.br { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+
+  .stage-inner {
+    background: #000;
+    border-radius: 4px;
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+  }
+
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.6rem;
+  }
+
+  .metric {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 0.6rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .metric .k {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .metric .v {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .metric .v.amber { color: var(--amber); }
+  .metric .v.cyan { color: var(--cyan); }
+
+  .note {
+    background: var(--panel-2);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--ink-dim);
+  }
+
+  .note strong { color: var(--ink); font-weight: 650; }
+
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--hairline);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="bar">
+    <span class="dim">Bulkhead τ &middot; Demos</span>
+    <span>
+      <a href="../bulkhead-tau/demos.html">&larr; Demos shelf</a>
+      &middot;
+      <a href="../pose-showcase/index.html">Pose-from-Video (overlay version)</a>
+      &middot;
+      <a href="../labwired-serve-hud/index.html">LabWired Serve HUD</a>
+      &middot;
+      <a href="../skeleton-hud/index.html">Skeleton + HUD combined</a>
+    </span>
+  </div>
+
+  <header>
+    <h1>The serve, reduced to <span class="cyan">tracked joints</span></h1>
+    <p class="dek">
+      Same tracking pass as the overlay version, a different presentation: the pixels are gone,
+      only the estimated skeleton remains, moving on an open field. Watch the toss lift, the
+      reach into contact, and the follow-through carry the body forward &mdash; nothing here was
+      drawn by hand.
+    </p>
+  </header>
+
+  <div class="stage">
+    <span class="stage-corner tl"></span>
+    <span class="stage-corner tr"></span>
+    <span class="stage-corner bl"></span>
+    <span class="stage-corner br"></span>
+    <div class="stage-inner">
+      <video controls playsinline preload="metadata" src="skeleton_182732.mp4" type="video/mp4">
+        Your browser cannot play this video.
+      </video>
+    </div>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric">
+      <span class="k">Source clip</span>
+      <span class="v">serve 182732</span>
+    </div>
+    <div class="metric">
+      <span class="k">Coverage</span>
+      <span class="v amber">90 / 90 frames</span>
+    </div>
+    <div class="metric">
+      <span class="k">Model</span>
+      <span class="v cyan">MediaPipe Pose Landmarker</span>
+    </div>
+    <div class="metric">
+      <span class="k">Trail</span>
+      <span class="v">6-frame joint fade</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>How to read it:</strong> each joint is a per-frame estimate from the video pixels, no
+    sensor involved. The faint trailing dots are the last few frames' joint positions fading out,
+    so the motion reads as a path rather than a flicker.
+  </div>
+
+  <footer>
+    <span>TennisAgent</span>
+    <span>scripts/pose_skeleton_on_black.py</span>
+  </footer>
+</div>
+
+</body>
+</html>

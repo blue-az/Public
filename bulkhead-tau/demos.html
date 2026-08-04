@@ -139,10 +139,50 @@
                 </div>
                 <a href="graphify-demo/index.html" class="btn-launch">EXPLORE GRAPH</a>
             </div>
+
+            <!-- Sensor / LabWired: real serve video + firmware HUD (2026-08) -->
+            <div class="game-card">
+                <div class="boundary-tag">Sensor Co-Sim: LabWired</div>
+                <div class="game-title">LabWired Serve HUD</div>
+                <div class="game-desc">
+                    Phone video of a serve with a sensor/firmware HUD: Zepp handle IMU plus peak edges from STM32 peak-detection under LabWired. Overlay only — not a simulated 3D player. Ball speed after contact.
+                </div>
+                <a href="../labwired-serve-hud/index.html" class="btn-launch">OPEN HUD</a>
+            </div>
+
+            <!-- Pose-from-video (pixels → skeleton; listed on domains + demos) -->
+            <div class="game-card">
+                <div class="boundary-tag">Vision: Pose-from-Video</div>
+                <div class="game-title">Serve Pose Overlay</div>
+                <div class="game-desc">
+                    MediaPipe pose landmarks on the same real serve clip — joints estimated from the footage itself. No sensors, no LabWired, no MuJoCo.
+                </div>
+                <a href="../pose-showcase/index.html" class="btn-launch">OPEN POSE DEMO</a>
+            </div>
+
+            <!-- Skeleton study: same pose track, isolated on a field instead of overlaid -->
+            <div class="game-card">
+                <div class="boundary-tag">Vision: Motion Study</div>
+                <div class="game-title">Skeleton Study</div>
+                <div class="game-desc">
+                    Same tracked joints as the pose overlay, isolated on an open field instead of drawn over the video — a motion study on its own.
+                </div>
+                <a href="../skeleton-study/index.html" class="btn-launch">OPEN SKELETON STUDY</a>
+            </div>
+
+            <!-- Skeleton + HUD combined: both overlays, one render pass -->
+            <div class="game-card">
+                <div class="boundary-tag">Vision + Sensor Co-Sim</div>
+                <div class="game-title">Skeleton + Sensor HUD</div>
+                <div class="game-desc">
+                    MediaPipe skeleton and the Zepp/LabWired telemetry panel, drawn on the same 90 frames in one pass — not two videos stitched together.
+                </div>
+                <a href="../skeleton-hud/index.html" class="btn-launch">OPEN COMBINED DEMO</a>
+            </div>
         </div>
 
         <footer>
-            Project Phoenix // Bulkhead τ Release Line 2026<br>
+            Bulkhead τ Release Line 2026<br>
             Deterministic authority through grounded substrates.
         </footer>
     </div>
