@@ -6,6 +6,8 @@
 #   ./deploy.sh domains           — sync domains catalog index
 #   ./deploy.sh pose-showcase     — sync pose-from-video showcase
 #   ./deploy.sh labwired-serve-hud — sync LabWired serve HUD demo
+#   ./deploy.sh groundstroke-demos — sync FH+BH groundstroke demos
+#   ./deploy.sh kernelcad-mount   — sync kernelCAD sensor mount demo
 #   ./deploy.sh all               — sync everything
 
 set -euo pipefail
@@ -76,6 +78,12 @@ case "$TARGET" in
     skeleton-hud)
         rsync_push "$LOCAL_ROOT/skeleton-hud/" "$REMOTE_ROOT/skeleton-hud/"
         ;;
+    groundstroke-demos)
+        rsync_push "$LOCAL_ROOT/groundstroke-demos/" "$REMOTE_ROOT/groundstroke-demos/"
+        ;;
+    kernelcad-mount)
+        rsync_push "$LOCAL_ROOT/kernelcad-mount/" "$REMOTE_ROOT/kernelcad-mount/"
+        ;;
     all)
         rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
         rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
@@ -85,10 +93,12 @@ case "$TARGET" in
         rsync_push "$LOCAL_ROOT/labwired-serve-hud/" "$REMOTE_ROOT/labwired-serve-hud/"
         rsync_push "$LOCAL_ROOT/skeleton-study/" "$REMOTE_ROOT/skeleton-study/"
         rsync_push "$LOCAL_ROOT/skeleton-hud/" "$REMOTE_ROOT/skeleton-hud/"
+        rsync_push "$LOCAL_ROOT/groundstroke-demos/" "$REMOTE_ROOT/groundstroke-demos/"
+        rsync_push "$LOCAL_ROOT/kernelcad-mount/" "$REMOTE_ROOT/kernelcad-mount/"
         rsync_push "$LOCAL_ROOT/.htaccess" "$REMOTE_ROOT/.htaccess"
         ;;
     *)
-        echo "Usage: $0 [papers|bulkhead-tau|domains|pose-showcase|labwired-serve-hud|skeleton-study|skeleton-hud|all]"
+        echo "Usage: $0 [papers|bulkhead-tau|domains|pose-showcase|labwired-serve-hud|skeleton-study|skeleton-hud|groundstroke-demos|kernelcad-mount|all]"
         exit 1
         ;;
 esac
