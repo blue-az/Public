@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bulkhead τ — Forehand (skeleton + LabWired HUD)</title>
+  <meta name="description" content="Phone video of a forehand with MediaPipe skeleton and Apple Watch LabWired peak HUD on the same frames." />
+  <style>
+    :root {
+      --bg: #0a192f;
+      --panel: #112240;
+      --border: #233554;
+      --text: #ccd6f6;
+      --muted: #8892b0;
+      --accent: #64ffda;
+      --warn: #ffc978;
+      --stroke: #7ec8ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Courier New", Courier, monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 16px 48px;
+    }
+    .page { width: 100%; max-width: 720px; }
+    .bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .bar a { color: var(--accent); }
+    .bar .dim { color: var(--muted); text-transform: none; letter-spacing: 0; }
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .nav a {
+      border: 1px solid var(--border);
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+    }
+    .nav a:hover, .nav a.here { border-color: var(--accent); color: var(--accent); }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: var(--stroke);
+      letter-spacing: 1px;
+    }
+    .dek {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      max-width: 58ch;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 0.85rem;
+      color: var(--warn);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    video {
+      width: 100%;
+      max-width: 380px;
+      display: block;
+      margin: 0 auto;
+      background: #000;
+      border: 1px solid var(--border);
+    }
+    dl {
+      display: grid;
+      grid-template-columns: 10.5rem 1fr;
+      gap: 8px 12px;
+      margin: 0;
+      font-size: 0.85rem;
+    }
+    dt { color: var(--muted); }
+    dd { margin: 0; color: var(--text); }
+    .ok { color: var(--accent); }
+    footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: #495670;
+      text-align: center;
+    }
+    .note { font-size: 0.8rem; color: var(--muted); margin: 12px 0 0; line-height: 1.45; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="bar">
+      <span>Bulkhead τ · Groundstrokes</span>
+      <span class="dim">
+        <a href="index.html">← Hub</a>
+        ·
+        <a href="../bulkhead-tau/demos.html">Demos shelf</a>
+        ·
+        <a href="../labwired-serve-hud/index.html">Serve HUD</a>
+      </span>
+    </div>
+
+    <nav class="nav">
+      <a class="here" href="forehand.html">Forehand</a>
+      <a href="backhand.html">Backhand</a>
+      <a href="../labwired-serve-hud/index.html">Serve HUD</a>
+    </nav>
+
+    <h1>Forehand · skeleton + HUD</h1>
+    <p class="dek">
+      Your forehand on video. Skeleton from MediaPipe; HUD is Apple Watch wrist
+      gyro under LabWired wrist peak-detection. Graphics are only the overlay —
+      not a simulated player.
+    </p>
+
+    <div class="card">
+      <h2>Playback</h2>
+      <video controls playsinline preload="metadata"
+        src="fh_combo_skeleton_hud.mp4"
+        type="video/mp4">
+        Your browser cannot play this video.
+      </video>
+      <p class="note">
+        Skeleton and HUD on the same frames. Racket speed / ball spin appear only
+        after contact. Red marks are LabWired L∞ &gt; 10 rad/s edges on wrist gyro.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Where each part comes from</h2>
+      <dl>
+        <dt>Video</dt>
+        <dd>Phone clip swing2, 31shot_20260104 (operator-verified forehand)</dd>
+        <dt>Skeleton</dt>
+        <dd>MediaPipe pose landmarker on this clip</dd>
+        <dt>Wrist gyro / accel</dt>
+        <dd>Apple Watch session watch_20260104_185001 (window around Zepp epoch)</dd>
+        <dt>Racket speed / spin</dt>
+        <dd>Zepp CSV 21.9 mph · ball_spin 9.2 — shown only after contact</dd>
+        <dt>Peak edges</dt>
+        <dd class="ok">LabWired + wrist_peak_detection.elf · L∞ &gt; 10 rad/s · edge @ [52]</dd>
+        <dt>Not in this demo</dt>
+        <dd>Handle Zepp origins (serve only) · MuJoCo body</dd>
+      </dl>
+    </div>
+
+    <footer>
+      <a href="backhand.html" style="color:var(--accent)">Next: Backhand →</a>
+      · Bulkhead τ · skeleton + LabWired HUD on recorded groundstroke footage
+    </footer>
+  </div>
+</body>
+</html>

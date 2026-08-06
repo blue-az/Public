@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bulkhead τ — Groundstrokes (FH + BH)</title>
+  <meta name="description" content="Forehand and backhand hub. Individual stroke pages for click-through. Serve demos stay separate." />
+  <style>
+    :root {
+      --bg: #0a192f; --panel: #112240; --border: #233554;
+      --text: #ccd6f6; --muted: #8892b0; --accent: #64ffda;
+      --fh: #7ec8ff; --bh: #ffc857;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: "Courier New", Courier, monospace;
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      display: flex; justify-content: center; padding: 24px 16px 48px;
+    }
+    .page { width: 100%; max-width: 900px; }
+    .bar {
+      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      border: 1px solid var(--border); background: var(--panel);
+      padding: 10px 14px; margin-bottom: 20px; font-size: 0.75rem;
+      color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .bar a { color: var(--accent); }
+    .bar .dim { color: var(--muted); text-transform: none; letter-spacing: 0; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--accent); }
+    .dek { margin: 0 0 24px; color: var(--muted); font-size: 0.9rem; line-height: 1.5; max-width: 68ch; }
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--panel); border: 1px solid var(--border); padding: 20px;
+      display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .card.fh h2 { color: var(--fh); margin: 0; }
+    .card.bh h2 { color: var(--bh); margin: 0; }
+    .card p { margin: 0; color: var(--muted); font-size: 0.85rem; line-height: 1.45; flex-grow: 1; }
+    .btn {
+      display: block; text-align: center; border: 1px solid var(--accent);
+      color: var(--accent); padding: 10px; font-weight: bold; font-size: 0.85rem;
+    }
+    .note {
+      margin-top: 20px; padding: 12px 14px; border: 1px solid var(--border);
+      background: #0a192f; font-size: 0.8rem; color: var(--muted); line-height: 1.45;
+    }
+    footer {
+      margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border);
+      font-size: 0.75rem; color: #495670; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="bar">
+      <span>Bulkhead τ · Demos</span>
+      <span class="dim">
+        <a href="../bulkhead-tau/demos.html">← Demos shelf</a>
+        ·
+        <a href="../labwired-serve-hud/index.html">Serve HUD</a>
+      </span>
+    </div>
+
+    <h1>Groundstrokes</h1>
+    <p class="dek">
+      Forehand and backhand as separate stroke pages — same layout as the serve
+      demo: one Playback panel with skeleton + LabWired HUD on the same frames.
+      Serve stays separate. LabWired here uses Apple Watch wrist gyro (not handle
+      Zepp origins).
+    </p>
+
+    <div class="cards">
+      <a class="card fh" href="forehand.html">
+        <h2>Forehand</h2>
+        <p>Phone clip + MediaPipe skeleton + AW LabWired wrist peak HUD in one Playback panel.</p>
+        <span class="btn">OPEN FOREHAND →</span>
+      </a>
+      <a class="card bh" href="backhand.html">
+        <h2>Backhand</h2>
+        <p>Phone clip + MediaPipe skeleton + AW LabWired wrist peak HUD in one Playback panel.</p>
+        <span class="btn">OPEN BACKHAND →</span>
+      </a>
+    </div>
+
+    <div class="note">
+      Clip labels are operator-verified against the video (not raw Zepp swing_type codes).
+      Serve: <a href="../labwired-serve-hud/index.html" style="color:var(--accent)">LabWired Serve HUD</a>
+      · <a href="../pose-showcase/index.html" style="color:var(--accent)">Serve pose</a>
+    </div>
+
+    <footer>Bulkhead τ · Groundstrokes hub · FH and BH are individual pages</footer>
+  </div>
+</body>
+</html>
