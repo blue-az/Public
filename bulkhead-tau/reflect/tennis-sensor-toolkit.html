@@ -1,0 +1,2163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Tennis Sensor Toolkit — Owner's Manual</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <style>
+  body{max-width:820px;margin:2rem auto;padding:0 1.2rem;font-family:-apple-system,Segoe UI,Roboto,Helvetica,sans-serif;line-height:1.55;color:#1a1a1a}
+  h1,h2,h3{line-height:1.25} h2{border-bottom:1px solid #eee;padding-bottom:.2em;margin-top:2em}
+  pre.mermaid{background:transparent;text-align:center}
+  pre:not(.mermaid){background:#f6f8fa;padding:.8em;overflow:auto;border-radius:6px}
+  code{background:#f4f4f4;padding:.1em .3em;border-radius:3px} pre code{background:none;padding:0}
+  blockquote{border-left:3px solid #ccd;margin:0;padding:.2em 1em;color:#555;background:#fafafc}
+  table{border-collapse:collapse;margin:1em 0}td,th{border:1px solid #ddd;padding:.4em .6em}
+  </style>
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true});</script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Tennis Sensor Toolkit — Owner's Manual</h1>
+</header>
+<h1 id="owners-manual-for-blue-aztennis-sensor-toolkit">Owner’s Manual
+for blue-az/tennis-sensor-toolkit</h1>
+<p><em>6 generated chapters from the reviewed repository
+snapshot</em></p>
+<blockquote>
+<p>Source:
+blue-az/tennis-sensor-toolkit:master@954ce378b15fed163f46f7e2d15b369a5207a995</p>
+</blockquote>
+<hr />
+<h2 id="quickstart">Quickstart</h2>
+<p>A deterministic CLI over 192 tennis-sensor tools (Babolat, Zepp,
+Apple Watch). No planner, no LLM — you name the tool and pass JSON
+parameters.</p>
+<pre><code>python toolkit.py categories          # list the 13 tool families
+python toolkit.py list &lt;category&gt;     # tools in a family
+python toolkit.py describe &lt;tool&gt;     # a tool&#39;s parameters
+python toolkit.py run &lt;tool&gt; &#39;&lt;json&gt;&#39; # invoke a tool</code></pre>
+<p>Tools that read sensor data need the local databases present;
+metadata commands (<code>categories</code>/<code>list</code>/
+<code>describe</code>) work without them.</p>
+<h2 id="what-this-toolkit-is-for">What This Toolkit Is For</h2>
+<p><em>This chapter tells you what you actually have: a deterministic
+command-line toolkit that runs one named tool at a time against local
+tennis-sensor databases and files. The real product surface is the
+catalog of tools organized through ToolRegistry, with the CLI as the
+front door, not the whole identity.</em></p>
+<h3 id="one-minute-snapshot">One-Minute Snapshot</h3>
+<p>This chapter tells you what you actually have: a deterministic
+command-line toolkit that runs one named tool at a time against local
+tennis-sensor databases and files. The real product surface is the
+catalog of tools organized through ToolRegistry, with the CLI as the
+front door, not the whole identity. Read this as a map of what the
+code-backed toolkit does today, not as a statement of business intent
+you still need to confirm.</p>
+<h3 id="what-you-should-be-able-to-explain">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain this toolkit as a deterministic local CLI, not a
+conversational assistant or web app.</li>
+<li>Explain why the named-tool catalog through ToolRegistry is the real
+product surface.</li>
+<li>Explain why local sensor databases and profile files are
+dependencies, not bundled product content.</li>
+<li>Explain where this chapter stops and later chapters take over, so
+you do not overread the identity frame.</li>
+</ul>
+<h3 id="the-shape-of-the-product">The Shape of the Product</h3>
+<h2 id="a-deterministic-front-door">A deterministic front door</h2>
+<p>The cleanest way to picture this toolkit is as a deterministic local
+command-line surface that takes a named tool and parameters, then runs
+that one tool against tennis-sensor data. That is a very different
+contract from a natural-language assistant or a generic analytics app.
+The operator does not ask for a loosely interpreted outcome and let a
+planner decide what to do; the operator chooses a tool, supplies
+structured parameters, and the toolkit dispatches that request in a
+fixed way. The consequence for the owner is important: the product
+should be judged as a controlled execution surface, not as a
+conversational system whose behavior depends on interpretation, ranking,
+or hidden orchestration.</p>
+<p>That framing also sets the boundary for what this chapter can safely
+claim. Because the manual is working from repository evidence rather
+than owner-confirmed business intent, it can describe what the toolkit
+does and how it is shaped, but it should not pretend that the broader
+business meaning is already settled. In other words, the code shows a
+deterministic tool runner over tennis-sensor data; it does not by itself
+prove the whole commercial story around it.</p>
+<h2 id="the-catalog-is-the-surface-that-matters">The catalog is the
+surface that matters</h2>
+<p>For an owner, the meaningful product surface is the named-tool
+catalog organized by the registry layer. The wrapper command is just the
+front door that gets you to that catalog. This matters because the
+catalog is where capability lives: if a tool is registered, it is
+reachable; if it is not, the wrapper does not invent a substitute. The
+system is therefore less like a single monolithic application and more
+like a curated shelf of callable capabilities that are exposed through
+one entry point.</p>
+<p>The practical consequence is that catalog discipline becomes product
+discipline. The owner should think about what tools exist, how they are
+named, and how they are grouped, because that is what shapes what
+operators can reach. A small naming change can make a tool feel new; a
+collision can replace one tool with another if registration order
+changes. That is not a cosmetic detail. It means the catalog is not just
+an implementation detail hidden behind the command line; it is the thing
+the front door reveals.</p>
+<p>A concrete example makes the difference plain. If an operator opens
+the toolkit expecting a chat-like experience, they will be disappointed,
+because the system does not negotiate intent with free-form
+conversation. If they instead think in terms of a tool catalog, the
+behavior is predictable: choose the capability, provide structured
+input, and get the matching operation. That is the mental model the
+owner should preserve.</p>
+<h2 id="local-data-is-a-dependency-not-the-identity">Local data is a
+dependency, not the identity</h2>
+<p>The toolkit also depends on local sensor databases and profile files
+that live outside the codebase. Those inputs are the working material
+the toolkit reads and interprets; they are not bundled product content
+that the repository fully owns. This distinction matters because it
+keeps the manual honest about scope. The code can show where data is
+expected and how missing files are handled, but it cannot, on its own,
+settle what the business thinks the toolkit is for or which datasets are
+guaranteed to exist in the real environment.</p>
+<p>That boundary changes how an owner should read every feature claim. A
+command that starts cleanly is not proof that the expected databases are
+present. A profile lookup that returns nothing is not evidence that the
+product has no role there; it may simply mean the local file is absent,
+unreadable, or mapped to no profile for that sensor type. The toolkit is
+therefore best understood as a deterministic engine over external
+inputs, not as a self-contained data product.</p>
+<p>The owner-level implication is simple but easy to miss: support,
+documentation, and product framing should stay evidence-bounded until
+the missing intent and data assumptions are confirmed. A local install
+with only part of the expected sensor material will still tell you
+something useful about the toolkit, but not everything about the
+business problem it is meant to solve. The next chapter explains how the
+front door behaves; this section’s job is to keep the bigger picture
+stable while you read it.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should read the command line as a
+gate, not the product itself: it forwards one structured request to the
+catalog, and that catalog is where capability actually lives.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Operator] --> B[CLI front door]
+  B --> C[Named tool catalog]
+  B --> D[JSON parameters]
+  C --> E[One selected tool]
+  D --> E
+  E --> F[Local tennis data]
+</pre>
+<p>The diagram shows an operator entering the CLI front door, which
+accepts JSON parameters and reaches the named tool catalog. The catalog
+selects one tool, and that selected tool then acts on local tennis data.
+The consequence is that the front door is only the dispatch path; the
+catalog is the real product surface the owner should care about.</p>
+<h3 id="how-the-front-door-behaves">How the Front Door Behaves</h3>
+<p>The front door is narrower than a conversational interface and more
+exact than a general-purpose app wrapper. When an operator uses the run
+entry point, the toolkit accepts JSON parameters, resolves one named
+tool, and executes that one tool directly. There is no conversational
+planner in the path. That matters because the operator is not asking the
+system to infer intent from a sentence or choose among several actions;
+the request is already committed to a single tool before execution
+begins. The practical consequence is simple: if the wrong tool is named,
+the wrong thing runs, and if the right tool is named, nothing else is
+quietly added on top.</p>
+<h3 id="one-tool-one-call">One Tool, One Call</h3>
+<p>This is why the operator contract is deterministic in a strict sense.
+The call does not branch through a natural-language layer or a hidden
+decision engine. It goes from parameters to tool resolution to
+execution. The owner should picture this as a gate, not a helper. A gate
+either opens for the named tool or it does not, and the shape of the
+JSON only matters insofar as it supplies the parameters that tool
+expects.</p>
+<p>That has two consequences for the owner. First, the surface is
+predictable enough to document as a fixed CLI contract rather than as a
+conversational workflow. Second, any later behavior belongs to the
+selected tool, not to the front door itself. If a tool produces
+analysis, visualization, or an export, that is downstream of the
+dispatch step; the front door only decides which named capability gets
+the request.</p>
+<h3 id="catalog-order-matters">Catalog Order Matters</h3>
+<p>The registry behind the front door stores tools by name, and later
+registrations replace earlier ones with the same name. That means
+collisions are not reconciled by merging behavior or by asking the
+operator which tool they meant. The last registration wins, so catalog
+order and registration discipline directly shape what the operator can
+reach. A tool that appears to exist in the catalog can be shadowed by a
+later one with the same name, and the operator will get whichever
+definition ended up stored last.</p>
+<p>Missing names fail fast instead of falling back to a nearby match.
+That is a useful constraint for owners because it prevents the system
+from silently improvising when a tool is absent, but it also makes
+naming errors immediately visible. The boundary is important: the
+registry does not try to rescue a bad name by guessing, and it does not
+return the first similar tool it can find. If the name is not present,
+execution stops at lookup.</p>
+<p>A concrete example makes the risk plain. Suppose two registrations
+use the same name for different variants of a report tool. The later one
+silently replaces the earlier one in the catalog, so the operator who
+reaches for that name gets only the newer behavior. If a name is
+mistyped instead, the operator gets an explicit failure rather than an
+unexpected fallback. Those are different failure modes, and the owner
+needs to treat them differently: one is a hidden collision, the other is
+an obvious miss.</p>
+<h3 id="startup-is-not-readiness">Startup Is Not Readiness</h3>
+<p>Startup is warning-first around local data. The toolkit resolves
+local filesystem paths for its data sources, and it can still start even
+when key databases are missing. In particular, missing Apple Watch,
+Zepp, unified, or playpop databases produce warnings rather than
+stopping the process. That means a successful launch tells the owner
+that the front door and its path resolution are alive, not that the
+local data set is complete.</p>
+<p>The consequence is operational, not cosmetic. An owner cannot use
+startup success as proof that the data environment is ready for
+meaningful work. A run may be technically available while the underlying
+local databases are absent, incomplete, or only partially populated.
+That is a deliberate tradeoff: the toolkit remains launchable so
+metadata and discovery can still come up, but the warning is the signal
+that the data layer may not support the work the operator expects.</p>
+<p>In practice, that means a clean startup log is a stronger statement
+about the executable than about the data. If the databases are not
+present, the operator may still reach the front door and even inspect
+the catalog, but they should not assume the linked local data is ready
+to answer. The manual’s later data chapter takes up the database paths
+themselves; here the important point is that startup and readiness are
+different checks.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What the toolkit does</th>
+<th>What the owner should infer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A valid run call</td>
+<td>Accepts JSON parameters, resolves one named tool, and executes that
+single tool directly.</td>
+<td>The front door is deterministic; the request is not being
+interpreted by a conversational planner.</td>
+</tr>
+<tr>
+<td>Two registrations use the same tool name</td>
+<td>The later registration replaces the earlier one in the stored
+catalog.</td>
+<td>Catalog order and naming discipline determine which tool the
+operator actually reaches.</td>
+</tr>
+<tr>
+<td>A requested tool name is missing</td>
+<td>Lookup fails immediately instead of falling back to another
+tool.</td>
+<td>Missing names are explicit errors, not silent substitutions.</td>
+</tr>
+<tr>
+<td>Startup happens while local databases are missing</td>
+<td>The toolkit resolves local paths and starts, but prints warnings for
+the missing databases.</td>
+<td>A successful launch does not mean the local data set is ready.</td>
+</tr>
+</tbody>
+</table>
+<p>The practical reading of this table is that the front door is stable,
+but not self-correcting. It will do exactly one dispatch, and it will
+tell you when the catalog or the local data layer is not in the state
+you expected. What it will not do is repair a collision, guess a tool
+name, or turn startup into a guarantee that the databases are
+present.</p>
+<blockquote>
+<p><strong>Figure:</strong> Naming discipline is part of product
+stability: a collision can silently swap the reachable behavior, while a
+missing name fails visibly instead of drifting to a nearby tool.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Public tool name] --> B[Later registration]
+  A --> C[Name is absent]
+  B --> D[Newer tool replaces older one]
+  C --> E[Request stops]
+  D --> F[Operator reaches the newer tool]
+  E --> G[Nothing else is chosen]
+</pre>
+<p>The diagram splits into two paths for a public tool name. If a later
+registration uses the same name, the newer tool replaces the older one
+and the operator reaches that newer implementation. If the name is
+absent, the request stops and nothing else is chosen. The consequence is
+that registration order can change what a public name means, while
+missing names fail fast instead of falling back.</p>
+<h3 id="concrete-facts-the-evidence-establishes">Concrete Facts the
+Evidence Establishes</h3>
+<h3 id="the-discovery-surface-is-small-and-exact">The discovery surface
+is small and exact</h3>
+<p>The public discovery surface is not a broad menu of hidden entry
+points. The evidence establishes exactly four subcommands: categories,
+list, describe, and run. That matters because it gives the owner a fixed
+boundary for what the toolkit advertises from the outside: discovery,
+inspection, and invocation are exposed through a small, named set rather
+than an open-ended command grammar. The consequence is practical. If an
+operator says they have found a fifth public path, that claim would go
+beyond the evidence here and should be treated as unconfirmed until it
+is re-checked.</p>
+<h3 id="default-data-locations-are-local-and-broad">Default data
+locations are local and broad</h3>
+<p>The toolkit also comes with a default search set for local databases.
+Those defaults point into the user’s home tree, the project tree, and
+the downloads tree, and they cover the major sensor data families the
+toolkit knows about: Apple Watch, Zepp, unified, Garmin, SensorLogger
+CSV, playpop, and BabPopExt. The important fact is not just that the
+toolkit has defaults, but that it expects to look for data in ordinary
+local places before any manual override is needed. For an owner, that
+means the absence of an explicit configuration is not the same thing as
+the absence of a search path; the product is already pointed at likely
+local sources.</p>
+<p>This also defines a boundary. The evidence shows where the toolkit
+searches by default, not that those databases are present, complete, or
+current. A successful startup can therefore mean only that the search
+paths were resolved, not that the underlying datasets were found or
+usable.</p>
+<h3 id="missing-databases-warn-instead-of-blocking-startup">Missing
+databases warn instead of blocking startup</h3>
+<p>The initialization behavior is warning-first for some missing
+databases. When Apple Watch, Zepp, unified, or playpop databases are
+absent, the toolkit emits warnings rather than stopping startup. That is
+a concrete operational fact with an owner-facing consequence: startup
+success does not certify that the expected local data is there. A
+started toolkit may still be running in a degraded or incomplete data
+state, and the warning is the signal that the owner should treat the
+environment as partially prepared rather than fully ready.</p>
+<p>The boundary is equally important. The evidence does not say that
+every missing dataset is handled this way, only that these particular
+ones are. So the safe reading is narrow: for these named databases,
+absence is tolerated at startup, but the manual should not generalize
+that behavior to all data sources without additional proof.</p>
+<h3 id="sensor-profiles-fail-closed">Sensor profiles fail closed</h3>
+<p>Sensor profile loading is stricter than the database search behavior.
+If the sensor profile JSON is missing or unreadable, the result is an
+empty list rather than a synthesized fallback. Garmin is treated even
+more starkly: it resolves to no profiles at all, while the other sensor
+types map to fixed profile IDs. The mechanism here is simple but
+consequential. The toolkit does not invent profile matches when the
+profile source cannot be read, and it does not pretend that every sensor
+family has the same profile coverage.</p>
+<p>For an owner, that changes how absence should be interpreted. A
+missing profile file means no matches, not guessed matches. A Garmin
+sensor type yielding no profiles is not a transient parsing hiccup; it
+is the established result in the reviewed evidence. A concrete example
+makes the point: if an operator points the toolkit at a system where the
+profile JSON has been removed, the profile lookup does not fabricate a
+substitute profile set to keep the workflow moving. It returns nothing,
+which forces the gap to stay visible instead of being hidden by
+defaults.</p>
+<p>The qualifier is that one part of this mapping remains a boundary
+question: the evidence establishes Garmin’s empty result, but it does
+not settle whether that is an intentional coverage choice or a gap
+waiting to be revisited. That uncertainty should remain attached to the
+fact rather than being smoothed away.</p>
+<blockquote>
+<p><strong>Figure:</strong> A successful launch is only proof that
+initialization got far enough to resolve paths and warn about missing
+data; it is not proof that the local dataset is usable.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Startup begins] --> B[Local paths are resolved]
+  B --> C[Missing databases trigger warnings]
+  C --> D[Toolkit still starts]
+  D --> E[Data readiness remains unproven]
+</pre>
+<p>The diagram shows startup beginning, then local paths being resolved,
+then missing databases producing warnings, and then the toolkit still
+starting. The last step is that data readiness remains unproven. The
+consequence is that a clean launch does not certify that the local
+tennis databases exist or are ready for use; the owner needs a separate
+readiness check.</p>
+<h3 id="what-is-solid-here">What Is Solid Here</h3>
+<h3 id="a-narrow-contract-is-easier-to-trust">A narrow contract is
+easier to trust</h3>
+<p>The strongest thing about this toolkit is that its operator contract
+stays small and legible. The public front door is limited to four
+discovery commands, and the execution path for a run takes exactly one
+named tool with JSON parameters rather than trying to interpret a
+conversation or improvise a multi-step plan. That matters because the
+operator does not have to guess what kind of request will be honored, or
+whether the toolkit will silently reshuffle the intent into something
+else. What you ask for is what the product is prepared to route, and the
+shape of that route is visible up front.</p>
+<p>For an owner, that predictability is not just a style choice. It
+lowers the chance that documentation, support guidance, and operator
+expectation drift apart. A team can describe the product as a fixed
+command surface, not as a flexible assistant whose behavior depends on
+hidden interpretation. The boundary is important, though: this tells you
+the operator contract is narrow, not that every tool it reaches is
+simple or side-effect free. The dispatch layer is clear; the
+consequences of individual tools are a separate question.</p>
+<h3 id="collisions-fail-visibly">Collisions fail visibly</h3>
+<p>The catalog behavior is also disciplined in a way that helps an owner
+reason about maintenance. If two tools are registered with the same
+name, the later one replaces the earlier one. If a name is missing,
+lookup fails immediately instead of falling back to some nearby match or
+default action. That combination makes catalog problems show up as
+catalog problems. You do not get a vague success path that hides a bad
+registration or an accidental overwrite.</p>
+<p>That visibility matters because the real risk in a named-tool system
+is not only whether a tool exists, but whether the wrong tool becomes
+reachable under a familiar name. A silent fallback would make the
+product feel forgiving while actually making it harder to trust. Here, a
+collision changes what is reachable, and a missing name stops the
+request. That is a sharper failure mode, but it is safer for an owner
+trying to understand what the catalog actually supports.</p>
+<p>A concrete example: if a team registers two different tools under the
+same public name while reshaping the catalog, the later registration
+wins. The operator will not be handed the first implementation by
+accident. If a name is mistyped, the request does not slide into another
+tool with a similar purpose; it simply fails. The benefit is that
+debugging stays local to naming and registration, which is where the
+mistake lives.</p>
+<h3 id="missing-data-stays-visible">Missing data stays visible</h3>
+<p>The local data path handling has a similar strength: it is
+warning-first rather than pretend-ready. The toolkit resolves database
+locations under local home, project, and downloads trees, and it can
+start even when some expected databases are absent. The practical
+consequence is that startup does not overclaim readiness. A successful
+launch means the program can initialize its search for data, not that
+the data set is already complete.</p>
+<p>For an owner, that is a useful distinction. It protects against
+reading startup as a proof of coverage when it is really only a proof
+that path resolution worked. If the product were to fail hard on every
+missing local database, it would be more brittle but also noisier; if it
+were to silently assume the databases were present, it would be easier
+to start but harder to trust. The warning-first path lands in the
+middle: the operator can see what was found and what was not, without
+the product inventing a healthier state than it has.</p>
+<p>A simple scenario makes this concrete. Suppose a new machine has the
+toolkit installed but only part of the local tennis-sensor history has
+been copied over. The program can still initialize, and it can report
+that some expected databases were not found. That tells the owner the
+environment is incomplete without stopping every other diagnostic step.
+The limit is that this does not prove the data is usable for every
+downstream tool; it only keeps absence from being hidden at startup.</p>
+<h3 id="profiles-do-not-get-invented">Profiles do not get invented</h3>
+<p>The same conservative pattern shows up in sensor profile lookup. When
+the sensor profile file is missing or unreadable, the lookup returns no
+matches. Garmin resolves to no profiles as well, while other sensor
+types map to fixed profile IDs. The key strength here is that profile
+selection is local and data-driven rather than synthesized from
+assumptions.</p>
+<p>That is safer for an owner because it avoids the false comfort of
+made-up defaults. If the profile file is absent, the product does not
+quietly pretend that a reasonable substitute exists. If a sensor type
+has no mapping, the result is empty rather than imaginative. In a system
+that depends on local sensor context, that behavior is valuable because
+a wrong profile can be more misleading than no profile at all.</p>
+<p>The boundary is worth stating plainly: the evidence shows fail-closed
+behavior, but it does not establish whether the Garmin emptiness is
+deliberate policy or a coverage gap. Either way, the owner gets a
+reliable signal that the toolkit is not auto-filling unsupported profile
+matches. That keeps the supported surface honest, which is often the
+most important kind of strength in an evidence-bounded product.</p>
+<p>Together, these traits make the toolkit easier to govern: the command
+surface is narrow, collisions are exposed, missing local data is
+visible, and profile matching does not invent support that is not there.
+The next chapter takes up the mechanics of discovery and execution; this
+one is about why the observed contract is sturdy enough to trust as a
+working surface, even before the rest of the manual fills in the
+operational details.</p>
+<h3 id="evidence-boundary">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - I reviewed the CLI
+dispatch contract, the registry’s name-collision behavior, the local
+filesystem data-path defaults and startup warnings, and the sensor
+profile loader’s fail-closed behavior. - I also used the open decisions
+about owner intent, single-tool dispatch, duplicate names, and missing
+databases to keep this chapter’s framing honest.</p>
+</blockquote>
+<p>Not reviewed: - I did not review live command execution for this
+chapter. - I did not review session-linking behavior, report generation,
+export durability, or browser-side CDN loading for this chapter. - I did
+not inspect any source files directly in this planning step.</p>
+<p>If the CLI parser, registry lookup rules, default data paths, or
+sensor profile loading change, re-check the command contract and the
+local-data boundary before expanding this chapter.</p>
+<blockquote>
+<p>Reviewed: blue-az/tennis-sensor-toolkit repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="how-operators-discover-and-run-tools">How Operators Discover and
+Run Tools</h2>
+<p><em>This chapter matters because it defines the owner-facing front
+door into the toolkit. An operator does not ask for a free-form answer
+here; they move through categories, inspect the available tools, read a
+tool description, and then run one named tool with parameters.
+ToolRegistry is the organizing layer behind that catalog and the
+dispatch point that turns a tool name into execution.</em></p>
+<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
+<p>This chapter matters because it defines the owner-facing front door
+into the toolkit. An operator does not ask for a free-form answer here;
+they move through categories, inspect the available tools, read a tool
+description, and then run one named tool with parameters. ToolRegistry
+is the organizing layer behind that catalog and the dispatch point that
+turns a tool name into execution. That boundary stops at routing: this
+chapter does not explain what the data mean, how sessions are resolved,
+or when outputs become durable.</p>
+<h3 id="what-you-should-be-able-to-explain-1">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>You can explain the CLI as a deterministic front door into a
+named-tool catalog, not as a conversational planner.</li>
+<li>You can see the discovery sequence: browse categories, list tools,
+read a tool description, then run one named tool with parameters.</li>
+<li>You can recognize that ToolRegistry organizes the callable surface
+and routes execution for one tool at a time.</li>
+<li>You can spot the main catalog risk: duplicate tool names can replace
+earlier registrations, so name discipline matters.</li>
+<li>You can separate dispatch from later chapters that explain sessions,
+linked sessions, and output artifacts.</li>
+</ul>
+<h3 id="the-front-door">The Front Door</h3>
+<p>The owner should think of this surface as a controlled front door
+into a broad catalog of named tools. The operator starts by browsing
+categories, then lists tools, then reads a description, and only after
+that runs one named tool with parameters. The product promise here is
+determinism: the toolkit routes a specific tool name through
+ToolRegistry rather than trying to interpret a request in a
+conversational way.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner-facing consequence is determinism:
+discovery narrows the choice before anything runs, and the dispatch step
+sends one named tool with parameters through the registry instead of
+handing the request to a planner.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Browse categories] --> B[List tools]
+  B --> C[Read a description]
+  C --> D[Run one named tool with JSON parameters]
+  D --> E[Registry execution path]
+  F[No conversational planner] -.-> D
+</pre>
+<p>The operator starts by browsing categories, then lists tools, then
+reads a description. After that, they run one named tool with JSON
+parameters, and the registry takes the execution path for that single
+tool. There is no conversational planner in between, so the surface
+stays fixed and predictable.</p>
+<h3 id="how-discovery-turns-into-execution">How Discovery Turns Into
+Execution</h3>
+<p>Discovery is meant to reduce ambiguity before anything runs.
+Categories help an operator narrow the catalog, listing shows what is
+currently registered, and description gives a last check before
+execution. The run action accepts JSON parameters and dispatches exactly
+one named tool. That is the whole contract in this chapter: visibility
+first, then a single routed action.</p>
+<h3 id="what-can-drift-in-the-catalog">What Can Drift in the
+Catalog</h3>
+<p>Two facts matter for the owner. First, duplicate tool names are not
+rejected at registration time; the later registration replaces the
+earlier one. Second, a missing tool name fails fast instead of falling
+back to something else. That makes the surface predictable, but it also
+means the catalog can change in ways that are easy to miss if
+registration order or naming discipline slips.</p>
+<blockquote>
+<p><strong>Figure:</strong> The catalog is stable only when names and
+registration order stay disciplined: a later match can silently replace
+an earlier tool, while a missing name stops immediately instead of
+drifting to a fallback.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Same name is registered again] --> B[Later entry wins]
+  B --> C[Earlier tool is replaced]
+  D[Missing name is looked up] --> E[Lookup fails fast]
+</pre>
+<p>One branch shows a repeated name being registered again, which causes
+the later entry to win and the earlier tool to be replaced. The other
+branch shows a missing name lookup, which fails fast instead of falling
+back to something else. The consequence for the owner is that catalog
+behavior depends on naming discipline and registration order.</p>
+<h3 id="why-this-surface-is-useful-and-where-it-stops">Why This Surface
+Is Useful, and Where It Stops</h3>
+<p>This design gives the owner a clear operational boundary. The
+operator can see what is available before running it, one named tool
+runs at a time, and there is no hidden planner deciding the next step.
+That is strong for repeatable work and auditability. The tradeoff is
+just as important: this chapter ends at dispatch. The next chapters own
+sessions, linked sessions, sensors, and output meaning.</p>
+<h3 id="evidence-boundary-1">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - I reviewed the
+documented CLI discovery and execution contract, the registry behavior
+for named tools and categories, and the owner decisions that define
+whether the single-tool surface and duplicate-name behavior should
+remain as they are.</p>
+</blockquote>
+<p>Not reviewed: - I did not review the session-loading chapter,
+output-generation chapter, or the full tool inventory in this chapter. -
+I did not verify live runtime behavior, only the reviewed evidence
+supplied for this manual build. - I did not inspect provider-specific
+behavior, sensor semantics, or artifact durability details here.</p>
+<p>If the command surface, registration order, or lookup rules change,
+recheck the CLI actions, the registry’s name handling, and the decision
+about whether one named tool should remain the long-term operator
+contract. If later chapters change how sessions or outputs work, keep
+this chapter at the front door and only update the handoff
+sentences.</p>
+<blockquote>
+<p>Reviewed: blue-az/tennis-sensor-toolkit repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="what-data-the-toolkit-depends-on">What Data the Toolkit Depends
+On</h2>
+<p><em>This toolkit works over your local sensor files and SQLite
+databases; the repository is the code, not the data. The review shows
+local paths for Apple Watch, Zepp, Zepp2, unified, Garmin, SensorLogger
+CSV, playpop, and BabPopExt locations, and linked sessions are the
+cross-sensor joins the code can use when overlap exists.</em></p>
+<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
+<p>This toolkit works over your local sensor files and SQLite databases;
+the repository is the code, not the data. The review shows local paths
+for Apple Watch, Zepp, Zepp2, unified, Garmin, SensorLogger CSV,
+playpop, and BabPopExt locations, and linked sessions are the
+cross-sensor joins the code can use when overlap exists. This chapter is
+built from the code, so it shows what the toolkit does today, not what
+you mean it to be; that part is yours to confirm.</p>
+<h3 id="what-you-should-be-able-to-explain-2">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain which local files and databases the toolkit depends on, and
+why missing ones matter.</li>
+<li>Explain what a session is in this product, and what a linked session
+adds on top of it.</li>
+<li>Separate a partial linked-session result from a true lack of
+data.</li>
+<li>Describe which local behaviors can change state, reuse cached reads,
+or reach outside the machine.</li>
+</ul>
+<h3 id="how-to-think-about-the-data">How to Think About the Data</h3>
+<h3 id="local-data-is-the-substrate">Local data is the substrate</h3>
+<p>Think of the toolkit as a reader and organizer for your local sensor
+files and SQLite databases, not as a system that brings its own
+independent data store. That matters because the product’s useful work
+only starts once those files exist in the places it expects or has been
+pointed to. The reviewed evidence shows that startup can resolve local
+paths and warn when some databases are missing instead of stopping
+immediately, which is a strong hint about the mental model: the software
+is prepared to operate against a partial local environment, but it is
+still fundamentally dependent on whatever data the machine holds.</p>
+<p>For an owner, the practical consequence is simple. When results look
+thin, incomplete, or strangely empty, the first question is often not
+“what did the toolkit invent?” but “what local sensor history is
+actually available to it?” That is a different posture from a hosted
+product where the vendor owns the source data. Here, the repository is
+the code; the data lives outside it.</p>
+<h3 id="session-is-the-unit-linked-session-is-the-bridge">Session is the
+unit, linked session is the bridge</h3>
+<p>A session is the core unit this toolkit reasons about. It is the
+basic thing that analysis, visualization, and later output work can
+organize around. A linked session sits one level above that: it is not
+the base unit itself, but the bridge the toolkit can form across sensor
+sources when the data lines up well enough to connect them.</p>
+<p>That distinction is important because a linked session is
+conditional. The evidence does not support treating linkage as an
+all-or-nothing guarantee, and it does not say that every session will
+have one. In fact, one reviewed path can still return Zepp data even
+when Apple Watch overlap is missing or empty. So the right mental model
+is not “the toolkit either has everything or nothing.” It is “the
+toolkit starts from the session it can see, then adds a linked layer
+only when the overlap is strong enough to justify it.”</p>
+<p>For an owner, that means a missing linked session does not
+automatically prove the underlying session is absent. It may only mean
+the cross-sensor bridge could not be established from what was
+available. Imagine a day where one source captured usable activity data
+but the other source did not align cleanly in time. The toolkit can
+still preserve the usable side rather than collapsing the whole thing
+into a blank result. That is useful, but it also means linked-session
+presence and session presence are not the same signal.</p>
+<h3 id="sensor-families-are-labels-not-a-coverage-promise">Sensor
+families are labels, not a coverage promise</h3>
+<p>The family names in this chapter, such as Apple Watch, Zepp, Zepp2,
+Garmin, SensorLogger, playpop, and BabPopExt, should be read as source
+families the toolkit can encounter. They tell you what kinds of local
+inputs the code knows how to recognize, not a ranking of which families
+matter most in practice. The reviewed evidence is explicit that it does
+not prove equal coverage or equal importance across those families.</p>
+<p>That boundary matters because it prevents overreading the names as a
+promise. A family appearing in the supported set does not mean it has
+the same depth of handling as every other family, and it does not mean
+every family contributes equally to every workflow. Garmin is a good
+example of why restraint is needed: the evidence shows a special case
+where no profiles are resolved, which is enough to show that one family
+can be handled very differently from another without implying a defect
+or a universal pattern.</p>
+<p>So the safest owner-level model is a tiered one. The toolkit has a
+recognized set of source families, but the actual quality of support,
+the density of mapping, and the operational importance of each family
+may differ. If you are deciding how much to trust a family’s
+contribution, treat the family name as a clue about recognition, not as
+proof of equal maturity.</p>
+<h3 id="what-this-model-lets-you-conclude-and-what-it-does-not">What
+this model lets you conclude, and what it does not</h3>
+<p>This chapter’s evidence supports a clear but bounded conclusion: the
+toolkit is a local-data system built around sessions, with linked
+sessions as an optional cross-sensor layer, and with source-family
+handling that is real but unevenly evidenced. That is enough to
+understand why missing files, missing overlap, or sparse family support
+can change what the toolkit can show you.</p>
+<p>It does not, however, establish that every family is equally
+complete, or that a missing linked session means the same thing in every
+case. Those questions belong to later sections that trace behavior and
+boundaries more closely. Here the important thing is the shape of the
+system: local data first, session second, linkage only when the data
+supports it.</p>
+<blockquote>
+<p><strong>Figure:</strong> The code can start without owning the data,
+so a missing database means the machine is incomplete, not that the
+toolkit filled the gap with invented sensor history.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  subgraph Outside[Outside the repository]
+    D[Local sensor files and local databases]
+  end
+
+  subgraph Inside[Inside the toolkit]
+    R[Repository code]
+    S[Startup]
+    W[Warn and continue]
+    O[Owner reviews results]
+  end
+
+  D --> S
+  R --> S
+  S --> W
+  W --> O
+</pre>
+<p>The repository code runs inside the toolkit, but the sensor files and
+local databases live outside it. Startup checks those local locations,
+then warns if some of them are missing and continues. The consequence
+for the owner is that a missing database signals absent local data, not
+a fabricated replacement.</p>
+<blockquote>
+<p><strong>Figure:</strong> A linked session sits above the base session
+as an optional bridge, so a weak or missing overlap can still leave
+usable Zepp data instead of collapsing the whole result.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  subgraph Base[Base session]
+    A[Core session]
+    A1[Analysis can start here]
+  end
+
+  subgraph Link[Linked session]
+    B[Session plus a bridge]
+    B1[Cross-sensor overlap helps connect sources]
+    B2[If overlap is missing, Zepp data can still appear]
+  end
+
+  A --> A1
+  B --> B1 --> B2
+</pre>
+<p>A session is the core unit the toolkit works from. A linked session
+adds a bridge across sensor sources when the overlap is good enough. If
+that overlap is missing, the toolkit can still return Zepp data rather
+than turning the whole result into nothing. The owner should read
+linked-session absence as incomplete linkage, not automatic absence of
+the underlying session.</p>
+<h3 id="what-happens-when-the-toolkit-reads-or-links-data">What Happens
+When the Toolkit Reads or Links Data</h3>
+<p>The operating rule here is not all-or-nothing. The toolkit can begin
+with local data missing, can return partial linked-session results when
+overlap is absent, and can reuse earlier reads inside one execution
+context. For an owner, that means the first thing to understand is not
+whether the toolkit always finds every file, but how it behaves when it
+does not.</p>
+<h3 id="startup-favors-reachability-over-completeness">Startup favors
+reachability over completeness</h3>
+<p>When the data client starts, it resolves local database paths under
+the user’s home, project, and downloads trees, then emits warnings for
+missing Apple Watch, Zepp, unified, or playpop databases instead of
+stopping the process. Mechanically, that means startup is willing to
+proceed with a partial local-data picture. The consequence for the owner
+is simple but important: a tool can open and present metadata-driven
+behavior before the expected sensor files are actually present. That is
+useful when the machine is only partially prepared, but it also means
+startup alone does not prove the data layer is complete. A missing
+database is treated as a warning-first condition, not as a hard
+failure.</p>
+<h3
+id="linked-session-reads-can-return-what-is-available">Linked-session
+reads can return what is available</h3>
+<p>Linked-session handling is also permissive. If Apple Watch overlap is
+missing or empty, the loader can still return Zepp data instead of
+collapsing the result to nothing. The same family of logic can also
+populate Apple Watch data from the SensorLogger branch even when there
+is no direct match in the session table. For the owner, the practical
+effect is that a partial match is still meaningful work output. You do
+not have to read an empty overlap as proof that the entire linkage path
+failed; you have to inspect which pieces came back and what they
+represent. That matters in day-to-day review because a returned
+linked-session result may be incomplete without being wrong.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What the toolkit does</th>
+<th>What changes</th>
+<th>Freshness note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Startup with missing local databases</td>
+<td>Resolves local paths and warns instead of stopping</td>
+<td>The process can begin before every expected database exists</td>
+<td>Startup is not a guarantee of complete local data</td>
+</tr>
+<tr>
+<td>Linkage lookup without Apple Watch overlap</td>
+<td>Returns Zepp data on the normal path</td>
+<td>Partial linked-session data can still be produced</td>
+<td>Missing overlap is not treated as a hard failure</td>
+</tr>
+<tr>
+<td>SensorLogger branch during linkage</td>
+<td>Can populate Apple Watch data even without a session-table
+match</td>
+<td>A useful linked result may appear from an alternate path</td>
+<td>The returned pieces still need separate inspection</td>
+</tr>
+<tr>
+<td>Auto-link detection with auto-save enabled</td>
+<td>Writes matched pairs into linked sessions and commits them</td>
+<td>The read path can also change stored linkage state</td>
+<td>A later run may reflect that new state, not the original input</td>
+</tr>
+<tr>
+<td>Repeated work inside one execution context</td>
+<td>Reuses cached session, sensor, and query reads</td>
+<td>A later call may not re-read the database immediately</td>
+<td>Freshness depends on cache reset, not just on new data on disk</td>
+</tr>
+</tbody>
+</table>
+<h3 id="a-read-can-become-a-write">A read can become a write</h3>
+<p>The detection path is not purely observational. With auto-save on,
+linked-session detection writes matched pairs into the linked-sessions
+store and commits them. That means the owner should treat the detector
+as state-changing, not just as a reporter. In a routine review, a caller
+might expect to inspect overlaps and stop there, but this path can
+persist the result before it returns. The qualifier is important: this
+only applies when the unified database exists and auto-save is enabled,
+so the persistence boundary depends on local conditions rather than on
+an abstract promise.</p>
+<h3 id="cached-reads-can-lag-the-disk">Cached reads can lag the
+disk</h3>
+<p>Repeated calls inside one execution context can reuse cached session,
+sensor, and query reads. In practice, that means a second call may
+answer from memory even after the underlying database has changed. The
+consequence for the owner is that retries are not automatically
+freshness checks. If a user has just added or corrected local data, the
+next call in the same context may still reflect the earlier state until
+caches are cleared or a new context is used. For example, if one
+operation detects a session and a later operation in the same run asks
+for it again, the second result may come from the cache rather than from
+a fresh database read.</p>
+<p>The boundary to keep in mind is that this section is about operating
+behavior, not about what the data ought to be. The toolkit can proceed
+with missing inputs, preserve partial linked results, and reuse cached
+reads; it does not infer completeness for you. That is the practical
+shape of the read-and-link path the owner needs to expect.</p>
+<blockquote>
+<p><strong>Figure:</strong> A second call inside the same execution can
+reuse stored reads, so a retry is not a freshness check and may still
+reflect the earlier state.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[First read]
+  B[Session and sensor data are cached]
+  C[Disk changes later]
+  D[Second read in the same run]
+  E[Cached copy may be reused]
+
+  A --> B --> D --> E
+  C -. happens after .-> D
+</pre>
+<p>The first read can store session and sensor data in cache. If the
+disk changes later, a second read in the same run may still reuse the
+cached copy instead of reading the database again. The owner should
+treat repeated calls inside one execution as potentially stale until
+caches are cleared or a new run begins.</p>
+<h3 id="what-the-reviewed-evidence-clearly-shows">What the Reviewed
+Evidence Clearly Shows</h3>
+<p>The reviewed evidence separates three behaviors that matter to an
+owner: the toolkit starts from local file locations and warns when they
+are missing, sensor profile lookup fails closed instead of inventing a
+match, and the public composite sync path can reach outside the machine
+and change linked-session state before it finishes. Those are not the
+same kind of dependency, so they should not be read as one general
+rule.</p>
+<h3 id="local-data-locations">Local data locations</h3>
+<p>The default lookup covers several source families across the local
+machine’s home, project, and downloads trees. That matters because the
+toolkit is not pretending the data is bundled with the code: it expects
+the owner or operator to already have local sensor databases and files
+in place. The practical consequence is simple but important. A missing
+database is not proof that the feature is broken; it is proof that the
+expected local data is not there yet, or is not where the toolkit
+expects to find it. The evidence does not show every possible file
+layout, and it does not establish that all sensor families are equally
+central. It does show that these defaults exist, and that they are
+specific enough to surface missing-data conditions early.</p>
+<h3 id="profile-lookup-and-sync-are-different-gates">Profile lookup and
+sync are different gates</h3>
+<p>Sensor profile selection behaves more conservatively than path
+lookup. When the profile file cannot be read, the result is no matches
+rather than a guessed profile. Garmin is treated as having no profiles,
+while the other known sensor types resolve to fixed profile IDs. For an
+owner, that means profile selection is local and data-driven: if the
+profile source is absent or unreadable, the system does not synthesize
+an alternate identity and call it good. That is useful when correctness
+matters, but it also means missing profile input can suppress results
+instead of partially filling them in. The evidence does not resolve
+whether Garmin’s empty mapping is a deliberate product choice or a
+coverage gap; it only shows the current behavior.</p>
+<h3 id="what-the-composite-sync-does">What the composite sync does</h3>
+<p>The public composite sync operation is broader than a local read or a
+simple lookup. It chains Zepp phone sync, Apple Watch sync from a Mac
+server, and auto-link detection in one sequence. That sequence crosses
+machine boundaries and can alter linked-session state before it returns.
+For an owner, the consequence is that this is not a read-only
+convenience wrapper. It is a state-changing operation with external
+prerequisites, so its outcome depends on more than local files alone.
+The reviewed evidence does not show the full runtime path or every side
+effect, but it does clearly establish that the operation can reach
+outward and then persist linkage changes.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Area</th>
+<th>Default behavior</th>
+<th>What happens when something is missing or partial</th>
+<th>Owner takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local sensor data locations</td>
+<td>The toolkit looks for Apple Watch, Zepp, Zepp2, unified, Garmin,
+SensorLogger CSV, playpop, and BabPopExt data under the local machine’s
+home, project, and downloads trees.</td>
+<td>Missing databases are warned about during startup instead of
+stopping the process.</td>
+<td>Startup can succeed before the data is fully in place, so a warning
+means absence, not necessarily failure.</td>
+</tr>
+<tr>
+<td>Sensor profile lookup</td>
+<td>Known sensor types resolve to fixed profile IDs, while Garmin
+resolves to no profiles.</td>
+<td>A missing or unreadable profile file produces no matches rather than
+a synthetic fallback.</td>
+<td>Profile selection is conservative; if the profile source is
+unavailable, the toolkit suppresses matches instead of guessing.</td>
+</tr>
+<tr>
+<td>Public composite sync</td>
+<td>One named sync operation chains Zepp phone sync, Apple Watch sync
+from a Mac server, and auto-link detection.</td>
+<td>The operation can reach outside the machine and can change
+linked-session state before it returns.</td>
+<td>Treat this as a state-changing sync path with external
+prerequisites, not as a local-only inspection command.</td>
+</tr>
+</tbody>
+</table>
+<p>These facts are enough to draw a practical boundary. The codebase
+shows where it expects local data, where it refuses to invent profile
+matches, and where a single sync action can update linkage state. What
+it does not prove here is owner intent about which sensor families
+should matter most, or whether every missing-data warning should be
+operationally treated the same way.</p>
+<blockquote>
+<p><strong>Figure:</strong> One path can write linked-session results
+back into storage, while another reaches external devices and services,
+so neither path should be treated as a harmless local read.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  O[Operator runs a tool]
+  L[Linked-session detection]
+  P[Saved linked sessions change]
+  C[Composite sync]
+  E[External devices and services]
+
+  O --> L
+  L -->|when auto-save is on| P
+  O --> C
+  C -->|reaches| E
+</pre>
+<p>An operator can run linked-session detection, and when auto-save is
+on that path can change saved linked-session rows. The operator can also
+run the composite sync path, which reaches external devices and services
+before it returns. The consequence is that these paths are not read-only
+local lookups; they can persist state or leave the machine.</p>
+<h3 id="what-is-solid-here-1">What Is Solid Here</h3>
+<h2 id="visible-dependencies">Visible Dependencies</h2>
+<p>One of the clearest strengths in this toolkit is that it does not
+pretend the local data is already in place. Instead, it makes the
+dependency visible during startup, including warnings when expected
+local databases are missing. For an owner, that matters because it
+separates two very different states: the code is available, but the
+underlying sensor files may not be. That distinction prevents a false
+reading of readiness. If a laptop has the toolkit installed but the
+Apple Watch or Zepp data has not been copied into place yet, the owner
+gets a signal that the gap is in the data holding, not in the product
+itself.</p>
+<p>That visibility is valuable because it sets the right expectation
+early. The toolkit can begin, report, and organize what it finds without
+implying that all source material exists. The boundary is important: a
+warning is not proof that the data will never arrive, and it is not a
+recovery mechanism. It simply tells the owner that the current run
+should be interpreted as partial until the missing local files are
+supplied.</p>
+<h2 id="conservative-profile-matching">Conservative Profile
+Matching</h2>
+<p>The profile side is equally disciplined. When sensor profile input is
+missing or unreadable, the toolkit does not invent a match to keep the
+workflow moving. It returns no profiles instead, and Garmin is treated
+as having no profile mapping in the reviewed path. That is a
+conservative design choice: it reduces the chance that the wrong sensor
+identity gets attached to a session just because the system wanted to
+produce something.</p>
+<p>For the owner, the practical effect is that bad or absent profile
+data stays visible as absence. A broken profile file does not quietly
+produce a plausible-looking fallback that could contaminate downstream
+analysis. In a real run, that means a missing profile file should be
+read as a data problem, not as a successful automatic guess. The limit
+is just as important as the benefit: this approach can leave a session
+with no usable profile until the input is corrected, and the reviewed
+evidence does not prove that every possible sensor family is handled in
+the same way.</p>
+<h2 id="partial-linkage-is-better-than-total-loss">Partial Linkage Is
+Better Than Total Loss</h2>
+<p>The linkage path also shows a useful form of resilience. If Apple
+Watch overlap is missing or empty, the toolkit can still return Zepp
+data instead of collapsing the whole linked-session lookup to nothing.
+That gives the owner something concrete to work with when cross-sensor
+alignment is incomplete. In practice, this means a partially matched day
+is still visible: the Zepp side can survive even when the bridge to the
+other source is weak or absent.</p>
+<p>That matters because real sensor holdings are often uneven. A morning
+workout might have Zepp data but no usable Apple Watch overlap yet, and
+the owner still gets a result that reflects the surviving source rather
+than a blank screen. The key boundary is that partial return is not the
+same as full linkage success. The reviewed evidence shows that absence
+of overlap is not treated as a hard failure, but it does not establish
+that the returned payload is complete in every variant. The right
+reading is therefore cautious: treat the result as usable signal, not as
+proof that all sources lined up cleanly.</p>
+<h3 id="evidence-boundary-2">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The local-data
+defaults and warning-first startup behavior for the data client. - How
+linked-session lookups can return partial Zepp data when Apple Watch
+overlap is missing. - How auto-link detection writes linked-session rows
+when auto-save is enabled. - How repeated calls can reuse cached session
+and sensor reads within one execution context. - How sensor profile
+loading fails closed, including the empty Garmin mapping. - How the
+composite sync path reaches external devices and servers.</p>
+</blockquote>
+<p>Not reviewed: - Live command runs or file presence on the machine. -
+Any inactive, archived, or other exceptional session-state branches not
+found in the traced paths. - The full exporter and report-writing layer.
+- Broader repository-wide coverage of every sensor source family or
+tool.</p>
+<p>Re-check the data client, session-linking, and sensor-profile paths
+together, then test one local lookup with overlapping data, one with
+missing overlap, and one cached repeat call in the same execution
+context.</p>
+<blockquote>
+<p>Reviewed: blue-az/tennis-sensor-toolkit repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="what-the-toolkit-produces">What the Toolkit Produces</h2>
+<p><em>This chapter is about the outputs the toolkit produces after an
+operator runs analysis tools. Those outputs are not a side effect to
+ignore; they are the product surface that a viewer consumes. Some
+results become real only after a local file write succeeds, some exports
+are only staged metadata, and some HTML can ask the browser to fetch
+external script code when it opens.</em></p>
+<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
+<p>This chapter is about the outputs the toolkit produces after an
+operator runs analysis tools. Those outputs are not a side effect to
+ignore; they are the product surface that a viewer consumes. Some
+results become real only after a local file write succeeds, some exports
+are only staged metadata, and some HTML can ask the browser to fetch
+external script code when it opens. For an owner, the question is not
+just what a tool returned, but whether the artifact is final, partial,
+or still pending.</p>
+<h3 id="what-you-should-be-able-to-explain-3">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Tell the difference between a durable output, a staged export, and a
+partial result.</li>
+<li>Recognize which outputs are meant for viewers rather than
+operators.</li>
+<li>Notice when a generated HTML artifact may reach outside the local
+machine when opened.</li>
+<li>Decide which output boundaries need confirmation before you treat
+them as final.</li>
+</ul>
+<h3 id="why-this-chapter-matters">Why this chapter matters</h3>
+<p>The owner risk here is simple: an analysis run can look successful
+before the useful artifact is actually finished. This toolkit turns
+session data and linked-session context into viewer-facing outputs such
+as dashboards, charts, reports, and exports. That makes the output
+boundary part of the product, not a cosmetic afterthought. A viewer may
+consume the artifact long after the operator has finished the run, so
+the owner needs a clear mental model of what is final, what is partial,
+and what is only staged.</p>
+<h3 id="how-analysis-becomes-an-artifact">How analysis becomes an
+artifact</h3>
+<p>An operator reaches analysis, visualization, reporting, or export
+through the named-tool surface described in the adjacent chapter. From
+there, the toolkit can generate HTML dashboards and reports, or produce
+export-oriented outputs in formats such as CSV, JSON, PDF, and PNG. The
+important distinction is lifecycle: some tools write the file locally
+and only become durable when that write succeeds, while the export path
+in the registry layer can stop at pending metadata and rely on
+downstream handling for the finished artifact. Linked-session views also
+do not always behave as all-or-nothing outputs; a missing overlap can
+still leave Zepp data in place, which means the viewer may receive a
+partial but still valid artifact.</p>
+<blockquote>
+<p><strong>Figure:</strong> Owners should not treat every
+successful-looking result as equally finished. A report file only counts
+once the local write succeeds, export work can stop at pending metadata,
+and linked-session output can still be valid even when it is
+incomplete.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Report file is durable]
+  B[Export stays pending]
+  C[Linked-session data may be partial]
+  A --- B --- C
+</pre>
+<p>The diagram compares three output states. One path becomes durable
+only after the local file write succeeds. A second path stops at pending
+metadata and still needs downstream handling. A third path can return a
+partial linked-session payload that remains useful even when Apple Watch
+overlap is missing. The consequence is that completion checks must look
+at the output boundary, not just whether the run returned something.</p>
+<h3 id="verified-facts">Verified facts</h3>
+<ul>
+<li>Public report and visualization tools write HTML to disk, and the
+set of HTML emitters is larger than the first evidence map
+suggested.</li>
+<li>The export path in the registry layer stages metadata and marks the
+export as pending instead of producing a finished file there.</li>
+<li>Some generated HTML is not self-contained; when a viewer opens it,
+the browser may fetch external Plotly script code.</li>
+<li>Linked-session output can be partial: missing Apple Watch overlap
+does not necessarily erase Zepp data from the result.</li>
+</ul>
+<blockquote>
+<p><strong>Figure:</strong> A local write is not the whole story. Once a
+browser opens the report, the file may reach outside the machine for
+script code, so the artifact is not automatically self-contained or safe
+to use offline.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  subgraph L[Local machine]
+    A[Report file is written]
+    B[Browser opens the file]
+  end
+  subgraph N[External web]
+    C[Plotly code is fetched]
+  end
+  A --> B
+  B -. may request .-> C
+</pre>
+<p>The diagram shows a report file written on the local machine and then
+opened in a browser. After that, the browser may request Plotly code
+from an external web source. The consequence is that local file creation
+does not guarantee a self-contained or offline-safe artifact.</p>
+<h3 id="what-is-solid-here-2">What is solid here</h3>
+<p>The strongest part of this surface is that it produces concrete
+artifacts instead of vague status. When an HTML report finishes writing,
+the owner can point to a real file. When an export is only staged, the
+pending state makes that boundary visible instead of pretending the file
+already exists. That is better than ambiguous success, even though it
+still asks the owner to watch the boundary carefully.</p>
+<h3 id="evidence-boundary-3">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The command surface
+is deterministic and dispatches one named tool at a time. - Report tools
+can write HTML files locally, and the write has to succeed before the
+artifact is durable. - The export path can stop at pending metadata
+instead of returning a finished file. - Some linked-session outputs can
+still return useful Zepp data even when Apple Watch overlap is missing.
+- Some generated HTML can ask the browser to fetch external script code
+when opened.</p>
+</blockquote>
+<p>Not reviewed: - The live runtime behavior of the toolkit was not
+exercised in this stage. - The downstream export implementation after
+the registry boundary was not inspected. - The manual does not prove the
+full inventory of every output-producing tool. - The chapter does not
+establish whether the repository is the whole owner-facing system or
+only part of a larger workflow.</p>
+<p>Re-check the tool dispatch surface, rerun the report and export
+paths, and confirm that a file exists on disk before calling an output
+final. If browser privacy matters, open a generated HTML file and verify
+whether it still loads external script code. If linked-session behavior
+changes, confirm whether partial results are still possible.</p>
+<blockquote>
+<p>Reviewed: blue-az/tennis-sensor-toolkit repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="which-tool-families-matter-most">Which Tool Families Matter
+Most</h2>
+<p><em>A 192-tool catalog is only legible if the owner reads it as a map
+of responsibilities, not as a flat list. The core families are data,
+session, analysis, visualization, export, calibration, monitoring, and
+utility; smart, ML, vision, audio, and query are real surfaces, but they
+stay secondary unless later evidence proves they are the center of the
+product.</em></p>
+<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
+<p>A 192-tool catalog is only legible if the owner reads it as a map of
+responsibilities, not as a flat list. The core families are data,
+session, analysis, visualization, export, calibration, monitoring, and
+utility; smart, ML, vision, audio, and query are real surfaces, but they
+stay secondary unless later evidence proves they are the center of the
+product.</p>
+<blockquote>
+<p><strong>Figure:</strong> The catalog is not governed by one behavior.
+Some families follow a fixed dispatch contract, some rely on local
+files, some route by heuristics, and some fail closed when data is
+missing. The owner has to read family names as responsibility hints, not
+as proof of the same operating model.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Catalog families]
+  B[Deterministic dispatch]
+  C[Local file defaults]
+  D[Heuristic routing]
+  E[Fail-closed profile selection]
+  A --> B
+  A --> C
+  A --> D
+  A --> E
+  D -.->|Can steer work to the wrong family| B
+  E -.->|Missing profile data suppresses matches| C
+</pre>
+<p>The diagram shows the catalog families branching into four different
+responsibility types: deterministic dispatch, local file defaults,
+heuristic routing, and fail-closed profile selection. It also shows that
+heuristic routing can send work to the wrong family and that missing
+profile data can suppress matches. The consequence is that the owner
+should not treat the whole catalog as one flat surface with one safety
+rule.</p>
+<h3 id="what-you-should-be-able-to-explain-4">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>See the catalog as a set of responsibilities, not as 192 unrelated
+tool names.</li>
+<li>Separate the deterministic core from smart and ML-related surfaces
+that should not redefine the product on their own.</li>
+<li>Recognize which families can change stored linkage, create durable
+outputs, or reach beyond the local machine.</li>
+<li>Know which family-priority questions still need owner judgment
+before the manual can claim a stable operating center.</li>
+</ul>
+<h3 id="families-are-the-unit-of-responsibility">Families are the unit
+of responsibility</h3>
+<p>The useful owner question is not whether the catalog is large. It is
+which families carry the real operating burden. Data, session, analysis,
+visualization, export, calibration, monitoring, and utility are the
+families that shape the core work; smart, ML, vision, audio, and query
+belong in the manual, but they should stay in a supporting or
+specialized lane unless later evidence shows that they control the
+product’s center of gravity.</p>
+<h3 id="the-registry-keeps-the-surface-deterministic">The registry keeps
+the surface deterministic</h3>
+<p>The operator front door is not a planner. The tool registry exposes
+one named tool at a time, and duplicate names do not create a second
+meaning; later registrations replace earlier ones. That matters for
+families because the catalog is a dispatch table, not just a menu. When
+a family starts mixing lookup, analysis, output, and state-changing
+tools, the owner needs to know whether that family is still one
+responsibility or several.</p>
+<blockquote>
+<p><strong>Figure:</strong> The sync path crosses a trust boundary
+before it is done. It reaches outside the local machine and can update
+stored linked-session state, so the owner should treat it as an
+operational boundary rather than a harmless refresh.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Local sync request]
+  subgraph Outside[Outside the local machine]
+    B[Phone sync]
+    C[Watch sync from a Mac server]
+  end
+  D[Auto-link detection]
+  E[Stored linked-session state updated]
+  A --> B --> C --> D --> E
+</pre>
+<p>The diagram starts with a local sync request, then moves into work
+outside the local machine: phone sync and watch sync from a Mac server.
+After that, auto-link detection runs and stored linked-session state is
+updated. The consequence is that the sync family is not local-only or
+read-only; it can reach external systems and change persisted state
+before it returns.</p>
+<h3 id="what-the-reviewed-evidence-makes-concrete">What the reviewed
+evidence makes concrete</h3>
+<p>The session and data families are local by default: the client
+resolves databases from local filesystem paths and warns when expected
+databases are missing instead of failing startup. The smart query
+surface infers context from keywords first, then from available data,
+then falls back to a practice default, so it is not a neutral
+dispatcher. Linked-session work is also not all-or-nothing: a linkage
+lookup can return Zepp data even when Apple Watch overlap is missing,
+and the auto-link detector writes matched rows by default. On the output
+side, HTML reports become durable only after the local write succeeds,
+while the registry export path stages metadata and leaves the export
+pending. Sensor profiles are data-driven and fail closed when the
+profile file is missing, which means some families can appear smaller or
+quieter than an owner expects without the tool inventing defaults.</p>
+<blockquote>
+<p><strong>Figure:</strong> Missing overlap does not force a hard stop.
+The owner has to check completeness explicitly, because the lookup can
+still return a useful partial result instead of failing closed.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Apple Watch overlap is present] --> B[Full linkage view]
+  C[Apple Watch overlap is missing] --> D[Zepp-only data still returns]
+  B --> E[Check the returned pieces]
+  D --> E
+</pre>
+<p>One branch shows Apple Watch overlap present and a full linkage view.
+The other branch shows overlap missing and Zepp-only data still
+returning. Both branches lead to a step that checks the returned pieces.
+The consequence is that absence of overlap is not a hard failure, so
+completeness must be verified explicitly.</p>
+<blockquote>
+<p><strong>Figure:</strong> Not every output family produces a finished
+artifact at the same point. The owner should treat report generation as
+complete only after the write succeeds, while staged export results
+still need follow-up before anyone can promise a file exists.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Report write succeeds] --> B[Finished file on disk]
+  C[Export request] --> D[Pending export result]
+  B --> E[Owner can rely on the file]
+  D --> F[Needs downstream handling]
+</pre>
+<p>One branch shows a report write succeeding and producing a finished
+file on disk. The other branch shows an export request returning a
+pending result that still needs downstream handling. The consequence is
+that report output can be durable after the local write, while export
+output may still be staged rather than finished.</p>
+<h3 id="the-catalog-is-broad-but-not-shapeless">The catalog is broad,
+but not shapeless</h3>
+<p>The strongest thing about this layout is that it stays deterministic
+while still covering a wide operational range. Owners can keep the core
+centered on local data, analysis, and output generation, then treat
+calibration and monitoring as responsibility checks rather than as
+separate products. That separation makes it easier to see when a family
+is producing durable work, when it is only staging work, and when it is
+quietly changing linked-session state instead of just reading it.</p>
+<h3 id="evidence-boundary-4">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The deterministic
+CLI contract and registry dispatch model. - Tool name overwrite behavior
+and missing-name failure in the catalog. - Local database defaults and
+warning-first startup for missing data files. - Smart query context
+routing based on keywords and data availability. - Partial
+linked-session returns, auto-save detection, and repeated-call caching.
+- Durable HTML report writes, staged export metadata, and sensor-profile
+failure behavior. - Generated HTML that can fetch external JavaScript in
+a browser.</p>
+</blockquote>
+<p>Not reviewed: - The live filesystem or any end-to-end runtime
+execution. - A full tool-by-tool dominance audit for every family in the
+192-tool catalog. - The whole-system boundary outside the repository
+evidence. - Whether smart and ML-related families are operationally
+dominant in actual use.</p>
+<p>Re-run the CLI after catalog changes to confirm family names,
+dispatch, and collision behavior. Recheck session and sync behavior on a
+live run if linkage or persistence policy changes. Confirm report and
+export durability by writing outputs on disk, and open a generated HTML
+file in a browser if you need to verify whether it fetches external
+scripts.</p>
+<blockquote>
+<p>Reviewed: blue-az/tennis-sensor-toolkit repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="what-this-manual-cannot-assume-yet">What This Manual Cannot
+Assume Yet</h2>
+<p><em>This chapter shows you where the manual is on solid ground and
+where it is still only a bounded read of the repository. The reviewed
+evidence covers a deterministic CLI front door, local sensor data
+loading, linked-session behavior, and output writing, but it does not
+prove this repository is the whole product or that live use matches the
+inspected code.</em></p>
+<h3 id="one-minute-snapshot-5">One-Minute Snapshot</h3>
+<p>This chapter shows you where the manual is on solid ground and where
+it is still only a bounded read of the repository. The reviewed evidence
+covers a deterministic CLI front door, local sensor data loading,
+linked-session behavior, and output writing, but it does not prove this
+repository is the whole product or that live use matches the inspected
+code. Read the rest of the manual as a careful map of what the code
+shows today, not as final confirmation of your product intent.</p>
+<h3 id="what-you-should-be-able-to-explain-5">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain what this manual can safely claim from reviewed evidence and
+where that line stops.</li>
+<li>Separate repository-visible behavior from whole-system
+assumptions.</li>
+<li>Identify the boundaries that most change later interpretation:
+system boundary, missing owner intent, and runtime validation.</li>
+<li>Decide which unresolved questions need verification before acting on
+the manual.</li>
+</ul>
+<h3 id="how-to-read-the-boundary">How to Read the Boundary</h3>
+<h3 id="the-boundary-is-the-point-of-proof">The boundary is the point of
+proof</h3>
+<p>This chapter is the line between what the reviewed evidence can
+actually establish and what the owner still has to confirm. Read it as a
+proof boundary, not as a tone choice. Where earlier chapters can
+describe confirmed behavior, this chapter tells you how far that
+confirmation goes before it turns into an assumption about the larger
+product, the operating environment, or the owner’s intent. That matters
+because evidence-based confidence and product-level confidence are not
+the same thing: the first can be strong inside the inspected surface,
+while the second still depends on questions the evidence did not
+settle.</p>
+<p>For the owner, the practical consequence is simple. You should treat
+the manual as reliable where it is anchored in reviewed behavior, but
+not as a statement that the repository is the whole system or that every
+live deployment follows the same shape. A local example makes the
+difference clear: if the evidence supports a deterministic command path
+and a warning-first startup posture, that is a real boundary the manual
+can state. It does not, by itself, prove how the rest of the product is
+packaged, what external services may sit around it, or which
+responsibilities belong outside the codebase.</p>
+<h3 id="missing-intent-is-not-a-cosmetic-gap">Missing intent is not a
+cosmetic gap</h3>
+<p>The absence of owner-confirmed intent changes the scope of the manual
+in a material way. It is not just missing color commentary. Without that
+intent, the safest framing is narrower: the manual should explain the
+confirmed toolkit surface, the data and output boundaries it exposes,
+and the places where later verification may still change interpretation.
+What it should not do is widen those findings into claims about business
+purpose, operational ownership, or the product’s full environment unless
+evidence actually supports that expansion.</p>
+<p>That missing intent also changes emphasis. Some questions become
+central precisely because they were not answered at the owner level:
+where the system boundary really ends, which sensor families matter most
+in practice, and what responsibilities sit outside the repository. Those
+questions are not distractions from the manual; they are part of what
+makes the manual honest. If later evidence arrives, it should be used to
+tighten the scope of those open edges, not to rewrite the
+already-supported parts into something weaker or more tentative than
+they are.</p>
+<h3
+id="verification-should-narrow-the-open-edges-not-reopen-settled-ground">Verification
+should narrow the open edges, not reopen settled ground</h3>
+<p>Later verification should work like a sieve, not a reset button. The
+point is to resolve the unanswered boundaries that still affect
+interpretation, while leaving the already-supported behavior intact
+unless new evidence directly contradicts it. In practice, that means
+checking the remaining uncertainty around system boundary, owner
+responsibilities outside the repository, and any live conditions that
+could change how the manual is read. It does not mean re-litigating the
+parts the reviewed evidence already establishes with high
+confidence.</p>
+<p>This distinction protects the reader from two opposite mistakes. One
+mistake is overtrusting the current manual as if every limit were
+already known; the other is treating all uncertainty as though nothing
+can be trusted yet. The correct reading sits between them. A supported
+claim stays supported until later evidence specifically overturns it. An
+unsupported edge stays provisional until it is verified. If a later
+check confirms an open boundary, the manual should become more precise
+there. If it does not, the boundary remains where it was, and the rest
+of the chapter should continue to carry the confidence the evidence
+earned.</p>
+<blockquote>
+<p><strong>Figure:</strong> The manual can stand on the reviewed toolkit
+behavior, but anything about the full product or owner intent remains
+provisional until separate verification closes that gap.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+    A[Reviewed evidence]
+    B[Confirmed toolkit surface]
+    C[Claims still provisional]
+    D[Whole product and owner intent]
+    A --> B
+    B --> C
+    C -.-> D
+    D -.-> C
+</pre>
+<p>Reviewed evidence supports the confirmed toolkit surface. Beyond that
+surface, claims about the whole product and owner intent stay
+provisional until later verification. The consequence is that the manual
+should be trusted where it is evidence-bound and treated as incomplete
+at the wider boundary.</p>
+<h3 id="where-the-real-boundary-checks-happen">Where the Real Boundary
+Checks Happen</h3>
+<p>The practical boundary in this toolkit is not a single line; it
+changes by surface. Some paths are fixed, local, and deterministic.
+Others begin locally but reach outward, write state, or infer context
+from signals that can be incomplete. For the owner, the important
+question is not whether the toolkit is generally controlled, but which
+control point you are actually standing at before you trust the
+result.</p>
+<p>The table below compares the main operator surfaces at that boundary.
+Read it as a map of where the system stays local, where it can write,
+and where it can make a decision that is only as good as the signal it
+receives.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Confirmed behavior</th>
+<th>Boundary implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLI front door</td>
+<td>The operator opens the surface through categories, list, describe,
+and run, and run executes one named tool with JSON parameters.</td>
+<td>Discovery and invocation are deterministic, not conversational. The
+owner can treat the front door as a fixed dispatch contract, but no live
+invocation was exercised in this stage.</td>
+</tr>
+<tr>
+<td>Local data-client startup</td>
+<td>The data client starts from local filesystem paths and warns if key
+databases are missing instead of stopping immediately.</td>
+<td>Startup can succeed before the data is actually ready, so a running
+process is not proof that the local databases exist or are usable.</td>
+</tr>
+<tr>
+<td>Composite sync tool</td>
+<td>The sync path reaches external sync services and can change
+linked-session state before it returns.</td>
+<td>This is not a local-only or read-only action. It depends on outside
+devices or servers and can alter persisted linkage as part of the same
+operation.</td>
+</tr>
+<tr>
+<td>Linked-session auto-save</td>
+<td>The detector writes matched pairs into the linked-session store by
+default and commits them when the database is present.</td>
+<td>Inspection can change state. A review run is not automatically
+passive, so repeated checks need explicit expectations about deduping
+and persistence.</td>
+</tr>
+<tr>
+<td>Per-context caching</td>
+<td>Repeated calls within one execution context can reuse cached
+session, sensor, and query reads.</td>
+<td>A retry inside the same context may not see fresh database state.
+Freshness depends on cache lifetime, not just on the data source
+changing.</td>
+</tr>
+<tr>
+<td>SmartQuery routing</td>
+<td>The query router chooses LAB, MATCH, or PRACTICE first by keyword,
+then by data availability, then by default.</td>
+<td>A misleading phrase or partial availability signal can steer the
+query into the wrong data family. When the context matters, the operator
+should not assume the first guess is the right one.</td>
+</tr>
+</tbody>
+</table>
+<p>The main consequence for the owner is that boundary checks are
+distributed. A command can be deterministic at the entry point and still
+become stateful later in the path. In practice, that means the safe
+question is not just “did the operator call a tool” but “did this
+particular path only look, or did it also write, sync, or infer?” The
+same toolkit can do both depending on the surface.</p>
+<p>A concrete example makes this easier to hold. Suppose an operator
+starts the local data client and sees only warnings about missing
+databases. That startup does not prove the environment is ready; it only
+proves the client tolerated the absence. If the operator then runs
+linked-session detection with the default behavior, the path may write
+matched pairs into the shared store. If they immediately repeat the same
+inspection inside the same execution context, cached reads can still
+show the earlier view. The result is that readiness, persistence, and
+freshness are separate checks, even though they may happen back to
+back.</p>
+<p>SmartQuery is a different kind of boundary problem. It is not mainly
+about writing state; it is about being routed to the wrong family of
+data. Keyword priority comes first, then availability, then a fallback.
+That is useful because it keeps query selection predictable, but it also
+means the operator must be careful with ambiguous wording. A phrase that
+sounds like one mode can override a more subtle availability signal, and
+a partial sensor picture can nudge the router toward the wrong answer
+set. The boundary here is interpretive rather than transactional.</p>
+<p>The composite sync path is the strongest reminder that some toolkit
+actions extend beyond the local machine. It reaches external sync
+services and can change linked-session state before returning, so the
+owner should not mentally classify it as a simple read or a harmless
+refresh. That does not make it unstable; it makes the prerequisites and
+side effects part of the contract. The manual can therefore promise that
+the front door is deterministic, while also warning that some of the
+tools behind it are not local-only and not read-only. The distinction
+matters because it changes what an operator must verify before trusting
+the result, and it changes what a retry can safely assume about
+state.</p>
+<blockquote>
+<p><strong>Figure:</strong> A deterministic entry point does not mean
+every path stays local or read-only; the owner has to verify which
+branch only warns, which branch writes, which branch syncs outward, and
+which branch may reuse cached reads.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+    A[Deterministic CLI front door]
+    B[Local startup warns]
+    C[External sync changes linked sessions]
+    D[Default auto-save writes]
+    E[Cached reads within one run]
+    F[Keyword routing]
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+    A --> F
+</pre>
+<p>The CLI front door leads to several different surfaces. One path only
+warns during local startup, one path reaches external sync and can
+change linked-session state, one path writes matched pairs by default,
+one path can reuse cached reads, and one path routes by keywords. The
+consequence is that the owner must check the specific branch before
+assuming locality, freshness, or read-only behavior.</p>
+<h3 id="facts-the-reviewed-evidence-actually-confirms">Facts the
+Reviewed Evidence Actually Confirms</h3>
+<p>The reviewed evidence is strongest where the toolkit refuses to
+guess. In this part of the manual, the useful facts are not broad
+promises about the whole product; they are specific edges the code makes
+explicit. When a catalog name collides, when a profile file is missing,
+when an HTML artifact is written, when a browser opens an artifact that
+may still depend on outside assets, and when an export is only staged,
+the behavior is concrete enough to describe without speculation. That
+matters to an owner because these are the places where a false
+assumption would change whether an output is complete, durable, or even
+present at all.</p>
+<h3 id="catalog-lookup-does-not-improvise">Catalog lookup does not
+improvise</h3>
+<p>Duplicate tool names are not blended into a merged catalog. The later
+registration replaces the earlier one, so the final stored name is the
+one the operator will see and use. A missing name does not fall through
+to a guess or a nearest match; it fails immediately. That combination is
+important because it makes catalog behavior predictable, but it also
+makes registration order part of the product outcome. If two tools are
+introduced with the same name, the one registered later wins, and the
+earlier one is no longer the effective tool behind that name.</p>
+<p>For an owner, the consequence is plain: catalog stability depends on
+naming discipline, not on any automatic conflict resolution. A mistaken
+duplicate can change what a name points to without a warning path that
+preserves both versions. A missing lookup is safer in a different sense:
+it does not silently route work somewhere else. The failure is visible
+instead of accidental.</p>
+<h3 id="missing-profiles-stay-empty">Missing profiles stay empty</h3>
+<p>The same fail-closed pattern appears in sensor profile loading. When
+the profile file is missing or unreadable, the result is no matches
+rather than a fabricated default set. Garmin is the clearest special
+case in the reviewed evidence: it resolves to no profiles at all. That
+means profile selection is local and data-driven, not synthesized from a
+guess about what should have been present.</p>
+<p>The practical effect is that absence stays absence. If a profile file
+is not there, the toolkit does not pretend that a profile exists, and it
+does not fill the gap with a generic stand-in. For an owner, that
+reduces the risk of false confidence: a profile-dependent path can look
+available in the interface while still resolving to nothing underneath.
+The boundary is also important. The evidence establishes the empty
+result, but it does not settle whether Garmin’s empty mapping is
+intentional product design or simply an uncovered case.</p>
+<h3 id="durability-comes-after-the-write">Durability comes after the
+write</h3>
+<p>HTML report generation is not durable at the moment the report is
+assembled. It becomes durable only after the local file write succeeds.
+The reviewed evidence shows report and visualization tools creating
+destination directories and writing HTML files to disk, which means the
+artifact exists as a durable output only after that write completes.
+Before then, it is still just generated content in motion.</p>
+<p>That distinction changes how an owner should read completion claims.
+A report generator may have done nearly all of its work and still not
+have produced a usable artifact if the write has not finished
+successfully. The table below gathers the confirmed edge conditions in
+one place.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Confirmed condition</th>
+<th>Observed result</th>
+<th>Owner takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Duplicate tool registrations or a missing catalog name</td>
+<td>Later registrations replace earlier ones; missing names fail
+fast</td>
+<td>Catalog behavior is deterministic, but name collisions and lookup
+failures are explicit and consequential</td>
+</tr>
+<tr>
+<td>Missing or unreadable sensor profile files, including Garmin</td>
+<td>No profiles are returned</td>
+<td>Profile selection fails closed instead of inventing a fallback</td>
+</tr>
+<tr>
+<td>HTML report generation followed by a successful local write</td>
+<td>The report becomes durable on disk</td>
+<td>Treat generation as incomplete until the file write succeeds</td>
+</tr>
+<tr>
+<td>Opening some generated HTML artifacts in a browser</td>
+<td>The page may fetch Plotly from a CDN</td>
+<td>Browser viewing can reach outside the local machine</td>
+</tr>
+<tr>
+<td>The export step</td>
+<td>The result is staged as pending rather than finished</td>
+<td>Do not treat the registry return as a completed export file</td>
+</tr>
+</tbody>
+</table>
+<h3 id="some-artifacts-are-still-dependent-on-the-outside-world">Some
+artifacts are still dependent on the outside world</h3>
+<p>The HTML story has one more boundary: some generated pages are not
+self-contained. The reviewed evidence shows cases where the artifact can
+load Plotly from a CDN when opened, either because the shared builder
+injects a remote script or because the template itself points there.
+That means a viewer opening the file may trigger browser-side network
+fetches even though the file was created locally.</p>
+<p>For an owner, this is a practical privacy and offline concern, not a
+theoretical footnote. A file on disk is not automatically a fully
+packaged artifact. If the environment assumes no external network
+contact, or if the output needs to be portable in isolation, the
+browser-opening step may violate that assumption. The evidence does not
+prove the full network footprint of every artifact, only that some
+outputs can reach outside the machine through Plotly loading.</p>
+<h3 id="export-is-staged-not-finished">Export is staged, not
+finished</h3>
+<p>The final confirmed edge is the export path. The registry-layer
+export step is staged as pending and only prepares metadata or a path
+for downstream handling. That means the presence of an export response
+does not prove that a finished export file exists yet. The owner
+consequence is simple but important: any workflow that promises a
+deliverable file has to wait for the downstream export work to
+complete.</p>
+<p>Taken together, these facts show a consistent pattern. The toolkit
+does not silently paper over missing inputs, and it does not mark every
+intermediate step as complete. Some paths fail closed, some outputs only
+become durable after the write lands, and some results remain pending
+until another stage finishes the job. That is the reliable line the
+reviewed evidence supports.</p>
+<blockquote>
+<p><strong>Figure:</strong> Generated HTML is not finished until the
+local write lands, and some files still create browser-side network
+exposure when opened, so completion and offline safety are separate
+checks.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+    state "HTML assembled" as Assembled
+    state "Durable on disk" as Durable
+    state "Staged handoff" as Staged
+    state "Opened in browser" as Opened
+    state "Remote chart load" as Remote
+    [*] --> Assembled
+    Assembled --> Durable : local write succeeds
+    Assembled --> Staged : handoff is only staged
+    Staged --> [*] : downstream handling finishes
+    Durable --> Opened : viewer opens the file
+    Opened --> Remote : Plotly loads from CDN
+</pre>
+<p>The output begins as assembled HTML. It becomes durable only after
+the local write succeeds. A separate path stays staged until downstream
+handling finishes. Even after a file is durable, opening it in a browser
+can trigger a remote chart-library load. The consequence is that the
+owner must treat durability, staging, and outside network contact as
+different checks.</p>
+<h3 id="what-is-solid-enough-to-trust">What Is Solid Enough to
+Trust</h3>
+<h3 id="explicit-edges-are-a-real-strength">Explicit edges are a real
+strength</h3>
+<p>The reviewed evidence is strongest where the toolkit refuses to blur
+a boundary into a guess. When two tools share a name, the later
+registration replaces the earlier one instead of quietly merging the
+two. When a requested tool name does not exist, lookup fails immediately
+instead of falling through to a substitute. That matters because catalog
+mistakes become visible as mistakes: the operator does not get a vague
+best effort, and the owner does not have to wonder whether a hidden
+fallback changed the result. A simple example is a duplicate tool
+registration during development. The registry will not preserve both
+versions; it will keep the last one it saw. That is a sharp edge, but it
+is also a clear one, which makes the catalog easier to reason about and
+easier to audit later.</p>
+<p>The same pattern shows up in data loading. Missing sensor profile
+files do not produce invented matches, and the Garmin path resolves to
+no profiles rather than a synthetic default. In practical terms, the
+toolkit is willing to say “nothing matched” when the local evidence is
+absent. That protects the owner from false confidence: a missing file
+does not masquerade as a valid configuration, and a sensor type without
+a mapping does not get a made-up profile just to keep the flow moving.
+The boundary is narrow and important. This does not prove the mapping is
+complete across every device family, and it does not tell us whether
+Garmin’s empty result is intentional coverage or a gap. What it does
+prove is that the load path is fail-closed, not imaginative.</p>
+<h3 id="output-is-separated-from-completion">Output is separated from
+completion</h3>
+<p>The output side has the same kind of discipline. HTML reports are
+only durable after the local write succeeds, and the export flow is
+staged as pending rather than presented as a finished artifact. That
+distinction is operationally valuable because it prevents the manual
+from overstating success. A report can be generated in memory or
+assembled by the toolkit, but the owner should not treat it as stable
+until the file exists on disk. Likewise, an export returned from the
+registry layer is not yet the final deliverable; it is a promise of
+downstream work, not the completed file itself. If a viewer opens a
+dashboard or an operator kicks off an export, the correct reading is
+that generation and durability are separate steps, and only the latter
+closes the loop.</p>
+<p>A concrete scenario makes the difference obvious. Suppose an operator
+requests an export and then immediately looks for a file to hand off.
+The registry can stage the export metadata and still leave the export
+pending. That is not a failure, but it is also not a finished handoff.
+The manual can trust that distinction because the evidence draws it
+explicitly instead of hiding it behind one generic success signal.</p>
+<h3 id="why-this-makes-later-verification-tractable">Why this makes
+later verification tractable</h3>
+<p>These explicit edges are what make the remaining work manageable. The
+manual does not need to guess the shape of the product from scratch,
+because the evidence already shows where the toolkit stops: duplicate
+names are not silently reconciled, missing profiles do not get
+fabricated, and unfinished outputs are not mislabeled as durable. Those
+are the kinds of boundaries that reduce ambiguity instead of creating
+it. They let later verification focus on scope and runtime confirmation,
+not on reconstructing the basic outline of the system.</p>
+<p>That is also why missing owner-confirmed intent matters less here
+than it would in a less well-bounded codebase. The intent question still
+matters for how broadly the manual should generalize, but it does not
+erase the structure already established by the evidence. The registry
+behavior, sensor loading behavior, and output handling all give the
+manual enough fixed points to stay honest. The unresolved questions now
+are about where the product surface extends, which live paths matter
+most, and how runtime behavior confirms those boundaries in practice.
+The heavy lifting of basic shape recognition is already done.</p>
+<h3 id="the-practical-owner-payoff">The practical owner payoff</h3>
+<p>For the owner, the payoff is confidence with guardrails. You can
+trust that the toolkit makes several important absences visible instead
+of smoothing them over. You can also trust that a later review will not
+need to reopen every assumption, because some parts of the system have
+already declared their limits plainly. That does not make the whole
+repository complete, and it does not replace runtime validation. It does
+mean the manual is not building on fog. The evidence is strong where it
+should be strongest: at the points where a mistaken default would be
+more dangerous than a clear refusal, a pending status, or an empty
+match.</p>
+<h3 id="evidence-boundary-5">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - the accepted
+investigation plan - the promoted reviewed knowledge items and
+counterevidence summary in this prompt - the open decisions and evidence
+gaps supplied in this prompt</p>
+</blockquote>
+<p>Not reviewed: - source-file contents - live CLI runs - runtime traces
+- sibling reference books - critic reports - benchmark answers -
+customer instructions outside the prompt</p>
+<p>Later stages should inspect the CLI front door, local data loading,
+linked-session handling, report writers, export staging, and any sync
+path, then run the toolkit against local data to confirm the system
+boundary, active sensor sources, and which outputs become durable.</p>
+<blockquote>
+<p>Reviewed: blue-az/tennis-sensor-toolkit repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<h2 id="appendix-attention-items-owner-decisions">Appendix — Attention
+Items &amp; Owner Decisions</h2>
+<p><em>48 in-chapter cards collapsed to the distinct items
+below.</em></p>
+<h3 id="resolved-this-pass">Resolved this pass</h3>
+<ul>
+<li><strong>Duplicate tool names are now rejected at
+registration</strong> (was a silent overwrite — a name collision in the
+192-tool registry clobbered the earlier tool with no error). Now fails
+closed.</li>
+</ul>
+<h3 id="things-to-know">Things to know</h3>
+<ul>
+<li>It’s a <strong>deterministic single-tool dispatch surface, not a
+planner/agent</strong>.</li>
+<li>It depends on <strong>local sensor databases outside the
+repo</strong>; missing DBs <strong>warn</strong> at startup — metadata
+commands still run, data-requiring tools fail when invoked (intended
+partial operation).</li>
+<li><strong>Sync families are not read-only</strong> — they pull from
+external sources with side effects; the sync path is not
+local-only.</li>
+<li><strong>Linked-session detection auto-saves by default</strong> (a
+“detect” operation that writes).</li>
+<li><strong>Linked-session / overlap output can be partial</strong>
+(e.g. Zepp-only) yet look complete; a missing overlap is not the same as
+no data.</li>
+<li><strong>HTML reports load Plotly from an external CDN</strong> (need
+internet to render); <strong>exports can return a staged result</strong>
+before the file is durable.</li>
+<li><strong>Repeated session reads can be stale</strong> within one
+execution context (caching).</li>
+</ul>
+<h3 id="open-decisions-kept-as-is-this-pass">Open decisions (kept as-is
+this pass)</h3>
+<ul>
+<li>Should missing local DBs <strong>fail closed</strong> instead of
+warning? <em>(currently warn — intended)</em></li>
+<li>Should HTML reports <strong>bundle Plotly</strong> to be
+self-contained? <em>(currently CDN — kept lightweight)</em></li>
+<li>Should partial linked-session output show a distinct
+<strong>“partial data” state</strong>? <em>(currently returns
+partial)</em></li>
+<li>Should linked-session <strong>auto-save be opt-in</strong>?
+<em>(currently on)</em></li>
+<li>Should <strong>staged exports be labeled
+pending-until-durable</strong>? <em>(currently not)</em></li>
+</ul>
+</body>
+</html>

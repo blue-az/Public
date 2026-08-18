@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Bulkhead Flappy — Owner's Manual</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <style>
+  body{max-width:820px;margin:2rem auto;padding:0 1.2rem;font-family:-apple-system,Segoe UI,Roboto,Helvetica,sans-serif;line-height:1.55;color:#1a1a1a}
+  h1,h2,h3{line-height:1.25} h2{border-bottom:1px solid #eee;padding-bottom:.2em;margin-top:2em}
+  pre.mermaid{background:transparent;text-align:center}
+  pre:not(.mermaid){background:#f6f8fa;padding:.8em;overflow:auto;border-radius:6px}
+  code{background:#f4f4f4;padding:.1em .3em;border-radius:3px} pre code{background:none;padding:0}
+  blockquote{border-left:3px solid #ccd;margin:0;padding:.2em 1em;color:#555;background:#fafafc}
+  table{border-collapse:collapse;margin:1em 0}td,th{border:1px solid #ddd;padding:.4em .6em}
+  </style>
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true});</script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Bulkhead Flappy — Owner's Manual</h1>
+</header>
+<h1 id="owners-manual-for-blue-azbulkhead-flappy">Owner’s Manual for
+blue-az/bulkhead-flappy</h1>
+<p><em>5 generated chapters from the reviewed repository
+snapshot</em></p>
+<blockquote>
+<p>Source:
+blue-az/bulkhead-flappy:main@793cf985ceac1f738e28cb38153532ce0cbecd33</p>
+</blockquote>
+<hr />
+<h2 id="quickstart">Quickstart</h2>
+<p>Bulkhead Flappy is a single-file canvas game — the Bulkhead τ
+charter/enforcement demo. It reads <code>flappy.pbc.md</code> at runtime
+as its charter source of truth.</p>
+<ul>
+<li><strong>Play:</strong> serve the directory (so the browser can fetch
+the charter) and open <code>index.html</code>.</li>
+<li><strong>Controls:</strong> SPACE / tap to thrust; the Mission
+Controls tune the run; Educational Mode opens the Engine Room
+(deterministic replay logs, seed, vessel state, charter-bound
+controls).</li>
+</ul>
+<h2 id="what-this-charter-flight-is">What This Charter Flight Is</h2>
+<p><em>This product is a static single-page browser game and teaching
+demo. A player enters through the splash screen, uses the Playable
+Flight Screen and Mission Controls, can open Educational Mode to inspect
+the Engine Room, and can read the Runtime Charter Document that sets the
+rules the page uses.</em></p>
+<h3 id="one-minute-snapshot">One-Minute Snapshot</h3>
+<p>This product is a static single-page browser game and teaching demo.
+A player enters through the splash screen, uses the Playable Flight
+Screen and Mission Controls, can open Educational Mode to inspect the
+Engine Room, and can read the Runtime Charter Document that sets the
+rules the page uses. This chapter is the owner’s map of those named
+parts and the evidence boundary around them: it shows what the
+code-backed product does today, not a broader business intent that has
+not been confirmed.</p>
+<h3 id="what-you-should-be-able-to-explain">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain what this work is and what it is not, in plain product
+terms.</li>
+<li>Name the surfaces and in-product roles the manual will keep
+using.</li>
+<li>Describe where the rules come from and why the charter matters
+before play starts.</li>
+<li>Separate the core product identity from supporting concerns like
+local state and version labels.</li>
+</ul>
+<h3 id="the-product-frame">The Product Frame</h3>
+<p>This work is a charter-governed browser flight demo and teaching
+tool. That framing matters because it tells the owner what kind of thing
+the product is: a single-page experience with a run loop, named
+surfaces, and a live rule source, not a generic app, dashboard, or
+business workflow. Because no owner-confirmed product brief was
+supplied, the manual stays inside the repository-backed snapshot and
+treats that boundary as real, not temporary.</p>
+<h3 id="a-charter-not-a-blank-page">A charter, not a blank page</h3>
+<p>The Runtime Charter Document is the product’s rule source. The
+reader-facing consequence is simple: the page is meant to be understood
+as charter-led from the start, with the rules visible before flight
+begins rather than hidden behind an assumed product policy. That makes
+the charter more than setup text. It is the thing that explains why the
+run behaves the way it does, and why later chapters spend time on how
+the rules are loaded and what happens when they are not cleanly read.
+This chapter only needs the mental picture: rules come from the charter,
+not from unseen business logic the reader is expected to guess.</p>
+<h3 id="the-surfaces-that-carry-the-experience">The surfaces that carry
+the experience</h3>
+<p>The owner-facing surfaces that matter here are the Playable Flight
+Screen, Mission Controls, Educational Mode, and the Runtime Charter
+Document. The first is where the player sees and plays the flight.
+Mission Controls are where the player shapes the next run. Educational
+Mode is the inspection-oriented teaching surface, and the Runtime
+Charter Document is the source of truth the rest of the experience
+points back to. Keeping those four surfaces separate prevents the manual
+from collapsing the product into one vague game screen. It also gives
+the owner a stable map: play happens here, tuning happens there,
+inspection opens over here, and the charter sits beside all of it.</p>
+<h3 id="role-language">Role language</h3>
+<p>The manual uses role words deliberately. Owner means you, the person
+responsible for the product. Player is the person who starts runs and
+interacts with Mission Controls. Pilot is the in-run actor whose
+movement determines what happens to the vessel. The Engine Room is the
+named diagnostics and state-visibility surface. This matters because it
+keeps responsibility lines clear. The owner does not become the player,
+and the player does not become the one inspecting state. The product
+separates who starts a run, who moves through it, and who inspects what
+the run revealed.</p>
+<h3 id="the-products-own-vocabulary">The product’s own vocabulary</h3>
+<p>Certain native terms should stay intact because they are part of how
+the product describes itself. Charter, bulkhead, current, gate, logbook,
+Bulkhead Build, and Vibe Build are not interchangeable labels; they are
+the product’s own nouns for the rule source, the obstacles and
+boundaries, the movement force, the scoring unit, the stored run record,
+and the two build modes that later chapters distinguish. Preserving
+those words keeps the manual faithful to the experience the player sees.
+Translating them too early into generic terms would blur the
+distinctions the product is trying to make visible.</p>
+<p>That is the right level of abstraction for this chapter: a
+charter-led browser flight, a small set of named surfaces, clear role
+boundaries, and a vocabulary the rest of the manual will keep using
+without flattening it.</p>
+<blockquote>
+<p><strong>Figure:</strong> For the owner, the useful boundary is that
+play and tuning happen on the working surfaces while inspection only
+reveals the Engine Room; the charter sits outside that loop, so looking
+at the product is not the same as changing its rules.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  P[Player]
+  R[Playable flight screen]
+  M[Mission controls]
+  D[Educational Mode]
+  E[Engine Room]
+  C[Runtime Charter]
+
+  P -->|plays on| R
+  P -->|tunes the next run in| M
+  D -->|shows| E
+  E -.->|does not rewrite| C
+  C -->|sets the live rules for| R
+  C -->|sets the live rules for| M
+  C -.->|sits outside the inspection view| E
+</pre>
+<p>The diagram shows the Player using the Playable Flight Screen and
+Mission Controls, Educational Mode opening the Engine Room for
+inspection, and the Runtime Charter sitting outside those surfaces as
+the rule source. The owner takeaway is that inspection is separate from
+play and does not rewrite the charter.</p>
+<h3 id="entry-controls-and-modes">Entry, Controls, And Modes</h3>
+<h3 id="the-charter-is-the-first-live-rule-source">The charter is the
+first live rule source</h3>
+<p>The player is pointed to the charter before play begins, and startup
+pulls charter values into the page so the live limits come from that
+document rather than from a separate hidden preset. For the owner, the
+important consequence is simple: the page is not merely showing a rule
+sheet, it is reading the rule sheet and using it to shape what the next
+run is allowed to be.</p>
+<p>That also means the charter has a real boundary condition. When the
+charter response is malformed, the page can keep stale limits in place
+while still presenting itself as live. So the useful mental model is not
+“the charter always refreshes cleanly,” but “the page tries to hydrate
+itself from the charter, and a bad response can leave old values
+standing.” In a concrete case, a player may open the page, see
+live-looking rule status, and still be running against values that
+survived a broken charter load rather than values newly confirmed from
+the document.</p>
+<h3 id="mission-controls-inherit-the-charter">Mission Controls inherit
+the charter</h3>
+<p>Mission Controls start from charter-shaped defaults, so the first
+values a player sees are already tied to the current charter rather than
+chosen ad hoc. When the charter loads successfully, the displayed bounds
+and tuning values update for the next run. That matters because it keeps
+the pre-run setup aligned with the rule source: if the charter changes a
+limit, the control surface moves with it before the next run starts
+instead of leaving the player to reconcile two different versions by
+hand.</p>
+<p>A practical example is a destination range change. If the charter
+narrows or widens that range, the visible control bounds and the next
+run’s tuning reflect that change together. The evidence does not
+establish that every on-screen control is rewritten the same way, only
+that the charter-shaped bounds and tuning values are synchronized for
+the next run.</p>
+<h3 id="educational-mode-only-changes-what-is-visible">Educational Mode
+only changes what is visible</h3>
+<p>Educational Mode is an inspection gate, not a rule editor. Turning it
+on exposes the Engine Room and the charter panels; turning it off hides
+them again. The charter values themselves do not get rewritten by that
+mode switch. For the owner, that separation matters because the teaching
+surface stays read-only unless some other path changes the charter,
+which keeps inspection from quietly mutating the rules it is meant to
+explain.</p>
+<p>A straightforward scenario makes the split visible: a player turns on
+Educational Mode to inspect the Engine Room and the charter side by
+side, then turns it off and goes back to the flight. The underlying
+charter does not change just because the panels were shown. The boundary
+here is narrow and useful: visibility changes are confirmed, but no
+separate evidence shows Educational Mode editing runtime rules.</p>
+<h3 id="run-start-enforcement-depends-on-build-mode">Run-start
+enforcement depends on build mode</h3>
+<p>At run start, the build choice decides what happens if current is
+outside the allowed range. Bulkhead Build corrects illegal current
+before the run proceeds. Vibe Build leaves that out-of-range current in
+place, so the next run starts with the drift still present. That is the
+difference that matters to an owner: the same starting value can either
+be normalized or carried forward depending on which build is
+running.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Build mode</th>
+<th>What happens to illegal current</th>
+<th>What the next run feels like</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bulkhead Build</td>
+<td>It is clamped back into range at run start.</td>
+<td>The run begins from a legal current setting.</td>
+</tr>
+<tr>
+<td>Vibe Build</td>
+<td>It is left to drift into the next run.</td>
+<td>The run starts with that drift still present.</td>
+</tr>
+</tbody>
+</table>
+<p>If a player leaves current out of range before restarting, Bulkhead
+Build acts like a correction point and Vibe Build acts like a
+preserve-the-state choice. The evidence only establishes this at run
+start; it does not prove a broader enforcement layer later in the
+flight.</p>
+<p>Taken together, these three controls define the owner-facing order of
+operations: the charter sets the live bounds, Mission Controls inherit
+those bounds for the next run, Educational Mode only changes what can be
+inspected, and build mode decides whether an illegal current is cleaned
+up or carried forward when a run starts.</p>
+<blockquote>
+<p><strong>Figure:</strong> For the owner, startup is a trust point:
+good charter values refresh the live limits and the next-run controls,
+but a malformed charter can leave earlier values standing while the page
+still appears live. That makes the visible status alone insufficient
+proof that the rules are fresh.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  S[Startup]
+  C[Runtime Charter]
+  U[Usable values]
+  L[Live limits]
+  M[Mission controls]
+  P[Previous values]
+
+  S -->|reads| C
+  C -->|yields usable values| U
+  U -->|updates| L
+  U -->|updates the next run controls| M
+  C -.->|if no usable values| P
+  P -->|stay in place as the live limits| L
+</pre>
+<p>The diagram shows startup reading the Runtime Charter. When the
+charter yields usable values, those values update the live limits and
+the Mission Controls for the next run. When the charter yields no usable
+values, the previous values stay in place as the live limits. The
+consequence is that the owner should not trust the live label alone as
+proof of a fresh charter load.</p>
+<h3 id="evidence-you-can-check">Evidence You Can Check</h3>
+<h3 id="what-this-evidence-actually-covers">What This Evidence Actually
+Covers</h3>
+<p>The reviewed evidence stays inside a narrow boundary: the
+repository’s README, the browser page, and the runtime charter document.
+That matters because it limits what can be said with confidence. It
+shows how the work presents itself to the player and how the page treats
+its charter, but it does not establish broader server-side behavior,
+account behavior, or any wider platform around it. In other words, the
+manual can describe the product as it appears in this snapshot; it
+cannot responsibly stretch that into a claim about systems the evidence
+does not show.</p>
+<h3 id="when-the-charter-text-is-bad">When the Charter Text Is Bad</h3>
+<p>The clearest checkable risk in the evidence is that a malformed
+charter response can leave the old charter values in place while the
+page still shows the charter as live. The mechanism is simple: if the
+page cannot extract new values from the charter text, it keeps the
+previous ones instead of replacing them with a safe empty state. If the
+fetch itself fails, the behavior is different; the evidence only
+establishes the stale-value path when the response arrives but does not
+yield usable values.</p>
+<p>For an owner, that means the visible status alone is not enough to
+prove the rules are fresh. A page can appear to have loaded the charter
+successfully while still carrying forward earlier limits. A concrete
+example is a charter document that comes back as an error page or
+otherwise malformed text: the page can still present the live charter
+label, but the numbers behind it may be leftovers from before. The
+reviewed files do not show a fail-closed parse path or an error banner
+that would force the user to stop and correct the charter first.</p>
+<h3 id="educational-mode-is-a-gate">Educational Mode Is A Gate</h3>
+<p>The other fact you can check directly is that the inspection surface
+is gated. Educational Mode controls whether the Engine Room is shown,
+and the live diagnostics counters are only written while that mode is
+on. Outside that mode, the inspection surface is not populated, so the
+page does not present those counters as active live data.</p>
+<p>The practical result is a read-only inspection path, not a second
+place where the charter can be edited. The table below makes that
+boundary explicit.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Educational Mode</th>
+<th>Engine Room visible</th>
+<th>Charter panels visible</th>
+<th>Diagnostics counters written</th>
+<th>Charter values rewritten</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Off</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>On</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>That pattern matters because it keeps observation separate from rule
+change. If Educational Mode is off, the Engine Room is hidden and
+nothing in the reviewed evidence says the diagnostics counters are
+updated. If it is on, the page exposes the inspection view and writes
+the counters, but it still does not rewrite the charter values
+themselves. So the owner can treat the Engine Room as an observation
+surface, not as a place where the runtime rules are edited.</p>
+<h3 id="what-is-steady-here">What Is Steady Here</h3>
+<p>The strongest thing this product does for an owner is make its rule
+source visible instead of implied. Before play begins, the player is
+pointed at the Runtime Charter Document, and the page then loads its
+live limits from that same charter source. That means the product does
+not ask the owner to trust a hidden setting or an unstated default; it
+makes the rule origin part of the experience. If a gate target or
+current limit seems odd, the first question is not “where did that come
+from?” but “what does the charter say right now?” That clarity matters
+because it gives the owner a single, named reference point for the rules
+the run is using. The boundary is just as important: the evidence
+supports that the source is explicit and loaded at startup, but it does
+not prove a fail-closed guarantee when the charter text is
+malformed.</p>
+<h3 id="play-and-inspection-stay-apart">Play and inspection stay
+apart</h3>
+<p>The second steady property is the clean separation between live play
+and inspection. Educational Mode does not rewrite the charter; it only
+shows or hides the Engine Room and charter panels. For the owner, that
+is a useful teaching-demo shape because the product can expose how it
+works without letting the inspection path quietly become a second rule
+editor. A player can move from a run into the teaching surface and
+inspect the diagnostics view without assuming the act of looking has
+changed the rules of the next flight. In practical terms, that protects
+the meaning of the demo: the teaching path explains the system, while
+the live path still runs on the charter that was already in force. The
+limit is narrow but real: this is read-only with respect to charter
+values, not a claim that every adjacent surface is immutable.</p>
+<h3 id="enforcement-is-not-buried">Enforcement is not buried</h3>
+<p>The third strength is that the difference between Bulkhead Build and
+Vibe Build is visible at the product level. The product does not hide
+its enforcement choice inside an internal rule path; it names the choice
+where the owner and player can see it. In Bulkhead Build, invalid
+current is clamped back at run start. In Vibe Build, the out-of-range
+current is allowed to carry forward into the next run. That matters
+because it turns a technical distinction into an understandable product
+decision: strict mode means the charter range is enforced at the start
+of the run, while vibe mode means the product is intentionally more
+permissive. A concrete example is a tampered current slider set outside
+the allowed range before a retry. In Bulkhead Build, the new run starts
+with that value corrected; in Vibe Build, the same out-of-range setting
+remains visible in the next run. The evidence only establishes that this
+split is enforced at run start, so it should not be read as proof of any
+broader enforcement layer later in the flight.</p>
+<h3 id="evidence-boundary">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The supplied
+reviewed knowledge items and open decisions for this run. - The declared
+evidence behind the README, the browser page, and the runtime charter
+document as summarized in that knowledge.</p>
+</blockquote>
+<p>Not reviewed: - Any broader repository files outside the declared
+evidence set. - Any server-side code, account or billing system,
+external service, or multi-user workflow. - Any sibling reference books,
+critic reports, benchmark answers, or other non-evidence
+instructions.</p>
+<p>If the launch copy, runtime charter file, or mode panels change,
+recheck the README, the startup charter load path, and the visible panel
+gating before rewriting this chapter frame.</p>
+<blockquote>
+<p>Reviewed: blue-az/bulkhead-flappy repository snapshot, Founder/owner
+context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="how-a-run-becomes-a-gate-clearing-flight">How a Run Becomes a
+Gate-Clearing Flight</h2>
+<p><em>This chapter follows one run from Mission Controls to flight to
+win or loss. It shows how current moves the vessel through gates and
+bulkheads, why the finish line still matters after the gate count
+climbs, and that this is the shipped behavior the page shows today, not
+a guess about intent.</em></p>
+<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
+<p>This chapter follows one run from Mission Controls to flight to win
+or loss. It shows how current moves the vessel through gates and
+bulkheads, why the finish line still matters after the gate count
+climbs, and that this is the shipped behavior the page shows today, not
+a guess about intent.</p>
+<h3 id="what-you-should-be-able-to-explain-1">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain how Mission Controls shape the next run before the player
+starts flying.</li>
+<li>Explain what the live flight loop does each frame and which states
+it can end in.</li>
+<li>Explain why gate count alone is not the same thing as a completed
+win.</li>
+<li>Spot the input boundary that changes between active flight and the
+post-run screen.</li>
+<li>Describe which parts of the run are cleanly reset and which outcome
+records stay bounded.</li>
+</ul>
+<h3 id="a-run-is-a-gate-counting-flight">A Run Is a Gate-Counting
+Flight</h3>
+<h3 id="pre-launch-envelope">Pre-launch envelope</h3>
+<p>Mission Controls are the place where the next attempt gets its shape
+before the pilot ever leaves the ground. The important mental model is
+not “settings page,” but “launch envelope”: the controls define the
+conditions that this run will inherit. The charter-shaped defaults give
+those controls a starting range, and the build choice decides whether
+illegal current is corrected at the start or allowed to carry forward
+into the next run. That matters to the owner because a change made here
+is not cosmetic; it changes what kind of flight the player is about to
+enter.</p>
+<p>A concrete way to picture it is this: if the player raises current or
+changes the destination before launch, they are not editing a forgotten
+preference. They are choosing the starting pressure on the vessel and
+the route the run will be measured against. The boundary is just as
+important as the power of the controls. Mission Controls shape the
+attempt that is about to begin, but they are not the same thing as the
+live steering experience once the flight is underway. The exact control
+split after a run ends belongs with the operating rules; the model to
+keep here is that these controls prepare the flight rather than follow
+it.</p>
+<h3 id="one-committed-pass">One committed pass</h3>
+<p>Once the run starts, think of it as a single committed pass through
+the course. Current is what actually pushes the vessel through space
+from frame to frame. Bulkheads are the hazards that make the pass
+dangerous. Gates are the unit of progress the player watches, because
+they are what the run counts while the vessel keeps moving.</p>
+<p>That sequence matters. The live loop does not simply ask whether the
+player is “doing well” in the abstract. It applies current to motion,
+advances the course, watches for gate passage, and stops the attempt
+when the vessel hits a boundary or a bulkhead. So the owner should
+expect the game to feel less like a menu of choices after launch and
+more like a committed physical drift that has to be managed in motion.
+If the current is strong, the vessel will move differently every frame;
+if the pilot misses the timing, the gates still count only when the
+course is actually crossed.</p>
+<p>The useful correction here is to resist treating gates as a separate
+mini-game from the flight itself. They are part of the same pass. The
+player is not collecting points in a vacuum and then later checking
+whether the vessel survived. Survival and gate passage are linked in the
+same run.</p>
+<h3 id="gates-do-not-equal-completion">Gates do not equal
+completion</h3>
+<p>Success is a two-step outcome, and that is the part owners are most
+likely to misread. The gate target matters, but it is not the whole
+story. A run becomes a completed win only when the game also verifies
+that the finish line has been reached. In other words, the score can say
+“enough,” while the flight can still say “not finished yet.”</p>
+<p>That distinction matters because it keeps the win condition tied to
+actual completion, not just to accumulation. A player may cross enough
+gates to hit the target and still need to carry the vessel through the
+last stretch. That prevents a common misconception: gate count is
+progress, but it is not the same thing as a completed flight. The
+finish-line check is what converts a scored run into a real win.</p>
+<p>A simple example makes the boundary clear. Suppose the player has
+already met the gate quota but is still short of the line. The run is
+promising, but it is not done. If the vessel collides before reaching
+the line, the attempt ends as a loss despite the score. If it reaches
+the line with the quota satisfied, the win lands. The evidence here
+supports no alternate shortcut to success: the game asks for both the
+score condition and the finish condition, and only then treats the run
+as complete.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner gets one launch envelope, but the
+build mode decides whether out-of-range current is corrected at run
+start or carried forward, so the same tuning can produce a stricter or
+looser opening flight.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  m[Mission Controls]
+  s[New run starts]
+  b[Bulkhead Build]
+  v[Vibe Build]
+  a[Current snapped back]
+  c[Current carries forward]
+  r[Next run begins]
+
+  m --> s
+  s --> b
+  s --> v
+  b --> a
+  v --> c
+  a --> r
+  c --> r
+</pre>
+<p>Mission Controls sit before launch and set the next attempt’s
+starting conditions. When the new run begins, Bulkhead Build snaps
+illegal current back into range, while Vibe Build leaves that current in
+place for the flight. The consequence is that launch tuning is real
+state, and the build mode determines whether the run starts inside the
+boundary or keeps the carried value.</p>
+<h3 id="from-setup-to-win-or-loss">From Setup to Win or Loss</h3>
+<h3 id="reset-before-launch">Reset before launch</h3>
+<p>A fresh run does not pick up where the last one left off. The reset
+path clears the vessel, the bulkheads, the score, the frame state, and
+the finish line, then takes a fresh snapshot of the chosen tuning before
+the loop starts again. It also rebuilds the course and reinitializes the
+run’s random seed, which means the new attempt is treated as a new
+flight rather than a continuation of the previous one.</p>
+<p>For the owner, that matters because the game does not rely on stale
+state to make the next attempt feel fair or readable. If the player
+changed the current or other Mission Controls before launching, those
+choices are captured at the start of the run, not guessed at later. The
+practical effect is simple: after a loss, starting again really means
+starting again.</p>
+<p>The boundary here is also important. The reviewed evidence shows one
+clean reset path, but it does not show a second, separate reset flow
+with different rules. So the manual can say the shipped run starts
+clean; it cannot claim more than that about alternate launch paths.</p>
+<h3 id="the-live-flight-loop">The live flight loop</h3>
+<p>Once the run is live, the frame loop owns the action. Each frame
+applies current to the vessel’s movement, advances the bulkheads,
+increments score when a gate is passed, and ends the run when the vessel
+hits a boundary or collides with a bulkhead. In other words, the page is
+not waiting for a separate scoring pass or a later cleanup step. The
+same live loop is doing motion, progress tracking, and failure detection
+in sequence.</p>
+<p>That sequence is why the visible gate count and the loss state have
+to stay aligned with the physics. If the loop order drifted, the player
+could see a gate counted before the vessel should have earned it, or a
+loss after movement had already put the vessel past a hazard. The
+current implementation is more straightforward than that: gate counting
+and end-state checks happen inside the flight loop itself.</p>
+<p>A concrete example helps. Suppose the player nudges the current hard
+enough to thread one more gate, but the next bulkhead closes the path
+before the vessel clears the boundary. The score can tick up for the
+passed gate, and the run can still end immediately after on collision.
+That is not a contradiction; it is the rule set the loop is
+applying.</p>
+<h3 id="direction-controls-by-state">Direction controls by state</h3>
+<p>The direction boundary is not just about which button exists. It is
+about which state the page is in when the player tries to use it. The
+explicit direction controls are blocked while the run is active or while
+the overlay is visible. After the run ends, the current-strength slider
+can still be used again, and it can flip direction through its sign even
+though the run is over.</p>
+<p>That means the page treats direction as a live-flight input until the
+run is settled, then loosens one control while keeping the others out of
+the way. The owner should read that as a state gate, not a permanent
+disablement. It keeps the flying controls from fighting the overlay
+during play, but it does not freeze the tuning surface after the result
+screen appears.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Direction control</th>
+<th>During active flight or while the overlay is visible</th>
+<th>After a run ends</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direction hotkeys</td>
+<td>Blocked</td>
+<td>Blocked</td>
+</tr>
+<tr>
+<td>On-canvas direction selectors</td>
+<td>Blocked</td>
+<td>Blocked</td>
+</tr>
+<tr>
+<td>Current-strength slider</td>
+<td>Blocked from acting as a direction selector during the live run or
+overlay state</td>
+<td>Usable again</td>
+</tr>
+</tbody>
+</table>
+<p>The table is the important part of the boundary: the explicit
+direction controls stay shut during live play and while the result
+screen is up, but the current-strength slider remains a usable post-run
+control. That is why the direction story cannot be summarized as “all
+inputs are off after a loss.” One tuning path still remains open, and
+the evidence does not establish whether that post-run direction flip is
+intentional or just the way the current build behaves.</p>
+<h3 id="win-still-needs-completion">Win still needs completion</h3>
+<p>A run does not become a win the moment the gate count reaches the
+target. Success still waits for two checks: the gate quota must be met,
+and the finish line must also be reached. Only then does the win path
+fire. That extra condition matters because it keeps the game from
+treating partial progress as completion.</p>
+<p>The outcome screens then put the player back into a readable post-run
+state. Win and loss handling re-enable controls and show the overlay,
+which is what makes the finished run legible instead of leaving the
+player stuck in the middle of the flight. The run is over, the result is
+visible, and the page is ready for the next action.</p>
+<p>A useful way to think about it is this: the gate total measures how
+far the player has progressed, but the finish line decides whether that
+progress counts as a completed run. If the player hits the target gate
+count early and still has distance left to cover, the run is not yet a
+win. Only the paired check turns the score into an actual finish.</p>
+<blockquote>
+<p><strong>Figure:</strong> A run starts clean, then one live loop owns
+movement and gate counting until the attempt ends; completion only
+counts when the gate target and the finish line are both satisfied.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Resetting : start fresh
+  Resetting --> Flying : old state cleared
+  Flying --> Flying : next frame advances the run
+  Flying --> Lost : boundary hit or bulkhead collision
+  Flying --> Won : gate target and finish line
+  Lost --> [*] : loss screen
+  Won --> [*] : win screen
+</pre>
+<p>A fresh attempt begins by clearing the old vessel, obstacles, score,
+frame state, and finish line. The run then enters the live flight state,
+where each frame moves the vessel and counts passed gates. From there
+the attempt can end in loss if the vessel hits a boundary or bulkhead,
+or in win only after the gate target and finish line are both reached.
+The result screen returns the page to a post-run state.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat direction as a
+live-flight boundary, not a permanent lock: the obvious selectors are
+blocked during play and while the overlay is up, but the current slider
+returns after the run and can still change direction.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  a[Active flight or result overlay]
+  h[Direction hotkeys]
+  c[On-canvas direction selectors]
+  r[Run has ended]
+  s[Current-strength slider]
+  f[Direction can flip]
+
+  a -->|blocked| h
+  a -->|blocked| c
+  r -->|reopens| s
+  s -->|changes sign| f
+</pre>
+<p>During active flight or while the result overlay is visible, the
+direction hotkeys and on-canvas direction selectors are blocked. After
+the run ends, the current-strength slider becomes usable again, and its
+sign can still flip direction. The consequence is that direction control
+is only fully shut during the live run, not after the result screen
+appears.</p>
+<h3 id="what-the-page-actually-does">What the Page Actually Does</h3>
+<h2 id="mission-controls-start-from-the-charter">Mission Controls start
+from the charter</h2>
+<p>On a fresh page load, the player does not begin with freeform tuning.
+The three visible Mission Controls sliders are the starting envelope,
+and the runtime charter shapes what those controls show. The page
+hydrates the charter on startup, then uses it to set the visible limits
+and the gate target. In practice, that means the destination slider is
+not just a decorative knob: its bounds and displayed value are
+synchronized from the charter loaded for that session. If the charter
+says the destination is narrower than before, the control reflects that
+immediately, so the next run is tuned against the current rules rather
+than an old remembered range. The boundary matters here: this is
+confirmed behavior from the page-load path, not proof that every future
+charter read will succeed or that every malformed response will be
+handled the same way.</p>
+<h2 id="run-start-enforcement-depends-on-build-mode-1">Run-start
+enforcement depends on build mode</h2>
+<p>The only consequential difference between Bulkhead Build and Vibe
+Build is what happens when current is outside the allowed range at the
+moment a new run starts. The page is not switching between two flight
+systems here; it is making one enforcement choice at launch. Bulkhead
+Build repairs illegal current before the pilot launches, while Vibe
+Build lets the same out-of-range value keep riding into the next
+attempt. For an owner, that means the build mode decides whether the
+charter’s current limit is actually enforced at run start or whether an
+illegal state is allowed to carry forward.</p>
+<p>The table below shows that difference directly.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>What happens to out-of-range current at run start</th>
+<th>What the run keeps or changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bulkhead Build clamps it back into range before the run starts.</td>
+<td>The next run starts inside the charter limit, and the out-of-range
+value does not carry forward.</td>
+</tr>
+<tr>
+<td>Vibe Build leaves it out of range and lets it carry into the next
+run.</td>
+<td>The run begins with that carried value instead of being corrected at
+launch.</td>
+</tr>
+</tbody>
+</table>
+<p>A concrete example makes the boundary easier to see: if a player
+leaves current above the allowed band and starts again, Bulkhead Build
+pulls it back inside the band, but Vibe Build does not. That difference
+is limited to run start; the evidence does not show a second enforcement
+layer taking over later in the flight.</p>
+<h2 id="current-edits-feed-the-next-run">Current edits feed the next
+run</h2>
+<p>The current-strength slider is not a detached preference control.
+When the player adjusts it, the page rewrites the current that the next
+run will use, and when the value is inside the charter range it mirrors
+that legal magnitude back into the visible dial. That mirror matters
+because the displayed control stays aligned with the actual run state
+instead of suggesting one current while storing another. The same action
+also refreshes the summary view, so the pre-run snapshot and the control
+surface move together.</p>
+<p>The boundary is that this mirroring is conditional on the value being
+legal. The evidence does not show the page inventing a substitute value
+when the current falls outside range; it shows the chosen current being
+carried forward, with the visible presentation brought back into step
+when the value is within bounds. In practical terms, if a player dials
+current down into the charter band, the next run starts from that new
+value and the summary updates to match, so the pre-launch state the
+owner sees is the same one the run will actually inherit.</p>
+<h2 id="live-does-not-guarantee-fresh-data">LIVE does not guarantee
+fresh data</h2>
+<p>The runtime charter loader can leave stale values live. When the
+charter response cannot be read into usable values, the page keeps the
+existing charter constants in place and still advances the status unless
+the fetch itself fails. That means a LIVE label is not a guarantee that
+the limits on screen were freshly parsed from a valid charter file. For
+the owner, the consequence is simple: the page can appear current while
+still carrying forward earlier limits.</p>
+<p>That is a narrow but important boundary, because it affects trust in
+the displayed rules rather than the flight loop itself. If the charter
+file comes back as a malformed or error-page response, the player may be
+looking at last known values presented as if they were validated for
+this session.</p>
+<blockquote>
+<p><strong>Figure:</strong> A LIVE label is not proof of fresh rules,
+because a malformed charter response can leave the previous limits in
+place and still advance status.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  r[Charter response]
+  g[Values read cleanly]
+  m[Values do not read cleanly]
+  l[LIVE status appears]
+  s[Previous limits stay]
+
+  r --> g --> l
+  r --> m --> s --> l
+</pre>
+<p>When the charter response reads cleanly, the page uses the new values
+and shows LIVE. When it does not read cleanly, the previous charter
+values stay in place and the status can still advance. The consequence
+is that the page can appear current while actually running on stale
+limits.</p>
+<h3 id="what-is-genuinely-solid-here">What Is Genuinely Solid Here</h3>
+<h3 id="clean-starts-make-the-run-loop-easy-to-trust">Clean starts make
+the run loop easy to trust</h3>
+<p>The most dependable part of the loop is that a fresh attempt starts
+from a clean slate instead of carrying old vessel or obstacle state
+forward. When a new run begins, the previous vessel state, bulkheads,
+score, and finish-line state are cleared, and the chosen tuning is
+snapshotted before the flight loop restarts. That matters because the
+player is not asked to mentally subtract leftovers from the last
+attempt. A retry feels like a retry, not like the tail end of some
+earlier flight that never fully let go. In practical terms, if a player
+loses after threading three gates, the next launch does not inherit that
+three-gate progress or the old obstacle layout; it rebuilds the run from
+the current tuning and starts again. The boundary is worth keeping in
+view: this strength is about the start of a new run, not about any
+broader claim that every visible number on the page is always freshly
+parsed or globally authoritative.</p>
+<h3 id="play-and-inspection-do-not-step-on-each-other">Play and
+inspection do not step on each other</h3>
+<p>A second solid property is the separation between live play and
+inspection. Educational Mode only reveals or hides the Engine Room and
+charter panels, and it does not rewrite the charter itself. That means
+the teaching surface can explain what the game is doing without quietly
+becoming a second place where the run’s rules are edited. The replay
+path has a similar guardrail: while a stored run is replaying, it will
+not write back into the logbook. For the owner, those two limits are
+valuable for the same reason. They keep observation from mutating the
+thing being observed. A player can open the inspection surface to
+understand a run, and a replay can demonstrate a past attempt, without
+either path quietly altering the live rules or overwriting the stored
+record mid-demonstration. The evidence does not go further than that. It
+shows a read-only inspection surface with a replay write guard; it does
+not prove that every other nearby control is read-only too.</p>
+<h3 id="scorekeeping-stays-bounded">Scorekeeping stays bounded</h3>
+<p>The score system is also more disciplined than a free-form
+leaderboard. High scores are browser-local, split by direction, limited
+to positive scores, and capped at five entries per direction. That
+combination makes the record easy to interpret and hard to inflate. A
+player does not need to compare unrelated runs across one mixed list,
+because each direction keeps its own top five. Zero or negative scores
+never enter the board, so the stored list stays focused on actual
+progress. For an owner, the payoff is not just neatness; it is
+predictability. The page is keeping a small, bounded record of what
+happened on this browser, rather than pretending to maintain a larger
+shared history. A concrete example is a player who finishes several runs
+in one direction and then several in the other: the two leaderboards
+remain separate, and once a direction already has five qualifying
+entries, the lowest qualifying result falls out of that direction’s
+list. The boundary is explicit: this is browser-local storage, so
+retention and quota behavior still depend on the browser runtime rather
+than on a broader product guarantee.</p>
+<h3 id="evidence-boundary-1">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The shipped page’s
+launch guidance and charter cues - Startup charter loading, fallback
+behavior, and live status behavior - Mission Controls defaults, current
+enforcement, and current-tamper handling - The reset, update, scoring,
+collision, and win/loss paths that drive the run loop - The
+direction-control boundary around active flight and the post-run screen
+- The diagnostic and replay boundaries only where they affect the
+visible loop</p>
+</blockquote>
+<p>Not reviewed: - Accounts, billing, authentication, or any external
+service behavior - Any source outside the three declared shipped files
+for this run - Broader owner intent or product strategy beyond the
+repository evidence - Off-page hosting, release workflow, or other
+surrounding operational processes</p>
+<p>Recheck the live page by starting a fresh run, changing Mission
+Controls, trying the direction inputs during flight and after the run,
+and confirming the win or loss overlay behavior. Re-open the charter
+file and launch copy whenever the starting limits or rule wording
+changes.</p>
+<blockquote>
+<p>Reviewed: blue-az/bulkhead-flappy repository snapshot, Founder/owner
+context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="the-charter-bulkhead-build-and-vibe-build">The Charter, Bulkhead
+Build, and Vibe Build</h2>
+<p><em>This chapter is about the Runtime Charter Document, the Mission
+Controls sliders, and the two build modes that decide whether the
+product enforces the rules or lets drift through. The page loads the
+charter at startup, shows its values to the player, and uses them to
+decide what the next run accepts.</em></p>
+<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
+<p>This chapter is about the Runtime Charter Document, the Mission
+Controls sliders, and the two build modes that decide whether the
+product enforces the rules or lets drift through. The page loads the
+charter at startup, shows its values to the player, and uses them to
+decide what the next run accepts. Bulkhead Build clamps illegal current
+back into range; Vibe Build leaves the out-of-range value alone so you
+can see the difference in the same product. This is built from the code,
+so it shows what the product does today, not what you mean it to be -
+that part is yours to confirm.</p>
+<h3 id="what-you-should-be-able-to-explain-2">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain why the Runtime Charter Document is a live rule source, not
+passive documentation.</li>
+<li>Describe how Bulkhead Build and Vibe Build diverge when a run starts
+and why that contrast matters.</li>
+<li>Explain which Mission Controls values shape the next run and which
+inspection surfaces stay read-only.</li>
+<li>Identify the main places where the charter can drift, stay stale, or
+be shown as authoritative without really being reloaded.</li>
+</ul>
+<h3 id="charter-as-live-authority">Charter as Live Authority</h3>
+<h3 id="the-charter-is-the-rule-source-not-a-caption">The charter is the
+rule source, not a caption</h3>
+<p>The easiest mistake is to treat the Runtime Charter Document as
+background documentation that describes the game from a distance. In
+this product, it works more like a live rule source that the page
+consults before play begins and then uses to shape what the player sees
+and what the next run is allowed to do. The launch copy points the
+player to that charter up front, so the experience starts with the
+rules, not with a detached explanation of them. That matters for the
+owner because it means the charter is part of the product’s operating
+surface: if it changes, the run experience can change with it. What is
+not established here is any broader governance process around that file;
+the evidence only shows that the product treats it as authoritative at
+startup.</p>
+<p>A concrete way to picture it: if the charter says the gate target or
+current limits are one thing, the page does not merely display that as a
+note for later review. It uses those values to stage the next flight.
+The owner should therefore read the charter as something that
+participates in behavior, not something that sits beside it.</p>
+<h3 id="two-attitudes-toward-the-same-limits">Two attitudes toward the
+same limits</h3>
+<p>Bulkhead Build and Vibe Build are not different rule sets; they are
+different attitudes toward the same rule set. Bulkhead Build is the
+enforcing stance. If a current value falls outside the allowed charter
+range, the run start snaps it back into range. That gives the owner a
+product that behaves as if the charter really means what it says:
+illegal current does not get to carry forward as the starting condition
+for the run.</p>
+<p>Vibe Build takes the opposite teaching stance. It leaves out-of-range
+current visible instead of correcting it, so drift remains in view on
+purpose. That does not mean the charter stops existing; it means the
+product is showing you the difference between a rule that is enforced
+and a rule that is merely displayed. For the owner, that contrast is the
+point of the mode split. It makes enforcement legible. If the current
+looks wrong in Vibe Build and stays wrong, you can see the gap between
+the declared limit and the actual starting state immediately instead of
+having the system hide it. The boundary is important: the evidence shows
+this contrast at run start, not some broader enforcement layer
+everywhere in the product.</p>
+<p>Imagine tuning current beyond the charter range, then starting twice.
+In Bulkhead Build, the next run begins inside the allowed band because
+the product clamps the illegal value back. In Vibe Build, the same
+out-of-range setting can remain out there, which is useful precisely
+because it lets the owner observe drift rather than having it disappear
+into correction.</p>
+<h3 id="mission-controls-are-part-of-the-rule-story">Mission Controls
+are part of the rule story</h3>
+<p>Mission Controls are not just a difficulty panel. They belong to the
+rule story because they set up the next run and shape what the player
+will actually experience. The starting sliders are charter-shaped, and
+the charter loading step synchronizes the destination bounds and
+displayed values before play. That means the controls are not
+free-floating preferences; they are the pre-run envelope in which the
+flight will happen.</p>
+<p>This changes what the owner should expect from a tuning change. When
+the player moves Mission Controls, they are not only making the game
+easier or harder in an abstract sense. They are changing the starting
+conditions that the charter will carry into the run. In other words, the
+controls are part of the route from rule to behavior. The consequence is
+practical: if the owner wants to understand why a run felt different,
+Mission Controls are not a side conversation after the fact; they are
+one of the first places to look.</p>
+<p>The boundary is that these controls do not tell the whole story on
+their own. The rest of the run still depends on how the active flight
+plays out, and the inspection surfaces can be read-only. Educational
+Mode can expose the charter and diagnostics without rewriting the
+charter itself, which keeps the rule story visible without making the
+inspection surface into a hidden editor.</p>
+<blockquote>
+<p><strong>Figure:</strong> Startup makes the charter the live rule
+source, but a malformed body can keep old limits in force. Educational
+Mode stays separate: it changes what the owner can see, not the rules
+themselves.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+A[Startup reads the charter] --> B[Live limits refresh]
+C[Malformed body] --> D[Old limits stay in place]
+D --> B
+E[Educational Mode] --> F[Panels appear or disappear]
+F -. does not change .-> B
+</pre>
+<p>At startup, the product reads the charter and refreshes the live
+limits. If the charter body is malformed, old limits can remain in place
+and still look active. Educational Mode only shows or hides panels; it
+does not rewrite the charter or the live limits. The consequence is that
+visibility and authority are separate, so a stale charter can still
+appear to be the current rule source.</p>
+<h3 id="modes-loads-and-run-start-gating">Modes, Loads, and Run-Start
+Gating</h3>
+<p>The important distinction in this part of the product is that loading
+the charter, enforcing it at run start, and exposing it for inspection
+are related but not identical jobs. The page can treat the charter as
+live, the run can still start with or without enforcement, and the
+inspection surface can be visible without changing the rules. That
+separation is what keeps the modes meaningful instead of making them
+just different labels on the same behavior.</p>
+<h3 id="startup-load">Startup load</h3>
+<p>On startup, the page fetches the Runtime Charter Document and
+hydrates the live charter state from it. In practical terms, the visible
+rule values and the destination bounds are not merely decorative copy;
+they are refreshed from the document the product loads before play. That
+means the limits the player sees at the top of the run are tied to the
+charter the page just read, not to some earlier default that happens to
+remain on screen.</p>
+<p>For the owner, the consequence is straightforward: the live limits
+are only as current as the most recent successful load. A fresh charter
+file can change what the player is allowed to see and, by extension,
+what the next run uses. A simple example is a tighter destination bound.
+If the charter says the target must sit within a narrower range, the
+page updates the visible bounds to match, and the next run starts from
+that narrower envelope instead of the old one.</p>
+<h3 id="when-parsing-goes-wrong">When parsing goes wrong</h3>
+<p>A malformed charter response does not behave like a clean failure. If
+the page cannot extract rule values from the returned body, it can leave
+the previous charter values in place and still present the charter as
+live. That means the visible status label and the actual freshness of
+the parsed rules are not the same thing. A page can look as though it
+has successfully loaded the charter while actually continuing to use
+stale values from an earlier successful parse.</p>
+<p>This matters because it creates a trust boundary the owner has to
+understand. The product is not simply saying, “the charter is present.”
+It is saying, “the charter surface is active.” Those are different
+statements. If the fetch itself fails, the page falls back to hardcoded
+values. If the fetch succeeds but the body does not parse, the old
+values can remain in force. The boundary here is important: the reviewed
+evidence does not show a fail-closed parse path or an error banner that
+would make the mismatch obvious.</p>
+<h3 id="mode-and-run-start-behavior">Mode and run-start behavior</h3>
+<p>Bulkhead Build and Vibe Build share the same run-start path, but they
+do not treat illegal current the same way. Bulkhead Build clamps invalid
+current back into range when a run resets. Vibe Build leaves the
+out-of-range current alone so the next run carries the drift forward.
+The difference is not when the run starts, but what happens inside the
+reset gate.</p>
+<p>That makes the table below the right way to compare them. The owner
+should read it as a state map, not as redundant wording around a single
+setting.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Charter values</th>
+<th>Run-start enforcement</th>
+<th>What the player sees or can change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Successful charter load</td>
+<td>Refreshed from the document and used for visible limits and
+destination bounds</td>
+<td>Normal run-start path uses the loaded values</td>
+<td>The live rule values and bounds update to match the charter</td>
+</tr>
+<tr>
+<td>Malformed charter response</td>
+<td>Previous values can stay in place</td>
+<td>No fresh parse replaces them unless the fetch itself fails</td>
+<td>The charter can still appear live even though the values are
+stale</td>
+</tr>
+<tr>
+<td>Bulkhead Build</td>
+<td>Loaded values still define the range</td>
+<td>Illegal current is snapped back into range at reset</td>
+<td>The next run begins inside the chartered limits</td>
+</tr>
+<tr>
+<td>Vibe Build</td>
+<td>Loaded values still define the range</td>
+<td>Out-of-range current is allowed to persist into the next run</td>
+<td>The next run exposes the drift instead of hiding it</td>
+</tr>
+<tr>
+<td>Educational Mode</td>
+<td>Charter values are not rewritten by the mode switch</td>
+<td>No enforcement change; only visibility changes</td>
+<td>The Engine Room and charter panels can be shown or hidden without
+mutating the charter</td>
+</tr>
+</tbody>
+</table>
+<p>The practical consequence is that the owner can compare enforcement
+against drift within the same product. Bulkhead Build makes the rules
+feel real by correcting illegal current before the run resumes. Vibe
+Build keeps the same mismatch visible, which is useful when the point is
+to observe how far the current has wandered rather than to hide that
+fact. If the goal is a teaching demo, this contrast is the point: one
+mode proves the boundary is enforced, the other proves the boundary is
+only being displayed.</p>
+<h3 id="educational-mode-and-direction-gating">Educational Mode and
+direction gating</h3>
+<p>Educational Mode is a visibility gate, not a charter editor. It shows
+or hides the Engine Room and charter panels, but it does not rewrite the
+charter values or rerun the parser. That means the inspection surface is
+read-only in the reviewed behavior. The owner should treat it as a way
+to look at the live state, not as a way to mutate the rules.</p>
+<p>The direction controls have a separate boundary. During active
+flight, the explicit direction selectors stay blocked, so the player
+cannot use those direct controls in the middle of a run. After the run
+ends, however, the tamper current slider remains active and can still
+alter direction because it writes the next run’s current state from its
+sign. In other words, the direct direction selectors are gated during
+flight, but the post-run tamper control still influences what the next
+run will inherit.</p>
+<p>A concrete case makes the split easier to see. Suppose a player
+finishes a run, then drags the current slider negative before starting
+again. Even though the on-flight direction selectors were unavailable
+during the run, that slider change can still flip the next run’s
+direction state after the run ends. The boundary is therefore
+time-based, not absolute: the active-flight selectors are blocked, while
+the post-run current editor remains a live influence on the next
+start.</p>
+<blockquote>
+<p><strong>Figure:</strong> Both modes start from the same staged
+values, but only Bulkhead Build turns the charter into an enforced
+boundary. Vibe Build leaves the mismatch visible, which makes drift easy
+to inspect instead of hiding it.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+A[Same staged current at reset] --> B[Bulkhead Build]
+A --> C[Vibe Build]
+B --> D[Illegal current snaps back into range]
+C --> E[Out-of-range current stays visible]
+D --> F[Next run begins inside the charter band]
+E --> G[Next run begins with drift still present]
+</pre>
+<p>Both modes reach reset with the same staged current. In Bulkhead
+Build, illegal current is pulled back into the allowed band before the
+next run starts. In Vibe Build, the out-of-range current is left alone,
+so the next run keeps the drift visible. The consequence is that one
+mode enforces the rule at reset while the other exposes the mismatch for
+comparison.</p>
+<blockquote>
+<p><strong>Figure:</strong> The direction boundary is time-based, not
+absolute. The direct selectors are blocked during flight, but after game
+over the tamper slider comes back and can still change the next run’s
+direction state.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+A[Active flight] --> B[Direction selectors are blocked]
+B --> C[Game over]
+C --> D[Tamper slider returns]
+D --> E[Slider sign sets the next run direction]
+</pre>
+<p>During active flight, the direct direction selectors are blocked.
+When game over happens, the tamper slider becomes available again.
+Because that slider writes direction from its sign, it can still flip
+the direction state for the next run. The consequence is that the
+in-flight boundary does not fully protect direction after the run
+ends.</p>
+<h3 id="what-the-reviewed-evidence-shows">What the Reviewed Evidence
+Shows</h3>
+<h3 id="the-charter-is-the-first-thing-the-player-is-told-to-read">The
+charter is the first thing the player is told to read</h3>
+<p>The reviewed evidence shows that the product does not treat the
+Runtime Charter Document as background notes. Both the README and the
+splash copy point the player to that document before play begins. That
+matters because it sets the rule source up front: the player is being
+told where the run’s limits come from before the first flight starts,
+not after a surprise limitation appears. The boundary here is narrow but
+clear. The evidence establishes the launch framing, not a broader
+governance process, so it proves the charter is the entry point without
+proving how every later surface reaffirms it.</p>
+<h3
+id="the-page-loads-live-charter-values-but-stale-values-can-survive-a-bad-parse">The
+page loads live charter values, but stale values can survive a bad
+parse</h3>
+<p>On startup, the charter loader pulls values from the Runtime Charter
+Document into the live charter state and uses them to refresh the
+visible rule text. The same mechanism also updates the destination bound
+that the player sees in Mission Controls. The important qualifier is
+that this is not a perfect fail-closed path: if the parser cannot find
+the expected values in the charter text, the existing charter values
+stay in place, and the page can still advance as though the charter were
+current unless the fetch itself fails. Only a hard fetch failure forces
+the loader back to its hardcoded fallback values. For the owner, the
+consequence is straightforward and uncomfortable: a malformed charter
+response can make stale limits look live. Example: if the charter file
+returns an error page or otherwise loses the expected numeric text, the
+page may keep showing the old limits instead of clearly dropping the run
+into a separate error state. What the evidence does not establish is any
+additional error banner or fail-closed recovery beyond that fallback on
+fetch failure.</p>
+<h3
+id="educational-mode-changes-what-is-visible-not-what-the-charter-is">Educational
+Mode changes what is visible, not what the charter is</h3>
+<p>The evidence also shows a clean boundary around Educational Mode.
+Switching that mode only changes panel visibility and labels; it does
+not rewrite the charter values or rerun the charter parser. In practical
+terms, the player can open or hide the inspection surfaces without
+changing the rules that govern the next run. That is valuable because it
+keeps the teaching surface separate from rule mutation: the mode can
+make the charter easier to inspect, but it is not itself a control that
+changes the charter. The boundary is important. This proves read-only
+behavior for the mode switch, but it does not say that no other path can
+alter the charter, only that Educational Mode is not one of them.</p>
+<h3 id="mission-controls-start-inside-a-bounded-envelope">Mission
+Controls start inside a bounded envelope</h3>
+<p>Mission Controls do not begin as free-form tuning space. The reviewed
+evidence shows fixed starting slider values, and it also shows that the
+destination control is synchronized to charter-shaped bounds before the
+player runs. That means the opening tuning envelope is already bounded
+when the run begins, rather than being invented ad hoc by the player.
+The practical consequence is that the first comparison between intended
+limits and live behavior starts from a constrained setup, which makes
+drift easier to spot. A simple example is a run where the charter
+narrows the acceptable destination range: the destination slider opens
+inside that range instead of outside it, so the player begins from a
+legal starting point. The evidence does not establish that every later
+adjustment stays locked to those same bounds; it only shows that the
+starting state is charter-shaped and bounded before play starts.</p>
+<h3 id="what-is-solid-here">What Is Solid Here</h3>
+<p>The strongest part of this product is that the charter is not hidden
+behind the curtain. The running page points the player to the Runtime
+Charter Document before play begins, and the live product pulls its rule
+values from that same source. For the owner, that changes the trust
+model: the limits are not just described somewhere else, they are
+visible in the experience where the run starts. That makes the product
+easier to audit and easier to explain, because the rules are shown as
+part of the product’s own surface rather than as background
+documentation. The boundary is still important, though. This evidence
+shows a live rule source, not a guarantee about broader governance or
+change control outside the page itself.</p>
+<h3 id="read-only-inspection">Read-only inspection</h3>
+<p>Educational Mode is well-formed because it gives the owner a clean
+inspection boundary. The reviewed evidence says it only shows or hides
+the Engine Room and charter panels, and it does not rewrite the charter
+values. That means a player can inspect diagnostics and charter
+presentation without that inspection step silently changing the rules
+being observed. In practice, that matters when the owner wants to
+compare what the product says it should do against what it is actually
+doing: the inspection surface stays separate from the rule source. For
+example, a player can open Educational Mode to read the live limits and
+the Engine Room readout without worrying that the act of opening that
+panel has altered the charter itself. The qualifier is simple: this
+protection applies to that mode, not to every possible path that might
+touch the charter.</p>
+<h3 id="enforcement-you-can-see">Enforcement you can see</h3>
+<p>Bulkhead Build makes the enforcement story concrete. When the current
+is invalid at run start, the product does not just keep the bad value
+and hope the run makes sense; it snaps the magnitude back into range
+before play continues. That is a real strength because it turns the
+charter from a stated preference into an enforced boundary that the
+owner can point to. It also makes the difference between the build modes
+legible: one mode accepts drift for comparison, while Bulkhead Build
+does not. The limit of the claim matters as much as the claim itself.
+The reviewed evidence supports this clamp at run start, so it should be
+read as a start-of-run enforcement behavior, not proof of a broader
+always-on guard everywhere in the product.</p>
+<h3 id="bounded-starting-values">Bounded starting values</h3>
+<p>Mission Controls begin from charter-shaped defaults, and that gives
+the owner a stable frame for comparison. The starting sliders and
+destination bounds are already bounded before the player runs, so the
+product begins inside a known envelope rather than from arbitrary
+values. That makes it much easier to compare intended limits with live
+behavior, because the owner can see the product’s own starting
+assumption and then watch whether the run stays aligned with it. A
+simple example: if the destination boundary and current settings are
+shown inside the charter range before the run, and the live flight later
+behaves differently, the mismatch is easier to spot because the starting
+frame was already constrained. What this evidence does not show is a
+promise that every later adjustment remains fixed; it shows a bounded
+starting point, which is still valuable because it makes drift visible
+instead of hiding it.</p>
+<h3 id="evidence-boundary-2">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The README, the
+launch copy in the page, the charter file loading path, the mode toggle,
+the Mission Controls sliders, and the enforcement toggle were reviewed.
+- The reviewed evidence also covered the inspection surface that shows
+the Engine Room and charter panels. - The plan was kept inside the
+declared repository evidence and the supplied reviewed knowledge.</p>
+</blockquote>
+<p>Not reviewed: - I did not review server-side systems, accounts,
+billing, external services, or anything outside the declared repository
+evidence. - I did not inspect any source not covered by the supplied
+reviewed knowledge for this chapter. - I did not assume any
+owner-confirmed product intent beyond what the supplied evidence
+showed.</p>
+<p>Recheck the launch copy, charter loading, mode toggle, and
+enforcement behavior whenever the charter text, slider defaults, or
+reset path changes.</p>
+<blockquote>
+<p>Reviewed: blue-az/bulkhead-flappy repository snapshot, Founder/owner
+context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="engine-room-and-logbook-insight">Engine Room and Logbook
+Insight</h2>
+<p><em>Educational Mode is the product’s inspection layer. Turn it on
+and the Engine Room shows the live run state, while the logbook keeps
+stored runs, bests, and replay context that the player can review later.
+This chapter is about the screens and entry points the product already
+exposes today: the Engine Room panel, the replay buttons, and the
+saved-run record.</em></p>
+<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
+<p>Educational Mode is the product’s inspection layer. Turn it on and
+the Engine Room shows the live run state, while the logbook keeps stored
+runs, bests, and replay context that the player can review later. This
+chapter is about the screens and entry points the product already
+exposes today: the Engine Room panel, the replay buttons, and the
+saved-run record. It shows what those surfaces do, what they do not
+change, and where the record stays bounded so the owner can trust what
+they are seeing.</p>
+<h3 id="what-you-should-be-able-to-explain-3">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain what Educational Mode reveals and what it leaves alone.</li>
+<li>Describe how the Engine Room shows live state while the logbook
+stores replayable runs and score history.</li>
+<li>Trace the replay gates that keep a stored run valid and prevent the
+record from rewriting itself.</li>
+<li>Spot the limits of the logbook: browser-local scores, direction
+split storage, and top-five caps.</li>
+</ul>
+<h3 id="what-the-engine-room-and-logbook-are-for">What the Engine Room
+and Logbook are for</h3>
+<h3 id="educational-mode-is-an-inspection-wrapper">Educational Mode is
+an inspection wrapper</h3>
+<p>Educational Mode is best understood as a wrapper around the flight,
+not a second flight. It opens the Engine Room and the logbook so the
+owner can inspect what the run is doing and what it has already
+recorded, but the underlying charter still governs the run itself. That
+distinction matters because it keeps the teaching surface in the role of
+observer and explainer. The player is still flying the same game;
+Educational Mode just makes more of the state visible. The evidence does
+not support reading this mode as a place that rewrites the rules
+underneath the flight. At most, it changes what is exposed to view. For
+an owner, that means the inspection surface is useful precisely because
+it is not a hidden alternate ruleset that could quietly change the
+outcome being studied.</p>
+<p>A concrete way to think about it is this: if a player is trying to
+understand why a run felt difficult, Educational Mode lets them open the
+inspection surfaces without asking them to start a different version of
+the game. They are looking at the same flight, with the same charter in
+force, but from a better angle. That is the boundary that makes the mode
+trustworthy. It is there to reveal, not to intervene.</p>
+<h3 id="the-engine-room-and-the-logbook-do-different-jobs">The Engine
+Room and the logbook do different jobs</h3>
+<p>The Engine Room is the live window. It is where the run’s current
+state is made visible while the flight is underway. The logbook is the
+stored record. It holds completed runs and the context needed to look
+back on them later. Keeping those roles separate is what gives the owner
+a durable mental model: one surface explains what is happening now, the
+other preserves what happened before. If the owner blurs those together,
+it becomes easy to expect a live display to behave like history or to
+treat history as if it were the active run. The product does not ask the
+reader to do that. It gives a present-tense surface for inspection and a
+past-tense surface for review.</p>
+<p>That split also changes how to read the evidence. The Engine Room is
+not a second place to play the game; it is the place to watch the live
+run state take shape. The logbook is not a duplicate live dashboard; it
+is the place where prior runs stay available for later understanding. A
+player who finishes a run and then opens the logbook should expect to
+see the record of that run, not a fresh simulation that is trying to
+become the current flight. The boundary is simple but important: live
+state belongs to the run in progress, and stored state belongs to
+review.</p>
+<h3 id="replay-teaches-from-records-not-from-invention">Replay teaches
+from records, not from invention</h3>
+<p>Replay should be read as a teaching tool built around stored
+snapshots and history. Its purpose is to let the owner examine a prior
+run in a way that makes the sequence understandable, not to create a new
+outcome with the authority of a fresh flight. That is the mental model
+that keeps replay honest. It is a demonstration of a recorded path, not
+a second route that can override what really happened.</p>
+<p>The consequence for the owner is practical. If a run failed, replay
+can help explain how it failed. If a run succeeded, replay can help show
+what had to line up for that success. In both cases, the value comes
+from showing the recorded run again, not from inventing a different
+result after the fact. A useful example is a player who wants to
+understand an awkward loss: they can inspect the stored run and then
+replay it to see the same sequence unfold as a teaching aid. What they
+should not expect is a replay path that turns that loss into a new win.
+The evidence supports the opposite boundary: replay is built from
+recorded state and history, so it stays tied to what was already
+captured.</p>
+<p>That limitation is the point. It keeps the logbook from becoming a
+story generator and keeps replay from competing with the actual flight.
+The owner can trust it as a way to study a run because it is anchored to
+stored evidence rather than to live improvisation.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner can treat Educational Mode as a
+window onto the live run and stored record, not as a second flight.
+Because it only reveals state, the inspection layer stays trustworthy
+only if it does not start changing the rules it is meant to explain.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Owner turns on Educational Mode] --> B[Inspection view opens]
+  B --> C[Engine Room]
+  B --> D[Logbook]
+  B -.-> E[Charter values stay unchanged]
+  B -.-> F[The flight keeps the same rules]
+</pre>
+<p>Turning on Educational Mode opens an inspection view with the Engine
+Room and the logbook. From there the owner can watch the live run and
+the stored record, while the charter values and flight rules stay
+unchanged. The consequence is that the mode helps explain the run
+without becoming a separate flight or altering what is being
+inspected.</p>
+<h3 id="how-the-inspection-layer-opens-and-replays-a-run">How the
+inspection layer opens and replays a run</h3>
+<p>Educational Mode is the gate that decides whether the inspection
+layer is even present. When it is on, the Engine Room and charter panels
+appear, and the live diagnostics counters are written only while that
+mode gate stays open. That means the inspection surface does not keep
+its own running memory in the background; it is populated by the live
+run only when the product has explicitly opened the teaching view. When
+the mode is off, those diagnostics are not being updated, even though
+the underlying flight can still continue on its own.</p>
+<p>This separation matters because it keeps the inspection layer from
+masquerading as the flight itself. The owner can think of Educational
+Mode as the window, not the engine: turning it on reveals the current
+state, but it does not rewrite the charter or steer the run. A player
+can use it to see what is happening now, yet the visibility switch does
+not change the rules the run is already following.</p>
+<h2 id="what-the-replay-gate-checks">What the replay gate checks</h2>
+<p>The replay path has its own entry check, and that check is stricter
+than the display gate. Replay only starts from a valid stored slot, and
+it refuses active runs. In plain terms, the page will not try to
+demonstrate a flight that is still underway, and it will not build a
+replay out of a missing record. That is the boundary that keeps replay
+tied to a finished, stored run instead of to the live flight state in
+front of the player.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Run state</th>
+<th>Engine Room visible?</th>
+<th>Diagnostics counters write?</th>
+<th>Replay can start?</th>
+<th>Logbook writes allowed?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Educational Mode off</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Educational Mode on during a live run</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Replay request with no stored slot</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Replay request during an active run</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Replay from a valid stored slot</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Replay in progress</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>That matrix is the important shape: the inspection surface is
+read-only, but the run state decides whether replay is allowed to begin
+and whether the logbook is temporarily protected from new writes. A
+visible Engine Room does not mean every action is permitted, and a
+stored record does not mean the system will accept it as a replay source
+unless the slot is valid and the live run is not active.</p>
+<h2 id="why-the-record-stays-fixed">Why the record stays fixed</h2>
+<p>Once replay starts, the stored snapshot and the prior input history
+are restored together. The replay is therefore not a fresh
+interpretation of the run; it is the same recorded flight re-entered
+from the stored state, with the recorded inputs carried back in so the
+sequence can be shown again. That is what makes replay useful as a
+teaching tool: the owner can inspect how the run unfolded without the
+replay inventing a new version of events.</p>
+<p>The other guard is that the logbook write paths stay blocked while
+replay is underway. In practice, that means replay cannot overwrite the
+record it is showing. If a player opens a stored run and plays it back,
+the stored entry does not get revised by the playback itself. The replay
+stays a viewer of the record, not a co-author of it.</p>
+<p>A concrete example makes the boundary clearer. Suppose a player
+finishes a run, later opens the logbook, and selects that stored result
+to replay. The page restores the saved run state and the recorded input
+sequence, then begins playback from that snapshot. While that replay is
+running, the logbook does not accept new writes from the replay itself,
+so the record remains the same one the player chose to inspect. If the
+player tries to start replay from an active flight instead, the page
+refuses because the current run has not yet become a valid stored
+slot.</p>
+<blockquote>
+<p><strong>Figure:</strong> Replay is allowed only when the stored run
+is real and finished, and once playback starts the record is protected
+from new writes. That keeps replay tied to one captured run instead of
+letting it rewrite history.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Player chooses a stored run] --> B{Stored slot is valid?}
+  B -- no --> C[Replay does not start]
+  B -- yes --> D{Run is active now?}
+  D -- yes --> C
+  D -- no --> E[Restore saved snapshot and inputs]
+  E --> F[Replay begins]
+  F --> G[Logbook writes stay blocked]
+</pre>
+<p>A player first picks a stored run. If the stored slot is missing or
+the run is still active, replay stops. If the slot is valid and the run
+is finished, the system restores the saved snapshot and prior inputs,
+starts playback, and keeps logbook writes blocked while replay runs. The
+consequence is that replay shows one captured run without changing
+it.</p>
+<h3 id="what-the-logbook-actually-stores">What the logbook actually
+stores</h3>
+<p>The Engine Room panel is broader than a single status strip. It
+carries the live frame count, the seed for the run, vessel state, input
+count, replay actions, and a logbook summary area in the same inspection
+surface. That matters because the owner is not looking at one isolated
+number; they are looking at the run as it is being described from
+several angles at once. The frame and input count show progress through
+time, the seed shows which run is being described, the vessel state
+tells you what the flight is doing now, and the replay actions are the
+bridge into stored history. The logbook summary area belongs on the same
+panel because it lets the live run and the stored record sit side by
+side instead of forcing the reader to switch mental context.</p>
+<p>The saved run record is more specific than the live panel. It
+captures direction, score, outcome, seed, current, enforcement, gap,
+gatesToWin, inputs, and finalFrame. In practice, that means the logbook
+preserves both what the run was trying to do and how far it got before
+it ended. Direction and current describe the run conditions; enforcement
+and gatesToWin describe the rule setting that shaped the attempt; score,
+gap, and outcome describe the result; inputs and finalFrame pin the
+record to the exact point where the run stopped. The boundary is
+important: this is a run snapshot, not a complete history of every
+moment the player saw. It stores the fields needed to recreate or
+explain the run, but it does not claim to be a full behavioral
+transcript.</p>
+<p>The high-score record is narrower still. It is browser-local, split
+by current direction, positive-only, and capped at five entries per
+direction. For the owner, that means the leaderboard is a local memory
+of best results on that machine and in that browser, not a shared or
+portable ranking. The direction split keeps like-for-like attempts
+separate, so an up-current result is not mixed with a down-current
+result. The positive-only rule prevents zero or negative scores from
+becoming achievements. The cap keeps the list short enough to read at a
+glance, but it also means the record is selective: once a direction
+already has five entries, a newer qualifying score has to earn its place
+against those existing slots.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>When it is written</th>
+<th>What it keeps</th>
+<th>Scope or limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>In progress, while the run is still being played</td>
+<td>A live run snapshot with the current direction, score, outcome
+state, seed, current, enforcement, gap, gatesToWin, inputs, and the
+final frame only once the run ends</td>
+<td>This is a run snapshot, not the whole history; it is the stored
+shape used around an active attempt</td>
+</tr>
+<tr>
+<td>At the end of a completed run</td>
+<td>The final run snapshot with direction, score, outcome, seed,
+current, enforcement, gap, gatesToWin, inputs, and finalFrame</td>
+<td>This is the record of one completed attempt, bounded to the fields
+needed for replay and review</td>
+</tr>
+<tr>
+<td>When a qualifying score is saved</td>
+<td>Separate high-score lists by direction, holding only positive scores
+and keeping no more than five entries per direction</td>
+<td>Browser-local storage; direction-scoped; capped; not a global
+leaderboard</td>
+</tr>
+</tbody>
+</table>
+<p>The practical consequence is that the logbook is not one flat record.
+It keeps different kinds of stored data with different write times,
+field sets, and limits. That gives the owner a stable way to read the
+run without assuming every stored item means the same thing. An
+in-progress snapshot supports inspection of a live attempt, the final
+snapshot fixes the completed run for later replay, and the high-score
+lists track only the best local results that cleared the score
+floor.</p>
+<blockquote>
+<p><strong>Figure:</strong> The logbook holds two different kinds of
+storage: one preserves a completed run so it can be replayed, and the
+other keeps a short browser-local list of best scores by direction. The
+owner should not read those as the same record, because they serve
+different review jobs and have different limits.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Stored logbook] --> B[Replayable run record]
+  A --> C[High-score list]
+  B --> D[One completed attempt with replay details]
+  C --> E[Best local scores by direction]
+  D --> F[Used to study the same run again]
+  E --> G[Kept to five entries per direction]
+</pre>
+<p>The stored logbook has two separate jobs. One branch is the
+replayable run record, which keeps one completed attempt with the
+details needed to study that same run again. The other branch is the
+high-score list, which keeps the best local scores by direction and
+stays capped at five entries per direction. The consequence is that the
+owner should not treat the replay record and the score list as the same
+kind of history.</p>
+<h3 id="where-this-system-is-genuinely-solid">Where this system is
+genuinely solid</h3>
+<h3 id="inspection-stays-read-only">Inspection stays read-only</h3>
+<p>Educational Mode is strong because it separates what you can look at
+from what the flight actually does. Turning the mode on only reveals the
+Engine Room and related inspection surfaces; it does not rewrite the
+charter or alter the run rules. The live diagnostics are written only
+when that gate is open, which means the numbers you see are produced by
+the running flight, not by a second path that can quietly steer it. For
+an owner, that matters because you can trust the inspection layer to
+observe rather than interfere. A player can switch the mode on to watch
+frame, seed, vessel state, and inputs update, then switch it off and
+keep flying under the same rules. The boundary is important: this is
+read-only visibility, not a hidden control surface.</p>
+<h3 id="replay-is-fenced-in">Replay is fenced in</h3>
+<p>Replay is also disciplined in the right way. It does not begin unless
+there is a valid stored slot, and it refuses active runs, so it only
+demonstrates something the logbook has already captured. Once replay
+starts, it restores the stored snapshot and prior input history, which
+is what makes it useful as a teaching tool instead of a fresh
+improvisation. Just as important, the logbook write paths stay blocked
+while replaying, so the record cannot rewrite itself while it is being
+shown. That guardrail keeps the replay honest: the thing under review
+stays the thing that was actually stored. The limit is that this depends
+on valid stored state and the browser’s own storage behavior; it is not
+a claim about a shared or durable archive beyond the current
+runtime.</p>
+<h3 id="the-logbook-stays-compact-enough-to-read">The logbook stays
+compact enough to read</h3>
+<p>The stored record is intentionally bounded, and that is a strength
+rather than a weakness. High scores are kept browser-local, split by
+direction, accept only positive scores, and stop at five entries per
+direction. That makes the logbook easier to scan and compare because it
+is not trying to be an endless leaderboard or a long-term history
+warehouse. An owner can read the top few outcomes for each direction
+without sorting through a flood of marginal results, and the split keeps
+unlike runs from crowding each other. The tradeoff is plain: this is not
+a cross-device or comprehensive record, and the browser environment
+still sets the outer limits. Within those limits, the boundedness is
+what gives the logbook its clarity.</p>
+<h3 id="evidence-boundary-3">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - Educational Mode,
+the Engine Room panel, replay controls, and the browser-local score
+record. - The stored run snapshot fields and the replay guards that
+protect the record from changing itself. - The difference between live
+inspection and saved history.</p>
+</blockquote>
+<p>Not reviewed: - The main flight loop, gate scoring, and charter
+loading are owned by adjacent chapters. - Any server-side sync, account
+system, or multi-user history was not reviewed. - The broader product
+intent was not provided, so this chapter does not infer it.</p>
+<p>Re-open the runtime, turn Educational Mode on and off, start a replay
+from a saved slot, and confirm the Engine Room stops updating while
+replay is active. Recheck this chapter if the replay buttons, score
+storage, or mode toggle change.</p>
+<blockquote>
+<p>Reviewed: blue-az/bulkhead-flappy repository snapshot, Founder/owner
+context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="operating-boundaries-and-lightweight-stewardship">Operating
+Boundaries and Lightweight Stewardship</h2>
+<p><em>The repository-backed product here is a browser game with a
+charter file, a splash screen that points at that charter, Mission
+Controls, Educational Mode, and a local logbook/replay path. This
+chapter is about what you should keep intact so a player can still start
+a run, inspect the Engine Room, and replay history without the
+experience drifting out of bounds.</em></p>
+<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
+<p>The repository-backed product here is a browser game with a charter
+file, a splash screen that points at that charter, Mission Controls,
+Educational Mode, and a local logbook/replay path. This chapter is about
+what you should keep intact so a player can still start a run, inspect
+the Engine Room, and replay history without the experience drifting out
+of bounds. It also marks the limits of the evidence: this does not
+confirm accounts, billing, authentication, workspace flows, or any
+larger release-management system, so anything beyond the shipped files
+is still yours to confirm.</p>
+<h3 id="what-you-should-be-able-to-explain-4">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain which parts of the product are real operating boundaries
+versus supporting convenience features.</li>
+<li>Describe how the charter, Educational Mode, replay, and
+browser-local history each constrain or expose the run.</li>
+<li>Name the risks that matter most when the charter, local state, or
+boundary cues drift.</li>
+<li>Decide which boundary behaviors should stay as-is and which ones
+need a stricter rule or a clearer owner choice.</li>
+</ul>
+<h3 id="what-you-are-stewarding">What You Are Stewarding</h3>
+<h3 id="charter-first-platform-second">Charter first, platform
+second</h3>
+<p>Treat this product as a charter-led browser experience. The load path
+points the player at the Runtime Charter Document before play begins,
+and the running page uses that charter as the rule source the experience
+is supposed to follow. That means your stewardship job is to keep the
+charter, the launch framing, and the visible run behavior in the same
+story: the player should be able to tell where the limits come from and
+see the experience behave as though those limits matter.</p>
+<p>The boundary matters just as much as the mechanism. The reviewed
+evidence only supports the repository-backed browser game in front of
+you, with no owner-confirmed product brief expanding it into a wider
+service or platform. So the right mental model is not “protect the whole
+ecosystem,” but “protect the chartered flight that is actually shipped.”
+If something sounds like accounts, billing, authentication, or a larger
+workspace system, that is outside what this evidence proves and should
+not be smuggled into the manual as if it were already part of the
+product.</p>
+<h3 id="inspection-is-support-not-a-separate-business">Inspection is
+support, not a separate business</h3>
+<p>Educational Mode and the logbook belong on the support side of the
+experience. They help the owner and player inspect what happened, replay
+a stored run, and understand the state of the flight, but they do not
+become a second product that defines the business on their own. The
+cleanest way to think about them is as surfaces that make the main
+experience more trustworthy: they expose the run, they do not replace
+it.</p>
+<p>That distinction keeps the product story coherent. If Educational
+Mode were treated as its own product, the manual would start giving it
+independent authority. The evidence does not support that. It supports a
+teaching and review layer that stays subordinate to the chartered run. A
+practical example is a player opening Educational Mode to inspect the
+Engine Room after a flight: that action helps explain the run, but it
+does not create a new operating model for the product. The support
+surface is there to make the chartered experience legible, not to
+redefine what the experience is.</p>
+<h3 id="browser-local-history-is-memory-not-shared-record">Browser-local
+history is memory, not shared record</h3>
+<p>Browser-local history should be understood as convenience memory
+inside the experience. It helps the same browser remember prior runs,
+scores, or replay material, which is useful for review and comparison.
+But that memory lives inside the browser boundary the evidence
+establishes. It is not proof of accounts, shared workspaces, or a common
+record system that follows a person across devices.</p>
+<p>That boundary changes how you should read the feature. A local
+leaderboard can be valuable because it gives the player a quick sense of
+progress without needing a larger system behind it. At the same time, it
+is narrow by design: useful for replayability, not evidence of a central
+archive. A concrete scenario makes this clear. If a player clears a run
+on one browser and later opens the product on another machine, the
+second browser should not be assumed to know that history unless some
+separate, unproven system exists. The manual should therefore treat the
+local record as a lightweight convenience, not as an organizational
+source of truth.</p>
+<p>Seen together, the three boundaries line up: the charter defines the
+run, Educational Mode and the logbook help inspect it, and browser-local
+memory helps the player revisit it. None of those facts prove a broader
+service exists beyond the shipped experience, and none of them should be
+narrated that way in stewardship decisions.</p>
+<blockquote>
+<p><strong>Figure:</strong> The charter is the authority for the shipped
+run, while Educational Mode and the logbook stay on the inspection side
+of the boundary. Browser-local history remains inside the browser, so it
+should not be treated as proof of a shared record service.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  C[Charter] --> R[Shipped run]
+  C --> L[Visible limits]
+  subgraph B[Browser boundary]
+    E[Educational Mode]
+    P[Replay and logbook]
+    M[Browser-local history]
+    E --> P
+    P --> M
+  end
+  X[Across-device record] -. not proved .-> M
+</pre>
+<p>The charter sits outside the browser boundary and governs the shipped
+run. Inside the browser boundary, Educational Mode feeds into replay and
+the logbook, and the browser-local history stays there as local memory.
+A separate across-device record is not proved by the evidence. The
+consequence is that the run is charter-led, while inspection and
+remembered history remain bounded support surfaces.</p>
+<h3 id="what-actually-happens-on-load-run-and-replay">What Actually
+Happens on Load, Run, and Replay</h3>
+<h3 id="startup-and-charter-loading">Startup and charter loading</h3>
+<p>The page does not treat the charter as decoration. On load it fetches
+the charter file, pulls the live rule values from it, and uses those
+values to refresh the visible limits and gate target. That matches the
+launch framing: the player is pointed at the charter before play begins.
+If that fetch fails outright, the experience falls back to built-in
+values so the page can still open. The boundary is narrower than the
+happy path, though: a response that reaches the browser but does not
+parse cleanly can leave the previous limits in place, so stale values
+may remain active even while the page still presents itself as live.</p>
+<p>That is the part an owner should care about. A player can see a
+current limit display and still be looking at old values if the charter
+response was malformed rather than missing. For a concrete example, an
+error page that happens to contain no usable charter values can leave
+yesterday’s gate target on screen instead of forcing a clear failure.
+The startup path therefore acts like a real operating gate, not just a
+loading detail.</p>
+<h3 id="run-start-and-direction">Run start and direction</h3>
+<p>The next boundary appears when a fresh run begins. The reset path
+clears the old vessel, bulkheads, score, frame, and finish line before
+the loop restarts, then seeds the next attempt from the current tuning
+values and rebuilds the course. In Bulkhead Build, that reset also
+clamps illegal current back into the charter range at run start. In Vibe
+Build, it does not. The practical difference is simple: the same pre-run
+tuning can produce a legal starting state in one mode and an
+out-of-range carryover in the other.</p>
+<p>Direction has its own gate. The obvious direction selectors are
+blocked during active flight, so the player cannot use those controls to
+redirect a live run. The boundary is not absolute, though, because the
+tamper current slider can still change direction after a run ends. That
+means direction is protected by a play-state gate during flight, but it
+is not fully sealed once the run is over. An owner should treat that as
+an incomplete boundary rather than a clean, permanent prohibition.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What the experience does</th>
+<th>What stays constrained</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Startup charter loading</td>
+<td>Fetches the charter file and refreshes the visible limits and gate
+target from it; if fetch fails, built-in values are used.</td>
+<td>A malformed response can leave the prior limits in place, so the
+page may keep stale values live.</td>
+</tr>
+<tr>
+<td>Fresh run reset</td>
+<td>Clears the old vessel, bulkheads, score, frame, and finish line
+before the next loop begins.</td>
+<td>Old run state does not carry forward into the new attempt.</td>
+</tr>
+<tr>
+<td>Active-flight direction handling</td>
+<td>Blocks the obvious direction selectors during active flight.</td>
+<td>Direction can still be altered after the run ends through the tamper
+current control, so the boundary is not absolute.</td>
+</tr>
+<tr>
+<td>Educational Mode diagnostics</td>
+<td>Reveals the Engine Room and charter panels and shows live
+diagnostics only in that mode.</td>
+<td>It does not rewrite the charter values; the panels stay read-only
+unless another path changes the rules.</td>
+</tr>
+<tr>
+<td>Replay entry</td>
+<td>Starts only from a valid stored slot and refuses when a run is
+already active.</td>
+<td>Missing slots and active runs are rejected, so replay cannot jump
+into arbitrary state.</td>
+</tr>
+<tr>
+<td>Replay while replaying</td>
+<td>Restores the stored snapshot and plays back prior input
+history.</td>
+<td>While replaying, the history-writing path is blocked, so replay
+cannot modify stored history.</td>
+</tr>
+<tr>
+<td>Browser-local high scores</td>
+<td>Stores high scores only in that browser, split by direction, and
+keeps the top five positive entries per direction.</td>
+<td>It is not a shared leaderboard, and zero or negative scores are
+ignored.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="inspection-and-replay">Inspection and replay</h3>
+<p>Educational Mode is a visibility gate, not a second rule source. It
+only reveals the Engine Room and charter panels, and the live counters
+only update when that mode is on. The consequence is that the inspection
+surface stays read-only as long as no other path changes the rules. For
+the owner, that keeps the teaching surface trustworthy: it can show the
+player what the run is doing, but it should not become a place where the
+rules silently drift.</p>
+<p>Replay is narrower still. It only starts from a valid stored slot and
+refuses to begin if a live run is already active or if the requested
+slot is missing. When replay does start, it restores the stored snapshot
+and prior input history rather than inventing a new run. While
+replaying, the history-writing path is blocked, so the replay cannot
+write back into the logbook and mutate the record it is demonstrating.
+That is the important boundary: the demonstration remains a
+demonstration.</p>
+<h3 id="browser-local-history">Browser-local history</h3>
+<p>High-score history stays inside the browser that produced it. It is
+split by direction, accepts only positive scores, and keeps only the top
+five entries for each direction. In practice, that means a run competes
+only with earlier runs in the same direction on the same browser, and
+weak or zero scores never displace real progress. The useful part of
+that design is its narrowness: it behaves like convenience memory for
+the experience, not like a shared record system.</p>
+<p>If the experience is opened in a different browser, or if the browser
+clears its stored data, that local history does not promise anything
+larger than the runtime actually proved. The right way to read it is as
+a bounded support feature: useful for replay and comparison, but not
+evidence of accounts, a shared workspace, or any broader record
+service.</p>
+<blockquote>
+<p><strong>Figure:</strong> A good fetch refreshes the live rules, but a
+malformed charter body can leave older limits active. That means the
+page can present itself as live without actually refreshing the rules
+the player relies on.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  S[Page opens] --> F[Fetch charter]
+  F -->|fetch succeeds| P[Parse charter body]
+  F -->|fetch fails| B[Use built-in values]
+  P -->|values found| U[Refresh live limits]
+  P -->|no values found| O[Keep earlier limits]
+  O --> L[Page can still read live]
+</pre>
+<p>When the page opens, it fetches the charter. If the fetch succeeds,
+the charter body is parsed and the live limits are refreshed. If the
+fetch fails, built-in values are used so the page can still open. If the
+body does not yield usable values, earlier limits stay in place and the
+page can still look live. The consequence is that a bad charter response
+can leave stale rules active.</p>
+<blockquote>
+<p><strong>Figure:</strong> Every new run starts from the same clean
+reset, but the two modes diverge on whether out-of-range current is
+corrected at start. Direction control is only partly sealed, because
+another control can still change it after play ends.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  R[Clean reset]
+  subgraph B[Bulkhead Build]
+    B1[Clamp illegal current]
+  end
+  subgraph V[Vibe Build]
+    V1[Keep carried current]
+  end
+  R --> B1
+  R --> V1
+  B1 --> D[Direction controls stay blocked during flight]
+  V1 --> D
+  D --> T[Tamper slider can still flip direction after the run]
+</pre>
+<p>A fresh run begins with a clean reset in both modes. In Bulkhead
+Build, illegal current is clamped at reset. In Vibe Build, the carried
+current is kept. During flight, direction controls stay blocked in both
+branches, but after the run ends the tamper slider can still flip
+direction. The consequence is that the reset is clean, yet the direction
+boundary is not fully closed.</p>
+<h3 id="what-the-evidence-actually-proves">What the Evidence Actually
+Proves</h3>
+<p>The reviewed evidence is narrow on purpose. It proves a shipped
+browser-game slice built around the page the player loads, the charter
+document that frames the run, and the README and splash language that
+point to that charter. It does not prove a broader service shape. So the
+safe reading is: this manual can describe the experience that exists in
+the repository-backed product, but it cannot promote that slice into
+accounts, billing, authentication, workspace workflows, or outside
+integrations that the evidence never shows.</p>
+<h2 id="what-is-confirmed-and-what-is-not">What is confirmed, and what
+is not</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Confirmed by the reviewed evidence</th>
+<th>Not confirmed by the reviewed evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A static browser-game slice centered on the shipped page, the
+charter document, and the README.</td>
+<td>Accounts, billing, authentication, workspace workflows, or external
+integrations.</td>
+</tr>
+<tr>
+<td>The charter is treated as the pre-run rule source, and the launch
+copy points the player to it before play begins.</td>
+<td>Any alternate rule source or a second governing surface that
+supersedes the charter.</td>
+</tr>
+<tr>
+<td>Educational Mode only changes what the player can see in the
+teaching surface; it does not rewrite the charter.</td>
+<td>A mode that edits runtime rules, or any hidden mutation path through
+the inspection surface.</td>
+</tr>
+<tr>
+<td>Replay starts only from a valid stored slot, and replaying a session
+cannot write back into stored history while it is replaying.</td>
+<td>An open replay path that can start from missing or active slots, or
+a replay flow that self-modifies the logbook.</td>
+</tr>
+<tr>
+<td>Browser-local score history stays split by current direction and is
+capped at five entries per direction.</td>
+<td>A shared, account-backed, or unbounded score record.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="charter-replay-and-history-in-practice">Charter, replay, and
+history in practice</h2>
+<p>The important consequence of the charter evidence is not just that a
+charter exists, but that it sits in front of the run. The player is told
+where the rules come from before starting, and the runtime hydrates
+those charter values into the visible limits used during play.
+Educational Mode sits beside that rule source, not above it: it can show
+or hide the Engine Room and charter panels, but the reviewed evidence
+says it does not rewrite the charter itself. In practical terms, that
+means the inspection surface is for looking, not for silently changing
+the rules underneath the player.</p>
+<p>Replay has a similarly tight boundary. The evidence supports replay
+only when there is a valid stored slot to restore, and it rejects active
+runs and missing slots instead of improvising a new replay state. That
+matters because replay is meant to demonstrate a real past run, not a
+made-up substitute. The replay guard also prevents the replayed session
+from writing back into stored history while it is replaying, which keeps
+the record from becoming self-editing. A concrete example is a player
+opening a saved session after a run ended: the stored snapshot can be
+restored and played back, but the replay should not be allowed to
+overwrite the very history it is demonstrating.</p>
+<p>The score history is equally bounded. The evidence says it lives in
+the browser, is separated by current direction, and keeps only the top
+five entries for each direction. That is a useful memory for the player,
+but it is still local memory, not a shared ledger. The consequence for
+the owner is straightforward: if direction scoping or the five-entry cap
+drift, the score display stops matching the rule the product currently
+proves. If a player posts several strong runs in one direction, only the
+top five survive in that browser, and runs in the opposite direction are
+tracked separately instead of being merged into one list.</p>
+<p>Taken together, the evidence draws a clean line: the shipped product
+proves a charter-led browser game with read-only inspection and
+constrained replay, plus browser-local score memory. It does not prove
+the larger business and platform layers that a broader product might
+have elsewhere.</p>
+<blockquote>
+<p><strong>Figure:</strong> Replay is allowed only when there is a valid
+stored slot and no live run is already active. Once it starts, it
+restores the stored run and keeps the record from editing itself, while
+browser-local scores remain a separate local memory.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  Q[Replay request] --> V{Valid stored slot?}
+  V -->|No| X[Reject replay]
+  V -->|Yes| A{Live run active?}
+  A -->|Yes| X
+  A -->|No| S[Restore stored run state]
+  S --> H[Play back prior inputs]
+  H --> W[History writes stay blocked]
+  subgraph B[Browser boundary]
+    L[Browser-local scores]
+  end
+  W -. separate local record .-> L
+</pre>
+<p>A replay request first checks for a valid stored slot. If the slot is
+missing, or if a live run is already active, the replay is rejected. If
+the slot is valid and no run is active, the stored run state is restored
+and the prior inputs are played back. While replay is running, history
+writes stay blocked. Browser-local scores sit in the browser boundary as
+a separate local record. The consequence is that replay stays
+observational instead of rewriting the history it demonstrates.</p>
+<h3 id="what-is-solid-enough-to-preserve">What Is Solid Enough to
+Preserve</h3>
+<h3 id="charter-visibility-is-doing-real-work">Charter visibility is
+doing real work</h3>
+<p>The strongest thing about the charter setup is that it is not hidden
+in the background. The player sees the charter as the place where the
+pre-run rules come from, and the live experience pulls those values into
+the runtime rather than leaving them as a dead reference. That
+combination matters because it gives the run a visible source of
+authority: the limits the player sees are meant to be the limits the
+game uses.</p>
+<p>For an owner, that is a useful form of trust. It reduces the chance
+that the product feels arbitrary or that the player has to guess whether
+the displayed rules are cosmetic. When the charter is visible before
+play and then reflected in the live experience, the product tells a
+coherent story about where its constraints come from.</p>
+<p>The boundary is important, though. The evidence supports this as a
+working operating pattern, not as proof that every charter lookup is
+safely validated forever. A malformed charter response can leave earlier
+values in place, so the strength here is visibility and integration, not
+perfect protection against every bad input. In practice, that means the
+launch framing is worth preserving, but it should not be mistaken for a
+complete safety net.</p>
+<h3 id="inspection-stays-read-only-and-replay-stays-guarded">Inspection
+stays read-only, and replay stays guarded</h3>
+<p>Educational Mode is strong because it behaves like an inspection
+surface rather than a second place where the rules can be rewritten. The
+Engine Room and charter panels can be shown or hidden, but the charter
+values themselves are not rewritten by entering that mode. That matters
+because it lets a player or owner inspect the system without turning the
+inspection view into a control surface.</p>
+<p>Replay has a similar kind of restraint. It does not accept just any
+starting condition: it refuses active runs and missing stored slots, and
+once a replay is underway it is blocked from writing back into stored
+history. That is a meaningful boundary for stewardship. A replay should
+demonstrate a past run, not quietly alter the record it is supposed to
+display.</p>
+<p>A concrete example makes the benefit obvious. If a player finishes a
+run, opens Educational Mode to inspect what happened, and then replays
+that same session, the replay should behave like a locked exhibit:
+readable, repeatable, and not self-editing. The evidence supports that
+shape. The remaining qualifier is that this is a browser-local record,
+so the guardrails are strong inside the experience but do not prove
+anything about a broader shared archive.</p>
+<h3 id="the-local-history-is-small-on-purpose">The local history is
+small on purpose</h3>
+<p>The history model is easier to preserve because it is narrow. Scores
+stay in the browser, split by direction, only positive scores are
+retained, and each direction is capped at five entries. That means the
+leaderboard-like behavior is not trying to become a universal record
+system. It is acting like a compact, local memory of what happened in
+this browser.</p>
+<p>That narrowness is a strength for the owner because it makes the
+outcome easier to explain and easier to reason about. A player is not
+expected to manage an account history or reconcile scores across
+devices. Instead, the product gives a small, legible record that
+supports replayability and quick comparison without implying a larger
+service behind it.</p>
+<p>The boundary is equally important: browser-local storage means the
+history lives within the browser environment, and the evidence does not
+establish any synced or shared account record. So the strength is not
+durability in the enterprise sense; it is simplicity. If the goal is to
+keep the logbook understandable and bounded, the current design already
+does that well.</p>
+<h3 id="resetting-preserves-clean-attempts">Resetting preserves clean
+attempts</h3>
+<p>The reset path is also worth keeping because it starts a fresh
+attempt instead of dragging stale run state into the next one. When a
+new run begins, the old vessel position, obstacle state, score, and
+finish-line progress are cleared out, and the run restarts from a clean
+slate. In Bulkhead Build, that reset also clamps illegal current back
+into range at run start, which keeps old tuning drift from bleeding into
+the next attempt.</p>
+<p>For the owner, this matters because repeated tries stay comparable. A
+player who fails once and retries should be testing the same challenge,
+not a leftover mix of old movement, old obstacles, or an out-of-range
+current that silently carried over. Clean resets make failures easier to
+interpret and make the next attempt feel like a true rerun rather than a
+continuation of a damaged state.</p>
+<p>The qualifier is that this cleanliness holds at reset time, not as a
+guarantee against every possible mid-run change. The evidence supports a
+fresh start, not a universal state scrub at all times. Even so, that is
+enough to make the experience trustworthy in the way owners usually
+need: each new run begins from a known baseline, and the chartered
+limits get another fair chance to apply.</p>
+<h3 id="evidence-boundary-4">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - README and splash
+copy that point players to the charter before play - runtime loading of
+the charter file into live rule values - Educational Mode showing
+diagnostics without rewriting rules - reset behavior that starts a fresh
+run from clean state - replay guards that reject bad entry states and
+block writes while replaying - browser-local score history that is split
+by direction and capped</p>
+</blockquote>
+<p>Not reviewed: - accounts, billing, authentication, workspace
+membership, or shared-user workflows - external integrations or
+third-party services - hosting, deployment, or release-management
+details beyond the shipped browser experience - version-label or
+build-metadata workflow as a separate operating system</p>
+<p>Recheck this chapter when the README, splash copy, charter loading
+logic, mode toggle, replay path, or score storage changes, or when the
+owner supplies a confirmed product brief that expands the boundary
+beyond the shipped browser files.</p>
+<blockquote>
+<p>Reviewed: blue-az/bulkhead-flappy repository snapshot, Founder/owner
+context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<h2 id="recent-additions-v0.9.x">Recent additions (v0.9.x)</h2>
+<p>Added after this manual’s draft: a <strong>Difficulty dial</strong>
+(gate-to-gate vertical swing — level = easy, max swing = hardest), a
+<strong>thrust (SPACE) counter</strong>, and a <strong>residual
+histogram</strong> (distribution of gate-clearance across a run). The
+charter/enforcement model the chapters describe is unchanged.</p>
+<h2 id="appendix-attention-items-owner-decisions">Appendix — Attention
+Items &amp; Owner Decisions</h2>
+<p><em>43 in-chapter cards collapsed to the distinct items below. This
+is a teaching demo, so most are design-intent, not defects.</em></p>
+<h3 id="things-to-know">Things to know</h3>
+<ul>
+<li><strong>Malformed charter keeps the last-good values</strong> rather
+than failing closed — a bad <code>flappy.pbc.md</code> leaves stale
+limits live (see the open decision below).</li>
+<li><strong>Bulkhead Build clamps illegal current only at run
+start</strong> (Vibe Build does not) — that contrast <em>is</em> the
+demo.</li>
+<li><strong>The tamper slider can change current direction after a run
+ends</strong> (sandbox control).</li>
+<li><strong>Educational Mode is read-only</strong> with respect to
+charter values.</li>
+<li><strong>Replay never writes back</strong> into its own stored
+record, and rejects active runs / missing slots.</li>
+<li><strong>The logbook is browser-local and capped</strong> (5 runs per
+current-direction); it is not a shared backend.</li>
+<li><strong>A win requires both</strong> the gate target <em>and</em>
+the finish line; gate count alone isn’t the success signal.</li>
+</ul>
+<h3 id="open-decisions">Open decisions</h3>
+<ul>
+<li>Should a malformed charter <strong>fail closed</strong> instead of
+preserving stale constants? <em>(currently keeps stale)</em> — the one
+semi-real item for an enforcement demo.</li>
+<li>Should the tamper slider stay <strong>magnitude-only</strong> after
+a run, or keep allowing direction flips? <em>(currently
+allows)</em></li>
+<li>Should Educational Mode stay strictly read-only? <em>(currently
+yes)</em></li>
+<li>Should replay stay unable to write back, and score storage stay
+direction-scoped / capped at 5? <em>(currently yes)</em></li>
+</ul>
+</body>
+</html>

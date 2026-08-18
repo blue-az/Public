@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TennisOracle Owner's Manual</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";mermaid.initialize({startOnLoad:true});</script>
+  <style>body{max-width:52em;margin:2em auto;font-family:sans-serif;line-height:1.5;padding:0 1em}pre.mermaid{background:none;text-align:center}</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">TennisOracle Owner's Manual</h1>
+</header>
+<h1 id="owners-manual-for-blue-aztennisoracle">Owner’s Manual for
+blue-az/TennisOracle</h1>
+<p><em>5 generated chapters from the reviewed repository
+snapshot</em></p>
+<blockquote>
+<p>Source:
+blue-az/TennisOracle:main@692fca9ea9def57319368f04ec9a190603d040fa</p>
+</blockquote>
+<hr />
+<h2 id="review-notes">Review Notes</h2>
+<p>This lean review edition removes the repeated Reflect attention and
+owner-decision cards from the chapters and consolidates them into one
+appendix. The source package pinned <code>blue-az/TennisOracle</code> at
+<code>692fca9ea9def57319368f04ec9a190603d040fa</code>; one backend
+startup fix was made after the scan and pushed as
+<code>37b914d</code>.</p>
+<p>Verification boundary: the Swift/watchOS app was reviewed by reading
+source only. It was not built or run on this Linux machine. Watch
+runtime behavior still needs on-device confirmation before any
+Swift-side change is trusted.</p>
+<h2 id="the-tennis-oracle-session-loop">The Tennis Oracle Session
+Loop</h2>
+<p><em>Tennis Oracle matters to the owner because it is one live session
+loop, not three separate apps. The watch captures the player’s motion
+and live feedback, the iPhone acts as the relay gateway, and the backend
+decides whether a sensor batch becomes a shot event and stores that
+result.</em></p>
+<h3 id="one-minute-snapshot">One-Minute Snapshot</h3>
+<p>Tennis Oracle matters to the owner because it is one live session
+loop, not three separate apps. The watch captures the player’s motion
+and live feedback, the iPhone acts as the relay gateway, and the backend
+decides whether a sensor batch becomes a shot event and stores that
+result. The current manual boundary is narrower than the full operating
+environment, so this chapter stays with the observed live loop and does
+not assume broader dashboards, coaching workflows, or external services
+that were not confirmed.</p>
+<h3 id="what-you-should-be-able-to-explain">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain Tennis Oracle as one live session loop from wrist capture to
+returned shot feedback.</li>
+<li>Separate what the player does on the watch from what the operator
+keeps running on the phone and backend.</li>
+<li>Recognize which session state is live only, which state is stored,
+and which state can look current even when it is stale.</li>
+<li>See the unresolved risks that can change session continuity,
+recovery, or trust.</li>
+</ul>
+<h3 id="what-this-product-is-from-the-owners-point-of-view">What this
+product is, from the owner’s point of view</h3>
+<p>Tennis Oracle is a live tennis capture loop. The player wears the
+watch and starts capture there. The phone is not the analysis surface;
+it is the gateway that keeps the watch connected to the Mac backend. The
+backend is where the sensor batch is judged and where a shot event is
+produced.</p>
+<p>That division matters to the owner because each surface carries a
+different responsibility. The watch owns the player’s immediate
+experience. The phone owns relay continuity. The backend owns detection
+and session state. The chapter on watch capture goes deeper on the
+player’s on-wrist controls and outputs, the iPhone chapter goes deeper
+on relay posture, the detection chapter goes deeper on the shot
+decision, and the continuity chapter takes the storage and scope
+boundaries.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should read the phone as a relay
+bridge, not a place where shot logic happens. That separation makes the
+operating roles clear: the watch captures, the backend judges, and the
+phone keeps the path moving.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  W[Watch\nplayer capture console]
+  P[Phone\nrelay gateway]
+  B[Backend\nshot judgment]
+  S[Live session\ncurrent state]
+  W -->|live batches| P
+  P -->|forwards batches| B
+  B -->|returns shot feedback| W
+  B -->|updates current state| S
+</pre>
+<p>The watch sends live batches to the phone, the phone forwards them to
+the backend, and the backend returns shot feedback while maintaining the
+live session state. The phone sits in the middle as relay only; it does
+not own shot judgment.</p>
+<h3 id="how-a-live-session-moves-through-the-loop">How a live session
+moves through the loop</h3>
+<p>A live session begins on the watch. While idle, the watch exposes
+mode selection and a single start and stop control. Starting capture
+turns on recording, clears the buffered samples, starts the tennis
+workout stack, starts motion capture, and tries heart-rate sampling only
+when Apple health data is available.</p>
+<p>The watch packages a sensor batch with samples, timestamp, and mode,
+hands that batch to the phone gateway, and then clears its local buffer.
+The phone gateway shows whether the Mac backend is connected, forwards
+batches to the backend, and sends shot events back toward the watch. On
+the backend, the batch is accepted, the detector applies its thresholds,
+only literal serve is treated as special, and the detected shot is
+written into the current session and emitted back into the loop.</p>
+<p>This is a live path, not a broad product tour. The owner should read
+it as a session loop with clear roles, not as a generic analytics
+stack.</p>
+<blockquote>
+<p><strong>Figure:</strong> A session only becomes meaningful after the
+batch clears the relay and the backend accepts it as a shot. If any link
+in that path breaks, the loop keeps capturing but the feedback path is
+interrupted.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Start capture on the watch]
+  B[Watch groups motion into a batch]
+  C[Phone relays the batch]
+  D{Backend treats it as a shot?}
+  E[Shot is stored in the live session]
+  F[Shot feedback returns to the watch]
+  A --> B --> C --> D
+  D -- yes --> E --> F --> B
+  D -- no --> B
+</pre>
+<p>The watch starts capture, groups motion into a batch, and hands it to
+the phone. The phone relays the batch to the backend. The backend
+decides whether it counts as a shot, stores it when it does, and returns
+feedback to the watch. If the batch is not accepted, the loop simply
+continues capturing.</p>
+<h3 id="what-is-confirmed-in-the-current-code-backed-evidence">What is
+confirmed in the current code-backed evidence</h3>
+<ul>
+<li>The watch is the live capture console. It exposes STROKES and SERVE
+mode selection only while idle, then shows live status and shot readouts
+during capture.</li>
+<li>Starting capture sets the recording state, clears buffered samples,
+starts motion capture, and attempts heart-rate sampling only when health
+data is available.</li>
+<li>Stopping capture turns off recording, stops motion updates, and
+stops the workout, but it does not reset the published shot
+metrics.</li>
+<li>The iPhone is a gateway. It shows connection state, forwards watch
+batches to the backend, and relays shot events back to the watch.</li>
+<li>Relay is manual rather than self-healing. A lost connection stays
+lost until the operator reconnects.</li>
+<li>The backend keeps a live session view in memory and writes
+detections during that session. The latest-session read returns that
+live view rather than a durable history feed.</li>
+<li>Only literal serve is special in detection. Any other mode value
+falls back to the strokes threshold.</li>
+<li>The watch capture stack depends on Apple workout and runtime
+services, but the permission-failure path is still not proven.</li>
+</ul>
+<blockquote>
+<p><strong>Figure:</strong> Stopping capture is operationally final but
+visually incomplete. The watch can still show the previous shot after
+recording ends, so a stopped screen must not be treated as live
+feedback.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Ready
+  Ready --> Live: start capture
+  Live --> Stopped: stop capture
+  Stopped --> Ready: new capture begins
+  note right of Stopped : Capture is off, but the last shot values can still be visible.
+</pre>
+<p>The state diagram moves from Ready to Live when capture starts, then
+to Stopped when capture stops, and back to Ready when a new capture
+begins. The stopped state keeps the last shot values visible, which is
+why the screen can look live even though capture is off.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should not treat the
+latest-session view as history. It reads live in-memory state, while
+shot records are stored separately, so the visible current session is
+not a durable log.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  Q[Latest session view]
+  subgraph B[Backend side]
+    M[Live session memory]
+    R[Stored shot records]
+  end
+  Q -->|reads current state| M
+  M -->|writes detected shots| R
+</pre>
+<p>The diagram separates the latest-session view from the backend side.
+The latest-session view reads the live in-memory session, and the
+backend writes detected shots into stored records. That means the
+latest-session path shows current state, not a historical archive.</p>
+<h3 id="what-this-loop-does-well">What this loop does well</h3>
+<p>The product has a clean owner-facing shape: the player starts capture
+on the watch, the operator keeps the gateway alive on the phone, and the
+backend turns sensor motion into a shot result. That split makes the
+live session easier to explain and easier to audit.</p>
+<p>The loop also keeps the meaningful state visible. The watch shows the
+player immediate feedback, the phone shows relay status, and the backend
+keeps a current session view that can be read back during play. The
+downside is that some of that state is live only, so the manual must be
+precise about what is current, what is stored, and what is merely still
+on screen.</p>
+<h2 id="player-capture-and-on-wrist-feedback">Player Capture and
+On-Wrist Feedback</h2>
+<p><em>This chapter is the player’s live on-wrist console: choose
+strokes or serve while idle, start and stop a Tennis Oracle session on
+the watch, and see live status, shot speed, clean contact, readiness,
+and heart rate while play is active. It is built from the code, so it
+describes what the product does today, not a broader coaching workflow
+you still need to confirm.</em></p>
+<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
+<p>This chapter is the player’s live on-wrist console: choose strokes or
+serve while idle, start and stop a Tennis Oracle session on the watch,
+and see live status, shot speed, clean contact, readiness, and heart
+rate while play is active. It is built from the code, so it describes
+what the product does today, not a broader coaching workflow you still
+need to confirm. Capture continuity also depends on Apple workout and
+runtime services, and stopping capture does not clear the last shot
+values, so a finished session can still look current until new data
+replaces it.</p>
+<h3 id="what-you-should-be-able-to-explain-1">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain why the watch is the live capture console and what the
+player can do from it.</li>
+<li>Describe the exact start and stop behavior, including idle-only mode
+selection and what remains visible after stop.</li>
+<li>State which live cues the player sees while the session is
+active.</li>
+<li>Explain the continuity dependency on Apple workout and runtime
+services, and the meaning of the serve-versus-strokes mode rule.</li>
+</ul>
+<h3 id="the-watch-as-a-live-capture-console">The Watch As A Live Capture
+Console</h3>
+<h2 id="live-console-not-a-record">Live Console, Not A Record</h2>
+<p>Think of the watch as the player’s on-court console for the current
+Tennis Oracle session. Its job is to let the player begin capture, end
+it, and choose the mode that shapes what the live session means. That
+framing matters because the watch is not presenting a separate coaching
+workspace or a retrospective dashboard; it is the surface that stays
+attached to the session while play is happening. In practice, that means
+the owner should expect the watch to answer a simple question: what is
+this session doing right now?</p>
+<h2 id="live-readouts-mean-the-current-session">Live Readouts Mean The
+Current Session</h2>
+<p>The readouts on the watch are live feedback from the active session.
+Shot speed, clean contact, readiness, heart rate, and the session status
+are useful because they give the player immediate state while the ball
+is still in play. They are not a history view, and they are not trying
+to explain everything after the fact. One practical consequence is that
+the last shot values can remain visible even after capture stops, so the
+display can still look current even though the session is no longer
+recording new data. That is a console behavior, not a report
+behavior.</p>
+<p>Example: if a player ends a rally, glances at the watch, and sees the
+last shot speed and readiness number still on screen, the correct
+reading is “this was the last live result,” not “the watch is still
+actively measuring.” The manual should keep that distinction clear so an
+owner does not mistake persistent values for an ongoing recording.</p>
+<h2 id="continuity-depends-on-apple-services">Continuity Depends On
+Apple Services</h2>
+<p>Capture continuity is also not just a question of whether the player
+pressed the button. The watch relies on Apple workout and runtime
+services underneath the control surface, which means the session is
+supported by the watch operating environment rather than by the button
+alone. The code evidence shows that the watch requests HealthKit access
+during setup, starts an extended runtime session before the workout
+session, and invalidates that runtime support when capture stops. That
+makes the live console more durable than a simple timer, but it also
+means the continuity story has an external dependency the owner should
+not ignore.</p>
+<p>The boundary is important: the reviewed evidence does not establish
+how the watch behaves if HealthKit access is absent, denied, or revoked.
+So the right mental model is “workout-backed live capture with
+unresolved permission-failure behavior,” not “capture always succeeds
+once the player taps start.” If continuity matters operationally, that
+dependency belongs in planning, testing, and release readiness, not just
+in the UI story.</p>
+<h2 id="scope-of-this-chapter">Scope Of This Chapter</h2>
+<p>This section stays inside what the reviewed code proves about the
+watch console today. It does not expand into a broader coaching workflow
+or pretend the watch is doing more than the evidence shows. The safe
+owner view is narrow and practical: the watch is the player’s live
+capture surface, its readouts reflect the active session, and its
+persistence depends on Apple watch services underneath. Anything beyond
+that needs separate evidence before it can be promised.</p>
+<h3 id="start-stop-and-mode-rules">Start, Stop, And Mode Rules</h3>
+<p>The watch behaves like a live capture console, but the important part
+is not just that there is a start and stop button. The mechanics are
+stateful: mode selection is only available before recording begins,
+starting capture flips the watch into an active session, and stopping
+capture shuts the session down without fully wiping the last readouts.
+That means the player is not working with a fresh screen every time they
+stop; they are working with a live session state that has to be read in
+context.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Mode control</th>
+<th>Capture and workout behavior</th>
+<th>HealthKit or heart-rate effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Idle mode selection</td>
+<td>The player can choose strokes or serve.</td>
+<td>Capture is not yet running.</td>
+<td>No heart-rate sampling is started from this choice alone.</td>
+</tr>
+<tr>
+<td>Starting capture</td>
+<td>The mode control is locked out once recording starts.</td>
+<td>Recording turns on, buffered samples are cleared, the workout stack
+starts, and motion capture begins.</td>
+<td>Heart-rate sampling is attempted only if health data is
+available.</td>
+</tr>
+<tr>
+<td>Stopping capture</td>
+<td>The mode control remains out of play until the session is idle
+again.</td>
+<td>Recording turns off, motion updates stop, and the workout stops, but
+the last shot readouts stay visible.</td>
+<td>Heart-rate sampling is no longer active as part of capture.</td>
+</tr>
+<tr>
+<td>Exactly serve mode value</td>
+<td>The player must have selected serve before recording started.</td>
+<td>The live session follows the serve path rather than the strokes
+path.</td>
+<td>The watch still depends on the same live capture stack.</td>
+</tr>
+<tr>
+<td>Any other mode value</td>
+<td>The player still has a mode, but it is treated as strokes.</td>
+<td>The session follows the strokes path even if the mode name looks
+different.</td>
+<td>No separate heart-rate behavior is implied by the mode name.</td>
+</tr>
+</tbody>
+</table>
+<p>What this means for the player is simple but easy to misread if you
+expect the watch to behave like a free-form settings screen. Mode choice
+is a pre-session decision, not a live toggle. Once the player starts
+capture, the watch is committed to the current session until it is
+stopped; the active session is what drives the live feedback, and the
+chapter on live readouts explains those outputs in more detail.</p>
+<p>The start path also matters because it does more than begin
+recording. It clears buffered samples before the session proceeds, then
+brings up the workout-backed runtime and motion capture that keep the
+watch session alive on court. That sequence is why the watch experience
+is tied to Apple’s workout and runtime services rather than to a simple
+on-screen timer. The consequence for the owner is that session
+continuity on the watch should be described as supported by those
+services, not as guaranteed by the button alone. The boundary is
+important: the reviewed evidence shows a heart-rate attempt only when
+health data is available, but it does not prove exactly how the app
+behaves when access is missing, denied, or revoked.</p>
+<p>Stopping capture is equally specific. The watch turns recording off,
+stops motion updates, and ends the workout session, but it does not
+clear the last shot values that were already published. So a finished
+session can still look current until new data arrives. That is not a
+cosmetic footnote; it changes how the owner should explain the watch
+state to a player. If the player stops after a hard serve, the shot
+speed, clean contact, and readiness display may remain on screen even
+though capture is no longer running. The correct reading is not that the
+watch is still detecting, but that the last published values are still
+sitting there.</p>
+<p>The mode rule is the strictest boundary in the whole sequence. Only
+the literal serve mode is treated as serve. Anything else falls back to
+strokes, even if the string looks close or sounds plausible. In
+practice, that means the naming matters exactly: if a player or upstream
+screen sends any non-serve value, the detector does not invent a third
+mode, and it does not create a special branch. It behaves like strokes.
+A simple example makes the consequence plain: if the player selects
+serve before starting and then begins capture, the session follows the
+serve path; if the mode is mistyped, renamed, or passed through as
+something else, the session is processed as strokes instead. That
+exactness is why the manual should avoid loose language here and keep
+the mode names literal.</p>
+<blockquote>
+<p><strong>Figure:</strong> The watch session is decided before
+recording starts, and stopping ends capture without wiping the last
+published shot values. That is why a finished session can still look
+live even though the watch is no longer recording.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --> Idle
+    state "Idle, mode can be chosen" as Idle
+    state "Serve armed" as Serve
+    state "Strokes armed" as Strokes
+    state "Recording" as Recording
+    state "Stopped, last values still shown" as Stopped
+
+    Idle --> Serve: choose serve
+    Idle --> Strokes: choose strokes or any other mode
+    Serve --> Recording: start capture
+    Strokes --> Recording: start capture
+    Recording --> Stopped: stop capture
+    Stopped --> [*]
+</pre>
+<p>When the watch is idle, the player can choose serve or strokes.
+Choosing either mode arms the session, and starting capture moves it
+into recording. Stopping capture ends the session, but the last shot
+values can remain on screen. The consequence for the owner is that a
+stopped watch can still look current, so the display must be read as the
+last live result, not as proof that recording is still active.</p>
+<h3 id="checkable-facts-from-the-reviewed-evidence">Checkable Facts From
+The Reviewed Evidence</h3>
+<p>The reviewed evidence supports a narrow set of checkable facts about
+what the watch exposes during a live session and what the watch build
+needs in order to run that session. These are not broad workflow claims;
+they are the specific on-wrist behaviors and packaging requirements the
+code snapshot establishes.</p>
+<h3 id="live-readouts">Live Readouts</h3>
+<p>The watch screen directly shows live status, heart rate, shot speed,
+clean-contact status, and readiness percentage from the session state
+the product is already publishing. In other words, the watch is not
+waiting for a later report before it shows the player something useful;
+the values are meant to update while the session is still active. That
+matters because the player can glance down mid-rally and see the current
+capture picture, not just a finished summary.</p>
+<p>A concrete example makes the shape clear: if a player starts a
+session, hits a forehand, and then looks at the watch, the speed and
+clean-contact readouts are part of the live session display rather than
+a separate review screen. The boundary is important, though: the
+evidence supports live rendering of these values, not a promise that
+every value resets cleanly at stop or that the screen behaves like a
+historical log.</p>
+<h3 id="what-happens-at-start">What Happens At Start</h3>
+<p>When capture starts, the watch clears the buffered samples and begins
+motion capture at 100 Hz. That is a meaningful operational reset. The
+new session is not continuing on top of old captured samples; it begins
+with a fresh buffer and a high-frequency stream of new motion data.</p>
+<p>For the owner, the consequence is straightforward: the first captured
+swings of the new session are treated as the new run, not as leftovers
+from a previous one. If a player stops, waits, and starts again for the
+next drill, the new start path is the point where the old sample buffer
+is discarded and the new motion stream begins. The evidence here is
+specific to the start path; it does not claim anything about broader
+session continuity beyond that reset.</p>
+<h3 id="watch-build-and-heart-rate">Watch Build And Heart Rate</h3>
+<p>The watch build is configured for HealthKit and workout capture,
+including the required permission text, the workout background mode, and
+the watch-side entitlement. That packaging matters because it shows the
+watch experience is not just a visual shell; it is built to run as a
+workout-backed capture surface with the Apple services it depends
+on.</p>
+<p>The heart-rate path is conditional. The reviewed code only attempts
+heart-rate sampling when HealthKit reports that health data is
+available. That is a narrower statement than saying heart rate is always
+available or that permission failure has already been fully resolved. It
+establishes a gate, not the outcome on every device or permission state.
+So the reliable owner takeaway is: heart-rate feedback is part of the
+live watch experience, but it depends on Apple health data being
+available, and the evidence does not prove what happens when that
+availability is absent, denied, or revoked.</p>
+<blockquote>
+<p><strong>Figure:</strong> The watch button starts the live capture
+path, but the session depends on Apple services underneath it. Because
+the permission-failure path is not resolved in the evidence, continuity
+risk does not end at the watch screen.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+    P[Player]
+    W[Watch controls]
+    S[Live capture]
+    H[Health data access]
+    R[Workout and runtime support]
+    U[Permission failure path remains unresolved]
+
+    P --> W --> S
+    S --> H
+    S --> R
+    H --> U
+    R --> U
+</pre>
+<p>The player uses the watch controls to start live capture. Once
+capture is running, the session depends on Health data access and on
+workout and runtime support underneath the watch UI. The reviewed
+evidence does not prove what happens when that access is missing,
+denied, or revoked. The consequence for the owner is that continuity is
+partly outside the watch screen and the failure path is still
+unresolved.</p>
+<h3 id="what-is-solid-here">What Is Solid Here</h3>
+<h3 id="small-legible-on-wrist-surface">Small, legible on-wrist
+surface</h3>
+<p>The strongest thing about the watch experience is how little it asks
+the player to hold in view at once. The live surface stays narrow: one
+start/stop control, one mode choice that only appears while idle, and a
+short list of live readouts that matter during play. That gives the
+owner a clean story to explain: the watch is not trying to be a full
+coaching console or a history browser; it is a focused live capture
+surface. In practice, that matters because the player can glance down
+between points and understand what state the session is in without
+sorting through extra screens or secondary settings. A player starting a
+rally, for example, does not need to hunt through menus to know whether
+the session is live, what mode is armed, or whether the current readouts
+are still updating.</p>
+<h3 id="session-timing-stays-separate-from-the-rest-of-the-app">Session
+timing stays separate from the rest of the app</h3>
+<p>Another solid part of the design is that the watch’s capture timing
+is treated as its own live session concern instead of being blended into
+a broader app workflow. That keeps the on-wrist experience disciplined:
+the watch is responsible for the active session and the feedback that
+belongs to it, while longer-lived concerns stay elsewhere in the
+product. For the owner, that separation reduces ambiguity. It is easier
+to describe what the watch does, easier to test the live state, and
+easier to avoid promising a wider workflow that the evidence does not
+establish. The practical effect is that the player experiences the
+session as something immediate and local to the court, not as a piece of
+a larger interface that needs interpretation before play can
+continue.</p>
+<h3
+id="continuity-is-backed-by-apple-services-not-a-loose-timer">Continuity
+is backed by Apple services, not a loose timer</h3>
+<p>The watch stack is also stronger than a simple screen timer because
+it is built around Apple workout and runtime services. That means the
+product is not relying on a decorative clock to keep the session alive;
+it is using the platform’s continuity model to support the live capture
+run. For the owner, that is the right kind of dependency to have on a
+watch: the session can stay tied to the operating system services that
+are meant to preserve activity during motion, rather than depending on
+an always-awake interface alone. The qualifier is important, though. The
+evidence shows the dependency, but it does not prove exactly how the
+product behaves if HealthKit access is absent, denied, or revoked. So
+the safe claim is that the continuity model is real and load-bearing,
+while the edge case around permission failure remains unconfirmed.</p>
+<h3 id="why-that-matters">Why that matters</h3>
+<p>Taken together, these strengths make the watch easy to reason about
+in live play. The player gets a small control surface, the owner gets a
+clean boundary around what the watch is responsible for, and the live
+session is supported by platform services that fit the job. What is
+solid here is not breadth; it is discipline. The product stays centered
+on the current session and on immediate feedback, which is exactly what
+an on-wrist tennis capture surface should do. The chapter on session
+flow can cover the rest of the loop; this section’s point is that the
+watch side already has a coherent shape and the right dependencies for a
+live court experience.</p>
+<h2 id="the-iphone-gateway-during-play">The iPhone Gateway During
+Play</h2>
+<p><em>The iPhone is the relay bridge, not the main analysis surface.
+During play, it keeps the live path between the watch and the Mac
+backend visible to the operator, shows connection health and the watch
+batch count, and carries session traffic in both directions. That
+matters because the phone is part of live session continuity, not just a
+background accessory.</em></p>
+<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
+<p>The iPhone is the relay bridge, not the main analysis surface. During
+play, it keeps the live path between the watch and the Mac backend
+visible to the operator, shows connection health and the watch batch
+count, and carries session traffic in both directions.</p>
+<p>That matters because the phone is part of live session continuity,
+not just a background accessory. When the bridge drops, the current
+evidence says recovery depends on the operator rather than on an
+automatic self-healing path.</p>
+<h3 id="what-you-should-be-able-to-explain-2">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>You can explain the phone as the live relay bridge that keeps a
+session moving between watch and Mac.</li>
+<li>You know what the operator can see on the phone: backend connection
+state and the watch batch count.</li>
+<li>You can describe the traffic path in both directions, including
+watch batch data on the way out and shot feedback on the way back.</li>
+<li>You know the recovery boundary: reconnect is operator-driven unless
+the product policy changes.</li>
+</ul>
+<h3 id="why-the-phone-matters">Why the phone matters</h3>
+<p>The iPhone exists here to keep the session connected while play is
+happening. It is the operator’s continuity surface: the place that shows
+whether the Mac backend is connected and whether watch batches are
+moving through the relay.</p>
+<p>The wider live loop starts on the watch and the backend decides
+shots. This chapter stays on the phone’s job only, so the owner can
+treat the iPhone as a gateway rather than as a scoring tool or a second
+control room.</p>
+<h3 id="what-crosses-the-phone">What crosses the phone</h3>
+<p>The phone sits in the middle of the path. Watch batches move toward
+the Mac backend through the gateway, and shot feedback comes back the
+other way toward the watch.</p>
+<p>That makes the phone part of the current live session, not a durable
+history view. The latest session state is live state, so the owner
+should not read the phone as if it were building a long-term record on
+its own.</p>
+<blockquote>
+<p><strong>Figure:</strong> This makes the phone part of the live
+control loop, so losing it interrupts current play rather than just
+hiding a history record.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  W[Watch batches]
+  G[iPhone gateway]
+  M[Mac backend]
+  F[Shot feedback]
+  W --> G --> M
+  M --> F --> W
+</pre>
+<p>The watch sends batches to the iPhone gateway, the gateway forwards
+them to the Mac backend, and shot feedback comes back from the backend
+to the watch. The consequence is that the phone is part of live session
+continuity, not a separate history view.</p>
+<h3 id="what-is-actually-visible">What is actually visible</h3>
+<p>The phone labels itself as the gateway, shows backend connection
+state, and shows the count of watch batches. It also exposes a connect
+or reconnect action, so the operator is expected to keep it available
+during play.</p>
+<p>The relay target is fixed to one configured backend address, and
+failures clear the connection state until the operator restores it. In
+practice, the phone gives continuity signals, not deep troubleshooting
+detail.</p>
+<blockquote>
+<p><strong>Figure:</strong> The important consequence is operational: a
+dropped link does not repair itself in the evidence, so the session
+stays down until the operator acts.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Connected
+  Connected --> Disconnected: link drops
+  Disconnected --> Connected: operator reconnects
+  Disconnected --> [*]: play stops
+</pre>
+<p>The gateway begins connected. If the link drops, it moves into a
+disconnected state and the visible connection state clears. Recovery
+returns to connected only when the operator reconnects; the diagram does
+not show an automatic repair loop.</p>
+<blockquote>
+<p><strong>Figure:</strong> Continuity depends on deployment alignment.
+The phone cannot keep a session alive unless the configured target and
+the running Mac service point to the same live destination.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  subgraph Phone[Phone side]
+    O[Operator]
+    G[iPhone gateway]
+  end
+  subgraph Mac[Mac side]
+    A[Configured backend address]
+    M[Live Mac service]
+  end
+  O --> G
+  G --> A
+  A --> M
+</pre>
+<p>On the phone side, the operator uses the iPhone gateway. The gateway
+points at one configured backend address on the Mac side, and that
+address has to resolve to the live Mac service for the relay to work.
+The consequence is that session continuity depends on deployment
+alignment, not just on the app being open.</p>
+<h3 id="where-this-surface-helps">Where this surface helps</h3>
+<p>Its value is narrow and practical. The operator gets one visible
+place to watch relay health, and the session can keep moving in both
+directions without turning the phone into a larger admin or analytics
+tool.</p>
+<p>That narrowness is a strength if the owner wants a simple live relay,
+but it also means the phone does not absorb much recovery or
+configuration complexity on its own.</p>
+<h2 id="detection-service-and-shot-events">Detection Service and Shot
+Events</h2>
+<p><em>This chapter matters because it is where live tennis motion
+becomes a shot decision. The backend detection service takes the watch’s
+motion batches from the phone gateway, applies a narrow set of threshold
+and shape checks, and sends back a shot event for the rest of the live
+loop. It is not a broad review layer.</em></p>
+<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
+<p>This chapter matters because it is where live tennis motion becomes a
+shot decision. The backend detection service takes the watch’s motion
+batches from the phone gateway, applies a narrow set of threshold and
+shape checks, and sends back a shot event for the rest of the live loop.
+It is not a broad review layer. It keeps a live current-session view in
+memory, stores shot records as support, and can look healthy even when
+startup has hidden a schema-change problem.</p>
+<h3 id="what-you-should-be-able-to-explain-3">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>You can explain what enters the detector and what comes back out in
+a live session.</li>
+<li>You can tell where the service is rule-based and where the exact
+mode setting changes behavior.</li>
+<li>You can separate the live current-session view from stored shot
+records.</li>
+<li>You can spot the owner decisions that still affect whether the
+service is safe to rely on.</li>
+</ul>
+<h3 id="mental-model">Mental Model</h3>
+<p>Think of this service as the product’s decision point. The watch
+captures movement, the phone relays it, and this backend decides whether
+the movement counts as a shot. That makes it the narrow middle of the
+live loop: it is responsible for the shot decision and the shot event,
+while the gateway and the watch stay focused on capture and relay. The
+live session view belongs here too, but only as the current state of the
+ongoing connection, not as a long-term record.</p>
+<h3 id="how-it-works">How It Works</h3>
+<p>A batch arrives through the live connection from the gateway. Empty
+or malformed input does not become a successful shot. When the backend
+accepts a new connection, it resets the current live session so the next
+session starts cleanly.</p>
+<p>The detector is heuristic and threshold-based. Only the literal serve
+setting gets serve behavior; every other mode is treated as strokes.
+Even then, a shot is not accepted until the detector sees a gap since
+the last shot, enough dominant motion in one direction, and enough
+sustained samples around the peak. That keeps the output narrow and
+prevents a swing from turning into a shot too easily.</p>
+<p>When the detector accepts a shot, it appends it to the live session,
+stores a shot record with the timing and movement details, and sends the
+shot event back out on the same live connection. The stored record
+supports continuity, but it does not turn this service into a review
+product.</p>
+<blockquote>
+<p><strong>Figure:</strong> Each accepted connection starts a fresh live
+session, detections accumulate only while that connection is open, and
+the latest-session view reflects memory-backed current state rather than
+durable history.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --> ready
+    ready --> live: accepted connection starts a fresh session
+    live --> live: shot is appended
+    live --> ready: connection ends
+    live --> latest: latest view is requested
+    latest --> live: returns memory-backed state
+</pre>
+<p>The session starts in a ready state. When the backend accepts a
+connection, it becomes a live session. While live, each detected shot is
+appended to that in-memory session. When the connection ends, the
+session returns to ready. A request for the latest-session view reads
+that live memory state, not a stored history, so the owner should treat
+it as current connection state only.</p>
+<blockquote>
+<p><strong>Figure:</strong> Only the literal serve mode changes which
+speed line the detector uses; every other mode string falls back to
+strokes behavior and still has to clear the same gates before a shot
+event is emitted.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+    A[serve mode] --> B[serve threshold]
+    C[any other mode] --> D[strokes threshold]
+    B --> E[same shot gates]
+    D --> E
+    E --> F[shot event]
+</pre>
+<p>One branch shows serve mode leading to the serve threshold. The other
+branch shows any other mode string leading to the strokes threshold.
+Both branches then meet the same shot gates and produce the same kind of
+shot event only after those gates pass. The consequence for the owner is
+that non-serve labels do not create a third behavior; they behave like
+strokes.</p>
+<h3 id="verified-facts">Verified Facts</h3>
+<ul>
+<li>The live session starts over when the backend accepts a new
+connection.</li>
+<li>The backend returns a shot event only after the detector’s gates
+pass.</li>
+<li>The detector treats only the literal serve setting as special; all
+other values fall back to strokes behavior.</li>
+<li>The current-session view comes from memory, not from a stored
+history query.</li>
+<li>Startup can keep going even if a schema change fails, so a running
+service does not prove storage is ready.</li>
+<li>Stored shot records include timing and movement details, including
+shot speed and rotation-related fields.</li>
+</ul>
+<blockquote>
+<p><strong>Figure:</strong> A running backend only proves the process
+reached startup, not that schema migration succeeded, because a
+suppressed migration error can leave storage readiness unverified.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+    subgraph startup["startup path"]
+        A[startup begins] --> B[schema change step]
+    end
+    subgraph trust["what the running backend proves"]
+        C[running backend] --> D[storage readiness]
+    end
+    B -. hidden failure is suppressed .-> C
+</pre>
+<p>The startup path begins, then attempts the schema change step. If
+that failure is suppressed, the backend can still keep running. The
+running backend may look healthy, but that does not prove storage
+readiness. The owner should not treat startup alone as evidence that the
+SQLite schema is trustworthy.</p>
+<h3 id="strengths">Strengths</h3>
+<p>The service has a clear job, which makes it easier for an owner to
+reason about. It separates live decision-making from the watch and phone
+surfaces, so the rest of the product can treat the backend as the place
+where shot events are born. It also keeps a small live session view
+instead of pretending to be a full history system. That narrow shape is
+a strength as long as the owner does not mistake it for a broader
+analytics or coaching layer.</p>
+<h2 id="session-continuity-records-and-scope-boundaries">Session
+Continuity, Records, and Scope Boundaries</h2>
+<p><em>This chapter is the trust layer. It explains what keeps a live
+Tennis Oracle session usable long enough to matter, what gets remembered
+after the moment passes, and where the product stops proving a broader
+history story. The current evidence supports a live session snapshot
+plus saved shot records, but not a full review or coaching
+system.</em></p>
+<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
+<p>This chapter is the trust layer. It explains what keeps a live Tennis
+Oracle session usable long enough to matter, what gets remembered after
+the moment passes, and where the product stops proving a broader history
+story. The current evidence supports a live session snapshot plus saved
+shot records, but not a full review or coaching system. The main owner
+risks are continuity gaps in watch permissions and runtime support, and
+a backend startup path that can keep running even if part of the record
+setup is not healthy.</p>
+<h3 id="what-you-should-be-able-to-explain-4">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Understand which pieces keep a live session alive versus which
+pieces only record it.</li>
+<li>Tell the difference between a live session snapshot and a durable
+history product.</li>
+<li>Spot the continuity, permission, and startup risks that can make the
+product look healthier than it is.</li>
+<li>Know which missing workflows and external operating details still
+need confirmation before promising more.</li>
+</ul>
+<h3 id="mental-model-1">Mental Model</h3>
+<p>Think of this part of Tennis Oracle as the support rail for the live
+loop. The watch and phone keep the session moving; this chapter covers
+whether the session stays alive, whether a record is kept, and whether
+the record is strong enough to trust later. The live session view is
+narrow by design. That narrowness is useful, but it means the owner
+should not mistake a current-session snapshot for a long-term history
+product.</p>
+<blockquote>
+<p><strong>Figure:</strong> Owners should treat the live read as current
+state, not as a replayable archive. The saved shot rows matter, but they
+are a different promise from a durable history surface.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  subgraph Live side
+    A[Live session snapshot] --> B[Latest-session read]
+  end
+  subgraph Saved side
+    C[Saved shot records] --> D[Later review]
+  end
+  B --> E[Current state only]
+  D --> F[Separate history path]
+
+</pre>
+<p>The left side shows the live session snapshot and the latest-session
+read returning that current state. The right side shows saved shot
+records that could support later review, but that is separate from the
+live read. The consequence is that the owner should not present the
+latest-session path as a durable history feed.</p>
+<h3 id="how-it-works-1">How It Works</h3>
+<p>The watch capture stack relies on workout and runtime services to
+stay active, so capture continuity depends on an outside permission and
+service boundary rather than only on the start button. As the backend
+accepts shot events, it keeps a live session view and stores shot
+records for that session. Those records support continuity, but they do
+not prove a full archive, reporting surface, or coaching workflow. The
+latest-session read returns the current live session directly, so it is
+only as durable as that live session. Startup can continue even when
+some schema changes are not fully proven, which makes a running backend
+a weaker signal than it first appears. Mode handling is also narrow:
+serve is treated specially, and every other mode value falls back to the
+strokes path.</p>
+<blockquote>
+<p><strong>Figure:</strong> Capture continuity depends on Apple
+services, not just the local start control. Because the
+denied-or-revoked path is not proven, the owner still has a live
+continuity risk at the permission boundary.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Watch app] -->|needs| B[HealthKit access]
+  subgraph Apple services
+    B --> C[Extended runtime session]
+    C --> D[Workout services]
+  end
+  D --> E[Live capture loop]
+  X[Permission denied or revoked] -. unresolved .-> B
+  X -. unresolved .-> E
+
+</pre>
+<p>The watch app depends on HealthKit access, an extended runtime
+session, and workout services before the live capture loop can keep
+going. The evidence does not show what happens if permission is denied
+or later revoked. The consequence is that capture continuity is still
+exposed to an unresolved permission boundary.</p>
+<h3 id="verified-facts-1">Verified Facts</h3>
+<p>The watch capture stack starts its workout and runtime support before
+motion capture and tears that support down on stop. The backend resets
+its session snapshot when a new session connection starts, appends shot
+records during that session, and returns the same live snapshot from the
+latest-session read. Only literal serve gets a special detector path;
+all other mode values reuse the strokes threshold. Startup may hide some
+schema errors, so a healthy launch does not prove that saved records are
+healthy. The evidence also does not establish a broader history feed,
+only a live session view with lightweight saved records.</p>
+<blockquote>
+<p><strong>Figure:</strong> A green startup is not enough to bless the
+record path. If schema errors can be hidden, the owner still needs an
+explicit readiness rule before trusting saved records.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Backend starts] --> B[Startup]
+  B --> C[Schema change runs]
+  subgraph Record setup
+    C
+    D[Saved records]
+  end
+  C -. hidden error .-> B
+  C --> D
+  B --> E[Server keeps running]
+  E --> F[Not enough proof]
+
+</pre>
+<p>The backend starts, then runs a schema change during startup. If that
+error is hidden, the server can keep running even though the
+saved-record path may still be unhealthy. The consequence is that a
+running backend does not prove persistence readiness.</p>
+<h3 id="strengths-1">Strengths</h3>
+<p>The product stays narrow instead of pretending to be a full analytics
+platform. That makes its promise easier to police: live capture stays
+live, and the records stay limited to what the current session can
+support. The mode rules are also simple enough for an owner to explain
+without inventing extra behavior. Most importantly, the manual boundary
+stays honest. It does not turn a live snapshot into a fake history
+system.</p>
+<h2 id="appendix-deduped-reflect-cards-and-dispositions">Appendix:
+Deduped Reflect Cards And Dispositions</h2>
+<h3 id="fixed-after-scan">Fixed After Scan</h3>
+<h4
+id="backend-startup-could-hide-schema-initialization-failure">Backend
+startup could hide schema initialization failure</h4>
+<p>Disposition: fixed in <code>37b914d</code>.</p>
+<p>Reflect correctly identified a real silent-gap bug. The backend
+previously attempted only additive <code>ALTER TABLE</code> statements
+and swallowed every <code>sqlite3.OperationalError</code>, which could
+hide a missing <code>oracle_shots</code> table or another schema
+failure. The fix creates <code>oracle_shots</code> first with
+<code>CREATE TABLE IF NOT EXISTS</code>, then suppresses only
+duplicate-column migration errors and re-raises all other SQLite startup
+failures.</p>
+<p>Verified locally with a fresh temporary SQLite database and two
+consecutive <code>init_db()</code> calls. The full backend import was
+not available in this Linux environment because <code>fastapi</code> is
+not installed, so the verification isolated the schema initializer with
+lightweight dependency stubs.</p>
+<p>Important deployment note: this fix was applied and pushed in the
+standalone <code>blue-az/TennisOracle</code> repo. The canonical Mac
+runtime copy was not present in the accessible Linux filesystem, so the
+same one-file change still needs to be propagated to
+<code>Mac/TennisOracle/backend/app/main.py</code> on the Mac copy before
+the running app benefits.</p>
+<h3 id="known-deferred-risk">Known Deferred Risk</h3>
+<h4
+id="healthkit-workout-and-extended-runtime-startup-are-not-gated-strongly-enough">HealthKit,
+workout, and extended-runtime startup are not gated strongly enough</h4>
+<p>Disposition: document and defer.</p>
+<p>The source shows a real risk: HealthKit authorization ignores
+success/error, <code>startSession()</code> marks recording true before
+workout startup is proven, and the live workout collection callback sets
+active without checking success/error. The app has HealthKit entitlement
+and workout background-mode configuration, so this is not a
+missing-packaging finding. It is a runtime behavior risk that must be
+tested on an Apple Watch before shipping a Swift fix.</p>
+<p>Recommended later change: gate capture on known authorization state
+and workout startup result, then test on Watch with allowed, denied, and
+revoked HealthKit states.</p>
+<h3 id="documented-design-decisions">Documented Design Decisions</h3>
+<h4 id="stop-leaves-last-shot-values-visible">Stop leaves last shot
+values visible</h4>
+<p>Disposition: document, do not fix now.</p>
+<p>Stopping capture turns off recording, motion updates, and workout
+support, but does not clear <code>lastShotMph</code>, readiness,
+fatigue, or contact state. The stopped screen can therefore show the
+previous live result. Treat this as accepted behavior unless Erik
+chooses a UI reset.</p>
+<h4 id="relay-is-fixed-address-and-operator-driven">Relay is
+fixed-address and operator-driven</h4>
+<p>Disposition: document, do not fix now.</p>
+<p>The iPhone gateway points at one hardcoded backend WebSocket URL and
+reconnect is manual. This is an operational constraint rather than a
+correctness bug for the current private workflow.</p>
+<h4 id="relay-delivery-is-best-effort">Relay delivery is
+best-effort</h4>
+<p>Disposition: document, do not fix now.</p>
+<p>The watch hands off batches through WatchConnectivity and clears its
+buffer after handoff. The phone forwards only when a WebSocket task
+exists. The manual should avoid guaranteed-delivery language.</p>
+<h4 id="latest-session-is-live-memory-not-durable-history">Latest
+session is live memory, not durable history</h4>
+<p>Disposition: document, do not fix now.</p>
+<p><code>/sessions/latest</code> returns the process-global current
+session object. Shot rows are persisted separately, but latest-session
+is not a durable history API.</p>
+<h4 id="only-literal-serve-gets-serve-behavior">Only literal serve gets
+serve behavior</h4>
+<p>Disposition: document, do not fix now.</p>
+<p>The backend uses the serve threshold only when
+<code>mode == "serve"</code>; all other values use strokes behavior. The
+Swift UI only exposes <code>serve</code> and <code>strokes</code>, so
+this is mainly an external/malformed-input boundary.</p>
+<h4 id="phone-health-surface-shows-status-not-root-cause">Phone health
+surface shows status, not root cause</h4>
+<p>Disposition: document, do not fix now.</p>
+<p>The iPhone UI reports backend connection state and watch batch count.
+It does not diagnose why the relay is down.</p>
+<h3 id="meta-cards">Meta Cards</h3>
+<p>Disposition: folded into manual wording.</p>
+<p>Cards asking whether to broaden the watch workflow, promise stronger
+relay behavior, or describe more durable history are manual-scope
+decisions. The lean edition keeps the promise narrow: live watch
+capture, iPhone relay, backend detection, live session state, and stored
+shot rows only where the source proves them.</p>
+<h3 id="reflect-and-swiftwatchos-verdict">Reflect And Swift/watchOS
+Verdict</h3>
+<p>Reflect handled this Swift/watchOS repository well enough for manual
+refinement. It correctly identified the watch app, iPhone relay, backend
+WebSocket path, HealthKit/workout dependency, live-only session
+boundary, and backend detection rules. The main cleanup need was
+deduplication and disposition, not correction of a
+language-understanding failure.</p>
+</body>
+</html>

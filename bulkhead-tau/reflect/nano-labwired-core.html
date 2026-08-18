@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>LabWired Core — Owner's Manual</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true});</script>
+  <style>body{max-width:52em !important;margin:2em auto !important;font-family:sans-serif !important;line-height:1.5 !important;padding:0 1em !important}pre.mermaid{background:none !important;text-align:center !important}</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">LabWired Core — Owner's Manual</h1>
+</header>
+<table>
+<tbody>
+<tr>
+<td>title: “LabWired Core — Owner’s Manual”</td>
+</tr>
+<tr>
+<td>subtitle: “System Core, Debugger, and Model-Validation Engine”</td>
+</tr>
+<tr>
+<td>version: “v0.16.0”</td>
+</tr>
+<tr>
+<td>date: “June 2026”</td>
+</tr>
+</tbody>
+</table>
+<h1 id="product-overview-quick-start">Product Overview &amp; Quick
+Start</h1>
+<p>LabWired Core is a deterministic firmware simulator for ARM Cortex-M,
+RISC-V, and Xtensa (ESP32 / ESP32-S3) microcontrollers. The same
+firmware ELF runs unmodified on hardware and in the simulator.</p>
+<h2 id="why-this-exists">Why This Exists</h2>
+<p>Most firmware simulators let you boot a binary and stop there.
+LabWired goes further:</p>
+<ul>
+<li><strong>Hardware-validated reset + UART parity.</strong> A real
+NUCLEO-H563ZI board is captured via OpenOCD+GDB and diffed against the
+simulator running the same firmware ELF. The committed
+report—<code>determinism_report_h563.json</code>—documents the verified
+scope (post-reset architectural alignment + UART byte parity over the
+smoke run) and explicitly notes what isn’t verified (step-by-step PC
+sequence past reset—OpenOCD’s sampling can’t resolve every executed
+instruction on real silicon). For deeper byte-parity evidence under
+continuous execution, see the NUCLEO-L476RG survival traces
+(<code>firmware-l476-demo/</code>).</li>
+<li><strong>Deterministic by construction.</strong> Same firmware → same
+trace, byte-for-byte, across runs and machines. Trace SHA-256 hashes are
+CI-gated.</li>
+<li><strong>Production-grade debug.</strong> GDB Remote Serial Protocol
+stub <em>and</em> a native VS Code Debug Adapter Protocol server —
+breakpoints, register inspect, expression evaluation, all without
+hardware.</li>
+<li><strong>Silicon-validated fidelity.</strong> Peripheral models
+continuously diffed against real hardware; high-MIPS host execution when
+iteration speed matters.</li>
+</ul>
+<h2 id="what-this-repo-owns">What this repo owns</h2>
+<ul>
+<li>Simulation engine correctness and determinism.</li>
+<li>Chip/system model execution (<code>configs/chips</code>,
+<code>configs/systems</code>).</li>
+<li>Hardware-target validation metadata for catalog consumers.</li>
+</ul>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="installation">Installation</h3>
+<p>Pinned release (recommended):</p>
+<pre class="sh"><code>curl -fsSL https://labwired.com/install.sh | LABWIRED_VERSION=v0.16.0 sh
+labwired --version</code></pre>
+<h3 id="running-a-deterministic-test-script">Running a Deterministic
+Test Script</h3>
+<pre class="sh"><code>labwired test --script examples/ci/uart-ok.yaml --output-dir results</code></pre>
+<h3 id="building-from-source">Building From Source</h3>
+<pre class="sh"><code>rustup target add thumbv6m-none-eabi thumbv7m-none-eabi riscv32i-unknown-none-elf
+cargo build --release -p labwired-cli
+./target/release/labwired --version</code></pre>
+<hr />
+<h1 id="owners-manual-for-blue-aznano-labwired-core">Owner’s Manual for
+blue-az/nano-labwired-core</h1>
+<p><em>6 generated chapters from the reviewed repository
+snapshot</em></p>
+<blockquote>
+<p>Source:
+blue-az/nano-labwired-core:master@b4a4248a1320518e052486839e448a422825ca23</p>
+</blockquote>
+<hr />
+<h2 id="what-labwired-core-owns">What LabWired Core Owns</h2>
+<p><em>LabWired Core is described here as a deterministic firmware
+simulator first. The core promise is that the same ELF can run in
+simulation and on hardware, while the CLI, debug servers, runtime APIs,
+and validation paths support that promise. Examples, demos, and board
+collateral are real parts of the code-backed work, but they do not
+define the product identity.</em></p>
+<h3 id="one-minute-snapshot">One-Minute Snapshot</h3>
+<p>LabWired Core is described here as a deterministic firmware simulator
+first. The core promise is that the same ELF can run in simulation and
+on hardware, while the CLI, debug servers, runtime APIs, and validation
+paths support that promise.</p>
+<p>Examples, demos, and board collateral are real parts of the
+code-backed work, but they do not define the product identity. This
+chapter is built from the reviewed evidence, so it tells the owner what
+the product does today, not what the wider LabWired offering might mean
+elsewhere.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat the simulator core as
+the center of the product. The surrounding surfaces matter, but they
+support that center, while examples and any broader LabWired intent do
+not expand the proof beyond what the evidence establishes.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  subgraph In[Owned product boundary]
+    C[Deterministic simulator core]
+    L[Command line]
+    D[Debugger access]
+    S[Runtime snapshots]
+    V[Validation flows]
+    C --> L
+    C --> D
+    C --> S
+    C --> V
+  end
+  subgraph Out[Outside this chapter proof]
+    E[Examples and demos]
+    B[Broader LabWired intent]
+  end
+  E -. supporting material .-> C
+  B -. not confirmed here .-> C
+</pre>
+<p>The diagram places the deterministic simulator core inside the owned
+boundary with the command line, debugger access, runtime snapshots, and
+validation flows. Examples and demos, plus any broader LabWired intent,
+sit outside this chapter proof. The consequence for the owner is that
+the product map centers on the simulator, while supporting material and
+unconfirmed scope do not redefine it.</p>
+<h3 id="what-you-should-be-able-to-explain">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain why LabWired Core is a simulator-first product with
+validation support, not a generic tool bundle.</li>
+<li>Use the manual’s role language consistently, including owner,
+firmware developer, CI operator, and hardware validation engineer.</li>
+<li>Separate the primary simulator surfaces from supporting validation,
+examples, and any broader LabWired estate.</li>
+<li>State where the evidence stops, so the chapter stays scoped to what
+the reviewed material actually proves.</li>
+</ul>
+<h3 id="start-with-the-simulator-core">Start With the Simulator
+Core</h3>
+<h2 id="the-core-promise">The Core Promise</h2>
+<p>LabWired Core is best understood as a deterministic firmware
+simulator first. That is the center of the product identity: the same
+ELF should behave the same way in simulation and on hardware, so the
+simulator is not just a convenience layer around other tooling. It is
+the thing the rest of the surface area is organized to support.</p>
+<p>That framing matters to an owner because it changes how you judge the
+surrounding capabilities. The CLI, debugger access, runtime snapshots,
+and validation flows are important, but they are supporting structures
+around the simulator core rather than the definition of the product
+itself. Put differently, the product is not a generic bundle of tools
+that happens to include simulation; it is a simulator with attached
+surfaces for running, inspecting, and validating firmware under the same
+ELF promise.</p>
+<p>The boundary is also important. The reviewed material supports this
+repository-scoped product model, but it does not establish a broader
+LabWired estate, hosted service, or separate owner-confirmed product
+intent. So the safest mental model is narrow and disciplined: this
+manual describes the code-backed simulator work that the evidence
+actually supports, not a wider offering that may exist elsewhere.</p>
+<h2 id="keep-the-vocabulary-stable">Keep the Vocabulary Stable</h2>
+<p>The manual uses a small set of native terms on purpose, and it is
+worth holding them steady from the start. Hardware oracle names the
+hardware-backed comparison side of the story. Chip descriptor and system
+manifest describe the machine configuration language. DAP and GDB name
+the debugger-facing surfaces. Runtime snapshot names captured machine
+state that can be revisited later.</p>
+<p>Why keep that vocabulary instead of translating everything into
+looser wording? Because later chapters depend on the same terms carrying
+the same meaning. If one chapter treats a runtime snapshot as a live
+machine state and another treats it as a captured state, the owner loses
+the thread. If one chapter speaks about the system manifest as the
+machine description and another treats it like a deployment artifact,
+the model drifts. Stable language is part of the product model here, not
+just a stylistic preference.</p>
+<p>A concrete example helps: when a firmware developer reads that a
+runtime snapshot was taken from a specific system manifest, the intended
+meaning is that the machine description and the captured state are
+separate things. The manifest describes what machine was simulated; the
+snapshot is what was preserved from a run. That distinction stays useful
+even before you get into the mechanics of capture and restore.</p>
+<h2 id="who-the-manual-means-by-who">Who the Manual Means by Who</h2>
+<p>Use role language carefully. Owner is the reader of this manual and
+the business or product owner trying to hold the right mental model.
+Inside the product, the reviewed evidence supports three practical
+roles: firmware developer, CI operator, and hardware validation
+engineer.</p>
+<p>Those roles matter because they point at different reasons to care
+about the simulator core. A firmware developer cares about building and
+running firmware against the simulator and keeping the same ELF promise
+intact. A CI operator cares about deterministic scripted runs and
+regression confidence. A hardware validation engineer cares about
+bench-backed comparison against real hardware without mistaking that
+validation layer for the core runtime itself.</p>
+<p>The owner should not collapse those roles into a generic user. They
+are distinct because the product gives them different kinds of leverage
+over the simulator and its validation surfaces. Even when the same
+person may move between roles in practice, the manual should preserve
+the distinction so later chapters can explain each path without blurring
+the responsibilities together.</p>
+<h2 id="stay-within-the-evidence">Stay Within the Evidence</h2>
+<p>This section deliberately stays close to what the supplied material
+proves. It is confident about the simulator-first identity, the same ELF
+framing, the product vocabulary, and the role taxonomy. It is not a
+claim that the repository exhausts every surface of the broader LabWired
+offering, because owner intent for that wider scope was not
+supplied.</p>
+<p>That restraint is useful rather than limiting. It keeps the manual
+from overpromising what the evidence does not establish, while still
+giving the owner a reliable starting picture: LabWired Core is a
+deterministic firmware simulator with supporting validation and
+inspection surfaces, not a vague tool bundle and not an unbounded
+platform claim.</p>
+<h3 id="keep-the-operating-lanes-separate">Keep the Operating Lanes
+Separate</h3>
+<p>The important thing to understand here is not a single user journey,
+but a set of lanes that only look similar from a distance. Normal
+running, snapshot capture, restore and replay, and debugger control each
+have their own entry conditions and their own stopping points. That
+separation matters to the owner because it prevents one surface from
+being described as if it automatically covers the others. It also keeps
+later chapters honest: the lane boundaries belong here, while the
+practical detail of each surface belongs elsewhere.</p>
+<h2 id="separate-lanes-separate-clocks">Separate lanes, separate
+clocks</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Lane</th>
+<th>What it covers</th>
+<th>Boundary to keep in mind</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normal run family routing</td>
+<td>The usual launch path selects a family-specific route, loads the
+firmware, and enters the simulator loop.</td>
+<td>The reviewed evidence does not prove that this list is exhaustive,
+and the RISC-V WiFi shortcut shows that at least one special branch
+exists alongside the standard family paths.</td>
+</tr>
+<tr>
+<td>Snapshot capture</td>
+<td>A capture run takes a completed or running simulation, advances it
+to a requested point, and writes out a runtime snapshot after the run
+work is done.</td>
+<td>Capture is a post-run artifact flow, not a live machine state that
+keeps running in place.</td>
+</tr>
+<tr>
+<td>Interactive restore and replay</td>
+<td>A saved interactive snapshot is loaded by rebuilding the machine
+state, restoring the original firmware and machine state, and then
+resuming simulation.</td>
+<td>Restore starts from a saved snapshot and reload boundary, not from
+the old live session continuing uninterrupted.</td>
+</tr>
+<tr>
+<td>Debugger session</td>
+<td>The debugger attaches to one active simulation session and allows
+control actions against that session.</td>
+<td>Debug authority is bounded to the attached simulation, and some
+control state can be staged before launch rather than waiting for the
+machine to be running.</td>
+</tr>
+</tbody>
+</table>
+<p>That table is the main map for this section. It tells the owner that
+the product is organized by operating lane, not by one blended workflow.
+The consequence is practical: a normal launch is not the same thing as a
+snapshot capture, a snapshot restore is not just a resume button, and
+debugger control is not authority over every future or past run. Each
+lane has a different moment when it starts, a different point where it
+hands off, and a different kind of state it is allowed to touch.</p>
+<h2 id="normal-launch-is-family-gated">Normal launch is
+family-gated</h2>
+<p>The run lane does not behave like one universal launcher. The
+evidence shows the launch path branching by chip family into standard
+family-specific routes, with a separate RISC-V WiFi shortcut that only
+appears under a specific environment condition. That means the owner
+should read the run story as a family matrix, not as a complete
+inventory of every possible submode. The RISC-V branch is important
+precisely because it proves the opposite of an all-in-one launch: there
+are ordinary paths, and there are special cases that sit beside
+them.</p>
+<p>For the owner, the boundary is simple. When you describe normal
+running, describe the families that are actually proven and leave room
+for additional submodes that are not established here. A firmware
+developer can therefore expect the product to choose a launch route
+based on the machine family, while a CI operator should avoid assuming
+that one run description covers every launch shape the product may have.
+A concrete example is a RISC-V machine with the WiFi shortcut enabled:
+it does not follow the same story as the standard family launch, which
+is exactly why the manual should not flatten the run lane into one
+generic path.</p>
+<h2 id="capture-and-restore-are-different-lifecycles">Capture and
+restore are different lifecycles</h2>
+<p>Snapshot capture and snapshot restore are separate on purpose.
+Capture happens after the simulation has already been driven forward to
+the point the owner wants to preserve, and only then is the runtime
+snapshot written out. Restore goes the other direction: it takes a saved
+interactive snapshot, rebuilds the machine from that saved state,
+reloads the original firmware, reapplies the saved machine state, and
+only then resumes simulation. In other words, capture produces a durable
+artifact, while restore reconstructs a machine from that artifact.</p>
+<p>That difference changes how an owner should think about
+troubleshooting and repeatability. If a capture run ends badly, the
+resulting snapshot is still a captured artifact boundary; if a restore
+starts, it is not continuing the old live machine but reconstituting one
+from the saved data. A hardware validation engineer might use that
+distinction to compare a saved interactive state against a later rerun
+without mistaking the replay for an uninterrupted continuation. The
+boundary is also strict: the evidence only establishes restore for
+interactive snapshots, so the manual should not imply that every saved
+state format has the same reload path.</p>
+<h2 id="debug-control-is-session-bounded">Debug control is
+session-bounded</h2>
+<p>Debugger authority stays attached to the active simulation session.
+The evidence shows a single-thread debugger model with control requests
+that act on one loaded machine, and it also shows that some control
+state can be staged before launch. That means debugger setup is not
+always a simple after-attach action, but the authority still remains
+bounded to the simulation session that is actually running.</p>
+<p>The owner consequence is that debugger mutations should be described
+as local to the active session, not as a product-wide control plane. A
+developer can stage breakpoints before the machine starts, then attach
+control to the launched simulation, but that does not make the debugger
+a blanket authority over unrelated runs. Similarly, continue and pause
+are session controls, not a promise that every debugger request waits
+for a fully initialized machine. The boundary matters because it keeps
+the manual from overstating what debugging can affect and from implying
+that debug state outlives the session it was attached to.</p>
+<p>External validation sits alongside these lanes as a separate
+bench-backed surface, but its activation and comparison rules belong to
+the fidelity chapter. Here, the useful point is only that it is not part
+of the same blended runtime loop as run, snapshot, or debugger
+control.</p>
+<blockquote>
+<p><strong>Figure:</strong> This shows the boundaries that matter
+operationally: capture is a post-run artifact step, restore is a rebuild
+from a saved interactive snapshot, and debugger authority stays attached
+to one active session.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Running
+  Running --> Capturing: run reaches a save point
+  Capturing --> Stored: snapshot is written
+  Stored --> Restoring: open saved snapshot
+  Restoring --> Running: rebuild and resume
+  Running --> Debugging: attach debugger
+  Debugging --> Running: control stays with the active session
+</pre>
+<p>The diagram starts with a running simulation. From there, one path
+moves into capture and then into a stored snapshot, and another path
+opens a saved snapshot, rebuilds the machine, and returns to running. A
+separate path shows debugger attachment and control returning to the
+same active session. The consequence is that run, capture, restore, and
+debugger control are separate lanes with different timing and different
+state boundaries.</p>
+<h3 id="what-the-evidence-proves">What the Evidence Proves</h3>
+<h3 id="defaults-and-fallbacks">Defaults and fallbacks</h3>
+<p>The reviewed material draws a clear line between permissive loading,
+tolerated skips, and hard failures. That line matters because it tells
+the owner which gaps are covered by defaults and which gaps still mean
+the machine is not valid. The evidence stays repository-scoped: it
+proves what this code-backed work does, not the broader LabWired
+estate.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Situation</th>
+<th>System behavior</th>
+<th>Owner takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Missing schema version or optional collections</td>
+<td>The loader fills in the expected defaults and keeps moving.</td>
+<td>Boilerplate can be omitted, but the owner should not read that as a
+promise that every field is optional.</td>
+</tr>
+<tr>
+<td>No system path in the manifest</td>
+<td>The system falls back to a plain system bus.</td>
+<td>The machine still has a usable base path, but the manifest did not
+supply a specialized system definition.</td>
+</tr>
+<tr>
+<td>No system config supplied to an interactive run</td>
+<td>The run defaults to Arm.</td>
+<td>Absence of system config is not neutral; it selects a default
+machine family.</td>
+</tr>
+<tr>
+<td>Firmware architecture and configuration architecture disagree</td>
+<td>The run only warns.</td>
+<td>The mismatch is visible, but it is not automatically fatal.</td>
+</tr>
+<tr>
+<td>Supported panel type is named</td>
+<td>The panel is attached.</td>
+<td>Known display hardware becomes part of the machine when it is
+declared.</td>
+</tr>
+<tr>
+<td>Unsupported device type is named</td>
+<td>The device is warned about and skipped.</td>
+<td>The manifest can carry unsupported entries without stopping the
+load, but those entries do not take effect.</td>
+</tr>
+<tr>
+<td>Referenced connection is missing or is not the expected kind of
+connection</td>
+<td>The loader errors and stops that attachment.</td>
+<td>This is a real wiring problem, not a soft compatibility note.</td>
+</tr>
+</tbody>
+</table>
+<p>The table shows the practical rule: the loaders are permissive when
+they can supply a safe default or ignore an unsupported peripheral, and
+strict when they would otherwise have to guess about connectivity. For
+the owner, that means the shape of a configuration error matters. A
+missing schema version or empty optional collection is a tolerance
+boundary. A bad connection is not.</p>
+<p>A concrete example makes the difference easier to see. If a machine
+description omits its schema version, leaves some optional lists empty,
+and names one supported display plus one unfamiliar accessory, the
+display can still attach and the unfamiliar accessory is only skipped
+with a warning. If the same description points a device at the wrong
+kind of connection, that entry fails instead of being reassigned. The
+machine is assembled from what the reviewed material can justify, not
+from whatever might be convenient to infer.</p>
+<h3 id="external-devices">External devices</h3>
+<p>External-device handling follows the same split logic. Supported
+panels are attached, so when the manifest names a known panel type, the
+machine gets that peripheral. Unsupported device types are not treated
+as fatal; they are warned about and skipped. That is permissive in a
+narrow way: the machine keeps assembling, but the unsupported device
+simply does not participate. By contrast, a missing connection or a
+connection that is not actually on the expected bus fails closed. The
+owner should treat that as a real wiring error, not a soft warning,
+because the system will not guess an alternate attachment.</p>
+<h3 id="hardware-in-the-loop">Hardware-in-the-loop</h3>
+<p>The hardware-in-the-loop surface is separate from the loading path.
+It does not start comparing simulator behavior to physical boards until
+a runner has been registered, so it stays inert until the surrounding
+validation infrastructure is actually present. Board registry state also
+controls whether jobs exist at all: planned entries do not create jobs,
+while active entries are placed under HIL. For the owner, that keeps
+bench-backed validation from being mistaken for normal simulator
+execution. The important fact is that this surface is externally
+activated and registry-gated rather than continuously live.</p>
+<p>These facts are enough to describe the product with confidence at the
+boundaries the evidence actually proves.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should read the loaders as
+permissive only where the system can safely keep going. Once the wiring
+is missing or wrong, the attachment stops instead of guessing.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  subgraph Safe[Can continue safely]
+    A[Missing schema version or optional collections]
+    B[Defaults fill them in]
+    C[No system path]
+    D[Plain bus fallback]
+    E[Unsupported device type]
+    F[Warn and skip it]
+    A --> B
+    C --> D
+    E --> F
+  end
+  subgraph Stop[Must fail closed]
+    G[Missing or wrong connection]
+    H[Attachment fails]
+    G --> H
+  end
+</pre>
+<p>The left side shows situations where the system can continue: missing
+boilerplate is filled in by defaults, a missing system path falls back
+to a plain bus, and an unsupported device type is warned about and
+skipped. The right side shows the hard stop: a missing or wrong
+connection causes the attachment to fail. The consequence is a clear
+split between safe tolerance and fail-closed wiring errors.</p>
+<blockquote>
+<p><strong>Figure:</strong> HIL is a gated validation surface, not
+day-to-day runtime. Runner registration and active board state have to
+switch it on before any comparison happens, so it should not be
+described as the normal simulator loop.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  subgraph Core[Normal simulator loop]
+    A[Simulator core]
+  end
+  subgraph Bench[External bench-backed validation]
+    R[Runner registered]
+    B[Active board entry]
+    J[Comparison jobs]
+    H[Real silicon comparison]
+    R --> J
+    B --> J
+    J --> H
+  end
+  A -. separate from .-> H
+</pre>
+<p>The diagram separates the normal simulator loop from an external
+bench-backed validation surface. A registered runner and an active board
+entry create comparison jobs, which then run the real silicon
+comparison. The consequence is that HIL stays outside normal runtime and
+only activates when the supporting bench state is in place.</p>
+<h3 id="what-is-already-solid">What Is Already Solid</h3>
+<h2 id="a-clear-center">A Clear Center</h2>
+<p>The strongest thing in the reviewed material is that it already gives
+the manual a firm center of gravity. LabWired Core is not being
+introduced as a loose collection of utilities; the documentation already
+frames it as a deterministic firmware simulator whose core promise is
+same-ELF behavior between simulation and hardware. That matters because
+it gives the owner a stable way to judge every later surface. A command,
+a debugger path, a validation flow, or a runtime artifact is not the
+product just because it exists in the repository. It is part of the
+product only insofar as it supports that simulator-first promise.</p>
+<p>That framing is valuable for ownership because it prevents the manual
+from drifting into feature catalog language. The reader does not have to
+infer what the product is from examples or surrounding tooling; the
+product identity is already anchored in the evidence. The boundary is
+also honest: this material supports a strong product model for this
+code-backed work, but it does not prove the whole LabWired estate or any
+broader business intent beyond this repository.</p>
+<h2 id="boundaries-that-help">Boundaries That Help</h2>
+<p>The evidence is also strong enough to draw boundaries that are useful
+rather than merely cautious. Examples and demos are explicitly
+subordinate, so they can support learning and adoption without being
+mistaken for the product’s defining surface. Hardware-oracle validation
+is treated as external validation, not as the normal simulator loop,
+which keeps the owner from confusing bench-backed proof with everyday
+operation. And the configuration material already distinguishes between
+supported paths, tolerated gaps, and hard failures, so the manual does
+not have to flatten all configuration behavior into one vague notion of
+“it loads or it does not.”</p>
+<p>That distinction matters in practice. If a firmware developer sees a
+supported peripheral description, that is part of the accepted product
+surface; if they see an unsupported device type, the reviewed behavior
+shows it is warned about and skipped rather than silently treated as
+equivalent. If the referenced connection is missing or not the right
+kind of connection, the path fails closed. For the owner, that is a
+concrete boundary: the product is permissive where the evidence says it
+is permissive, and strict where correctness depends on it.</p>
+<h2 id="what-remains-open">What Remains Open</h2>
+<p>This is enough evidence to keep the chapter confident about scope,
+but not enough to turn every adjacent possibility into a commitment. The
+owner has a reliable map of the simulator core, the supporting
+validation surface, and the limits around configuration behavior. What
+is still unresolved is broader owner intent. Since no owner-confirmed
+product direction was supplied, the manual should stay
+repository-bounded and avoid implying a wider strategy, packaging model,
+or hosted experience that the inputs do not establish.</p>
+<p>A practical reading of that boundary is straightforward: the manual
+can speak decisively about what this code-backed work already proves,
+while remaining restrained about what it does not. That is a strength,
+not a weakness. It lets the chapter sound confident where the evidence
+is firm, and precise where the evidence stops.</p>
+<h3 id="evidence-boundary">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The root product
+framing that says this code-backed work is a deterministic firmware
+simulator with same-ELF behavior. - The notes that keep examples, demos,
+and board collateral subordinate to that core framing. - The run,
+snapshot, debugger, configuration, and HIL evidence used to separate
+primary simulator behavior from supporting validation and setup
+rules.</p>
+</blockquote>
+<p>Not reviewed: - Owner interview answers or confirmed product intent.
+- Any broader LabWired offering that is only hinted at, not proved here.
+- A complete inventory of every run mode or every possible surface. -
+Step-by-step walkthroughs that belong to later operational chapters.</p>
+<p>Recheck the top-level product framing, the main launch paths, the
+debugger boundary, the manifest and device-loading rules, and the HIL
+registry rules whenever the product promise, supported modes, or
+external validation setup changes. If the owner later confirms broader
+intent, rewrite the opening and boundary cards first.</p>
+<blockquote>
+<p>Reviewed: blue-az/nano-labwired-core repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="how-people-operate-labwired-core">How People Operate LabWired
+Core</h2>
+<p><em>This chapter is the owner’s map of where people intentionally
+touch LabWired Core. The labwired CLI is the main operating surface for
+running firmware, capturing snapshots, restoring interactive state, and
+running gated tests; DAP and GDB are first-class debugger-facing
+surfaces; and the embeddable simulation APIs belong in the owned surface
+family even though this chapter does not inventory every entry
+point.</em></p>
+<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
+<p>This chapter is the owner’s map of where people intentionally touch
+LabWired Core. The labwired CLI is the main operating surface for
+running firmware, capturing snapshots, restoring interactive state, and
+running gated tests; DAP and GDB are first-class debugger-facing
+surfaces; and the embeddable simulation APIs belong in the owned surface
+family even though this chapter does not inventory every entry point.
+The important boundary is that these surfaces are not all the same
+thing: live simulation, snapshot capture, restore, debugger control,
+configuration, and external validation each have a different ownership
+and risk profile. That separation matters because it keeps delivery
+mechanics, defaults, and bench-backed validation from being mistaken for
+the product itself.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner boundary is narrower than the
+whole product story: the CLI, debugger surfaces, and owned simulation
+APIs are the primary control paths, while HIL and test only validate
+behavior from outside the core runtime.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  subgraph P[Owner-facing control paths]
+    C[Main CLI doorway]
+    D[Debugger surfaces]
+    A[Owned simulation APIs]
+  end
+  subgraph V[Supporting validation paths]
+    H[Hardware validation bench]
+    T[Test surface]
+  end
+  C --> D
+  C --> A
+  H -.->|checks behavior from outside| C
+  T -.->|checks behavior from outside| C
+</pre>
+<p>The diagram splits LabWired Core into two groups. On one side are the
+owner-facing control paths: the main CLI doorway, the debugger surfaces,
+and the owned simulation APIs. On the other side are supporting
+validation paths: the hardware validation bench and the test surface.
+The validation paths connect back only as outside checks, not as core
+control, which means the owner should describe them as supporting
+evidence rather than the product’s main operating boundary.</p>
+<h3 id="what-you-should-be-able-to-explain-1">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Know which surface to reach for: CLI, debugger, embeddable APIs, or
+external validation.</li>
+<li>Separate live simulation, snapshot capture, restore, and validation
+instead of treating them as one flow.</li>
+<li>See where configuration defaults are permissive and where they fail
+closed.</li>
+<li>Notice which control paths are owned product surfaces and which are
+supporting delivery mechanics.</li>
+</ul>
+<h3 id="why-the-surfaces-matter">Why The Surfaces Matter</h3>
+<p>Owners should read this chapter as the product’s surface map.
+LabWired Core is not just a simulator engine in the abstract; it is a
+set of intentional ways to operate it. The labwired CLI is where
+firmware developers and CI operators launch runs, capture snapshots,
+restore interactive state, and run gated tests. DAP and GDB are
+debugger-facing surfaces for firmware developers, while HIL belongs to
+hardware validation engineers and stays separate from the normal
+simulator loop. The embeddable simulation APIs are part of the owned
+surface family, but this chapter stays at the level of surface roles
+rather than turning them into an API reference. The point is to keep
+these surfaces distinct so delivery mechanics, configuration defaults,
+and validation benches do not get mistaken for the product itself.</p>
+<h3 id="the-surface-map">The Surface Map</h3>
+<p>Use the CLI as the main doorway and think in lifecycles, not
+commands. A normal firmware run starts from a chosen chip family, loads
+the firmware, and enters simulation; snapshot capture is a separate
+headless path that records state after stepping to the target moment;
+interactive restore is not a simple resume, because the saved snapshot
+is loaded back by rebuilding the machine before simulation continues.
+The debugger surfaces sit beside that flow and can inspect or steer the
+attached session, but they do not grant product-wide control.
+Configuration and manifest files choose the machine shape and can fall
+back to safe defaults, yet they are still selection inputs, not an
+all-purpose authorization layer. HIL is even farther out: it compares
+simulator behavior with real silicon and only becomes active when the
+registry and runners say so.</p>
+<blockquote>
+<p><strong>Figure:</strong> Capture and restore are separate boundaries,
+so owners should describe replay as a staged handoff from live stepping
+to a saved snapshot and then back into a rebuilt machine.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Live
+  state "Live simulation" as Live
+  state "Snapshot capture" as Capture
+  state "Saved snapshot" as Saved
+  state "Interactive restore" as Restore
+  Live --> Capture: step to target moment
+  Capture --> Saved: write the runtime snapshot
+  Saved --> Restore: load the interactive snapshot
+  Restore --> Live: rebuild the machine and continue
+</pre>
+<p>The lifecycle starts in live simulation. From there, the product
+steps to a target moment and enters snapshot capture, which writes a
+saved snapshot. The saved snapshot is then loaded by interactive
+restore, which rebuilds the machine and returns to live simulation. This
+means capture is not just a pause, and restore is not just a simple
+resume; each phase has its own boundary and consequence.</p>
+<h3 id="what-is-proven">What Is Proven</h3>
+<p>Several facts matter because they change how the owner should think
+about the product. The CLI has a normal family matrix for run, including
+ARM, RISC-V, classic ESP32, and ESP32-S3 paths, and the reviewed
+evidence also shows a special RISC-V WiFi shortcut, which means the full
+run inventory is not exhausted. Snapshot capture is profile-gated and
+writes the runtime snapshot after the machine has been stepped, which
+keeps capture distinct from live execution. Interactive restore only
+accepts an interactive snapshot and rebuilds the machine before
+resuming. The debugger server works with a single loaded machine and
+exposes a limited thread model, but some control requests can be staged
+before launch and some control commands succeed by changing debugger
+state even when the machine is not yet fully attached. Configuration
+loading is permissive: many manifest fields default, unsupported
+external devices are skipped with warnings, and missing or non-SPI
+connections fail closed. HIL is a separate validation surface that stays
+inert until the runner and registry are active. Test runs are
+entitlement-gated unless explicitly bypassed, and their output bundles
+are best-effort rather than guaranteed to be complete.</p>
+<blockquote>
+<p><strong>Figure:</strong> Debugger control is real before attachment,
+so owners should avoid claiming that every change waits for a live
+machine; the risk is overstating how tightly gated debugger state really
+is.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  P[Before attachment]
+  S[Breakpoint state can be staged]
+  L[Live attached session]
+  C[Continue or pause]
+  R[Reverse step]
+  H[Earlier machine state]
+  P --> S
+  S -.->|takes effect when the session attaches| L
+  L -->|only toggles running state| C
+  L -->|rewinds when history exists| R
+  R -->|restores earlier machine state| H
+</pre>
+<p>The diagram shows a pre-attachment stage where breakpoint state can
+be prepared before the session is live. Once the machine is attached,
+continue and pause only toggle the running state. Reverse step depends
+on the live session history and can restore earlier machine state when
+that history exists. The consequence for the owner is that debugger
+authority is bounded, but not fully blocked, by attachment.</p>
+<blockquote>
+<p><strong>Figure:</strong> Configuration is permissive at the edges but
+not universal: defaults and skipped devices reduce friction, while
+missing or wrong connections still stop setup instead of silently
+proceeding.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  I[Manifest input]
+  subgraph P[Permissive selection]
+    A[Most fields default]
+    U[Unsupported external device]
+    W[Warning and skip]
+    A --> U --> W
+  end
+  subgraph F[Fail-closed check]
+    M[Missing or wrong connection]
+    S[Setup stops]
+    M --> S
+  end
+  I --> A
+  I --> M
+</pre>
+<p>The comparison has two branches. In the permissive branch, most
+manifest fields default, an unsupported external device is treated as a
+warning and skipped, and configuration can keep going. In the
+fail-closed branch, a missing or wrong connection stops setup. The owner
+takeaway is that configuration is a selection layer with some tolerated
+gaps, not a blanket guarantee that every input will be accepted.</p>
+<h3 id="where-the-product-is-strong">Where The Product Is Strong</h3>
+<p>The strongest part of the surface design is that it separates intent
+from mechanics. The CLI carries the operational center of gravity,
+snapshots give a deliberate replay boundary, debugger access is explicit
+rather than hidden, and HIL is clearly marked as external evidence
+instead of core runtime. The same-ELF framing and deterministic behavior
+give owners a stable promise to anchor on, while the configuration model
+makes common setups easy to express without forcing every input to be
+fully specified. That is a useful structure as long as owners keep the
+boundaries intact and do not let adjacent tooling redefine the main
+surface.</p>
+<h3 id="evidence-boundary-1">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - I reviewed the
+product framing that presents LabWired Core as a deterministic firmware
+simulator with supporting examples and docs kept subordinate to the core
+surface. - I reviewed the CLI behavior that distinguishes normal run
+paths, snapshot capture, interactive restore, and test execution,
+including the limits of those flows. - I reviewed the debugger surface
+behavior that shows a single attached session model, bounded control,
+and some requests that can affect debugger state before full machine
+attachment. - I reviewed the configuration and manifest behavior that
+defaults many fields, tolerates some unsupported entries, and fails
+closed for missing or invalid connections. - I reviewed the HIL
+validation framing that keeps hardware-oracle comparison separate from
+the normal simulator loop and depends on runner activation. - I reviewed
+the test output behavior that makes key validation and output bundles
+part of the surface, while allowing best-effort writes rather than a
+guaranteed file set.</p>
+</blockquote>
+<p>Not reviewed: - This chapter does not prove a complete inventory of
+every run submode. - This chapter does not inventory the Python and WASM
+embeddable API entry points in detail. - This chapter does not establish
+hosted web, account, billing, or workspace behavior as primary product
+surfaces. - This chapter does not resolve every debugger client error
+shape or every edge case in protocol handling.</p>
+<p>Re-check the top-level product framing, the run and snapshot flows,
+the debugger surface, the configuration loaders, the HIL registry
+behavior, and the test output writers whenever the surface map changes.
+If new run modes or embeddable API surfaces become important, verify
+their entry points directly and update the owner decisions about what
+counts as primary versus supporting.</p>
+<blockquote>
+<p>Reviewed: blue-az/nano-labwired-core repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="how-a-simulated-machine-is-described">How a Simulated Machine Is
+Described</h2>
+<p><em>Configuration is part of the product’s machine model here, not
+just setup. A chip descriptor names the simulated target, a system
+manifest assembles the broader machine, firmware is the workload that
+runs against that description, and a runtime snapshot saves machine
+state so it can be rebuilt later.</em></p>
+<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
+<p>Configuration is part of the product’s machine model here, not just
+setup. A chip descriptor names the simulated target, a system manifest
+assembles the broader machine, firmware is the workload that runs
+against that description, and a runtime snapshot saves machine state so
+it can be rebuilt later. The reviewed evidence shows a selective
+configuration layer: some missing fields fall back to defaults, some
+unsupported entries are skipped with warnings, and some missing
+connections fail closed. Board-specific examples and hardware-oracle
+validation material support the model, but they do not redefine it. This
+chapter is based on repository evidence, so it shows what LabWired Core
+does today, not any owner intent you still need to confirm.</p>
+<h3 id="what-you-should-be-able-to-explain-2">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain the difference between a chip descriptor, a system manifest,
+firmware, and a runtime snapshot.</li>
+<li>Describe where the configuration layer uses defaults, warnings, or
+hard failures.</li>
+<li>Tell which configuration entries are tolerated, skipped, or rejected
+in the reviewed paths.</li>
+<li>Keep examples and hardware-oracle validation in supporting roles
+instead of treating them as the core machine model.</li>
+<li>Decide whether the current configuration permissiveness is
+acceptable for your product.</li>
+</ul>
+<h3 id="what-counts-as-the-machine">What Counts as the Machine</h3>
+<h2 id="the-machine-is-a-description-a-workload-and-saved-state">The
+machine is a description, a workload, and saved state</h2>
+<p>In this repository, the reusable core is not just a file or a setup
+step. The machine is described by a chip descriptor and a system
+manifest, the firmware is the workload that runs against that
+description, and a runtime snapshot preserves machine state so it can be
+rebuilt later. That separation matters because each piece answers a
+different question: what target exists, what should run on it, and what
+state should be carried forward.</p>
+<p>For an owner, the practical consequence is that configuration is part
+of the product model, not a wrapper around it. If the chip descriptor
+names one target and the system manifest assembles a broader machine
+around it, then changing those inputs changes what the simulator is
+describing. The firmware does not define the machine; it is what the
+machine is asked to execute. And a runtime snapshot is not an alternate
+description of the machine. It is the captured state of a particular
+run.</p>
+<p>A useful way to picture the distinction is this: a firmware developer
+can choose a machine description, load firmware onto it, and later save
+a runtime snapshot after the machine has advanced. The saved snapshot
+can be used to restore that same state later, but it does not replace
+the original description of the machine that made the run possible.</p>
+<h2 id="snapshot-means-saved-state-not-the-machine-description">Snapshot
+means saved state, not the machine description</h2>
+<p>That distinction is easy to blur if you only look at the artifact
+names. The evidence here keeps them separate. The machine description
+says what the simulated machine is supposed to be. The runtime snapshot
+records where that machine was at a point in time. Those are related,
+but they are not interchangeable.</p>
+<p>This matters because a snapshot can only be interpreted correctly
+against the machine it came from. If you treat the snapshot as if it
+were the machine description itself, you lose the boundary between
+configuration and captured state. The repository evidence instead
+supports a rebuild model: the machine description is what gets
+assembled, and the snapshot is what gets applied to bring that assembled
+machine back to a prior state.</p>
+<p>A concrete example makes the boundary clearer. Suppose a run is built
+from one chip descriptor and one system manifest, then firmware executes
+for a while and a runtime snapshot is taken. Later, the snapshot can be
+used to restore the saved state. But the snapshot does not suddenly
+become the chip descriptor or the system manifest. It is only the
+recorded state of that earlier machine instance.</p>
+<h2 id="supporting-material-stays-subordinate">Supporting material stays
+subordinate</h2>
+<p>The same repository also includes examples and hardware-oracle
+validation, but those are supporting context around the core model, not
+the thing that defines the product. They help show the model in use and
+help validate behavior against real silicon, yet they do not rewrite
+what counts as the machine here.</p>
+<p>That distinction is important for owners because examples can be
+misleading if they are mistaken for the product’s center. A
+board-specific example may demonstrate one target, one manifest, or one
+validation path, but it is still an instance of the machine model rather
+than the model itself. Hardware-oracle validation serves a similar role:
+it is a separate validation surface that compares simulator behavior
+against real hardware, which makes it useful evidence, but it remains
+auxiliary to the reusable machine description and runtime snapshot
+relationship.</p>
+<h2 id="repository-scoped-boundary">Repository-scoped boundary</h2>
+<p>This chapter stays repository-scoped because the supplied evidence
+does not include owner-confirmed product intent. That means the safe
+reading is the one the repository itself supports: describe the machine
+model as this codebase defines it, keep the distinction between
+description, workload, and saved state intact, and avoid turning
+supporting collateral into a broader product claim.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner-facing boundary is that the
+descriptor and manifest define what machine exists, firmware is what
+runs on that machine, and the runtime snapshot only records a later
+state for restoration. If those inputs change, the machine being
+described changes too; the snapshot does not become the description.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  C[Chip descriptor] --> M[Machine description]
+  S[System manifest] --> M
+  M --> F[Firmware]
+  F --> R[Machine run]
+  R --> N[Runtime snapshot]
+  N --> P[Saved state for later restore]
+</pre>
+<p>The chip descriptor and the system manifest both feed the machine
+description. Firmware runs against that description, the machine then
+advances, and a runtime snapshot is taken from that later run. The
+snapshot is saved state for a later restore, not a replacement for the
+chip descriptor or system manifest.</p>
+<h3 id="how-configuration-is-applied">How Configuration Is Applied</h3>
+<h3 id="defaults-are-applied-up-front">Defaults Are Applied Up
+Front</h3>
+<p>The loader is not waiting for a fully populated manifest before it
+can do useful work. Missing default fields, and even optional
+collections or maps, are filled in automatically. That matters because
+it lets a partially specified chip or system description run far enough
+for the owner to inspect behavior instead of failing at the first
+omitted field.</p>
+<p>There is one important boundary inside that permissiveness: the
+system builder still treats the manifest as the reference point for chip
+paths. It resolves those paths relative to the manifest first, so a path
+is interpreted in the context of the machine description rather than
+from an arbitrary working directory. If there is no system path at all,
+it does not invent a more specific machine model; it drops back to a
+plain default bus. In practice, that means the run can continue, but
+only with a more generic hardware skeleton.</p>
+<h3 id="interactive-runs-favor-continuity">Interactive Runs Favor
+Continuity</h3>
+<p>Interactive configuration follows the same pattern. If no system
+config is supplied, the run defaults to Arm rather than stopping. If the
+firmware architecture and the config architecture disagree, the run
+issues a warning and keeps going.</p>
+<p>That is helpful when a firmware developer is trying to get to first
+boot or confirm a manifest edit, because the simulator still starts and
+exposes the mismatch as a signal to inspect. The tradeoff is that a
+warning is not a safety net for correctness: the run may proceed far
+enough to look alive while still being built on the wrong architecture
+choice. The evidence supports the warning behavior, but not a broader
+rule that every mismatch anywhere in the configuration is treated this
+way.</p>
+<h3 id="esp32-attachment-uses-mixed-strictness">ESP32 Attachment Uses
+Mixed Strictness</h3>
+<p>For ESP32 external devices, the behavior splits by case. Supported
+panel types attach normally. Unsupported device types are warned about
+and skipped, which is a deliberate no-op rather than a failure. Missing
+references and non-SPI connections are handled in the opposite
+direction: they fail closed, so the product does not guess at a
+connection that is not there or is wired to the wrong kind of
+peripheral. When the chip-select pin is omitted, it falls back to
+GPIO5.</p>
+<p>That mix is the point of the configuration layer here. Safe defaults
+cover missing shape, warnings cover cases the simulator can ignore
+without lying, and hard failures protect the attachment path when the
+hardware relationship is ambiguous or invalid. If a board manifest
+includes an unsupported accessory alongside a valid display, the valid
+display can still attach and the unsupported entry will be skipped; if
+the same manifest points the display at a missing or non-SPI connection,
+the attachment stops instead of continuing with a guessed wiring
+choice.</p>
+<h3 id="comparison">Comparison</h3>
+<p>The cases below show the pattern at a glance: some inputs are filled
+in, some are tolerated with a warning, some are skipped, and some fail
+closed.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What happens</th>
+<th>How strict it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Missing default fields or optional collections or maps</td>
+<td>The loader fills them from built-in defaults instead of rejecting
+the manifest.</td>
+<td>Permissive: missing shape is tolerated.</td>
+</tr>
+<tr>
+<td>Missing system config in an interactive run</td>
+<td>The run starts as Arm.</td>
+<td>Permissive: the run keeps going.</td>
+</tr>
+<tr>
+<td>Relative chip path in a system manifest</td>
+<td>The system builder resolves it against the manifest before use.</td>
+<td>Normalizing step: not a failure.</td>
+</tr>
+<tr>
+<td>No system path available</td>
+<td>The builder falls back to a plain default bus.</td>
+<td>Permissive: it uses a generic bus rather than failing.</td>
+</tr>
+<tr>
+<td>Firmware and config architecture mismatch</td>
+<td>The run warns and continues.</td>
+<td>Soft warning: not a stop.</td>
+</tr>
+<tr>
+<td>Supported external panel type</td>
+<td>The device attaches.</td>
+<td>Accepts the entry.</td>
+</tr>
+<tr>
+<td>Unsupported external device type</td>
+<td>The run warns and skips the entry.</td>
+<td>Permissive no-op: it quietly does nothing after warning.</td>
+</tr>
+<tr>
+<td>Missing referenced connection</td>
+<td>The attachment errors out.</td>
+<td>Strict: fail closed.</td>
+</tr>
+<tr>
+<td>Referenced connection is not SPI</td>
+<td>The attachment errors out.</td>
+<td>Strict: fail closed.</td>
+</tr>
+<tr>
+<td>Missing chip-select setting</td>
+<td>The device defaults to GPIO5.</td>
+<td>Permissive default.</td>
+</tr>
+</tbody>
+</table>
+<p>For an owner, the practical takeaway is that this layer is selective,
+not uniform. It is lenient where the product can safely supply a
+default, more relaxed where it can ignore an unsupported entry without
+misrepresenting the machine, and strict where a wrong connection would
+create a false picture of the hardware. That is the difference between a
+configuration system that makes progress and one that quietly invents a
+machine the user did not actually describe.</p>
+<h3 id="what-the-evidence-establishes">What the Evidence
+Establishes</h3>
+<h2 id="capture-is-gated-and-ordered">Capture is gated and ordered</h2>
+<p>The snapshot capture path is narrow by design: it accepts only the
+agentdeck or arduino-esp32 profiles, and when a system manifest is
+supplied it wires the board manifest devices before firmware is loaded.
+Only after that wiring exists does the capture run step the machine to
+the requested cycle count and write out the runtime snapshot artifact,
+with an optional panel-image sidecar. For an owner, the practical
+consequence is that capture is not a generic save button for any run; it
+is a specific post-setup path that depends on the selected profile and
+the board description being present. If a firmware developer points
+capture at a different profile, the reviewed evidence does not show it
+widening to accommodate that request.</p>
+<h2 id="restore-means-rebuild-not-just-continue">Restore means rebuild,
+not just continue</h2>
+<p>The machine load command is even narrower. It accepts only
+interactive snapshots, rebuilds the machine wiring, reloads the original
+firmware, applies the saved CPU and peripheral state, and then resumes
+simulation. That makes restore a replay boundary rather than a simple
+continuation of the old process. A snapshot taken from an interactive
+run can therefore be brought back as a working machine state, but a
+noninteractive capture artifact is not shown to be a valid restore
+input. In a concrete case, a firmware developer who captures a run for
+later inspection should expect to reload the interactive snapshot
+through machine load, not to resume from the capture artifact as if it
+were a live session.</p>
+<h2 id="validation-waits-for-registration">Validation waits for
+registration</h2>
+<p>The hardware-oracle validation surface stays inert until a
+self-hosted runner has been registered. Board registry state then
+decides whether jobs are created at all, so the validation system is not
+continuously active just because boards are listed somewhere. In the
+reviewed behavior, entries marked as planned do not produce jobs, while
+active entries are placed under hardware-oracle validation. The
+owner-facing consequence is that validation capacity is explicit and
+controlled: nothing starts until the runner exists, and board status is
+the switch that turns a registry entry into actual comparison work.</p>
+<h2 id="what-this-proves-and-what-it-does-not">What This Proves, And
+What It Does Not</h2>
+<p>These are strong boundary facts because they are directly exercised
+in the reviewed paths. They establish how capture, restore, and
+hardware-oracle validation behave in the specific configurations that
+were inspected, but they do not prove a product-wide rule for every
+possible combination of manifest, profile, board, and runtime state. The
+safest reading is therefore selective rather than universal: the
+evidence shows where the system is gated, where it reloads, where it
+remains dormant, and where it creates jobs, but it does not justify
+claiming that every configuration is handled the same way.</p>
+<blockquote>
+<p><strong>Figure:</strong> Capture is a post-setup save path, while
+restore is a rebuild path. The owner consequence is that replay is not a
+simple continue button: the machine wiring and firmware are
+reconstructed before saved state is applied.</p>
+</blockquote>
+<pre class="mermaid">
+sequenceDiagram
+    participant Dev as Firmware developer
+    participant Cap as Snapshot capture
+    participant Load as Machine load
+    participant Run as Simulated machine
+    Dev->>Cap: request a capture
+    Cap->>Run: wire the board devices and load firmware
+    Cap->>Run: step to the requested cycles
+    Cap->>Cap: write the runtime snapshot
+    Dev->>Load: restore the saved snapshot later
+    Load->>Run: rebuild wiring and reload firmware
+    Load->>Run: apply saved state and resume
+</pre>
+<p>A firmware developer requests snapshot capture. The capture path
+wires the board devices, loads firmware, steps the machine, and then
+writes the runtime snapshot. Later, the machine load path takes the
+saved snapshot, rebuilds the wiring, reloads the original firmware,
+applies the saved state, and then resumes simulation. The consequence is
+that restore is a rebuild step, not a simple continuation of the old
+run.</p>
+<h3 id="what-is-solid-here">What Is Solid Here</h3>
+<h3 id="stable-terms-stable-model">Stable terms, stable model</h3>
+<p>The strongest thing in this material is that the vocabulary does not
+drift. A chip descriptor, a system manifest, a runtime snapshot, and
+hardware-oracle validation keep their roles across the reviewed evidence
+instead of being reused loosely for whatever happens to be nearby. That
+consistency matters for an owner because it turns configuration into
+something readable and transferable: when a firmware developer says the
+chip descriptor names the target and the system manifest assembles the
+machine, those phrases keep the same meaning whether the context is a
+live run, a captured snapshot, or validation against physical hardware.
+The result is a reusable machine model that can be discussed without
+re-litigating basic terms each time.</p>
+<h3 id="defaults-where-omission-is-normal">Defaults where omission is
+normal</h3>
+<p>The configuration layer is also strong because it does not treat
+every missing field as a crisis. In the reviewed paths, several missing
+pieces fall back to defaults, and the system builder can continue when
+no system path is available. That is a practical design choice: it
+reduces unnecessary hard failure when the input is only partially
+specified, which is exactly where owners often need the product to be
+tolerant. In the interactive path, the same pattern appears at a higher
+level: when no system config is supplied, the run can still start from a
+plain architecture default rather than collapsing immediately.</p>
+<p>For an owner, the consequence is not that configuration becomes
+vague; it is that routine incompleteness is absorbed in the places where
+the product already knows how to make a safe assumption. A small
+scenario shows the difference. If a team is trying a new board setup and
+has not filled in every optional manifest detail yet, the run can still
+proceed through the defaulted parts instead of stopping on the first
+omission. That makes iteration faster and reduces the amount of ceremony
+needed before a machine can be described well enough to run.</p>
+<h3 id="strict-edges-still-protect-the-model">Strict edges still protect
+the model</h3>
+<p>The permissive parts do not erase the hard boundaries. Missing or
+invalid hardware connections still fail closed, and unsupported external
+devices do not silently pretend to attach. That is an important
+strength, not a contradiction: it means the product distinguishes
+between absence that can be sensibly defaulted and absence that would
+otherwise create a false picture of attached hardware. The owner benefit
+is trust. A manifest can be forgiving about optional structure, but it
+does not lie about a device being present when the required connection
+is wrong or missing.</p>
+<p>This is the right boundary for a simulator that wants to stay useful
+as a machine model rather than a loose configuration parser. A firmware
+developer can tolerate an omitted default field; they should not be
+allowed to believe an external panel is wired when the connection does
+not exist, or when the connection is not the right kind. The evidence
+supports that line clearly, even though it does not prove a universal
+rule for every possible configuration combination.</p>
+<h3 id="examples-and-validation-stay-in-support">Examples and validation
+stay in support</h3>
+<p>Finally, the supporting material is kept in the right place.
+Board-specific examples and hardware-oracle validation are real and
+useful, but they stay subordinate to the reusable model instead of
+taking over the chapter’s meaning. That is a strength because it keeps
+the manual from becoming a board catalog or a gallery of one-off cases.
+Owners get the core description first, with examples and validation as
+proof that the model is grounded in actual collateral and comparison
+flows.</p>
+<p>That balance matters when the same manual needs to serve both
+understanding and decision-making. If the examples dominated, the
+machine model would look accidental and local to each board. Because
+they remain supporting context, the model stays portable: the reader can
+see how the configuration system works in principle, then use the
+example material as evidence of breadth rather than as the definition of
+the product.</p>
+<blockquote>
+<p><strong>Figure:</strong> Examples and the hardware comparison bench
+help prove and explain the model, but they sit outside the reusable
+machine description. The owner consequence is that supporting material
+should inform judgment without being mistaken for core
+configuration.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  subgraph Core[Reusable machine model]
+    D[Chip descriptor and system manifest]
+    F[Firmware]
+    S[Runtime snapshot]
+    D --> F
+    F --> S
+  end
+  subgraph Support[Supporting evidence]
+    E[Examples]
+    H[Hardware comparison bench]
+  end
+  E -. illustrates .-> D
+  H -. compares against .-> F
+  H -. checks .-> S
+</pre>
+<p>Inside the reusable machine model are the chip descriptor and system
+manifest, the firmware that runs against them, and the runtime snapshot
+that records later state. Outside that core are examples and the
+hardware comparison bench. The examples illustrate the model, and the
+hardware bench compares behavior against it. The consequence is that
+supporting material should be treated as evidence, not as the machine
+model itself.</p>
+<h3 id="evidence-boundary-2">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The repository
+framing that defines the simulator core and keeps examples subordinate.
+- Configuration loading, manifest resolution, and external-device
+attachment behavior. - Snapshot capture and interactive restore
+boundaries that separate saved state from live execution. -
+Hardware-oracle validation docs that show the boundary between core
+runtime and external validation.</p>
+</blockquote>
+<p>Not reviewed: - Owner interview answers about intended product scope.
+- The full inventory of every run mode or submode. - Web, account,
+billing, workspace, or other hosted-product surfaces. - Broader
+board-by-board collateral that was not needed to establish the machine
+model.</p>
+<p>Re-check the product orientation note, configuration loaders,
+snapshot restore path, and hardware-oracle validation docs if any of
+those behaviors change. If owner intent is supplied later, revisit the
+chapter emphasis and whether board-specific material should stay
+secondary.</p>
+<blockquote>
+<p>Reviewed: blue-az/nano-labwired-core repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="deterministic-workflows-for-development-and-ci">Deterministic
+Workflows for Development and CI</h2>
+<p><em>Determinism is the spine of this part of the product. A firmware
+developer launches a specific firmware image against a described
+machine, steps it, captures a runtime snapshot, and later restores only
+the interactive snapshots that can be rebuilt from saved state.</em></p>
+<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
+<p>Determinism is the spine of this part of the product. A firmware
+developer launches a specific firmware image against a described
+machine, steps it, captures a runtime snapshot, and later restores only
+the interactive snapshots that can be rebuilt from saved state. A CI
+operator uses the same repeatable paths to run tests and collect
+validation evidence, while the debugger and hardware-oracle surfaces
+stay bounded to the attached simulation session or the external bench.
+The supplied evidence is strong for run, snapshot, restore, debugger,
+test, and hardware-oracle behavior; coverage, fuzzing, and Tier-1
+validation are adjacent concerns here, but their full behavior is not
+proven by this bundle.</p>
+<h3 id="what-you-should-be-able-to-explain-3">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Distinguish a live run from snapshot capture and restore, so
+repeatability does not get confused with simple resumption.</li>
+<li>See where the firmware developer loop and the CI operator loop
+differ in purpose, not in product identity.</li>
+<li>Recognize which debugger, configuration, and test behaviors are
+permissive, which fail closed, and which are best-effort.</li>
+<li>Know which workflow edges are supporting validation and which ones
+sit inside the core simulator promise.</li>
+</ul>
+<h3 id="mental-model">Mental Model</h3>
+<p>Think of this chapter as the repeatability layer. LabWired Core earns
+its value when the same firmware image and the same machine description
+produce predictable results, and when saved runtime state can be used
+again without pretending it is the same moment as the original run. That
+promise is strongest in the simulator’s own run, snapshot, and restore
+paths. Validation against real hardware sits next to that core as
+evidence, not as the core runtime itself.</p>
+<blockquote>
+<p><strong>Figure:</strong> The same simulator core serves both the
+interactive developer loop and the CI loop, but hardware-oracle work
+stays outside that runtime as comparison evidence. That keeps normal
+execution and bench validation distinct, so owners can reason about
+product behavior without collapsing it into test infrastructure.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+core[Deterministic simulator core]
+dev[Developer loop]
+ci[CI test loop]
+bench[Hardware-oracle bench]
+evidence[Bench-backed evidence]
+core --> dev
+core --> ci
+bench --> evidence
+evidence -. compares with .-> core
+</pre>
+<p>The deterministic simulator core sits in the middle. One branch
+serves the developer loop, and another serves the CI test loop.
+Hardware-oracle validation sits off to the side as bench-backed evidence
+that compares against the core rather than becoming part of normal
+runtime behavior. The consequence is a clean split between product
+execution and external validation.</p>
+<h3 id="how-it-works">How It Works</h3>
+<p>An interactive firmware developer starts a run, often with a system
+description, and the product builds the machine, loads firmware, and
+steps through execution. When no system description is supplied, the run
+falls back to a default machine shape, which is a convenience rather
+than a blanket guarantee.</p>
+<p>A snapshot capture is a separate headless path: it wires the board
+description first, loads firmware afterward, advances to the chosen
+cycle count, and only then writes the runtime snapshot and optional
+image sidecar. Restore is narrower still: only interactive snapshots are
+accepted, and restore rebuilds the machine wiring, reloads the original
+firmware, reapplies saved state, and resumes simulation.</p>
+<p>The debugger surface is session-bound rather than product-wide. Some
+requests can stage before the machine is fully attached, some control
+requests only flip the running state, and reverse stepping depends on
+history to restore earlier machine state. That is useful for a developer
+working in one attached session, but it is not authority over unrelated
+workspace state.</p>
+<p>The test flow follows the same determinism theme but adds an
+entitlement gate by default, best-effort metering on transient
+validation trouble, and best-effort result bundles. A successful test
+run is therefore not the same thing as a guaranteed full artifact
+set.</p>
+<blockquote>
+<p><strong>Figure:</strong> Snapshot capture belongs to the run itself,
+but restore crosses a harder boundary: only interactive snapshots come
+back, and the product rebuilds the machine before execution continues.
+Owners should treat restore as replay through a reload, not as a simple
+pause-and-resume.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+[*] --> live
+state "Live run" as live
+state "Snapshot saved" as snap
+state "Restore check" as check
+state "Rebuilt session" as rebuilt
+state "Running again" as again
+state "Rejected" as reject
+live --> snap: capture at the chosen point
+snap --> check: restore starts
+check --> rebuilt: interactive snapshot only
+check --> reject: other snapshots stay out
+rebuilt --> again: reload bus and firmware
+again --> [*]
+reject --> [*]
+</pre>
+<p>A live run starts, advances to a chosen point, and then can be
+captured as a snapshot. Restore begins as a check on the saved snapshot:
+interactive snapshots are accepted, while other snapshots are rejected.
+When restore succeeds, the product rebuilds the machine, reloads the
+firmware, and only then continues running. The consequence is that
+restore is a reload boundary, not just a continuation of the same
+moment.</p>
+<blockquote>
+<p><strong>Figure:</strong> Debugger control is bounded to one
+simulation session, but not every request waits for the machine to be
+fully attached. Owners should read that as a narrow control surface with
+some accepted-before-launch setup, not as broad authority over the rest
+of the workspace.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+client[Debugger client]
+staged[Breakpoints can be staged before launch]
+subgraph session[One attached simulation session]
+machine[Loaded machine]
+runstate[Running state]
+history[Saved history]
+end
+client --> staged
+client --> machine
+client --> runstate
+client --> history
+runstate --> history
+history --> machine
+</pre>
+<p>A debugger client works against one attached simulation session. Some
+breakpoint setup can be staged before launch, while continue and pause
+affect the running state inside the session. Reverse stepping depends on
+saved history inside that same session. The consequence is a narrow
+control boundary: some requests can be queued early, but the debugger
+does not gain broad product-wide authority.</p>
+<blockquote>
+<p><strong>Figure:</strong> The test command checks entitlement before
+it does any work by default, can still keep going after a transient
+validation network problem, and does not promise complete output
+bundles. Owners should treat the result files as helpful evidence, not
+as guaranteed artifacts.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+start[Start test command]
+gate[Check entitlement]
+run[Run locally]
+net[Validation network trouble]
+meter[Continue locally and record usage]
+write[Write result bundles]
+best[Best-effort files]
+stop[Stop before execution]
+start --> gate
+gate -->|valid key| run
+gate -->|missing or bad key| stop
+run -->|network trouble| net
+net --> meter
+run --> write
+meter --> write
+stop --> write
+write --> best
+</pre>
+<p>The test command starts by checking entitlement. If the key is valid,
+the run continues locally. If the key is missing or invalid, execution
+stops before the test work begins. A transient validation network
+problem does not force a hard stop; the run can continue locally and
+still record usage. After either a normal run or a setup failure, the
+command writes result bundles on a best-effort basis, so some files may
+still be missing. The consequence is that a successful run is not the
+same thing as a guaranteed artifact set.</p>
+<h3 id="verified-facts">Verified Facts</h3>
+<p>The reviewed evidence supports these concrete owner-facing
+claims:</p>
+<ul>
+<li>The product is documented as a deterministic firmware simulator with
+same-ELF parity, and examples and documentation collateral are
+subordinate to that core model.</li>
+<li>Run routing follows chip-family paths, and one RISC-V branch has an
+env-gated dual WiFi shortcut, so the run inventory is not
+exhaustive.</li>
+<li>Snapshot capture is headless, profile-gated, and emits the runtime
+snapshot after stepping to the requested point.</li>
+<li>Interactive restore only accepts interactive snapshots and reloads
+firmware rather than resuming a stale machine state.</li>
+<li>The debugger advertises one thread and can stage some requests
+before launch, while some control requests only change the running
+state.</li>
+<li>Chip and system manifests default many optional fields; unsupported
+external devices are skipped with warnings, while missing or invalid
+connections fail closed.</li>
+<li>Hardware-oracle validation is external and runner-gated, so it is
+validation evidence rather than normal runtime behavior.</li>
+<li>Test runs check entitlement by default and write their output
+bundles after execution or setup failure, but those writes are
+best-effort.</li>
+</ul>
+<h3 id="strengths">Strengths</h3>
+<p>Two strengths stand out. First, the product separates live execution,
+snapshot capture, replay, and validation evidence, which gives an owner
+a clearer place to ask whether a problem is in the run, the saved state,
+or the external comparison. Second, the configuration layer is
+permissive where defaults help adoption and strict where missing
+connections would make the machine ambiguous. The tradeoff is that
+permissive defaults can hide a silent fallback, so the owner should
+treat warnings and skipped devices as part of the product story, not
+noise.</p>
+<h3 id="evidence-boundary-3">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The root product
+framing that presents LabWired Core as a deterministic firmware
+simulator with same-ELF parity and keeps examples and documentation
+subordinate. - The workflow paths for running firmware, capturing and
+restoring runtime snapshots, debugger control, manifest loading, test
+gating, and hardware-oracle validation.</p>
+</blockquote>
+<p>Not reviewed: - The full inventory of every run mode or special
+launch path beyond the reviewed workflow evidence. - Coverage, fuzzing,
+and Tier-1 validation behavior beyond the evidence in this bundle. - Any
+hosted web, account, billing, or workspace experience. - Owner-confirmed
+product intent beyond the repository-scoped fallback boundary.</p>
+<p>Recheck the product framing and the run, snapshot, restore, debugger,
+configuration, test, and validation paths after any change to launch
+behavior, saved-state handling, manifest defaults, artifact handling, or
+validation activation. If coverage, fuzzing, or Tier-1 validation become
+owner-relevant, verify their workflow rules directly before moving them
+into the core story.</p>
+<blockquote>
+<p>Reviewed: blue-az/nano-labwired-core repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="how-fidelity-is-proved">How Fidelity Is Proved</h2>
+<p><em>This chapter explains how LabWired Core proves fidelity in the
+evidence we actually reviewed. The product docs say the simulator is
+checked against real silicon through hardware-oracle and HIL runs over a
+debug probe, and that those checks stay outside the normal simulator
+loop.</em></p>
+<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
+<p>This chapter explains how LabWired Core proves fidelity in the
+evidence we actually reviewed. The product docs say the simulator is
+checked against real silicon through hardware-oracle and HIL runs over a
+debug probe, and that those checks stay outside the normal simulator
+loop. A hardware validation engineer keeps the comparison side alive by
+registering runners and moving boards from planned to active; when that
+setup is missing, the validation layer stays inert. This is built from
+repository evidence, so it shows what the product does today, not the
+broader fidelity policy you may want to set later.</p>
+<h3 id="what-you-should-be-able-to-explain-4">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain how hardware-oracle and HIL evidence supports the same-ELF
+promise without becoming the product itself.</li>
+<li>Describe who owns the comparison side of fidelity work and what the
+hardware validation engineer is responsible for.</li>
+<li>Tell when validation runs can actually happen, and how runner
+registration and board state control them.</li>
+<li>Say which fidelity claims are proven, which are only partial, and
+where the manual must stay bounded.</li>
+</ul>
+<h3 id="what-fidelity-is-for">What Fidelity Is For</h3>
+<h3 id="fidelity-is-evidence-not-the-product">Fidelity is evidence, not
+the product</h3>
+<p>Fidelity work exists to support the simulator’s same ELF promise, not
+to replace the simulator or turn the product into bench infrastructure.
+The useful mental model is simple: the simulator is the main product
+path, and hardware oracle and HIL runs are the outside evidence that
+checks whether that path still matches real silicon closely enough to
+trust. That matters to an owner because it keeps the product’s center of
+gravity in the simulator itself while still giving the business a
+separate way to test whether the promise holds up in the physical
+world.</p>
+<p>That separation also sets the boundary. Fidelity evidence can
+strengthen confidence in simulator behavior, but it does not by itself
+become the normal place where work runs. The reviewed evidence shows a
+distinct validation surface, and that is the important ownership lesson:
+fidelity supports the product claim from the side, rather than
+redefining the product as a hardware lab. If someone asks whether
+LabWired Core is primarily a simulator or a validation rig, this
+chapter’s answer stays on the simulator side of that line.</p>
+<h3 id="who-carries-the-burden">Who carries the burden</h3>
+<p>The hardware validation engineer is the role that keeps this evidence
+alive. Their work sustains the comparison side of the promise so the
+rest of the organization can trust the result instead of just asserting
+it. Firmware developers and CI operators are the main consumers of that
+confidence: they benefit when the evidence says the simulator still
+tracks hardware closely enough, but they are not the ones carrying the
+comparison burden day to day.</p>
+<p>That role split matters because it tells the owner where
+responsibility sits. A firmware developer can use the simulator to build
+and debug, and a CI operator can rely on deterministic checks in
+automation, but neither role alone establishes fidelity against
+hardware. The comparison layer has to be maintained separately, by the
+hardware validation engineer, because the claim being supported is about
+agreement with real boards, not just about repeatable execution inside
+the simulator.</p>
+<p>A practical way to picture it is this: if a firmware change alters
+timing around a peripheral, the simulator may still run cleanly, but
+confidence in the same ELF promise should not be treated as automatic
+until the hardware comparison side has exercised the relevant path. The
+point of fidelity work is to catch that gap before the owner mistakes
+internal consistency for hardware agreement.</p>
+<h3 id="why-the-scope-stays-bounded">Why the scope stays bounded</h3>
+<p>Because no owner-confirmed product intent was supplied in this run,
+the safest reading is to keep the chapter repository-scoped. That means
+the manual can say what the reviewed evidence shows here, but it should
+not turn that evidence into a broader claim about every board, chip,
+workflow, or future operating model. The confidence this chapter
+describes is real, but it is bounded by the evidence that was actually
+reviewed.</p>
+<p>That boundary is not a weakness in the manual; it is part of the
+operating model. A fidelity claim can be strong for the specific
+surfaces the evidence covers, weaker where coverage is partial, and
+still pending where no comparison has been established. For the owner,
+that means confidence should be read as qualified: enough to support the
+simulator’s promise where the hardware evidence exists, not enough to
+assume universal coverage everywhere else.</p>
+<p>So the right mental model is not “fidelity proves everything.” It is
+“fidelity supplies the outside proof that keeps the simulator’s core
+promise honest, and its reach is only as broad as the evidence behind
+it.”</p>
+<blockquote>
+<p><strong>Figure:</strong> Hardware-oracle and HIL belong on the
+evidence side of the line: they strengthen the same-ELF promise by
+checking the simulator against real silicon, but they do not redefine
+the product as bench infrastructure.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  subgraph inside["Inside the product"]
+    A[Main simulator path]
+  end
+  subgraph outside["Outside proof"]
+    B[Hardware-oracle runs]
+    C[Comparison runs]
+    D[Real board]
+    E[Confidence in the promise]
+  end
+  A -->|is checked by| B
+  A -->|is checked by| C
+  B -->|compares with| D
+  C -->|compares with| D
+  B --> E
+  C --> E
+</pre>
+<p>The diagram separates the main simulator path from outside proof.
+Hardware-oracle runs and comparison runs sit outside the product path,
+compare with the real board, and feed confidence in the promise. The
+consequence is that fidelity supports the simulator from the side
+instead of becoming the simulator itself.</p>
+<h3 id="how-the-comparison-loop-runs">How the Comparison Loop Runs</h3>
+<p>The comparison loop is the part of fidelity work that steps outside
+the simulator and asks a physical board to answer back. Hardware-oracle
+and HIL runs compare simulator behavior against real silicon over a
+debug probe, so the evidence is produced by an external board path
+rather than by the simulator observing itself. That distinction matters
+to the owner because it keeps fidelity proof in a supporting lane: the
+simulator remains the product, while the comparison loop supplies checks
+on whether its behavior still matches the board.</p>
+<h2 id="where-the-jobs-come-from">Where the jobs come from</h2>
+<p>The first gate is runner registration. Until a self-hosted runner is
+registered, the HIL registry does not become active enough to create
+comparison jobs at all. In practical terms, that means the validation
+surface can be defined on paper and still produce nothing on the bench.
+Once a runner is registered, the registry can begin placing work, but
+only onto boards whose status allows it.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Gate</th>
+<th>State</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runner registration</td>
+<td>No self-hosted runner registered</td>
+<td>The HIL registry stays inert and comparison jobs are not
+created.</td>
+</tr>
+<tr>
+<td>Board registry</td>
+<td>Planned</td>
+<td>The board is listed, but it does not receive HIL jobs.</td>
+</tr>
+<tr>
+<td>Board registry</td>
+<td>Active</td>
+<td>The board can be placed under HIL and receive comparison jobs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="planned-is-not-enough">Planned is not enough</h2>
+<p>Board status then decides whether a specific board is only planned or
+actually active. Planned entries are inventory and intent, not
+execution; they do not receive jobs. Active entries are the ones the
+validation surface can target.</p>
+<p>That separation is the practical boundary the owner should rely on. A
+board can exist in the registry, be visible to the hardware validation
+engineer, and still do no work if it remains planned. The comparison
+loop only starts to move when both conditions are true: a self-hosted
+runner is registered, and the board has been moved into active
+status.</p>
+<p>For example, a hardware validation engineer may prepare a board
+listing for a new device family and leave it planned while the bench is
+being staged. Nothing will run yet. After the runner is registered and
+the board is switched to active, comparison jobs can finally be
+assigned, and the simulator-versus-silicon check can begin.</p>
+<p>The reviewed evidence stops there. It establishes the activation
+gates and the board-state effect, but it does not prove that every
+possible board, chip, or validation scenario is covered. The manual
+should therefore treat this as an operational rule for the checked HIL
+surface, not as a promise of universal validation breadth.</p>
+<blockquote>
+<p><strong>Figure:</strong> Comparison work does not start just because
+a board exists. The runner has to be registered, and the target board
+has to move out of planned status before jobs can appear.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Runner registered]
+  B[Registry can place work]
+  C[Board planned]
+  D[Board active]
+  E[No jobs yet]
+  F[Comparison jobs appear]
+  A --> B
+  B --> C
+  C -->|stays inert| E
+  C -->|move it to active| D
+  D --> F
+</pre>
+<p>The diagram shows a short activation chain. First a runner is
+registered, then the registry can place work, then the board is either
+left planned or moved to active. Planned boards stay inert and produce
+no jobs. Active boards are the ones that can receive comparison jobs, so
+both setup and board state matter.</p>
+<h3 id="what-the-reviewed-evidence-proves">What the Reviewed Evidence
+Proves</h3>
+<h2 id="the-core-model-the-repository-presents">The core model the
+repository presents</h2>
+<p>The reviewed orientation material is not written as a broad product
+catalog. It opens from a single core claim: LabWired Core is a
+deterministic firmware simulator, and the surrounding examples and
+supporting documentation sit underneath that model rather than replacing
+it. That matters because it tells the owner how to read the rest of the
+evidence. The simulator is the thing being described; the examples,
+demos, and collateral are there to support understanding and adoption.
+The practical consequence is that fidelity work should be read as
+evidence about the simulator’s behavior, not as a sign that the
+repository’s documentation has quietly become the product itself.</p>
+<p>That framing also sets a boundary. The evidence shows a
+repository-level product story, not a promise about every possible
+deployment, workflow, or companion tool. So the manual can say the
+repository is organized around a deterministic simulator and same ELF
+parity, but it should not convert that into a claim about the entire
+LabWired estate or about validation being exhaustive by default.</p>
+<h2 id="what-the-hardware-oracle-material-actually-names">What the
+hardware-oracle material actually names</h2>
+<p>The reviewed HIL documentation is specific about the comparison
+surface. It explicitly names hardware-oracle tests that compare
+simulator behavior against real silicon over a debug probe. That detail
+is important because it shows the validation claim is not hand-wavy. The
+comparison is made against physical hardware, and the debug probe is the
+bridge that lets the external board path observe and measure behavior
+outside the simulator’s normal run loop.</p>
+<p>For the owner, the consequence is that fidelity evidence has a
+concrete shape: it is comparison evidence, not just expectation, naming,
+or static configuration review. If a hardware-oracle run succeeds, it
+means the simulator matched the observed hardware behavior for the case
+under test. If it fails, the discrepancy is about the
+simulator-versus-board comparison, not about a generic quality
+metric.</p>
+<p>The boundary is just as important. The reviewed material names this
+comparison surface, but it does not prove every detail of every
+hardware-oracle case or every board family. The evidence is enough to
+establish what the surface does, not enough to turn that surface into a
+universal guarantee.</p>
+<h2 id="what-the-validation-layer-depends-on">What the validation layer
+depends on</h2>
+<p>The same evidence also shows that this validation work is separate
+from the simulator runtime itself. The simulator remains the main
+product path; the comparison layer is an external support path that only
+becomes active when the required runner and board registry state are in
+place. In other words, comparison work is not something the simulator
+does to itself automatically. It depends on a supporting environment
+that has to be registered and activated before jobs can appear.</p>
+<p>That separation changes how an owner should reason about fidelity. A
+working simulator does not imply validation will run, and the absence of
+comparison jobs does not imply the simulator has changed. The comparison
+layer has its own gate: when the runner is not registered, the HIL
+surface stays inert; when a board is only planned, it does not receive
+jobs; when it is active, it can be placed under HIL. The validation
+system therefore has operational prerequisites, and those prerequisites
+control whether evidence can be produced at all.</p>
+<h2 id="what-the-evidence-does-not-establish">What the evidence does not
+establish</h2>
+<p>The reviewed inputs do not establish complete validation coverage
+across every board, chip, or workflow. They prove the existence of a
+real hardware comparison surface and the gates that control it. They do
+not prove that every supported target is covered, that every workflow is
+validated, or that the same level of evidence exists everywhere the
+simulator can run. For the owner, that means confidence must stay
+bounded: the chapter can say the fidelity proof is real and operational,
+but it cannot honestly claim blanket coverage where the evidence never
+showed it.</p>
+<blockquote>
+<p><strong>Figure:</strong> The reviewed evidence is solid on the
+comparison surface and the activation gates, but it stops short of
+proving that every board, chip, or workflow is covered.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Reviewed evidence]
+  B[Proven: real board comparisons]
+  C[Proven: activation gates]
+  D[Partial: some targets]
+  E[Unproven: every board, chip, and workflow]
+  A --> B
+  A --> C
+  A --> D
+  A --> E
+</pre>
+<p>The diagram splits the reviewed evidence into four outcomes. It
+proves the real board comparison surface and the activation gates that
+make it run. It also leaves room for partial coverage in some targets.
+What it does not prove is universal coverage across every board, chip,
+and workflow, so the owner should keep the claim bounded.</p>
+<h3 id="what-is-solid-here-1">What Is Solid Here</h3>
+<h3 id="one-center-of-gravity">One center of gravity</h3>
+<p>The reviewed material is coherent in the way that matters most for an
+owner: it keeps the simulator at the center and treats hardware-oracle
+and HIL work as supporting evidence for fidelity, not as a second
+product. The product orientation frames LabWired Core as a deterministic
+firmware simulator with same-ELF behavior, and the HIL material stays
+aligned with that frame by describing external comparison work rather
+than redefining the system around benches or boards. That consistency
+matters because it gives the owner a stable story: the simulator is the
+thing being trusted, and the hardware path is the way that trust is
+checked.</p>
+<p>This is stronger than a vague marketing claim because the two sources
+point in the same direction from different angles. One establishes what
+the product is; the other shows how fidelity is examined against real
+silicon. The result is not full proof of every possible workload, but it
+is a believable structure for proving the part of the promise that can
+be checked against hardware.</p>
+<h3 id="the-gate-is-real">The gate is real</h3>
+<p>The comparison side is also operationally meaningful, not just
+conceptual. The HIL evidence says validation work stays inert until a
+self-hosted runner is registered, and board registry state decides
+whether a board is merely planned or actually active. That is a concrete
+control point. If the runner is not present, nothing starts. If the
+board is only planned, it does not receive jobs. For an owner, that is
+valuable because the comparison layer is clearly gated by setup, not
+assumed to be always on.</p>
+<p>A practical example makes the boundary obvious. If a hardware
+validation engineer has added boards to the registry but has not moved
+them into active status, the validation layer does not silently pretend
+coverage exists. The work stays waiting. Once the runner is registered
+and the board is active, comparison jobs can be created. That makes the
+gate legible, auditable, and easy to reason about.</p>
+<h3 id="honest-confidence">Honest confidence</h3>
+<p>The best part of this evidence set is that it leaves room for honest
+confidence instead of overclaiming. The core runtime behavior is
+separate from the external validation surface, so the manual can say
+what is proven without collapsing everything into one blanket assurance.
+Where coverage is not shown, the chapter can stay bounded and say so
+plainly rather than filling the gap with implication.</p>
+<p>That distinction matters for ownership. It means the manual can
+support stronger claims where the evidence is direct, and weaker or
+pending claims where the reviewed material does not establish breadth.
+For example, it is reasonable to say that hardware-oracle and HIL
+support the same-ELF promise for the cases actually represented here. It
+is not reasonable to turn that into a claim that every board, chip, or
+workflow has been fully validated, because the reviewed inputs do not
+prove that. The strength is not just in what the evidence says, but in
+how cleanly it separates proven support from unproven reach.</p>
+<h3 id="evidence-boundary-4">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - the root README that
+frames LabWired Core as a deterministic firmware simulator and keeps
+examples and supporting documentation in a secondary role - the HIL
+documentation that describes hardware-oracle comparisons against real
+silicon over a debug probe - the HIL registry behavior that stays inert
+until a self-hosted runner is registered and uses board status to decide
+whether jobs exist</p>
+</blockquote>
+<p>Not reviewed: - complete validation coverage across every board,
+chip, and workflow - owner-confirmed product intent for how broad the
+fidelity promise should be - any hosted web, account, billing, or
+workspace experience</p>
+<p>If the validation flow changes, reread the root product framing and
+the HIL documentation, then confirm whether runner registration, board
+status, or comparison scope has changed before widening any claim.</p>
+<blockquote>
+<p>Reviewed: blue-az/nano-labwired-core repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="examples-boards-and-adoption-paths">Examples, Boards, and
+Adoption Paths</h2>
+<p><em>This chapter keeps the example catalog in the right place:
+useful, broad, but subordinate. LabWired Core is still the deterministic
+firmware simulator; examples, board notes, and lab collateral are the
+material that helps people get there, not the product identity itself.
+The owner should read the catalog as a map of adoption paths, support
+expectations, and validation references.</em></p>
+<h3 id="one-minute-snapshot-5">One-Minute Snapshot</h3>
+<p>This chapter keeps the example catalog in the right place: useful,
+broad, but subordinate. LabWired Core is still the deterministic
+firmware simulator; examples, board notes, and lab collateral are the
+material that helps people get there, not the product identity itself.
+The owner should read the catalog as a map of adoption paths, support
+expectations, and validation references. The main risk is simple: if
+every sample is treated as equally strategic, the product starts to look
+like a collection of demos instead of a simulator with a real support
+surface.</p>
+<h3 id="what-you-should-be-able-to-explain-5">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Separate onboarding material from the simulator core, so the example
+catalog does not distort product ownership.</li>
+<li>Tell which example paths are lightweight demonstrations and which
+ones carry validation or delivery consequences.</li>
+<li>Understand how the same sample can serve a firmware developer, a CI
+operator, or a hardware validation engineer differently.</li>
+<li>Decide whether packaging, artifact completeness, and validation
+gating need to be treated as part of the onboarding experience.</li>
+</ul>
+<h3 id="what-the-catalog-is-for">What the catalog is for</h3>
+<p>The example catalog is adoption material layered on top of the
+simulator. It tells a new firmware developer where to start, gives a CI
+operator repeatable workloads, and gives a hardware validation engineer
+board-backed reference material. It does not replace the simulator story
+itself, and it should not be read as a complete map of what matters
+most. The volume of examples is a signal that the product supports more
+than one entry point, not proof that every item is strategic.</p>
+<blockquote>
+<p><strong>Figure:</strong> Examples, board notes, and lab collateral
+help people reach the simulator, but they do not become the product’s
+center of gravity. The owner should read them as support around a core
+product, not as a new definition of what matters most.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  core["deterministic simulator core"]
+  catalog["example catalog"]
+  notes["board notes"]
+  lab["lab collateral"]
+  adoption["adoption paths"]
+
+  catalog --> adoption
+  notes --> adoption
+  lab --> adoption
+  adoption --> core
+  catalog -. supports .-> core
+</pre>
+<p>The diagram places the deterministic simulator core at the center and
+shows the example catalog, board notes, and lab collateral feeding
+adoption paths that point toward it. The consequence is that these
+materials support onboarding and understanding, but they stay
+subordinate to the core product.</p>
+<h3 id="how-examples-carry-different-jobs">How examples carry different
+jobs</h3>
+<p>A single example can play three different roles. For a firmware
+developer, it is often a first run or a sanity check. For a CI operator,
+it can be a repeatable workload that proves the same outcome again. For
+a hardware validation engineer, board and lab collateral can anchor
+comparisons with physical boards. Some items may even serve as reference
+material for validation, which means changing them casually can have
+consequences outside onboarding.</p>
+<p>The detailed mechanics of run modes, manifests, restore, and fidelity
+proof belong to sibling chapters; this chapter only explains how
+examples sit on top of them.</p>
+<blockquote>
+<p><strong>Figure:</strong> The same sample can play different roles
+depending on who is using it: a quick check for firmware work, a
+repeatable workload for automation, or reference material for
+validation. Only the validation role creates downstream change-control
+consequences, so the owner should not treat every use as equally
+lightweight.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  sample["one sample"]
+
+  sample --> fw["firmware developer\nfirst-run sanity check"]
+  sample --> ci["CI operator\nrepeatable workload"]
+  sample --> hv["hardware validation engineer\nreference material"]
+  hv --> change["change control consequences"]
+</pre>
+<p>The figure shows one sample splitting into three uses. For a firmware
+developer it is a first-run sanity check, for a CI operator it is a
+repeatable workload, and for a hardware validation engineer it is
+reference material. The validation path also leads to change-control
+consequences, which means that path carries more weight than the
+others.</p>
+<h3 id="what-is-actually-supported">What is actually supported</h3>
+<p>The product framing keeps examples and demos subordinate to the
+simulator core. Snapshot capture is a separate, post-run pipeline, not
+the same thing as an interactive machine. Restore is a reload boundary,
+not a loose resume. Configuration loading is permissive in some places
+and strict in others, and unsupported external devices can be skipped
+with warnings. Hardware-oracle validation is an external bench path with
+its own activation boundary, and test runs can be entitlement-gated with
+best-effort artifact writes. Those facts matter here because they define
+which example paths are lightweight and which ones carry operational or
+support expectations.</p>
+<blockquote>
+<p><strong>Figure:</strong> The support surface is tiered. Some example
+paths stay in onboarding territory, while hardware validation runs,
+keyed test runs, and bundle writes cross explicit boundaries that owners
+should not promise as always present or always complete.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  easy["lightweight example path"]
+  onboard["onboarding-only use"]
+  hil["hardware validation run"]
+  gate["activation gate"]
+  keyed["keyed test run"]
+  bundle["bundle writes"]
+  caution["do not treat as guaranteed"]
+
+  easy --> onboard
+  easy --> hil --> gate --> caution
+  easy --> keyed --> caution
+  easy --> bundle --> caution
+</pre>
+<p>The diagram separates lightweight example use from paths that cross
+boundaries. Onboarding-only use stays simple, but hardware validation
+runs, keyed test runs, and bundle writes each pass through a gate and
+end with a caution that they are not guaranteed. The consequence is that
+owners should treat the support surface as tiered rather than uniformly
+dependable.</p>
+<h3 id="why-this-matters-to-an-owner">Why this matters to an owner</h3>
+<p>This catalog lowers first-contact friction without redefining the
+product. It gives the owner more than one path into the simulator, which
+is useful when the audience is split across firmware development,
+automation, and lab validation. The same breadth also raises the
+maintenance cost: every supported example increases the chance that
+stale boards, partial artifacts, or drift in reference material will
+confuse the next reader. The right interpretation is broad support
+surface, not automatic strategic priority.</p>
+<h3 id="evidence-boundary-5">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - the product framing
+that keeps examples and docs subordinate to the deterministic simulator
+core - the run, snapshot, restore, configuration, hardware validation,
+and test paths that show how examples connect to workloads, reference
+material, and delivery - the open decisions about hardware validation
+activation, capture sidecars, and bundle completeness - the fallback
+scope rule that keeps claims repository-scoped when owner intent is
+missing</p>
+</blockquote>
+<p>Not reviewed: - a complete inventory of every example, board family,
+or collateral item - any broader product estate, hosted surface, account
+flow, or workspace experience outside the repository evidence</p>
+<p>Recheck the product overview, the example catalog, the snapshot and
+artifact outputs, and the hardware validation notes whenever examples
+are added, removed, or repurposed.</p>
+<blockquote>
+<p>Reviewed: blue-az/nano-labwired-core repository snapshot,
+Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<h1 id="appendix-attention-cards-owner-decisions-triaged">Appendix:
+Attention Cards &amp; Owner Decisions (Triaged)</h1>
+<p>This appendix registers the 53 attention/decision cards from the
+draft manual, triaged and resolved against the implementation.</p>
+<h2 id="product-scope-launch-matrix">1. Product Scope &amp; Launch
+Matrix</h2>
+<ul>
+<li><strong>Attention Cards:</strong> Broader product estate is
+unconfirmed (Card 1), Examples can shadow core product (Card 2), Run
+inventory is not complete (Card 4), Run inventory is not proven
+exhaustive (Card 11), Supporting material can swallow core model (Card
+23), Run inventory is not exhaustive (Card 31).</li>
+<li><strong>Owner Decisions:</strong> Should manual describe work as
+core engine or whole product estate? (Card 5), Should examples and board
+writeups stay in support chapters? (Card 6), Should dual-C3 WiFi branch
+be named separately? (Cards 8, 14, 33), Should board-specific examples
+stay in support material? (Cards 26).</li>
+<li><strong>Disposition:</strong>
+<ul>
+<li><em>Product Estate &amp; Simulator Core:</em> Resolved. LabWired
+Core is documented specifically as the core simulation engine of the
+broader LabWired offering. Reusable configuration definitions and core
+engine components are maintained separately from board-specific
+examples.</li>
+<li><em>Standard Matrix vs. Dual-C3 WiFi Branch:</em> Things to know.
+The standard run matrix covers the main production chips, while the
+dual-C3 WiFi branch is a specialized branch exception shortcut that does
+not alter standard family matrix expectations.</li>
+</ul></li>
+</ul>
+<h2 id="hil-validation-infrastructure">2. HIL &amp; Validation
+Infrastructure</h2>
+<ul>
+<li><strong>Attention Cards:</strong> HIL is not normal runtime (Cards
+3, 12), Bench evidence mistaken for core runtime (Card 44), Validation
+layer depends on active upkeep (Card 43).</li>
+<li><strong>Owner Decisions:</strong> Should HIL be framed as separate
+validation infrastructure? (Cards 7, 17, 32, 38, 51), Active vs. planned
+validation coverage (Card 45), Conf gate vs. supporting proof (Card 46),
+Runner/board upkeep ownership (Card 47).</li>
+<li><strong>Disposition:</strong>
+<ul>
+<li><em>HIL Scope &amp; Activation:</em> Things to know. HIL and
+hardware-oracle flows are validation/evidence machinery that run
+out-of-band and are inert until a self-hosted runner is explicitly
+registered. They are not part of the normal simulator runtime.</li>
+<li><em>Board Coverage Status:</em> Things to know. Boards listed in
+<code>boards.json</code> can be <code>planned</code> (inactive, no CI
+jobs) or <code>active</code>. Currently, <code>stm32f103-bluepill</code>
+is active, while others like <code>esp32s3-devkit</code>,
+<code>esp32c3-devkit</code>, and <code>nrf52840-dk</code> are
+planned.</li>
+</ul></li>
+</ul>
+<h2 id="debugger-gating">3. Debugger Gating</h2>
+<ul>
+<li><strong>Attention Cards:</strong> Debugger control not fully gated
+by attachment (Card 9), Debugger authority is narrower than attached
+session (Card 29).</li>
+<li><strong>Owner Decisions:</strong> Pre-launch debugger requests
+disposition (Cards 15, 36).</li>
+<li><strong>Disposition:</strong>
+<ul>
+<li><em>Flagged (Andrii’s Repo):</em> DAP/GDB commands like
+<code>continue</code>, <code>pause</code>, <code>step_back</code>, and
+<code>step_out</code> execute state mutations (or silently ignore
+failures) and return success/event responses to the debugger client even
+when the machine model is not yet attached/initialized.</li>
+</ul></li>
+</ul>
+<h2 id="permissive-configuration-loader">4. Permissive Configuration
+Loader</h2>
+<ul>
+<li><strong>Attention Cards:</strong> Configuration is permissive, not
+exhaustive (Card 10), Partial configuration can look valid (Card 20),
+Unsupported device entries can disappear quietly (Card 21), Permissive
+vs. strict configuration (Card 30).</li>
+<li><strong>Owner Decisions:</strong> Documenting unsupported external
+devices as warnings or errors (Cards 16, 24, 37, 191).</li>
+<li><strong>Disposition:</strong>
+<ul>
+<li><em>Permissive Defaults &amp; Warnings:</em> Things to know.
+Peripherals/devices not recognized by the central system builder
+(<code>from_config.rs</code>) default to <code>StubPeripheral</code> or
+are warned and skipped (e.g. unknown external devices), whereas
+missing/unresolved GPIO pins and certain CAN diagnostic tester
+connections fail closed explicitly.</li>
+</ul></li>
+</ul>
+<h2 id="test-entitlements-metering">5. Test Entitlements &amp;
+Metering</h2>
+<ul>
+<li><strong>Owner Decisions:</strong> API-key gate documentation (Cards
+18, 39), Metering transient validation failures (Cards 27, 40).</li>
+<li><strong>Disposition:</strong>
+<ul>
+<li><em>Key Gate &amp; Quota Consumption:</em> Things to know. Test
+invocation checks entitlements if <code>LABWIRED_API_KEY</code> is set.
+Quota consumption applies to all executed runs (even those terminating
+in runtime errors or assertion failures), but initialization/config
+failures that exit before the simulation loops do not consume
+cycles.</li>
+</ul></li>
+</ul>
+<h2 id="best-effort-artifact-bundles">6. Best-Effort Artifact
+Bundles</h2>
+<ul>
+<li><strong>Attention Cards:</strong> Test outputs are best-effort (Card
+13), Onboarding depends on delivery details (Card 50).</li>
+<li><strong>Owner Decisions:</strong> Success/failure bundle
+completeness as contract vs. optional diagnostics (Cards 19, 41,
+52).</li>
+<li><strong>Disposition:</strong>
+<ul>
+<li><em>Diagnostics Write Failures:</em> Things to know. File writes for
+execution result logs, snapshots, and junit XML are best-effort;
+failures to write to the filesystem print errors but do not crash the
+runner or fail the test execution.</li>
+</ul></li>
+</ul>
+<h2 id="snapshot-restore-reload-boundary">7. Snapshot Restore Reload
+Boundary</h2>
+<ul>
+<li><strong>Attention Cards:</strong> Snapshots mistaken for
+configuration (Card 22), Restore is a reload boundary (Card 28).</li>
+<li><strong>Owner Decisions:</strong> Restore snapshots as
+reload/rebuild step (Cards 25, 35), Split capture modes and panel image
+sidecars (Cards 34, 53).</li>
+<li><strong>Disposition:</strong>
+<ul>
+<li><em>Rebuild-on-Restore:</em> Things to know. Restoring a snapshot
+via the CLI <code>--snapshot</code> parameter recreates the system bus,
+re-instantiates the machine CPU wiring, and reloads the ELF firmware
+before applying the register/memory delta.</li>
+</ul></li>
+</ul>
+<h2 id="strategic-board-examples">8. Strategic Board Examples</h2>
+<ul>
+<li><strong>Attention Cards:</strong> Catalog can blur what is strategic
+(Card 48), Reference material vs. tutorials (Card 49).</li>
+<li><strong>Disposition:</strong>
+<ul>
+<li><em>Strategic Pathing:</em> Things to know. Board examples are
+separated into onboarding guides (tutorials) and target conformance
+validations (references) to ensure modifications do not break validation
+expectations.</li>
+</ul></li>
+</ul>
+</body>
+</html>

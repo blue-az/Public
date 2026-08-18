@@ -3,7 +3,7 @@
 ### White Paper 1.31 — May 2026
 
 **Author:** blue-az
-**Status:** Active draft
+**Status:** Published (addendum 2026-08-15)
 **Paper group:** Local LLM Operator Judgment
 **Predecessor:** Paper 1.30 (`LOCAL_MODELS_COST_FRONTIER_TOKENS.md`) — audit and repair are exactly where the catalog earns its keep
 **Gate-evidence packet:** `docs/AGENT_AUDIT_PROTOCOL.md`, `docs/AGY_FAILURE_MODES.md`, `docs/CLAUDE_FAILURE_MODES.md`, `docs/GEMINI_FAILURE_MODES.md`, `docs/CODEX_FAILURE_MODES.md`, `docs/AGY_HARNESS.md`
@@ -20,7 +20,7 @@ The contemporary discourse around AI reliability is dominated by the model. The 
 
 When a frontier model ships a new version, the dominant operator behavior is to evaluate the new version on the same task class that frustrated them with the previous version, observe a marginal improvement or regression, and recalibrate vendor preference. The implicit model is that reliability is *delivered by the vendor* on a release cadence the operator does not control.
 
-This model produces a specific failure pattern: the same operator hits the same class of agent failure across multiple model releases and multiple vendors, never accumulates knowledge of the failure, and re-derives the workaround each time. Project Phoenix's six-month operational history is a counterexample. The repository accumulates not "agent fixes" but a *catalog of how each agent fails*. The catalog produces *harness rules*. The harness rules prevent recurrence of named patterns across agent identity changes — across Claude versions, across the Gemini-CLI-to-Antigravity-CLI transition, and across Codex's stack-internal version churn.
+This model produces a specific failure pattern: the same operator hits the same class of agent failure across multiple model releases and multiple vendors, never accumulates knowledge of the failure, and re-derives the workaround each time. Bulkhead τ's six-month operational history is a counterexample. The repository accumulates not "agent fixes" but a *catalog of how each agent fails*. The catalog produces *harness rules*. The harness rules prevent recurrence of named patterns across agent identity changes — across Claude versions, across the Gemini-CLI-to-Antigravity-CLI transition, and across Codex's stack-internal version churn.
 
 The argument is bounded. Models *do* get better. Frontier checkpoints between 2024-Q3 and 2026-Q2 represent real capability gains. But the *operator-relevant time horizon* — the time over which a project must remain reliable — is months to years; the *model improvement time horizon* on dimensions the operator cares about (hallucination types, narration-surface drift, capture-pipeline artifacts) is uneven and partially adversarial to the operator's needs. Operator-side infrastructure, by contrast, compounds linearly with operator effort and is fully under operator control.
 
@@ -109,7 +109,7 @@ The cataloged finding is *Agy-specific in the sense that Agy took the largest me
 
 **Severity:** S2 / High.
 
-When asked to interpret a screenshot of the Antigravity CLI's `/usage` quota dashboard, Agy generated three structurally-coherent explanations ("multi-agent rotation harness for Project Phoenix," "shared telemetry dashboard for Ollama and frontier models," "subagent model resource constraints") that bore no relation to what the screenshot actually showed. All three were fabrications. The screenshot was Antigravity's own model-quota dashboard.
+When asked to interpret a screenshot of the Antigravity CLI's `/usage` quota dashboard, Agy generated three structurally-coherent explanations ("multi-agent rotation harness for Bulkhead τ," "shared telemetry dashboard for Ollama and frontier models," "subagent model resource constraints") that bore no relation to what the screenshot actually showed. All three were fabrications. The screenshot was Antigravity's own model-quota dashboard.
 
 Pattern label: **fabrication-from-nothing**. The agent generates plausible-sounding technical explanations from session context rather than reading the artifact. The catalog entry exists because the same pattern recurred in entries #3 and #1 (in different forms), and the label is now load-bearing for triage.
 
@@ -201,6 +201,20 @@ The boundary is observable. A project that finds its catalog entries clustering 
 A model release lasts a quarter. A catalog entry lasts as long as the operator maintains it. The asymmetric durability is the source of the relative reliability gain. Operators waiting for the vendor to ship the next checkpoint that will solve their hallucination problem are waiting for an event whose magnitude they cannot predict and whose dimensions they do not control. Operators maintaining a cross-audit failure-mode catalog are accumulating reliability infrastructure at a rate they fully control.
 
 The catalog is the unit of accumulated knowledge. The model is a temporary substrate. Build the catalog.
+
+---
+
+## Post-Publication Addendum — 2026-08-15
+
+The May 2026 body (especially §3 and Appendix B) describes a **cross-audit-only** filing rule: no agent authors formal entries in its own catalog. That was the living protocol when this paper froze. It is still the *preferred* check. It is no longer the *gate*.
+
+**What changed.** `docs/AGENT_AUDIT_PROTOCOL.md` (2026-08-15) is agent-agnostic. Any registered peer (Claude Code, Codex CLI, Antigravity CLI, Grok) may append to any catalog. Each entry must declare **Kind:** `cross-audit` or `self-report`. A vendor report on itself is allowed and must be labeled. The old author table (who may write whose file) is retained as **history of early authors**, not as a permission list. Grok registered as a peer (`operator-control-plane` `2b46544`) and could not file a Codex entry without a leftover “not on the author list” disclaimer; that residue is the reason the gate was lifted, not a change in the compounding thesis.
+
+**What did not change.** Catalogs still compound faster than waiting on the next checkpoint. Entries are still append-only, severity-rated, and partitioned narration / execution / mixed. Cross-audit is still the stronger genre (self-report drifts generous-to-self / severe-to-others). A later seat may challenge a self-report; the original is not edited. Paper 1.31’s body is not rewritten.
+
+**§10 survivorship note.** The body flagged that candidate self-observations can sit unpromoted forever. Labeled `self-report` formal entries close that hole without pretending they are cross-audit.
+
+**This addendum is the living-rule update.** Re-render and deploy (`publish_paper.py --paper-id models-dont-get-better-catalogs-do`) when the public HTML should match. Not done in the same turn as this source edit.
 
 ---
 

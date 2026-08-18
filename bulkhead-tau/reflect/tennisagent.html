@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TennisAgent Owner's Manual</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";mermaid.initialize({startOnLoad:true});</script>
+  <style>body{max-width:52em;margin:2em auto;font-family:sans-serif;line-height:1.5;padding:0 1em}pre.mermaid{background:none;text-align:center}</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">TennisAgent Owner's Manual</h1>
+</header>
+<h1 id="owners-manual-for-blue-aztennisagent">Owner's Manual for
+blue-az/TennisAgent</h1>
+<p><em>6 generated chapters from the reviewed repository
+snapshot</em></p>
+<blockquote>
+<p>Source:
+blue-az/TennisAgent:main@75c649bc7ce9f90af75f521d2b01c2b3d5a9e575</p>
+</blockquote>
+<hr />
+<h2 id="package-context">Package Context</h2>
+<p>This polished manual is derived from the Stewie Reflect export
+package for <code>blue-az/TennisAgent</code> at
+<code>75c649bc7ce9f90af75f521d2b01c2b3d5a9e575</code>. The standalone
+Reflect source is a scrubbed extract; the canonical code fixes noted
+below were applied in Project Phoenix at
+<code>domains/SensorAgents/TennisAgent</code> after the scan.</p>
+<p>This package contains the Owner's Manual generated by Stewie
+Reflect.</p>
+<h2 id="files">Files</h2>
+<ul>
+<li><code>index.md</code> — table of contents, attention index and owner
+decision index.</li>
+<li><code>manual-full.md</code> — the complete manual in one Markdown
+file.</li>
+<li><code>full-owner-manual.md</code> — the complete manual in one
+Markdown file.</li>
+<li><code>chapters/*.md</code> — the same manual split into chapter
+files for easier reading and agent context loading.</li>
+<li><code>figures/*.mmd</code> — Mermaid source files extracted from the
+manual figures.</li>
+<li><code>pbc/*.pbc.md</code> — draft, agent-ready Product Behavior
+Contracts derived from the manual.</li>
+<li><code>pbc/README.md</code> — notes for using the behavior contracts
+with coding agents and review workflows.</li>
+<li><code>data/bundle.json</code> — the full machine-readable manual
+bundle.</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Mermaid-capable Markdown viewers can render the diagrams from the
+fenced blocks in the Markdown files.</li>
+<li>The text fallback under each figure is included for viewers that do
+not render Mermaid.</li>
+<li>PBC files are draft behavior contracts derived from the manual, not
+a replacement for the human-readable manual.</li>
+<li>Use PBC files as agent context or review starting points; verify
+important behavior against the manual and source evidence before
+treating it as settled.</li>
+<li>This export is available only after the manual is unlocked.</li>
+</ul>
+<hr />
+<h2 id="what-this-tennis-cockpit-owns">What This Tennis Cockpit
+Owns</h2>
+<p><em>This product is a local tennis cockpit, not a generic SaaS
+dashboard. The web cockpit, REST API, terminal cockpit, and live sensor
+dashboard all revolve around sessions, swings, linked sessions, and
+local sync of Apple Watch, Zepp, Babolat, Garmin, and match-history
+data.</em></p>
+<h3 id="one-minute-snapshot">One-Minute Snapshot</h3>
+<p>This product is a local tennis cockpit, not a generic SaaS dashboard.
+The web cockpit, REST API, terminal cockpit, and live sensor dashboard
+all revolve around sessions, swings, linked sessions, and local sync of
+Apple Watch, Zepp, Babolat, Garmin, and match-history data. The owner
+needs to know two things up front: some visible results can fall back to
+mock data when the live agent stack is unavailable, and some session
+selectors do not fully scope the query or chart paths the way they
+appear to.</p>
+<h3 id="what-you-should-be-able-to-explain">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>See which surfaces are meant for browsing, querying, syncing, and
+live monitoring.</li>
+<li>Understand the owner, user, and operator roles without collapsing
+them into one job.</li>
+<li>Recognize where local devices, local databases, and relay-style
+services are required for full operation.</li>
+<li>Spot where the interface can look more scoped or live than the
+underlying request actually is.</li>
+</ul>
+<h3 id="mental-model">Mental Model</h3>
+<p>Read this as a local workbench that organizes tennis evidence, not as
+a hosted multi-tenant platform. The owner is the business reader of the
+manual. The user is the person exploring session data and charts. The
+operator is the person keeping local data flows working, syncing
+devices, and resolving linked-session setup. The web cockpit is the main
+visual surface, the REST API is the backing contract, the terminal
+cockpit is a local control surface, and the live sensor dashboard is the
+motion view. The rest of the book takes session detail, sync freshness,
+cross-surface querying, live motion, and validation apart one layer at a
+time.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner is there to understand the model,
+the user is there to browse and query in the browser, and the operator
+is there to sync and monitor motion. The surfaces are separate jobs, but
+they still depend on the same backing contract, so they should not be
+treated as one blended dashboard.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+own[Owner] -. reads the map .-> web[Web cockpit]
+usr[User] -->|browsing and querying| web
+op[Operator] -->|syncing and local control| term[Terminal cockpit]
+op -->|live monitoring| live[Live motion dashboard]
+web --> srv[Server contract]
+term --> srv
+live --> srv
+</pre>
+<p>The diagram shows the owner reading the map of the system, the user
+working in the web cockpit for browsing and querying, and the operator
+using the terminal cockpit for syncing and the live motion dashboard for
+monitoring. The web, terminal, and live surfaces all connect back to the
+same server contract, which means each surface has a distinct job even
+though they rely on shared backing.</p>
+<h3 id="how-it-works">How It Works</h3>
+<p>At the top level, the docs frame the product as a browser-plus-API
+cockpit. Startup can populate sessions and data sources from the API,
+but the failure treatment is not uniform: an empty or offline session
+selector is not the same as the data-source warning. Querying and
+charting are separate paths, and neither is fully guaranteed to inherit
+the visible session selection. Metrics do stay session-bound. The
+terminal cockpit seeds its session list from local Apple Watch and Zepp
+databases, but that selection is display-only for execution.
+Plain-language sync commands map into dedicated handler paths. The live
+dashboard opens a local HTML surface and depends on local reachability
+and relay behavior.</p>
+<blockquote>
+<p><strong>Figure:</strong> A screen can look healthy even when the live
+engine is missing, because the cockpit can still return synthetic
+results. The owner should treat visible output as potentially
+fallback-backed unless the live path is confirmed.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+u[User] --> c[Startup, query, and chart screens]
+c -->|live backing available| live[Live engine]
+live -->|real results| c
+c -.->|engine does not load| fake[Synthetic results]
+fake -->|appears normal| c
+</pre>
+<p>The diagram shows the cockpit screens on one side and the live engine
+on the other. When the live engine is available, real results flow back
+to the screens. When it does not load, the cockpit can still show
+synthetic results that look normal. That means a working startup, query,
+or chart screen does not prove the output is live-backed.</p>
+<h3 id="verified-facts">Verified Facts</h3>
+<p>The owner-facing docs say to start the API server before the Dash
+app. When the live-agent stack is unavailable, the API can return canned
+sessions, query responses, tool lists, raw data, and chart configs
+instead of live-backed values. The web query path posts only the
+instruction text. The metrics panel refuses to fetch until a session is
+selected. The TUI starts from local Apple Watch and Zepp session data
+and keeps the current session in display state only. Apple Watch sync is
+delta-based and reports only newly observed session IDs. Phone sync
+verifies ADB authorization and SQLite integrity before it counts as
+successful. Garmin and match-history merges back up, rewrite, and verify
+the canonical CSV. The live dashboard has its own discovery list and
+reconnect behavior, so the launcher and browser client can drift apart
+if that list changes.</p>
+<blockquote>
+<p><strong>Figure:</strong> Only the metrics path is genuinely narrowed
+by the selected session. The query and chart paths keep the selector
+visible but can still execute without sending that session through, so
+the owner must not read every output as session-specific.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+subgraph A[Truly session-bound]
+direction TB
+s1[Selected session] --> m[Metrics panel]
+m --> r1[Fetch uses that session]
+end
+subgraph B[Looks session-scoped]
+direction TB
+s2[Visible session stays in view] --> q[Browser query]
+s2 --> c[Browser chart]
+s2 --> t[Terminal query]
+q --> r2[Execution gets only the instruction]
+c --> r2
+t --> r2
+end
+</pre>
+<p>The comparison shows two branches. The metrics panel uses the
+selected session and fetches session-bound data. The browser query,
+browser chart, and terminal query paths keep the selected session
+visible in the interface but do not necessarily pass it into execution.
+The result is that metrics are truly session-bound, while the other
+paths can only look session-scoped.</p>
+<h3 id="strengths">Strengths</h3>
+<p>This is not a hidden black box. The docs name the client-server
+shape. Session-gated metrics reduce one class of accidental broad reads.
+The sync and merge flows include normalization, backup, and verification
+steps. The live dashboard tries to recover from disconnects instead of
+silently stalling. Plain-language sync commands make operator entry
+points discoverable.</p>
+<h2 id="sessions-swings-and-linked-sessions">Sessions, Swings, and
+Linked Sessions</h2>
+<p><em>This chapter explains the product through one activity at a time:
+a session is the thing you browse and compare, the swing-level motion
+records stay inside that session story, and a linked session is the
+bridge when two source recordings should be read together.</em></p>
+<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
+<p>This chapter explains the product through one activity at a time: a
+session is the thing you browse and compare, the swing-level motion
+records stay inside that session story, and a linked session is the
+bridge when two source recordings should be read together. The reviewed
+code also shows that Apple Watch, Zepp, Babolat, Garmin, and match
+history do not all behave the same way, so the product is not treating
+every source as an equal copy of the same record. It also shows a
+boundary that matters to an owner: some views really do follow the
+selected session, while others can still run without that choice
+reaching execution, so this chapter is about where the session story is
+real and where it only looks real on screen.</p>
+<h3 id="what-you-should-be-able-to-explain-1">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain why session is the main unit of browsing and comparison, how
+linked sessions connect overlapping recordings, and where the smaller
+motion records fit in that story.</li>
+<li>Explain which browser and terminal paths actually respect selected
+session state and which ones do not.</li>
+<li>Explain how linked-session state is discovered and written, and why
+overlap plus operator-managed setup matters.</li>
+<li>Explain how Apple Watch, Zepp, Babolat, Garmin, and match history
+contribute unevenly to the session record.</li>
+</ul>
+<h3 id="the-session-story">The session story</h3>
+<h2 id="session-first">Session first</h2>
+<p>A session is the level at which the product expects browsing and
+comparison to happen. The owner should think of it as the story the
+cockpit is trying to tell about one stretch of play, not as a loose
+label attached to raw source data. That matters because once session
+becomes the unit, every comparison starts with the same question: which
+recorded story are we actually looking at? The reviewed evidence already
+points in that direction in the metrics path, which asks for a selected
+session rather than pretending there is one global summary for
+everything. The boundary is just as important as the rule: a session is
+not the same thing as every source record, and the product does not
+promise that every view stays session-bound.</p>
+<h2 id="linking-as-a-bridge">Linking as a bridge</h2>
+<p>A linked session is the bridge when two recordings should be read as
+one story. It is not the default state. The linking idea only makes
+sense when there is real overlap between recordings, because overlap is
+the signal that two captures are describing the same activity rather
+than separate ones. That overlap rule protects the owner from collapsing
+unrelated sessions into one comparison unit just because the data looks
+similar at a glance.</p>
+<p>The other part of the boundary is authority. The reviewed evidence
+shows more than one way that link state can be written, and it does not
+settle which writer is the single source of truth. So the safe mental
+model is not "links appear automatically when the data exists." The
+safer model is "a supported write flow may have to establish the link
+before the product treats the pair as one combined story." In practice,
+that means an operator may need to create the link through the product's
+intended write path rather than assuming the relationship is inferred
+everywhere from overlap alone.</p>
+<p>Example: if the same match is captured by two different recordings,
+and those recordings overlap in time, the link lets the owner compare
+them together instead of treating each one as a separate account of the
+event. If the overlap is missing, or if no link was written, the product
+should be read as showing two separate stories, even if the subject
+matter looks related.</p>
+<h2 id="sources-are-normalized-differently">Sources are normalized
+differently</h2>
+<p>The last mistake to avoid is assuming every source contributes the
+same shape of data. They do not. Apple Watch sync is incremental and
+reports only newly observed session IDs, so it refreshes local inventory
+without restating the whole history. Phone pulls are stricter: they
+depend on an authorized device and on verification of the pulled
+database before the result is accepted. Garmin merges rewrite the
+historical activity file after normalizing missing fields and removing
+duplicates by date, while match-history imports reconstruct records from
+raw text, skip walkovers and forfeits, infer a year when needed, and
+deduplicate by tournament, date, and opponent.</p>
+<p>For the owner, the consequence is that comparison quality depends on
+the source path that produced the session, not just on the session label
+itself. A session that came from an incremental watch sync, a phone
+pull, a Garmin history rewrite, or a match-history reconstruction can
+all belong to the same cockpit story, but each reaches comparison
+through a different normalization step and with different failure
+boundaries. The product is therefore best understood as comparing
+prepared session stories, not as mirroring every device or import format
+in the same way.</p>
+<blockquote>
+<p><strong>Figure:</strong> Owners should read the session as the unit
+that collects prepared records: source imports are normalized into it,
+swing-level motion stays within it, and linked sessions only connect
+recordings that overlap.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Apple Watch record] -->|normalized into| S[Session story]
+  P[Phone pull] -->|normalized into| S
+  G[Garmin merge] -->|normalized into| S
+  H[Match history] -->|normalized into| S
+  M[Swing-level motion records] -->|stay inside| S
+  L[Linked session] -->|bridges overlapping recordings| S
+</pre>
+<p>Apple Watch records, phone pulls, Garmin merges, and match history
+all feed source records into one prepared session story. Swing-level
+motion records remain inside that session story. A linked session is the
+bridge that lets overlapping recordings be read together. The owner
+consequence is that comparison happens at the session level, not by
+treating every raw source as a separate unit.</p>
+<h3 id="where-session-state-actually-matters">Where session state
+actually matters</h3>
+<p>Session state is not treated as a single thing across the cockpit. In
+the reviewed flows, the visible session selector can be real in one
+place and only decorative in another, so the owner has to judge each
+surface on its own terms instead of assuming that one chosen session
+automatically governs the rest of the request path.</p>
+<p>That distinction starts at startup. The browser reads session
+inventory and data-source status separately, which means the two
+failures do not collapse into the same empty screen. If session loading
+fails, the session side can go offline with an empty selector. If
+data-source loading fails, the browser can still have sessions but show
+a warning about sources. The consequence for the owner is practical: an
+empty selector is not the same problem as a source warning, and each
+points to a different part of the cockpit being unavailable. The
+boundary is also important. This tells you how the startup experience is
+divided, but it does not prove that every warning is always surfaced
+with the same wording or prominence.</p>
+<p>The query path is looser. The browser sends only the raw instruction
+text into execution. On the live-agent branch, that instruction is
+parsed and then auto-executed by default unless auto execution is turned
+off. If the agent modules do not load, the route stops being live-backed
+and returns canned output instead. For the owner, the important effect
+is that a user can think they are querying within a selected session
+while the backend is actually responding to the text alone. That means
+session choice is not a guarantee of scoping in this path; it is only a
+guarantee if the request handling is explicitly threaded with session
+context. The reviewed evidence did not see that threading in the browser
+query flow.</p>
+<p>Charts are similar, but in a different way. The chart fetch path does
+not inherit the selected session through the direct fetch branch, so the
+visible selector does not reliably control what chart comes back. The
+browser can pass chart type and color scheme while leaving the session
+out of the actual fetch, which means the chart may be rendered from a
+broader or different context than the one the user has in view. The
+owner consequence is straightforward: a chart can look session-specific
+on screen while coming from a request that was not narrowed by that
+session. The boundary matters here too. The reviewed material shows the
+gap in the request shape, but it does not establish whether every chart
+result is wrong; only that the selected session is not carried through
+that branch by default.</p>
+<p>The TUI follows the same general pattern of separation between
+display and execution. Its selector is built from local Apple Watch and
+Zepp databases and includes an All Sessions option, but the chosen
+session stays in UI state rather than being passed into the execution
+path. The operator can therefore browse with a selected session visible
+while the query handler still receives only the raw text. In plain
+terms, the terminal lets the operator point at a session for the screen,
+but that choice does not necessarily narrow what the backend runs. The
+limitation is not about whether local data exists; it is about where the
+selected session is actually carried after selection.</p>
+<p>The table below condenses the surface-by-surface difference. Read it
+as a check on scope, not as a description of one universal session
+rule.</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>How session state is handled</th>
+<th>What the owner experiences when session state is missing or
+ignored</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Browser startup</td>
+<td>Session inventory and data-source status are loaded separately, with
+different fallback behavior for each.</td>
+<td>The session side can go empty or offline while data sources still
+show a warning, so one failure does not mean the whole cockpit
+failed.</td>
+</tr>
+<tr>
+<td>Browser query execution</td>
+<td>The request carries only the raw instruction; the live-agent branch
+auto-executes by default unless disabled, and a non-loading agent stack
+returns canned output.</td>
+<td>A query can run without the visible session narrowing the backend
+request, so the result may not match the session shown in the
+cockpit.</td>
+</tr>
+<tr>
+<td>Browser chart retrieval</td>
+<td>The direct fetch branch does not inherit the selected session, so
+the visible selector does not reliably reach the chart request.</td>
+<td>The owner can see a chart that is not constrained by the selected
+session, unless the chart result itself happens to preserve that
+context.</td>
+</tr>
+<tr>
+<td>TUI query flow</td>
+<td>The selector is built from local Apple Watch and Zepp databases, but
+the selected session stays in UI state and is not passed into
+execution.</td>
+<td>The operator can believe a chosen session is active while the
+backend still runs from the raw query alone.</td>
+</tr>
+</tbody>
+</table>
+<p>What this means operationally is that the session story is real, but
+it is not uniformly enforced. Startup tells you whether sessions and
+sources are available. Query execution may ignore the visible session
+unless that context is explicitly carried. Chart retrieval can drift
+even when the user has a session selected. The terminal keeps the same
+basic split between what is shown and what is executed. For an owner,
+that is the key boundary: treat the session selector as meaningful only
+after checking whether that specific surface actually uses it.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should not assume the visible
+selector scopes every surface. Metrics stays tied to the selected
+session here, but startup, query, chart, and terminal paths can still
+reach execution without that context.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  subgraph A[Selected session reaches here]
+    V[Visible session]
+    M[Metrics]
+    V --> M
+  end
+
+  subgraph B[Visible session may not reach here]
+    S[Startup]
+    Q[Query]
+    C[Chart]
+    T[Terminal]
+    X[Execution]
+    S --> X
+    Q --> X
+    C --> X
+    T --> X
+  end
+
+  V -.-> S
+  V -.-> Q
+  V -.-> C
+  V -.-> T
+</pre>
+<p>The diagram splits the cockpit into one path where the selected
+session really reaches metrics, and other paths where the session can be
+shown but not carried into the work being run. Startup, query, chart,
+and terminal can therefore diverge from the visible selector. The
+consequence is that the selector only means session-scoped output when
+that specific surface threads the session through.</p>
+<h3 id="what-the-reviewed-evidence-proves">What the reviewed evidence
+proves</h3>
+<h3 id="the-terminal-selector-is-intentionally-narrow">The terminal
+selector is intentionally narrow</h3>
+<p>The reviewed evidence proves that the terminal session selector is
+not trying to be a complete archive. It is built from local Apple Watch
+and Zepp data, it always starts with an All Sessions choice, and it is
+capped to the recent 15 local entries. That matters because the selector
+is a browsing convenience, not a guarantee that every locally known
+session is surfaced at once. In practice, the owner should read it as a
+recent-window chooser: useful for quick work, but not the same thing as
+the full session inventory.</p>
+<p>The boundary is important. The evidence shows the selector limit and
+the prepended All Sessions option, but it does not prove that older
+sessions disappear from the system itself. It only proves that this
+particular selection control does not expose more than the recent slice.
+A concrete case makes the consequence clear: if an operator has 40 local
+sessions, the terminal picker will still present All Sessions first and
+then only the latest 15 entries after it. Anything older may still exist
+locally, but it is outside this selector’s immediate reach.</p>
+<h3 id="linked-session-writing-is-not-a-single-path">Linked-session
+writing is not a single path</h3>
+<p>The reviewed snapshot also proves that linked-session persistence is
+not confined to one route. It shows a direct saver for linked-session
+records and a separate auto-save path that can write new, non-duplicate
+links when the detector finds them. That is enough to say the writer
+inventory is incomplete: there is more than one way for canonical link
+state to be written, and the reviewed material does not establish that
+these are the only writers.</p>
+<p>For the owner, the consequence is straightforward: linked-session
+state should be treated as multi-route until the authority question is
+settled. A link can be created by a direct save path, and the agentic
+path can also persist a link after deduplication, so downstream
+reasoning cannot assume a single exclusive writer. The boundary is
+equally important. The evidence does not prove which writer is
+authoritative, whether both are always active, or whether additional
+legacy writers exist outside the reviewed snapshot. In other words, the
+product can write linked sessions through more than one observed route,
+but the reviewed material stops short of proving the full persistence
+map.</p>
+<h3 id="the-documentation-presents-a-client-server-launch-order">The
+documentation presents a client-server launch order</h3>
+<p>The owner-facing documentation frames the product as a web-native
+Dash cockpit backed by Flask. It also lays out an API-first launch
+order: start the API server before the Dash app, and use the documented
+ports and REST endpoints as the published operating surface. That
+framing is not just cosmetic. It tells the owner that the browser
+cockpit is meant to sit on top of a separate API layer, rather than
+acting like a single self-contained script.</p>
+<p>The practical consequence is that startup order is part of the
+supported operating model. If the API is not up first, the web cockpit
+is not being launched in the order the documentation describes. A simple
+example: an operator following the README should expect to bring up the
+API service, then open the Dash cockpit against it, and use the
+published endpoints and ports as the coordination points between the
+two. The boundary here is that this is documentation framing, not a
+runtime proof of every branch. The reviewed evidence establishes how the
+README presents the system and how it tells the owner to start it, but
+it does not by itself prove that every execution path always behaves
+exactly that way.</p>
+<blockquote>
+<p><strong>Figure:</strong> Overlap is only the starting point. The
+system can persist a linked session through more than one observed
+writer, so the owner cannot assume one canonical write path has been
+settled.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Overlap found
+  Overlap found --> Candidate link : overlap detected
+  Candidate link --> Direct save : direct write
+  Candidate link --> Auto save : helper write
+  Direct save --> Stored link : persists
+  Auto save --> Stored link : persists
+  Stored link --> [*]
+  note right of Candidate link
+    Canonical writer is not settled
+  end note
+</pre>
+<p>A possible overlap becomes a candidate link, then either the direct
+save path or the helper auto-save path can write the link into storage.
+Both paths lead to a stored link, and the reviewed evidence does not
+settle which writer is authoritative. The consequence is that
+linked-session history should be treated as multi-route until the write
+authority is confirmed.</p>
+<h3 id="what-is-genuinely-solid-here">What is genuinely solid here</h3>
+<h3 id="session-bound-metrics">Session-bound metrics</h3>
+<p>One of the clearest strengths in this part of the cockpit is that the
+metrics panel does not behave like a global summary. It waits for a
+selected session and then asks only about that session, which means the
+panel is acting as a session-scoped read path rather than a catch-all
+dashboard. That matters for an owner because it keeps the number you are
+reading attached to the activity you actually chose, instead of quietly
+blending in unrelated history. In practice, this reduces a common source
+of false confidence: if you are checking one practice block, the panel
+is not free to answer from the whole archive.</p>
+<p>The boundary is important too. This strength applies to the metrics
+flow specifically; it does not prove that every other surface in the
+product is equally session-tied. The reviewed evidence shows one
+important place where the session choice is honored, and that is still
+valuable even if other paths need separate scrutiny. A concrete example
+is a user selecting a single practice session after an afternoon hit and
+then opening metrics to compare serve count or motion totals for that
+session alone. The panel should stay inside that frame, which is exactly
+the sort of behavior an owner wants from a comparison tool.</p>
+<h3 id="overlap-as-a-sensible-basis">Overlap as a sensible basis</h3>
+<p>Linked-session detection also has a solid foundation: it starts from
+overlap windows, and when an Apple Watch session has no end time it
+falls back in a way that still gives the system a basis for association.
+That is a sensible design choice because the product is trying to
+connect recordings that belong to the same real-world activity, and
+overlap is the most defensible first signal for that. If two source
+records cover the same time span, the system has something concrete to
+compare before it decides they belong together.</p>
+<p>The fallback for a missing watch end time is especially important
+because real source data is not always neat. A recording that never
+closes cleanly would otherwise leave the linking logic with no obvious
+stopping point. By having a fallback, the product can still attempt a
+link instead of dropping the session on the floor just because the
+source was incomplete. For an owner, that means the system is more
+likely to preserve a usable combined story when one source is messy. The
+limit is also clear: the evidence supports overlap-based association
+with a fallback, not perfect source reconciliation, and it does not
+establish that every possible edge case will be linked correctly.</p>
+<p>A simple scenario shows why this matters. Suppose an Apple Watch
+recording runs long and never records a clean end, while another source
+captures the same time block normally. A purely rigid matcher could fail
+to relate them at all. The reviewed behavior instead gives the system a
+practical route to say, in effect, these records still appear to
+describe the same activity, so keep them eligible for linking.</p>
+<h3 id="incremental-apple-watch-sync">Incremental Apple Watch sync</h3>
+<p>Apple Watch sync is also strong in a different way: it is
+incremental. The service snapshots the local session inventory before
+sync, refreshes the source, and then reports only newly observed session
+IDs. That means the sync flow preserves existing local reporting state
+instead of rewriting the whole session list every time. For an owner,
+this is a real operational benefit because it keeps sync output narrow
+and legible: you can see what changed without losing the sense of what
+was already there.</p>
+<p>This is not just a presentation choice. Incremental reporting reduces
+churn in the operator’s mental model and makes it easier to notice
+genuine additions. If a new watch session arrives overnight, the sync
+result can point directly to that new item rather than repeating the
+entire catalog. That makes the sync result more actionable, especially
+when the local store already contains many sessions. The tradeoff is
+that this is still dependent on the external Mac server being reachable,
+so the mechanism is robust in its accounting but not independent of the
+source being available.</p>
+<p>Taken together, these three behaviors give the session story real
+weight: at least one important read path is truly session-gated, link
+discovery has a meaningful overlap basis with a fallback for incomplete
+Apple Watch records, and Apple Watch sync reports change incrementally
+instead of pretending every refresh is a full rewrite. Those are the
+kinds of implementation details that make a cockpit trustworthy to
+operate, even before the remaining chapter boundaries are addressed.</p>
+<h2 id="keeping-local-tennis-data-fresh">Keeping Local Tennis Data
+Fresh</h2>
+<p><em>This chapter is about the parts of the cockpit that keep your
+tennis data current: the Apple Watch pull, the Zepp and Babolat phone
+pull, the Garmin and match-history rewrites, and the linked-session
+state that later makes comparisons useful. It is built from the code and
+docs, so it shows what the product does today, not what you may want it
+to mean.</em></p>
+<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
+<p>This chapter is about the parts of the cockpit that keep your tennis
+data current: the Apple Watch pull, the Zepp and Babolat phone pull, the
+Garmin and match-history rewrites, and the linked-session state that
+later makes comparisons useful. It is built from the code and docs, so
+it shows what the product does today, not what you may want it to mean.
+The code does not show one universal refresh button; freshness depends
+on a reachable Mac server, an authorized Android device, local files or
+databases, and source-specific merge rules.</p>
+<h3 id="what-you-should-be-able-to-explain-2">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain which source is refreshed by which path, and why there is no
+single global refresh.</li>
+<li>Describe what must be true before Apple Watch, phone, Garmin, or
+match-history sync can succeed.</li>
+<li>Distinguish incremental sync from canonical rewrite and post-write
+verification.</li>
+<li>Spot where freshness can drift or stall because one source is
+current while another is not.</li>
+<li>Name the link-state choices that affect later session
+comparison.</li>
+</ul>
+<h3 id="freshness-is-managed-per-source">Freshness Is Managed Per
+Source</h3>
+<p>Freshness in this cockpit is not one thing that either exists or does
+not. It is a set of separate local relationships to separate sources,
+and each source becomes current through its own path. Apple Watch, phone
+databases, Garmin, and match history do not share a single refresh
+state, so the owner should expect them to drift independently. One
+source can be up to date while another is stale, and that is normal for
+this product rather than a sign that the whole cockpit has failed.</p>
+<h3 id="separate-freshness-buckets">Separate freshness buckets</h3>
+<p>The practical consequence of this split is that each source answers a
+different question. Apple Watch sync updates the local session inventory
+incrementally: it brings in newly observed sessions instead of
+re-declaring the whole set. Phone sync does a different job again,
+pulling databases from an authorized device and judging each database by
+whether it verifies cleanly. Garmin merge and match-history merge go
+further still: they rebuild a canonical history file rather than simply
+layering on another transient import. Those flows can improve the local
+record, but they do not mean the same thing as a live feed becoming
+current.</p>
+<p>For the owner, that means freshness is not measured by asking whether
+the cockpit has been updated somewhere in general. It is measured by
+asking which source was refreshed, what kind of refresh it used, and
+whether that refresh was incremental or a rewrite. If an Apple Watch
+pull succeeds, the session inventory may gain new entries even though
+the Garmin history remains untouched. If a history merge succeeds, the
+canonical record may be rebuilt even though the watch or phone source
+has not changed at all. The right mental model is therefore one of
+separate ledgers, not one universal timeline.</p>
+<h3 id="canonical-history-is-different-from-local-arrival">Canonical
+history is different from local arrival</h3>
+<p>Some workflows only add or expose new local records. Others rebuild
+the canonical history file and then verify that the write landed
+cleanly. That difference matters because a rewrite changes the product’s
+source of truth in a way that an incremental pull does not. An
+incremental source can make the cockpit more complete without replacing
+what was already there; a canonical rewrite can replace the history the
+owner relies on for later review.</p>
+<p>Linked-session state sits beside that, not inside it. The reviewed
+evidence shows linked-session persistence as a separate reconciliation
+layer used later for comparison, with more than one possible write path.
+The owner should think of that layer as downstream of source freshness,
+not as the freshness mechanism itself. In other words, a source can be
+current and still not be fully comparable until linked-session state is
+present and coherent.</p>
+<p>A concrete example makes the split visible. Suppose the operator
+refreshes Apple Watch and sees new session IDs appear locally. That does
+not mean the Garmin history has been rebuilt, or that linked sessions
+are ready for comparison. The watch inventory may now be fresher, but
+the later comparison step can still be limited by older canonical
+history or unresolved linkage state.</p>
+<h3 id="reachability-is-part-of-the-model">Reachability is part of the
+model</h3>
+<p>A source is only as fresh as the external chain that can reach it.
+That is not a hidden implementation detail; it is part of the product
+model the owner has to operate against. Apple Watch sync depends on
+reaching a Mac server. Phone sync depends on an authorized Android
+connection. Garmin and match-history merges depend on local source files
+or exports being available to rewrite. If any of those prerequisites are
+missing, the source is not merely delayed; it is blocked from becoming
+current.</p>
+<p>This boundary is important because it keeps freshness honest. The
+cockpit cannot treat a source as refreshed just because the operator
+asked for it. It has to be able to reach the host, read the local data,
+or verify the write that followed. That is why the same overall product
+can feel partly fresh and partly old at the same time: freshness is
+distributed, and each source stops at its own prerequisite boundary.</p>
+<p>The mental rule for the owner is simple: ask which source is current,
+not whether the cockpit is current. Then ask what kind of update that
+source used, and whether the external prerequisite chain was actually
+available. That framing explains why the product can show new watch
+sessions, an unchanged phone database, a rebuilt Garmin history, and
+still incomplete linked-session comparisons without any
+contradiction.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat freshness as four
+separate ledgers, not one global switch. A success in one path does not
+mean the others moved, so a partly fresh cockpit is expected rather than
+contradictory.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  R["No shared refresh state"]
+  W["Apple Watch pull"]
+  P["Phone pull"]
+  G["Garmin merge"]
+  M["Match history merge"]
+  S["Session inventory"]
+  D["Phone records"]
+  H["Canonical history"]
+  R --> W
+  R --> P
+  R --> G
+  R --> M
+  W --> S
+  P --> D
+  G --> H
+  M --> H
+</pre>
+<p>Freshness is shown as separate paths for Apple Watch, phone, Garmin,
+and match history. Each source updates its own local record, and there
+is no shared refresh state that moves all of them together. The
+consequence for the owner is that one source can be current while
+another is still stale.</p>
+<h3 id="how-freshness-moves-through-the-cockpit">How Freshness Moves
+Through the Cockpit</h3>
+<h2 id="plain-language-routing">Plain-Language Routing</h2>
+<p>The operator does not start from a single refresh switch.
+Plain-language requests for sync, link, merge, and live-dashboard
+actions are first translated into stable intent types, then handed to
+the matching handler. That matters because freshness is controlled by
+the intent map, not by a hidden universal refresh: what the operator can
+ask for, and what the cockpit can complete, are determined source by
+source. The reviewed map also shows a batch path that chains multiple
+source actions, so one request can coordinate more than one refresh step
+without making the operator repeat each source manually. The boundary is
+straightforward: the evidence confirms the routing and the batch shape,
+but it does not prove that every supported phrase was listed.</p>
+<h2 id="source-gates-in-order">Source Gates, In Order</h2>
+<p>A source counts as current only after its own gate has cleared and
+its own completion signal has happened. The watch path depends on a
+reachable Mac server and refreshes by comparing the pre-sync local
+inventory with the refreshed database; the phone path stops unless ADB
+reports a connected, authorized device; Garmin and match history both
+move by backing up a historical file, rewriting it, and then checking
+the result. These are not cosmetic differences. They decide whether a
+flow is incremental, whether it is a destructive rewrite, and what the
+operator gets back when it finishes.</p>
+<table>
+<thead>
+<tr>
+<th>Source flow</th>
+<th>Prerequisite or gate</th>
+<th>What it does to local records</th>
+<th>How success is recognized</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Apple Watch sync</td>
+<td>The Mac server must be reachable, and the local session inventory is
+compared before the pull.</td>
+<td>Refreshes the underlying database and reports only newly observed
+session IDs instead of rebuilding the whole list.</td>
+<td>The not-modified path counts as success, and the result contains
+only new session IDs.</td>
+</tr>
+<tr>
+<td>Phone sync</td>
+<td>ADB must report a connected, authorized device.</td>
+<td>Pulls each database locally and writes the file on the operator's
+machine.</td>
+<td>Each database passes SQLite verification.</td>
+</tr>
+<tr>
+<td>Garmin merge</td>
+<td>Garmin CSV input must be available, and the historical CSV is backed
+up before rewrite.</td>
+<td>Normalizes missing fields to dashes, deduplicates by date, backs up
+the historical CSV, and rewrites it.</td>
+<td>The post-write row and column counts match expectations.</td>
+</tr>
+<tr>
+<td>Match-history merge</td>
+<td>Raw export text must be available, and the historical CSV is backed
+up before rewrite.</td>
+<td>Parses raw export text, skips walkovers and forfeits, infers the
+year when needed, deduplicates by tournament, date, and opponent, backs
+up the historical CSV, and rewrites it.</td>
+<td>The rewritten history verifies successfully.</td>
+</tr>
+</tbody>
+</table>
+<p>Read the rows as different meanings of current. Apple Watch is
+current when it emits only new session IDs after the database refresh.
+Phone sync is current when each pulled database survives verification.
+Garmin and match history are current only after the rewritten history
+file passes its post-write check. That is why a batch request can finish
+with one source done and another still pending: the cockpit is waiting
+on separate completion signals, not a shared global timer.</p>
+<p>A concrete example makes the difference clear. If the operator asks
+for a multi-source refresh before a match, the watch path may return
+only a few newly seen sessions, the phone path may refuse to proceed
+because the device is not authorized, and Garmin may still rewrite and
+verify its history file. The right reading is not that refresh is broken
+globally. It is that each source reached, or failed at, its own gate on
+its own schedule.</p>
+<blockquote>
+<p><strong>Figure:</strong> Plain-language commands only choose the
+path. Each source still has to clear its own gate and finish its own
+check, so a batch request can partially succeed, stall, or complete
+unevenly.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  R["Plain-language request"] --> I["Intent type"] --> H["Matching handler"]
+  H --> W["Apple Watch: Mac server reachable, then new sessions"]
+  H --> P["Phone: device authorized, then verified pull"]
+  H --> G["Garmin: backup, rewrite, then check"]
+  H --> M["Match history: backup, rewrite, then check"]
+</pre>
+<p>A plain-language request is first turned into an intent type and then
+sent to the matching handler. From there, each source follows its own
+gate: Apple Watch needs the Mac server to be reachable, phone sync needs
+an authorized device, and Garmin plus match history need a backup,
+rewrite, and check. The consequence is that one batch can move some
+sources forward while another source stays blocked.</p>
+<h3 id="what-the-evidence-confirms">What the Evidence Confirms</h3>
+<h2 id="apple-watch-sync-is-incremental">Apple Watch Sync Is
+Incremental</h2>
+<p>The Apple Watch path is confirmed as an incremental refresh rather
+than a full reset of local state. It starts by snapshotting the session
+IDs already present, discovers the Mac server from fixed addresses,
+fetches the watch database with a not-modified-aware request, and then
+compares the pre-sync inventory with the refreshed database. The
+owner-facing consequence is simple but important: the result is
+intentionally limited to newly observed session IDs, so a successful
+refresh can be much smaller than the full local inventory. If the server
+has not changed, a not-modified response still counts as success. That
+means the path is measuring freshness by change detection, not by file
+replacement. The boundary is just as important: the reviewed evidence
+does not runtime-verify the live Mac server or the exact reachability of
+those addresses, so the claim is about the confirmed flow, not about
+today’s external network state. A practical example is a second watch
+sync run after nothing changed on the server. In that case the run
+should still succeed, but it should not invent new sessions.</p>
+<h2 id="phone-sync-fails-closed">Phone Sync Fails Closed</h2>
+<p>Phone sync has a hard gate before any local copy is trusted. The
+device must be connected and authorized through the Android bridge; if
+that check fails, the flow does not continue. When the gate passes, each
+database is pulled locally, written to the operator’s machine, and then
+marked by SQLite verification outcome. That sequence matters because the
+product does not treat a transferred file as fresh on transfer alone. It
+becomes acceptable only after the verification step says the database is
+sound. The consequence for the owner is that partial or corrupt phone
+pulls do not silently pass as current. They remain failures, even if
+bytes arrived on disk. The evidence does not runtime-verify the live
+device state, so this is a confirmed gate-and-check pattern, not a
+guarantee that any particular phone is ready right now. A concrete
+scenario is a device that is physically connected but not authorized. In
+that case the sync stops before the local file is trusted, which is the
+intended fail-closed behavior.</p>
+<h2 id="canonical-history-rebuilds-normalize-differently">Canonical
+History Rebuilds Normalize Differently</h2>
+<p>Garmin merge and match-history merge both use a backup-then-rewrite
+shape. Each one backs up the historical CSV before it overwrites
+anything, then rewrites the canonical file and verifies the result
+afterward. For the owner, that shared pattern is the important stability
+point: there is a recovery copy before the write and an integrity check
+after it. The two flows diverge in what they normalize and how they
+deduplicate. Garmin merge fills missing columns with dashes and
+deduplicates by date. Match-history merge starts from raw export text,
+skips walkovers and forfeits, infers the year when the export context
+does not make it obvious, and deduplicates by tournament, date, and
+opponent. The boundary is that these are the reviewed rules, not a
+promise that the dedupe keys are ideal. Changing the key changes what
+counts as a duplicate, and the evidence does not resolve every edge case
+that could follow. A realistic example is a Garmin import that has a
+missing field and two rows on the same date. The merge normalizes the
+missing value, collapses the duplicate date, and then verifies the
+rewritten history. A separate raw match export can only become canonical
+after the parser has decided which rows are real matches and which are
+excluded results.</p>
+<h2
+id="linked-session-persistence-has-multiple-confirmed-routes">Linked-Session
+Persistence Has Multiple Confirmed Routes</h2>
+<p>The linked-session evidence does not support a single canonical
+persistence path. It confirms an overlap-based detector, an automatic
+save route, and a separate direct writer, with the unresolved question
+being which one should be treated as authoritative. That matters because
+a reviewer cannot assume one write path covers every case or that all
+links pass through the same duplicate check. The reviewed map also
+leaves room for legacy writers outside the captured view, so the safe
+reading is plural routes with partial overlap, not one universal save
+point.</p>
+<table>
+<thead>
+<tr>
+<th>Write route</th>
+<th>What triggers it</th>
+<th>How it avoids duplicates</th>
+<th>What stays unresolved</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Overlap-based detector</td>
+<td>Overlap candidates are derived from session evidence.</td>
+<td>It works from overlap candidates before persistence; the evidence
+does not establish a fuller duplicate rule here.</td>
+<td>Whether this detector alone is sufficient to control all canonical
+writes.</td>
+</tr>
+<tr>
+<td>Automatic save path</td>
+<td>The agentic detector finds a new link and auto-save is enabled, with
+the unified database present.</td>
+<td>It deduplicates existing pairs before writing.</td>
+<td>Whether other writers can still reach the same state in parallel or
+by another path.</td>
+</tr>
+<tr>
+<td>Direct writer</td>
+<td>A direct write call is issued.</td>
+<td>The reviewed evidence does not show an additional duplicate check on
+this route.</td>
+<td>Which writer is authoritative, and whether older writers still exist
+elsewhere.</td>
+</tr>
+</tbody>
+</table>
+<p>For the owner, the table means one practical thing: linked-session
+state is not protected by a single, visible gate in the reviewed
+evidence. A link can be created because overlap was detected, because
+the auto-save path accepted a non-duplicate pair, or because a direct
+write route was used. The evidence does not let us collapse those into
+one guaranteed behavior, so later debugging has to ask which route wrote
+the pair, not just whether the pair exists. In a real review, that is
+the difference between "the link was saved" and "the link was saved
+through the path we expected."</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should not read all refreshes as
+the same kind of update. One path adds only newly observed sessions,
+another trusts a pulled file only after verification, and the history
+paths replace the canonical record after backup.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A["Apple Watch"] --> A1["Reports only new sessions"]
+  P["Phone"] --> P1["Pulled file must verify"]
+  G["Garmin or match history"] --> G1["Backup first, then rewrite"]
+</pre>
+<p>Apple Watch sync is incremental and only reports newly observed
+sessions. Phone sync pulls a file and only treats it as current after
+verification. Garmin and match history are different again: they back up
+the old file and then rewrite the canonical history. The consequence is
+that freshness can mean addition, verification, or replacement depending
+on the source.</p>
+<blockquote>
+<p><strong>Figure:</strong> Linked-session state is not shown as
+protected by one visible writer. Because more than one route can create
+the saved pair, later comparison depends on which route wrote it and
+whether that path was the one the owner expected.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  O["Overlap detector"] --> C["Candidate link"]
+  C --> D["Direct writer"]
+  C --> S["Auto-save path"]
+  D --> L["Linked session state"]
+  S --> L
+  L --> R["Later comparison"]
+</pre>
+<p>The diagram shows an overlap detector producing a candidate link,
+then two confirmed write routes: a direct writer and an auto-save path.
+Both can land in linked session state, which then feeds later
+comparison. The consequence for the owner is that linked-session
+authority is not single-path in the evidence, so debugging has to ask
+which route wrote the link.</p>
+<h3 id="what-is-solid-here">What Is Solid Here</h3>
+<h3 id="visible-paths-not-hidden-magic">Visible paths, not hidden
+magic</h3>
+<p>The strongest thing about this sync story is that the important
+actions are named and routed separately. An operator can ask for an
+Apple Watch pull, a phone pull, a Garmin merge, a match-history merge,
+or the grouped sync flow, and the system takes a source-specific path
+rather than pretending one background process can make everything fresh
+at once. That matters because stale-data diagnosis becomes a question of
+which source did not complete, not whether some invisible refresh is
+broken. The Apple Watch path is a good example of this discipline: it
+reports only newly observed sessions instead of pretending to rebuild
+the whole world, so the operator can see the refresh boundary rather
+than guessing at it. The boundary is still real, though. Explicit
+routing does not make the external source reachable, authorized, or
+current; it just makes failure legible.</p>
+<h3 id="canonical-rewrites-are-guarded">Canonical rewrites are
+guarded</h3>
+<p>The rewrite-based imports are shaped the right way for local history
+that is supposed to become canonical. Garmin and match history both back
+up the historical file before they overwrite it, and they verify the
+result after the write. That sequence gives the owner a safer failure
+mode than blind replacement: if the input is malformed, a merge key is
+too broad, or a normalization rule is wrong, the write is still a
+discrete event that can be checked afterward instead of blending into
+silent drift. This is not a guarantee that the data becomes correct. It
+is a guarantee that the rewrite is treated as a checked operation. For
+example, if a match-history import accidentally folds two rows together,
+the post-write verification is where the mismatch should surface, not a
+week later when a comparison looks suspicious.</p>
+<h3 id="one-feed-at-a-time">One feed at a time</h3>
+<p>The command layer is also a strength because it keeps source actions
+separate enough to reason about them individually. That is useful
+operationally: an owner or operator can decide whether the problem is
+with Apple Watch, a phone database, Garmin history, or match history,
+and then run the matching path instead of guessing at a hidden global
+refresh. The consequence is simpler triage and less accidental
+cross-source contamination. It also keeps the mental model honest. If
+one feed is stale, the right response is to inspect that feed's path and
+prerequisites, not to assume the others have moved with it. The limit is
+that separation of actions does not prove every possible phrase is
+supported, only that the reviewed paths are not one opaque refresh
+bucket.</p>
+<h3 id="why-this-helps-later">Why this helps later</h3>
+<p>Taken together, these traits make the cockpit easier to trust over
+time. When freshness is wrong, the operator has named paths to inspect,
+a canonical rewrite shape that checks itself after writing, and a
+source-by-source command model that keeps the search narrow. That is
+exactly what a local tennis owner needs when one feed is current and
+another is stale: not a promise that everything is always synced, but a
+system that makes the difference visible and actionable.</p>
+<h2 id="querying-sessions-across-the-cockpit">Querying Sessions Across
+the Cockpit</h2>
+<p><em>This chapter matters because it defines where stored tennis
+sessions are actually queried and where the product can drift away from
+the session the user thinks they selected. The web cockpit is the main
+place to pick a session, ask a plain-language question, and read
+summaries, charts, raw data, and tool-driven results.</em></p>
+<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
+<p>This chapter matters because it defines where stored tennis sessions
+are actually queried and where the product can drift away from the
+session the user thinks they selected. The web cockpit is the main place
+to pick a session, ask a plain-language question, and read summaries,
+charts, raw data, and tool-driven results. The terminal cockpit is a
+narrower local command surface, and the REST API is the clearest
+contract surface because it names the sessions, query outputs, tools,
+raw data, and chart responses directly.</p>
+<p>The important boundary is that these surfaces are related, but not
+identical. Metrics stay session-bound, while the reviewed query and
+chart paths can lose that session context. That means the owner should
+treat session selection as a real control only where the flow actually
+carries it forward, not as a blanket guarantee across the whole
+cockpit.</p>
+<h3 id="what-you-should-be-able-to-explain-3">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>See how the web cockpit, terminal cockpit, and REST API divide the
+work instead of assuming they are perfect mirrors.</li>
+<li>Know which outputs are genuinely session-bound and which ones can
+drift away from the visible selection.</li>
+<li>Understand when a plain-language query is only one route through the
+cockpit, not the entire product.</li>
+<li>Spot when the cockpit may be returning canned output instead of live
+data.</li>
+</ul>
+<h3 id="three-surfaces-one-stored-session-product">Three Surfaces, One
+Stored-Session Product</h3>
+<p>Stored-session work in this cockpit is split across three surfaces.
+The web cockpit is where a user usually picks a session, asks a
+question, and reads summaries, charts, raw data, or tool results. The
+terminal cockpit is a local command surface built from recent local
+sessions and an All Sessions default, but the reviewed query flow keeps
+the selected session in display state rather than using it to constrain
+execution. The REST API sits underneath the browser experience and
+exposes the clearest contract for what the product can return. The
+surfaces complement each other, but they do not promise identical
+behavior.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat the browser as the
+widest inspection surface, the terminal as a local-session surface, and
+the API as the shared contract underneath both.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  W[Web cockpit] --> P[Pick a session and ask a plain-language question]
+  W --> R[Read summaries, charts, raw data, and tool results]
+  T[Terminal cockpit] --> L[Work from local sessions]
+  T --> Q[Run a local question]
+  A[API surface] --> D[Stored-session data paths]
+  W --> A
+  T --> A
+</pre>
+<p>The web cockpit is the broad inspection surface: it lets the owner
+pick a session, ask a plain-language question, and read summaries,
+charts, raw data, and tool results. The terminal cockpit is narrower and
+works from local sessions. Both surfaces sit on top of the API surface,
+which exposes the stored-session data paths underneath them. The
+consequence is that the browser is the broadest entry point, the
+terminal is a local-session tool, and the API is the clearest contract
+layer.</p>
+<h3 id="how-a-session-becomes-a-question">How A Session Becomes A
+Question</h3>
+<p>A typical user flow begins with session selection. When the flow is
+truly session-bound, the cockpit fetches only that session’s metrics.
+The user can then issue a plain-language query. On the browser path, the
+request carries only the instruction text; when the live agent stack is
+available, the API executes the parsed plan automatically unless that
+behavior is turned off. If the live stack is unavailable, the same API
+can return canned sessions, session details, query results, tools, raw
+data, and chart configs. Charts can come from cached chart configuration
+or from a chart fetch, but the reviewed cockpit callback does not itself
+thread the selected session into that request. Raw-data inspection and
+tool-driven results are therefore separate checks, not decorations on
+the query answer.</p>
+<blockquote>
+<p><strong>Figure:</strong> Only the metrics path keeps the chosen
+session as a hard boundary; the query and chart paths can look
+session-scoped without actually staying there.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  subgraph S[Session stays attached]
+    M[Metrics panel] -->|requires a chosen session| O[Only that session]
+  end
+  subgraph D[Session can fall away]
+    Q[Browser or terminal question] -->|selected session may not travel| E[Answer path]
+    C[Direct chart request] -->|selected session may not travel| E
+    E --> R[Result can drift from the visible session]
+  end
+</pre>
+<p>The metrics panel waits for a chosen session and then fetches only
+that session. Browser questions, terminal questions, and the direct
+chart path are different: they can keep the session visible in the
+interface without carrying it into execution. The consequence is that
+metrics are genuinely session-bound, while queries and charts can drift
+away from the session the owner thinks they selected.</p>
+<h3 id="what-was-actually-confirmed">What Was Actually Confirmed</h3>
+<ul>
+<li>The browser startup reads sessions and data-source status from the
+API. If the session fetch fails, the selector falls back to an empty
+offline state. If the data-source fetch fails, the cockpit shows warning
+text instead of the list.</li>
+<li>The browser query action sends only the instruction text. The API
+can execute the parsed plan automatically on the live path, or return
+canned output when the live agent stack is missing.</li>
+<li>Chart rendering can happen from cached chart configuration or from a
+chart fetch that does not carry the selected session through the cockpit
+callback.</li>
+<li>Metrics are different. They wait for an explicit selected session
+and then fetch only that session.</li>
+<li>The terminal surface loads recent local sessions from local
+databases and always offers an All Sessions option.</li>
+</ul>
+<blockquote>
+<p><strong>Figure:</strong> Usable results in mock mode are not the same
+as live-backed results, so the product must make the mode visible before
+the owner trusts the answer.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  L[Live agent stack available?] -->|yes| V[Live output]
+  L -->|no| M[Mock output]
+  V --> T[Owner can trust the answer as live]
+  M --> T[Owner needs an explicit cue]
+</pre>
+<p>When the live agent stack is available, the cockpit can return live
+output. When it is not available, the product can still return mock
+sessions, query results, tools, raw data, and chart configs. The owner
+therefore needs an explicit cue that says whether the current result is
+live or synthetic, or the output can look more trustworthy than it
+is.</p>
+<h3 id="what-this-design-does-well">What This Design Does Well</h3>
+<p>This design gives the owner more than one way to inspect the same
+stored tennis data. The browser is the easiest place to read summaries,
+charts, and raw data. The terminal is useful when local session browsing
+matters. The API makes the product contract visible and easier to reason
+about.</p>
+<p>The strongest part is not that the surfaces are identical. It is that
+they expose different levels of depth, so a user can start with a
+plain-language question and then verify the answer in structured
+views.</p>
+<h2 id="watching-live-sensor-motion">Watching Live Sensor Motion</h2>
+<p><em>The live sensor dashboard matters because it gives the owner a
+fast way to inspect motion as it happens, instead of waiting for later
+session review. It shows rotation, acceleration, and gravity as
+real-time signals, but it sits beside stored-session analysis rather
+than replacing it. The reviewed material also shows that this surface
+depends on local launch and relay readiness.</em></p>
+<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
+<p>The live sensor dashboard matters because it gives the owner a fast
+way to inspect motion as it happens, instead of waiting for later
+session review. It shows rotation, acceleration, and gravity as
+real-time signals, but it sits beside stored-session analysis rather
+than replacing it.</p>
+<p>The reviewed material also shows that this surface depends on local
+launch and relay readiness. The page can open before the stream is fully
+healthy, and the browser keeps its own target list and in-memory
+samples, so live monitoring needs careful boundaries.</p>
+<h3 id="what-you-should-be-able-to-explain-4">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Tell live motion apart from stored-session analysis.</li>
+<li>Recognize the live signals in scope and the local readiness it
+depends on.</li>
+<li>Spot discovery drift, transient buffering, and other ways the live
+view can mislead an operator.</li>
+<li>Know which later chapters own sessions, sync freshness,
+cross-surface queries, and trust.</li>
+</ul>
+<h3 id="why-live-motion-matters">Why Live Motion Matters</h3>
+<p>This surface is the cockpit's real-time inspection window. It is for
+watching what is happening now, not for replacing the later work of
+session interpretation.</p>
+<p>The reviewed material does not establish a one-to-one handoff from
+live traces to stored summaries. Keep those surfaces separate: live
+monitoring helps you see the moment, while the session chapters explain
+how the product turns stored data into later understanding.</p>
+<h3 id="from-launch-to-live-view">From Launch to Live View</h3>
+<p>A local launcher looks for the dashboard page, checks whether the
+local host is reachable, and opens the page in a browser. If the live
+connection is not ready yet, the browser side can still open and then
+try to connect or retry later.</p>
+<p>The browser page keeps its own target list, stores live samples in
+memory, trims them as they grow, and resets the live view when a new
+session starts. That makes the surface useful for inspection, but it
+also means the live view depends on local runtime readiness and can
+drift if the target lists do not match.</p>
+<blockquote>
+<p><strong>Figure:</strong> Opening the dashboard file is not the same
+as having a healthy live feed. The launcher can check reachability
+first, but the browser may still open before the stream is ready and
+then wait or retry.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Launcher finds the dashboard file] --> B[Launcher checks local reachability]
+  B --> C[Browser opens the page]
+  C --> D{Live feed ready?}
+  D -->|yes| E[Browser connects]
+  D -->|no| F[Browser waits and retries]
+  F --> D
+</pre>
+<p>The launcher first finds the dashboard file and checks whether the
+local host is reachable. It then opens the page in the browser. After
+the page opens, the browser checks whether the live feed is ready. If it
+is ready, the browser connects. If it is not ready, the browser waits
+and retries until the feed comes up. The owner consequence is that an
+open page does not by itself prove a healthy live connection.</p>
+<h3 id="what-the-review-confirmed">What the Review Confirmed</h3>
+<p>The reviewed material confirms three live inspection signals are in
+scope: rotation, acceleration, and gravity. It also confirms that the
+launcher probes local reachability before opening the page, while the
+browser page maintains in-memory samples and reconnects with backoff
+after a close.</p>
+<p>The owner-facing documentation frames the cockpit as a
+browser-plus-API product with a specific start order. That matters here
+because the live dashboard is not self-sufficient; it assumes local
+prerequisites are already in place.</p>
+<blockquote>
+<p><strong>Figure:</strong> The launcher and the browser client do not
+share one authoritative discovery list. If one side keeps a stale or
+duplicate target, the live view can point at the wrong place or seem
+broken for the wrong reason.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  subgraph L[Launcher side]
+    A[Launcher target list]
+    B[Opens the page]
+    A --> B
+  end
+
+  subgraph H[Browser side]
+    C[Browser target list]
+    D[Live view]
+    C --> D
+  end
+
+  B --> D
+  A -.-> C
+  C -.-> A
+  D --> E[Live relay]
+</pre>
+<p>The launcher has its own target list and opens the page from that
+list. The browser has a separate target list and uses it to reach the
+live view. The live view then talks to the live relay. Because the two
+lists are separate, a stale or duplicated target on either side can
+mislead the operator about whether the live stream is healthy.</p>
+<h3 id="where-this-surface-helps">Where This Surface Helps</h3>
+<p>This surface is good at giving immediate motion feedback without
+waiting for stored-session processing. It can also survive short
+interruptions better than a one-shot view because the browser retries
+instead of dropping the experience at the first disconnect.</p>
+<p>Used as intended, it helps the operator separate what is happening
+now from what must be analyzed later. That separation is a strength, as
+long as the owner does not mistake the live page for the full
+record.</p>
+<blockquote>
+<p><strong>Figure:</strong> The live view is an inspection surface, not
+a durable archive. It keeps samples in memory, trims them as they grow,
+and resets when a new session starts, so the owner should not read it as
+retained history.</p>
+</blockquote>
+<pre class="mermaid">
+stateDiagram-v2
+  state "In memory samples" as LiveBuffer
+  state "Trimmed buffer" as Trimmed
+  state "Session reset" as Reset
+  state "Fresh live view" as Fresh
+  [*] --> LiveBuffer
+  LiveBuffer --> Trimmed : samples grow
+  Trimmed --> LiveBuffer : more live samples arrive
+  LiveBuffer --> Reset
+  Trimmed --> Reset
+  Reset --> Fresh : new session starts
+  Fresh --> LiveBuffer : live data resumes
+</pre>
+<p>Live samples enter an in-memory buffer. As more samples arrive, the
+buffer can be trimmed, but it remains a live view rather than permanent
+storage. When a new session starts, the live view resets and then begins
+collecting again. The owner consequence is that the page is useful for
+inspection, but it does not behave like retained history.</p>
+<h2 id="trusting-what-the-cockpit-shows">Trusting What the Cockpit
+Shows</h2>
+<p><em>This chapter is about what in your tennis cockpit you can trust,
+and what still depends on the outside world. The browser cockpit,
+terminal cockpit, sync commands, and live dashboard are real entry
+points, but some of the confidence they give comes from supporting
+checks: the system can fall back to canned output when the live agent
+stack is missing, some sync and merge paths rewrite a canonical local
+record and then...</em></p>
+<h3 id="one-minute-snapshot-5">One-Minute Snapshot</h3>
+<p>This chapter is about what in your tennis cockpit you can trust, and
+what still depends on the outside world. The browser cockpit, terminal
+cockpit, sync commands, and live dashboard are real entry points, but
+some of the confidence they give comes from supporting checks: the
+system can fall back to canned output when the live agent stack is
+missing, some sync and merge paths rewrite a canonical local record and
+then verify it, and the live dashboard launch depends on host
+reachability and a websocket relay.</p>
+<p>This is built from the code and reviewed evidence, so it shows what
+the product does today, not what you intend it to be. The safe reading
+is: use the cockpit for actual work, use the validation paths to judge
+confidence, and keep the boundary visible whenever local databases,
+devices, or relay services are outside the snapshot.</p>
+<h3 id="what-you-should-be-able-to-explain-5">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain which parts of the product are primary cockpit behavior and
+which parts are supporting validation or fallback.</li>
+<li>Tell when the system can show synthetic output, and why that matters
+before acting on what the cockpit shows.</li>
+<li>Describe the main trust gates that narrow risk: session selection,
+device authorization, host reachability, and post-write
+verification.</li>
+<li>Name the unresolved trust decisions that still need an owner choice:
+mock-mode visibility, linked-session authority, and live-dashboard
+discovery.</li>
+</ul>
+<h3 id="trust-lives-at-the-boundary">Trust Lives at the Boundary</h3>
+<h2 id="trust-is-about-the-path-behind-the-screen">Trust Is About the
+Path Behind the Screen</h2>
+<p>In this product, trust is not the same thing as a clean-looking
+screen or a command that seems to finish successfully. Trust means
+matching the surface you used to the data path behind it. The browser
+cockpit, the terminal cockpit, sync commands, and the live dashboard all
+sit on top of different routes into the system, and those routes do not
+carry the same confidence boundary. Some are supported by the documented
+cockpit launch path and some reach beyond the repository into live
+devices, local databases, or relay services. For the owner, the
+consequence is simple: the thing you see is only as trustworthy as the
+path that produced it, not as trustworthy as the most polished surface
+that displayed it.</p>
+<p>That is why the manual stays scoped to the declared cockpit and sync
+surfaces. No owner-confirmed product intent was supplied before this
+run, so the safe reading is evidence-bound rather than expansive. That
+is not a disclaimer for its own sake. It is the rule that keeps the
+manual from pretending the product means more than the reviewed evidence
+can support. If the evidence shows a browser cockpit, a terminal
+cockpit, and a launch path with explicit start order, the manual can
+explain those surfaces. It cannot turn that into a broader claim about
+product purpose, deployment model, or guarantees that were never
+confirmed.</p>
+<h2 id="validation-supports-the-cockpit">Validation Supports the
+Cockpit</h2>
+<p>Supporting validation belongs behind the cockpit's main workflows,
+not in place of them. The right mental model is that validation checks
+help you judge confidence after or alongside ordinary cockpit use, but
+they do not become the front door of the product. That matters because
+the product already uses real operating surfaces for sessions, queries,
+sync, and monitoring; validation is there to answer a narrower question:
+can you believe what the cockpit just showed you, and how far does that
+belief extend?</p>
+<p>A concrete example is a sync that checks whether a connected phone is
+authorized before it pulls data, and then verifies the database after
+the pull. The operator still uses the sync as the main action. The
+verification step is what tells you whether the result deserves
+confidence. If verification fails, the pull may have happened, but it
+should not be read as a clean sync. That is the difference between a
+working workflow and a trustworthy one. The same pattern shows up in the
+live dashboard: the launcher can open the local view, but the browser
+experience still depends on whether the relay and host path are actually
+reachable. Validation helps you decide whether the visible output is
+current, partial, or merely the best fallback available.</p>
+<h2 id="external-state-extends-the-boundary">External State Extends the
+Boundary</h2>
+<p>Anything that depends on local databases, connected devices, or a
+relay or host outside the repository has to be treated as confidence
+that extends beyond the code snapshot. The repository can show you the
+intended route, but it cannot on its own prove that a phone is attached,
+that a Mac server is reachable, or that a relay is alive at the moment
+you look. That is especially important for the operator, because these
+dependencies change the meaning of a successful-looking action. A sync
+may be structurally correct and still be only partially trustworthy if
+the device was not authorized or the database check failed. A dashboard
+may open correctly and still be limited if the relay path is not
+actually connected yet.</p>
+<p>This boundary changes how the owner should read the product. If a
+view depends on live external state, treat it as a claim about the
+current condition of that state, not as a permanent property of the
+product. If a path returns a result from a local database, that result
+is only as fresh and valid as the database behind it. If a dashboard is
+launched from the local machine but depends on a separate host to feed
+live motion, the visible chart is a negotiated view, not an isolated
+fact. The manual therefore keeps a hard line between what the cockpit
+itself can present and what it can only report through a live
+dependency.</p>
+<h2 id="what-this-means-in-practice">What This Means In Practice</h2>
+<p>Suppose an operator opens the live dashboard, then a user reads a
+session summary in the browser cockpit, and later a phone sync runs
+against a connected device. The proper mental sequence is not "the
+product said it, so it is true." The proper sequence is "which surface
+produced this, what state did it depend on, and what validation or
+external check supports it?" If the dashboard depends on a relay that is
+not reachable yet, the safest interpretation is that the view is
+provisional. If the phone sync has not passed verification, the safest
+interpretation is that the local data may exist but should not be
+treated as fully trusted. If the browser or terminal cockpit is showing
+a result from a supported launch path, that still only tells you the
+cockpit rendered correctly; it does not erase the boundary around the
+data source behind it.</p>
+<p>That is the durable frame for this chapter. Trust lives where the
+product meets the outside world, and the owner should read every result
+through that boundary. Validation makes the boundary visible. External
+dependencies make the boundary real. The cockpit is still the right
+place to work, but the confidence in what it shows must be earned by the
+path that produced it.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat each cockpit surface
+as only half the story: the visible screen is primary, but trust is
+earned by the matching gate behind it. When the right check is missing,
+the same surface can still look finished while the result remains unsafe
+to rely on.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  B[Browser cockpit]
+  T[Terminal cockpit]
+  S[Sync commands]
+  L[Live dashboard]
+  Q[Session choice]
+  D[Trusted device]
+  W[Write verification]
+  H[Host reachability]
+  O[Output you can act on]
+
+  B --> Q
+  T --> Q
+  S --> D
+  S --> W
+  L --> H
+  Q --> O
+  D --> O
+  W --> O
+  H --> O
+</pre>
+<p>The browser cockpit and terminal cockpit are work surfaces, but their
+output depends on a chosen session. Sync commands are only trustworthy
+when the device is trusted and the write is verified. The live dashboard
+depends on host reachability. The consequence is that a polished screen
+is not enough on its own; the owner should judge the result by the gate
+behind it.</p>
+<h3 id="what-the-confidence-path-actually-does">What the Confidence Path
+Actually Does</h3>
+<p>The confidence path is not a single yes-or-no check. In this cockpit,
+startup can land in different fallback states, and query execution can
+fall back on a different branch again. That distinction matters because
+an empty selector, a warning, and canned output all mean different
+things about what the system actually managed to reach.</p>
+<h3 id="startup-does-not-fail-in-one-way">Startup does not fail in one
+way</h3>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Where it happens</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Session fetch fails at startup</td>
+<td>Browser cockpit startup</td>
+<td>The cockpit opens offline with an empty session selector.</td>
+</tr>
+<tr>
+<td>Data-source fetch fails at startup</td>
+<td>Browser cockpit startup</td>
+<td>The cockpit opens with a warning for the data-source side.</td>
+</tr>
+<tr>
+<td>Live agent modules are missing during query execution</td>
+<td>Browser cockpit query path</td>
+<td>The query returns canned output instead of running against live
+data.</td>
+</tr>
+</tbody>
+</table>
+<p>Read that table as three separate confidence states, not as one
+general outage. An empty selector says the browser cockpit could not
+populate sessions. A warning says the cockpit did start, but part of the
+live inventory did not load cleanly. Canned output is different again:
+the query path still answered, but it answered from a fallback branch
+rather than from the live agent stack. For the owner, that means the
+right question is not just whether the screen opened, but which part of
+the path actually had live backing when the result appeared.</p>
+<h3 id="a-visible-session-choice-is-not-the-same-as-enforced-scope">A
+visible session choice is not the same as enforced scope</h3>
+<p>The terminal cockpit does keep a visible session choice for the
+operator, and it builds that selector from local Apple Watch and Zepp
+databases. But in the reviewed query flow, that choice stays on screen
+and does not become a trust gate for execution. The command still goes
+forward as plain query text. So the operator can feel as if a selected
+session is narrowing the answer when the execution path has not actually
+received that session context. The boundary is important: the selector
+is useful for orientation, but in the reviewed path it is not the thing
+that proves the result belongs to that session.</p>
+<h3 id="the-live-dashboard-launch-is-split-in-two">The live dashboard
+launch is split in two</h3>
+<p>The live sensor dashboard also divides responsibility between launch
+and browser behavior. The launcher resolves the local HTML file, checks
+whether the Mac server is reachable, and then opens the file in a
+browser. After that, the browser client carries its own discovery list
+and its own reconnect behavior, including retry and backoff after the
+websocket closes. That means launch success is not the same as live
+stream health. A page can open while the relay is still unavailable, and
+a stale or mismatched host list can change what the operator sees once
+the page is up. The reviewed evidence also shows that the launcher and
+the browser client can carry different discovery lists, so which list
+should be authoritative remains an open decision.</p>
+<h3 id="plain-language-actions-are-explicit">Plain-language actions are
+explicit</h3>
+<p>The plain-language sync, link, merge, and live-dashboard phrases are
+not magical shortcuts. The reviewed flow first classifies the phrase
+into a specific intent, then routes it to the matching action, including
+the batch sync flow. That is a deliberate shape: the operator path is
+explicit, not implied. If a phrase is supported, it lands in a named
+action; if it is not, the reviewed map does not prove that the phrase
+list is exhaustive. For the owner, the practical consequence is that
+supported commands are visible and centralized, but the command surface
+still needs to be treated as a defined set rather than an open-ended
+natural-language promise.</p>
+<p>The main thing to keep straight is that the cockpit can be live,
+warning, offline, or synthetic at different points in the same session.
+Those states are not interchangeable, and the evidence does not support
+reading them as if they were. Mock visibility and the authoritative
+discovery list are still open decisions, so they should stay visible as
+scope boundaries rather than being smoothed over into a single trust
+story.</p>
+<blockquote>
+<p><strong>Figure:</strong> A finished-looking cockpit does not prove
+live backing. Startup can still land in a partial state, and a query can
+answer from a fallback branch, so the owner has to read the state that
+produced the screen, not just the screen itself.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart TD
+  A[Startup begins]
+  B[Sessions load]
+  C[Data sources load]
+  D[Empty selector]
+  E[Warning banner]
+  Q[Query runs]
+  R[Live answer]
+  S[Canned output]
+
+  A --> B
+  A --> C
+  B -->|sessions missing| D
+  C -->|sources missing| E
+  Q -->|live agent stack present| R
+  Q -->|live agent stack missing| S
+</pre>
+<p>Startup checks for sessions and data sources separately. If sessions
+are missing, the cockpit opens with an empty selector. If data sources
+are missing, it opens with a warning banner. Later, a query can either
+produce a live answer or fall back to canned output when the live agent
+stack is missing. The consequence is that a screen can look complete
+while still being synthetic or partial.</p>
+<blockquote>
+<p><strong>Figure:</strong> Launch success is only the first step. The
+owner still needs the browser page, the relay, and the retry behavior to
+line up, so a page that opens cleanly can still be disconnected from
+live motion.</p>
+</blockquote>
+<pre class="mermaid">
+sequenceDiagram
+  participant O as Operator
+  participant L as Launcher
+  participant P as Local page
+  participant H as Host
+  participant R as Relay
+
+  O->>L: Open the dashboard
+  L->>H: Probe reachability
+  alt Host is ready
+    L->>P: Open the local page
+    P->>R: Connect to the live stream
+    R-->>P: Send updates
+    loop After a close
+      P->>R: Retry with backoff
+    end
+  else Host is not ready
+    L-->>O: Page can open, live stream may wait
+  end
+</pre>
+<p>The operator opens the dashboard through a launcher. The launcher
+first probes whether the host is reachable. If it is, the launcher opens
+the local page, and the page connects to the live relay stream and keeps
+retrying after a close. If the host is not ready, the page may still
+open, but the live connection can wait or drift. The consequence is that
+launch success does not guarantee live stream health.</p>
+<h3 id="what-the-evidence-proves">What the Evidence Proves</h3>
+<h3 id="the-documented-cockpit-path-is-explicit">The documented cockpit
+path is explicit</h3>
+<p>The README presents the product as a web-native Dash cockpit backed
+by Flask, and it does not leave the launch sequence vague: the API is
+meant to start before the Dash app. It also lists the documented ports
+and REST endpoints, which matters because the owner is not being asked
+to infer how the pieces fit together from code alone. The evidence
+therefore supports a concrete operating picture: there is a
+browser-facing cockpit, there is a separate API behind it, and the
+documented startup order treats the API as the prerequisite surface.</p>
+<p>That is useful because it gives the owner a checkable standard. If
+the API is not up, the browser cockpit is not being operated in the
+documented state, even if the page itself loads. The boundary is also
+clear: the documentation proves the intended launch path and endpoint
+inventory, but it does not prove that every runtime environment will
+obey that order without issue. A practical example is a support person
+trying to open the cockpit after starting only the browser app. The docs
+say that is not the supported sequence, so any confusing empty state
+should be read against the missing API rather than treated as a normal
+success path.</p>
+<h3 id="metrics-only-follow-a-chosen-session">Metrics only follow a
+chosen session</h3>
+<p>The metrics panel is session-gated. The reviewed behavior shows that
+the panel waits until a session is selected, and only then requests
+metrics for that one session. In other words, the panel does not start
+from a global summary and narrow it later; it refuses to proceed without
+a session choice and then binds the request to that choice alone.</p>
+<p>For the owner, that changes how the panel should be interpreted. A
+metrics display in this cockpit is not a broad health dashboard for all
+data, but a view scoped to the session the user picked. That reduces the
+risk of reading a mixed or accidental aggregate as if it belonged to one
+athlete activity. The limit is equally important: when no session is
+selected, the panel does not fabricate a result, it prompts instead. So
+if a user opens the metrics area and sees a prompt rather than numbers,
+the correct reading is that the gating is working, not that the data
+vanished.</p>
+<p>A concrete case makes this visible. If an operator selects one
+training session from a busy day and then opens metrics, the panel
+should reflect that single session only. If they switch sessions, the
+panel should change with the selection rather than keep a stale
+aggregate from the previous choice.</p>
+<h3 id="apple-watch-sync-is-incremental-not-a-full-refresh">Apple Watch
+sync is incremental, not a full refresh</h3>
+<p>The Apple Watch sync path works from a before-and-after comparison.
+It snapshots the current local session IDs, discovers a Mac server from
+fixed IP addresses, downloads the tennis watch database with a
+freshness-preserving fetch, and then reports only session IDs that were
+newly observed after the update. The key point is not just that it
+fetches data, but that it uses the existing local inventory as the
+reference point for what counts as new.</p>
+<p>That makes the sync path delta-oriented. The owner should expect it
+to tell them what changed, not to reprint the entire known history as
+though everything were reloaded from scratch. This matters because
+incremental reporting narrows operator attention: when the sync
+completes, the important question is which sessions appeared since the
+last local snapshot, not whether the entire list was rewritten. The
+evidence also shows the path still depends on the external Mac server
+being reachable, so the trust boundary includes network and host
+availability.</p>
+<p>A simple example is enough to show the consequence. If the local
+database already contains twenty session IDs and the refreshed database
+yields two new ones, the sync result should surface those two additions
+rather than a reconstructed list of all twenty-two. If the server is
+unreachable or the database is unchanged, the path does not pretend that
+a full refresh happened anyway.</p>
+<h3
+id="phone-sync-rejects-untrusted-input-before-it-counts-as-clean">Phone
+sync rejects untrusted input before it counts as clean</h3>
+<p>Phone sync has a hard gate before any database is treated as valid:
+it refuses to continue unless ADB reports a connected and authorized
+device. Only after that check does it pull each database locally, and
+each pulled database is then verified with SQLite checks. If
+verification fails, the database is marked unsuccessful, which means the
+pull does not count as a clean sync.</p>
+<p>This is a strong trust boundary because it separates access from
+correctness. Authorization alone is not enough, and a file arriving on
+disk is not enough either. The path requires a trusted device, a local
+write, and a verification step before the owner can rely on the result.
+That protects the owner from treating a partial or corrupt pull as if it
+had the same standing as a verified one. The limit is that the reviewed
+evidence does not promise every failure will be explained in rich detail
+here; it establishes the refusal and the verification outcome, not a
+complete reporting policy.</p>
+<p>In practice, that means a bad phone pull is noisy in the right way.
+Suppose the device is connected but the downloaded database fails
+verification. The sync should not quietly blend that file into the local
+set as though it were fine. Instead, it should leave the owner with a
+failed database status, which is the correct signal that the local copy
+is not trustworthy yet.</p>
+<blockquote>
+<p><strong>Figure:</strong> Not all syncs mean the same trust contract.
+One path only reports what changed, while the others rewrite the main
+record after checks, so the owner should not treat every sync result as
+the same kind of confidence.</p>
+</blockquote>
+<pre class="mermaid">
+flowchart LR
+  A[Sync work]
+
+  subgraph Delta path
+    B[Apple Watch sync]
+    C[Reports only newly seen sessions]
+  end
+
+  subgraph Rewrite path
+    D[Phone, Garmin, and match-history syncs]
+    E[Check the input or device]
+    F[Back up and rewrite the main record]
+    G[Verify the result]
+  end
+
+  A --> B --> C
+  A --> D --> E --> F --> G
+</pre>
+<p>Apple Watch sync is incremental: it reports only newly seen sessions.
+Phone sync, Garmin merge, and match-history merge follow a
+write-after-check pattern: the input or device is checked, the main
+record is backed up and rewritten, and the result is verified. The
+consequence is that 'sync' can mean either a delta report or a
+controlled rewrite, depending on the path.</p>
+<h3 id="what-is-already-solid">What Is Already Solid</h3>
+<p>What is already solid here is not perfect completeness. It is
+restraint: the product often refuses to act as though confidence is
+already earned when it is not. That makes the system easier to trust
+because it shows its work at the edge of each sensitive path instead of
+hiding the boundary.</p>
+<h3 id="visible-gates">Visible Gates</h3>
+<p>The clearest trust pattern is that the product asks for a session, a
+device, or a reachable host before it proceeds. Metrics do not run as a
+global guess; they wait for a selected session and then fetch that
+session only. Phone sync does not pull from any connected phone; it
+stops unless the device is authorized. The live dashboard launcher does
+not pretend the live source is available; it probes reachability before
+opening the local page and tells you whether the relay is ready or will
+need another attempt. For an owner, that matters because the cockpit is
+less likely to present a confident-looking result that has no live
+footing. The limit is equally important: these gates narrow risk, but
+they do not remove the external dependency they are checking. If the
+session is missing, the device is unauthorized, or the host is
+unreachable, the system has reached the edge of what it can know
+locally.</p>
+<h3 id="recoverable-rewrites">Recoverable Rewrites</h3>
+<p>The destructive import paths are still serious operations, but they
+are not silent ones. The Garmin merge normalizes missing values, removes
+duplicates, backs up the historical file, rewrites the canonical copy,
+and then checks the row and column counts after the write. The
+match-history merge follows the same pattern with raw export text: it
+rebuilds records, skips walkovers and forfeits, infers a missing year
+when the surrounding context allows it, backs up the old history,
+rewrites it, and verifies the result. That is a strong reliability
+pattern because it turns an import into a controlled rewrite rather than
+a hidden append or an opaque replacement. For the owner, the consequence
+is recoverability: if something goes wrong, there is at least a backup
+and a post-write check instead of a quiet overwrite that looks
+successful until later. The boundary is that this is not a guarantee
+that every bad source can be repaired safely. It reduces blast radius
+and makes failure visible, but it still depends on the quality of the
+incoming file and on the rewrite rules being correct. A duplicate Garmin
+row, for example, is not just accepted; it is folded into a normalized
+history and checked after the fact.</p>
+<h3 id="incremental-apple-watch-sync-1">Incremental Apple Watch
+Sync</h3>
+<p>The Apple Watch sync path is stronger than a blind refresh because it
+narrows the change it claims. It snapshots the current local session
+inventory, refreshes from a Mac server, and reports only session IDs
+that were not already present. That makes the result easier to trust
+operationally: you can tell what was newly observed without confusing a
+no-change fetch with a failed refresh. For the owner, the value is a
+smaller and more honest change set. You do not have to read the output
+as if the entire history was reissued; you can treat it as a delta
+against what was already on disk. The boundary is that this is still
+contingent on external state. The method depends on server reachability
+and on the local inventory it captured before the pull, so it is
+incremental reporting, not an absolute statement about the whole device
+universe. A practical example is a routine sync that adds one new
+session after several unchanged ones: the output should be read as one
+new observation, not as a promise that the rest of the history was
+freshly validated at the same moment.</p>
+<h3 id="launch-order-and-surface-split">Launch Order and Surface
+Split</h3>
+<h2
+id="the-documentation-also-helps-trust-by-making-the-operating-order-explicit-it-presents-the-product-as-a-browser-cockpit-backed-by-a-server-tells-the-owner-to-start-the-server-before-the-web-cockpit-and-lists-the-ports-and-endpoints-that-belong-to-that-arrangement-that-matters-because-the-launch-path-is-no-longer-an-assumption-hidden-in-behavior-it-is-a-declared-sequence-the-operator-can-follow-it-also-gives-a-cleaner-split-between-the-visible-interface-and-the-server-side-which-makes-failures-easier-to-place-if-the-cockpit-is-not-coming-up-you-can-ask-whether-the-issue-is-in-the-interface-start-or-in-the-server-start-instead-of-treating-everything-as-one-undifferentiated-failure-the-remaining-boundary-is-documentary-not-imaginary-the-review-does-not-prove-that-every-runtime-branch-is-called-out-with-the-same-clarity-especially-where-mock-or-local-only-behavior-is-concerned-even-so-the-value-is-real-a-new-operator-can-follow-the-documented-order-and-reach-the-right-surface-first-instead-of-discovering-the-dependency-by-trial-and-error">The
+documentation also helps trust by making the operating order explicit.
+It presents the product as a browser cockpit backed by a server, tells
+the owner to start the server before the web cockpit, and lists the
+ports and endpoints that belong to that arrangement. That matters
+because the launch path is no longer an assumption hidden in behavior;
+it is a declared sequence the operator can follow. It also gives a
+cleaner split between the visible interface and the server side, which
+makes failures easier to place. If the cockpit is not coming up, you can
+ask whether the issue is in the interface start or in the server start
+instead of treating everything as one undifferentiated failure. The
+remaining boundary is documentary, not imaginary: the review does not
+prove that every runtime branch is called out with the same clarity,
+especially where mock or local-only behavior is concerned. Even so, the
+value is real. A new operator can follow the documented order and reach
+the right surface first instead of discovering the dependency by trial
+and error.</h2>
+<h2 id="deduped-attention-and-decision-appendix">Deduped Attention And
+Decision Appendix</h2>
+<p>Reflect generated 38 attention and owner-decision cards. The repeated
+cards collapse into the themes below. Items marked <strong>Fixed after
+scan</strong> were repaired in the canonical Project Phoenix TennisAgent
+after this manual was generated; the chapter prose above still reflects
+the original scan.</p>
+<h3 id="fixed-after-scan">Fixed After Scan</h3>
+<h4 id="1-mocklive-fallback-could-look-real">1. Mock/live fallback could
+look real</h4>
+<p><strong>Original cards:</strong> Mock mode can look live; Synthetic
+output can look live; cockpit should surface mock mode; launch docs may
+understate fallback behavior.</p>
+<p><strong>Disposition:</strong> <strong>Fixed after scan.</strong> The
+canonical API now reports degraded health when the live agent is
+unavailable, returns HTTP 503 from <code>/health</code>, gates mock
+payloads behind explicit <code>?allow_mock=1</code>, and labels allowed
+mock payloads with mock metadata.</p>
+<h4
+id="2-apple-watch-missing-or-corrupt-local-database-looked-like-no-sessions">2.
+Apple Watch missing or corrupt local database looked like no
+sessions</h4>
+<p><strong>Original cards:</strong> Freshness is not one action; Apple
+Watch freshness can stall on reachability; UI should expose failed
+verification.</p>
+<p><strong>Disposition:</strong> <strong>Fixed after scan.</strong>
+Canonical Apple Watch session reads now raise on missing or corrupt
+SQLite databases instead of returning an empty list that can be confused
+with a valid no-session state.</p>
+<h4
+id="3-garmin-merge-deduplication-could-drop-distinct-same-day-activities">3.
+Garmin merge deduplication could drop distinct same-day activities</h4>
+<p><strong>Original cards:</strong> Canonical history can be rewritten
+by narrow dedupe rules; should Garmin deduplication stay Date-only?</p>
+<p><strong>Disposition:</strong> <strong>Fixed after scan.</strong>
+Garmin dedupe now uses an activity identity composed of date, activity
+type, title, time, and distance, preserving distinct same-day
+activities.</p>
+<h4
+id="4-match-history-merge-deduplication-could-drop-same-day-rematches">4.
+Match-history merge deduplication could drop same-day rematches</h4>
+<p><strong>Original cards:</strong> Does deduplication by
+tournament/date/opponent collapse legitimate rematches?</p>
+<p><strong>Disposition:</strong> <strong>Fixed after scan.</strong>
+Match-history dedupe now includes round, score, and outcome in addition
+to tournament/date/opponent, preserving distinct rematches against the
+same opponent on the same date.</p>
+<h4
+id="5-linked-session-cli-guidance-pointed-at-deprecated-config-persistence">5.
+Linked-session CLI guidance pointed at deprecated config
+persistence</h4>
+<p><strong>Original cards:</strong> Linked-session writes have more than
+one route; which link-write entrypoint is authoritative?</p>
+<p><strong>Disposition:</strong> <strong>Fixed after scan.</strong> The
+CLI guidance now points to
+<code>AppleWatchSyncService.save_linked_session(candidate)</code> and
+the canonical <code>data/unified/tennis_unified.db</code> writer path.
+It no longer tells the operator to persist links by editing the
+deprecated cockpit session config.</p>
+<h3 id="open-owner-decisions">Open Owner Decisions</h3>
+<h4
+id="6-visible-session-selection-is-not-universal-query-or-chart-scope">6.
+Visible session selection is not universal query or chart scope</h4>
+<p><strong>Original cards:</strong> Session scope can be narrower than
+the UI suggests; visible session does not always scope analysis; queries
+can outgrow the visible session; charts can lose session scope.</p>
+<p><strong>Disposition:</strong> <strong>Open owner decision.</strong>
+Metrics are session-bound, but browser query, terminal query, and chart
+paths can still execute without the selected session. Decide whether to
+thread selected session context into those paths or make the UI language
+stop implying session-scoped output.</p>
+<h4
+id="7-live-dashboard-discovery-and-readiness-are-local-operational-boundaries">7.
+Live dashboard discovery and readiness are local operational
+boundaries</h4>
+<p><strong>Original cards:</strong> Live dashboard discovery can drift;
+page can open before stream is ready; local-only assumptions should be
+clearer.</p>
+<p><strong>Disposition:</strong> <strong>Appendix only.</strong> The
+dashboard depends on local relay readiness and discovery lists. Treat
+this as operating guidance unless the owner chooses to make launch fail
+fast or centralize discovery.</p>
+<h4 id="8-source-freshness-and-source-detail-are-not-uniform">8. Source
+freshness and source detail are not uniform</h4>
+<p><strong>Original cards:</strong> Freshness is not one action; sources
+do not contribute equal detail; delta-only Apple Watch reporting; live
+samples are transient.</p>
+<p><strong>Disposition:</strong> <strong>Appendix only.</strong> The
+manual should preserve the boundary that Apple Watch, Zepp, Babolat,
+Garmin, match history, and live samples contribute different levels of
+evidence and freshness.</p>
+<h4 id="9-startup-wording-and-panel-semantics-differ">9. Startup wording
+and panel semantics differ</h4>
+<p><strong>Original cards:</strong> Startup failure states are uneven;
+should both startup panels use the same empty-state language?</p>
+<p><strong>Disposition:</strong> <strong>Appendix only.</strong> This is
+a UI wording decision, not a code defect from this pass.</p>
+<h3 id="reflect-fit-note">Reflect Fit Note</h3>
+<p>TennisAgent passed Reflect where GolfAgent failed because it exposes
+reachable product behavior through the web cockpit, REST API, terminal
+cockpit, sync services, and live sensor dashboard. The lesson for other
+tool-domains is to expose a real front door: a dashboard, CLI, service,
+or focused entry point that Reflect can map to owner-visible
+behavior.</p>
+</body>
+</html>
