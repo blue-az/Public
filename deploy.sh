@@ -17,7 +17,22 @@ PORT="22"
 USER="u115257687"
 REMOTE_ROOT="prototypes"
 LOCAL_ROOT="$(cd "$(dirname "$0")" && pwd)"
-IDENTITY_FILE="${IONOS_DEPLOY_KEY:-$HOME/.ssh/ionos_deploy}"
+# Prefer an explicit deploy key; fall back to the account key, then to the
+# agent's default identities. Passing -i for a file that does not exist makes
+# every ssh/rsync call warn, and IdentitiesOnly=yes would break outright if the
+# default key ever stopped being offered.
+IDENTITY_FILE="${IONOS_DEPLOY_KEY:-}"
+if [[ -z "$IDENTITY_FILE" ]]; then
+    for candidate in "$HOME/.ssh/ionos_deploy" "$HOME/.ssh/id_ed25519"; do
+        [[ -f "$candidate" ]] && { IDENTITY_FILE="$candidate"; break; }
+    done
+fi
+if [[ -n "$IDENTITY_FILE" && -f "$IDENTITY_FILE" ]]; then
+    SSH_IDENTITY_OPTS=(-i "$IDENTITY_FILE" -o IdentitiesOnly=yes)
+else
+    echo "[!] No deploy key found; using default ssh identities." >&2
+    SSH_IDENTITY_OPTS=()
+fi
 
 TARGET="${1:-all}"
 
@@ -25,8 +40,7 @@ CONTROL_SOCKET="/tmp/ionos_deploy_$$"
 
 start_master() {
     ssh -fNM -p "$PORT" \
-        -i "$IDENTITY_FILE" \
-        -o IdentitiesOnly=yes \
+        "${SSH_IDENTITY_OPTS[@]}" \
         -o BatchMode=yes \
         -o ControlMaster=yes \
         -o ControlPath="$CONTROL_SOCKET" \
@@ -43,7 +57,7 @@ rsync_push() {
     local dest="$2"
     echo "[*] Syncing $src → $USER@$HOST:$dest"
     rsync -avz \
-        -e "ssh -p $PORT -i $IDENTITY_FILE -o IdentitiesOnly=yes -o BatchMode=yes -o ControlMaster=no -o ControlPath=$CONTROL_SOCKET" \
+        -e "ssh -p $PORT ${SSH_IDENTITY_OPTS[*]} -o BatchMode=yes -o ControlMaster=no -o ControlPath=$CONTROL_SOCKET" \
         "$src" "$USER@$HOST:$dest"
 }
 

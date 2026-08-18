@@ -70,7 +70,7 @@
 
         <section id="mtp" class="section">
             <h2>MTP — yes, this improves 3.8 on the 3090</h2>
-            <p>The stock Ollama tag <code>qwen3.8:27b</code> already sets <code>draft_num_predict 4</code>. Embedded MTP tensors are in the GGUF. Ollama was speculating. A 3090 peaks at <strong>2</strong> draft tokens, not 4 — same shape as the llama.cpp community table. Measured 16 Aug 2026, same Q4_K_M blob, ctx 16384, temp 0.8, think off, 128-token gen, cold load, n=4, 100% GPU, 320&nbsp;W:</p>
+            <p>The stock Ollama tag <code>qwen3.8:27b</code> already sets <code>draft_num_predict 4</code>. Embedded MTP tensors are in the GGUF. Ollama was speculating. A 3090 peaks at <strong>2</strong> draft tokens, not 4 — same shape as the llama.cpp community table. <strong>Update 18 Aug:</strong> that peak is specific to an <em>empty</em> KV cache — which is what a 128-token generation from a short prompt measures, regardless of the <code>num_ctx</code> allocated. Under <em>occupied</em> context the peak moves to <strong>8</strong>: 65.0 tok/s at 15k and 57.9 at 30k, versus 57.5 and 52.8 at depth 2. Never go past 8 — depth 16 is roughly 5× slower than no speculation at all. See the <a href="../../generated-papers/the-default-draft-is-too-deep.html">draft-depth addendum</a>. Measured 16 Aug 2026, same Q4_K_M blob, ctx 16384, temp 0.8, think off, 128-token gen, cold load, n=4, 100% GPU, 320&nbsp;W:</p>
             <div class="table-wrap">
                 <table class="table">
                     <thead>
