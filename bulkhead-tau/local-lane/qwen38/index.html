@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen 3.6 vs 3.8 | Bulkhead τ</title>
+    <meta name="description" content="Qwen3.8:27b versus 3.6:27b on a 3090 and a Strix Halo laptop. Faster, not measurably more correct. Tool traces differ.">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Draft · 16 Aug 2026</span>
+            <h1>Qwen 3.6 vs 3.8</h1>
+            <p class="subtitle">Same architecture, new weights. The only clean A/B in the field.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="../../index.html">Home</a>
+            <a href="../../../papers/">Research Papers</a>
+            <a href="../../index.html#engine-room">Tau-Bench</a>
+            <a href="../../../sensor-simulation/">Simulation Lab</a>
+            <a href="../../../local-llm-tsp/">Benchmarks</a>
+            <a href="../../demos.html">Demos</a>
+            <a href="../../reflect.html">Reflect</a>
+            <a href="../">Local Lane</a>
+            <a class="active" href="./">3.6 vs 3.8</a>
+        </nav>
+
+        <div class="pullquote">
+            <p>3.8 is clearly faster than 3.6 on both machines. It is not measurably more correct. Gemma4:26b remains the seat.</p>
+        </div>
+
+        <section class="section">
+            <h2>What this is</h2>
+            <p>Head-to-head after the Qwen3.8:27b drop. Both 27Bs are <strong>dense</strong> (not MoE — that is the 35B-A3B sibling). Same <code>qwen35</code> hybrid-attention stack, same quant, think off. Power rankings and the ruled-out list live on <a href="../#index">Local Lane</a>.</p>
+            <p>Nothing here is UID-verified. It will move.</p>
+        </section>
+
+        <section class="section">
+            <h2>Speed</h2>
+            <p>Desktop, cold load, n=4 each (three reps plus the 14 Aug baseline), <code>num_ctx 16384</code>:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th class="num">mean tok/s</th>
+                            <th>range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>qwen3.8:27b</code></td>
+                            <td class="num">44.6</td>
+                            <td>43.5–45.7, sd 1.19</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen3.6:27b</code></td>
+                            <td class="num">37.3</td>
+                            <td>36.4–38.4, sd 0.98</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>+19.7%</strong> on the stock tag. No overlap: 3.8's slowest run beats 3.6's fastest. Welch t=9.53. That figure mixed a small weight gain with MTP already on at the wrong depth — see below.</p>
+            <p>z13, AC / <code>performance</code>, matched <code>num_ctx 8192</code>: <strong>16.3 vs 13.0, +25%</strong>. Same direction on Vulkan / unified as on CUDA / discrete. 3.8 fits at 4096 (15.5) and 8192, and OOMs at 12288 / 16384 because of the CLIP projector. 3.6 runs at 16384 (12.0). Neither clears the ~20 tok/s interactive floor on the laptop. Machine specs are on <a href="../">Local Lane</a>.</p>
+        </section>
+
+        <section id="mtp" class="section">
+            <h2>MTP — yes, this improves 3.8 on the 3090</h2>
+            <p>The stock Ollama tag <code>qwen3.8:27b</code> already sets <code>draft_num_predict 4</code>. Embedded MTP tensors are in the GGUF. Ollama was speculating. A 3090 peaks at <strong>2</strong> draft tokens, not 4 — same shape as the llama.cpp community table. Measured 16 Aug 2026, same Q4_K_M blob, ctx 16384, temp 0.8, think off, 128-token gen, cold load, n=4, 100% GPU, 320&nbsp;W:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th class="num">draft</th>
+                            <th class="num">tok/s</th>
+                            <th>sd / range</th>
+                            <th>vs MTP off</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>qwen3.6:27b</code></td>
+                            <td class="num">—</td>
+                            <td class="num">37.5</td>
+                            <td>0.55 · 36.5–37.8</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen38-mtp-0</code></td>
+                            <td class="num">0</td>
+                            <td class="num">40.3</td>
+                            <td>0.05 · 40.3–40.4</td>
+                            <td>1.00</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen3.8:27b</code> stock</td>
+                            <td class="num">4</td>
+                            <td class="num">41.4</td>
+                            <td>4.21 · 36.1–46.9</td>
+                            <td>+3%</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen38-mtp-4</code></td>
+                            <td class="num">4</td>
+                            <td class="num">42.5</td>
+                            <td>3.68 · 37.8–46.5</td>
+                            <td>+5%</td>
+                        </tr>
+                        <tr>
+                            <td><strong><code>qwen38-mtp-2</code></strong></td>
+                            <td class="num"><strong>2</strong></td>
+                            <td class="num"><strong>50.3</strong></td>
+                            <td>2.71 · 46.3–53.8</td>
+                            <td><strong>+25%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Split the old +20%: weights only are <strong>40.3 vs 37.5 (~+8%)</strong>. MTP at 2 is another <strong>+25%</strong> on 3.8. Prompt eval stayed ~90–106 tok/s. Load 10–13&nbsp;s. vs 26b at 133 tok/s this is still <strong>0.38×</strong>. Seat does not move. Interactive 3.8 does.</p>
+            <p>z13, same tags, ctx <strong>8192</strong> (16k OOMs), AC plugged in, governor was <code>powersave</code>/<code>balanced</code> — so these are conservative vs the 16.3 @ <code>performance</code> figure. n=3, 100% GPU:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th class="num">draft</th>
+                            <th class="num">tok/s</th>
+                            <th>vs MTP off</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>qwen38-mtp-0</code></td>
+                            <td class="num">0</td>
+                            <td class="num">13.0</td>
+                            <td>1.00</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen38-mtp-4</code> (stock depth)</td>
+                            <td class="num">4</td>
+                            <td class="num">17.7</td>
+                            <td>+36%</td>
+                        </tr>
+                        <tr>
+                            <td><strong><code>qwen38-mtp-2</code></strong></td>
+                            <td class="num"><strong>2</strong></td>
+                            <td class="num"><strong>21.4</strong></td>
+                            <td><strong>+65%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Draft 2 is the z13 setting too. It is the first time 3.8 clears the ~20 tok/s “I’m watching this” floor on this laptop. Stock draft 4 is slower. Daily: <code>ollama run qwen38-mtp-2</code> on both machines. Same layers as stock. Do not use the Ollama library <code>:27b-mtp-</code> tag — a same-weekend report had that path 2× slower.</p>
+            <p>Stub writeup — fix, gain, likely cause: <a href="../generated-papers/the-default-draft-is-too-deep.html">Paper 1.44 · The Default Draft Is Too Deep</a>.</p>
+        </section>
+
+        <section class="section">
+            <h2>Correctness — L2, same three fixtures</h2>
+            <p>Pooled L2 field. 3.6 per-fixture rows use the E11 n=12 baseline; totals use the pooled /54.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th class="num">Pass</th>
+                            <th class="num">Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>gemma4:26b</code> / <code>31b</code></td>
+                            <td class="num">36/54</td>
+                            <td class="num">66.7%</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen3.8:27b</code></td>
+                            <td class="num">34/54</td>
+                            <td class="num">63.0%</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen3.6:27b</code></td>
+                            <td class="num">28/54</td>
+                            <td class="num">51.9%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>34/54 vs 36/54 is p=0.84. 3.8 is the first Qwen in the Gemma band on this battery. That is not the same as beating 3.6 in a head-to-head you can defend.</p>
+        </section>
+
+        <section class="section">
+            <h2>3.8 vs 3.6 — the +3 cells</h2>
+            <p>76/105 vs 73/105 is a slightly higher count. It is not a finding of improvement. Fisher p=0.76.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Pack</th>
+                            <th class="num">3.8</th>
+                            <th class="num">3.6</th>
+                            <th>Read</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ladder, 3 fixtures</td>
+                            <td class="num">34/54</td>
+                            <td class="num">28/54</td>
+                            <td>Most of the gap is <code>strict-log-format</code> (15/18 vs 2/12, p=0.0005)</td>
+                        </tr>
+                        <tr>
+                            <td><code>strict-table-render</code></td>
+                            <td class="num">14/18</td>
+                            <td class="num">18/18</td>
+                            <td>Replication failed; direction reversed. Zero contract violations from either model.</td>
+                        </tr>
+                        <tr>
+                            <td><code>constant-and-callers</code></td>
+                            <td class="num">13/18</td>
+                            <td class="num">12/18</td>
+                            <td>Mid-band fixture with headroom. p=1.000.</td>
+                        </tr>
+                        <tr>
+                            <td>Comprehension probes</td>
+                            <td class="num">15/15</td>
+                            <td class="num">15/15</td>
+                            <td>Saturated.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td class="num"><strong>76/105</strong></td>
+                            <td class="num"><strong>73/105</strong></td>
+                            <td>p=0.761</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>The one significant contract win did not generalize. A <code>run_command</code> / verify difference (p=0.0455) died on retest (p=0.733). On bounded local-agent work these two revisions do not separate.</p>
+            <p>Vendor benches are a different claim and a different harness (think on, 256K, Claude Code harness on some rows). Qwen's card: SWE-bench Pro 53.5 → 61.7, Terminal-Bench 2.1 63.4 → 73.0, LiveCodeBench v6 83.9 → 90.3. Those numbers are not this ladder.</p>
+        </section>
+
+        <section class="section">
+            <h2>How they use tools</h2>
+            <p>Pass rate is a wash. The traces are not. 3.6 is persistent after a patch miss (tool said the hunk did not apply; file unchanged). 3.8 can get a similar score by jumping in instead of reading first.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>What</th>
+                            <th><code>qwen3.6</code></th>
+                            <th><code>qwen3.8</code></th>
+                            <th>Hold?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Reads the files first</td>
+                            <td>13 <code>read_file</code> on the 5-edit fixture</td>
+                            <td>2 across the same 18 cells</td>
+                            <td>Recorded. Same patch count (45/45). Cost nothing on that item.</td>
+                        </tr>
+                        <tr>
+                            <td>Runs the checker</td>
+                            <td>0/18 on the table fixture</td>
+                            <td>5/18 (p=0.0455)</td>
+                            <td>Died on retest. 3.6 then verified 10/18 on the next fixture.</td>
+                        </tr>
+                        <tr>
+                            <td>Recovers a failed patch</td>
+                            <td>13/13 failed-call cells recovered</td>
+                            <td>6/7; three cells barely engaged</td>
+                            <td>Direction only. p=0.104.</td>
+                        </tr>
+                        <tr>
+                            <td>Works from a human prompt</td>
+                            <td>—</td>
+                            <td>L1 7/18 vs 26b 14/18</td>
+                            <td>Yes at p=0.04. 3.8 wants a numbered plan.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>On the table fixture 3.6 went 18/18 without ever running the test; 3.8 went 14/18 while verifying in five cells. The gate stays the deterministic checker, not the trajectory.</p>
+        </section>
+
+        <section id="ceiling" class="section">
+            <h2>The ceiling is still above the local field</h2>
+            <p><code>csv-summarize-repair</code> is the hard item: quoted currency, thousands separators, accounting negatives, empty amounts. Characteristic failure is a total that is wrong but plausible.</p>
+            <ul>
+                <li><code>qwen3.8:27b</code> L2: 3/18</li>
+                <li><code>gemma4:26b</code> L2 (E11): 0/12</li>
+            </ul>
+            <p>Frontier control, same three fixtures, n=1 Flash-class oneshot: logsum pass, limits pass, and this ceiling item pass. Single trial, not a ranking. Locals are bunched with each other. They are not bunched with frontier on that class of silent-wrong-total repair.</p>
+        </section>
+
+        <section class="section">
+            <h2>What this does not say</h2>
+            <ul>
+                <li>It does not say large local models have reached current Sonnet. Claude Code launched 24 Feb 2025 on Sonnet 3.7. Sonnet 4.5 is 29 Sep 2025.</li>
+                <li>It does not say Qwen's long-horizon benches are wrong. DeepSWE and Terminal-Bench are a different regime than a five-edit local fixture.</li>
+                <li>It does not re-rank the seat. 26b holds on speed and L1. MTP at draft 2 takes 3.8 to 50 tok/s. That is still 0.38× 26b. See <a href="../">Local Lane</a>.</li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <p>Bulkhead τ · Draft · measured 14–15 Aug 2026</p>
+            <p><a href="../">Local Lane</a> &nbsp;·&nbsp; <a href="../../index.html">Engineering Core</a> &nbsp;·&nbsp; <a href="../../../papers/">All Papers</a></p>
+        </footer>
+    </div>
+</body>
+</html>

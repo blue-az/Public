@@ -351,6 +351,27 @@ body {
     border-bottom: 1px solid var(--accent);
 }
 
+.table-wrap {
+    overflow-x: auto;
+    margin: 0.8rem 0 1rem;
+}
+
+.table .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.note {
+    font-size: var(--font-size-sm);
+    color: var(--ink-muted);
+    line-height: 1.5;
+}
+
+.nav a.active {
+    background: var(--paper-dark);
+    border-color: var(--accent);
+}
+
 @media (max-width: 720px) {
     .page {
         padding: 2rem 1rem 2.5rem;

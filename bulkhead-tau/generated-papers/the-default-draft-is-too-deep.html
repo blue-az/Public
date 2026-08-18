@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Default Draft Is Too Deep</title>
+  <meta name="description" content="Stub. Stock Qwen3.8-27B in Ollama already runs MTP at draft depth 4. On a 3090 and a Strix Halo, depth 2 is faster. The default copied the separate-draft convention.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    h3 { font-size: 1.15rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #6b5a45; margin-bottom: 1.2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .paper-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper 1.44 · stub</div>
+    <h1>The Default Draft Is Too Deep</h1>
+    <p class="meta">Stock Qwen3.8-27B in Ollama already runs MTP. The leftover speed is the draft depth. On a 3090 and a Strix Halo, 2 beats 4. Measured 16 Aug 2026. Not frozen. Not UID-verified.</p>
+    <p class="meta">Live numbers: <a href="../local-lane/qwen38/#mtp">local-lane / 3.6 vs 3.8 / MTP</a> · Source: <code>generated-papers-src/the-default-draft-is-too-deep.md</code></p>
+
+    <h2>Working claim</h2>
+    <p>Ollama’s stock <code>qwen3.8:27b</code> already turns on multi-token prediction. The leftover speed is not “enable MTP.” It is <strong>how many tokens the head is allowed to draft</strong>. On a 24&nbsp;GB 3090 and on a 2025 Strix Halo, the stock depth of <strong>4</strong> is slower than <strong>2</strong>. The vendor default copied the separate-draft-model convention. It is the wrong depth for this card class.</p>
+
+    <h2>The fix</h2>
+    <p>Same Q4_K_M blob. Do not pull the Ollama library <code>:27b-mtp-</code> tag (a same-weekend report had that path 2× slower). Derive the stock tag and set:</p>
+    <pre>PARAMETER draft_num_predict 2</pre>
+    <p>Serve as <code>qwen38-mtp-2</code>. Daily on both machines.</p>
+
+    <h2>The improvement</h2>
+    <p>Method: Ollama 0.32.12/0.32.13, <code>think</code> off, temp 0.8, 128-token generations, cold load each, decode = <code>eval_count / eval_duration</code>.</p>
+
+    <h3>Desktop — RTX 3090 24&nbsp;GB @ 320&nbsp;W, ctx 16384, n=4, 100% GPU</h3>
+    <table class="paper-table">
+      <thead>
+        <tr>
+          <th>Tag</th>
+          <th class="num">draft</th>
+          <th class="num">tok/s</th>
+          <th class="num">sd</th>
+          <th>vs draft 0</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>qwen3.6:27b</code></td>
+          <td class="num">—</td>
+          <td class="num">37.5</td>
+          <td class="num">0.55</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>qwen38-mtp-0</code></td>
+          <td class="num">0</td>
+          <td class="num">40.3</td>
+          <td class="num">0.05</td>
+          <td>1.00</td>
+        </tr>
+        <tr>
+          <td><code>qwen3.8:27b</code> stock</td>
+          <td class="num">4</td>
+          <td class="num">41.4</td>
+          <td class="num">4.21</td>
+          <td>+3%</td>
+        </tr>
+        <tr>
+          <td><code>qwen38-mtp-4</code></td>
+          <td class="num">4</td>
+          <td class="num">42.5</td>
+          <td class="num">3.68</td>
+          <td>+5%</td>
+        </tr>
+        <tr>
+          <td><strong><code>qwen38-mtp-2</code></strong></td>
+          <td class="num"><strong>2</strong></td>
+          <td class="num"><strong>50.3</strong></td>
+          <td class="num">2.71</td>
+          <td><strong>+25%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Split of the earlier “+20% vs 3.6” figure: weights only are 40.3 vs 37.5 (~+8%). MTP at depth 2 is another +25% on 3.8. Stock depth 4 is noisy and barely above off. vs <code>gemma4:26b</code> at 133 tok/s, 50.3 is still 0.38×. Seat does not move. Interactive 3.8 does.</p>
+
+    <h3>z13 — Ryzen AI MAX 390 / 8050S, ctx 8192, n=3, 100% GPU</h3>
+    <p>16k OOMs. AC plugged in. Governor was <code>powersave</code>/<code>balanced</code> — conservative versus the earlier 16.3 @ <code>performance</code>.</p>
+    <table class="paper-table">
+      <thead>
+        <tr>
+          <th>Tag</th>
+          <th class="num">draft</th>
+          <th class="num">tok/s</th>
+          <th>vs draft 0</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>qwen38-mtp-0</code></td>
+          <td class="num">0</td>
+          <td class="num">13.0</td>
+          <td>1.00</td>
+        </tr>
+        <tr>
+          <td><code>qwen38-mtp-4</code></td>
+          <td class="num">4</td>
+          <td class="num">17.7</td>
+          <td>+36%</td>
+        </tr>
+        <tr>
+          <td><strong><code>qwen38-mtp-2</code></strong></td>
+          <td class="num"><strong>2</strong></td>
+          <td class="num"><strong>21.4</strong></td>
+          <td><strong>+65%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Draft 2 is the first time 3.8 clears the ~20 tok/s “I am watching this” floor on this laptop.</p>
+
+    <h2>Likely cause</h2>
+    <p>Not proven. Consistent with the traces and with the llama.cpp MTP table that appeared the same weekend.</p>
+    <ol>
+      <li><strong>Acceptance decays with draft depth.</strong> The head proposes n tokens; the main model verifies them in one pass. Rejected drafts waste the verify. Community 24&nbsp;GB rows peak at <code>n-max 2</code>. Deeper drafts help code and hurt prose. Our stock-4 arms are the noisy ones (sd 3.7–4.2). The off arm is a flat line (sd 0.05). That is what a decaying hit-rate looks like when you average mixed short generations.</li>
+      <li><strong>The default is the other kind of speculation.</strong> Ollama documents <code>draft_num_predict</code> as defaulting to 4 for <em>separate</em> draft models, and says embedded MTP tensors “require setting this parameter.” Stock <code>qwen3.8:27b</code> ships with 4. That is a library convention, not a 3090 measurement. We did not choose it.</li>
+      <li><strong>Bandwidth-poor decode pays more for a good depth and loses more for a bad one.</strong> z13’s +65% at depth 2 versus the 3090’s +25% is the same shape as the community APU rows: MTP amortises a starved weight read. Depth 4 still loses to 2 on both of our machines, so the miss is not “MTP off.” It is “one click too deep.”</li>
+    </ol>
+    <p>What would falsify (1): a paired run that logs draft acceptance, with depth 4 showing equal or higher acceptance and still losing tok/s. We did not collect acceptance. The next measurement is that log, not another Elo cell.</p>
+
+    <h2>What this does not say</h2>
+    <ul>
+      <li>It does not say 3.8 is more correct than 3.6. The seat battery is still a wash.</li>
+      <li>It does not say 3.8 becomes the 3090 seat. 26b remains ~3×.</li>
+      <li>It does not say llama.cpp would match these Ollama numbers. Different serve.</li>
+      <li>It does not say depth 2 is universal. A 5090-class card in the community table peaks deeper. Measure the card you own.</li>
+    </ul>
+
+    <h2>Open</h2>
+    <ul>
+      <li>Log draft acceptance at 0/2/4 on both machines.</li>
+      <li>Repeat z13 at <code>performance</code> (this stub’s z13 arm was balanced/powersave).</li>
+      <li>Do not use this as a ranking paper. It is a serve-parameter paper.</li>
+    </ul>
+
+
+    <hr>
+    <h2>Addendum — 18 Aug 2026: depth 2 is right at empty KV, depth 8 is right under load</h2>
+    <p>The stub above stands as measured. A follow-up of 448 generations on the 3090 answers both of its Open items and changes the daily recommendation for one condition it did not sample: <strong>occupied context</strong>.</p>
+
+    <h3>The Open item is closed: acceptance was logged</h3>
+    <p><code>llama-server</code> reports per-position acceptance at INFO level (<code>#acc rate/pos</code>, <code>#mean acc len</code>). Mean accepted length rises monotonically with depth:</p>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>draft depth</th><th class="num">1</th><th class="num">2</th><th class="num">4</th><th class="num">6</th><th class="num">8</th></tr></thead>
+      <tbody><tr><td>mean accepted length</td><td class="num">1.88</td><td class="num">2.56</td><td class="num">3.53</td><td class="num">4.05</td><td class="num">4.13</td></tr></tbody>
+    </table></div>
+
+    <h3>The stated falsification test fired</h3>
+    <p>The stub asked for “a paired run that logs draft acceptance, with depth 4 showing equal or higher acceptance and still losing tok/s.” That is exactly what depth <strong>6</strong> does: it accepts more per pass than depth 4 (4.05 vs 3.53) and is 11% slower (46.07 vs 51.99 tok/s at 45k context, t&nbsp;=&nbsp;−12.03).</p>
+    <p><strong>So hypothesis (1) — “acceptance decays with draft depth” — is not the mechanism.</strong> Acceptance does not decay with depth; it rises. The cost is in the draft generation pass itself. No working mechanism has replaced it.</p>
+
+    <h3>Allocated context is not occupied context</h3>
+    <p>This stub’s protocol runs 128-token generations from a short prompt at <code>num_ctx 16384</code>. That <strong>allocates</strong> a 16k window the model never <strong>occupies</strong> — KV residency during those runs is near zero. Re-measured under this stub’s exact protocol (temp 0.8, 128 tokens, think off, cold load, n=4):</p>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>Tag</th><th class="num">draft</th><th class="num">tok/s</th><th class="num">sd</th></tr></thead>
+      <tbody>
+        <tr><td><code>qwen38-mtp-0</code></td><td class="num">0</td><td class="num">40.67</td><td class="num">0.19</td></tr>
+        <tr><td><strong><code>qwen38-mtp-2</code></strong></td><td class="num"><strong>2</strong></td><td class="num"><strong>58.05</strong></td><td class="num">3.06</td></tr>
+        <tr><td><code>qwen3.8:27b</code> stock</td><td class="num">4</td><td class="num">50.20</td><td class="num">2.63</td></tr>
+        <tr><td><code>qwen38-mtp-4</code></td><td class="num">4</td><td class="num">50.86</td><td class="num">4.05</td></tr>
+        <tr><td><code>qwen38-mtp-8</code></td><td class="num">8</td><td class="num">53.39</td><td class="num">3.68</td></tr>
+      </tbody>
+    </table></div>
+    <p><code>mtp-0</code> reproduces the stub’s 40.3 at 40.67. <strong>Depth 2 wins at empty KV, as the stub says.</strong></p>
+
+    <h3>Under real occupied context, depth 8 wins</h3>
+    <p>Seven content corpora (Rust, Python, prose, agent scrollback, mixed, CSV, journald logs), 400-token generations, fixed seed:</p>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th class="num">draft depth</th><th class="num">15k ctx</th><th class="num">30k ctx</th><th class="num">45k ctx</th></tr></thead>
+      <tbody>
+        <tr><td class="num">2</td><td class="num">57.50</td><td class="num">52.82</td><td class="num">49.80</td></tr>
+        <tr><td class="num">4</td><td class="num">56.52</td><td class="num">52.70</td><td class="num">51.99</td></tr>
+        <tr><td class="num"><strong>8</strong></td><td class="num"><strong>65.04</strong></td><td class="num"><strong>57.89</strong></td><td class="num"><strong>52.53</strong></td></tr>
+        <tr><td class="num">12</td><td class="num">58.99</td><td class="num">52.62</td><td class="num">30.92</td></tr>
+        <tr><td class="num">16</td><td class="num">29.10</td><td class="num">8.26</td><td class="num">5.88</td></tr>
+      </tbody>
+    </table></div>
+    <p>Depth 8 beats stock by +8.52 tok/s at 15k (t&nbsp;=&nbsp;3.33) and +5.19 at 30k (t&nbsp;=&nbsp;2.48). <strong>The stub stopped one power of two early.</strong></p>
+
+    <h3>Revised guidance</h3>
+    <ul>
+      <li><strong>Short prompts, interactive one-liners:</strong> depth 2, as published.</li>
+      <li><strong>Loaded context</strong> — agent sessions, long files, anything past ~10k: <strong>depth 8</strong>.</li>
+      <li><strong>Never exceed 8.</strong> Depth 12 is break-even with no speculation at 45k; depth 16 is ~5× <em>worse</em> than no speculation at every context length.</li>
+      <li><strong>Only powers of two.</strong> Depths 5, 6, 7 are all worse than both 4 and 8; 7 is worse than 6.</li>
+    </ul>
+
+    <h3>One correction</h3>
+    <p>The stub says “deeper drafts help code and hurt prose.” Across seven corpora the split does not follow that line: Rust prefers depth 2 at every context length, while Python, prose, scrollback, logs and CSV all prefer deeper. Rust is the only one of seven that wants shallow drafts. “Code” is not the category.</p>
+
+    <p class="release-line">Bulkhead τ · Paper 1.44 stub · 16 Aug 2026 · addendum 18 Aug 2026 · <a href="../local-lane/">Local Lane</a> · <a href="../../papers/">All papers</a></p>
+  </div>
+</body>
+</html>

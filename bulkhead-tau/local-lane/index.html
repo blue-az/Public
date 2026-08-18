@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTX 3090 vs Ryzen AI MAX 390 | Local Lane | Bulkhead τ</title>
+    <meta name="description" content="Chip-to-chip local-model field notes. Gemma4 26b remains the seat on the RTX 3090 and on the Ryzen AI MAX 390. Qwen 3.6-35B is ranked. Qwen 3.6 vs 3.8 on a separate page.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Draft · 18 Aug 2026</span>
+            <h1>RTX 3090 vs Ryzen AI MAX 390</h1>
+            <p class="subtitle">Chip-to-chip local field. Same blobs, two accelerators. 26b is still the seat on both. Not a frozen paper.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="../index.html">Home</a>
+            <a href="../../papers/">Research Papers</a>
+            <a href="../index.html#engine-room">Tau-Bench</a>
+            <a href="../../sensor-simulation/">Simulation Lab</a>
+            <a href="../../local-llm-tsp/">Benchmarks</a>
+            <a href="../demos.html">Demos</a>
+            <a href="../reflect.html">Reflect</a>
+            <a class="active" href="./">Local Lane</a>
+            <a href="qwen38/">3.6 vs 3.8</a>
+        </nav>
+
+        <div class="pullquote">
+            <p>3090 26b = 1. Rank is Eff. = (Speed + vs&nbsp;26b) / 2. MAX 390 26b is second. Seat is 26b on both chips.</p>
+        </div>
+
+        <section class="section">
+            <h2>What this is</h2>
+            <p>Personal benchmarking of large local models on two chips I actually use. Correctness is the local-lane L2 battery under <code>opr</code>. Speed is decode rate (<code>eval_count / eval_duration</code>) on both. Nothing here is UID-verified or registered as a claim. It will move.</p>
+            <p>The Qwen3.6 → 3.8 drop has its own page: <a class="back-link" href="qwen38/">3.6 vs 3.8</a>. Faster, not measurably more correct. This page is the field.</p>
+        </section>
+
+        <section class="section">
+            <h2>Two chips</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>NVIDIA RTX 3090</h3>
+                    <p>24&nbsp;GB dedicated GDDR6X. Stock TDP 350&nbsp;W, <strong>capped at 320&nbsp;W</strong>. Every 3090 rate is therefore conservative. Q4, flash attention, KV <code>q8_0</code>. A second 3090 is installed and unpowered (wrong cord). Dual-card numbers do not exist yet. Machine shorthand in the logs: desktop.</p>
+                </article>
+                <article class="card">
+                    <h3>AMD Ryzen AI MAX 390</h3>
+                    <p>Radeon 8050S, 24 threads, 27&nbsp;GB unified LPDDR5X. Vulkan (RADV GFX1151), not ROCm. The box is a Flow Z13; the comparison is the <strong>MAX 390</strong>, not the chassis. 35b is 100% iGPU here. 26b is too, on the current stack (the old 16% CPU row is stale). Latest 35b/26b decode is AC / <code>balanced</code> / <code>powersave</code> — could not switch to <code>performance</code> without sudo. Battery / <code>power-saver</code> once made 26b look 3.4× slow. Write the power state down or throw the number out.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="index" class="section">
+            <h2>Power ranking — RTX 3090 vs Ryzen AI MAX 390</h2>
+            <p>A row is ranked if it has an L2 score on that chip <em>and</em> it runs there. Speed is always against <strong>3090</strong> <code>gemma4:26b</code> at 133.0 tok/s — MAX 390 is on the same axis, not renormalized to itself. 26b vs-26b 1.00 is still 36/54 (E11). 35b vs-26b uses the same-run E9 control (24/30 on both chips).</p>
+            <p><strong>Rubric.</strong> Two axes, equal weight. <code>Eff. = (Speed + vs&nbsp;26b) / 2</code>. Order is Eff., then Speed on a tie. Seat is 26b on both chips. The top two rows are MoE. MAX 390 26b is still second. 35b is on the table: 4% lip on the 3090, 100% iGPU on the MAX 390.</p>
+            <p class="note">3090 <code>qwen3.8:27b</code> is the daily <code>qwen38-mtp-2</code> tag (50.3 tok/s). Stock library draft 4 is 44.6. MAX 390 Qwen 27B rows stay @8k (3.8 OOMs at 16k). MAX 390 26b/35b decode is AC / <code>balanced</code>, 17 Aug. See <a href="qwen38/#mtp">MTP</a>. <strong>18 Aug:</strong> depth 2 is the empty-KV optimum measured here; under occupied context (15k+) depth 8 wins — 65.0 tok/s at 15k vs 57.5 for depth 2. See the <a href="../generated-papers/the-default-draft-is-too-deep.html">draft-depth addendum</a>.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="num">#</th>
+                            <th>Chip</th>
+                            <th>Model</th>
+                            <th>Arch</th>
+                            <th class="num">tok/s</th>
+                            <th class="num">Speed</th>
+                            <th class="num">L2</th>
+                            <th class="num">vs 26b</th>
+                            <th class="num">Eff.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="num">1</td>
+                            <td>RTX 3090</td>
+                            <td><strong><code>gemma4:26b</code></strong></td>
+                            <td>MoE</td>
+                            <td class="num"><strong>133.0</strong></td>
+                            <td class="num"><strong>1.00</strong></td>
+                            <td class="num"><strong>36/54</strong></td>
+                            <td class="num"><strong>1.00</strong></td>
+                            <td class="num"><strong>1.00</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="num">2</td>
+                            <td>MAX 390</td>
+                            <td><strong><code>gemma4:26b</code></strong></td>
+                            <td>MoE</td>
+                            <td class="num"><strong>55.2</strong></td>
+                            <td class="num"><strong>0.42</strong></td>
+                            <td class="num">36/54</td>
+                            <td class="num">1.00</td>
+                            <td class="num"><strong>0.71</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="num">3</td>
+                            <td>RTX 3090</td>
+                            <td><code>qwen3.8:27b</code> MTP-2</td>
+                            <td>Dense</td>
+                            <td class="num">50.3</td>
+                            <td class="num">0.38</td>
+                            <td class="num">34/54</td>
+                            <td class="num">0.94</td>
+                            <td class="num">0.66</td>
+                        </tr>
+                        <tr>
+                            <td class="num">4</td>
+                            <td>RTX 3090</td>
+                            <td><code>gemma4:31b</code></td>
+                            <td>Dense</td>
+                            <td class="num">33.9</td>
+                            <td class="num">0.25</td>
+                            <td class="num">36/54</td>
+                            <td class="num">1.00</td>
+                            <td class="num">0.63</td>
+                        </tr>
+                        <tr>
+                            <td class="num">5</td>
+                            <td>RTX 3090</td>
+                            <td><code>qwen3.6:35b</code>*</td>
+                            <td>MoE</td>
+                            <td class="num">86.4*</td>
+                            <td class="num">0.65</td>
+                            <td class="num">14/30</td>
+                            <td class="num">0.58</td>
+                            <td class="num">0.62</td>
+                        </tr>
+                        <tr>
+                            <td class="num">6</td>
+                            <td>MAX 390</td>
+                            <td><code>qwen3.6:35b</code></td>
+                            <td>MoE</td>
+                            <td class="num">59.2</td>
+                            <td class="num">0.45</td>
+                            <td class="num">18/30</td>
+                            <td class="num">0.75</td>
+                            <td class="num">0.60</td>
+                        </tr>
+                        <tr>
+                            <td class="num">7</td>
+                            <td>MAX 390</td>
+                            <td><code>gemma4:31b</code></td>
+                            <td>Dense</td>
+                            <td class="num">11.5</td>
+                            <td class="num">0.09</td>
+                            <td class="num">36/54</td>
+                            <td class="num">1.00</td>
+                            <td class="num">0.55</td>
+                        </tr>
+                        <tr>
+                            <td class="num">8</td>
+                            <td>RTX 3090</td>
+                            <td><code>qwen3.6:27b</code></td>
+                            <td>Dense</td>
+                            <td class="num">37.3</td>
+                            <td class="num">0.28</td>
+                            <td class="num">28/54</td>
+                            <td class="num">0.78</td>
+                            <td class="num">0.53</td>
+                        </tr>
+                        <tr>
+                            <td class="num">9</td>
+                            <td>MAX 390</td>
+                            <td><code>qwen3.8:27b</code> @8k</td>
+                            <td>Dense</td>
+                            <td class="num">16.3</td>
+                            <td class="num">0.12</td>
+                            <td class="num">34/54</td>
+                            <td class="num">0.94</td>
+                            <td class="num">0.53</td>
+                        </tr>
+                        <tr>
+                            <td class="num">10</td>
+                            <td>MAX 390</td>
+                            <td><code>qwen3.6:27b</code> @8k</td>
+                            <td>Dense</td>
+                            <td class="num">13.0</td>
+                            <td class="num">0.10</td>
+                            <td class="num">28/54</td>
+                            <td class="num">0.78</td>
+                            <td class="num">0.44</td>
+                        </tr>
+                        <tr>
+                            <td class="num">11</td>
+                            <td>RTX 3090</td>
+                            <td><code>qwen2.5-coder:14b</code></td>
+                            <td>Dense</td>
+                            <td class="num">72.9</td>
+                            <td class="num">0.55</td>
+                            <td class="num">3/54</td>
+                            <td class="num">0.08</td>
+                            <td class="num">0.32</td>
+                        </tr>
+                        <tr>
+                            <td class="num">12</td>
+                            <td>RTX 3090</td>
+                            <td><code>qwen3:32b</code></td>
+                            <td>Dense</td>
+                            <td class="num">35.1</td>
+                            <td class="num">0.26</td>
+                            <td class="num">4/54</td>
+                            <td class="num">0.11</td>
+                            <td class="num">0.19</td>
+                        </tr>
+                        <tr>
+                            <td class="num">13</td>
+                            <td>RTX 3090</td>
+                            <td><code>gemma3:27b</code></td>
+                            <td>Dense</td>
+                            <td class="num">39.9</td>
+                            <td class="num">0.30</td>
+                            <td class="num">0/54</td>
+                            <td class="num">0.00</td>
+                            <td class="num">0.15</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">* <code>qwen3.6:35b</code> on the 3090 is a 4%/96% CPU/GPU weight lip (23&nbsp;GB on 24&nbsp;GB). Spill fraction did not grow 16k→32k. Same blob is 100% iGPU on the MAX 390. 86.4 is the spilling number, not a 100% GPU ceiling.</p>
+            <p>We do not have a frontier 54/54. Agy Flash Low and Claude-in-Agy cleared the three seat fixtures at isolated n=3. That is 9/9 on a different harness, not 54 cells. A 54/54 would be 1.50 on vs-26b and 1.25 on Eff. at desktop-26b speed.</p>
+        </section>
+
+        <section id="ruled-out" class="section">
+            <h2>Ruled out — not ranked</h2>
+            <p>These were measured. They do not get a rank. Mixing them into the table above would launder a different instrument or a model that does not run.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>What we have</th>
+                            <th>Why it is not ranked</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>granite4</code></td>
+                            <td>197.9 tok/s desktop; floor 8/18</td>
+                            <td>Floor battery (path fidelity), not the seat /54. Fast and below the ~12B knee.</td>
+                        </tr>
+                        <tr>
+                            <td><code>llama3.1:8b</code></td>
+                            <td>floor 9/18</td>
+                            <td>Same floor instrument. Same path-drop failure.</td>
+                        </tr>
+                        <tr>
+                            <td><code>gemma4:e4b</code></td>
+                            <td>floor 13/18</td>
+                            <td>Floor only. No seat /54.</td>
+                        </tr>
+                        <tr>
+                            <td><code>gemma4:12b</code></td>
+                            <td>floor 17/18; 75.2 / 26.8 tok/s</td>
+                            <td>Floor knee, not a seat score. No /54. Slow for its size on the floor pack.</td>
+                        </tr>
+                        <tr>
+                            <td><code>gpt-oss</code></td>
+                            <td>51.4 tok/s on MAX 390, 100% iGPU</td>
+                            <td>Speed peer of 26b on the laptop. No L2 on either machine. 13 Aug power state unrecorded.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nemotron-3-nano</code></td>
+                            <td>121.2 tok/s at 7% spill; 0/18 on the three seat fixtures</td>
+                            <td>The 0 is real (left stubs). n=6, host-conditioned, do not fold into Elo. Not a floor score and not a /54.</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen3-vl:30b</code></td>
+                            <td>177 tok/s</td>
+                            <td>Vision grader, not a field model.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Floor pack (E5), for the record, is a different ranking problem: granite 8/18, llama 9/18, e4b 13/18, 12b 17/18, coder:14b 18/18. 26b is not the 1.00 there — those items saturate by 14B. It is how the floor was mapped. It is not this power ranking.</p>
+        </section>
+
+        <section class="section">
+            <h2>The resident field</h2>
+            <p>Models that run on both chips at a usable context. <strong>Resident</strong> is what must sit in memory (all weights, MoE included) — the capacity wall. <strong>Active</strong> is what decode actually reads per token — the bandwidth wall. MoE moves the second and not the first, which is the whole reason 26b is 3.9× the 31b decode on the same card. 26b is MoE (25.2B total / 3.8B active). 31b is dense. Both Qwen 27Bs are dense. 35b is 35B-A3B MoE: 4% lip on the 3090, 100% iGPU on the MAX 390.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Kind</th>
+                            <th class="num">Resident</th>
+                            <th class="num">Active</th>
+                            <th class="num">3090 tok/s</th>
+                            <th class="num">MAX 390 tok/s</th>
+                            <th class="num">L2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>gemma4:26b</code></td>
+                            <td>MoE, 3.8B active</td>
+                            <td class="num">17 GB</td>
+                            <td class="num">3.8 B</td>
+                            <td class="num">133.0</td>
+                            <td class="num">55.2</td>
+                            <td class="num">36/54</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen3.6:35b</code></td>
+                            <td>MoE, 3B active</td>
+                            <td class="num">23 GB</td>
+                            <td class="num">3.0 B</td>
+                            <td class="num">86.4 <span class="note">4% lip</span></td>
+                            <td class="num">59.2 <span class="note">100% GPU</span></td>
+                            <td class="num">14/30 · 18/30</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen3.8:27b</code></td>
+                            <td>dense</td>
+                            <td class="num">17 GB</td>
+                            <td class="num">27.3 B</td>
+                            <td class="num">50.3</td>
+                            <td class="num">16.3 <span class="note">@8k</span></td>
+                            <td class="num">34/54</td>
+                        </tr>
+                        <tr>
+                            <td><code>qwen3.6:27b</code></td>
+                            <td>dense</td>
+                            <td class="num">17 GB</td>
+                            <td class="num">27.8 B</td>
+                            <td class="num">37.3</td>
+                            <td class="num">13.0 <span class="note">@8k</span></td>
+                            <td class="num">28/54</td>
+                        </tr>
+                        <tr>
+                            <td><code>gemma4:31b</code></td>
+                            <td>dense</td>
+                            <td class="num">19 GB</td>
+                            <td class="num">31.3 B</td>
+                            <td class="num">33.9</td>
+                            <td class="num">11.5</td>
+                            <td class="num">36/54</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>26b and 31b are tied on the /54 battery (p=0.49 in E11). 26b is ~3.9× the decode of 31b on the 3090. That is the seat on both chips. 31b on the MAX 390: <strong>11.5</strong> tok/s, 100% GPU — still below the ~20 tok/s interactive floor. 35b E9 is 14/30 on the 3090 and 18/30 on the MAX 390; same-run 26b is 24/30 on both. The 18 vs 14 is n=6 noise (p=0.44). The hole is <code>constant-and-callers</code> (0/6 both chips).</p>
+            <p>MAX 390 Qwen 27B rows are <code>num_ctx 8192</code>. 3.8 OOMs at 16384 (CLIP projector). 3.6 does not. 35b runs 16k and 32k at 100% GPU. Detail on 3.6 vs 3.8: <a href="qwen38/">3.6 vs 3.8</a>.</p>
+        </section>
+
+        <section id="spill" class="section">
+            <h2>The 3090 lip — not a MAX 390 problem</h2>
+            <p>35b is ranked above. This section is the placement story. 23&nbsp;GB of weights on 24&nbsp;GB dedicated is a 4% lip. The same blob on 27&nbsp;GB UMA is 100% iGPU. Nano is still unranked (0/18).</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Place</th>
+                            <th class="num">tok/s</th>
+                            <th class="num">L2 (same run)</th>
+                            <th>Read</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>qwen3.6:35b</code> (MoE, 35B-A3B)</td>
+                            <td>4%/96% — half the samples 100%</td>
+                            <td class="num">86.4</td>
+                            <td class="num">9/18</td>
+                            <td>3090 only. E9 14/30. Same blob is 100% GPU on the MAX 390.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nemotron-3-nano</code></td>
+                            <td>7%/93%</td>
+                            <td class="num">121.2</td>
+                            <td class="num">0/18</td>
+                            <td>26b-class decode. Empty on the battery. Fast skip.</td>
+                        </tr>
+                        <tr>
+                            <td><code>gemma4:26b</code> (control)</td>
+                            <td>100% GPU</td>
+                            <td class="num">128.0</td>
+                            <td class="num">12/18 and 11/18</td>
+                            <td>Same-run control, two invocations.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>4–7% spill is not a decode cliff.</strong> 3090 35b is ~2.3× the dense 27b and ~2.5× 31b. 16k → 32k cost ~3% decode; the CPU fraction did not grow. On the MAX 390 the 4% is gone and 35b is slightly faster than 26b (59.2 vs 55.2).</p>
+            <p>35b did not win merit on either chip. E9: 14/30 (3090) and 18/30 (MAX 390) vs 26b 24/30 twice. It still fails <code>constant-and-callers</code> 0/6. Usable. Not the seat.</p>
+            <p>Nano failed all 18 cells by missing the implementation, not by timing out. Cells died in 2.3–2.5s. Decode class does not predict L2.</p>
+        </section>
+
+        <section class="section">
+            <h2>Why 26b is still the seat on both chips</h2>
+            <p>Tied with 31b on L2. Far faster on the 3090 (133 vs 34). On the MAX 390 it is still the interactive pick (55 t/s, 24/30). 35b is the speed pick on the MAX 390 (59 t/s, 100% GPU) and loses the battery (18/30) on one fixture. At L1 — the prompt a human actually types — 26b is 14/18 and 3.8 is 7/18 (p=0.04). Nano is a speed demon that does not implement the task.</p>
+            <p>Published cards put 31b a notch above 26b. That can be true and still not be the pick on either chip.</p>
+        </section>
+
+        <section class="section">
+            <h2>What this does not say</h2>
+            <ul>
+                <li>It does not say spill is free. It says a few percent on this meter is not the old 31b-era disaster.</li>
+                <li>It does not treat 35b’s 18/30 on the MAX 390 as a seat. Same-run 26b is 24/30. The miss is <code>constant-and-callers</code>.</li>
+                <li>It does not claim locals have reached current frontier. A Flash-class oneshot still clears the ceiling item the field sits under. See <a href="qwen38/#ceiling">3.6 vs 3.8</a>.</li>
+                <li>MAX 390 26b/35b decode (17 Aug) is AC / <code>balanced</code>. Older Qwen 27B rows are AC / <code>performance</code> @8k. Battery is a different machine.</li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <p>Bulkhead τ · Draft · RTX 3090 vs Ryzen AI MAX 390 · 18 Aug 2026</p>
+            <p><a href="../index.html">Engineering Core</a> &nbsp;·&nbsp; <a href="qwen38/">3.6 vs 3.8</a> &nbsp;·&nbsp; <a href="../../papers/">All Papers</a></p>
+        </footer>
+    </div>
+</body>
+</html>
