@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-07-21T12:01:14.664228+00:00",
+  "generated_at": "2026-08-27T03:06:36.174938+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": false,
   "groups": [
@@ -9,6 +9,22 @@
       "group": "Local LLM Operator Judgment",
       "group_status": "confirmed",
       "papers": [
+        {
+          "id": "empirical-analysis-r1-r6",
+          "title": "Empirical Analysis: The Harness-Centric Approach to Local Model Delegation",
+          "source_path": "docs/EMPIRICAL_ANALYSIS_R1_R6.md",
+          "track": "paper",
+          "paper_number": "1.45",
+          "lifecycle": "active draft",
+          "publication_status": "private",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "empirical-analysis-r1-r6",
+          "proto_output_path": "bulkhead-tau/generated-papers/empirical-analysis-r1-r6.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/empirical-analysis-r1-r6.md",
+          "publish": false,
+          "summary": "DRAFT. Four-model R6 grid finds a Syntax Wall on raw py_fix writes. R3 as a harness-applied splice is the proposed fix; that treatment grid is not yet run. Do not freeze."
+        },
         {
           "id": "gemma-handoff-discipline",
           "title": "Smarter, Faster, and Bounded by Handoff Discipline",
@@ -135,7 +151,7 @@
           "proto_output_path": "bulkhead-tau/generated-papers/models-dont-get-better-catalogs-do.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/models-dont-get-better-catalogs-do.md",
           "publish": true,
-          "summary": "Reliability gains from waiting for the next model release are slow, diffuse, and not under operator control; reliability gains from operator-side cross-audit failure catalogs are fast, specific, and operator-controlled. The catalog (per-agent failure-mode files, severity-rated, append-only, no self-entries) survives agent identity changes across model releases and CLI vendor releases. Concrete chain: incident -> cross-audited catalog entry -> memory entry -> harness rule (worked example: AGY Rule 7 working-state preservation, from a multi-pin GPIO cleanup-broke-the-circuit incident, 2026-05-26). Defended claim is relative: operator-side catalog accumulation outpaces model improvement on operator-relevant time horizons and on the dimensions operators care about. Boundaries documented: claim binds for supervised multi-agent workflows with patterned recurrence; does not bind for single-agent stacks, unsupervised workflows, or task classes where model capability ceiling is the dominant variable."
+          "summary": "Reliability gains from waiting for the next model release are slow, diffuse, and not under operator control; reliability gains from operator-side failure catalogs are fast, specific, and operator-controlled. The catalog (per-agent failure-mode files, severity-rated, append-only) survives agent identity changes. Addendum 2026-08-15: filing is agent-agnostic; labeled self-report is allowed; the May 2026 no-self-entry table is historical. Concrete chain: incident -> catalog entry -> memory entry -> harness rule (worked example: AGY Rule 7, 2026-05-26). Defended claim is relative: operator-side catalog accumulation outpaces model improvement on operator-relevant time horizons. Boundaries: supervised multi-agent workflows with patterned recurrence; not single-agent stacks, unsupervised workflows, or capability-ceiling tasks."
         },
         {
           "id": "the-narration-surface",
@@ -296,6 +312,38 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/graphify-reduction-tracks-density.md",
           "publish": true,
           "summary": "Two intuitive hypotheses about what a code-graph tool's token-reduction ratio measures -- modularity, then raw corpus size -- were each proposed from limited evidence and each falsified by a real contrasting corpus chosen specifically to test them. A third hypothesis, graph density (edges per node, inverse), fit the falsified hypotheses' data retrospectively, was confirmed by an exact independent reproduction of a previously unverified number, then tested predictively twice: once on a corpus later retracted as flagship evidence after its provenance turned out to be uncertain (likely an old coding-eval submission), once on a corpus chosen because its author could vouch for it. Both predictions were directionally correct; the second missed its predicted magnitude by roughly 5x, which the paper treats as the most interesting open question rather than smoothing over -- the true relationship may be closer to a power law than linear. A secondary finding: the provenance error in the first predictive corpus was caught by the author reviewing results, not by any automated check, and is reported as part of the method rather than edited out."
+        },
+        {
+          "id": "one-implementer-three-supervisors",
+          "title": "Can One Abundant Implementer Exhaust Three Frontier Supervisors?",
+          "source_path": "docs/CAN_ONE_IMPLEMENTER_EXHAUST_THREE_SUPERVISORS_STUB.md",
+          "track": "paper",
+          "paper_number": "",
+          "lifecycle": "stub",
+          "publication_status": "private",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "one-implementer-three-supervisors",
+          "proto_output_path": "bulkhead-tau/generated-papers/one-implementer-three-supervisors.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/one-implementer-three-supervisors.md",
+          "publish": false,
+          "summary": "STUB. Uses the sunset Gemini CLI turn-metered token glitch as a historical motivating observation, then proposes a controlled local-inference replication of the narrower system claim: one abundant implementation lane may create reviewable artifacts faster than Claude Code, Codex, and Antigravity can collectively verify and close them. The primary outcome is verification-queue behavior, not cross-vendor quota conversion."
+        },
+        {
+          "id": "model-did-not-get-worse",
+          "title": "The Model Did Not Get Worse: Leaderboard Rank, Harness Quality, and the Operational Competence Floor",
+          "source_path": "docs/THE_MODEL_DID_NOT_GET_WORSE_STUB.md",
+          "track": "paper",
+          "paper_number": "",
+          "lifecycle": "stub",
+          "publication_status": "private",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "model-did-not-get-worse",
+          "proto_output_path": "bulkhead-tau/generated-papers/model-did-not-get-worse.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/model-did-not-get-worse.md",
+          "publish": false,
+          "summary": "STUB. A dated Claude Sonnet 4.5 system was operationally competent in Claude Code in November 2025 yet sits around rank 60 on the July 2026 Frontend Code leaderboard. The paper separates relative model rank from task-specific operational competence, then treats the unresolved model-harness confound directly: proprietary harness effects can usually be measured end to end but not isolated causally."
         }
       ]
     },
@@ -404,6 +452,22 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-proof-boundary.md",
           "publish": true,
           "summary": "Defines the 'Proof Boundary' separating testing of a simulation harness from verification of a target component's behavior. Analyzes four boundary-crossing failure modes, outlines four operational tests (Provenance, Path, Triviality, Output Dependence) to determine boundary status, and examines susceptibility to layered offload in multi-agent supervisor-supervised workflows."
+        },
+        {
+          "id": "cpu-gpu-simulation-crossover",
+          "title": "CPU/GPU Simulation Has a Workload Crossover",
+          "source_path": "docs/CPU_GPU_SIMULATION_CROSSOVER.md",
+          "track": "paper",
+          "paper_number": "1.46",
+          "lifecycle": "published",
+          "publication_status": "published",
+          "paper_group": "Sensor-to-Simulation Engineering",
+          "group_status": "confirmed",
+          "public_slug": "cpu-gpu-simulation-crossover",
+          "proto_output_path": "bulkhead-tau/generated-papers/cpu-gpu-simulation-crossover.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/cpu-gpu-simulation-crossover.md",
+          "publish": true,
+          "summary": "CPU/GPU simulation routing is workload-shaped: tiny real TennisAgent sensor-state kernels stay CPU-favorable, generic articulated scenes cross on desktop RTX 3090 near practical batch sizes, and a measured-pose single-serve articulated alignment sweep crosses on desktop between batch 512 and 2,048 while z13 ROCm remains CPU-favorable by batch 8,192. Measured-pose and three-repeat variance gates are closed."
         }
       ]
     },

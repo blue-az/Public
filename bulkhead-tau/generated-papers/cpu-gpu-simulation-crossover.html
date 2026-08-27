@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPU/GPU Simulation Has a Workload Crossover</title>
+  <meta name="description" content="CPU/GPU simulation routing is workload-shaped: tiny real TennisAgent sensor-state kernels stay CPU-favorable, generic articulated scenes cross on desktop RTX 3090 near practical batch sizes, and a measured-pose single-serve articulated alignment sweep crosses on desktop between batch 512 and 2,048 while z13 ROCm remains CPU-favorable by batch 8,192. Measured-pose and three-repeat variance gates are closed.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>CPU/GPU Simulation Has a Workload Crossover</h1>
+    <p class="meta">CPU/GPU simulation routing is workload-shaped: tiny real TennisAgent sensor-state kernels stay CPU-favorable, generic articulated scenes cross on desktop RTX 3090 near practical batch sizes, and a measured-pose single-serve articulated alignment sweep crosses on desktop between batch 512 and 2,048 while z13 ROCm remains CPU-favorable by batch 8,192. Measured-pose and three-repeat variance gates are closed.</p>
+    <p class="meta">Canonical source: <code>docs/CPU_GPU_SIMULATION_CROSSOVER.md</code></p>
+    <p><strong>Status:</strong> published <strong>Date:</strong> 2026-08-25 <strong>Project:</strong> Bulkhead τ / Bulkhead Tau <strong>Paper group:</strong> Sensor-to-Simulation Engineering <strong>Publication posture:</strong> frozen and published. The benchmark evidence includes cached MediaPipe landmarks from the single-serve video and a three-repeat variance pass on both desktop and z13.</p>
+<h2>Abstract</h2>
+<p>GPU simulation is not automatically faster than CPU simulation. The useful engineering rule is workload-shaped: use CPU for small or latency-sensitive simulation batches, and use GPU only after the target scene has enough independent work to amortize accelerator overhead.</p>
+<p>This paper reports three progressively more realistic MuJoCo/MJX measurements. A tiny sensor-state kernel built from real TennisAgent IMU windows does not cross over on either a dual-RTX-3090 desktop or a Ryzen AI MAX 390 / Radeon 8050S laptop. A larger articulated generic scene reaches practical desktop crossover near batch 512 and approaches parity on the laptop by batch 4,096. A single-serve articulated TennisAgent workload, built from one real serve video template and one real Zepp origins stream, reaches desktop crossover between batch 512 and 2,048 while still not crossing over on the laptop by batch 8,192.</p>
+<p>The result is not &quot;GPU good&quot; or &quot;CPU good.&quot; It is a routing rule:</p>
+<blockquote><p>CPU is the default for small simulations. GPU becomes useful when the workload</p></blockquote>
+<blockquote><p>is both sufficiently articulated and sufficiently batched for the specific</p></blockquote>
+<blockquote><p>hardware path.</p></blockquote>
+<h2>1. Question</h2>
+<p>When does CPU MuJoCo stop being the better substrate, and when does batched MJX GPU execution become worthwhile?</p>
+<p>The question matters for Bulkhead τ because sensor and hardware-in-the-loop workloads are not homogeneous. Some paths are firmware-fidelity controls, some are tiny sensor transforms, and some are large hypothesis sweeps over simulated states. Treating all of them as &quot;GPU work&quot; would overstate the accelerator&#x27;s role. Treating all of them as &quot;CPU work&quot; would miss the point where large parallel sweeps become cheaper on the GPU.</p>
+<h2>2. Hardware and Backends</h2>
+<table class="paper-table">
+<thead><tr><th>Machine</th><th>CPU/GPU path</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Desktop</td><td>native MuJoCo CPU; MJX on CUDA <code>cuda:0</code> / <code>cuda:1</code></td><td>dual RTX 3090 available; rows are separate device measurements, not a combined two-GPU speedup</td></tr>
+<tr><td>z13</td><td>native MuJoCo CPU; MJX on ROCm <code>rocm:0</code></td><td>Ryzen AI MAX 390 / Radeon 8050S unified-memory path via side-by-side ROCm 7.2.4 userspace</td></tr>
+</tbody>
+</table>
+<p>All runners report native CPU rows and MJX rows at matched batch sizes. JIT warm-up is excluded from steady-state timing. GPU rows are only treated as GPU evidence when JAX reports an actual CUDA or ROCm device.</p>
+<h2>3. Evidence Packets</h2>
+<p>Primary evidence lives under:</p>
+<p><code>docs/domain_runs/MUJOCO-CPU-MJX-SCALE-001/</code></p>
+<p>Key artifacts:</p>
+<ul>
+<li><code>desktop_3090_large_verified.json</code> — large articulated generic scene on desktop CUDA.</li>
+<li><code>z13_rocm7_large_2026-08-24.json</code> and <code>z13_rocm7_large4096_2026-08-24.json</code> — matching large-scene z13 ROCm evidence.</li>
+<li><code>tennis_sensor_adapter.json</code> and <code>z13_tennis_sensor_adapter.json</code> — real TennisAgent sensor-state adapter.</li>
+<li><code>single_serve_skeleton_sensor_desktop.json</code> and <code>single_serve_skeleton_sensor_z13.json</code> — single-serve articulated workload.</li>
+<li><code>single_serve_skeleton_sensor_crossover_plot.png</code> — summary plot.</li>
+</ul>
+<p>The summary plot is here:</p>
+<p><code>docs/domain_runs/MUJOCO-CPU-MJX-SCALE-001/single_serve_posefit_variance_plot.png</code></p>
+<p><img src="../generated-papers-assets/single_serve_posefit_variance_plot.png" alt="Measured-pose single-serve workload variance pass" loading="lazy"></p>
+<h2>4. Result 1 — Large Generic Articulated Scene</h2>
+<p>The large generic scene is a 10-joint articulated MuJoCo model. It is not a TennisAgent domain model, but it establishes the basic scaling behavior: scene complexity and batch size determine whether GPU launch and synchronization overhead are amortized.</p>
+<h3>Desktop RTX 3090</h3>
+<table class="paper-table">
+<thead><tr><th>Batch</th><th>Native CPU</th><th>RTX 3090 GPU 0</th><th>RTX 3090 GPU 1</th><th>Reading</th></tr></thead>
+<tbody>
+<tr><td>256</td><td>166,121</td><td>110,417</td><td>107,786</td><td>CPU leads</td></tr>
+<tr><td>512</td><td>166,458</td><td>169,128</td><td>166,988</td><td>practical parity</td></tr>
+<tr><td>1,024</td><td>160,500</td><td>253,316</td><td>257,943</td><td>GPU leads</td></tr>
+<tr><td>2,048</td><td>151,117</td><td>293,124</td><td>304,164</td><td>GPU leads</td></tr>
+<tr><td>4,096</td><td>150,989</td><td>334,735</td><td>330,209</td><td>GPU leads ~2.2x</td></tr>
+</tbody>
+</table>
+<p>Evidence: <code>desktop_3090_large_verified.json</code>.</p>
+<h3>z13 unified Radeon path</h3>
+<p>On the z13, the same large scene approached crossover but did not beat CPU in the tested range. At batch 4,096, CPU measured 164,665 steps/s and the Radeon measured 161,247 steps/s: only a 1.02x CPU advantage.</p>
+<p>Evidence: <code>z13_rocm7_large4096_2026-08-24.json</code>.</p>
+<h2>5. Result 2 — Real TennisAgent Sensor-State Kernel</h2>
+<p>The first TennisAgent adapter intentionally stayed conservative. It used real Zepp and Apple Watch IMU windows, kept the sensor lanes separate, and reported LabWired only as a firmware-fidelity control. Each real IMU sample initialized a free-body state with:</p>
+<p><code>qvel = [accel * dt linear-velocity proxy, measured gyro]</code></p>
+<p>This representation is honest, but too small to make the GPU useful.</p>
+<h3>Desktop result</h3>
+<p>At batch 256, native CPU remained far ahead:</p>
+<table class="paper-table">
+<thead><tr><th>Lane</th><th>CPU</th><th>Best MJX GPU</th><th>Reading</th></tr></thead>
+<tbody>
+<tr><td>Zepp</td><td>~561k</td><td>~40k</td><td>CPU wins</td></tr>
+<tr><td>Apple Watch</td><td>~562k</td><td>~44k</td><td>CPU wins</td></tr>
+</tbody>
+</table>
+<p>Evidence: <code>tennis_sensor_adapter.json</code>.</p>
+<h3>z13 result</h3>
+<p>At batch 256, CPU also led on z13; Apple Watch batch 512 narrowed but did not cross:</p>
+<table class="paper-table">
+<thead><tr><th>Lane / batch</th><th>CPU</th><th>MJX GPU</th><th>Reading</th></tr></thead>
+<tbody>
+<tr><td>Zepp / 256</td><td>~711k</td><td>~199k</td><td>CPU wins</td></tr>
+<tr><td>Apple Watch / 256</td><td>~710k</td><td>~216k</td><td>CPU wins</td></tr>
+<tr><td>Apple Watch / 512</td><td>~704k</td><td>~309k</td><td>CPU wins</td></tr>
+</tbody>
+</table>
+<p>Evidence: <code>z13_tennis_sensor_adapter.json</code>.</p>
+<h2>6. Result 3 — Single-Serve Articulated Skeleton/Sensor Workload</h2>
+<p>The heavier TennisAgent workload is closer to an actual application. It uses the existing real serve video:</p>
+<p><code>domains/SensorAgents/TennisAgent/data/golden_sessions/serves_20260103/IMG_0050.MOV</code></p>
+<p>and the real Zepp origins stream for swing <code>1767490069922</code> from the plugged-in phone pull / local Zepp database. The model is a 10-actuator torso/arm/racket chain. The batch dimension is not fake duplicated swings; it is a deterministic calibration sweep over one serve:</p>
+<ul>
+<li>time offset;</li>
+<li>pose scale;</li>
+<li>sensor gain;</li>
+<li>pronation bias.</li>
+</ul>
+<p>The template now uses cached MediaPipe pose landmarks from the actual serve window. The conversion is intentionally simple: 2D shoulder/elbow/wrist angles become arm/racket joint targets. This closes the measured-skeleton-fit gate, but it remains a 2D pose-derived alignment workload rather than validated 3D biomechanics.</p>
+<h3>Desktop RTX 3090 result</h3>
+<p>The desktop crossed over between batch 512 and 2,048.</p>
+<table class="paper-table">
+<thead><tr><th>Batch</th><th>CPU</th><th>Best CUDA MJX</th><th>GPU / CPU</th></tr></thead>
+<tbody>
+<tr><td>512</td><td>~100k</td><td>~28k</td><td>0.28x</td></tr>
+<tr><td>2,048</td><td>~97k</td><td>~112k</td><td>1.16x</td></tr>
+<tr><td>4,096</td><td>~95k</td><td>~145k</td><td>1.52x</td></tr>
+<tr><td>8,192</td><td>~96k</td><td>~171k</td><td>1.79x</td></tr>
+</tbody>
+</table>
+<p>Evidence: <code>single_serve_skeleton_sensor_desktop.json</code>.</p>
+<p>A three-repeat variance pass on the measured-pose workload preserved the same routing decision. Mean throughput over repeats:</p>
+<table class="paper-table">
+<thead><tr><th>Batch</th><th>CPU mean</th><th>Best CUDA mean</th><th>GPU / CPU mean</th></tr></thead>
+<tbody>
+<tr><td>512</td><td>~102k</td><td>~29k</td><td>0.29x</td></tr>
+<tr><td>2,048</td><td>~96k</td><td>~104k</td><td>1.08x</td></tr>
+<tr><td>4,096</td><td>~94k</td><td>~140k</td><td>1.49x</td></tr>
+<tr><td>8,192</td><td>~95k</td><td>~168k</td><td>1.76x</td></tr>
+</tbody>
+</table>
+<p>Evidence: <code>single_serve_posefit_variance_desktop_summary.json</code> and repeat files <code>single_serve_posefit_variance_desktop_r1.json</code> through <code>r3.json</code>.</p>
+<h3>z13 ROCm result</h3>
+<p>The z13 did not cross over in the tested range.</p>
+<table class="paper-table">
+<thead><tr><th>Batch</th><th>CPU</th><th>ROCm MJX</th><th>GPU / CPU</th></tr></thead>
+<tbody>
+<tr><td>512</td><td>~164k</td><td>~38k</td><td>0.23x</td></tr>
+<tr><td>2,048</td><td>~105k</td><td>~63k</td><td>0.59x</td></tr>
+<tr><td>4,096</td><td>~96k</td><td>~69k</td><td>0.72x</td></tr>
+<tr><td>8,192</td><td>~74k</td><td>~62k</td><td>0.83x</td></tr>
+</tbody>
+</table>
+<p>Evidence: <code>single_serve_skeleton_sensor_z13.json</code>.</p>
+<p>The z13 three-repeat variance pass also preserved the routing decision. Mean throughput over repeats:</p>
+<table class="paper-table">
+<thead><tr><th>Batch</th><th>CPU mean</th><th>ROCm MJX mean</th><th>GPU / CPU mean</th></tr></thead>
+<tbody>
+<tr><td>512</td><td>~182k</td><td>~36k</td><td>0.20x</td></tr>
+<tr><td>2,048</td><td>~100k</td><td>~60k</td><td>0.61x</td></tr>
+<tr><td>4,096</td><td>~82k</td><td>~68k</td><td>0.84x</td></tr>
+<tr><td>8,192</td><td>~76k</td><td>~63k</td><td>0.84x</td></tr>
+</tbody>
+</table>
+<p>Evidence: <code>single_serve_posefit_variance_z13_summary.json</code> and repeat files <code>single_serve_posefit_variance_z13_r1.json</code> through <code>r3.json</code>.</p>
+<p>This does not mean the z13 GPU path is broken. It means the laptop CPU is strong and the integrated GPU/ROCm path does not beat it for this workload by batch 8,192. The desktop result is different because the RTX 3090 has enough raw parallel throughput to pass its CPU once the articulated workload is large enough.</p>
+<h2>7. Interpretation</h2>
+<p>The three measurements form a useful ladder:</p>
+<table class="paper-table">
+<thead><tr><th>Workload</th><th>Desktop result</th><th>z13 result</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Tiny real sensor-state kernel</td><td>no crossover by batch 256</td><td>no crossover by batch 512</td><td>CPU default for small sensor transforms</td></tr>
+<tr><td>Large generic articulated scene</td><td>crossover near batch 512</td><td>near parity at batch 4,096</td><td>articulation and batching matter</td></tr>
+<tr><td>Single-serve measured-pose articulated alignment sweep</td><td>crossover between batch 512 and 2,048</td><td>no crossover by batch 8,192</td><td>application-shaped workload crosses on discrete GPU, not unified iGPU</td></tr>
+</tbody>
+</table>
+<p>The CPU comparison is also informative. In the single-serve workload the z13 CPU is not weak; it is faster than the desktop CPU at most batch sizes. The desktop crossover is therefore not explained by a weak CPU baseline. It is explained by the RTX 3090 GPU path becoming worthwhile once the batch is large enough.</p>
+<h2>8. Boundaries</h2>
+<p>This paper does not claim:</p>
+<ul>
+<li>a universal batch-512 or batch-2,048 threshold;</li>
+<li>a combined two-GPU speedup from the dual 3090s;</li>
+<li>validated 3D biomechanics;</li>
+<li>authoritative racket speed, ball impact, spin, or pronation measurement from the MuJoCo model;</li>
+<li>that LabWired replay is a GPU benchmark;</li>
+<li>that z13 ROCm is broken because it did not cross over.</li>
+</ul>
+<p>The claim binds to the named runners, artifacts, machines, batch sizes, and workload representations. The TennisAgent single-serve workload is a bridge from synthetic scaling to application-shaped scaling, not a finished digital twin.</p>
+<h2>9. Engineering Rule</h2>
+<p>Use this routing rule in Bulkhead τ:</p>
+<ol>
+<li>Run small or latency-sensitive sensor transforms on CPU.</li>
+<li>Keep LabWired on its firmware-fidelity path; do not relabel it as GPU work.</li>
+<li>Use GPU for large parallel articulated sweeps only after a measured crossover    exists for the target scene and hardware.</li>
+<li>Treat desktop RTX 3090 and z13 unified Radeon as different routing targets;    a crossover on one does not imply crossover on the other.</li>
+</ol>
+<h2>10. Publication State</h2>
+<p>The two active-draft gates are closed:</p>
+<ul>
+<li>measured pose: cached MediaPipe landmarks extracted from the actual serve window;</li>
+<li>variance: three-repeat measured-pose runs completed on both desktop and z13,   with GPU telemetry logs captured.</li>
+</ul>
+<p>Optional future extensions remain:</p>
+<ul>
+<li>add a second serve video/template to show that the routing result is not one   clip&#x27;s artifact;</li>
+<li>add an application-faithful ProximityAgent geometry/ray workload;</li>
+<li>add a public-facing demo page that embeds the plot and boundary text.</li>
+</ul>
+<p>Those extensions would widen the claim. They are not required for the bounded routing rule published here.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>
