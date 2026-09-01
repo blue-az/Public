@@ -1,8 +1,8 @@
 # Dedicated 24 GB Beats Unified 27 GB: The Capacity Trap in Local Inference
 
-**Status:** active draft  
-**Date:** 2026-07-04 (updated 2026-07-20, Section 12)  
-**Project:** Project Phoenix / Bulkhead Tau  
+**Status:** active draft
+**Date:** 2026-07-04 (updated 2026-07-20, Section 12)
+**Project:** Bulkhead τ / Bulkhead Tau
 **Publication posture:** paper-grade draft. Multi-prompt variance pass completed
 2026-07-05 (Section 10); the core numbers are now variance-backed and the gate is
 closed. A realistic-context residency confirmation (Section 12) was folded in
@@ -174,7 +174,16 @@ The desktop power sweep explains why the first speed conclusion was wrong. The
 card was not merely memory-bound at 200 W. Dense inference was strongly
 compute-bound under the cap.
 
-| Power | gemma4:26b MoE | gemma4:31b dense |
+> ⚠️ **Do not quote the `gemma4:31b` column as a current throughput figure.**
+> Residency was **not** confirmed per row here, and these cells were probably
+> partially CPU-spilling. The residency-verified number is **18.1 tok/s**
+> (Section 12; `domain_runs/GEMMA4-CTX8192-3090-VS-Z13-001/findings.md`), which
+> is *lower* than this table's 300 W and 350 W rows despite a higher power cap.
+> In particular **the 30.8 / 31.7 entries have been mis-cited as "31B runs at
+> ~31 tok/s"** to argue it clears the ~20 tok/s conversational floor. It does
+> not: at 18.1 tok/s it is **below** the floor. See the note under the table.
+
+| Power | gemma4:26b MoE | gemma4:31b dense (⚠️ residency unconfirmed) |
 |---:|---:|---:|
 | 200 W | 89.8 | 14.1 |
 | 250 W | 97.8 | 23.5 |
@@ -411,6 +420,17 @@ Byte-identical model files were used on both machines (Ollama IDs
 API calls (`temperature 0`, `num_predict 256`); run 1 includes model load,
 runs 2–3 are warm and reported as the mean below. Zero errors, zero crashes,
 across all 12 calls.
+
+
+> ⚠️ **The z13 column is superseded (re-measured 2026-08-13).** `gemma4:26b` now
+> runs at **46.8 tok/s with 16% CPU spill** on z13, against the 18.8 / 38% below —
+> a **2.5x** revision. `gemma4:31b` moved 4.86 → **7.1 tok/s**, spill 45% → 31%.
+> Verified like-for-like first: same architecture, 25.8B parameters, Q4_K_M on
+> both machines. Spill improved alongside throughput, which points at the serving
+> stack (Vulkan/RADV, ollama) rather than measurement error.
+> **The desktop:z13 ratios below are therefore wrong** — the MoE gap is now
+> roughly **2x**, not 4.86x. The desktop figures are unaffected.
+> Current data: `operator-control-plane/evals/local_lane_ladder/Z13_BENCHMARK.md`.
 
 | Model | Desktop @ 220W | Laptop | Ratio | Desktop residency | Laptop residency |
 |---|---:|---:|---:|---|---|

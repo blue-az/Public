@@ -7,7 +7,7 @@ Frozen / Published (Paper 1.36)
 When utilizing local LLMs or vision-language models to generate image prompts from conceptual sketches, a specific failure mode arises when the source sketch contains abstract text labels (e.g., "COMPANIES", "ATS", "USERS").
 
 ## Mechanism: The "Sketch Poisoning" Effect
-In image-to-image (img2img) generation pipelines (like Stable Diffusion architectures), the model interprets the visual structures of the input image alongside the text prompt. 
+In image-to-image (img2img) generation pipelines (like Stable Diffusion architectures), the model interprets the visual structures of the input image alongside the text prompt.
 
 When a sketch contains literal text labels intended for human comprehension, the img2img model attempts to physically render these geometric shapes (the letters) into the final output. Because the model is optimizing for the text prompt's aesthetic (e.g., "photorealistic office", "clean vector art") but is constrained by the hard geometry of the sketched letters, it produces garbled, hallucinated artifacts where the text used to be. The text acts as "visual noise" or "poison" to the generation process.
 

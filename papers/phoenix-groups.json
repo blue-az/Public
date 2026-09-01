@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-09-01T01:49:10.712639+00:00",
+  "generated_at": "2026-09-01T04:09:29.045164+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": true,
   "groups": [
@@ -296,6 +296,22 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/graphify-reduction-tracks-density.md",
           "publish": true,
           "summary": "Two intuitive hypotheses about what a code-graph tool's token-reduction ratio measures -- modularity, then raw corpus size -- were each proposed from limited evidence and each falsified by a real contrasting corpus chosen specifically to test them. A third hypothesis, graph density (edges per node, inverse), fit the falsified hypotheses' data retrospectively, was confirmed by an exact independent reproduction of a previously unverified number, then tested predictively twice: once on a corpus later retracted as flagship evidence after its provenance turned out to be uncertain (likely an old coding-eval submission), once on a corpus chosen because its author could vouch for it. Both predictions were directionally correct; the second missed its predicted magnitude by roughly 5x, which the paper treats as the most interesting open question rather than smoothing over -- the true relationship may be closer to a power law than linear. A secondary finding: the provenance error in the first predictive corpus was caught by the author reviewing results, not by any automated check, and is reported as part of the method rather than edited out."
+        },
+        {
+          "id": "the-default-draft-is-too-deep",
+          "title": "The Default Draft Is Too Deep",
+          "source_path": "docs/THE_DEFAULT_DRAFT_IS_TOO_DEEP_STUB.md",
+          "track": "paper",
+          "paper_number": "1.44",
+          "lifecycle": "stub",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "the-default-draft-is-too-deep",
+          "proto_output_path": "bulkhead-tau/generated-papers/the-default-draft-is-too-deep.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-default-draft-is-too-deep.md",
+          "publish": true,
+          "summary": "STUB. Ollama's stock qwen3.8:27b already runs multi-token prediction, so the remaining speed is not in enabling MTP but in how deep the head is allowed to draft. On a 24 GB 3090 and a 2025 Strix Halo the stock depth of 4 is slower than 2: the vendor default carried over the separate-draft-model convention and is the wrong depth for this card class. Measured 16 Aug 2026; not frozen and not UID-verified."
         }
       ]
     },

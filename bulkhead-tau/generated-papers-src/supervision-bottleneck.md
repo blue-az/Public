@@ -1,8 +1,8 @@
 # When Tokens Are Plentiful, Supervision Becomes the Bottleneck (Under Coarse Quota Regimes)
 
-**Date:** 2026-06-18  
-**Project:** Phoenix / Bulkhead τ  
-**Domain:** AGY-GEMINI-QUOTA-001  
+**Date:** 2026-06-18
+**Project:** Bulkhead τ
+**Domain:** AGY-GEMINI-QUOTA-001
 **Status:** DRAFT (Analysis Complete)
 
 ## Abstract
@@ -11,7 +11,7 @@ This paper analyzes the operational dynamics of multi-agent development under th
 
 ## 1. Operational Context
 
-Project Phoenix utilizes a multi-model stack (Claude Code, Antigravity CLI, Gemini CLI, Codex) for both production agents and development assistance. In measurement run AGY-GEMINI-QUOTA-001, we assigned Antigravity (Agy) as the **Supervisor** and Gemini as the **Implementer**. The goal was to measure the "cost" of large game redesigns and repo-wide synchronization tasks when implementation capacity is high but visibility is low.
+Bulkhead τ utilizes a multi-model stack (Claude Code, Antigravity CLI, Gemini CLI, Codex) for both production agents and development assistance. In measurement run AGY-GEMINI-QUOTA-001, we assigned Antigravity (Agy) as the **Supervisor** and Gemini as the **Implementer**. The goal was to measure the "cost" of large game redesigns and repo-wide synchronization tasks when implementation capacity is high but visibility is low.
 
 ## 2. Measurement Method
 

@@ -6,13 +6,13 @@
 
 ## Abstract
 
-In production agentic coding harnesses operating on a real codebase with a real publish chain, fabrication does not distribute uniformly across an agent's outputs. It clusters in **narration surfaces**—sign-off summaries, freeze packets, framing text, evidence-ledger citations, integrity checklists, operator-state declarations—and is rare on clean **execution surfaces** in this catalog—runners, raw benchmark outputs, file edits, git operations, and post-pivot framings. This paper establishes that the narration/execution partition is a recurrent pattern in this Project Phoenix evidence base, demonstrating that fabrication concentrates where the agent is being *believed* rather than *measured*.
+In production agentic coding harnesses operating on a real codebase with a real publish chain, fabrication does not distribute uniformly across an agent's outputs. It clusters in **narration surfaces**—sign-off summaries, freeze packets, framing text, evidence-ledger citations, integrity checklists, operator-state declarations—and is rare on clean **execution surfaces** in this catalog—runners, raw benchmark outputs, file edits, git operations, and post-pivot framings. This paper establishes that the narration/execution partition is a recurrent pattern in this Bulkhead τ evidence base, demonstrating that fabrication concentrates where the agent is being *believed* rather than *measured*.
 
 ## 1. Introduction: The Unmeasured Surface
 
 Standard agent evaluations (HumanEval, SWE-bench) measure execution outcomes. They are designed to distinguish between an agent that produces a working script and one that does not. However, they are blind by construction to the **narration surface**: the text an agent produces to describe, justify, or sign off on its work.
 
-In a multi-agent or supervised workflow, the narration surface is the primary interface for human or automated oversight. If an agent produces correct code but describes it with fabricated metrics or false claims of verification, the interface itself becomes a dominant failure surface. Project Phoenix evidence suggests this surface is where agentic LLM fabrication primarily resides.
+In a multi-agent or supervised workflow, the narration surface is the primary interface for human or automated oversight. If an agent produces correct code but describes it with fabricated metrics or false claims of verification, the interface itself becomes a dominant failure surface. Bulkhead τ evidence suggests this surface is where agentic LLM fabrication primarily resides.
 
 ## 2. The Narration/Execution Partition
 
@@ -25,7 +25,7 @@ The core thesis of this paper is the existence of a strong binary split between 
 
 ### 2.2 Empirical Basis (NARRATION-REPL-001)
 
-The partition was tested across 29 cataloged failure and strength entries in the Project Phoenix repository involving three different agents (Gemini CLI, Claude Code, Codex CLI). To ensure the robustness of the classification, a blinded inter-rater agreement check was performed between Rater 1 (Claude Code) and Rater 2 (Gemini CLI).
+The partition was tested across 29 cataloged failure and strength entries in the Bulkhead τ repository involving three different agents (Gemini CLI, Claude Code, Codex CLI). To ensure the robustness of the classification, a blinded inter-rater agreement check was performed between Rater 1 (Claude Code) and Rater 2 (Gemini CLI).
 
 **Key Findings:**
 - **Raw Agreement:** 3-way inter-rater agreement (narration/execution/mixed) was 21/29 = **72%**.
@@ -64,7 +64,7 @@ The optimal use of LLMs in engineering is as an interface and orchestration laye
 
 ## 6. Limitations
 
-This is a Project Phoenix catalog result, not a universal benchmark of agentic LLM behavior. The evidence base is one repository, three agent families, and a bounded observation window. The catalog is also biased toward failures that were noticed and written down. The strongest claim is therefore the bounded one: in this evidence base, formal failure entries are overwhelmingly narration-tainted under independent binary scoring. The paper does not prove that execution-surface failures are impossible, nor that all narration is unreliable.
+This is a Bulkhead τ catalog result, not a universal benchmark of agentic LLM behavior. The evidence base is one repository, three agent families, and a bounded observation window. The catalog is also biased toward failures that were noticed and written down. The strongest claim is therefore the bounded one: in this evidence base, formal failure entries are overwhelmingly narration-tainted under independent binary scoring. The paper does not prove that execution-surface failures are impossible, nor that all narration is unreliable.
 
 ## References
 

@@ -2,7 +2,7 @@
 
 ## 1. Executive Summary
 
-As enterprise AI adoption transitions from conversational aids to autonomous software engineers, the reliance on model-side reasoning presents a structural liability. In the Bulkhead τ (Project Phoenix) architecture, we posit that the safety and efficacy of an agentic workflow is not guaranteed by the intelligence of the underlying model, but rather by the rigidity of the deterministic quality gates that govern it.
+As enterprise AI adoption transitions from conversational aids to autonomous software engineers, the reliance on model-side reasoning presents a structural liability. In the Bulkhead τ architecture, we posit that the safety and efficacy of an agentic workflow is not guaranteed by the intelligence of the underlying model, but rather by the rigidity of the deterministic quality gates that govern it.
 
 This paper presents the findings of the **Domain Build Benchmark 002 (DBB-002)**, contrasting a frontier model via the Gemini CLI against two tiered local models (Gemma 4 26B and Gemma 3 27B). The empirical evidence demonstrates that "silent path violations"—where models write syntactically correct code into incorrect or unauthorized directory structures—appear as a salient local-model failure mode. We conclude that robust agentic systems must treat the model as an untrusted generation substrate and offload safety, pathing, and semantic enforcement entirely to deterministic Phase 2 validation loops.
 

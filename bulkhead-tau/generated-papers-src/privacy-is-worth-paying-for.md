@@ -53,7 +53,7 @@ The honest deployment case is "privacy is worth paying for," not
 ## Why This Paper Exists
 
 The DocDrop privacy lane is currently the cleanest production-shape
-privacy deployment in Project Phoenix. Its design is correct: local
+privacy deployment in Bulkhead τ. Its design is correct: local
 inference on `localhost`, no API egress, sensitive documents on
 operator-controlled media, strict 5-field JSON contract, schema
 validation at the receive boundary.
@@ -122,7 +122,7 @@ several places that an API-boundary view misses.
   with native function-calling skips that text entirely
 - larger system prompts to compensate for lower instruction-following
 - verbose reasoning preambles must be suppressed (`/no_think`) and
-  monitored (the suppression-regression probe Project Phoenix built);
+  monitored (the suppression-regression probe Bulkhead τ built);
   even when suppressed, the suppression contract has to be tested
   on a schedule
 
@@ -145,7 +145,7 @@ several places that an API-boundary view misses.
 
 - prompt design and maintenance (longer, more constrained prompts than
   a frontier path needs)
-- regression scaffolding (the probes Project Phoenix has scaffolded for
+- regression scaffolding (the probes Bulkhead τ has scaffolded for
   exactly this reason)
 - drift handling (catching upstream changes to Ollama or model weights
   that break the suppression contract)
@@ -238,7 +238,7 @@ The accounting does not stop at tokens. The local lane also requires:
 - drift handling when model, runtime, or transport behavior changes
 - hardware capacity and operator time
 
-Project Phoenix treats those obligations as engineering work, not as hidden
+Bulkhead τ treats those obligations as engineering work, not as hidden
 externalities. That is the point: privacy can justify the local lane, but it
 does not erase the cost of operating it.
 

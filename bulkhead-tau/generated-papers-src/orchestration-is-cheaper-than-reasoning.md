@@ -89,7 +89,7 @@ nothing in quality and costs ~10× wall-clock.
 
 ## Evidence Anchor 1c: gemma4:26b vs gemma4:12b Arizona Ladder (REST API, June 2026)
 
-To resolve the CLI-wrapped generate-looping bottleneck, the benchmark was migrated to the Ollama HTTP REST API (`/api/generate` with `"stream": false`, `temperature: 0.0`, and `"num_predict": 2048`). 
+To resolve the CLI-wrapped generate-looping bottleneck, the benchmark was migrated to the Ollama HTTP REST API (`/api/generate` with `"stream": false`, `temperature: 0.0`, and `"num_predict": 2048`).
 
 The optimized runs compare `gemma4:26b` and the newly integrated `gemma4:12b` model.
 

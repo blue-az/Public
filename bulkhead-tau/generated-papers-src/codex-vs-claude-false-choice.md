@@ -45,9 +45,9 @@ This is an engineering-process claim, not a model leaderboard.
 
 ## The Case
 
-The task was identical for both agents: build a tau-bench-style Project Phoenix
+The task was identical for both agents: build a tau-bench-style Bulkhead τ
 domain on publicly available data (Amkor Technology, a semiconductor packaging
-firm) under Project Phoenix principles — a versioned variation ladder, a SQLite
+firm) under Bulkhead τ principles — a versioned variation ladder, a SQLite
 data substrate built from public SEC / market / news / jobs sources, and an SOP
 that drives Policy → Tools → Tasks.
 
@@ -153,7 +153,7 @@ cockpit layer and 10-K text extraction. The artifacts make that merge concrete
 rather than aspirational: both halves already exist, in two different
 repositories, authored by two different agents.
 
-The portable lesson for Project Phoenix domain building: **compare
+The portable lesson for Bulkhead τ domain building: **compare
 implementation paths under evidence discipline, not models in the abstract.** The
 scaffold, the validator, and the operator review are the constants; the agent is
 a swappable producer of a rough draft whose surfaces you then audit and combine.

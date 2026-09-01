@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codex vs Claude Code Is a False Choice</title>
-  <meta name="description" content="Case study arguing that Codex vs Claude Code is usually the wrong abstraction for Project Phoenix domain building. In the Amkor/xAmkor comparison, the artifact-backed claim is compositional: xAmkor was stronger on the benchmark/verifier surface, while Amkor carried broader cockpit/application surface.">
+  <meta name="description" content="Case study arguing that Codex vs Claude Code is usually the wrong abstraction for Bulkhead Tau domain building. In the Amkor/xAmkor comparison, the artifact-backed claim is compositional: xAmkor was stronger on the benchmark/verifier surface, while Amkor carried broader cockpit/application surface.">
   <style>
     body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
     .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
@@ -16,8 +16,11 @@
     code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
     pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
     pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
     a { color: #8b4513; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
     .meta { color: #6b5a45; margin-bottom: 2rem; }
     .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
     .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
@@ -30,29 +33,31 @@
   <div class="page">
     <div class="badge">Paper · frozen</div>
     <h1>Codex vs Claude Code Is a False Choice</h1>
-    <p class="meta">Case study arguing that Codex vs Claude Code is usually the wrong abstraction for Project Phoenix domain building. In the Amkor/xAmkor comparison, the artifact-backed claim is compositional: xAmkor was stronger on the benchmark/verifier surface, while Amkor carried broader cockpit/application surface.</p>
+    <p class="meta">Case study arguing that Codex vs Claude Code is usually the wrong abstraction for Bulkhead Tau domain building. In the Amkor/xAmkor comparison, the artifact-backed claim is compositional: xAmkor was stronger on the benchmark/verifier surface, while Amkor carried broader cockpit/application surface.</p>
     <p class="meta">Canonical source: <code>docs/CODEX_VS_CLAUDE_FALSE_CHOICE.md</code></p>
-    <p>*A domain-building case study in comparing implementation paths, not models in the abstract.*</p>
+    <p><em>A domain-building case study in comparing implementation paths, not models in the abstract.</em></p>
 <h2>Status</h2>
 <p>Frozen / Published, Paper 1.38. Authored 2026-06-01, registered 2026-06-08, and frozen 2026-06-08. Promoted from <code>ready_to_draft</code> on the basis of:</p>
 <ul>
 <li>The artifact-backed side-by-side inventory at   <code>docs/domain_runs/AMKOR-CASE-001/side_by_side_inventory.md</code>, whose load-bearing   claims were re-verified against the on-disk domains on 2026-06-01.</li>
 <li>The two formal Domain Build Benchmark supervisor verdicts the case study sits   beside: <code>docs/domain_runs/DBB-001/codex_frontier/supervisor_verdict.md</code>   (<code>PASS_WITH_WAIVER</code>) and <code>docs/domain_runs/DBB-001a/claude_frontier/supervisor_verdict.md</code>   (<code>PASS</code>, &quot;cleanest run in the DBB-001 group so far&quot;).</li>
-<li>The archived operator-supplied source at   <code>docs/domain_runs/AMKOR-CASE-001/linkedin_post_archive.md</code>, retained as   anecdotal context, explicitly **not** as an independent benchmark result.</li>
+<li>The archived operator-supplied source at   <code>docs/domain_runs/AMKOR-CASE-001/linkedin_post_archive.md</code>, retained as   anecdotal context, explicitly <strong>not</strong> as an independent benchmark result.</li>
 </ul>
 <p>This paper is registered in <code>docs/PAPERS_MANIFEST.json</code> and published through the Bulkhead Tau paper index.</p>
 <h2>Thesis</h2>
-<p>&quot;Claude Code vs Codex&quot; is a real comparison and an almost-always false choice. The two tools are not locked in: an operator can use either, switch between them, or use both, so the abstract question *which model is better* rarely pays rent. The question that does pay rent is narrower and answerable from artifacts:</p>
-<p>&gt; Under a shared scaffold, a shared validator discipline, and the same operator &gt; review, **which implementation path produced the better rough domain — and &gt; which surface did each path win?**</p>
-<p>In the Amkor / xAmkor case, the answer is not winner-take-all. The Codex-authored domain was more *operationally complete* at handoff — its verifier surface was executable, tested, and reproducibility-oriented. The Claude-authored domain was more *ambitious as an application* — it carried a richer cockpit core and broader schema/feature scaffolding. The strongest path is therefore **compositional**: the Codex-style verifier discipline plus the Claude-style cockpit/application surface. The choice between models is a false binary; the useful act is choosing which *surface* each path is trusted to own.</p>
+<p>&quot;Claude Code vs Codex&quot; is a real comparison and an almost-always false choice. The two tools are not locked in: an operator can use either, switch between them, or use both, so the abstract question <em>which model is better</em> rarely pays rent. The question that does pay rent is narrower and answerable from artifacts:</p>
+<blockquote><p>Under a shared scaffold, a shared validator discipline, and the same operator</p></blockquote>
+<blockquote><p>review, **which implementation path produced the better rough domain — and</p></blockquote>
+<blockquote><p>which surface did each path win?**</p></blockquote>
+<p>In the Amkor / xAmkor case, the answer is not winner-take-all. The Codex-authored domain was more <em>operationally complete</em> at handoff — its verifier surface was executable, tested, and reproducibility-oriented. The Claude-authored domain was more <em>ambitious as an application</em> — it carried a richer cockpit core and broader schema/feature scaffolding. The strongest path is therefore <strong>compositional</strong>: the Codex-style verifier discipline plus the Claude-style cockpit/application surface. The choice between models is a false binary; the useful act is choosing which <em>surface</em> each path is trusted to own.</p>
 <p>This is an engineering-process claim, not a model leaderboard.</p>
 <h2>The Case</h2>
-<p>The task was identical for both agents: build a tau-bench-style Project Phoenix domain on publicly available data (Amkor Technology, a semiconductor packaging firm) under Project Phoenix principles — a versioned variation ladder, a SQLite data substrate built from public SEC / market / news / jobs sources, and an SOP that drives Policy → Tools → Tasks.</p>
+<p>The task was identical for both agents: build a tau-bench-style Bulkhead τ domain on publicly available data (Amkor Technology, a semiconductor packaging firm) under Bulkhead τ principles — a versioned variation ladder, a SQLite data substrate built from public SEC / market / news / jobs sources, and an SOP that drives Policy → Tools → Tasks.</p>
 <ul>
 <li><code>Amkor</code> — authored by Claude Code (<code>domains/ExperimentalAgents/Amkor</code>)</li>
 <li><code>xAmkor</code> — authored by Codex (<code>domains/ExperimentalAgents/xAmkor</code>)</li>
 </ul>
-<p>Both domains exist on disk today with a shared baseline: <code>schema.sql</code>, <code>service.py</code>, <code>scripts/init_db.py</code>, the same family of SEC/companyfacts/filings/ jobs/news/prices pull scripts, a <code>variations/variation_1</code> through <code>variation_4</code> ladder, and a built SQLite artifact. That shared baseline is what makes the comparison fair: the divergence is in what each agent did *above* the scaffold, not in whether they had the same starting line.</p>
+<p>Both domains exist on disk today with a shared baseline: <code>schema.sql</code>, <code>service.py</code>, <code>scripts/init_db.py</code>, the same family of SEC/companyfacts/filings/ jobs/news/prices pull scripts, a <code>variations/variation_1</code> through <code>variation_4</code> ladder, and a built SQLite artifact. That shared baseline is what makes the comparison fair: the divergence is in what each agent did <em>above</em> the scaffold, not in whether they had the same starting line.</p>
 <h2>Two Layers of Evidence, Held Apart on Purpose</h2>
 <p>This paper deliberately separates a weak evidence layer from a strong one, and rests its claim only on the strong layer.</p>
 <h3>Layer 1 — the reported ratings (anecdotal)</h3>
@@ -64,7 +69,7 @@
 <tr><td>Codex</td><td>6.5/10</td><td>8.8/10</td><td>xAmkor is more operational and validator-friendly today.</td></tr>
 </tbody>
 </table>
-<p>Both judges converged on the same direction: Codex produced the more complete rough draft. That convergence is suggestive — but these are agent self/peer assessments recounted in a LinkedIn post, not independent benchmark scores, and the original rating prompts and transcripts were not recovered. **The ratings are treated here as anecdote, not as a result.** They motivate the question; they do not answer it.</p>
+<p>Both judges converged on the same direction: Codex produced the more complete rough draft. That convergence is suggestive — but these are agent self/peer assessments recounted in a LinkedIn post, not independent benchmark scores, and the original rating prompts and transcripts were not recovered. <strong>The ratings are treated here as anecdote, not as a result.</strong> They motivate the question; they do not answer it.</p>
 <h3>Layer 2 — the artifact inventory (load-bearing)</h3>
 <p>The answerable version of the question is settled by reading the two domains as they sit in the repository. Each axis below was verified against the files on 2026-06-01.</p>
 <table class="paper-table">
@@ -78,7 +83,7 @@
 <tr><td>Public visualization</td><td><code>https://proto.efehnconsulting.com/amkor/</code></td><td><code>https://proto.efehnconsulting.com/xamkor/</code></td><td>Both have recorded public surfaces</td></tr>
 </tbody>
 </table>
-<p>The single sharpest number is the V4 implementation gap: **37 lines of placeholder versus 781 lines of executable, tested tool code.** The Codex path shipped a working verifier surface; the Claude path deferred its V4 wiring to a cockpit layer it had also built but not connected to the variation ladder.</p>
+<p>The single sharpest number is the V4 implementation gap: <strong>37 lines of placeholder versus 781 lines of executable, tested tool code.</strong> The Codex path shipped a working verifier surface; the Claude path deferred its V4 wiring to a cockpit layer it had also built but not connected to the variation ladder.</p>
 <p>The asymmetry runs both ways and that is the point. Reading only xAmkor, you would conclude Codex builds more complete domains. Reading only Amkor, you would conclude Claude Code builds more ambitious systems. Reading them side by side, the honest conclusion is that each agent optimized a different surface, and the operator&#x27;s job is to know which surface to take from which path.</p>
 <h2>Proof Boundary</h2>
 <p>This is stated explicitly because the case study is easy to over-sell:</p>
@@ -91,13 +96,13 @@
 <h2>Relation to the Formal Domain Build Benchmark</h2>
 <p>The case study sits next to the formal Domain Build Benchmark (DBB) records rather than replacing them, and the two tell a consistent story.</p>
 <ul>
-<li>**DBB-001 / codex_frontier** — <code>final_verdict: PASS_WITH_WAIVER</code>. First-pass   structural validity and final validator-backed quality both pass; the waiver   reflects process caveats noted in the first row. A lower-friction   implementation path with a clean substantive baseline.</li>
-<li>**DBB-001a / claude_frontier** — <code>final_verdict: PASS</code>, characterized by the   supervisor as the &quot;cleanest run in the DBB-001 group so far,&quot; after the   benchmark protocol had been hardened.</li>
+<li><strong>DBB-001 / codex_frontier</strong> — <code>final_verdict: PASS_WITH_WAIVER</code>. First-pass   structural validity and final validator-backed quality both pass; the waiver   reflects process caveats noted in the first row. A lower-friction   implementation path with a clean substantive baseline.</li>
+<li><strong>DBB-001a / claude_frontier</strong> — <code>final_verdict: PASS</code>, characterized by the   supervisor as the &quot;cleanest run in the DBB-001 group so far,&quot; after the   benchmark protocol had been hardened.</li>
 </ul>
 <p>The DBB rows sharpen the same distinction the Amkor/xAmkor artifacts show: the Codex path tends to reach a validator-friendly baseline with low friction; the Claude path produces clean, procedure-aware work, particularly once the surrounding discipline is in place. Neither verdict crowns a model. Both reward the path that respected the validator boundary.</p>
 <h2>Why &quot;False Choice&quot; Is the Right Frame</h2>
-<p>The lock-in story is the giveaway. Because there is no real switching cost between these tools, &quot;which is better&quot; is rarely the decision an operator actually faces. The decision is *composition*: which path owns the verifier surface, which owns the cockpit/application surface, and how the operator merges them under one review discipline. In the operator&#x27;s own original words, the ideal domain merges xAmkor&#x27;s V4 implementation and HITL rigor with Amkor&#x27;s cockpit layer and 10-K text extraction. The artifacts make that merge concrete rather than aspirational: both halves already exist, in two different repositories, authored by two different agents.</p>
-<p>The portable lesson for Project Phoenix domain building: **compare implementation paths under evidence discipline, not models in the abstract.** The scaffold, the validator, and the operator review are the constants; the agent is a swappable producer of a rough draft whose surfaces you then audit and combine.</p>
+<p>The lock-in story is the giveaway. Because there is no real switching cost between these tools, &quot;which is better&quot; is rarely the decision an operator actually faces. The decision is <em>composition</em>: which path owns the verifier surface, which owns the cockpit/application surface, and how the operator merges them under one review discipline. In the operator&#x27;s own original words, the ideal domain merges xAmkor&#x27;s V4 implementation and HITL rigor with Amkor&#x27;s cockpit layer and 10-K text extraction. The artifacts make that merge concrete rather than aspirational: both halves already exist, in two different repositories, authored by two different agents.</p>
+<p>The portable lesson for Bulkhead τ domain building: <strong>compare implementation paths under evidence discipline, not models in the abstract.</strong> The scaffold, the validator, and the operator review are the constants; the agent is a swappable producer of a rough draft whose surfaces you then audit and combine.</p>
 <h2>What This Paper Is Not</h2>
 <ul>
 <li>It is not a claim that one model is generally superior.</li>

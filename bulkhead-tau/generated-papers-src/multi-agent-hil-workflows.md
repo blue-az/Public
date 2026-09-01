@@ -1,16 +1,16 @@
 # Multi-Agent AI Workflows in Hardware-in-the-Loop Simulation
-## A Field Study from Project Phoenix
+## A Field Study from Bulkhead τ
 ### White Paper 1.26 — May 2026
 
-**Authors:** blue-az, Gemini CLI  
-**Status:** Published  
+**Authors:** blue-az, Gemini CLI
+**Status:** Published
 **Committed by:** Gemini CLI
 
 ---
 
 ## Abstract
 
-Hardware-in-the-Loop (HIL) simulation pipelines occupy an unusual position in the software stack: they span compiled firmware, hardware abstraction libraries, Python orchestration, and cloud observability — often across multiple repositories with different ownership and permission structures. This paper describes a field study in which two AI coding agents (Gemini CLI and Claude Sonnet) were deployed sequentially on Project Phoenix to establish a production observability pipeline and close a cross-repo firmware simulation gap. We characterize the task decomposition that emerged naturally from agent capability and permission boundaries, describe the "Handoff Artifact" pattern that enabled cross-agent continuity, and propose a lightweight taxonomy of agent roles suited to heterogeneous embedded/cloud stacks. Our findings suggest that in complex engineering environments, the quality of the interface between agents is a more significant predictor of success than the peak reasoning capability of any single model.
+Hardware-in-the-Loop (HIL) simulation pipelines occupy an unusual position in the software stack: they span compiled firmware, hardware abstraction libraries, Python orchestration, and cloud observability — often across multiple repositories with different ownership and permission structures. This paper describes a field study in which two AI coding agents (Gemini CLI and Claude Sonnet) were deployed sequentially on Bulkhead τ to establish a production observability pipeline and close a cross-repo firmware simulation gap. We characterize the task decomposition that emerged naturally from agent capability and permission boundaries, describe the "Handoff Artifact" pattern that enabled cross-agent continuity, and propose a lightweight taxonomy of agent roles suited to heterogeneous embedded/cloud stacks. Our findings suggest that in complex engineering environments, the quality of the interface between agents is a more significant predictor of success than the peak reasoning capability of any single model.
 
 ---
 
@@ -24,14 +24,14 @@ Real-world engineering workflows are rarely so uniform. A typical Hardware-in-th
 3.  **HIL Execution:** Managing shared-memory handshakes between a virtual MCU and a Python test harness.
 4.  **Credential Management:** Navigating multi-factor authentication or hardware-bound secrets (e.g., tokens on removable media).
 
-This paper provides concrete field data from a real deployment in Project Phoenix. We demonstrate how a "Handoff Artifact" — a structured document produced at a capability or permission boundary — allows a second agent to resume a task with zero re-investigation cost. We conclude that the future of agentic engineering lies in "Handoff Discipline" rather than monolithic agent capability.
+This paper provides concrete field data from a real deployment in Bulkhead τ. We demonstrate how a "Handoff Artifact" — a structured document produced at a capability or permission boundary — allows a second agent to resume a task with zero re-investigation cost. We conclude that the future of agentic engineering lies in "Handoff Discipline" rather than monolithic agent capability.
 
 ---
 
 ## 2. System Overview
 
-### 2.1 Project Phoenix and LabWired
-Project Phoenix is a multi-domain agent evaluation framework. This study focuses on the **ProximityAgent** domain, which simulates an ultrasonic distance sensor used by an embedded controller. The simulation environment uses **LabWired**, a hardware simulation platform (Rust) that provides a shared-memory interface between the simulated firmware and external Python agents.
+### 2.1 Bulkhead τ and LabWired
+Bulkhead τ is a multi-domain agent evaluation framework. This study focuses on the **ProximityAgent** domain, which simulates an ultrasonic distance sensor used by an embedded controller. The simulation environment uses **LabWired**, a hardware simulation platform (Rust) that provides a shared-memory interface between the simulated firmware and external Python agents.
 
 ### 2.2 The Observability Target
 The objective was to establish a dual-path observability pipeline:
@@ -97,7 +97,7 @@ This forces the incoming agent to:
 -   Search the codebase for the hang location.
 -   Reverse-engineer the firmware-to-hardware contract.
 
-The Project Phoenix handoff artifact allowed Claude Sonnet to move directly to implementation in the first turn. The time-to-first-commit was reduced from an estimated 45 minutes of research to under 5 minutes.
+The Bulkhead τ handoff artifact allowed Claude Sonnet to move directly to implementation in the first turn. The time-to-first-commit was reduced from an estimated 45 minutes of research to under 5 minutes.
 
 ---
 
@@ -126,7 +126,7 @@ The following metrics were captured during the PROX-HIL-001 validation run on th
     -   Samples 1–99 (Steady State): 10,500 cycles per sample.
 -   **Agent Contributions:**
     -   **Phase 1 (Gemini):** 7 commits, 3 core Python files, 2 shell scripts, 3 HIL/observability documents.
-    -   **Phase 2 (Claude):** 7 commits (4 Phoenix, 3 LabWired), 1 Rust device model (~130 LOC), 1 upstream PR (#87).
+    -   **Phase 2 (Claude):** 7 commits (4 Bulkhead τ, 3 LabWired), 1 Rust device model (~130 LOC), 1 upstream PR (#87).
 -   **Time-to-Merge:** Upstream PR merged in < 24 hours.
 
 ---
@@ -154,7 +154,7 @@ The study identified several critical failure modes that are unique to multi-sys
 
 ## 8. Related Work
 
-This study builds upon the "Handoff Discipline" doctrine established in Project Phoenix's prior research:
+This study builds upon the "Handoff Discipline" doctrine established in Bulkhead τ's prior research:
 
 -   **Handoff Discipline (Paper 1.20):** Characterized the need for strict machine-facing local-model lanes. This field study extends that concept to cross-agent handoffs in heterogeneous stacks.
 -   **The Model is Not the Function (Paper 1.24):** Argued that LLMs should earn their runtime against written specs. In this study, the HIL "Proof Boundary" served as the deterministic oracle that validated the agent's work.
@@ -165,7 +165,7 @@ This study builds upon the "Handoff Discipline" doctrine established in Project 
 
 ## 9. Conclusion
 
-The Project Phoenix HIL field study demonstrates that heterogeneous stacks — spanning firmware, systems libraries, and cloud observability — naturally decompose into agent roles along language and permission boundaries.
+The Bulkhead τ HIL field study demonstrates that heterogeneous stacks — spanning firmware, systems libraries, and cloud observability — naturally decompose into agent roles along language and permission boundaries.
 
 Our primary conclusion is that **the handoff artifact is the critical interface** in multi-agent engineering. By shifting focus from "peak agent capability" to "handoff discipline," engineering teams can:
 1.  Chain specialized agents (e.g., Infrastructure vs. Implementation) to solve tasks that exceed any single agent's scope.
@@ -191,12 +191,12 @@ Following the multi-agent HIL study (PROX-HIL-001), a subsequent fault-tolerance
 
 | Artifact | Location | Role / Produced By |
 | :--- | :--- | :--- |
-| `observability/phoenix_otel.py` | `project-phoenix` | Infrastructure / Gemini CLI |
-| `observability/ai_obs_smoke.py` | `project-phoenix` | Infrastructure / Gemini CLI |
+| `observability/phoenix_otel.py` | `internal repository` | Infrastructure / Gemini CLI |
+| `observability/ai_obs_smoke.py` | `internal repository` | Infrastructure / Gemini CLI |
 | `Z13_LABWIRED_SHM_IMU_HANDOFF.md` | `docs/domain_runs/GRAFANA-OBS-001/` | Handoff Artifact / Gemini CLI |
 | `labwired_shm_i2c.patch` | `docs/domain_runs/GRAFANA-OBS-001/` | Implementation / Claude Sonnet |
 | Grafana Trace `PROX-HIL-001` | Grafana Cloud (prod-us-west-0) | Success Proof / Claude Sonnet |
-| `docs/gemini_feedback_may2026.md` | `project-phoenix` | Analysis / Claude Sonnet |
+| `docs/gemini_feedback_may2026.md` | `internal repository` | Analysis / Claude Sonnet |
 
 ---
 
@@ -229,6 +229,6 @@ of verified facts is noted explicitly and is itself documented as a finding in
 that introduced a new wrong value — is an additional data point in the same vein.
 
 ---
-*This paper was prepared by Gemini CLI based on field notes, session logs, and verifiable artifacts from the Project Phoenix repository.*  
-*Corrections by: Claude Sonnet 4.6.*  
+*This paper was prepared by Gemini CLI based on field notes, session logs, and verifiable artifacts from the Bulkhead τ repository.*
+*Corrections by: Claude Sonnet 4.6.*
 *Committed by: Gemini CLI*

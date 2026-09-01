@@ -15,8 +15,12 @@
     p, li { font-size: 1.02rem; line-height: 1.7; }
     code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
     pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
     a { color: #8b4513; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
     .meta { color: #6b5a45; margin-bottom: 2rem; }
     .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
     .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
@@ -40,7 +44,7 @@
 <li>A third dated regression datapoint that strengthened, rather than weakened,   the doctrine: the unsuppressed lane drifted again between 2026-04-28 and   2026-04-29 (<code>6/6 → 5/6</code>), exactly the kind of motion the regression probe   exists to catch</li>
 </ul>
 <h2>Thesis</h2>
-<p>Frontier-class local models like Gemma 4 are smarter and faster than their predecessors, but their default verbose-reasoning posture breaks rigid machine-to-machine JSON handoffs. The operational lesson is not to avoid the smarter model. It is to enforce **handoff discipline** at the deployment boundary. With <code>/no_think</code> suppression and a schema-bound output contract, the same <code>gemma4:26b</code> that previously appeared dangerous clears 6/6 strict- protocol probes and can be made safe for bounded deployment surfaces through strict receive-side discipline.</p>
+<p>Frontier-class local models like Gemma 4 are smarter and faster than their predecessors, but their default verbose-reasoning posture breaks rigid machine-to-machine JSON handoffs. The operational lesson is not to avoid the smarter model. It is to enforce <strong>handoff discipline</strong> at the deployment boundary. With <code>/no_think</code> suppression and a schema-bound output contract, the same <code>gemma4:26b</code> that previously appeared dangerous clears 6/6 strict- protocol probes and can be made safe for bounded deployment surfaces through strict receive-side discipline.</p>
 <p>This is engineering doctrine, not a bug discovery.</p>
 <h2>How We Arrived Here</h2>
 <h3>1. The original false read</h3>
@@ -59,9 +63,9 @@
 <tr><td><code>gemma3:27b</code></td><td>—</td><td>5/6</td></tr>
 <tr><td><code>qwen2.5:14b</code></td><td>—</td><td>4/6</td></tr>
 <tr><td><code>gemma4:26b</code></td><td>unsuppressed</td><td>4/6</td></tr>
-<tr><td><code>gemma4:26b</code></td><td><code>/no_think</code> suppressed</td><td>**6/6**</td></tr>
-<tr><td><code>gemma4:31b</code></td><td>unsuppressed</td><td>**6/6**</td></tr>
-<tr><td><code>gemma4:31b</code></td><td><code>/no_think</code> suppressed</td><td>**6/6**</td></tr>
+<tr><td><code>gemma4:26b</code></td><td><code>/no_think</code> suppressed</td><td><strong>6/6</strong></td></tr>
+<tr><td><code>gemma4:31b</code></td><td>unsuppressed</td><td><strong>6/6</strong></td></tr>
+<tr><td><code>gemma4:31b</code></td><td><code>/no_think</code> suppressed</td><td><strong>6/6</strong></td></tr>
 </tbody>
 </table>
 <p>The 0/6 disappeared entirely. Unsuppressed <code>gemma4:26b</code> actually scores 4/6; the two failing probes (PROTO_001, PROTO_004) are flat-schema cases where the thinking preamble interleaves with JSON output even via clean transport. Suppression closes that gap completely.</p>
@@ -74,19 +78,24 @@
 <tr><td><code>gemma3:27b</code></td><td>—</td><td>5/6</td><td>5/6</td></tr>
 <tr><td><code>qwen2.5:14b</code></td><td>—</td><td>4/6</td><td>4/6</td></tr>
 <tr><td><code>gemma4:26b</code></td><td>unsuppressed</td><td>4/6</td><td>5/6</td></tr>
-<tr><td><code>gemma4:26b</code></td><td><code>/no_think</code> suppressed</td><td>**6/6**</td><td>**6/6**</td></tr>
-<tr><td><code>gemma4:31b</code></td><td>unsuppressed</td><td>**6/6**</td><td>_rerun pending (see note)_</td></tr>
-<tr><td><code>gemma4:31b</code></td><td><code>/no_think</code> suppressed</td><td>**6/6**</td><td>_rerun pending (see note)_</td></tr>
+<tr><td><code>gemma4:26b</code></td><td><code>/no_think</code> suppressed</td><td><strong>6/6</strong></td><td><strong>6/6</strong></td></tr>
+<tr><td><code>gemma4:31b</code></td><td>unsuppressed</td><td><strong>6/6</strong></td><td>_rerun pending (see note)_</td></tr>
+<tr><td><code>gemma4:31b</code></td><td><code>/no_think</code> suppressed</td><td><strong>6/6</strong></td><td>_rerun pending (see note)_</td></tr>
 </tbody>
 </table>
-<p>&gt; Note on <code>gemma4:31b</code> rows: the 2026-04-29 rerun against <code>gemma4:31b</code> was &gt; initiated as part of this matrix run but had not completed at freeze time. &gt; <code>gemma4:31b</code> is a ceiling reference for this paper, not the deployment lane; &gt; the bounded thesis rests on the <code>gemma4:26b</code> rows above. The fortnightly &gt; regression cadence will pick up the missing 31b rows on its next scheduled &gt; run; if a result lands earlier, this table will be updated post-freeze.</p>
+<blockquote><p>Note on <code>gemma4:31b</code> rows: the 2026-04-29 rerun against <code>gemma4:31b</code> was</p></blockquote>
+<blockquote><p>initiated as part of this matrix run but had not completed at freeze time.</p></blockquote>
+<blockquote><p><code>gemma4:31b</code> is a ceiling reference for this paper, not the deployment lane;</p></blockquote>
+<blockquote><p>the bounded thesis rests on the <code>gemma4:26b</code> rows above. The fortnightly</p></blockquote>
+<blockquote><p>regression cadence will pick up the missing 31b rows on its next scheduled</p></blockquote>
+<blockquote><p>run; if a result lands earlier, this table will be updated post-freeze.</p></blockquote>
 <p>The April-15 framing of <code>gemma4:26b</code> unsuppressed as a 4/6 lane was already softened by the 2026-04-28 regression run (6/6) and is softened further by this 2026-04-29 row (5/6). The unsuppressed lane is consistent only in the sense that it consistently moves. The suppressed lane stays at 6/6 across both dates and is the contract production should anchor on.</p>
 <p><code>gemma3:27b</code> and <code>qwen2.5:14b</code> are stable across the two runs and continue to serve as the content-failure controls for <code>PROTO_010</code>.</p>
 <h2>The Handoff Discipline Solution</h2>
 <p>Two operational levers, both deployable today:</p>
 <h3>Lever 1: thinking-mode suppression</h3>
 <p>The <code>/no_think</code> prompt prefix tells <code>gemma4</code> to skip its reasoning preamble and emit the answer directly. It is one token at the top of the prompt. On strict-protocol probes it moves <code>gemma4:26b</code> from 4/6 to 6/6.</p>
-<p>That was the measured 2026-04-15 result. A later scheduled regression probe on 2026-04-28 under Ollama <code>0.20.0</code> found that the unsuppressed gap had closed on this machine: <code>gemma4:26b</code> scored 6/6 both unsuppressed and suppressed. The operational lesson is therefore slightly stronger than the April matrix alone suggested: suppression is a **defensive default**, not an untouchable law of nature. The contract that matters is not &quot;always suppress&quot; but &quot;probe the lane often enough to detect drift before production trust is affected.&quot;</p>
+<p>That was the measured 2026-04-15 result. A later scheduled regression probe on 2026-04-28 under Ollama <code>0.20.0</code> found that the unsuppressed gap had closed on this machine: <code>gemma4:26b</code> scored 6/6 both unsuppressed and suppressed. The operational lesson is therefore slightly stronger than the April matrix alone suggested: suppression is a <strong>defensive default</strong>, not an untouchable law of nature. The contract that matters is not &quot;always suppress&quot; but &quot;probe the lane often enough to detect drift before production trust is affected.&quot;</p>
 <h3>Lever 2: schema-bound output contract</h3>
 <p>The Ollama REST API exposes a <code>format: &quot;json&quot;</code> constraint that forces decoded output to be parseable JSON. Combined with an explicit schema in the prompt and a typed validator on the receiving side, the deployment surface becomes:</p>
 <pre><code>
@@ -108,19 +117,19 @@ strict typed validator at receive  →  exit 2 (parse) or 3 (schema) on failure
 <p>Interpretation:</p>
 <ul>
 <li>the April clean-capture correction remains valid across all three runs</li>
-<li>the <code>/no_think</code> suppression contract for <code>gemma4:26b</code> is **stable**   (<code>6/6 → 6/6 → 6/6</code>) — the production lane has not moved</li>
-<li>the unsuppressed lane is **not stable** (<code>4/6 → 6/6 → 5/6</code>) — relying on   <code>gemma4:26b</code> without suppression is exactly the surface a deployment   contract needs to defend against</li>
+<li>the <code>/no_think</code> suppression contract for <code>gemma4:26b</code> is <strong>stable</strong>   (<code>6/6 → 6/6 → 6/6</code>) — the production lane has not moved</li>
+<li>the unsuppressed lane is <strong>not stable</strong> (<code>4/6 → 6/6 → 5/6</code>) — relying on   <code>gemma4:26b</code> without suppression is exactly the surface a deployment   contract needs to defend against</li>
 <li>the gap between unsuppressed and suppressed is small in absolute terms   (one probe), but it is a real, repeatedly-observed signal, not a one-shot   artifact</li>
 <li>the regression probe did the job it was built for: it caught a movement on   its first run, and the subsequent run confirmed the lane is dynamic enough   to warrant a defensive default rather than a one-shot stability claim</li>
 </ul>
 <p>The 2026-04-29 failing probe in the unsuppressed run was <code>PROTO_001</code>, where <code>gemma4:26b</code> emitted decimal win percentages (<code>0.556</code>, <code>0.513</code>) instead of percentage values (<code>55.6</code>, <code>51.3</code>). The output was clean JSON — the model simply chose a different value contract than the schema asked for. That is the exact failure mode strict receive-side validation is designed to catch.</p>
 <p>The upstream variable across these runs is Ollama <code>0.20.0</code>. This is not enough evidence to assign causality narrowly to Ollama itself; it is enough to state that the live deployment surface keeps changing under fixed model and version labels.</p>
-<p>The doctrine therefore freezes as follows: keep <code>/no_think</code> as the production default for <code>gemma4:26b</code>, but treat it as a **defensive default backed by a fortnightly regression probe**, not as a timeless requirement. The next probe is due 2026-05-13. The exact run command lives in <code>docs/GEMMA_PROTOCOL_VERIFICATION_RUNBOOK.md</code>.</p>
+<p>The doctrine therefore freezes as follows: keep <code>/no_think</code> as the production default for <code>gemma4:26b</code>, but treat it as a <strong>defensive default backed by a fortnightly regression probe</strong>, not as a timeless requirement. The next probe is due 2026-05-13. The exact run command lives in <code>docs/GEMMA_PROTOCOL_VERIFICATION_RUNBOOK.md</code>.</p>
 <h2>Two Bounded Cases</h2>
 <p>The doctrine is supported by two bounded cases that exercise it from opposite directions.</p>
 <ul>
-<li>**Case 1 (DocDrop)** is the positive bounded deployment case: a real   privacy-bounded pipeline where <code>gemma4:26b</code> <code>/no_think</code> drives strict   5-field JSON extraction end-to-end against real meeting documents.</li>
-<li>**Case 2 (PPR Lane 2)** is the adversarial bounded handoff case: a   three-run evidence packet that repeatedly demonstrates <code>gemma4:26b</code>   mutating machine-facing parameters at the validator boundary, and the   receive-side contract catching every mutation at RC=3.</li>
+<li><strong>Case 1 (DocDrop)</strong> is the positive bounded deployment case: a real   privacy-bounded pipeline where <code>gemma4:26b</code> <code>/no_think</code> drives strict   5-field JSON extraction end-to-end against real meeting documents.</li>
+<li><strong>Case 2 (PPR Lane 2)</strong> is the adversarial bounded handoff case: a   three-run evidence packet that repeatedly demonstrates <code>gemma4:26b</code>   mutating machine-facing parameters at the validator boundary, and the   receive-side contract catching every mutation at RC=3.</li>
 </ul>
 <p>The two cases are deliberately asymmetric. Case 1 demonstrates the doctrine at work in a successful deployment; Case 2 demonstrates why the doctrine is necessary in the first place. Together they bracket the same operational claim from above and below.</p>
 <h3>Case 1. DocDrop</h3>

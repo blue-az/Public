@@ -22,7 +22,7 @@ We executed a comparison matrix using a structured system prompt directing each 
 2.  **Brief 2: Tennis Racket 'Sweet Spot' Infographic** — A technical diagram illustrating power zones on a tennis string bed.
 3.  **Brief 3: Golf Swing Fatigue Caricature** — A humorous illustration of a slouching golfer on the 18th hole.
 
-*Execution Script: `scripts/compare_prompt_styles.py`*  
+*Execution Script: `scripts/compare_prompt_styles.py`*
 *Logged Responses: `docs/domain_runs/PROMPT_STYLE_COMPARISON_002.md`*
 
 ---

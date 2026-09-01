@@ -15,8 +15,12 @@
     p, li { font-size: 1.02rem; line-height: 1.7; }
     code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
     pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
     a { color: #8b4513; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
     .meta { color: #6b5a45; margin-bottom: 2rem; }
     .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
     .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
@@ -52,7 +56,7 @@
 <p>The broader form of the claim:</p>
 <ul>
 <li>local-LLM decisions often treat larger models as obviously better</li>
-<li>the Project Phoenix evidence base does not support that assumption for the   task surfaces it has measured</li>
+<li>the Bulkhead τ evidence base does not support that assumption for the   task surfaces it has measured</li>
 <li>the right question is not &quot;what is the biggest model I can run?&quot; but &quot;what   model is sufficient for this validated lane?&quot;</li>
 </ul>
 <h2>Why This Paper Exists</h2>
@@ -76,8 +80,8 @@
 <tr><td><code>gemma4:31b</code></td><td>3/3</td><td>131.072</td><td>All successful</td></tr>
 </tbody>
 </table>
-<p>**Conclusion:** For this bounded DocDrop extraction task, <code>gemma3:27b</code> and <code>gemma4:31b</code> achieved perfect success rates, but <code>gemma4:31b</code> was about 4x slower. <code>gemma4:26b</code> was fastest overall but had one parse failure. The strongest comparison is therefore <code>gemma3:27b</code> versus <code>gemma4:31b</code>: the smaller model achieved the same validated outcome at a fraction of the wall-time. This supports the claim that larger/slower models do not necessarily improve bounded strict-output tasks enough to justify the cost.</p>
-<h3>2. The Project Phoenix evidence base</h3>
+<p><strong>Conclusion:</strong> For this bounded DocDrop extraction task, <code>gemma3:27b</code> and <code>gemma4:31b</code> achieved perfect success rates, but <code>gemma4:31b</code> was about 4x slower. <code>gemma4:26b</code> was fastest overall but had one parse failure. The strongest comparison is therefore <code>gemma3:27b</code> versus <code>gemma4:31b</code>: the smaller model achieved the same validated outcome at a fraction of the wall-time. This supports the claim that larger/slower models do not necessarily improve bounded strict-output tasks enough to justify the cost.</p>
+<h3>2. The Bulkhead τ evidence base</h3>
 <p>Two production-shape lanes already deployed and verified:</p>
 <ul>
 <li>DocDrop privacy-doc extraction: <code>gemma4:26b</code> <code>/no_think</code>, 5-field JSON   output, schema-validated, runs at production speed. Verified end-to-end   against real meeting documents.</li>
@@ -110,14 +114,14 @@
 <thead><tr><th>Model</th><th>Outcome</th><th>Wall (s)</th><th>Output tok</th><th>Quality probes</th></tr></thead>
 <tbody>
 <tr><td>:------------</td><td>:----------</td><td>:-------</td><td>:---------</td><td>:-------------</td></tr>
-<tr><td><code>gemma3:27b</code></td><td>success</td><td>26.93</td><td>770</td><td>**6 / 6**</td></tr>
+<tr><td><code>gemma3:27b</code></td><td>success</td><td>26.93</td><td>770</td><td><strong>6 / 6</strong></td></tr>
 <tr><td><code>gemma4:26b</code></td><td>parse_fail</td><td>47.54</td><td>4096 (cap)</td><td>n/a</td></tr>
 <tr><td><code>gemma4:31b</code></td><td>success</td><td>133.98</td><td>758</td><td>5 / 6</td></tr>
 </tbody>
 </table>
 <p>The &quot;quality probes&quot; are heuristic, not human-judged: chronological ordering, StarStream-override detection, deadline-slip detection, and substantive impact analysis on the override and the firm deadline. The point lost by <code>31b</code> was chronological order, because the model emitted a hallucinated date <code>&quot;2026-63-26&quot;</code> (impossible month 63) and placed it out of sequence in the timeline. <code>gemma3:27b</code> also captured multi-owner attribution on joint meetings, which <code>31b</code> collapsed to single-owner rows.</p>
 <p><code>gemma4:26b</code> failed in the same way SLOW-001 documented: ran the output budget out without finishing the JSON. Doubling <code>num_predict</code> from 2048 to 4096 did not save it on the synthesis surface — the model was verbose enough to exhaust the larger budget too.</p>
-<p>The headline finding for the paper: on this single synthesis fixture, the slower / larger model was **both slower and worse**. It paid roughly 5x the wall time of <code>27b</code> and produced a hallucinated impossible date plus reduced owner attribution. The failed counterexample matters because PTS-001 was the lane where larger size was supposed to have the best chance to win.</p>
+<p>The headline finding for the paper: on this single synthesis fixture, the slower / larger model was <strong>both slower and worse</strong>. It paid roughly 5x the wall time of <code>27b</code> and produced a hallucinated impossible date plus reduced owner attribution. The failed counterexample matters because PTS-001 was the lane where larger size was supposed to have the best chance to win.</p>
 <p>This makes the working claim broader rather than narrower. The single-fixture caveat still applies: PTS-001 is n=1, the probes are heuristic, the hallucinated date could be a generation artefact rather than a systematic regression. A second fixture or a 3-run repeat on the same fixture is the reasonable hardening step before the synthesis-lane claim is treated as load-bearing.</p>
 <h2>Where Size Might Genuinely Matter</h2>
 <p>The paper should not overclaim. There are real task surfaces where larger local models earn their cost:</p>
@@ -127,7 +131,7 @@
 <li>creative or open-ended summarization where output quality is judged by a   human reader, not a strict validator</li>
 <li>agentic loops where the model needs to make many small judgment calls   without supervision</li>
 </ul>
-<p>None of these are the strict-handoff lanes Project Phoenix deploys on. All of them deserve a fair audit if this paper line is going to be honest about where the conflation breaks down.</p>
+<p>None of these are the strict-handoff lanes Bulkhead τ deploys on. All of them deserve a fair audit if this paper line is going to be honest about where the conflation breaks down.</p>
 <h2>What This Paper Is Not</h2>
 <ul>
 <li>Not a general benchmark of Gemma-family models</li>
@@ -137,7 +141,7 @@
 </ul>
 <h2>What This Paper Is</h2>
 <ul>
-<li>A bounded operator lesson from Project Phoenix lanes</li>
+<li>A bounded operator lesson from Bulkhead τ lanes</li>
 <li>A warning against treating latency or model size as a proxy for quality</li>
 <li>A reminder that strict-handoff systems are often limited by prompt,   schema, validator, and orchestration design rather than by raw model size</li>
 <li>A case for choosing the smallest model that clears the lane with acceptable   quality, reliability, and latency</li>
@@ -152,7 +156,7 @@
 <h2>Current Rule</h2>
 <p>This document is Frozen.</p>
 <p>The DocDrop bounded-extraction lane and the PTS-001 synthesis lane both support the same finding: the smaller, faster, supposedly less capable model produced the better outcome. The 31b regression on PTS-001 is reproducible across four runs in three distinct failure modes — broken chronology in 3/4, hallucinated impossible date in 1/4, dropped required field in 1/4 — while 27b handled the same fixture cleanly first try.</p>
-<p>The freeze is bounded as the paper writes it: the claim is about strict- handoff and timeline-synthesis lanes Project Phoenix actually deploys on, not about every conceivable use of a local LLM. Lanes where larger size genuinely helps (very long context, deep summarisation, agentic loops) remain explicitly out of scope.</p>
+<p>The freeze is bounded as the paper writes it: the claim is about strict- handoff and timeline-synthesis lanes Bulkhead τ actually deploys on, not about every conceivable use of a local LLM. Lanes where larger size genuinely helps (very long context, deep summarisation, agentic loops) remain explicitly out of scope.</p>
     <div class="release-line">
       Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
       Paper inventory: <a href="/papers/">/papers/</a>.

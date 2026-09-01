@@ -17,7 +17,7 @@ frontier coding harnesses ship: how does a harness earn operational
 standing inside an existing multi-agent system, without that decision
 collapsing into brand rank or a private relationship? This paper answers
 with a case study: xAI's Grok CLI was registered as a peer harness inside
-Project Phoenix's Operator system (commit `2b46544`), and its subsequent
+Bulkhead τ's Operator system (commit `2b46544`), and its subsequent
 admission was tested empirically rather than assumed. A single Grok
 session produced two independently verified git commits and one
 standalone analytical artifact, one of which — a commit adding
@@ -49,7 +49,7 @@ capable, and the easy failure mode is to grant it standing for reasons
 that do not generalize: it is well-funded, it is well-known, or someone
 in the loop has a personal reason to trust it.
 
-Project Phoenix's answer, stated in `docs/AGENT_AUDIT_PROTOCOL.md`, is a
+Bulkhead τ's answer, stated in `docs/AGENT_AUDIT_PROTOCOL.md`, is a
 three-part fitness check applied uniformly to any harness:
 
 > recover the map, calibrate from failure-mode catalogs, leave residue.
@@ -106,7 +106,7 @@ Grok reviewed a real diff (`core/data_client.py`, `core/smart_tools.py`,
 `git commit` tool call content and file list match `git show --stat
 c1beff5` exactly.
 
-### 3.2 Commit `181d4a72` — project-phoenix
+### 3.2 Commit `181d4a72` — internal repository
 
 Grok staged a specific hunk of `AGENTS.md` — explicitly skipping
 unrelated content it recognized as out of scope for this commit — then

@@ -77,7 +77,7 @@ The two papers land as a pair. 1.21 closes the inference-side loophole. This pap
 
 ## 4. Retrospective Evidence — Ten Historical Workflows
 
-The full evidence packet is at `docs/domain_runs/COST-RETRO-001/report.md`. Ten historical workflows in the Project Phoenix repo were inspected for frontier-token audit/repair cost. The summary table:
+The full evidence packet is at `docs/domain_runs/COST-RETRO-001/report.md`. Ten historical workflows in the Bulkhead τ repo were inspected for frontier-token audit/repair cost. The summary table:
 
 ### 4.1 Outcome Classification
 
@@ -232,4 +232,4 @@ The strongest form of the claim — and the form this paper should defend — is
 
 ---
 
-*Active draft begun 2026-05-20. Phoenix-side authoring; all evidence anchored in `docs/domain_runs/COST-RETRO-001/report.md` and the artifacts it cites. No new probe runs performed for this draft.*
+*Active draft begun 2026-05-20. internal authoring; all evidence anchored in `docs/domain_runs/COST-RETRO-001/report.md` and the artifacts it cites. No new probe runs performed for this draft.*

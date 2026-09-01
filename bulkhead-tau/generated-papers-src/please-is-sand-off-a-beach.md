@@ -36,7 +36,7 @@ The broader form:
   consequential tokens.
 - the real cost drivers are architectural rather than interpersonal.
 - "stop saying please" is an attractive efficiency slogan because it feels
-  concrete, but for Project Phoenix we have proven it is sand off a beach.
+  concrete, but for Bulkhead τ we have proven it is sand off a beach.
 
 ## Why This Paper Exists
 
@@ -46,9 +46,9 @@ The prompt-cost conversation keeps drifting toward symbolic token thrift:
 - should users stop saying `thank you`?
 - should users shorten natural language into clipped machine shorthand?
 
-That conversation is almost always pointed at the wrong scale. 
+That conversation is almost always pointed at the wrong scale.
 
-Project Phoenix has measured the real cost centers. Our evidence packet shows:
+Bulkhead τ has measured the real cost centers. Our evidence packet shows:
 
 - **Sand:** Courtesy tokens cost ~8 tokens.
 - **Ritual:** Repeated unexamined prompt rituals cost ~390 tokens.
@@ -97,7 +97,7 @@ Examples:
   needs a few extracted fields
 - re-running expensive prompts after predictable parse/schema failures
 
-This is where meaningful latency and reliability damage live. 
+This is where meaningful latency and reliability damage live.
 
 ### 5. Beach itself
 
@@ -118,7 +118,7 @@ millions of dollars" and were "well spent." The quote is useful not because it
 settles anything, but because it reveals where public attention goes first:
 the tiny human-visible tokens.
 
-The Project Phoenix answer is narrower and more operational:
+The Bulkhead τ answer is narrower and more operational:
 
 - maybe those tokens cost real money at platform scale.
 - but they are not where an operator should look first.

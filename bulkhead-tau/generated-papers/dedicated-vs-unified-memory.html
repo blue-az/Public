@@ -20,6 +20,7 @@
     hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
     a { color: #8b4513; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
     .meta { color: #6b5a45; margin-bottom: 2rem; }
     .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
     .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
@@ -34,7 +35,7 @@
     <h1>Dedicated 24 GB Beats Unified 27 GB: The Capacity Trap in Local Inference</h1>
     <p class="meta">Head-to-head local-inference hardware measurement comparing a 24 GB RTX 3090 desktop against a 27 GB Strix Halo unified-memory laptop. The capacity result is the lead: the larger shared-memory label hides a smaller GPU-resident default ceiling and can invite dense-model spill to 5.4 tok/s. The speed result is conditional: the desktop is about 2x faster when capped at 200 W, but about 3.5x faster at 300 W measured warm and multi-prompt (matching the 3.66x bandwidth ratio). A 2026-07-20 realistic-context residency confirmation (Section 12, num_ctx 8192, gemma4:26b/31b, GPU residency verified per cell via ollama ps) widened the measured desktop advantage to 3.7-4.9x and found the laptop spill ratio largely context-length-insensitive at these model sizes; the full power x context matrix remains unmeasured under residency confirmation and is out of scope for this freeze.</p>
     <p class="meta">Canonical source: <code>docs/DEDICATED_VS_UNIFIED_MEMORY.md</code></p>
-    <p><strong>Status:</strong> active draft <strong>Date:</strong> 2026-07-04 (updated 2026-07-20, Section 12) <strong>Project:</strong> Project Phoenix / Bulkhead Tau <strong>Publication posture:</strong> paper-grade draft. Multi-prompt variance pass completed 2026-07-05 (Section 10); the core numbers are now variance-backed and the gate is closed. A realistic-context residency confirmation (Section 12) was folded in 2026-07-20 — it widens the desktop&#x27;s measured advantage on gemma4:26b/31b and flags that some earlier power-sweep numbers may not have been confirmed GPU-resident. Not yet frozen, pending a publication decision.</p>
+    <p><strong>Status:</strong> active draft <strong>Date:</strong> 2026-07-04 (updated 2026-07-20, Section 12) <strong>Project:</strong> Bulkhead τ / Bulkhead Tau <strong>Publication posture:</strong> paper-grade draft. Multi-prompt variance pass completed 2026-07-05 (Section 10); the core numbers are now variance-backed and the gate is closed. A realistic-context residency confirmation (Section 12) was folded in 2026-07-20 — it widens the desktop&#x27;s measured advantage on gemma4:26b/31b and flags that some earlier power-sweep numbers may not have been confirmed GPU-resident. Not yet frozen, pending a publication decision.</p>
 <h2>Abstract</h2>
 <p>Local LLM hardware is often compared by the largest advertised memory number: 24 GB dedicated VRAM, 27 GB unified memory, 64 GB system RAM, and so on. That comparison hides the two variables that matter operationally: how much memory the accelerator can actually address, and how fast the accelerator can read and compute through the model once it is resident.</p>
 <p>This paper reports a head-to-head local-inference measurement between a desktop RTX 3090 with 24 GB dedicated GDDR6X and a Strix Halo laptop with 27 GB shared LPDDR5X. The laptop is not a weak opponent: it is a best-case x86 unified-memory machine for local LLM work. Even so, the dedicated card wins on both dimensions that matter. It can keep larger practical models fully resident, and it runs fit-both models much faster.</p>
@@ -100,8 +101,16 @@ datasheet prediction -&gt; capped undershoot -&gt; uncapped vindication -&gt; va
 <p>These rows predate the <code>num_ctx 8192</code> GPU-residency fix (Section 12) and did not log <code>ollama ps</code> residency confirmation for the desktop side. Section 12 re-runs both models with residency verified per cell; the laptop&#x27;s spill percentage barely moves, but the desktop numbers come in higher, widening these ratios.</p>
 <h2>6. Power Scaling</h2>
 <p>The desktop power sweep explains why the first speed conclusion was wrong. The card was not merely memory-bound at 200 W. Dense inference was strongly compute-bound under the cap.</p>
+<blockquote><p>⚠️ <strong>Do not quote the <code>gemma4:31b</code> column as a current throughput figure.</strong></p></blockquote>
+<blockquote><p>Residency was <strong>not</strong> confirmed per row here, and these cells were probably</p></blockquote>
+<blockquote><p>partially CPU-spilling. The residency-verified number is <strong>18.1 tok/s</strong></p></blockquote>
+<blockquote><p>(Section 12; <code>domain_runs/GEMMA4-CTX8192-3090-VS-Z13-001/findings.md</code>), which</p></blockquote>
+<blockquote><p>is <em>lower</em> than this table&#x27;s 300 W and 350 W rows despite a higher power cap.</p></blockquote>
+<blockquote><p>In particular **the 30.8 / 31.7 entries have been mis-cited as &quot;31B runs at</p></blockquote>
+<blockquote><p>~31 tok/s&quot;** to argue it clears the ~20 tok/s conversational floor. It does</p></blockquote>
+<blockquote><p>not: at 18.1 tok/s it is <strong>below</strong> the floor. See the note under the table.</p></blockquote>
 <table class="paper-table">
-<thead><tr><th>Power</th><th>gemma4:26b MoE</th><th>gemma4:31b dense</th></tr></thead>
+<thead><tr><th>Power</th><th>gemma4:26b MoE</th><th>gemma4:31b dense (⚠️ residency unconfirmed)</th></tr></thead>
 <tbody>
 <tr><td>200 W</td><td>89.8</td><td>14.1</td></tr>
 <tr><td>250 W</td><td>97.8</td><td>23.5</td></tr>
@@ -216,6 +225,15 @@ cat docs/domain_runs/GEMMA4-CTX8192-3090-VS-Z13-001/findings.md
 <p>Sections 5 and 6 report gemma4:26b/31b throughput and spill state, but neither logged GPU-residency confirmation per row, and neither pinned context length. This section closes that gap on two models: <code>gemma4:26b</code> (MoE, 17 GB) and <code>gemma4:31b</code> (dense, 19 GB), run with <code>num_ctx 8192</code> pinned explicitly on every call — the setting separately established (2026-06-24) as necessary for <code>gemma4:31b</code> to reach 100% GPU residency on the desktop — and with <code>ollama ps</code> residency checked after every load, not assumed.</p>
 <p>The desktop ran at 220 W, not 300 W. <code>gemma4:26b</code> is the exact model that caused CRASH-20260502-01 at 330 W (Section 2 hardware note); 220 W is this rig&#x27;s verified-stable floor, so this run stayed there rather than default to the 320 W doctrine now in force for other workloads. The ratios below are therefore not directly comparable to the 300 W rows in Sections 4–6 on power alone — they isolate the residency-confirmation and context-length variables instead.</p>
 <p>Byte-identical model files were used on both machines (Ollama IDs <code>5571076f3d70</code> / <code>6316f0629137</code> match on desktop and laptop). Each cell is 3 API calls (<code>temperature 0</code>, <code>num_predict 256</code>); run 1 includes model load, runs 2–3 are warm and reported as the mean below. Zero errors, zero crashes, across all 12 calls.</p>
+<blockquote><p>⚠️ <strong>The z13 column is superseded (re-measured 2026-08-13).</strong> <code>gemma4:26b</code> now</p></blockquote>
+<blockquote><p>runs at <strong>46.8 tok/s with 16% CPU spill</strong> on z13, against the 18.8 / 38% below —</p></blockquote>
+<blockquote><p>a <strong>2.5x</strong> revision. <code>gemma4:31b</code> moved 4.86 → <strong>7.1 tok/s</strong>, spill 45% → 31%.</p></blockquote>
+<blockquote><p>Verified like-for-like first: same architecture, 25.8B parameters, Q4_K_M on</p></blockquote>
+<blockquote><p>both machines. Spill improved alongside throughput, which points at the serving</p></blockquote>
+<blockquote><p>stack (Vulkan/RADV, ollama) rather than measurement error.</p></blockquote>
+<blockquote><p><strong>The desktop:z13 ratios below are therefore wrong</strong> — the MoE gap is now</p></blockquote>
+<blockquote><p>roughly <strong>2x</strong>, not 4.86x. The desktop figures are unaffected.</p></blockquote>
+<blockquote><p>Current data: <code>operator-control-plane/evals/local_lane_ladder/Z13_BENCHMARK.md</code>.</p></blockquote>
 <table class="paper-table">
 <thead><tr><th>Model</th><th>Desktop @ 220W</th><th>Laptop</th><th>Ratio</th><th>Desktop residency</th><th>Laptop residency</th></tr></thead>
 <tbody>

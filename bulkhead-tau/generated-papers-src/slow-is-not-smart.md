@@ -46,7 +46,7 @@ The narrower form of the claim:
 The broader form of the claim:
 
 - local-LLM decisions often treat larger models as obviously better
-- the Project Phoenix evidence base does not support that assumption for the
+- the Bulkhead τ evidence base does not support that assumption for the
   task surfaces it has measured
 - the right question is not "what is the biggest model I can run?" but "what
   model is sufficient for this validated lane?"
@@ -95,7 +95,7 @@ model achieved the same validated outcome at a fraction of the wall-time. This
 supports the claim that larger/slower models do not necessarily improve bounded
 strict-output tasks enough to justify the cost.
 
-### 2. The Project Phoenix evidence base
+### 2. The Bulkhead τ evidence base
 
 Two production-shape lanes already deployed and verified:
 
@@ -207,7 +207,7 @@ local models earn their cost:
 - agentic loops where the model needs to make many small judgment calls
   without supervision
 
-None of these are the strict-handoff lanes Project Phoenix deploys on. All
+None of these are the strict-handoff lanes Bulkhead τ deploys on. All
 of them deserve a fair audit if this paper line is going to be honest about
 where the conflation breaks down.
 
@@ -220,7 +220,7 @@ where the conflation breaks down.
 
 ## What This Paper Is
 
-- A bounded operator lesson from Project Phoenix lanes
+- A bounded operator lesson from Bulkhead τ lanes
 - A warning against treating latency or model size as a proxy for quality
 - A reminder that strict-handoff systems are often limited by prompt,
   schema, validator, and orchestration design rather than by raw model size
@@ -250,7 +250,7 @@ hallucinated impossible date in 1/4, dropped required field in 1/4 — while
 27b handled the same fixture cleanly first try.
 
 The freeze is bounded as the paper writes it: the claim is about strict-
-handoff and timeline-synthesis lanes Project Phoenix actually deploys on, not
+handoff and timeline-synthesis lanes Bulkhead τ actually deploys on, not
 about every conceivable use of a local LLM. Lanes where larger size genuinely
 helps (very long context, deep summarisation, agentic loops) remain
 explicitly out of scope.

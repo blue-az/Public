@@ -15,8 +15,12 @@
     p, li { font-size: 1.02rem; line-height: 1.7; }
     code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
     pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
     a { color: #8b4513; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
     .meta { color: #6b5a45; margin-bottom: 2rem; }
     .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
     .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
@@ -54,7 +58,7 @@
 <ul>
 <li>AI cost talk often fixates on the most visible, most human, and least   consequential tokens.</li>
 <li>the real cost drivers are architectural rather than interpersonal.</li>
-<li>&quot;stop saying please&quot; is an attractive efficiency slogan because it feels   concrete, but for Project Phoenix we have proven it is sand off a beach.</li>
+<li>&quot;stop saying please&quot; is an attractive efficiency slogan because it feels   concrete, but for Bulkhead τ we have proven it is sand off a beach.</li>
 </ul>
 <h2>Why This Paper Exists</h2>
 <p>The prompt-cost conversation keeps drifting toward symbolic token thrift:</p>
@@ -64,11 +68,11 @@
 <li>should users shorten natural language into clipped machine shorthand?</li>
 </ul>
 <p>That conversation is almost always pointed at the wrong scale.</p>
-<p>Project Phoenix has measured the real cost centers. Our evidence packet shows:</p>
+<p>Bulkhead τ has measured the real cost centers. Our evidence packet shows:</p>
 <ul>
-<li>**Sand:** Courtesy tokens cost ~8 tokens.</li>
-<li>**Ritual:** Repeated unexamined prompt rituals cost ~390 tokens.</li>
-<li>**Storm:** Retry amplification multiplies the cost of the *entire workload* by ~2.0×.</li>
+<li><strong>Sand:</strong> Courtesy tokens cost ~8 tokens.</li>
+<li><strong>Ritual:</strong> Repeated unexamined prompt rituals cost ~390 tokens.</li>
+<li><strong>Storm:</strong> Retry amplification multiplies the cost of the <em>entire workload</em> by ~2.0×.</li>
 </ul>
 <p>This paper exists to separate ritual token anxiety from structural token economics.</p>
 <h2>The Token-Cost Spectrum</h2>
@@ -79,21 +83,21 @@
 <li><code>please</code></li>
 <li><code>thank you</code></li>
 </ul>
-<p>These are real tokens, but for a serious system they are trivial. In our A/B test, adding &quot;Please... thank you&quot; to a standard probe added exactly **8 tokens** (+1.5% overhead). They are only interesting if the rest of the workflow is already perfect.</p>
+<p>These are real tokens, but for a serious system they are trivial. In our A/B test, adding &quot;Please... thank you&quot; to a standard probe added exactly <strong>8 tokens</strong> (+1.5% overhead). They are only interesting if the rest of the workflow is already perfect.</p>
 <h3>2. Low-grade prompt ritual</h3>
 <p>Examples:</p>
 <ul>
 <li>repeated polite framing that does not change the contract</li>
 <li>redundant &quot;be careful / be accurate / think step by step&quot; language copied   from prompt folklore</li>
 </ul>
-<p>This is no longer &quot;manners.&quot; It is unexamined ritual. Comparing our production strict-protocol prompt against a stripped functional prompt revealed **393 tokens** of pure ritual waste—nearly 80% of the prompt budget.</p>
+<p>This is no longer &quot;manners.&quot; It is unexamined ritual. Comparing our production strict-protocol prompt against a stripped functional prompt revealed <strong>393 tokens</strong> of pure ritual waste—nearly 80% of the prompt budget.</p>
 <h3>3. Medium structural waste</h3>
 <p>Examples:</p>
 <ul>
 <li>repeating large schema instructions every turn when the task could be   decomposed</li>
 <li>oversized system prompts used as a substitute for typed validation</li>
 </ul>
-<p>At this rung, the cost starts to matter operationally. The minimum viable schema definition for our tools still cost **113 tokens** on every single call.</p>
+<p>At this rung, the cost starts to matter operationally. The minimum viable schema definition for our tools still cost <strong>113 tokens</strong> on every single call.</p>
 <h3>4. High structural waste</h3>
 <p>Examples:</p>
 <ul>
@@ -108,11 +112,11 @@
 <li>no deterministic substrate where one should exist</li>
 <li>no receive-side validator, causing retries or human cleanup</li>
 </ul>
-<p>At this level, token cost is evidence that the system is structurally wrong. In the PPR Lane 2 evidence runs, validator-rejected probes drove a **2.03× retry multiplier**. For every 1 token of expected work, the system paid for ~2 tokens because of architectural and validation failures.</p>
+<p>At this level, token cost is evidence that the system is structurally wrong. In the PPR Lane 2 evidence runs, validator-rejected probes drove a <strong>2.03× retry multiplier</strong>. For every 1 token of expected work, the system paid for ~2 tokens because of architectural and validation failures.</p>
 <h2>How We Arrived Here</h2>
 <h3>1. The Sam Altman manners anecdote</h3>
 <p>In April 2025, Sam Altman replied on X that polite prompt tokens cost &quot;tens of millions of dollars&quot; and were &quot;well spent.&quot; The quote is useful not because it settles anything, but because it reveals where public attention goes first: the tiny human-visible tokens.</p>
-<p>The Project Phoenix answer is narrower and more operational:</p>
+<p>The Bulkhead τ answer is narrower and more operational:</p>
 <ul>
 <li>maybe those tokens cost real money at platform scale.</li>
 <li>but they are not where an operator should look first.</li>

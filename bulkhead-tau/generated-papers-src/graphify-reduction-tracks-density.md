@@ -2,7 +2,7 @@
 
 **Status:** active draft
 **Date:** 2026-07-20
-**Project:** Project Phoenix / Bulkhead Tau
+**Project:** Bulkhead τ / Bulkhead Tau
 **Publication posture:** paper-grade draft. Both falsification rounds and
 both predictive tests are complete; the functional form of the
 density-reduction relationship is not yet fit to anything and is stated as

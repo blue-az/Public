@@ -20,6 +20,7 @@
     hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
     a { color: #8b4513; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
     .meta { color: #6b5a45; margin-bottom: 2rem; }
     .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
     .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
@@ -34,11 +35,11 @@
     <h1>When Tokens Are Plentiful, Supervision Becomes the Bottleneck (Under Coarse Quota Regimes)</h1>
     <p class="meta">DRAFT. Auto-ethnographic finding from the Bulkhead tau game build: under coarse, turn-limited quota regimes, implementation tokens are abundant but barely register on coarse meters, so the binding constraint shifts to human supervision, specification clarity, and verification. Per-segment token deltas audited against measurement_result.md.</p>
     <p class="meta">Canonical source: <code>docs/WHEN_TOKENS_ARE_PLENTIFUL_SUPERVISION_BECOMES_THE_BOTTLENECK.md</code></p>
-    <p><strong>Date:</strong> 2026-06-18 <strong>Project:</strong> Phoenix / Bulkhead τ <strong>Domain:</strong> AGY-GEMINI-QUOTA-001 <strong>Status:</strong> DRAFT (Analysis Complete)</p>
+    <p><strong>Date:</strong> 2026-06-18 <strong>Project:</strong> Bulkhead τ <strong>Domain:</strong> AGY-GEMINI-QUOTA-001 <strong>Status:</strong> DRAFT (Analysis Complete)</p>
 <h2>Abstract</h2>
 <p>This paper analyzes the operational dynamics of multi-agent development under the specific coarse quota regimes of the late-Gemini CLI transition. Using the Bulkhead τ game suite as a testbed, we demonstrate that while raw model implementation capacity appears effectively limitless on visible percentage meters, the true bottleneck remains the human-supervised &quot;command and control&quot; layer. Operational evidence suggests that in environments with abundant but opaque implementation tokens, scarcity shifts to specification clarity, role discipline, and the cognitive cost of verification — a dynamic we term the <strong>agentic overhang</strong>: implementation throughput that outruns the human&#x27;s capacity to direct and audit it.</p>
 <h2>1. Operational Context</h2>
-<p>Project Phoenix utilizes a multi-model stack (Claude Code, Antigravity CLI, Gemini CLI, Codex) for both production agents and development assistance. In measurement run AGY-GEMINI-QUOTA-001, we assigned Antigravity (Agy) as the <strong>Supervisor</strong> and Gemini as the <strong>Implementer</strong>. The goal was to measure the &quot;cost&quot; of large game redesigns and repo-wide synchronization tasks when implementation capacity is high but visibility is low.</p>
+<p>Bulkhead τ utilizes a multi-model stack (Claude Code, Antigravity CLI, Gemini CLI, Codex) for both production agents and development assistance. In measurement run AGY-GEMINI-QUOTA-001, we assigned Antigravity (Agy) as the <strong>Supervisor</strong> and Gemini as the <strong>Implementer</strong>. The goal was to measure the &quot;cost&quot; of large game redesigns and repo-wide synchronization tasks when implementation capacity is high but visibility is low.</p>
 <h2>2. Measurement Method</h2>
 <p>We tracked two distinct metrics, prioritizing the former as the &quot;ground truth&quot;:</p>
 <ol>

@@ -15,8 +15,12 @@
     p, li { font-size: 1.02rem; line-height: 1.7; }
     code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
     pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
     a { color: #8b4513; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
     .meta { color: #6b5a45; margin-bottom: 2rem; }
     .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
     .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
@@ -48,8 +52,8 @@
 <p>The narrow form:</p>
 <ul>
 <li>privacy is the load-bearing reason to deploy DocDrop-class workloads on   a local LLM</li>
-<li>our measurements on PPR Lane 2 show the local lane pays a **2.0× retry penalty** and requires massive prompt ritual overhead compared to a frontier equivalent</li>
-<li>our synthetic DocDrop same-task ledger shows the local lane at **1 / 3**   first-pass success versus **3 / 3** for the frontier lane, with **1.83×**   total-token use, **3.37×** output-token use, and **2.45×** wall-time</li>
+<li>our measurements on PPR Lane 2 show the local lane pays a <strong>2.0× retry penalty</strong> and requires massive prompt ritual overhead compared to a frontier equivalent</li>
+<li>our synthetic DocDrop same-task ledger shows the local lane at <strong>1 / 3</strong>   first-pass success versus <strong>3 / 3</strong> for the frontier lane, with <strong>1.83×</strong>   total-token use, <strong>3.37×</strong> output-token use, and <strong>2.45×</strong> wall-time</li>
 <li>the resource cost of local deployment is real and is rightly paid for the   privacy benefit</li>
 <li>the resource cost is not avoided by relabeling the local lane as &quot;free&quot;</li>
 </ul>
@@ -61,7 +65,7 @@
 </ul>
 <p>The honest deployment case is &quot;privacy is worth paying for,&quot; not &quot;privacy is free.&quot;</p>
 <h2>Why This Paper Exists</h2>
-<p>The DocDrop privacy lane is currently the cleanest production-shape privacy deployment in Project Phoenix. Its design is correct: local inference on <code>localhost</code>, no API egress, sensitive documents on operator-controlled media, strict 5-field JSON contract, schema validation at the receive boundary.</p>
+<p>The DocDrop privacy lane is currently the cleanest production-shape privacy deployment in Bulkhead τ. Its design is correct: local inference on <code>localhost</code>, no API egress, sensitive documents on operator-controlled media, strict 5-field JSON contract, schema validation at the receive boundary.</p>
 <p>The privacy argument for that design is bulletproof and survives any accounting.</p>
 <p>The trouble is that the privacy argument and a &quot;no cost&quot; argument get bundled in operator framing — both for DocDrop specifically and for local-LLM offloading more generally. Bundling weakens the privacy argument because the &quot;free&quot; half does not survive scrutiny. Separating the two strengthens the privacy half.</p>
 <p>This paper exists to keep the two arguments separate, and to make the cost ledger explicit so the privacy-vs-cost trade is a deliberate operator choice, not a hidden one.</p>
@@ -88,7 +92,7 @@
 <ul>
 <li>the schema must be in the prompt every single call; a frontier model   with native function-calling skips that text entirely</li>
 <li>larger system prompts to compensate for lower instruction-following</li>
-<li>verbose reasoning preambles must be suppressed (<code>/no_think</code>) and   monitored (the suppression-regression probe Project Phoenix built);   even when suppressed, the suppression contract has to be tested   on a schedule</li>
+<li>verbose reasoning preambles must be suppressed (<code>/no_think</code>) and   monitored (the suppression-regression probe Bulkhead τ built);   even when suppressed, the suppression contract has to be tested   on a schedule</li>
 </ul>
 <h3>Retry amplification</h3>
 <ul>
@@ -105,7 +109,7 @@
 <h3>Operator-side overhead</h3>
 <ul>
 <li>prompt design and maintenance (longer, more constrained prompts than   a frontier path needs)</li>
-<li>regression scaffolding (the probes Project Phoenix has scaffolded for   exactly this reason)</li>
+<li>regression scaffolding (the probes Bulkhead τ has scaffolded for   exactly this reason)</li>
 <li>drift handling (catching upstream changes to Ollama or model weights   that break the suppression contract)</li>
 <li>the choice to deploy a local lane is a choice to take on these   obligations</li>
 </ul>
@@ -128,7 +132,7 @@
 <p>In those cases, &quot;use local because it is free&quot; often does not survive a real volume × cost-per-call vs. capex + ops-time accounting. The honest framing is that the operator is paying with hardware, electricity, and wall-time instead of with API tokens. That can still be the right choice, but it is not free.</p>
 <p>The paper does not need to moralize about this. The corrective is just making the ledger visible.</p>
 <h2>Evidence 1: PPR Lane 2</h2>
-<p>The PPR Lane 2 packet measured a bounded tool-dispatch task on local <code>gemma4:26b</code> versus a frontier-native function-calling lane. The headline is not subtle: the local lane paid a **2.0x retry penalty** and carried much more prompt-maintenance overhead to preserve strict machine-facing behavior.</p>
+<p>The PPR Lane 2 packet measured a bounded tool-dispatch task on local <code>gemma4:26b</code> versus a frontier-native function-calling lane. The headline is not subtle: the local lane paid a <strong>2.0x retry penalty</strong> and carried much more prompt-maintenance overhead to preserve strict machine-facing behavior.</p>
 <p>That does not make the local lane wrong. It makes the deployment reason matter. If the task is privacy-bounded, offline, or contractually restricted, the extra cost may be justified. If the task is ordinary non-sensitive dispatch, the local lane has to win on some other ledger.</p>
 <h2>Evidence 2: DocDrop Same-Task Ledger</h2>
 <p>DocDrop is the stronger privacy exhibit because the real production lane is privacy-bounded by design. Sensitive documents remain local. The frontier comparison therefore uses synthetic <code>.docx</code> fixtures only, while the local lane uses the same synthetic fixtures for apples-to-apples measurement.</p>
@@ -142,9 +146,9 @@
 </table>
 <p>The local lane used:</p>
 <ul>
-<li>**1.83x** total tokens</li>
-<li>**3.37x** output tokens</li>
-<li>**2.45x** wall-time</li>
+<li><strong>1.83x</strong> total tokens</li>
+<li><strong>3.37x</strong> output tokens</li>
+<li><strong>2.45x</strong> wall-time</li>
 <li>and failed two of three first-pass validations (<code>schema_fail</code>, <code>parse_fail</code>)</li>
 </ul>
 <p>The frontier lane succeeded on all three documents. That is exactly why the privacy argument must stand on privacy, not on an inherited claim that local is cheaper or simpler.</p>
@@ -158,7 +162,7 @@
 <li>drift handling when model, runtime, or transport behavior changes</li>
 <li>hardware capacity and operator time</li>
 </ul>
-<p>Project Phoenix treats those obligations as engineering work, not as hidden externalities. That is the point: privacy can justify the local lane, but it does not erase the cost of operating it.</p>
+<p>Bulkhead τ treats those obligations as engineering work, not as hidden externalities. That is the point: privacy can justify the local lane, but it does not erase the cost of operating it.</p>
 <h2>Boundary</h2>
 <p>This paper does not argue against local LLM deployment. It argues against the wrong justification for local LLM deployment.</p>
 <p>The correct argument for DocDrop is:</p>
