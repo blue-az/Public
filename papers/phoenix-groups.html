@@ -7,6 +7,13 @@
     <meta name="description" content="Bulkhead &tau; paper inventory grouped by paper_group, exported from PAPERS_MANIFEST.json. Complementary to the numbered /papers/ index.">
     <link rel="stylesheet" href="style.css">
     <style>
+.cluster-blurb {
+    max-width: 62ch;
+    margin: 0.35rem 0 1.1rem;
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
 .phoenix-badge {
     display: inline-block;
     padding: 0.05rem 0.45rem;
@@ -74,6 +81,7 @@
 
         <section class="section">
     <div class="cluster-heading">Local LLM Operator Judgment &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
+    <p class="cluster-blurb">Papers 1.20–1.26, 1.30, 1.31, and 1.34–1.37 turn the Bulkhead Tau evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, token-cost attention, when a model call should not be a model call, multi-agent HIL workflows, cross-audit cataloging, narration-surface failure analysis, validator discipline, and image-generation prompt discipline. Papers 1.39–1.45 add: a local-cluster negative result, encoding-as-lookup for cold-start architecture recovery, evidence-based harness governance, dedicated-vs-unified hardware measurement, a graph-density explanation for a code-compression tool&#x27;s reduction ratio, a stub on Qwen3.8 MTP draft depth (stock 4 is slower than 2 at empty KV; a follow-up of 448 generations finds depth 8 wins under occupied context), and a draft four-model R6 grid whose Syntax Wall is measured and whose R3 fix is still pending. Paper 1.47 adds the supervision-cost argument: under coarse quota regimes, plentiful implementer tokens move the bottleneck to the supervisor.</p>
     <div class="grid-2">
             <a class="paper-card phoenix-paper-card" href="../bulkhead-tau/generated-papers/gemma-handoff-discipline.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-frozen">frozen</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Smarter, Faster, and Bounded by Handoff Discipline</h3><p class="paper-thesis">Handoff-discipline doctrine for strict machine-facing local-model lanes. Frozen 2026-04-29 with the corrected matrix, the three-datapoint drift addendum, DocDrop as the positive deployment case, and a three-run PPR Lane 2 evidence packet as the adversarial complement.</p><span class="paper-link">Open paper →</span></a>
             <a class="paper-card phoenix-paper-card" href="../bulkhead-tau/generated-papers/privacy-is-worth-paying-for.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-frozen">frozen</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Privacy Is Worth Paying For</h3><p class="paper-thesis">Separates the privacy argument for local inference from the false claim that the local lane is free. Frozen 2026-05-01 with PPR Lane 2 and DocDrop same-task local-vs-frontier ledgers.</p><span class="paper-link">Open paper →</span></a>
@@ -99,6 +107,7 @@
 
         <section class="section">
     <div class="cluster-heading">Agentic Engineering Field Studies &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
+    <p class="cluster-blurb">Paper 1.26 studies two AI coding agents deployed sequentially across a hardware-in-the-loop stack spanning firmware, Python orchestration, and cloud observability. The finding is that the quality of the interface between agents -- the handoff artifact -- predicts success better than the peak reasoning capability of any single model.</p>
     <div class="grid-2">
             <a class="paper-card phoenix-paper-card" href="../bulkhead-tau/generated-papers/multi-agent-hil-workflows.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-published">published</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Multi-Agent AI Workflows in Hardware-in-the-Loop Simulation</h3><p class="paper-thesis">Demonstrates that heterogeneous HIL stacks decompose into agent roles along language and permission boundaries, and that the handoff artifact is the critical interface for multi-agent continuity. Field data from GRAFANA-OBS-001/PROX-HIL-001 on the Z13 laptop.</p><span class="paper-link">Open paper →</span></a>
     </div>
@@ -106,6 +115,7 @@
 
         <section class="section">
     <div class="cluster-heading">Sensor-to-Simulation Engineering &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
+    <p class="cluster-blurb">Papers 1.27, 1.28, 1.29, 1.32, 1.33, and 1.46 characterize wearable sport sensors through a fidelity-boundary lens (1.27), define the LabWired simulation platform boundary (1.28), close the physical-replay HIL loop (1.29), apply the corpus framing to a single instrumented match at depth (1.32), define the proof boundary separating harness testing from component verification (1.33), and measure when CPU MuJoCo gives way to GPU MJX for simulation workloads (1.46).</p>
     <div class="grid-2">
             <a class="paper-card phoenix-paper-card" href="../bulkhead-tau/generated-papers/wearable-sensor-corpus.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-published">published</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>A Field Guide to Wearable Sport Sensors: Data Landscape, Fidelity Boundaries, and Engineering Constraints</h3><p class="paper-thesis">Characterizes the five-sensor corpus deployed in Bulkhead τ (Babolat POP, Zepp Tennis, Apple Watch, Garmin, MiiFit) through a fidelity-boundary lens: the point at which each sensor&#x27;s output stops being measurement and starts being vendor interpretation. AW-ZEPP cross-sensor alignment results (60/60 closure at 357.63 ms residual jitter; 60.3% ceiling on the discontinuity session) anchor the claim that Zepp swing timestamps are a usable simulation clock within sessions. Concludes that no sensor in the corpus exposes a sample-accurate waveform, so sensor-driven HIL on this corpus is necessarily event-driven, not waveform-driven.</p><span class="paper-link">Open paper →</span></a>
             <a class="paper-card phoenix-paper-card" href="../bulkhead-tau/generated-papers/labwired-simulation-platform.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-published">published</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>LabWired: Cycle-Accurate Hardware Simulation for Embedded Sensor Systems</h3><p class="paper-thesis">Explains the LabWired hardware simulation platform: architecture, expanded component library, Path A declarative register-bank modeling vs Path B behavioral/shared-memory device models, and the STM32F401 I2C implementation. The current inventory confirms TMP102 remains attachable via type:&quot;tmp102&quot;, SPI/UART/GPIO models exist, and the F401 fidelity claim is bounded to register state-machine behavior, reset values, and cycle cost rather than analog bus-edge timing.</p><span class="paper-link">Open paper →</span></a>
@@ -118,13 +128,14 @@
 
         <section class="section">
     <div class="cluster-heading">Agent Path Evaluation &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
+    <p class="cluster-blurb">Paper 1.38 compares implementation paths rather than model identities. In the Amkor/xAmkor case study, the useful result is compositional: xAmkor owns the verifier surface, while Amkor owns broader cockpit/application surface.</p>
     <div class="grid-2">
             <a class="paper-card phoenix-paper-card" href="../bulkhead-tau/generated-papers/codex-vs-claude-false-choice.html"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-frozen">frozen</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Codex vs Claude Code Is a False Choice</h3><p class="paper-thesis">Case study arguing that Codex vs Claude Code is usually the wrong abstraction for Bulkhead Tau domain building. In the Amkor/xAmkor comparison, the artifact-backed claim is compositional: xAmkor was stronger on the benchmark/verifier surface, while Amkor carried broader cockpit/application surface.</p><span class="paper-link">Open paper →</span></a>
     </div>
 </section>
 
         <footer style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--ink-muted); font-size:var(--font-size-sm); text-align:center;">
-            <p>Generated 2026-09-01T04:09:29.045164+00:00 from <code>docs/PAPERS_MANIFEST.json</code> via <code>scripts/publish_papers_index.py</code>.</p>
+            <p>Generated 2026-09-01T05:22:10.113617+00:00 from <code>docs/PAPERS_MANIFEST.json</code> via <code>scripts/publish_papers_index.py</code>.</p>
         </footer>
 
     </div>
