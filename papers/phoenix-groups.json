@@ -1,30 +1,14 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-08-27T03:06:36.174938+00:00",
+  "generated_at": "2026-09-01T01:49:10.712639+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
-  "public_only": false,
+  "public_only": true,
   "groups": [
     {
       "group": "Local LLM Operator Judgment",
       "group_status": "confirmed",
       "papers": [
-        {
-          "id": "empirical-analysis-r1-r6",
-          "title": "Empirical Analysis: The Harness-Centric Approach to Local Model Delegation",
-          "source_path": "docs/EMPIRICAL_ANALYSIS_R1_R6.md",
-          "track": "paper",
-          "paper_number": "1.45",
-          "lifecycle": "active draft",
-          "publication_status": "private",
-          "paper_group": "Local LLM Operator Judgment",
-          "group_status": "provisional",
-          "public_slug": "empirical-analysis-r1-r6",
-          "proto_output_path": "bulkhead-tau/generated-papers/empirical-analysis-r1-r6.html",
-          "proto_markdown_path": "bulkhead-tau/generated-papers-src/empirical-analysis-r1-r6.md",
-          "publish": false,
-          "summary": "DRAFT. Four-model R6 grid finds a Syntax Wall on raw py_fix writes. R3 as a harness-applied splice is the proposed fix; that treatment grid is not yet run. Do not freeze."
-        },
         {
           "id": "gemma-handoff-discipline",
           "title": "Smarter, Faster, and Bounded by Handoff Discipline",
@@ -256,7 +240,7 @@
           "track": "paper",
           "paper_number": "",
           "lifecycle": "active draft",
-          "publication_status": "private",
+          "publication_status": "published",
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "provisional",
           "public_slug": "supervision-bottleneck",
@@ -312,38 +296,6 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/graphify-reduction-tracks-density.md",
           "publish": true,
           "summary": "Two intuitive hypotheses about what a code-graph tool's token-reduction ratio measures -- modularity, then raw corpus size -- were each proposed from limited evidence and each falsified by a real contrasting corpus chosen specifically to test them. A third hypothesis, graph density (edges per node, inverse), fit the falsified hypotheses' data retrospectively, was confirmed by an exact independent reproduction of a previously unverified number, then tested predictively twice: once on a corpus later retracted as flagship evidence after its provenance turned out to be uncertain (likely an old coding-eval submission), once on a corpus chosen because its author could vouch for it. Both predictions were directionally correct; the second missed its predicted magnitude by roughly 5x, which the paper treats as the most interesting open question rather than smoothing over -- the true relationship may be closer to a power law than linear. A secondary finding: the provenance error in the first predictive corpus was caught by the author reviewing results, not by any automated check, and is reported as part of the method rather than edited out."
-        },
-        {
-          "id": "one-implementer-three-supervisors",
-          "title": "Can One Abundant Implementer Exhaust Three Frontier Supervisors?",
-          "source_path": "docs/CAN_ONE_IMPLEMENTER_EXHAUST_THREE_SUPERVISORS_STUB.md",
-          "track": "paper",
-          "paper_number": "",
-          "lifecycle": "stub",
-          "publication_status": "private",
-          "paper_group": "Local LLM Operator Judgment",
-          "group_status": "provisional",
-          "public_slug": "one-implementer-three-supervisors",
-          "proto_output_path": "bulkhead-tau/generated-papers/one-implementer-three-supervisors.html",
-          "proto_markdown_path": "bulkhead-tau/generated-papers-src/one-implementer-three-supervisors.md",
-          "publish": false,
-          "summary": "STUB. Uses the sunset Gemini CLI turn-metered token glitch as a historical motivating observation, then proposes a controlled local-inference replication of the narrower system claim: one abundant implementation lane may create reviewable artifacts faster than Claude Code, Codex, and Antigravity can collectively verify and close them. The primary outcome is verification-queue behavior, not cross-vendor quota conversion."
-        },
-        {
-          "id": "model-did-not-get-worse",
-          "title": "The Model Did Not Get Worse: Leaderboard Rank, Harness Quality, and the Operational Competence Floor",
-          "source_path": "docs/THE_MODEL_DID_NOT_GET_WORSE_STUB.md",
-          "track": "paper",
-          "paper_number": "",
-          "lifecycle": "stub",
-          "publication_status": "private",
-          "paper_group": "Local LLM Operator Judgment",
-          "group_status": "provisional",
-          "public_slug": "model-did-not-get-worse",
-          "proto_output_path": "bulkhead-tau/generated-papers/model-did-not-get-worse.html",
-          "proto_markdown_path": "bulkhead-tau/generated-papers-src/model-did-not-get-worse.md",
-          "publish": false,
-          "summary": "STUB. A dated Claude Sonnet 4.5 system was operationally competent in Claude Code in November 2025 yet sits around rank 60 on the July 2026 Frontend Code leaderboard. The paper separates relative model rank from task-specific operational competence, then treats the unresolved model-harness confound directly: proprietary harness effects can usually be measured end to end but not isolated causally."
         }
       ]
     },
