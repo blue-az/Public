@@ -166,1236 +166,1270 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <style>
-  body{max-width:820px;margin:2rem auto;padding:0 1.2rem;font-family:-apple-system,Segoe UI,Roboto,Helvetica,sans-serif;line-height:1.55;color:#1a1a1a}
-  h1,h2,h3{line-height:1.25} h2{border-bottom:1px solid #eee;padding-bottom:.2em;margin-top:2em}
-  pre.mermaid{background:transparent;text-align:center}
-  pre:not(.mermaid){background:#f6f8fa;padding:.8em;overflow:auto;border-radius:6px}
-  code{background:#f4f4f4;padding:.1em .3em;border-radius:3px} pre code{background:none;padding:0}
-  blockquote{border-left:3px solid #ccd;margin:0;padding:.2em 1em;color:#555;background:#fafafc}
-  table{border-collapse:collapse;margin:1em 0}td,th{border:1px solid #ddd;padding:.4em .6em}
-  </style>
-  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true});</script>
+
+  <link rel="stylesheet" href="bt-manual.css" />
+  <script type="module" src="bt-manual.js"></script>
 </head>
 <body>
 <header id="title-block-header">
 <h1 class="title">Operator Control Plane — Owner's Manual</h1>
 </header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#owners-manual-for-blue-azoperator-control-plane"
+id="toc-owners-manual-for-blue-azoperator-control-plane">Owner’s Manual
+for blue-az/operator-control-plane</a>
+<ul>
+<li><a href="#what-this-manual-does-not-establish"
+id="toc-what-this-manual-does-not-establish">What this manual does not
+establish</a></li>
+<li><a href="#quickstart" id="toc-quickstart">Quickstart</a></li>
+<li><a href="#what-operator-control-plane-is"
+id="toc-what-operator-control-plane-is">What Operator Control Plane
+Is</a></li>
+<li><a href="#running-the-core-ledger-workflow"
+id="toc-running-the-core-ledger-workflow">Running the Core Ledger
+Workflow</a></li>
+<li><a href="#governing-the-ledger-and-evidence-record"
+id="toc-governing-the-ledger-and-evidence-record">Governing the Ledger
+and Evidence Record</a></li>
+<li><a href="#when-to-use-enrolled-authority-mode"
+id="toc-when-to-use-enrolled-authority-mode">When to Use Enrolled
+Authority Mode</a></li>
+<li><a href="#operating-safely-and-recovering-cleanly"
+id="toc-operating-safely-and-recovering-cleanly">Operating Safely and
+Recovering Cleanly</a></li>
+<li><a href="#harnesses-delegation-and-study-work"
+id="toc-harnesses-delegation-and-study-work">Harnesses, Delegation, and
+Study Work</a></li>
+<li><a href="#entry-checks" id="toc-entry-checks">Entry Checks</a></li>
+<li><a href="#phase-states-and-control"
+id="toc-phase-states-and-control">Phase States and Control</a></li>
+<li><a href="#approval-pause-resume"
+id="toc-approval-pause-resume">Approval, Pause, Resume</a></li>
+<li><a href="#checkpointed-replay"
+id="toc-checkpointed-replay">Checkpointed Replay</a></li>
+<li><a href="#local-comparison" id="toc-local-comparison">Local
+Comparison</a></li>
+<li><a href="#worked-example" id="toc-worked-example">Worked
+example</a></li>
+<li><a href="#command-reference" id="toc-command-reference">Command
+reference</a></li>
+<li><a href="#configuration"
+id="toc-configuration">Configuration</a></li>
+<li><a href="#appendix-attention-items-and-owner-decisions"
+id="toc-appendix-attention-items-and-owner-decisions">Appendix —
+Attention Items and Owner Decisions</a></li>
+</ul></li>
+</ul>
+</nav>
 <h1 id="owners-manual-for-blue-azoperator-control-plane">Owner’s Manual
 for blue-az/operator-control-plane</h1>
-<p><em>6 generated chapters from the reviewed repository
-snapshot</em></p>
-<blockquote>
-<p>Source:
-blue-az/operator-control-plane:main@9b9e3e63a7f0f54ccde541c6c10570c8fdbe8f5b</p>
-</blockquote>
-<hr />
+<p>Generated from a Reflect scan of
+<code>blue-az/operator-control-plane-v2:main@7968d1a</code>, an archive
+snapshot of the product tree at
+<code>blue-az/operator-control-plane@cab4a7a</code> with the benchmark
+corpus removed. The chapters are Reflect’s. The quickstart, worked
+example, command reference, configuration notes and appendix are from
+the repository and edited by hand.</p>
+<p>Attention items and owner decisions are deduplicated into the
+appendix rather than interleaved. Two scans of the same tree produced
+two differently worded card sets; the appendix states their union
+once.</p>
+<h2 id="what-this-manual-does-not-establish">What this manual does not
+establish</h2>
+<p>It is written from a static read of the source tree at the pin above.
+Three things it describes but does not demonstrate.</p>
+<p><strong>Runtime compatibility with external harness
+binaries.</strong> Twelve harness profiles are seeded at
+<code>operator init</code> and listed in the command reference. That
+they are cataloged is a fact about the source. That each provider’s CLI
+still behaves as this product expects is not shown here.</p>
+<p><strong>Live host behaviour for enrolled authority.</strong>
+Provisioning, service enablement and rollback safety on the broker path
+were not exercised against a real host. A checkout is not a production
+install.</p>
+<p><strong>Backup and migration guarantees beyond the append-only
+model.</strong> The durable history and its projections are described.
+Whether a particular backup or migration procedure restores a running
+system is an operational question this document does not answer.</p>
+<p>Two limits the scans raised are answered rather than open. Product
+intent was listed as unconfirmed; publishing this manual confirms it.
+Whether this repository is the whole system or one part of a larger one
+was listed as unknown; it is a standalone, domain-neutral control plane,
+developed alongside Bulkhead Tau but not importing, invoking or
+requiring it.</p>
 <h2 id="quickstart">Quickstart</h2>
-<pre class="bash"><code>pip install -r requirements.txt        # just PyYAML
-./operator --help
-./operator doctor                      # consistency check over the local .operator/ ledger
-pytest tests/                          # subprocess-driven tests + synthetic session fixtures</code></pre>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt        <span class="co"># runtime: just PyYAML</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements-dev.txt    <span class="co"># tests/lint: pytest, ruff, black, isort</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> <span class="at">--help</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> /tmp/operator-demo <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> /tmp/operator-demo   <span class="co"># init writes into the current directory</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/path/to/operator</span> init                 <span class="co"># create a .operator/ ledger here</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">/path/to/operator</span> doctor               <span class="co"># consistency check -&gt; &quot;All records consistent.&quot;</span></span></code></pre></div>
+<p>Run the tests from the repo:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pytest tests/test_operator.py <span class="at">-q</span>   <span class="co"># repo CLI, ledger layout, identity, doctor, usage</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pytest tests/ <span class="at">-q</span>                   <span class="co"># everything (some suites need a Linux host)</span></span></code></pre></div>
 <p>The ledger (<code>.operator/</code>) is gitignored — it’s your work
-history, not the tool.</p>
-<h2 id="worked-example">Worked example</h2>
-<pre class="bash"><code>./operator init                                    # create .operator/ ledger in this repo
-
-# open a task
-./operator task-create --objective &quot;Add retry to the uploader&quot; --id up-retry --repo myapp
-
-# an agent registers a typed, gate-bound claim
-./operator claim-add --task up-retry --type test_passes \
-    --text &quot;uploader retries 3x on 5xx&quot; --gate tests/test_upload.py
-
-# attach evidence and verify — verifier identity must differ from the builder (guard fails closed)
-./operator evidence-attach tests/out/upload.log --task up-retry --claim claim-0001 \
-    --type test_output --status verified --verified-by reviewer
-
-# read-only consistency check: unverified / self-verified claims, enforcement downgrades
-./operator doctor
-
-# track the session + its cost, then close out with a brief for the next harness
-./operator session-start --task up-retry --harness claude
-./operator session-end --outcome useful --cost 12.50
-./operator handoff-add --task up-retry --changed &quot;uploader.py&quot; --verified &quot;retry test&quot; --open &quot;tune backoff&quot;
-./operator export-brief --for codex --task up-retry</code></pre>
-<h2 id="what-operator-is-for">What operator Is For</h2>
-<p><em>operator is a local command-line control plane with a file-backed
-ledger under .operator/. Its job is not to be a general project tracker
-or a hosted control plane; it is to keep multi-agent work legible
-through a task, claim, evidence, and verification frame. For the owner,
-the important thing is the boundary: this product is about preserving
-accountable work records inside a bounded local workflow.</em></p>
+history, not the tool. Its durable local event history is stored in
+<code>.operator/ledger.sqlite3</code>.</p>
+<h2 id="what-operator-control-plane-is">What Operator Control Plane
+Is</h2>
+<p><em>Operator Control Plane is a local-first control plane for AI
+coding work. Its center of gravity is a repository-local ledger that
+records claims, evidence, verification, and the doctor audit trail. That
+makes the product a trust record for work, not a generic workspace or
+hosted service. The roles are distinct. A builder creates claims and
+drafts evidence. A verifier establishes trusted sign-off.</em></p>
 <h3 id="one-minute-snapshot">One-Minute Snapshot</h3>
-<p>operator is a local command-line control plane with a file-backed
-ledger under .operator/. Its job is not to be a general project tracker
-or a hosted control plane; it is to keep multi-agent work legible
-through a task, claim, evidence, and verification frame.</p>
-<p>For the owner, the important thing is the boundary: this product is
-about preserving accountable work records inside a bounded local
-workflow. The human operator maintains the ledger, assigned harnesses do
-the work, review harnesses check it, and verifiers are recorded when
-trust changes. The next chapters go deeper into the lifecycle, the
-records, and the verification rules; this chapter only sets the identity
-and the limits.</p>
-<blockquote>
-<p><strong>Figure:</strong> The owner should read operator as a local
-control surface over a bounded ledger, so the product ends at the
-recorded workflow instead of expanding into a hosted control plane or a
-generic tracker.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-  O[Owner]
-  subgraph B[Local product boundary]
-    C[Fixed command surface]
-    L[File-backed local ledger]
-    W[Recorded task, claim, evidence, verification flow]
-    C --> L --> W
-  end
-  X[Outside the product]
-  O --> C
-  X -. not part of the product .-> C
-</pre>
-<p>This diagram shows the owner using a local product boundary that
-contains a fixed command surface, a file-backed local ledger, and the
-recorded task-to-claim-to-evidence-to-verification flow. Anything
-outside that boundary is not part of the product’s scope.</p>
-<h3 id="what-you-should-be-able-to-explain">What You Should Be Able To
-Explain</h3>
-<ul>
-<li>Understand that operator is a local CLI plus a .operator/ ledger,
-not a hosted SaaS control plane.</li>
-<li>Recognize the native roles: operator, assigned harness, review
-harness, and verifier.</li>
-<li>See the core product frame: task, claim, evidence, then
-verification.</li>
-<li>Know that brief and handoff records are the continuity path between
-harnesses.</li>
-<li>Notice the main boundary risks before deciding what to trust or
-correct.</li>
-</ul>
+<p>Operator Control Plane is a local-first control plane for AI coding
+work. Its center of gravity is a repository-local ledger that records
+claims, evidence, verification, and the doctor audit trail. That makes
+the product a trust record for work, not a generic workspace or hosted
+service.</p>
+<p>The roles are distinct. A builder creates claims and drafts evidence.
+A verifier establishes trusted sign-off. An administrator handles the
+enrolled authority boundary and its host prerequisites. A harness can
+run delegated or study work, but it is not a trust authority. The owner
+is the person reading this manual and deciding what the product should
+promise.</p>
+<p>The product also has a layered boundary. The everyday path stays
+local. The enrolled authority path is optional and consequential. Later
+chapters separate the core workflow, the ledger lifecycle, the authority
+choice, recovery, and harness work instead of blending them into one
+story.</p>
 <h3 id="mental-model">Mental Model</h3>
-<p>The owner should read operator as a local governance ledger for
-software work. The product matters because it turns scattered
-multi-agent activity into a recorded sequence: work is assigned as a
-task, assertions become claims, claims are supported by evidence, and
-trust changes only through verification. That is the load-bearing frame
-of the product, and it is the reason the manual keeps returning to the
-same vocabulary instead of treating this as generic ticket tracking.</p>
-<p>This chapter stays at the level of identity and boundary. The
-detailed movement of work through the ledger belongs in the lifecycle
-chapter, and the mechanics of records belong in the surfaces
-chapter.</p>
+<p>Operator Control Plane is a local-first control plane for AI coding
+work. Its center of gravity is a repository-local ledger that records
+claims, evidence, verification, and the doctor audit trail. That makes
+the product a trust record for work, not a generic workspace or hosted
+service.</p>
+<p>The roles are distinct. A builder creates claims and drafts evidence.
+A verifier establishes trusted sign-off. An administrator handles the
+enrolled authority boundary and its host prerequisites. A harness can
+run delegated or study work, but it is not a trust authority. The owner
+is the person reading this manual and deciding what the product should
+promise.</p>
+<p>The native terms matter because they mark different kinds of risk. A
+claim is the statement tied to a task. Evidence is the retained proof
+attached to that claim. Verification is the trusted status. Doctor is
+the read-only audit. UID-isolated metadata is part of the trust check
+when identity matters.</p>
 <blockquote>
-<p><strong>Figure:</strong> Continuity is not informal memory here. The
-next harness starts from recorded context, so the handoff path keeps
-work legible across role changes instead of forcing a cold restart.</p>
+<p><strong>Figure:</strong> The owner should read the repository-local
+ledger as the default path for ordinary work, with enrolled authority,
+root-only administration, and read-only snapshots kept on separate
+paths. That separation means the product is not one generic control
+surface.</p>
 </blockquote>
-<pre class="mermaid">
-sequenceDiagram
-  participant Current as Current harness
-  participant Ledger as Local ledger
-  participant Next as Next harness
-  Current->>Ledger: Record the brief and handoff
-  Current->>Ledger: Close the session
-  Ledger-->>Next: Surface the latest handoff and next action
-  Next->>Ledger: Continue from the recorded context
-</pre>
-<p>The current harness writes the brief and handoff into the local
-ledger, then closes the session. The next harness reads that recorded
-context and continues from the latest handoff and next action. The
-consequence is that work moves forward through saved records rather than
-through memory alone.</p>
+<pre class="mermaid"><code>flowchart TD
+  local[Repository-local ledger]
+  work[Everyday local work]
+  enrolled[Enrolled authority path]
+  admin[Root-only administration]
+  read[Read-only snapshot path]
+  work --&gt; local
+  local -. optional .-&gt; enrolled
+  enrolled --&gt; admin
+  local -. separate read path .-&gt; read</code></pre>
+<p>The diagram shows everyday work flowing into the repository-local
+ledger first. From that local center, one separate path leads to
+enrolled authority, another to root-only administration, and another to
+read-only snapshots. The consequence is that ordinary use should be
+treated as the default trust boundary, while privileged and
+inspection-only paths stay distinct.</p>
 <h3 id="how-it-works">How It Works</h3>
-<p>The executable surface is a fixed CLI, and the durable surface is the
-.operator/ ledger. Some write commands bind to the current task when the
-task is not passed explicitly, so the product expects there to be an
-active piece of work already in view. A new claim begins unverified and
-linked to its task; it does not become trusted just because it
-exists.</p>
-<p>Briefs and handoffs are the continuity layer between harnesses.
-Sessions, usage, and provenance records support the work, but they do
-not replace the core task-to-claim-to-evidence-to-verification sequence.
-That keeps the product centered on accountable work records rather than
-on a generic activity log.</p>
-<blockquote>
-<p><strong>Figure:</strong> Convenience comes with a dependency: if the
-task is omitted, the write falls back to the current ledger state, so
-the command is only safe when the active task is already set.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart LR
-  subgraph A[With an explicit task]
-    A1[Writer names the task]
-    A2[The write targets that task]
-    A1 --> A2
-  end
-  subgraph B[Without an explicit task]
-    B1[Writer omits the task]
-    B2[The product reads the current task]
-    B3[No active task exists]
-    B4[The write fails closed]
-    B1 --> B2 --> B4
-    B2 -. when nothing is active .-> B3 --> B4
-  end
-</pre>
-<p>With an explicit task, the writer points the command at a known
-target and the write goes there directly. Without an explicit task, the
-product tries to use the current task from the ledger; if no active task
-exists, the write stops instead of guessing. The consequence is that
-these writes depend on existing task state when the task is not
-named.</p>
+<p>By default, the product stays local. The Operator command line
+creates draft claims, keeps a verification command beside them, and
+stores evidence as retained snapshots in the repository-local ledger
+area. That is the everyday loop.</p>
+<p>If the repository is enrolled, ordinary commit requests are
+role-gated and the broker becomes the authority boundary. Root-only
+enrollment and rebind actions sit in a separate administrator surface.
+Read-only snapshot requests are handled separately from mutating
+commits, so inspection and mutation do not share the same trust
+path.</p>
+<p>Later chapters take the pieces apart one by one: the core workflow
+chapter covers the day-to-day loop, the ledger lifecycle chapter covers
+stored history and evidence governance, the authority chapter covers the
+local-versus-enrolled choice, the operations chapter covers recovery and
+host prerequisites, and the harness chapter covers delegation, studies,
+and usage accounting.</p>
 <h3 id="verified-facts">Verified Facts</h3>
 <ul>
-<li>The CLI surface is statically enumerated, not dynamically
-discovered.</li>
-<li>The first run creates the standard .operator/ structure, and
-rerunning bootstrap does not repair a tree that already exists.</li>
-<li>Several task-bound writes fall back to the current task when no task
-is supplied, and they fail closed if no active task exists.</li>
-<li>Claims start unverified, with no verifier and no evidence refs, then
-link back to the task that owns them.</li>
-<li>Briefs and handoffs are designed to carry context forward to the
-next harness.</li>
-<li>Operational writes record executor provenance, while doctor acts as
-a diagnostic check for identity and drift rather than the product’s main
-identity.</li>
+<li>The local claim path writes a draft record with verification still
+false, and evidence attachment copies local files into retained
+snapshots.</li>
+<li>Doctor fails closed on verified records when evidence references,
+the verification command, self-verification, or UID-isolated metadata
+are missing or malformed. Draft records surface the same issues as
+warnings or infos, and warning-only runs still exit cleanly.</li>
+<li>Ordinary broker commits are builder- or verifier-gated. Root-only
+enrollment and rebind are separate requests, and the administrator
+surface itself requires root and host preflight.</li>
+<li>The broker’s read-only snapshot path is separate from commit
+handling, and reconciliation does not silently adopt a replaced store.
+It needs explicit acknowledgement before it resets and retries prepared
+work.</li>
+<li>The public navigation still places the local loop first, with
+enrolled authority and secondary command families following behind
+it.</li>
 </ul>
-<blockquote>
-<p><strong>Figure:</strong> A claim does not become trusted just because
-it exists, and closeout is not final if quarantine comes later. The
-owner should treat the terminal state as reversible when that later
-signal appears.</p>
-</blockquote>
-<pre class="mermaid">
-stateDiagram-v2
-  [*] --> Unverified
-  state "Claim unverified" as Unverified
-  state "Verification gate" as Gate
-  state "Claim verified" as Verified
-  state "Task closeout" as Closed
-  state "Quarantined" as Quarantined
-  Unverified --> Gate: evidence is attached
-  Gate --> Verified: verifier accepts
-  Gate --> Unverified: verifier is missing or mismatched
-  Verified --> Closed: the task reaches closeout
-  Verified --> Quarantined: quarantine arrives earlier
-  Closed --> Quarantined: quarantine can still overwrite it
-</pre>
-<p>A claim starts unverified. When evidence is attached, it enters a
-verification gate; if the verifier is accepted, the claim becomes
-verified, and if the verifier is missing or mismatched, it stays
-unverified. When the task reaches closeout, a later quarantine can still
-overwrite that terminal state. The consequence is that trust is gated,
-and terminal status is not one-way.</p>
 <h3 id="strengths">Strengths</h3>
-<p>The strongest thing about the product is that it makes work legible
-across harnesses without asking the owner to trust memory. The
-vocabulary is consistent across the command surface and the recorded
-workflow, which makes it easier to tell whether a task is actually
-supported, merely asserted, or already verified.</p>
-<p>A second strength is that the product keeps continuity explicit.
-Briefs, handoffs, sessions, and provenance are recorded as part of the
-workflow instead of being left as informal side notes, so the ledger can
-answer what happened and who acted even when the work moved between
-roles.</p>
-<h3 id="evidence-boundary">Evidence Boundary</h3>
-<blockquote>
-<p><strong>Evidence boundary</strong> — Reviewed: - The CLI command
-surface and its fixed product vocabulary. - The local .operator/ ledger
-layout and first-run bootstrap behavior. - Task-bound writes that use
-the current task when one is not passed explicitly. - Claim creation as
-an unverified task-linked record. - Brief, handoff, session, and
-provenance behavior as the continuity layer around the core
-workflow.</p>
-</blockquote>
-<p>Not reviewed: - A live runtime .operator/ snapshot from an actual
-working workspace. - External session logs used by usage import. - Owner
-interview answers that would confirm the broader operating boundary. -
-Any workflow beyond the bounded local tool that the repository evidence
-does not prove.</p>
-<p>Recheck the manual against a fresh workspace by exercising the
-visible CLI entry points and comparing the resulting .operator/ layout
-and records with the described workflow. Confirm that first-run setup,
-repeat setup, task-bound writes, claim creation, brief and handoff
-generation, and session closeout still behave the same way. If live
-evidence shows a repair path, a broader system boundary, or different
-task-binding rules, revise the chapter boundary instead of stretching
-the current claims.</p>
-<blockquote>
-<p>Reviewed: blue-az/operator-control-plane repository snapshot,
-Founder/owner context</p>
-</blockquote>
-<blockquote>
-<p>Not reviewed: External runtime and integrations, Unreviewed runtime
-and owner context</p>
-</blockquote>
-<hr />
-<h2 id="how-work-moves-through-the-ledger">How Work Moves Through the
-Ledger</h2>
-<p><em>The product matters to the owner because it turns work into a
-governed record instead of a pile of loosely related notes. A task
-becomes a claim when an assigned harness says what it did, evidence
-supports that claim, and verification is the separate trust step that
-decides whether the claim should be treated as trusted.</em></p>
-<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
-<p>The product matters to the owner because it turns work into a
-governed record instead of a pile of loosely related notes. A task
-becomes a claim when an assigned harness says what it did, evidence
-supports that claim, and verification is the separate trust step that
-decides whether the claim should be treated as trusted. Sessions,
-briefs, and handoffs sit around that core path so the next harness can
-continue without losing context. Usage records are also governed, but
-they are secondary to the trust path and should not be mistaken for
-proof of work.</p>
-<h3 id="what-you-should-be-able-to-explain-1">What You Should Be Able To
-Explain</h3>
-<ul>
-<li>Understand the difference between a task, a claim, evidence, and
-verification.</li>
-<li>See why claims and evidence stay separate until a verifier signs
-off.</li>
-<li>Recognize which records are essential for auditability and which
-records mainly preserve continuity.</li>
-<li>Spot where the workflow can drift, downgrade, or stay ambiguous
-before it becomes a governance problem.</li>
-<li>Know which follow-on chapters handle surfaces, trust, usage, and
-operating rhythm in more detail.</li>
-</ul>
-<h3 id="mental-model-1">Mental Model</h3>
-<p>Think of the ledger as a governed work trail. The task is the
-container for work. The claim is the statement that something was done.
-Evidence is the support for that statement. Verification is the trust
-step that tells the owner whether the claim should count as trusted.
-Those are related, but they are not the same thing.</p>
-<p>The supporting records sit beside that core path. Briefs and handoffs
-are there so the next harness can pick up the work with context intact.
-Sessions capture the working period and help close it out cleanly. Usage
-records account for activity and cost. A healthy workflow makes those
-layers visible instead of blending them into one vague status
-stream.</p>
-<blockquote>
-<p><strong>Figure:</strong> The owner should read trust as a separate
-gate, not something created by the claim itself. A task can become a
-claim before it is trusted, and only evidence plus verification changes
-how that claim counts.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-  T[Task]
-  C[Claim]
-  E[Evidence]
-  V[Verification]
-  R[Trusted claim]
-  N[Still only an assertion]
-  T --> C
-  C --> E
-  E --> V
-  V --> R
-  C --- N
-</pre>
-<p>A task leads to a claim. The claim can gather evidence. Verification
-is a separate step that decides whether the claim becomes trusted. Until
-that review happens, the claim remains only an assertion about work, not
-proof.</p>
-<h3 id="how-it-works-1">How It Works</h3>
-<p>The normal sequence is straightforward: a task exists, an assigned
-harness works it, a claim records what was done, evidence supports that
-claim, and verification decides whether the claim is trusted. The owner
-should read that as a chain of responsibility, not a set of
-interchangeable statuses.</p>
-<p>A few supporting rules matter for how the chain behaves. Some writes
-follow the current active task automatically when no task is named, so
-the ledger depends on task state being correct. A new claim starts
-unverified and has no verifier until later evidence and verification are
-recorded. When claim-backed evidence is being marked with a status, the
-verification step is separate from the evidence itself, and the trust
-check is stricter in enforced mode than in single-user mode. Briefs and
-handoffs carry the latest context to the next harness, while session
-start and end frame the working period and the usage placeholder that
-belongs to it.</p>
-<blockquote>
-<p><strong>Figure:</strong> Briefs, handoffs, sessions, and usage
-records sit beside the core path to preserve continuity and accounting.
-They help the next harness continue cleanly, but they do not replace the
-proof path.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart LR
-  subgraph Core[Core trust path]
-    T[Task] --> C[Claim] --> E[Evidence] --> V[Verification]
-  end
-  subgraph Support[Supporting records]
-    B[Brief] --- H[Handoff]
-    S[Session] --- U[Usage record]
-  end
-  B -. keeps context current .-> T
-  H -. passes work to the next harness .-> T
-  S -. frames the working period .-> T
-  U -. accounts for activity and cost .-> T
-</pre>
-<p>The core path is task, claim, evidence, and verification. Around it
-sit briefs, handoffs, sessions, and usage records. Those supporting
-records keep context moving, frame the working period, and account for
-activity and cost, but they do not serve as proof of work.</p>
-<h3 id="verified-facts-1">Verified Facts</h3>
-<p>The reviewed evidence supports a few concrete behaviors that matter
-to the owner:</p>
-<ul>
-<li>Claim creation is not trust creation. A new claim begins unverified,
-with no verifier and no evidence refs, and it is linked back to its
-task.</li>
-<li>Claim-backed evidence updates only enforce the verifier rule when a
-status is being recorded on a claim. That is the protected trust path;
-it is not a blanket rule for every evidence write.</li>
-<li>Local evidence copying is best-effort. If the copy fails, the ledger
-write can still proceed, so the owner should not assume the file itself
-always landed safely just because the ledger entry exists.</li>
-<li>Doctor is a diagnostic check, not a single binary gate. It separates
-self-verification errors, reviewer mismatch warnings, and legacy records
-that lack verifier metadata.</li>
-<li>Briefs are meant to hand work to the next harness. They carry the
-latest handoff, the current task state, and the next action, and they
-tell builders to attach evidence while leaving verification to the
-review harness.</li>
-<li>Usage has two lanes. Imported usage is tied to session history,
-while direct usage intake is a separate accounting write that goes
-straight into the dated usage ledger.</li>
-<li>Executor identity is stamped on operational writes, but bootstrap is
-a known exception, and single-user mode can accept a write while still
-warning that verification is not identity-enforced.</li>
-</ul>
-<blockquote>
-<p><strong>Figure:</strong> Verified promotion is guarded by
-terminal-state checks, but quarantine still has the power to overwrite
-the parent task. That makes closeout reversible when late quarantine
-evidence arrives.</p>
-</blockquote>
-<pre class="mermaid">
-stateDiagram-v2
-  [*] --> open: work starts
-  open --> verified: review accepts the claim
-  open --> complete: work closes out
-  verified --> complete: work closes out
-  open --> quarantined: quarantine evidence arrives
-  verified --> quarantined
-  complete --> quarantined
-  note right of verified
-    Promotion only happens before the task looks terminal.
-  end note
-  note right of quarantined
-    A late quarantine can still downgrade the task.
-  end note
-</pre>
-<p>A task can move from open to verified or complete when review and
-closeout happen. Verified promotion only happens before the task looks
-terminal. If quarantine evidence arrives later, the task can still be
-moved to quarantined even after it looked finished. The owner should
-treat terminal-looking status as provisional when quarantine remains
-possible.</p>
-<h3 id="strengths-1">Strengths</h3>
-<p>The strongest part of this lifecycle is that it separates assertion,
-support, and trust. That gives the owner a cleaner audit trail than a
-simple done/not-done status. The workflow also preserves continuity: the
-next harness does not have to guess what happened, because the brief and
-handoff records carry the recent context forward.</p>
-<p>The second strength is that the ledger does not force every record
-into one bucket. Usage, session closeout, and direct handoff records
-remain visible as supporting material instead of being hidden inside the
-claim itself. That makes it easier to tell whether the workflow is
-actually trusted, merely in progress, or already drifting into a state
-that needs review.</p>
-<h3 id="evidence-boundary-1">Evidence Boundary</h3>
-<blockquote>
-<p><strong>Evidence boundary</strong> — Reviewed: - Reviewed the task,
-claim, evidence, verification, session, handoff, usage, identity, and
-bootstrap behaviors that define how work moves through the ledger. -
-Reviewed the diagnostic behavior that separates trust errors, reviewer
-mismatch warnings, and in-flight lifecycle drift. - Reviewed the
-boundary between core auditability records and supporting coordination
-records such as briefs, handoffs, sessions, and usage.</p>
-</blockquote>
-<p>Not reviewed: - No live runtime ledger snapshot was mounted, so the
-chapter stays with documented behavior rather than observed production
-state. - No external home-directory session log corpus was available for
-usage import, so source availability and exact import results remain
-runtime-unverified. - Owner-confirmed product intent was not supplied,
-so the chapter avoids broader product-framing claims beyond the reviewed
-repository evidence.</p>
-<p>Recheck the command surface, bootstrap path, claim creation, evidence
-update behavior, brief and handoff generation, session closeout, usage
-import, direct usage intake, and doctor diagnostics if the
-implementation or manual vocabulary changes. Mount a live ledger
-snapshot and the external session logs before making stronger claims
-about on-disk state or import source selection.</p>
-<blockquote>
-<p>Reviewed: blue-az/operator-control-plane repository snapshot,
-Founder/owner context</p>
-</blockquote>
-<blockquote>
-<p>Not reviewed: External runtime and integrations, Unreviewed runtime
-and owner context</p>
-</blockquote>
-<hr />
-<h2 id="the-surfaces-and-records-you-actually-operate">The Surfaces and
-Records You Actually Operate</h2>
-<p><em>This chapter gives the owner the map of what is actually
-operated: a fixed command surface and a durable local ledger. The
-important part is not the command count, but which records the product
-creates, what it expects you to inspect, and how briefs, handoffs,
-sessions, and usage move context between harnesses.</em></p>
-<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
-<p>This chapter gives the owner the map of what is actually operated: a
-fixed command surface and a durable local ledger. The important part is
-not the command count, but which records the product creates, what it
-expects you to inspect, and how briefs, handoffs, sessions, and usage
-move context between harnesses. Because no live runtime ledger snapshot
-is mounted here, this chapter stays at the documented category level
-instead of pretending to show observed live state.</p>
-<h3 id="what-you-should-be-able-to-explain-2">What You Should Be Able To
-Explain</h3>
-<ul>
-<li>Recognize that operator is a fixed CLI surface, not a loose
-script.</li>
-<li>See the local ledger as the durable record surface that matters for
-inspection and backup.</li>
-<li>Understand how briefs and handoffs move context between an assigned
-harness and a review harness.</li>
-<li>Know the main record families: tasks, claims, evidence,
-verification, sessions, usage, briefs, and handoffs.</li>
-<li>Notice where this chapter relies on documented behavior rather than
-a live runtime snapshot.</li>
-</ul>
-<h3 id="why-the-surfaces-matter">Why the Surfaces Matter</h3>
-<p>If you do not know which surfaces are real, you cannot tell what to
-inspect, what to back up, or what to review after something drifts. Here
-the product is not a single opaque script; it is a fixed CLI family plus
-a durable local ledger. That ledger is where the product remembers
-tasks, claims, evidence, verification, sessions, usage, briefs, and
-handoffs. The evidence for this chapter is bounded, and there is no live
-runtime ledger snapshot mounted here, so the safe reading is the
-documented surface, not an imagined live state.</p>
-<blockquote>
-<p><strong>Figure:</strong> The owner should treat the CLI as a fixed
-front door and the ledger as the durable record surface; first-run setup
-lays the scaffold once, but the real operating records live in the
-ledger.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart LR
-  C[Closed command surface]
-  I[First-run setup]
-  L[Durable local ledger]
-  R[Records to inspect and back up]
-  C -->|writes into| L
-  I -->|creates the ledger scaffold once| L
-  L -->|holds| R
-</pre>
-<p>The diagram shows a fixed command surface feeding a durable local
-ledger. First-run setup creates the ledger scaffold once. The ledger
-holds the records the owner inspects and backs up.</p>
-<h3 id="how-the-surface-and-ledger-fit-together">How the Surface and
-Ledger Fit Together</h3>
-<p>The command surface is a family of named entry points, and several
-write paths follow the current task automatically when the caller does
-not supply one. That makes the local ledger behave like a governed
-workspace, not a free-form note pad. First-run bootstrap creates the
-standard local ledger structure; it does not repair an already-partial
-tree. Briefs and handoffs are the native document flow between an
-assigned harness and a review harness, and the generated brief is meant
-to carry forward the latest handoff, the current state, and the next
-action. Usage has a separate path: some usage comes from imported
-session records, and some comes from direct usage intake. The direct
-path is a first-class ledger write, not a hidden side channel.</p>
-<blockquote>
-<p><strong>Figure:</strong> Context moves through recorded briefs,
-handoffs, and session transitions, while usage follows a separate intake
-path instead of being reconstructed from memory.</p>
-</blockquote>
-<pre class="mermaid">
-sequenceDiagram
-  participant A as Assigned harness
-  participant L as Local ledger
-  participant R as Review harness
-  participant U as Usage intake
-  A->>L: Add handoff details
-  L->>L: Build the brief with the latest handoff
-  L->>R: Pass the brief to the next harness
-  A->>L: Start the session
-  L->>L: Mark the task running and open usage
-  L->>U: Record usage through its own intake path
-</pre>
-<p>An assigned harness writes handoff details into the local ledger, the
-ledger builds the brief and passes it to the review harness, and the
-session marks the task running while opening usage. Usage is recorded
-through its own intake path.</p>
-<h3 id="what-the-reviewed-evidence-supports">What the Reviewed Evidence
-Supports</h3>
-<p>A task is the parent record; a claim is a tracked assertion attached
-to that task; a fresh claim starts unverified, with no verifier and no
-evidence links. Evidence can be attached to a claim, but verification is
-not the same thing as simply adding a record. The record families around
-the core lifecycle are distinct enough to matter: sessions frame
-activity, usage records account for it, and briefs and handoffs carry
-context forward. The command surface and the README use the same
-lifecycle vocabulary, which reduces the chance that the manual invents
-terms the product itself does not use.</p>
-<blockquote>
-<p><strong>Figure:</strong> The claim-based verifier gate is narrower
-than a blanket evidence rule, so a status write without a claim can
-still change the task path without passing the same check.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-  subgraph Protected path
-    C[Claim-backed evidence]
-    G[Verifier gate]
-    T[Task record]
-    C -->|status with a claim| G
-    G -->|approved write| T
-  end
-  B[Bare status evidence write]
-  B -->|skips that gate| T
-</pre>
-<p>Claim-backed evidence goes through the verifier gate before it
-changes the task record. A bare status evidence write goes straight to
-the task record without that same gate, so verification is not universal
-across every evidence write.</p>
-<h3 id="what-is-strong-here">What Is Strong Here</h3>
-<p>The strongest part of this product is the clarity of its surface. The
-ledger is local and durable, so inspection, backup, and review can
-happen on the same machine that created the records. Bootstrap is
-predictable. The command surface is fixed rather than discovered at
-runtime. The brief and handoff flow gives the next harness something
-structured instead of forcing it to reconstruct context from memory.
-Executor stamping on operational writes gives the operator a provenance
-trail for most ongoing record changes.</p>
-<blockquote>
-<p><strong>Figure:</strong> Imported usage is built for reconciliation
-and can fill an open placeholder instead of creating a fresh row, while
-direct intake writes straight to the ledger and keeps provenance simpler
-but less source-linked.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart LR
-  subgraph Imported path
-    M[Source session details]
-    I[Imported usage]
-    H[Open placeholder]
-    M -->|matches against| I -->|may hydrate| H
-  end
-  subgraph Direct path
-    D[Direct usage intake]
-    R[Usage ledger row]
-    D -->|appends directly| R
-  end
-  H -->|becomes the stored row| R
-</pre>
-<p>One path imports usage from source session details, where it can fill
-an open placeholder and rewrite that row in place. The other path adds
-usage directly to the ledger as a first-class write. The owner gets
-smoother reconciliation on the import path and a cleaner source trail on
-the direct path.</p>
-<h3 id="evidence-boundary-2">Evidence Boundary</h3>
-<blockquote>
-<p><strong>Evidence boundary</strong> — Reviewed: - The reviewed
-evidence covers a fixed command family, a local durable ledger, and the
-native record categories that the owner is expected to inspect. - It
-also covers first-run bootstrap, task-bound writes, claim creation,
-evidence and verification behavior, briefs and handoffs, usage intake
-and import, and the diagnostic checks that surface drift. - The reviewed
-material is enough to describe the documented operating surfaces, but
-not enough to pretend there is a live runtime example in this
-chapter.</p>
-</blockquote>
-<p>Not reviewed: - No live local ledger snapshot was mounted for this
-stage. - No runtime session log corpus from the host environment was
-mounted for this stage. - Owner interview answers and product-intent
-framing were not supplied for this run.</p>
-<p>Compare the current executable and documentation with a live local
-ledger snapshot and a real session log from the same environment. Then
-confirm that the command surface, bootstrap behavior, task binding,
-brief and handoff flow, usage intake, and diagnostic checks still match
-the record categories described here.</p>
-<blockquote>
-<p>Reviewed: blue-az/operator-control-plane repository snapshot,
-Founder/owner context</p>
-</blockquote>
-<blockquote>
-<p>Not reviewed: External runtime and integrations, Unreviewed runtime
-and owner context</p>
-</blockquote>
-<hr />
-<h2 id="trust-identity-and-verification">Trust, Identity, and
-Verification</h2>
-<p><em>Trust in this product is not a feeling; it is the result of
-separated roles, evidence-backed claims, and identity checks. A task
-becomes dependable only when the assigned harness has produced a claim,
-the evidence is attached, a separate verifier has confirmed it under the
-right identity rules, and doctor no longer sees integrity
-drift.</em></p>
-<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
-<p>Trust in this product is not a feeling; it is the result of separated
-roles, evidence-backed claims, and identity checks. A task becomes
-dependable only when the assigned harness has produced a claim, the
-evidence is attached, a separate verifier has confirmed it under the
-right identity rules, and doctor no longer sees integrity drift. The
-risky part is that several of these guarantees change with mode or
-command path, so the operator has to watch the boundaries, not just the
-status label.</p>
-<h3 id="what-you-should-be-able-to-explain-3">What You Should Be Able To
-Explain</h3>
-<ul>
-<li>Tell whether work is merely recorded or actually trusted.</li>
-<li>See the difference between assigned harness, review harness, and
-verifier.</li>
-<li>Understand which command paths enforce identity and which only
-warn.</li>
-<li>Spot when missing evidence, self-verification, or quarantine drift
-weakens the ledger.</li>
-<li>Decide where the product needs a stricter rule instead of another
-reminder.</li>
-</ul>
-<h3 id="mental-model-2">Mental Model</h3>
-<p>Trust is a governance layer on top of the ledger, not a synonym for
-activity. The assigned harness does the work, the review harness checks
-it, and the verifier is the identity attached when trust is written. A
-claim starts unverified, so present, supported, and trusted are
-different states. Doctor is the integrity audit that looks for
-self-verification, reviewer mismatch, missing verifier metadata, and
-session or usage drift before the ledger quietly drifts. Some of this
-trust framing comes from the command behavior itself, and some from the
-surrounding policy language that explains how those commands are meant
-to be interpreted.</p>
-<blockquote>
-<p><strong>Figure:</strong> Recording the work and trusting the work are
-different steps: the assigned harness can create the claim, but trust
-only exists after a separate review harness writes a verifier
-identity.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-A[Assigned harness does the work] --> B[Claim is recorded]
-B --> C[Review harness checks it]
-C --> D[Verifier identity is written]
-D --> E[Trusted claim]
-</pre>
-<p>The assigned harness does the work first, then a claim is recorded. A
-separate review harness checks that claim, and only after that is a
-verifier identity written. The consequence for the owner is that trust
-depends on a second role, not just on work being present in the
-ledger.</p>
-<h3 id="how-it-works-2">How It Works</h3>
-<p>The trust path is narrow on purpose. A new claim is unverified and
-carries no verifier or evidence refs. When evidence is attached to a
-claim and a status is being set, the command requires a verifier
-identity; in enforced mode it rejects unknown identities and mismatches
-before the ledger accepts trusted verification. If identity is
-configured more loosely, the command can still accept the write and
-doctor will warn rather than treat the mismatch as fully enforced. The
-generated brief is meant to hand the task to the next harness with the
-latest handoff and next action, while telling the builder to attach
-evidence and leave verification to the review harness. Sessions and
-handoffs support continuity, but they are not the same thing as trust;
-they help the next harness continue work without pretending the work has
-already been proven.</p>
-<blockquote>
-<p><strong>Figure:</strong> The same write can carry different trust
-strength: claim-backed status updates hit a hard gate in enforced mode,
-but single-user mode only warns, and bare evidence updates can bypass
-verifier checks altogether.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-A[Bare evidence with status] --> B[Status is recorded]
-A -.-> C[No verifier check]
-D[Claim-backed status write] --> E{Verifier gate}
-E -->|enforced mode| F[Stop on mismatch]
-E -->|single-user mode| G[Allow write and warn]
-</pre>
-<p>Bare evidence with status moves straight to a recorded status and is
-shown outside the verifier gate. Claim-backed status writes pass through
-a verifier gate, where enforced mode stops mismatches and single-user
-mode allows the write but records a warning. The consequence is that not
-every status update carries the same trust guarantee.</p>
-<h3 id="verified-facts-2">Verified Facts</h3>
-<p>The CLI surface is fixed rather than dynamically discovered.
-Task-bound writes fall back to the current task if no task id is
-provided and fail closed when there is no active task. Init creates the
-standard ledger layout on first run and does not repair an existing
-partial tree. Most operational writes stamp executor identity, but init
-is exempt. Claim-backed evidence updates require a verifier identity and
-can change task status to verified or quarantined. Quarantine can
-overwrite terminal task status. Usage import can match a source session
-by more than exact equality, can hydrate an existing placeholder, and
-rewrites that row in place. Direct usage intake writes a row without a
-source-session import trail. Doctor separates self-verification errors,
-reviewer mismatch warnings, and legacy no-verifier informational cases
-instead of collapsing them into one bucket.</p>
-<blockquote>
-<p><strong>Figure:</strong> Verification can move a task forward only
-before it reaches a terminal state, but quarantine can still land later
-and pull a finished task back to a quarantined state. Closeout is
-therefore reversible when integrity evidence arrives late.</p>
-</blockquote>
-<pre class="mermaid">
-stateDiagram-v2
-[*] --> Open
-Open --> Verified: review succeeds
-Verified --> Finished: task closes
-Open --> Quarantined: quarantined attach
-Verified --> Quarantined: quarantined attach
-Finished --> Quarantined: later quarantine arrives
-</pre>
-<p>A task starts open, can move to verified after review, and can then
-close. A quarantined attach can move an open, verified, or finished task
-into quarantined. The important consequence is that closeout is not
-final when a later integrity finding arrives.</p>
-<h3 id="strengths-2">Strengths</h3>
-<p>The design already gives the owner several guardrails that make trust
-legible. Role separation is explicit. Unverified claims stay untrusted
-until evidence and verification are added. Doctor does not collapse
-every irregularity into one failure bucket; it separates
-self-verification, reviewer mismatch, legacy gaps, and in-flight drift.
-Handoffs and briefs keep cross-harness continuity structured, and usage
-imports are idempotent on their provenance key instead of blindly
-duplicating records. Those are real strengths because they let the owner
-inspect trust as a set of narrow checks instead of one vague sense of
-progress.</p>
-<h3 id="evidence-boundary-3">Evidence Boundary</h3>
-<blockquote>
-<p><strong>Evidence boundary</strong> — Reviewed: - The executable CLI
-surface, including the trust-related command paths for claims, evidence,
-doctor checks, sessions, handoffs, and usage import. - The repository
-README and tests where they describe the same lifecycle vocabulary and
-the trust rules around verification and identity. - The policy and spec
-language that sits beside the executable surface where it affects how
-trust and verification are interpreted. - The ledger behaviors that
-matter to this chapter: unverified claims, identity enforcement,
-quarantine handling, executor provenance, and usage import rules.</p>
-</blockquote>
-<p>Not reviewed: - No live .operator snapshot was mounted, so this
-chapter does not claim observed live-state behavior beyond the reviewed
-material. - External session logs used by usage import were not mounted,
-so import-source availability remains runtime-unverified. - No owner
-interview answers were supplied, so the chapter stays inside repository
-evidence and does not widen the product boundary.</p>
-<p>Recheck the command inventory, claim-backed evidence verification,
-doctor classifications, identity enforcement, and usage import behavior
-whenever the CLI, policy text, or tests change. Reverify bootstrap
-behavior if first-run setup changes, and recheck quarantine handling if
-task closeout rules are edited.</p>
-<blockquote>
-<p>Reviewed: blue-az/operator-control-plane repository snapshot,
-Founder/owner context</p>
-</blockquote>
-<blockquote>
-<p>Not reviewed: External runtime and integrations, Unreviewed runtime
-and owner context</p>
-</blockquote>
-<hr />
-<h2 id="sessions-usage-and-accountability">Sessions, Usage, and
-Accountability</h2>
-<p><em>Sessions are the accountability wrapper around governed work. For
-the operator, usage is a way to explain what happened and when, not the
-product’s center. A session opens usage, writes the brief that hands the
-task to the next harness, and closes usage when the work stops. Imported
-usage can pull external session history into the ledger; direct usage
-entries remain a separate write path.</em></p>
-<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
-<p>Sessions are the accountability wrapper around governed work. For the
-operator, usage is a way to explain what happened and when, not the
-product’s center. A session opens usage, writes the brief that hands the
-task to the next harness, and closes usage when the work stops. Imported
-usage can pull external session history into the ledger; direct usage
-entries remain a separate write path. Read usage as supporting evidence,
-not as a spend dashboard.</p>
-<h3 id="what-you-should-be-able-to-explain-4">What You Should Be Able To
-Explain</h3>
-<ul>
-<li>Understand why sessions exist and why they support, rather than
-replace, the core ledger workflow.</li>
-<li>Separate imported session usage from direct usage entries and know
-why the product keeps both.</li>
-<li>See where matching rules, closeout behavior, and external logs can
-change the usage trail.</li>
-<li>Know which usage facts are verified and which still depend on
-runtime evidence that was not mounted here.</li>
-</ul>
-<h3 id="the-role-sessions-play">The role sessions play</h3>
-<p>Think of a session as the time boundary around the real work record.
-The work still lives in task, claim, evidence, and verification; the
-session only gives that work a start, a stop, and a handoff to the next
-harness. For the operator, that makes usage a supporting record, not the
-decisive record.</p>
-<h3 id="how-sessions-and-usage-move-together">How sessions and usage
-move together</h3>
-<p>Starting a session writes the brief, opens a usage placeholder, and
-marks the task running. That gives the assigned harness a clean start
-while leaving verification to the review harness. Ending a session
-closes usage, can force-close a previously closed record, and normally
-lets the task fall back to assigned once no open usage remains unless
-someone supplies an explicit final state.</p>
-<p>Imported usage is selected from external session data by more than
-one path: exact session match, a matching source reference fragment, a
-time window, overlap with the operator session, or a score-based
-fallback. Re-importing the same source is idempotent on the source
-reference, and an existing open placeholder can be filled in place
-instead of appended again. Direct usage entries are separate writes with
-caller-supplied details and no imported-session trail.</p>
-<blockquote>
-<p><strong>Figure:</strong> Session boundaries are not just timestamps:
-they open the usage wrapper, close it, and can still reshape the task’s
-ending. The important consequence for the owner is that assigned is a
-fallback, not a guarantee, and explicit closeout choices can override
-it.</p>
-</blockquote>
-<pre class="mermaid">
-stateDiagram-v2
-    [*] --> Running: session starts, brief is written, usage opens
-    Running --> Closed: session ends and usage closes
-    Closed --> Closed: force-close an already closed record
-    Closed --> Assigned: no open usage remains and no final state is supplied
-    Closed --> FinalState: an explicit final state is chosen
-    FinalState --> [*]
-</pre>
-<p>A session starts in the running state, where the brief is written and
-the usage placeholder opens. When the session ends, usage closes. If no
-open usage remains and nobody supplies a final state, the task falls
-back to assigned. If an explicit final state is chosen, that state wins
-instead. The diagram also shows that an already closed record can be
-force-closed again.</p>
-<blockquote>
-<p><strong>Figure:</strong> Import is flexible on purpose, which is
-useful when source logs are messy, but it also means the importer is
-choosing among several possible matches. The owner should read the
-result as a selected-and-merged path, not a single exact lookup.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-    A[External session log] --> B{Match the source?}
-    B -->|exact session| C[Selected external session]
-    B -->|matching source fragment| C
-    B -->|time window| C
-    B -->|session overlap| C
-    B -->|best scored fallback| C
-    C --> D{Open placeholder exists?}
-    D -->|yes| E[Fill it in place]
-    D -->|no| F[Append a new usage row]
-    E --> G[Imported usage is recorded]
-    F --> G
-</pre>
-<p>Imported usage begins with an external session log and then chooses a
-source session by one of several matching paths: exact session, matching
-source fragment, time window, session overlap, or a best-scored
-fallback. After a session is selected, the importer checks whether an
-open placeholder already exists. If it does, the importer fills that row
-in place; otherwise it appends a new usage row. The consequence is that
-import can merge into existing accounting instead of always creating a
-duplicate row.</p>
-<h3 id="what-is-actually-recorded">What is actually recorded</h3>
-<p>Most operational writes carry executor identity, which helps
-retrospective accountability, but the initial bootstrap path is a
-special case. Usage records also stay split between token-based and
-activity-based accounting, and the diagnostic check treats missing
-pricing coverage or automatic activity cost as accounting problems
-rather than hiding them.</p>
-<p>The boundary to keep in mind is that usage records are
-evidence-adjacent. They help explain what happened and when, but they do
-not replace claim verification or make imported history complete on
-their own.</p>
-<blockquote>
-<p><strong>Figure:</strong> There are two different trust paths here:
-imported usage preserves where it came from, while direct usage writes
-do not. For the owner, the consequence is that a later review can trust
-imported provenance more easily than a manual row, so the two habits
-must stay distinct.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart LR
-    ext[External session logs] --> imp[Imported usage row]
-    imp --> trail[Carries a source session trail]
-    ext -. replay-safe on the same source .-> imp
-    manual[Manual usage entry] --> direct[Direct usage row]
-    direct --> bare[No import trail]
-    manual -. bypasses import trail .-> direct
-</pre>
-<p>External session logs feed imported usage rows, and those imported
-rows carry a source session trail. Re-importing the same source is
-replay-safe on that same source. Manual usage entries follow a separate
-direct path into the ledger, creating direct usage rows that do not
-carry the import trail. The key consequence is that imported and direct
-usage should not be treated as the same kind of evidence.</p>
-<h3 id="what-this-layer-does-well">What this layer does well</h3>
-<p>The strongest part of this layer is structure. Briefs and handoffs
-carry the latest handoff, current state, and next action forward to the
-next harness instead of leaving the operator to reconstruct context from
-memory. Imported usage is replay-safe on its source reference, so
-repeated intake does not automatically duplicate accounting. That
-combination gives the owner something usable for review and continuity
-without pretending this is a spend dashboard.</p>
-<h3 id="evidence-boundary-4">Evidence Boundary</h3>
-<blockquote>
-<p><strong>Evidence boundary</strong> — Reviewed: - Reviewed only
-repository evidence, with no owner-confirmed product intent supplied for
-this run. - Reviewed the documented session start and end flow,
-including how usage opens, closes, and can shape task state at closeout.
-- Reviewed the handoff and brief behavior that carries the next harness
-forward. - Reviewed the imported-versus-direct usage split, the separate
-accounting classes, and the diagnostic checks that surface identity and
-accounting drift.</p>
-</blockquote>
-<p>Not reviewed: - No live runtime ledger snapshot was mounted, so
-active on-disk session state could not be observed here. - The external
-session logs that imported usage depends on were not mounted, so source
-availability and log-convention edge cases remain unverified.</p>
-<p>Compare the documented flow against a live ledger and representative
-source logs. Confirm that session start still opens usage and writes the
-brief, that imported usage still follows the same selection and merge
-behavior, that direct usage entries still stay separate, and that
-session closeout still falls back to assigned when open usage ends.</p>
-<blockquote>
-<p>Reviewed: blue-az/operator-control-plane repository snapshot,
-Founder/owner context</p>
-</blockquote>
-<blockquote>
-<p>Not reviewed: External runtime and integrations, Unreviewed runtime
-and owner context</p>
-</blockquote>
-<hr />
-<h2 id="running-a-multi-harness-workflow">Running a Multi-Harness
+<p>The structure protects the owner in four ways: - It keeps the
+everyday trust boundary close to the repository, which makes claims and
+evidence easier to reason about. - It separates read-only inspection
+from mutating commit paths. - It keeps recovery explicit instead of
+silent, which lowers the risk of accidentally inheriting the wrong store
+state. - It keeps study and dogfood workflows in their own lane instead
+of letting them define the product’s main identity.</p>
+<h2 id="running-the-core-ledger-workflow">Running the Core Ledger
 Workflow</h2>
-<p><em>This chapter is about continuity. The product does not just
-record isolated tasks; it keeps a local operating rhythm where an
-operator, an assigned harness, and a review harness move work forward
-through briefs, handoffs, session closeout, and usage records.</em></p>
-<h3 id="one-minute-snapshot-5">One-Minute Snapshot</h3>
-<p>This chapter is about continuity. The product does not just record
-isolated tasks; it keeps a local operating rhythm where an operator, an
-assigned harness, and a review harness move work forward through briefs,
-handoffs, session closeout, and usage records. The practical question
-for the owner is whether each handoff still points to the same task, the
-same next action, and the same trust boundary, or whether the workflow
-has drifted into overlapping sessions, mismatched status, or unclear
-accountability.</p>
-<h3 id="what-you-should-be-able-to-explain-5">What You Should Be Able To
-Explain</h3>
+<p><em>This chapter is the product’s trust loop. A builder turns work
+into a claim, attaches evidence, and a separate verifier turns that
+claim into trusted state. Doctor is the continuing check on that trust,
+not a repair tool. The owner needs to notice one sharp edge: closeout
+can be reopened if a later verifier write negates the transition
+claim.</em></p>
+<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
+<p>This chapter is the product’s trust loop. A builder turns work into a
+claim, attaches evidence, and a separate verifier turns that claim into
+trusted state. Doctor is the continuing check on that trust, not a
+repair tool. The owner needs to notice one sharp edge: closeout can be
+reopened if a later verifier write negates the transition claim. In
+enrolled mode, the ordinary builder and verifier path stays separate
+from root-only authority changes.</p>
+<h3 id="mental-model-1">Mental Model</h3>
+<p>Think of the core loop as a trust ladder. A task starts as work. A
+builder turns that work into a claim and attaches evidence. A verifier
+is a different role that can turn the claim into a trusted record.
+Doctor keeps checking whether the record still fits the rules.</p>
+<p>The key owner rule is that narration and trust are separate. A claim
+can exist before it is trusted, but verified records are held to
+stricter checks than drafts. That split lets the product keep work
+flexible without pretending it is already authoritative.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should read this as a handoff, not
+a blur: work is not trusted until it passes from builder output into
+verifier judgment, and doctor keeps checking the result afterward.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  W[Work] --&gt; B[Builder]
+  B --&gt; C[Draft claim]
+  B --&gt; E[Evidence]
+  C --&gt; V[Verifier]
+  E --&gt; V
+  V --&gt; T[Trusted record]
+  T --&gt; D[Doctor]
+  D --&gt; T</code></pre>
+<p>Work flows to the builder, which produces a draft claim and evidence.
+Those feed the verifier, which can produce a trusted record. Doctor then
+checks the trusted record and keeps feeding its result back as an
+ongoing audit rather than becoming the step that creates trust.</p>
+<h3 id="how-it-works-1">How It Works</h3>
+<p>In the default local path, the builder creates a draft claim and
+evidence stays in the local ledger. That is the everyday owner boundary
+for repo-local work.</p>
+<p>When the repository is enrolled, the ordinary path splits builder and
+verifier duties cleanly. Builders create claims and attach draft
+evidence, verifiers attach status, and task transitions to verified or
+complete only happen when the claimed task state and uid-isolated checks
+still line up. Root-only enrollment and repository rebind are separate
+privileged steps, not part of the normal loop.</p>
+<p>Doctor is read-only. On verified records it fails closed for missing
+evidence, missing verification command, self-verification, and malformed
+uid-isolated metadata. On draft records the same findings stay advisory,
+so a warning does not mean the trust boundary itself has failed.</p>
+<p>Closeout sits after verification, but it is not a permanent
+guarantee. A later negative verifier write on the transition claim can
+reopen the task and clear the closeout state. Any replay or resumable
+work belongs to the later study and recovery chapters, not to the core
+daily loop.</p>
+<blockquote>
+<p><strong>Figure:</strong> The daily loop is only one trust path.
+Keeping enrollment, rebind, and read-only snapshots separate prevents
+owner readers from treating privileged authority changes or inspections
+as ordinary workflow.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  subgraph D[Daily loop]
+    B[Builder work] --&gt; C[Claims and evidence] --&gt; V[Verification] --&gt; T[Trusted record]
+  end
+  subgraph P[Separate paths]
+    R[Root-only enrollment and rebind]
+    S[Read-only snapshots]
+  end
+  R -. separate trust path .-&gt; T
+  S -. separate trust path .-&gt; T</code></pre>
+<p>The diagram separates the daily builder/verifier loop from two other
+paths. Ordinary work goes through claims, evidence, and verification
+into a trusted record. Root-only enrollment and rebind stay in a
+separate privileged path, and read-only snapshots stay on their own
+path. The consequence is that the owner should not treat privileged
+authority changes or inspection views as part of normal workflow.</p>
+<h3 id="verified-facts-1">Verified Facts</h3>
+<p>The local path writes a draft claim with verification marked false
+and keeps the intended verification command separate from the claim
+itself.</p>
+<p>Evidence attachment in the local path keeps a retained, hashed
+snapshot instead of treating a bare status write as enough.</p>
+<p>Doctor is not a repair tool. It is an audit that returns a failure
+only when issues exist, and warnings alone do not make the run fail.</p>
+<p>In enrolled mode, ordinary builder and verifier actions are
+role-separated, while root-only enrollment and rebind are separate
+privileged requests.</p>
+<p>A negative verifier write can reopen a task that had already been
+closed.</p>
+<p>The command surface is intentionally split so the core loop is shown
+first and study, dogfood, and admin work stay secondary.</p>
+<blockquote>
+<p><strong>Figure:</strong> Draft output can warn about the same
+problems that would block a verified record, but only verified records
+are enforced. That means a warning on a draft is not proof that the
+trust boundary failed.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  P[Same problem]
+  P --&gt; D[Draft claim]
+  P --&gt; V[Verified record]
+  D --&gt; A[Warning or info]
+  V --&gt; B[Blocking failure]</code></pre>
+<p>One branch shows a draft claim: if it has missing evidence or trust
+details, doctor reports a warning or info. The other branch shows a
+verified record: the same kind of problem becomes a blocking failure.
+The consequence is that warning-only draft output should be read as
+advisory, not as a broken trust boundary.</p>
+<blockquote>
+<p><strong>Figure:</strong> A closed task is only closed while its
+transition claim remains verified. If a later negative verifier write
+lands, the closeout is withdrawn and the task can open again.</p>
+</blockquote>
+<pre class="mermaid"><code>stateDiagram-v2
+  [*] --&gt; InProgress
+  InProgress --&gt; Closed : verifier marks it done
+  Closed --&gt; InProgress : later negative verifier write
+  InProgress --&gt; Closed : verifier marks it done again</code></pre>
+<p>The lifecycle starts with work in progress. When verification
+succeeds, the task moves to closed. If a later negative verifier write
+arrives on the transition claim, the task moves back to in progress and
+closeout clears. The consequence is that closeout is provisional rather
+than permanently final.</p>
+<h3 id="strengths-1">Strengths</h3>
+<p>The product makes trust transitions visible instead of hiding them.
+The owner can distinguish a draft claim from a verified record and see
+when evidence is still only backing, not trust.</p>
+<p>Builder and verifier responsibilities are separated before trusted
+state is changed. That makes the handoff easier to reason about and
+reduces the chance that one role quietly acts as the other.</p>
+<p>Doctor keeps checking consistency after the fact instead of acting
+like a one-time acceptance step. That gives the owner a continuing
+signal when the record no longer matches the rules.</p>
+<p>The manual and command surface both lead with the core local loop
+first. That matches the product’s owner-facing shape and keeps secondary
+tooling from crowding out the real daily path.</p>
+<h2 id="governing-the-ledger-and-evidence-record">Governing the Ledger
+and Evidence Record</h2>
+<p><em>The ledger is the product’s memory: it decides what work exists,
+which evidence supports it, and what can be trusted later. In the local
+path, claim creation and evidence attachment build a retained record
+first; in enrolled mode, the broker and administrator surfaces separate
+ordinary mutations from privileged enrollment and rebind
+actions.</em></p>
+<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
+<p>The ledger is the product’s memory: it decides what work exists,
+which evidence supports it, and what can be trusted later. In the local
+path, claim creation and evidence attachment build a retained record
+first; in enrolled mode, the broker and administrator surfaces separate
+ordinary mutations from privileged enrollment and rebind actions.
+Compatibility views help the product read and reconcile state, but they
+are not the same thing as the durable history.</p>
+<p>For the owner, the important question is not just where data lives,
+but which record is canonical, which parts can be rebuilt, and which
+lifecycle choices can reopen or wedge work. That matters for
+auditability, recovery, backup, and migration decisions.</p>
+<h3 id="mental-model-2">Mental Model</h3>
+<p>Think of the ledger as the governed record of work. It is where the
+product decides what happened, what evidence supports it, and what can
+be trusted later. The durable history is the part the owner should rely
+on for audit and recovery. Compatibility projections help the product
+read or reconcile that history, but they are not the same thing as the
+history itself.</p>
+<p>Evidence attachments matter because they are provenance, not just
+storage. A claim can exist as a draft, but a draft does not carry the
+same trust weight as a verified claim. That distinction shapes
+auditability, reconciliation, and every recovery decision that depends
+on rebuilding confidence from local records.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat the append-only
+history as the record that must survive restore and audit work. The
+other surfaces help the product read or rebuild state, but they cannot
+stand in for the durable record when recovery or evidence review
+matters.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  A[Append-only ledger] --&gt; B[Canonical history]
+  A --&gt; C[Compatibility read surface]
+  A --&gt; D[Read-only snapshot]
+  B --&gt; E[Restore and audit]
+  C --&gt; E
+  D --&gt; E</code></pre>
+<p>The diagram shows one append-only ledger feeding three outcomes: the
+canonical history, a compatibility read surface, and a read-only
+snapshot. Only the canonical history is the durable record. The other
+surfaces can be rebuilt or reread, so backup and restore planning has to
+protect the history rather than only the convenient read surfaces.</p>
+<h3 id="how-it-works-2">How It Works</h3>
+<p>Locally, claim creation writes a draft record with explicit
+verification metadata, and evidence attachment stores a retained, hashed
+snapshot in the repository-local ledger. The audit step then treats
+verified records more strictly than drafts: verified items fail closed
+on missing evidence, missing verification command, self-verification, or
+malformed trusted-identity metadata, while drafts surface the same
+problems only as warnings or infos.</p>
+<p>When the repository is enrolled, the trust boundary moves to the
+broker. Ordinary commits remain role-gated: builders create claims and
+attach draft evidence, verifiers attach status, and root-only enrollment
+or rebind sits outside that ordinary matrix. Read-only snapshots are
+handled separately from mutating requests, the broker ties requests to
+the connecting peer’s operating-system identity, and privileged
+administration stays root-only and stops at host preflight until the
+machine is ready.</p>
+<blockquote>
+<p><strong>Figure:</strong> Local work can begin with a draft claim and
+retained evidence, but that is not the same authority as the broker.
+Once the boundary moves to the broker, ordinary commits, read-only
+snapshots, and privileged enrollment or rebind each follow different
+checks, so the owner should not treat them as one flat write path.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  subgraph Local[Local path]
+    A[Builder creates a draft claim]
+    B[Retained evidence snapshot]
+    A --&gt; B
+  end
+
+  subgraph Broker[Broker authority]
+    C[Ordinary commits]
+    D[Read-only snapshot]
+    E[Root-only enroll and rebind]
+    C --&gt; D
+    C --&gt; E
+  end
+
+  B --&gt; F[Broker boundary]
+  F --&gt; C</code></pre>
+<p>The diagram separates the local path from broker authority. On the
+local side, a builder creates a draft claim and stores a retained
+evidence snapshot. At the broker boundary, ordinary commits, read-only
+snapshots, and root-only enroll or rebind are handled as separate
+authority paths. The consequence is that local record creation and
+broker-controlled actions must be governed differently.</p>
+<h3 id="verified-facts-2">Verified Facts</h3>
 <ul>
-<li>Understand how briefs and handoffs carry work from one harness
-session to the next.</li>
-<li>See which actions stay bound to the current task and which ones can
-change task state across closeout.</li>
-<li>Recognize when continuity is healthy and when the ledger is drifting
-away from the work actually being done.</li>
-<li>Know where the local ledger workflow ends and where any broader
-external system would still need separate confirmation.</li>
+<li>The durable history is append-only, and projection state is treated
+as a compatibility read surface.</li>
+<li>Reconciliation does not silently adopt a replaced store; it needs an
+explicit reset acknowledgment, then it drops prepared work tied to the
+old store and resumes from the new incarnation.</li>
+<li>A later negative verifier write can reopen a task if it demotes the
+transition claim.</li>
+<li>The manual’s navigation keeps the local ledger first and demotes
+privileged and secondary workflows to later chapters.</li>
 </ul>
+<h3 id="strengths-2">Strengths</h3>
+<p>This design has a few strong governance traits. Evidence snapshots
+are retained and hashed instead of being treated as throwaway
+attachments. Ordinary commits are role-gated, while snapshot reads stay
+separate from mutating writes. The history model is append-only, and
+reconciliation refuses to paper over a store replacement. Those
+constraints give the owner a cleaner audit trail and a better chance of
+understanding what can be rebuilt versus what must be preserved.</p>
+<h2 id="when-to-use-enrolled-authority-mode">When to Use Enrolled
+Authority Mode</h2>
+<p><em>Enrolled authority mode is the optional privileged layer above
+the repo-local ledger. It matters when the owner needs a separate
+host-managed trust boundary, not just local claim and evidence tracking.
+The change is consequential. Administrators take over install,
+enrollment, rotation, revocation, repository rebind, and
+recovery.</em></p>
+<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
+<p>Enrolled authority mode is the optional privileged layer above the
+repo-local ledger. It matters when the owner needs a separate
+host-managed trust boundary, not just local claim and evidence
+tracking.</p>
+<p>The change is consequential. Administrators take over install,
+enrollment, rotation, revocation, repository rebind, and recovery. The
+broker then enforces who may mutate trusted state, read-only snapshots
+stay separate from mutating commits, and reconciliation will not quietly
+adopt a replaced store. That gives the owner stronger control, but it
+also creates a harder boundary to operate and recover.</p>
 <h3 id="mental-model-3">Mental Model</h3>
-<p>Think of this product as a governed local workflow, not a loose pile
-of notes. The operator keeps continuity, the assigned harness does the
-work, and the review harness checks it before trust changes. The
-important pattern is not just task to claim to evidence to verification,
-but the wrapper around that pattern: a brief starts the next session, a
-handoff records what changed, and the session records keep the work
-aligned with the current task.</p>
-<p>Because owner-confirmed operating context is not supplied, this
-chapter treats the workflow as a local multi-harness rhythm rather than
-a proven end-to-end external system. That means the owner should read
-every continuity rule as a local ledger rule first, and only extend it
-outward if later evidence proves a larger orchestration boundary.</p>
+<p>Treat the product as local-first with an optional privileged layer on
+top. In ordinary use, builders create claims and attach draft evidence,
+verifiers sign off, and the ledger records that work. Enrolled authority
+mode changes the trust model: administrators own the privileged
+lifecycle, and the broker becomes the gate for durable trusted-state
+changes.</p>
+<p>That is the owner decision in this chapter. If the team only needs
+local evidence tracking, the local ledger is enough. If the team needs a
+separate host-managed trust boundary with stronger role separation and
+recovery discipline, enrolled authority mode is worth the cost.</p>
 <blockquote>
-<p><strong>Figure:</strong> The handoff does not live as a loose note
-stream. It becomes a brief that carries the task, the latest handoff,
-and the next action into the next session, so continuity stays attached
-to the active task instead of drifting.</p>
+<p><strong>Figure:</strong> The owner keeps a lighter local loop until
+the team truly needs a separate host-managed boundary. After enrollment,
+privilege is no longer shared across everyone who touches the product:
+administrators own the privileged lifecycle, while the broker keeps
+trusted-state changes behind its own gate.</p>
 </blockquote>
-<pre class="mermaid">
-flowchart TD
-  A[Current task] --> B[Recorded handoff]
-  B --> C[Generated brief]
-  C --> D[Next harness session]
-  D --> E[Session start]
-  E --> F[Session end]
-  F --> A
-  C --> G[Next action]
-  E --> H[Running work stays tied to the task]
-</pre>
-<p>The diagram shows a current task feeding a recorded handoff, which is
-packaged into a generated brief for the next harness session. Session
-start and session end keep the work moving while preserving the tie back
-to the same task. The consequence is that continuity stays in the ledger
-as a structured transfer, not an informal handoff.</p>
+<pre class="mermaid"><code>flowchart TD
+  A[Repo-local ledger]
+  B[Authority enrolled]
+  C[Builder]
+  D[Verifier]
+  E[Administrator]
+  F[Broker]
+
+  A --&gt;|ordinary claim and evidence work| C
+  A --&gt;|ordinary claim and evidence work| D
+  B --&gt;|adds a privileged boundary| E
+  B --&gt;|puts trusted-state changes behind a gate| F
+  C --&gt;|draft claims and evidence| A
+  D --&gt;|verification writes| A
+  E --&gt;|owns the privileged lifecycle| B
+  F --&gt;|gates durable trusted-state changes| B</code></pre>
+<p>The diagram contrasts two operating modes. In the local mode,
+builders and verifiers work against the repo-local ledger. In the
+enrolled mode, authority is added as a separate boundary, administrators
+own the privileged lifecycle, and the broker becomes the gate for
+durable trusted-state changes. The consequence is that the team trades
+simplicity for stronger role separation and controlled recovery.</p>
 <h3 id="how-it-works-3">How It Works</h3>
-<p>The handoff path is deliberate. A handoff can come in through
-structured input, and it is stored against the task rather than floating
-as an informal note. The generated brief then packages the latest
-handoff, the current task state, and the next action so the next harness
-does not have to reconstruct context from scratch. It also tells
-builders to attach evidence and leave verification to the review
-harness, which keeps work and trust in separate lanes.</p>
-<p>Session start and session end are part of the same rhythm. Starting a
-session writes the export brief, opens usage, and marks the task
-running. Ending a session closes usage and usually returns the task to
-assigned when no open usage remains, unless an explicit status is
-supplied. That matters because task state and usage closeout are related
-but not identical, so the owner should read them as linked records, not
-one merged state.</p>
-<p>Usage import sits beside that flow as a secondary accounting path. It
-can match by more than one selector, and it can update an existing open
-placeholder instead of always appending a fresh row. Direct usage intake
-is also separate: it writes a usage record from caller-provided input
-without using the same import trail. That means accountability is real,
-but it is not all funneled through a single path.</p>
+<p>Enrollment is not a generic switch. The admin surface is root-only
+and stops until host preflight passes, so privileged actions do not
+blend into everyday product use. The client side resolves enrollment
+through a fixed registry and repository identity check, which means a
+moved or altered repository does not silently inherit authority.</p>
+<p>On the broker side, ordinary claim, evidence, and transition writes
+are role-gated, while root-only enrollment and repository rebind stay
+separate. The broker also keeps read-only snapshots apart from mutating
+commits. Reconciliation is another deliberate step: if the authority
+store has been replaced, the operator must explicitly acknowledge the
+reset before reconciliation adopts the new incarnation. The day-to-day
+claim and evidence loop stays in the core workflow chapter; host failure
+and recovery details belong in the next chapter.</p>
 <blockquote>
-<p><strong>Figure:</strong> Imported usage is forgiving and can land on
-an existing open placeholder, which makes it good for recovery but risky
-for mistaken attachment. Direct intake skips the source-session trail
-and writes a fresh ledger row, so it is simpler but less connective.</p>
+<p><strong>Figure:</strong> Privileged administration is not just
+another broker action. The owner gets a hard boundary: the root-only
+surface must clear host checks before enrollment or rebind can happen,
+and read-only snapshots remain separate from mutating commits so a
+viewer path cannot drift into a write path.</p>
 </blockquote>
-<pre class="mermaid">
-flowchart LR
-  subgraph I[Imported usage]
-    A[Source session or time window] --> B[Permissive match]
-    B --> C[Existing open placeholder]
-    C --> D[Row rewritten in place]
-  end
-  subgraph J[Direct usage intake]
-    E[Caller-provided input] --> F[Direct intake]
-    F --> G[New usage row]
-  end
-</pre>
-<p>The left side shows imported usage: the importer looks for a source
-session or time window, makes a permissive match, and can rewrite an
-existing open placeholder in place. The right side shows direct usage
-intake: caller-provided input goes straight into a new usage row. The
-consequence is that import is more flexible and can merge into existing
-accounting, while direct intake is a standalone write without the same
-source-session trail.</p>
+<pre class="mermaid"><code>flowchart TD
+  A[Root-only admin surface]
+  B[Host checks pass]
+  C[Enroll, rotate, revoke, rebind]
+  D[Broker request path]
+  E[Read-only snapshot request]
+  F[Mutating commit request]
+
+  A --&gt; B
+  B --&gt; C
+  D --&gt; E
+  D --&gt; F
+  E --&gt;|stays read-only| D
+  F --&gt;|writes trusted state| D</code></pre>
+<p>The diagram shows two separations. First, the root-only admin surface
+must pass host checks before enrollment, rotation, revocation, or
+repository rebind can proceed. Second, within the broker, read-only
+snapshot requests are handled on a separate path from mutating commit
+requests. The consequence is that privileged setup and ordinary use do
+not blend together, and read-only access cannot slip into a write.</p>
 <h3 id="verified-facts-3">Verified Facts</h3>
-<p>The workflow surface is fixed rather than open-ended: the command set
-is enumerated, and the same vocabulary appears in the manual and the
-executable surface.</p>
-<p>Several task-bound writes depend on the current task when no explicit
-task is supplied. That makes the active task record part of the
-operating state, not just a convenience.</p>
-<p>A new claim starts unverified, with no verifier and no evidence
-attached. Claim creation records that an assertion exists; it does not
-make the assertion trusted.</p>
-<p>Verification checks are not blanket checks on every evidence write.
-The trusted-status branch is gated by the presence of a claim and a
-status update, and identity enforcement can be strict or warning-only
-depending on configuration.</p>
-<p>Doctor is a diagnostic check, not a generic failure for every
-inconsistency. It separates self-verification, reviewer mismatch, legacy
-verifier gaps, and lifecycle drift so the owner can see what is broken
-versus what is merely incomplete.</p>
-<blockquote>
-<p><strong>Figure:</strong> Verification is a gated path, not a blanket
-promise over every evidence write. Even after a task appears finished,
-quarantine still has the power to pull it back and change the owner’s
-reading of completion.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-  A[New claim] --> B[Unverified claim]
-  B --> C[Claim-backed check]
-  C --> D[Trusted evidence]
-  B --> E[Evidence write without the gate]
-  D --> F[Task looks finished]
-  F --> G[Later quarantine]
-  G --> H[Task becomes quarantined]
-  E -. not the same guard .-> H
-</pre>
-<p>The diagram starts with a new claim that is still unverified. Only
-the claim-backed check leads into trusted evidence. A separate evidence
-write path is shown outside that gate. After a task looks finished, a
-later quarantine can still move it to quarantined. The consequence is
-that closeout is not one-way, and finish-like status can be
-reversed.</p>
+<ul>
+<li>Local, non-enrolled work stays in the repo-local ledger, where claim
+creation and evidence retention are separate from trusted
+verification.</li>
+<li>Verified records fail closed when evidence prerequisites or
+identity-isolation checks are broken, but draft records surface the same
+conditions only as warnings or infos.</li>
+<li>The broker’s ordinary commit paths are role-gated, and root-only
+enrollment or rebind stay outside that matrix.</li>
+<li>A later negative verifier write can reopen a task if the demoted
+claim was the transition claim.</li>
+<li>Reconciliation refuses to silently adopt a replaced store unless the
+operator explicitly acknowledges the reset.</li>
+<li>Read-only snapshots are handled separately from mutating broker
+commits, so the same boundary does not apply to both kinds of
+request.</li>
+</ul>
 <h3 id="strengths-3">Strengths</h3>
-<p>The strongest part of this design is that continuity is explicit.
-Briefs and handoffs are structured records, not casual conversation, so
-the next harness can inherit work with a real task state and a real next
-action.</p>
-<p>The second strength is separation. Work creation, review, session
-closeout, and usage accounting do not collapse into one vague status.
-That separation makes it easier for the owner to see whether the system
-is progressing, merely logging, or actually crossing a trust
-boundary.</p>
-<p>A third strength is auditability. Re-importing usage does not have to
-create duplicates, and executor provenance is stamped on operational
-writes. That gives the owner a better chance of spotting drift instead
-of guessing which session produced which record.</p>
-<h3 id="evidence-boundary-5">Evidence Boundary</h3>
+<p>The design keeps the trust boundary visible instead of hiding it.
+Local work stays light until the owner chooses to enroll authority.
+After enrollment, the product does not pretend that every request is the
+same: builders, verifiers, administrators, and the broker each have
+their own lane, the broker is locked down, and store replacement is
+explicit rather than silent.</p>
+<p>That makes it easier to audit who changed trust, not just what
+changed. It also helps the owner see where trust became durable and
+where it can still be reopened or reset.</p>
+<h2 id="operating-safely-and-recovering-cleanly">Operating Safely and
+Recovering Cleanly</h2>
+<p><em>This chapter is about what to do when the product stops being
+routine: a host fails preflight, the broker is unavailable, the
+authority store is replaced, or a run stops halfway through. The owner
+question is not whether to improvise, but which recovery path matches
+the failure that actually happened. The reviewed evidence supports a
+bounded answer.</em></p>
+<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
+<p>This chapter is about what to do when the product stops being
+routine: a host fails preflight, the broker is unavailable, the
+authority store is replaced, or a run stops halfway through. The owner
+question is not whether to improvise, but which recovery path matches
+the failure that actually happened.</p>
+<p>The reviewed evidence supports a bounded answer. Reconcile when the
+durable store or projection state has changed and the system needs
+explicit reset acknowledgement before it will adopt the new state.
+Resume when a checkpointed study or checkpointed dogfood run can
+continue on the same validated plan. Restart or re-stage when the host,
+socket, policy, or registry boundary is the thing that looks wrong.</p>
+<p>What this snapshot does not prove is just as important. It does not
+establish live rollback safety or a full external harness compatibility
+matrix, so this chapter keeps those boundaries explicit instead of
+turning them into promises.</p>
 <blockquote>
-<p><strong>Evidence boundary</strong> — Reviewed: - The command surface
-and bootstrap behavior of the local CLI, including how the ledger is
-initialized and what happens on repeat initialization. - The way work
-binds to the current task when no task is passed, and how that affects
-task creation, evidence, usage, handoff, and session actions. - The
-claim, evidence, and verification flow, including the difference between
-unverified claims, claim-backed verification, and diagnostic checks. -
-The brief and handoff flow, including how the next harness receives the
-latest handoff, current task state, and next action. - Session start and
-session end behavior, including usage placeholders, running state, and
-closeout fallback. - Usage import and direct usage intake, including
-idempotent re-import behavior, placeholder hydration, and separate
-manual usage records. - Identity and provenance stamping on operational
-writes, plus diagnostic checks that reveal drift.</p>
+<p><strong>Figure:</strong> The owner should not treat every stop the
+same way. Recovery follows the boundary that failed: trust the machine
+again, adopt the changed saved state with reconciliation, or continue a
+checkpointed run only when the validated plan still matches.</p>
 </blockquote>
-<p>Not reviewed: - A live runtime ledger snapshot under .operator, so
-the chapter does not claim to have observed active on-disk state
-directly. - External session logs that usage import searches, so the
-chapter does not claim runtime availability or completeness of those
-sources. - The owner’s preferred operating scenario and the broader
-system boundary, so the chapter does not pretend to know whether this
-repository is the whole product or one governed part of it.</p>
-<p>Recheck the command inventory, bootstrap path, task-bound writes,
-brief and handoff generation, session closeout, usage import, and doctor
-diagnostics against a fresh workspace with a live ledger and real
-session logs. If the owner clarifies the broader system, revisit the
-boundary sentence first before expanding any claims beyond the local
-workflow.</p>
+<pre class="mermaid"><code>flowchart LR
+  A[Recovery question] --&gt; H[Host or enrollment boundary failed]
+  A --&gt; S[Saved state changed]
+  A --&gt; C[Checkpointed study or dogfood run]
+  H --&gt; R1[Re-stage]
+  S --&gt; R2[Reconcile]
+  C --&gt; R3[Resume]
+</code></pre>
+<p>The figure shows one recovery question branching into three different
+answers. If the host or enrollment boundary failed, the right move is to
+re-stage. If the saved state changed underneath the product, the right
+move is to reconcile. If the run was checkpointed and the validated plan
+is still valid, the run can resume. The consequence is that owners
+should choose recovery by failure boundary, not by habit.</p>
+<h3 id="mental-model-4">Mental Model</h3>
+<p>Think about recovery in three layers. The first layer is the host and
+enrollment boundary: the product needs the right privileges, the right
+host checks, and the right registry identity before it can trust any
+privileged action. The second layer is the durable ledger and projection
+state: when that state changes underneath the product, the right move is
+to reconcile rather than to guess. The third layer is checkpointed
+execution: some study and dogfood runs can continue from a stored point,
+but only inside the cataloged plan and only with the approval and quota
+rules that the product already records.</p>
+<p>That is the practical split for an owner. If the host boundary is
+wrong, re-stage. If the durable store changed, reconcile. If a run
+stopped but the plan is still valid, resume. The earlier chapters own
+the ordinary claim and verification loop; this chapter only tells you
+what to do when the thing that failed is the boundary around that
+loop.</p>
+<h3 id="how-recovery-works">How Recovery Works</h3>
+<p>Privilege comes first. The admin surface is root-only, and enrollment
+or repository rebind does not begin until host preflight says the
+machine is ready and the active policy is in force. Enrollment lookup is
+pinned to a fixed registry path, requires absolute repository and socket
+paths, and treats a changed repository identity as an error instead of
+silently inheriting trust. The broker side is equally bounded: it uses a
+restricted Unix socket, ties requests to the connecting peer, and keeps
+the read-only snapshot path separate from mutating commit paths.</p>
+<p>That means the owner should read runbook-style guidance as the place
+for setup, enrollment, rebind, and host repair, while ordinary workflow
+guidance covers the everyday claim and evidence path. The runbook is
+where you decide whether the machine is ready to be trusted at all. The
+workflow chapters are where you decide whether a claim is verified.</p>
+<p>For state recovery, the key move is reconcile. When the authority
+store or projection layer has been replaced, the system does not
+silently adopt the new incarnation. It asks for explicit reset
+acknowledgement, resets its sequence progress, drops prepared work tied
+to the old store, and then retries prepared broker operations in an
+idempotent way. That is a bounded recovery path, not a generic repair
+mode.</p>
+<p>For resumed work, the evidence is narrower but still useful. Study
+plans are validated before execution, mutating phases need explicit
+approval, quota exhaustion is surfaced as a state, and a resume path can
+continue from a stored run id. Dogfood runs are checkpointed as well.
+These are resumable flows, but they are not proof that every external
+provider binary or every interrupted host interaction can safely
+continue in place.</p>
 <blockquote>
-<p>Reviewed: blue-az/operator-control-plane repository snapshot,
-Founder/owner context</p>
+<p><strong>Figure:</strong> Reconcile is a guarded adoption path, not a
+silent swap. The system waits for explicit acknowledgement, clears
+progress tied to the old store, and only then retries prepared work so
+the owner does not mistake a rebuilt state for a safe automatic
+takeover.</p>
 </blockquote>
+<pre class="mermaid"><code>stateDiagram-v2
+  [*] --&gt; StoreChanged: new incarnation appears
+  StoreChanged --&gt; AskReset: request explicit reset acknowledgement
+  AskReset --&gt; ResetProgress: acknowledgement given
+  ResetProgress --&gt; DropOldWork: old prepared work is discarded
+  DropOldWork --&gt; RetryBrokerWork: prepared broker work retries idempotently
+  RetryBrokerWork --&gt; [*]: recovery completes
+</code></pre>
+<p>The figure starts when a new store incarnation appears. Reconcile
+then asks for explicit reset acknowledgement. After that
+acknowledgement, the system resets sequence progress, drops prepared
+work tied to the old store, and retries prepared broker work in an
+idempotent way. The consequence is that a rebuilt authority state does
+not take effect silently; the owner has to acknowledge the reset
+first.</p>
+<h3 id="verified-facts-4">Verified Facts</h3>
+<p>Verified records are stricter than drafts. Doctor fails closed on
+missing evidence references, missing verification commands,
+self-verification, and malformed isolation metadata when the record is
+verified. Draft and unverified records surface the same issues as
+warnings or information instead, and warning-only runs still exit
+successfully. That split matters in recovery because a warning on an
+unfinished record does not mean the trust model itself is broken.</p>
+<p>The ordinary broker commit path is also role-gated. Builders can
+create claims and attach draft evidence, verifiers can attach status,
+and task transitions only happen when the current claim and task state
+still satisfy the product’s trusted checks. Root-only enrollment and
+rebind are separate request kinds, so the ordinary builder and verifier
+roles do not cover the whole authority surface.</p>
+<p>One more fact changes the recovery story: a later negative verifier
+write can reopen a task if it was the transition claim. Closeout is
+therefore not monotonic. A task that looked finished can become active
+again after later verification changes, so the owner should treat
+completion as provisional until the transition claim still holds.</p>
+<h3 id="what-looks-solid">What Looks Solid</h3>
+<p>The strongest property in this area is that the product does not blur
+its boundaries. Privileged administration is kept root-only and
+host-gated. Enrollment does not accept a casually moved registry entry.
+The broker keeps read-only snapshot access separate from mutating
+commits. Reconciliation does not silently swallow a replaced store.
+Those are all signs that the product is trying to make drift visible
+instead of hiding it.</p>
+<p>The execution side is also more disciplined than a generic retry
+loop. Study plans are catalog-validated, mutating phases require
+approval, quota exhaustion is explicit, and completed phases can be
+replayed in a controlled way. Dogfood runs are checkpointed rather than
+guessed at. And the top-level navigation still puts the local ledger
+first, which helps the owner find the everyday path before reaching for
+privileged or secondary tooling.</p>
+<h2 id="harnesses-delegation-and-study-work">Harnesses, Delegation, and
+Study Work</h2>
+<p><em>This chapter covers the extra work paths around the ledger:
+handing a run to a harness, running study plans, replaying checkpointed
+dogfood work, and doing small local A/B comparisons. The snapshot shows
+how those paths behave today, so it tells you what the product does now,
+not what you may want it to be.</em></p>
+<h3 id="one-minute-snapshot-5">One-Minute Snapshot</h3>
+<p>This chapter covers the extra work paths around the ledger: handing a
+run to a harness, running study plans, replaying checkpointed dogfood
+work, and doing small local A/B comparisons. The snapshot shows how
+those paths behave today, so it tells you what the product does now, not
+what you may want it to be. It is solid on validation, approvals, quota
+pauses, and replay checkpoints, but it does not prove a full support
+list for every external provider.</p>
+<h3 id="mental-model-5">Mental Model</h3>
+<h3 id="read-these-paths-as-evidence-scoped">Read These Paths as
+Evidence-Scoped</h3>
+<p>No owner-confirmed product intent was supplied for this run, so the
+safest way to read these workflows is as current code behavior rather
+than as proof of where the product is meant to center itself. That
+matters because this chapter is about secondary paths around the ledger:
+it describes what the system can do today, but it does not prove that
+these paths are the main story or the long-term organizing principle.
+The practical consequence for an owner is simple: use this material to
+understand present behavior and its limits, not to infer product
+strategy.</p>
+<h3 id="support-paths-not-a-new-trust-model">Support Paths, Not a New
+Trust Model</h3>
+<p>Harness and study work freeze a concrete execution shape. They make a
+run more specific by binding it to named harness profiles and explicit
+phases, and they keep the execution record orderly enough to replay or
+resume under the right conditions. That is useful because it reduces
+ambiguity about what was attempted and what was allowed to proceed. But
+this structure is support infrastructure, not a replacement for the
+ledger’s claim, evidence, and verification story. The ledger remains the
+place where trust is established; these workflows only govern how a
+delegated or experimental run is carried out around that core.</p>
+<p>A good way to picture the difference is this: the ledger answers
+whether a claim has been backed by evidence and verified, while a study
+plan answers how a particular run should unfold, in what order, and
+under what limits. If a study run pauses for approval or quota, that
+pause changes execution, not truth. If a checkpointed dogfood run
+replays completed phases, that replay helps avoid redundant work, but it
+still does not turn the run itself into the source of verification. For
+an owner, the boundary is important: these paths can make work more
+controlled and repeatable, but they do not carry the same trust meaning
+as the ledger.</p>
+<h3 id="compatibility-stays-narrow">Compatibility Stays Narrow</h3>
+<p>The reviewed evidence does not establish a full external-provider
+compatibility promise. It shows cataloged support for the harness
+profiles used by study phases, and it shows a narrow local comparison
+path, but it stops short of proving that every named external provider
+binary works in all cases. That is a real boundary, not a cosmetic one.
+Owners should therefore read support claims as bounded to the cataloged
+profiles and the observed local workflows, not as a general guarantee
+across the broader provider landscape.</p>
+<p>A concrete example: if a study plan names a supported harness
+profile, the system can reason about that run in a structured way. If
+the plan depends on some other external binary or provider setup, the
+evidence here does not let you assume it will behave the same way. The
+right mental model is that these workflows are dependable inside their
+documented lane, while the edges beyond that lane remain unproven until
+they are separately validated.</p>
 <blockquote>
-<p>Not reviewed: External runtime and integrations, Unreviewed runtime
-and owner context</p>
+<p><strong>Figure:</strong> The ledger remains the place where trust is
+established. Harnessed study work, checkpointed replay, and local
+comparison can control and repeat execution, but they stay in support
+lanes and do not gain claim-evidence-verification authority from that
+structure.</p>
 </blockquote>
-<h2 id="command-reference">Command Reference</h2>
-<p>The <code>operator</code> CLI exposes 20 subcommands across the task
+<pre class="mermaid"><code>flowchart TD
+  L[Ledger trust center]
+  H[Harnessed study run]
+  D[Checkpointed replay]
+  A[Local A/B comparison]
+  T[Trusted records]
+  H --&gt;|runs beside| L
+  D --&gt;|runs beside| L
+  A --&gt;|runs beside| L
+  L --&gt;|establishes trust| T
+  H -.-&gt;|does not establish trust on its own| T
+  D -.-&gt;|does not establish trust on its own| T
+  A -.-&gt;|does not establish trust on its own| T</code></pre>
+<p>The diagram shows a ledger trust center and three support lanes: a
+harnessed study run, a checkpointed replay, and a local A/B comparison.
+Each support lane sits beside the ledger and points back to trusted
+records only through the ledger. The consequence for an owner is that
+these workflows can organize execution, but they do not replace the
+ledger as the source of trust.</p>
+<h3 id="how-it-works-4">How It Works</h3>
+<h2 id="entry-checks">Entry Checks</h2>
+<p>Study work does not begin by trusting whatever plan text arrives. The
+plan is checked before launch, and it is rejected if it names an
+operation the catalog does not recognize, puts phases in the wrong
+order, supplies the wrong number of harness profiles, or marks a phase
+as mutating when the phase shape says it should be read only. That early
+rejection is the main mechanism that keeps a malformed study from
+consuming time as if it were valid.</p>
+<p>For an owner, the consequence is simple: a bad plan fails at the door
+instead of halfway through execution. That matters because it keeps the
+run from looking partially successful just because some later step
+happened to be runnable. The boundary is also important. This validation
+tells you whether the study is structurally acceptable; it does not say
+the external provider binaries behind every cataloged profile are
+universally compatible.</p>
+<h2 id="phase-states-and-control">Phase States and Control</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Execution path</th>
+<th>What controls entry or progress</th>
+<th>Replay or retry rule</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main study run</td>
+<td>Catalog validation, phase order checks, harness profile count
+checks, and the mutating-versus-read-only shape of each phase; mutating
+phases also wait for approval</td>
+<td>Completed phases replay idempotently; quota exhaustion pauses the
+run instead of forcing a guess</td>
+<td>Study execution with explicit phase states and cataloged harness
+profiles</td>
+</tr>
+<tr>
+<td>Checkpointed dogfood run</td>
+<td>Saved phase checkpoints plus the same approval and quota gates used
+by study execution</td>
+<td>Completed phases replay only when the saved plan fingerprint still
+matches; failed work needs an explicit quota-reset acknowledgment before
+retrying</td>
+<td>Dogfood replay with retained checkpoints</td>
+</tr>
+<tr>
+<td>Local A/B race</td>
+<td>Only two local OpenCode arms are allowed</td>
+<td>It is a local comparison only, not a broad replay path or a provider
+matrix</td>
+<td>Narrow comparison between two local arms</td>
+</tr>
+</tbody>
+</table>
+<p>The table shows the practical split: the main study path is governed
+by validation and explicit phase control, the checkpointed dogfood path
+is governed by saved checkpoints, and the local A/B path stays
+intentionally narrow. These are separate execution surfaces, not three
+names for the same thing.</p>
+<h2 id="approval-pause-resume">Approval, Pause, Resume</h2>
+<p>Once a study run is in motion, it moves through explicit phase states
+rather than a single yes-or-no launch switch. The execution layer tracks
+phases as completed, failed, waiting for quota, pending, or not started.
+Mutating phases require approval before they proceed. If quota runs out,
+the run pauses. Nothing is silently skipped, and nothing is assumed to
+have finished just because the pipeline reached a later point.</p>
+<p>That pause behavior changes what resume means. To continue, the
+operator has to acknowledge the quota reset explicitly. The same
+acknowledgment is required when a failed phase is retried in the
+checkpointed dogfood path. In practice, this means a paused run is
+visible as paused work, not as hidden debt that the system resolves on
+its own. A concrete example: a mutating study phase can wait for
+approval after earlier read-only phases have already completed; if the
+quota is then exhausted, the run stays paused until the owner resets
+quota and acknowledges that reset before retrying.</p>
+<h2 id="checkpointed-replay">Checkpointed Replay</h2>
+<p>Dogfood runs add a second layer of persistence by keeping completed
+phases in checkpoints. That checkpointed replay is not a free restart.
+The system reuses completed work only when the saved plan fingerprint
+still matches, which is the safeguard against resuming an old shape of
+work as if it were the current one. If the fingerprint no longer
+matches, the old completed phases are not treated as fresh truth.</p>
+<p>The consequence for the owner is that replay is resumable, but only
+within the same plan shape. That is useful when a long run was
+interrupted for a recoverable reason, because completed work does not
+need to be redone blindly. The boundary is equally clear: the checkpoint
+does not authorize a different plan, and retrying failed work still
+needs the same explicit quota-reset acknowledgment.</p>
+<h2 id="local-comparison">Local Comparison</h2>
+<p>The local A/B tool is deliberately smaller in scope than the other
+execution paths. It compares two local OpenCode arms only. That gives
+the owner a narrow comparison surface for local behavior, but it does
+not establish broad provider coverage and it does not turn the result
+into a general compatibility statement.</p>
+<p>A concrete way to read it is this: if you want to compare two local
+arms on the same machine, the tool is built for that. If you want
+evidence that every named provider binary behaves the same way, this
+evidence does not give you that. The comparison is useful because it
+stays bounded; its value comes from being a local race, not from
+pretending to be a full external matrix.</p>
+<blockquote>
+<p><strong>Figure:</strong> Malformed plans do not get a partial pass.
+Once a plan validates, mutating phases still wait for approval, and
+quota exhaustion turns into a visible pause that resumes only after an
+explicit reset acknowledgment.</p>
+</blockquote>
+<pre class="mermaid"><code>stateDiagram-v2
+  [*] --&gt; Planned
+  Planned --&gt; Rejected: bad plan
+  Planned --&gt; Ready: plan validates
+  Ready --&gt; Running: launch
+  Running --&gt; WaitingApproval: mutating phase
+  WaitingApproval --&gt; Running: approval granted
+  Running --&gt; Paused: quota runs out
+  Paused --&gt; Running: quota reset acknowledged
+  Running --&gt; Done: phases complete
+  Rejected --&gt; [*]
+  Done --&gt; [*]</code></pre>
+<p>The lifecycle starts with a planned study. A bad plan is rejected
+before execution begins. A valid plan becomes ready, then runs. If a
+mutating phase appears, the run waits for approval before continuing. If
+quota runs out, the run pauses and only resumes after the quota reset is
+acknowledged. When all phases finish, the run ends. The consequence for
+an owner is that failed validation, approval, and quota recovery are
+separate control points rather than hidden states.</p>
+<h3 id="verified-facts-5">Verified Facts</h3>
+<h3 id="separate-entry-points">Separate Entry Points</h3>
+<p>The snapshot shows a command surface that stays local-ledger-first
+instead of collapsing everything into one generic launcher. The core
+claim-evidence-verification-doctor loop comes first, and the admin,
+broker, study, and race paths remain separate entry points rather than
+being flattened into a single menu. That layout matters because it keeps
+the main trust story visible: the owner can tell which parts are
+ordinary workflow, which parts are privileged administration, and which
+parts are secondary harness work. For example, someone trying to run a
+study does not have to infer that they are still inside the same lane as
+the core ledger flow; the layout itself already separates those
+concerns. What this fact does not prove is broader product intent or
+runtime behavior beyond the documented ordering and command
+taxonomy.</p>
+<h3 id="harness-setup-before-hashing">Harness Setup Before Hashing</h3>
+<p>The snapshot also shows that a harness run is not treated as an
+abstract label alone. Before the plan is hashed, the setup records the
+executable path, version, arguments, role, and workspace. In practice,
+that means the run is anchored to a concrete execution shape: the same
+named harness with different arguments or a different version is not the
+same planned run, because the recorded setup changes first. For an
+owner, that is useful when comparing reports or replaying a study,
+because the recorded shape explains why two runs with the same broad
+goal may not be equivalent. A simple scenario is a study that moves from
+one binary version to another; the recorded setup captures that shift
+before the plan identity is fixed. This fact stops at the recording
+boundary, though: it does not tell us that the external tool will behave
+the same way in every environment.</p>
+<h3 id="compatibility-boundary">Compatibility Boundary</h3>
+<p>The evidence also leaves an important boundary open. The snapshot
+does not establish runtime compatibility for every named external
+provider binary. Put another way, the presence of a cataloged harness
+profile or a named provider in the materials is not the same thing as a
+proven, current promise that the binary will launch and work today. That
+boundary matters for owners because it prevents over-reading the
+snapshot as a universal support matrix. It is safe to say the system is
+organized to track harnessed study work, but not safe to claim that
+every external provider listed in the materials is runtime-verified in
+this environment. A concrete example is a study configuration that names
+multiple providers: the snapshot can show how the plan is recorded, yet
+still leave one provider’s live behavior unproven.</p>
+<blockquote>
+<p><strong>Figure:</strong> The snapshot gives owners a bounded support
+story: cataloged harness profiles and local comparison are confirmed,
+but that does not become a blanket promise that every named external
+provider binary works everywhere.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  subgraph C[Confirmed here]
+    P[Cataloged harness profiles]
+    R[Checkpointed dogfood replay]
+    L[Two local OpenCode arms]
+  end
+  subgraph U[Still unproven]
+    B[Every named external provider binary]
+    M[Full runtime compatibility matrix]
+  end
+  P --&gt;|supports study phases| R
+  L --&gt;|stays local only| R
+  P -.-&gt;|does not prove| B
+  L -.-&gt;|does not prove| M</code></pre>
+<p>The comparison has two sides. One side is what the snapshot confirms:
+cataloged harness profiles, checkpointed dogfood replay, and a local
+two-arm comparison. The other side is what stays unproven: that every
+named external provider binary works in the same way or that the product
+has a full runtime compatibility matrix. The consequence for an owner is
+that local and cataloged support should not be treated as universal
+provider proof.</p>
+<h3 id="what-is-solid-here">What Is Solid Here</h3>
+<h3 id="secondary-by-design">Secondary by Design</h3>
+<p>The strongest thing in this snapshot is the separation itself. The
+command layout keeps the core ledger path, administration, broker work,
+study runs, and local races in separate lanes, and the product is
+introduced as local-ledger-first before the enrolled authority path.
+That matters because it prevents harness work from being mistaken for
+the trust center of the product. An owner can treat delegation briefs,
+study plans, and local comparisons as supporting tools around claim,
+evidence, verification, and doctor rather than as a substitute for them.
+The boundary is important: this is a documented operating shape, not a
+promise that the secondary lanes are irrelevant in every deployment. In
+practice, it means a team can use a study run to test an alternate
+workflow without rewriting the mental model of how trusted records are
+established.</p>
+<h3 id="study-runs-are-readable">Study Runs Are Readable</h3>
+<p>Study execution is also solid because it exposes its failure modes
+instead of hiding them. Plans are rejected before launch when they name
+unknown operations, use the wrong phase order, provide the wrong number
+of harness profiles, or mix mutating and read-only phases incorrectly.
+Once a run starts, it does not treat all interruptions the same way. The
+execution path tracks whether a phase is completed, failed, waiting on
+quota, pending, or not started; mutating phases need approval; and quota
+exhaustion pauses the run instead of pretending it succeeded. The owner
+value is straightforward: you can tell whether a run is blocked by
+policy, by capacity, or by a real failure, and resume is explicit rather
+than magical. The checkpointed dogfood path reinforces that strength by
+keeping completed phases and replaying them only when the saved plan
+fingerprint still matches, with a deliberate quota-reset acknowledgment
+before failed work is retried. That keeps the rerun story honest. What
+this does not establish is universal external provider behavior; it
+shows a controlled study workflow, not a blanket compatibility
+guarantee.</p>
+<h3 id="narrow-local-comparison">Narrow Local Comparison</h3>
+<p>The local comparison tool is deliberately narrow, and that narrowness
+is a strength. It compares only two local arms and excludes broader
+frontier harnesses, so its output should be read as a local comparison,
+not as evidence that every named external provider binary behaves the
+same way. That lowers the risk of over-reading the result. An owner can
+use it to compare two local choices quickly, knowing the comparison is
+bounded and intentionally small. The limitation is the point: because
+the tool does not pretend to cover the whole provider surface, it is
+harder to mistake a useful local race for a general compatibility
+matrix. In a workflow where trust still belongs to the ledger and
+verification path, that restraint keeps the secondary tooling from
+making claims it cannot support.</p>
+<h2 id="worked-example">Worked example</h2>
+<p><strong>A runnable version of this lives at <a
+href="examples/verified-work/run.sh"><code>examples/verified-work/run.sh</code></a></strong>
+and is executed on every CI run, so it cannot quietly stop working.
+Nothing in it is stubbed: it writes a real module, runs a real
+<code>pytest</code>, then tries two things that should fail and shows
+them failing —</p>
+<ul>
+<li>editing an evidence file after attachment → <code>doctor</code>
+reports a SHA-256 mismatch and exits non-zero</li>
+<li>a builder verifying its own claim under <code>mode: enforced</code>
+→ refused before anything is written</li>
+</ul>
+<p>The snippet below is the same lifecycle written out for reading
+rather than running.</p>
+<p>The following end-to-end script demonstrates the creation and
+lifecycle of a task and claim. It shows how to initialize the local
+ledger, create a task, register a gate-bound claim, attach verifiable
+evidence (with an explicit verification command and reviewer signature),
+run the integrity doctor check, track a session’s usage metrics, and
+generate a downstream brief.</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> init                                    <span class="co"># create .operator/ ledger (run this in a fresh throwaway dir)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a couple of stand-in files so the claim&#39;s gate and evidence actually exist</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> tests/out</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&#39;def retries(n): return n &lt;= 3\ndef test_retry(): assert retries(3) and not retries(4)\n&#39;</span> <span class="op">&gt;</span> tests/test_upload.py</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">&#39;ok\n&#39;</span> <span class="op">&gt;</span> tests/out/upload.log</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># open a task</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> task-create <span class="at">--objective</span> <span class="st">&quot;Add retry to the uploader&quot;</span> <span class="at">--id</span> up-retry</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># an agent registers a typed, gate-bound claim</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> claim-add <span class="at">--task</span> up-retry <span class="at">--type</span> test_passes <span class="dt">\</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">--text</span> <span class="st">&quot;uploader retries 3x on 5xx&quot;</span> <span class="at">--gate</span> tests/test_upload.py</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># attach evidence and record an advisory verification in the default single_user mode;</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># --verify-cmd is inert audit metadata and is not executed by operator</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> evidence-attach tests/out/upload.log <span class="at">--task</span> up-retry <span class="at">--claim</span> claim-0001 <span class="dt">\</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">--type</span> test_output <span class="at">--status</span> verified <span class="at">--verified-by</span> reviewer <span class="dt">\</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">--verify-cmd</span> <span class="st">&quot;pytest -q tests/test_upload.py&quot;</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># read-only consistency check: unverified / self-verified / unverifiable-evidence claims</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> doctor</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co"># track the session + its cost, then close out with a brief for the next harness</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> session-start <span class="at">--task</span> up-retry <span class="at">--harness</span> claude   <span class="co"># opens the session, recorded as usage-0001</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> session-end usage-0001 <span class="at">--outcome</span> useful <span class="at">--cost</span> 12.50</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> handoff-add <span class="at">--task</span> up-retry <span class="at">--changed</span> <span class="st">&quot;uploader.py&quot;</span> <span class="at">--verified</span> <span class="st">&quot;retry test&quot;</span> <span class="at">--open</span> <span class="st">&quot;tune backoff&quot;</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="ex">./operator</span> export-brief <span class="at">--for</span> codex <span class="at">--task</span> up-retry</span></code></pre></div>
+<h2 id="command-reference">Command reference</h2>
+<p>The <code>operator</code> CLI exposes 23 subcommands across the task
 → claim → evidence → verification → session → usage lifecycle. Run
 <code>./operator &lt;command&gt; --help</code> for full flags.</p>
-<p><strong>Setup</strong> — <code>init</code> create the
-<code>.operator/</code> ledger in the current repo.</p>
+<p><strong>Setup</strong> — <code>init</code> creates the
+<code>.operator/</code> ledger in the current repo. Re-running it on an
+existing YAML-only ledger baselines those records into SQLite without
+changing their visible IDs or files.</p>
 <p><strong>Tasks</strong> -
 <code>task-create --objective "…" [--id ID] [--repo R] [--assign A] [--review R]</code>
 — open a task. - <code>task-show [ID]</code> — show a task’s claims,
-evidence, and status. - <code>task-list</code> — list all tasks with
-outcome summaries.</p>
+evidence, and status. - <code>task-route --task ID --review H</code> /
+<code>task-route --task ID --clear-review</code> — append an auditable
+correction to reviewer routing. - <code>task-list</code> — list all
+tasks with outcome summaries. -
+<code>decide --claim ID --decision approve|reject|defer --rationale "…"</code>
+— operator ruling on a frozen proposal claim. Records UID; does not
+require a distinct verifier UID.</p>
 <p><strong>Claims</strong> (a claim is a typed, checkable assertion
 bound to a gate) -
-<code>claim-add --type TYPE --text "…" [--task ID] [--gate GATE] [--by WHO]</code>
-— register a claim. Types:
+<code>claim-add --type TYPE --text "…" [--task ID] [--gate GATE] [--verify-cmd CMD] [--by WHO]</code>
+— register a claim. <code>--gate</code> is an artifact path;
+<code>--verify-cmd</code> is the command a verifier reruns. Types:
 <code>file_exists, test_passes, numeric_measurement, real_data, model_output,   firmware_behavior, deployment_state, supervision_credit, paper_or_report_claim</code>.
 - <code>claim-show [ID]</code> / <code>claim-list [--task ID]</code> —
 inspect claims.</p>
 <p><strong>Evidence &amp; verification</strong> (the core: a claim is
 only as good as its evidence + a different-identity sign-off) -
-<code>evidence-attach PATH_OR_URL --claim CID --type TYPE [--status {verified,false,quarantined}] [--verified-by WHO] [--verify-cmd CMD]</code>
-— attach an artifact and optionally verify the claim. Evidence types:
-<code>run_log, manifest,   database_query, test_output, git_commit, screenshot, transcript, paper_section, external_doc</code>.
-- <code>verify RUN_DIR</code> — automated audit of a run directory’s
+<code>evidence-attach PATH_OR_URL --claim CID --type TYPE [--hash SHA256] [--status {verified,false,quarantined}] [--verified-by WHO] [--verify-cmd CMD]</code>
+— attach an artifact and optionally verify the claim. Local files are
+copied into the ledger and fingerprinted with SHA-256, byte size, and
+modification time; <code>--hash</code> is an expected digest that must
+match the local bytes before any evidence write. Missing filesystem
+paths are rejected; non-file external references must use an explicit
+URI scheme. Evidence types:
+<code>run_log, manifest,   database_query, test_output, git_commit, screenshot, transcript, paper_section, external_doc,   session_crystal</code>.
+Crystal Markdown attaches via <code>crystal-attach</code> / imports via
+<code>crystal-import</code> (draft only); hook glue is
+<code>crystal-bridge</code> and
+<code>session-end --attach-crystal</code> (see
+<code>CRYSTAL_LEDGER_INTEROP_SPEC.md</code> and
+<code>CRYSTAL_SESSION_BRIDGE_SPEC.md</code>). Under enforced identity
+policy, draft attachment is a builder action and any status attachment
+is a verifier action from an OS UID distinct from the claim author. -
+<code>verify RUN_DIR</code> — automated audit of a run directory’s
 artifacts. - <code>doctor [--audit]</code> — read-only consistency check
 across the ledger: flags unverified claims,
-<strong>self-verification</strong>, and <strong>enforcement
-downgrades</strong> (a claim that would be rejected under enforced
-identity mode but is silently accepted under
-<code>single_user</code>).</p>
+<strong>self-verification</strong>, advisory verification, malformed
+UID-isolated verification, and enforcement downgrades. Fails closed
+(exit code 1) on verified/completed records if they lack required
+evidence files, target repository references, matching gate/test files,
+or valid command run hashes. It also verifies SQLite event hashes,
+compares each latest event with the corresponding YAML projection, and
+recomputes local evidence fingerprints. A changed verified source or
+retained snapshot fails closed; an unavailable original source is
+reported separately when its retained snapshot is still current. Remote
+evidence without a local snapshot is explicitly uncheckable.
+<code>doctor</code> never executes a stored
+<code>--verify-cmd</code>.</p>
 <p><strong>Sessions</strong> (track a coding session and its cost) -
 <code>session-start --harness H [--task ID] [--force]</code> -
 <code>session-end --outcome {useful,partial,no_go,quarantined,reverted,unknown} --cost N</code>
@@ -1403,16 +1437,37 @@ identity mode but is silently accepted under
 <p><strong>Usage / quota accounting</strong> -
 <code>usage-add --harness H [--model M] [--outcome …]</code> — capture a
 pasted usage snippet. -
-<code>usage-import --harness {claude,codex,gemini-agy} [--since …] [--dry-run]</code>
-— auto-ingest token/usage from harness session logs. -
-<code>usage-summary [--by-task] [--by-harness] [--by-model] [--metering]</code>
+<code>usage-import --harness {claude,codex,gemini-agy,prime-agent} [--since …] [--dry-run]</code>
+— auto-ingest token/usage from implemented harness session-log adapters.
+Other registered harnesses, including Grok, can use
+<code>session-start</code>, <code>usage-add</code>, and manual
+annotation until an adapter exists. The prime-agent adapter reads root
+session transcripts under <code>~/.prime/agent/sessions/</code>
+(read-only, format v3 only): own usage fills the shared token columns;
+the RLM subtree aggregate is kept in distinctly-named
+<code>prime_agent.subtree_*</code> fields so unlike units are never
+summed. Prime Agent is metered here without being a registered harness
+peer. -
+<code>usage-summary [--by-task] [--by-harness] [--by-model] [--by-lane] [--offload-audit] [--metering]</code>
 / <code>usage-annotate [--cost …] [--note …]</code>.</p>
 <p><strong>Briefs &amp; handoff</strong> -
 <code>brief --for H [--task ID]</code> /
 <code>export-brief --for H [--task ID]</code> — generate a
-harness-specific brief (copy-paste for the next agent). -
-<code>handoff-add [--task ID] [--changed …] [--verified …] [--claimed …] [--open …]</code>
-— record a closeout.</p>
+harness-specific brief (copy-paste for the next agent).</p>
+<p><strong>Headless delegation (all vendors with a CLI backend)</strong>
+-
+<code>./delegate-brief --task ID --brief FILE --harness {claude,codex,grok,gemini-agy,fable,openrouter} [options]</code>
+- Preserves the brief under <code>--deliver/.brief.md</code>, optional
+<code>--freeze</code> path hashes, full log + exit code. -
+<code>--record</code> writes an Operator handoff (dispatch outcome only,
+not acceptance). - Local model harness ids (<code>gemma4_local</code>,
+…) are not agent CLIs — use ollama runners separately. - Example (Codex,
+no paste):<br />
+<code>./delegate-brief --task front-e1-gold-pack --brief .operator/briefs/front-e1-gold-pack.codex.NOW.md --harness codex --cwd . --deliver evals/local_lane_ladder/fixtures/e1-gold-pack --freeze evals/local_lane_ladder/GOLD_STANDARD.md --record</code></p>
+<ul>
+<li><code>handoff-add [--task ID] [--changed …] [--verified …] [--claimed …] [--open …]</code>
+— record a closeout.</li>
+</ul>
 <h2 id="configuration">Configuration</h2>
 <p>Operator is driven by files under <code>.operator/</code> (created by
 <code>init</code>); behavior is governed by a small set of
@@ -1420,70 +1475,154 @@ product-facing config:</p>
 <ul>
 <li><p><strong><code>.operator/identity.yaml</code></strong> — the
 identity-enforcement policy:</p>
-<pre class="yaml"><code>mode: enforced          # or: single_user (advisory)
-uids:
-  1001: reviewer
-  1002: builder</code></pre>
-<p>In <code>enforced</code> mode, writes bind to the executing OS uid
-and a claim verified by the wrong identity is <strong>rejected</strong>
-(impersonation guard). In <code>single_user</code> mode the binding is
-advisory — and <code>doctor</code> warns when a claim <em>would</em> be
-rejected under enforced mode (an enforcement downgrade).</p></li>
-<li><p><strong><code>.operator/{tasks,claims,evidence,sessions}/</code></strong>
-— append-only YAML records (the ledger; gitignored).</p></li>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span><span class="kw">:</span><span class="at"> enforced</span><span class="co">          # or: single_user (advisory)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">uids</span><span class="kw">:</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">1001</span><span class="kw">:</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> builder</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">roles</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">builder</span><span class="kw">]</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">1002</span><span class="kw">:</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> reviewer</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">roles</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">verifier</span><span class="kw">]</span></span></code></pre></div>
+<p>In <code>enforced</code> mode, claim creation and draft evidence
+require the <code>builder</code> role. Status-bearing evidence requires
+the <code>verifier</code> role, a matching <code>--verified-by</code>,
+and a verifier UID distinct from the recorded claim-author UID.
+Rejections occur before artifacts or ledger records are written. A
+legacy scalar entry such as <code>1001: builder</code> remains loadable
+and grants both roles, but the distinct UID rule still prevents
+self-verification. In <code>single_user</code>, status writes remain
+available and are recorded as <code>advisory</code>, never
+<code>uid_isolated</code>.</p></li>
+<li><p><strong><code>.operator/{tasks,claims,evidence,handoffs,usage}/</code></strong>
+— current YAML projections (gitignored).</p></li>
+<li><p><strong><code>.operator/ledger.sqlite3</code></strong> —
+append-only, full-snapshot event versions for task, claim, evidence,
+handoff, and usage/session records. Session commands version their
+<code>usage-XXXX</code> record.</p></li>
 </ul>
-<p>This config is what makes the guarantees real: the gate, the
-identities, and the fail-closed verification all read from it.</p>
-<h2 id="appendix-attention-items-owner-decisions">Appendix — Attention
-Items &amp; Owner Decisions</h2>
-<p><em>The deduplicated set of caveats and open decisions Reflect
-surfaced (52 in-chapter cards collapsed to the distinct items
-below).</em></p>
+<p>SQLite is the durable audit history for CLI writes; YAML remains the
+compatibility read surface. Event versions are allocated
+transactionally, linked by per-record SHA-256 hashes, and protected from
+<code>UPDATE</code>/<code>DELETE</code> through database triggers.
+<code>doctor</code> reports divergence but does not silently repair
+either side. Because both live on the same writable disk, this improves
+local durability and auditability; it is not an off-machine backup or an
+adversarial tamper-proof boundary.</p>
+<p>The registry supplies role policy. The trusted boundary also requires
+the processes to run under genuinely distinct OS UIDs; the CLI does not
+provision those users or containers.</p>
+<h3 id="root-managed-external-policy-p3b">Root-managed external policy
+(P3b)</h3>
+<p>Issue #5 adds the separate <code>operator-admin</code> installation
+and policy lifecycle described in <a
+href="docs/specs/AUTHORITY_POLICY_SPEC.md"><code>AUTHORITY_POLICY_SPEC.md</code></a>.
+It installs the standalone broker under fixed root-controlled paths,
+creates SQLite only after dropping to the broker UID, and supports
+strict generation-one install, append-only rotation, terminal
+revocation, audit, and conservative privilege preflight.</p>
+<p>This is still not repo CLI integration. <code>operator</code> and
+existing <code>.operator</code> ledgers do not consult the external
+authority yet. The service is installed but not started or enabled, and
+real-host privilege proof remains issue #7. Initial installation must
+execute a root-owned staged copy of <code>operator-admin</code>; its
+privileged wrapper intentionally refuses a user-writable checkout.</p>
+<h2 id="appendix-attention-items-and-owner-decisions">Appendix —
+Attention Items and Owner Decisions</h2>
+<p>The deduplicated set of caveats and open decisions two Reflect scans
+surfaced. Forty in-chapter cards across the two runs collapse to the
+twenty-two distinct items below. The two scans described the same
+product in different words, so items are stated once here rather than
+twice.</p>
 <h3 id="operating-caveats-things-to-know">Operating caveats — things to
 know</h3>
-<ul>
-<li><strong>A status needs a claim.</strong>
-<code>evidence-attach --status</code> fails closed without
-<code>--claim</code> (now enforced).</li>
-<li><strong><code>init</code> creates, it doesn’t repair.</strong>
-Re-running it won’t fix a broken <code>.operator/</code>; back up and
-re-init.</li>
-<li><strong>Quarantine can reopen a finished task.</strong> A late
-quarantine overrides verified/complete — intended (late findings should
-reopen); closeout isn’t one-way.</li>
-<li><strong>Identity mode sets the guarantee.</strong>
-<code>enforced</code> = fail-closed on mismatch;
-<code>single_user</code> = warn only (<code>doctor</code> flags the
-relaxation).</li>
-<li><strong>A claim isn’t trusted at creation</strong> — it’s an
-assertion until evidence + verification land.</li>
-<li><strong>Evidence copy is best-effort</strong> — the ledger can
-record a verification even if the file copy failed; don’t assume the
-artifact is on disk.</li>
-<li><strong>Usage import is fuzzy</strong> — it matches beyond an exact
-session ID and can merge into an open row; use exact IDs for strict
-provenance.</li>
-<li><strong>Direct usage intake lacks the import provenance
-trail</strong> — first-class, but distinct from imported usage.</li>
-<li><strong>Task-bound writes use the current-task fallback</strong> —
-they depend on ledger state; pass an explicit task for high-stakes
-writes.</li>
-<li><strong>Session closeout can fall back to
-<code>assigned</code></strong> — set an explicit final state if you want
-a deterministic lifecycle.</li>
-</ul>
-<h3 id="open-owner-decisions">Open owner decisions</h3>
-<ul>
-<li>Should <code>init</code> also repair an existing ledger, or stay
-create-only? <em>(currently create-only)</em></li>
-<li>Should quarantine override a verified/complete task? <em>(currently
-yes — late findings reopen)</em></li>
-<li>Should usage import be exact-match / append-only, or stay
-permissive? <em>(currently permissive)</em></li>
-<li>Should <code>single_user</code> fail closed when an identity map is
-configured? <em>(currently warn-only)</em></li>
-<li>Should the generated brief remain the canonical handoff?
-<em>(currently yes)</em></li>
-</ul>
+<p><strong>Trusted verification needs a genuinely distinct
+verifier.</strong> Under <code>mode: enforced</code>, a verification
+only counts when the verifier’s OS uid differs from the claim author’s.
+A different harness name buys nothing. Two agents under one Unix user
+are one identity.</p>
+<p><strong>A harness name is routing, not authority.</strong>
+<code>assigned_harness</code> and <code>review_harness</code> describe
+where work goes. Neither confers the right to bless a claim.</p>
+<p><strong>Enrolled authority is a separate, root-managed
+surface.</strong> Enrollment, rotation, revocation and rebinding are
+privileged operations with host prerequisites. They are not part of the
+daily loop, and a failure there is usually a missing prerequisite rather
+than a product fault.</p>
+<p><strong>A broker receipt is not local convergence.</strong> The
+broker accepting a protected change means the change was authorized, not
+that the repository has finished reconciling.</p>
+<p><strong>Durable history is local, and projections are not
+backup.</strong> Compatibility views can be rebuilt; they do not
+reconstruct the authority store. Back up canonical history, not the
+projections derived from it.</p>
+<p><strong>Store replacement is never silent.</strong> Reconciliation
+refuses to adopt a new store incarnation without explicit
+acknowledgment. A rebuilt store can look healthier than it is, so
+rehearse the acknowledgment step before you need it.</p>
+<p><strong>Status-bearing evidence can reopen finished work.</strong>
+Attaching evidence with a status can move a task backward or out of
+trusted state. Closeout is not one-way.</p>
+<p><strong>Doctor is strict on verified records and advisory on
+drafts.</strong> A warning on draft material is not the same signal as
+an error on a verified claim. Read the level, not just the presence of
+output.</p>
+<p><strong>Doctor never executes anything.</strong> It validates paths,
+bytes and identity. A recorded <code>required_gate</code> is an artifact
+path it checks for existence; the rerunnable command lives in
+<code>verify_cmd</code> and is run by a verifier, never by doctor.</p>
+<p><strong>Study and dogfood runs have bounded recovery, not open-ended
+replay.</strong> A partial run resumes under defined rules or it does
+not resume. Neither is a general rerun queue.</p>
+<p><strong>Study runs stop for approval or quota.</strong> A paused
+study is a gate doing its job, not a failure. Someone has to resume
+it.</p>
+<p><strong>Dogfood is a privileged run.</strong> It is bound to
+installed machine paths and a release digest, with a deliberately narrow
+recovery path. Treating it as a retry button hands out a powerful
+command with less slack than people expect.</p>
+<p><strong>Harness support is proven only for cataloged
+profiles.</strong> The twelve profiles seeded at
+<code>operator init</code> are the validated set. Anything else may
+write compatible ledger records manually, but it is not a supported
+adapter.</p>
+<p><strong>Local A/B results are easy to overread.</strong> The
+comparison tool is a narrow local instrument. Its output is a
+measurement of one machine on one day, not a general benchmark.</p>
+<p><strong>Rollback and provisioning safety are not proven from source
+alone.</strong> A checkout is not a production install, and reading the
+code does not demonstrate that recovery works on a live host.</p>
+<h3 id="owner-decisions-still-open">Owner decisions — still open</h3>
+<p><strong>Stay on the local ledger, or enroll authority?</strong> The
+local path is the documented default. Enrollment buys a root-managed
+boundary and costs host prerequisites and operational surface.</p>
+<p><strong>Who owns reconciliation and store-reset
+acknowledgment?</strong> And should explicit acknowledgment be a
+first-class documented step rather than an implicit one?</p>
+<p><strong>Are study plans and phase catalogs owner-facing?</strong>
+They can be presented as supported product workflows or as
+operator-internal material. They are currently documented as both.</p>
+<p><strong>Should dogfood stay administrator-only with one acknowledged
+retry?</strong></p>
+<p><strong>Is closeout provisional until the transition claim stays
+verified?</strong></p>
+<p><strong>Should quota exhaustion pause a study for resumption, or stop
+the run outright?</strong></p>
+<p><strong>Should the local A/B tool stay a narrow local comparison
+instrument?</strong></p>
+<p><strong>Should root-only enrollment and rebind be documented as a
+separate privileged surface,</strong> rather than as advanced options
+inside the main flow?</p>
+<p><strong>Should warning-only doctor output be described as advisory
+for drafts</strong> in the owner-facing documentation, or left to the
+reader to infer from severity?</p>
+<h3 id="resolved-since-the-first-scan">Resolved since the first
+scan</h3>
+<p>Three items raised by the first scan are answered in the repository
+and no longer open: whether the local ledger or enrolled authority leads
+(the local ledger does), whether the cataloged harness profiles are the
+supported set (they are), and a caveat about generated export material
+drifting from live behavior, which applied to a previously generated
+manual that has since been removed from the tree.</p>
 </body>
 </html>

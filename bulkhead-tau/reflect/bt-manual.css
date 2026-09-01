@@ -1,0 +1,192 @@
+/* Bulkhead tau theme for Reflect owner's manuals.
+ *
+ * Reflect emits light-mode pandoc HTML. The preview page that links these
+ * manuals (bulkhead-tau/reflect.html) is dark navy, so a manual opened from it
+ * used to flip to white. This file restyles the pandoc output to that palette.
+ *
+ * Loaded via a <link> injected by scripts/theme_reflect_manuals.py in
+ * project-phoenix. A fresh Reflect scan rewrites the whole HTML and drops the
+ * link; re-run that script after any rescan. It is idempotent.
+ */
+:root {
+  --bt-bg: #0a192f;
+  --bt-panel: #112240;
+  --bt-accent: #64ffda;
+  --bt-text: #ccd6f6;
+  --bt-muted: #8892b0;
+  --bt-dim: #495670;
+  --bt-border: #233554;
+}
+
+html, body {
+  color: var(--bt-text);
+  background-color: var(--bt-bg);
+}
+body { max-width: 46em; }
+
+h1, h2, h3, h4, h5, h6 { color: var(--bt-text); }
+h1.title { color: var(--bt-accent); }
+h2 { border-bottom: 1px solid var(--bt-border); padding-bottom: 0.3rem; }
+
+a, a:visited { color: var(--bt-accent); }
+a:hover { color: var(--bt-accent); background: rgba(100, 255, 218, 0.1); }
+
+hr { border: 0; border-top: 1px solid var(--bt-border); }
+strong { color: var(--bt-text); }
+
+blockquote {
+  color: var(--bt-muted);
+  border-left: 3px solid var(--bt-accent);
+  background: var(--bt-panel);
+  padding: 0.6rem 1rem;
+  margin-left: 0;
+}
+
+#TOC, nav#TOC {
+  border: 1px solid var(--bt-border);
+  background: var(--bt-panel);
+  padding: 1rem 1rem 1rem 1.4rem;
+  border-radius: 4px;
+}
+#TOC a, nav#TOC a { color: var(--bt-muted); }
+#TOC a:hover, nav#TOC a:hover { color: var(--bt-accent); }
+
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--bt-border); padding: 0.4rem 0.6rem; }
+th { background: var(--bt-panel); color: var(--bt-text); }
+tr:nth-child(even) td { background: rgba(17, 34, 64, 0.5); }
+
+pre, code, .sourceCode {
+  background-color: var(--bt-panel);
+  color: var(--bt-text);
+}
+pre {
+  border: 1px solid var(--bt-border);
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  overflow-x: auto;
+}
+code { padding: 0.1rem 0.3rem; border-radius: 3px; }
+pre code { padding: 0; background: transparent; }
+
+/* pandoc token colours, retuned for a dark ground */
+code span.co { color: #6b7a99; font-style: italic; }  /* comment   */
+code span.kw { color: #ff7b72; }                      /* keyword   */
+code span.st { color: #a5d6ff; }                      /* string    */
+code span.fu { color: #d2a8ff; }                      /* function  */
+code span.dt { color: #79c0ff; }                      /* datatype  */
+code span.bu { color: #ffa657; }                      /* builtin   */
+code span.at { color: #7ee787; }                      /* attribute */
+code span.va { color: #ffa657; }                      /* variable  */
+code span.dv, code span.fl { color: #79c0ff; }        /* numbers   */
+code span.op, code span.ex { color: var(--bt-text); }
+code span.er { color: #ff7b72; }
+
+/* Diagrams. Before bt-manual.js runs these hold raw mermaid source and should
+ * read as a code block; once rendered they hold an SVG and should not. */
+pre.mermaid { color: var(--bt-muted); }
+pre.mermaid[data-processed="true"] {
+  background: transparent;
+  border: 1px solid var(--bt-border);
+  text-align: center;
+  padding: 1rem;
+}
+pre.mermaid[data-processed="true"] svg { max-width: 100%; height: auto; }
+
+/* Subgraph clusters. Mermaid injects per-diagram <style> into each SVG and
+ * alternates nested cluster fills, so some came through as its default cream
+ * (#ffffde) on navy even with altBackground set. Pinned here because the
+ * injected styles are more specific than the theme variables that produced
+ * them; nesting is shown by border rather than by alternating fill. */
+pre.mermaid[data-processed="true"] .cluster rect,
+pre.mermaid[data-processed="true"] rect.cluster {
+  fill: rgba(17, 34, 64, 0.55) !important;
+  stroke: var(--bt-border) !important;
+}
+pre.mermaid[data-processed="true"] .cluster-label,
+pre.mermaid[data-processed="true"] .clusterLabel {
+  color: var(--bt-muted);
+  fill: var(--bt-muted);
+}
+
+/* Nodes, edges and labels. Same reason as clusters: mermaid's per-diagram
+ * injected <style> is more specific than the theme variables, so flowchart
+ * node containers kept mermaid's default lavender (#ECECFF) and note yellow
+ * (#fff5ad). Pinned rather than fought through themeVariables. */
+pre.mermaid[data-processed="true"] .node rect,
+pre.mermaid[data-processed="true"] .node polygon,
+pre.mermaid[data-processed="true"] .node circle,
+pre.mermaid[data-processed="true"] .node ellipse,
+pre.mermaid[data-processed="true"] .node path,
+pre.mermaid[data-processed="true"] rect.basic {
+  fill: var(--bt-panel) !important;
+  stroke: var(--bt-accent) !important;
+}
+pre.mermaid[data-processed="true"] .label rect,
+pre.mermaid[data-processed="true"] .labelBkg,
+pre.mermaid[data-processed="true"] .edgeLabel rect {
+  fill: transparent !important;
+  background: transparent !important;
+}
+pre.mermaid[data-processed="true"] .nodeLabel,
+pre.mermaid[data-processed="true"] .edgeLabel,
+pre.mermaid[data-processed="true"] .label,
+pre.mermaid[data-processed="true"] text,
+pre.mermaid[data-processed="true"] span.nodeLabel {
+  color: var(--bt-text) !important;
+  fill: var(--bt-text) !important;
+}
+pre.mermaid[data-processed="true"] .edgeLabel {
+  background-color: var(--bt-bg) !important;
+}
+pre.mermaid[data-processed="true"] .edgePath path,
+pre.mermaid[data-processed="true"] .flowchart-link,
+pre.mermaid[data-processed="true"] .transition,
+pre.mermaid[data-processed="true"] line {
+  stroke: var(--bt-muted) !important;
+}
+pre.mermaid[data-processed="true"] marker path,
+pre.mermaid[data-processed="true"] .arrowheadPath {
+  fill: var(--bt-muted) !important;
+  stroke: var(--bt-muted) !important;
+}
+/* state diagrams: note bodies and start/end markers */
+pre.mermaid[data-processed="true"] .note,
+pre.mermaid[data-processed="true"] rect.note {
+  fill: var(--bt-panel) !important;
+  stroke: var(--bt-border) !important;
+}
+
+/* sequence diagrams: actor boxes, lifelines and loop label boxes */
+pre.mermaid[data-processed="true"] rect.actor,
+pre.mermaid[data-processed="true"] .actor,
+pre.mermaid[data-processed="true"] polygon.labelBox {
+  fill: var(--bt-panel) !important;
+  stroke: var(--bt-accent) !important;
+}
+pre.mermaid[data-processed="true"] .actor-line,
+pre.mermaid[data-processed="true"] .loopLine {
+  stroke: var(--bt-border) !important;
+}
+pre.mermaid[data-processed="true"] .messageText,
+pre.mermaid[data-processed="true"] .loopText,
+pre.mermaid[data-processed="true"] .loopText tspan,
+pre.mermaid[data-processed="true"] .labelText,
+pre.mermaid[data-processed="true"] .noteText,
+pre.mermaid[data-processed="true"] .noteText tspan,
+pre.mermaid[data-processed="true"] .sequenceNumber {
+  fill: var(--bt-text) !important;
+  stroke: none !important;
+}
+pre.mermaid[data-processed="true"] .messageLine0,
+pre.mermaid[data-processed="true"] .messageLine1 {
+  stroke: var(--bt-muted) !important;
+}
+
+/* keep print light: ink on paper, not navy on paper */
+@media print {
+  html, body { background-color: #fff; color: #000; }
+  a, a:visited, h1.title { color: #000; }
+  pre, code, .sourceCode, th, blockquote { background: transparent; color: #000; }
+  pre.mermaid[data-processed="true"] { border-color: #999; }
+}

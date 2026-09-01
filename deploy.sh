@@ -62,7 +62,11 @@ rsync_push() {
     local src="$1"
     local dest="$2"
     echo "[*] Syncing $src → $USER@$HOST:$dest"
+    # _archive/ is kept locally and never published: superseded copies of a page
+    # (an earlier Reflect scan, say) belong next to the current one for
+    # reference, but only the current one should be on the site.
     rsync -avz \
+        --exclude '_archive/' \
         -e "ssh -p $PORT ${SSH_IDENTITY_OPTS[*]} -o BatchMode=yes -o ControlMaster=no -o ControlPath=$CONTROL_SOCKET" \
         "$src" "$USER@$HOST:$dest"
 }
