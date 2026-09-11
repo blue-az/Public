@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Lane | Local benchmark program | Bulkhead τ</title>
+    <meta name="description" content="What two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026: task wall clock over decode speed, context and placement, the quality ceiling, a tool-grounded consultant bench, and what reasoning effort costs.">
+    <link rel="stylesheet" href="../../bulkhead-tau/style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Benchmark program · rewritten 11 Sep 2026</span>
+            <h1>Local Lane</h1>
+            <p class="subtitle">What two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026, and what the instrument got wrong along the way.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="../../bulkhead-tau/index.html">Home</a>
+            <a href="../../papers/">Research Papers</a>
+            <a href="../../bulkhead-tau/index.html#engine-room">Tau-Bench</a>
+            <a href="../../sensor-simulation/">Simulation Lab</a>
+            <a href="../../local-llm-tsp/">Benchmarks</a>
+            <a href="../../bulkhead-tau/demos.html">Demos</a>
+            <a href="../../bulkhead-tau/reflect.html">Reflect</a>
+            <a class="active" href="./">Local Lane</a>
+            <a href="../layers/">MoE or not</a>
+            <a href="qwen38/">3.6 vs 3.8</a>
+            <a href="../instrument-log/">Instrument Log</a>
+        </nav>
+
+        <div class="pullquote">
+            <p>Measure quality once per model and speed once per machine. Neither one is decode tok/s.</p>
+        </div>
+
+        <section class="section">
+            <h2>What this is</h2>
+            <p>I benchmark the three chips I have:</p>
+            <ul>
+                <li><strong>RTX 3090, 24 GB</strong>, two of them in the desktop (i9-9900KF), power capped at 320 W.</li>
+                <li><strong>RTX 2080, 8 GB</strong>, in a headless test bench (i3-9100F, 15 GB RAM, Debian 12).</li>
+                <li><strong>Ryzen AI MAX 390</strong> with Radeon 8050S and 27 GB of unified memory, in a Flow Z13, running Vulkan rather than ROCm.</li>
+            </ul>
+            <p>Every figure below comes from a committed run in my evaluation tree, and each one carries its run date, sample size and configuration. Where a number was later found to be wrong, the correction is stated rather than the number quietly replaced.</p>
+            <p><strong>The measurement standard, as of 8 Sep.</strong> Models run as shipped. Only context length, temperature, thinking (off), the prompt and the probe length are pinned. Speed means measured task wall clock under a realistic prompt, not decode rate on an empty cache. So a ranking here is a ranking of each model at its shipped defaults, not of the model at its best.</p>
+            <p><strong>The seat is <code>qwen3.6:35b</code>.</strong> I pick the seat from interactive use. The ranking informs that choice, it does not make it.</p>
+            <p>An earlier version of this page ranked the two chips by decode rate. It is archived in the site repository, and the sections below explain which of its numbers were wrong and why.</p>
+        </section>
+
+        <section class="section">
+            <h2>The ranking</h2>
+            <p>One table, all three chips. Speed is measured task wall clock on two E9 fixtures, the mean of the warm trials with the first of each run discarded, normalised to <code>gemma4:26b</code> on the RTX 3090 = 1.00. Quality is the clean L2 pass count. Configuration: <code>num_ctx</code> 16384, temperature 0.8, thinking off, ollama 0.32.12 except the MAX 390 at 0.32.13.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>#</th><th>Chip</th><th>Model</th><th>Arch</th><th>short task s</th><th>long task s</th><th>Speed</th><th>L2 clean</th></tr></thead>
+                    <tbody>
+                    <tr><td>1</td><td>RTX 3090</td><td><code>qwen3.6:35b</code> (seat)</td><td>MoE</td><td>8.8</td><td>15.6</td><td><strong>1.99</strong></td><td>51/51</td></tr>
+                    <tr><td>2=</td><td>RTX 3090</td><td><code>gemma4:26b</code></td><td>MoE</td><td>13.0</td><td>38.9</td><td>1.00</td><td>149/178</td></tr>
+                    <tr><td>2=</td><td>RTX 3090</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>18.1</td><td>32.4</td><td>0.96</td><td>63/63</td></tr>
+                    <tr><td>4</td><td>MAX 390</td><td><code>qwen3.6:35b</code></td><td>MoE</td><td>27.3</td><td>40.6</td><td>0.72</td><td>18/18</td></tr>
+                    <tr><td>5</td><td>RTX 3090</td><td><code>gpt-oss:120b</code></td><td>MoE</td><td>31.1</td><td>53.4</td><td>0.57</td><td>60/60</td></tr>
+                    <tr><td>6=</td><td>MAX 390</td><td><code>gemma4:26b</code></td><td>MoE</td><td>26.3</td><td>132.4</td><td>0.39</td><td>16/18</td></tr>
+                    <tr><td>6=</td><td>MAX 390</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>35.3</td><td>96.8</td><td>0.39</td><td>18/18</td></tr>
+                    <tr><td>8</td><td>RTX 3090</td><td><code>gemma4:31b</code></td><td>dense</td><td>36.4</td><td>128.4</td><td>0.33</td><td>28/33</td></tr>
+                    <tr><td>9</td><td>RTX 2080</td><td><code>gemma4:26b</code></td><td>MoE</td><td>41.3</td><td>171.6</td><td>0.27 (0.23 to 0.31)</td><td>15/15</td></tr>
+                    <tr><td>10</td><td>RTX 3090</td><td><code>qwen3-next</code></td><td>MoE</td><td>92.0</td><td>325.7</td><td>0.13</td><td>19/22</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Ten is the whole list, not a cut from a longer one.</strong> Six models have wall clock in the corrected configuration on the RTX 3090, three on the MAX 390 and one on the RTX 2080, which comes to ten. Several further models have quality data but no wall clock under the corrected protocol, so they cannot be placed here at all. The ranking grows when those are re-run, not when the cutoff is moved.</p>
+            <p>Rows 2 and 3 are joint second. Bootstrapping the RTX 3090 ranking over warm trials and pass counts puts <code>qwen3.8:27b</code> ahead of <code>gemma4:26b</code> in only 79.1% of draws, which is not separable. Every other adjacent pair on that chip is ordered at 98.7% or better, and <code>qwen3.6:35b</code> takes first in every draw.</p>
+            <p><strong>The RTX 2080 row is the weakest evidence in the table.</strong> That fixture ran three trials rather than four, so its warm mean rests on n=2 where every other row has n=3, and its long task was still falling across those two trials, 218.6 s then 124.5 s. Its two per-task ratios spread from 0.23 to 0.31, wider than the gap between several adjacent rows above it. Read the row as placing the card in this neighbourhood, not as fixing it at 0.27, and note the direction: with the long task still coming down, 0.27 more likely understates the card than flatters it. It is also the only roster member that fits the 8 GB card comfortably, so there is no second 2080 row to check it against.</p>
+            <p><strong>The quality column is not poolable across chips.</strong> The RTX 3090 counts accumulate over the seat corpus, the MAX 390 figures are an 18-cell floor battery, and the RTX 2080 is 15 cells at n=3 over five tasks. The denominators are printed because they are not interchangeable, and a rate computed across them would be arithmetic rather than a measurement.</p>
+            <p>Quality does not carry this ordering. Five of the ten rows sit at exactly 100%, so the order comes from speed. Finding a repeatable quality differentiator is open, and more trials cannot fix a ceiling.</p>
+        </section>
+
+        <section class="section">
+            <h2>Decode speed does not predict finishing</h2>
+            <p>Five models, two E9 tasks, n=2 each, dual RTX 3090, 5 Sep.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Model</th><th>decode tok/s</th><th>task wall clock s</th><th>output tokens</th><th>tool calls</th></tr></thead>
+                    <tbody>
+                    <tr><td><code>qwen3.8:27b</code></td><td>73.8</td><td>28.8</td><td>788</td><td>4.8</td></tr>
+                    <tr><td><code>qwen3.6:35b</code></td><td>126.6</td><td>29.0</td><td>1,380</td><td>7.0</td></tr>
+                    <tr><td><code>gemma4:26b</code></td><td><strong>214.1</strong></td><td>34.7</td><td>3,366</td><td>5.8</td></tr>
+                    <tr><td><code>gpt-oss:120b</code></td><td>35.1</td><td>91.4</td><td>921</td><td>6.2</td></tr>
+                    <tr><td><code>gemma4:31b</code></td><td>34.8</td><td>117.1</td><td>2,715</td><td>4.8</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>The fastest decoder is not the fastest finisher. <code>gemma4:26b</code> decodes 2.9x faster than <code>qwen3.8:27b</code> and finishes later, because it writes four times the output tokens. That is why the standard moved from decode rate to task wall clock. One correction to this run: its wall clock included about 4.5 s per trial of ledger bookkeeping, since removed. The ranking above is re-measured without it.</p>
+            <p>Decode rate also depends on the prompt. The same probe under a ~12.8k-token prompt, the loaded condition that matches my actual use, shows every model losing throughput, but by very different amounts:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Model</th><th>decode, 121-token prompt</th><th>decode, ~12.8k-token prompt</th><th>change</th></tr></thead>
+                    <tbody>
+                    <tr><td><code>gemma4:26b</code></td><td>226</td><td>170.1</td><td>-25%</td></tr>
+                    <tr><td><code>qwen3.8:27b</code></td><td>78.1</td><td>62.3</td><td>-21%</td></tr>
+                    <tr><td><code>gemma4:31b</code></td><td>37.7</td><td>33.8</td><td>-11%</td></tr>
+                    <tr><td><code>qwen3.6:35b</code></td><td>130.0</td><td>127.7</td><td>-2%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Because the gap is model-dependent there is no conversion factor between the two. A decode figure means nothing without the prompt length it was measured under.</p>
+        </section>
+
+        <section class="section">
+            <h2>Across machines</h2>
+            <p>The rows above interleave three chips on purpose. What they show when read by machine rather than by rank:</p>
+            <p><strong>Quality rank transfers between chips. Speed rank does not.</strong> Both the desktop and the MAX 390 put <code>qwen3.6:35b</code> and <code>qwen3.8:27b</code> at ceiling with <code>gemma4:26b</code> below. There is no single chip multiplier either. The MAX 390 penalty runs from 1.95x to 3.40x against the same model on the RTX 3090 and reverses between tasks, so any single "N times slower" figure for this chip is wrong. That is also why the MAX 390's fastest model on the short task is not its fastest overall: <code>gemma4:26b</code> reads the prompt quicker than the seat and then loses three times the ground on the long one.</p>
+            <p>Stated confound: the MAX 390 ran ollama 0.32.13 against the desktop's 0.32.12. That affects cross-chip magnitudes, not ordering within a chip. MAX 390 quality is 18 cells per model, shown as a rate. Its numbers also depend on power state, so write the power state down or throw the number out.</p>
+            <p>A headless test bench with an 8 GB RTX 2080 reproduces the desktop's correctness (15/15 against the desktop's 28/30 on the same tasks) at 3.8x the wall clock, 141.1 s against 37.1 s. And capping VRAM on the 3090 is a good stand-in for a smaller card: a simulated 8 GB envelope ran <code>gemma4:26b</code> at 31.55 tok/s against a real 2080's 31.02, 1.7% apart.</p>
+            <p>What the 8 GB card can hold decides everything else about it. Same probe, <code>num_ctx</code> 16384, ollama 0.32.12:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Model</th><th>Class</th><th>Layers on the 8 GB card</th><th>VRAM used</th><th>decode tok/s</th><th>same probe, RTX 3090</th></tr></thead>
+                    <tbody>
+                    <tr><td><code>gemma4:26b</code></td><td>MoE</td><td>31 of 31</td><td>7,416 MiB</td><td>31.02</td><td>226</td></tr>
+                    <tr><td><code>qwen3.8:27b</code></td><td>dense</td><td>16 of 66</td><td>6,438 MiB</td><td>3.80</td><td>74 to 77</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>The dense model is the smaller file and runs 8.2x slower, because only 24% of its layers fit. That makes the bench an MoE-only host, and it is why functional testing moves there while anything about memory stays on the desktop.</p>
+        </section>
+
+        <section class="section">
+            <h2>Memory, context and placement</h2>
+            <p><strong>Pin <code>num_ctx</code>.</strong> <code>gemma4:26b</code> ships with a default context of 262,144 tokens. Unpinned, its cache takes it from 19.7 GB to 39.3 GB and splits it across both cards, and decode drops from 214.4 to 139.9 tok/s (n=6 interleaved, ranges do not overlap). The 35% loss was the oversized cache, not the split.</p>
+            <p><strong>Splitting a model across two cards costs almost nothing when it fits on one.</strong> With context pinned, moving four models between one card and two changed decode by -4.7% to +9.3%, and under a realistic prompt by -8.0% to +6.7%. Decode walks the layers in order, so the two cards never work at once, and what crosses between them per token is tiny. What splitting does cost is about 1.4 GB of VRAM.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Model</th><th>solo tok/s</th><th>dual tok/s</th><th>decode</th><th>solo prefill</th><th>dual prefill</th></tr></thead>
+                    <tbody>
+                    <tr><td><code>gemma4:26b</code> (control, one card either way)</td><td>171.3</td><td>170.1</td><td>+0.7%</td><td>3.5 s</td><td>3.5 s</td></tr>
+                    <tr><td><code>qwen3.6:35b</code></td><td>132.7</td><td>124.4</td><td>+6.7%</td><td>4.8 s</td><td><strong>3.9 s</strong></td></tr>
+                    <tr><td><code>qwen3.8:27b</code></td><td>56.4</td><td>61.3</td><td>-8.0%</td><td>11.1 s</td><td>11.0 s</td></tr>
+                    <tr><td><code>gemma4:31b</code></td><td>33.7</td><td>33.8</td><td>-0.3%</td><td>14.2 s</td><td><strong>8.5 s</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>The exception is prefill. Two of four models read their prompt much faster on two cards, <code>gemma4:31b</code> by 40% and <code>qwen3.6:35b</code> by 19%. I do not know why. My first explanation, that they were short of headroom on one card, was tested the same evening and did not hold.</p>
+            <p><strong>Where the second card earns its place.</strong> At a configured context of 131,072 with a ~12.8k-token prompt, <code>qwen3.8:27b</code> ran at 61.4 tok/s on two cards and 11.2 on one, about 5.5x apart. This is a configured-capacity sweep, not a prompt-length sweep, and placement on the one-card side was not captured, so how much of that comes from spilling to CPU is provisional. Two models also fit side by side on the pair up to a context of 32,768, which makes switching between them take 0.6 s instead of a full reload.</p>
+            <p><strong>Spilling to the CPU is expensive.</strong> Forcing layers of <code>gemma4:26b</code> onto the CPU (empty-cache probe, n=3) took it from 224.8 tok/s at 31 of 31 layers on the GPU to 172.7 at 30 of 31. One layer cost 23%. All four measured points fit a fixed 1.34 ms per CPU-resident layer. Whether that cost carries over to other models is not established. A rough estimate for <code>qwen3.8:27b</code> comes out near 5.5 ms per layer, but it divides a VRAM shortfall by an assumed layer count rather than counting layers, so it is arithmetic, not a measurement. And a dense model near its memory limit does not slow down smoothly: <code>gemma4:31b</code> at a reduced GPU layer count passed two tasks 3/3 and timed out on others. The limit is a stall with task-dependent odds, not a wall.</p>
+            <p>The interactive version of this is <a class="back-link" href="../layers/">Where the Layers Go</a>.</p>
+        </section>
+
+        <section class="section">
+            <h2>The quality ceiling and the noise floor</h2>
+            <p><strong>Small samples lie.</strong> One cell, <code>gemma4:26b</code> on <code>csv-summarize-repair</code>, had produced 5/6, 6/6 and 6/6 in separate runs, two of them read as clean results. At n=100 its true pass rate is 75/100. Six trials cannot distinguish that from 100%. Every result is now labelled with the evidence tier its sample size supports.</p>
+            <p><strong>The battery is saturated at the hard rung and still works at the easier one.</strong> At L2 the current roster tops out the E9 tasks. At L1 the same tasks still separate models: <code>gemma4:31b</code> and <code>gpt-oss:120b</code> 30/30, <code>qwen3.8:27b</code> 26/30, <code>gemma4:26b</code> 24/30. Three fixtures that had been written and never run came back 18/18 for all seven models tested. The top of the ladder is exhausted.</p>
+            <p>Decode class does not predict correctness either. <code>nemotron-3-nano</code> decodes at 121.2 tok/s and passed 0 of 18 cells, missing the implementation rather than timing out.</p>
+        </section>
+
+        <section class="section">
+            <h2>A tool-grounded consultant bench</h2>
+            <p>The newest bench asks consultant questions about a real medical-device registry, 2008 to 2025, three companies. The model gets a catalog of registered tools and one question at a time, has to actually call the tools against the live database within three turns, then commit an answer as JSON.</p>
+            <p>Each answer is scored three separate ways: <strong>protocol</strong> (well-formed turns), <strong>execution</strong> (it really called the tools when the task needs data) and <strong>truth</strong> (the answer matches ground truth computed independently by SQL over a pinned copy of the database, never taken from the tool path being judged). One task is planted: it asks about 2030, outside the data, and the only correct answer is that there is none.</p>
+            <p>Overnight on 10 Sep, one RTX 3090 per model:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Model</th><th>laps</th><th>task pass rate</th><th>tasks passed on every lap</th><th>never passed</th></tr></thead>
+                    <tbody>
+                    <tr><td><code>qwen3.8:27b</code></td><td>302</td><td><strong>83.3%</strong></td><td>01, 02, 03, 04, 06</td><td>05</td></tr>
+                    <tr><td><code>qwen3.6:35b</code></td><td>612</td><td>33.3%</td><td>04, 06 (06 on 611 of 612)</td><td>01, 02, 03, 05</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>It ran on off-peak electricity for under a dollar, estimated from the utility rate rather than metered.</p>
+            <p>Hosted models on the same bench, as controls:</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Control</th><th>laps</th><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th><th>06</th></tr></thead>
+                    <tbody>
+                    <tr><td>DeepSeek chat (OpenRouter)</td><td>13</td><td>3/13</td><td>13/13</td><td>0/13</td><td>13/13</td><td>0/13</td><td>11/12</td></tr>
+                    <tr><td>Claude Opus</td><td>1</td><td>pass</td><td>pass</td><td>pass</td><td>pass</td><td>fail</td><td>pass</td></tr>
+                    <tr><td>GPT-5.6 Sol, reasoning off</td><td>1</td><td>fail</td><td>pass</td><td>pass</td><td>pass</td><td>fail</td><td>pass</td></tr>
+                    <tr><td>GPT-5.6 Terra, reasoning off</td><td>1</td><td>pass</td><td>pass</td><td>fail</td><td>pass</td><td>fail</td><td>pass</td></tr>
+                    <tr><td>GPT-5.6 Luna, reasoning medium</td><td>1</td><td>pass</td><td>pass</td><td>pass</td><td>pass</td><td>fail</td><td>pass</td></tr>
+                    <tr><td>GPT-5.6 Luna, reasoning off</td><td>2</td><td>1 of 2</td><td>1 of 2</td><td>0 of 2</td><td>2 of 2</td><td>0 of 2</td><td>0 of 2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Task 05 fails on every model tested</strong>, local and hosted, including a frontier model with reasoning on. When every model agrees, suspect the bench. I read it as a defect in how the task handles year-over-year figures, not as a ranking.</p>
+            <p>Everything except DeepSeek is a single lap and cannot be ranked against hundreds of local laps. Within this harness, though, the local 27b passes tasks 01 and 03 on every one of 302 laps, where DeepSeek managed 3 of 13 and 0 of 13.</p>
+            <p>Two hosted controls are left out on purpose. Claude Sonnet and Claude Haiku were driven through a command-line path that still exposed my account's own connected tools. Haiku replied that the bench's tools were not in its toolkit and named its email tools instead, and Sonnet answered "no data" without calling anything. That is the harness, not the models. It also shows a property of the bench: a model that refuses the tools still passes the 2030 task, so 1 of 6 is the score for doing nothing.</p>
+        </section>
+
+        <section class="section">
+            <h2>What reasoning effort costs</h2>
+            <p>The same six tasks on GPT-5.6 Luna through a subscription, one lap with reasoning off and one at medium, 10 Sep. Token counts come from the API's own usage report and are priced at list, $1.25 per million input tokens and $10 per million output.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Luna, same six tasks</th><th>pass</th><th>turns</th><th>input tokens</th><th>output tokens</th><th>reasoning tokens</th><th>cost at list</th></tr></thead>
+                    <tbody>
+                    <tr><td>reasoning off</td><td>2/6</td><td>17</td><td>11,722</td><td>782</td><td>0</td><td>$0.0225</td></tr>
+                    <tr><td>reasoning medium</td><td>5/6</td><td>23</td><td>23,054</td><td>7,248</td><td>5,229</td><td>$0.1013</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Reasoning tokens are 72% of the output and about half the cost of the lap. Turning it on cost 4.5x as much and passed 2.5x as many tasks, which works out to 1.8x the cost per task solved. At list price, one lap is about two cents with reasoning off and ten with it on. A single lap did not visibly move the subscription's usage meter.</p>
+            <p>This is also what makes subscription value measurable: the bill is flat, and the list value of the tokens used is now counted per lap.</p>
+        </section>
+
+        <section class="section">
+            <h2>What this does not say</h2>
+            <ul>
+                <li>It does not rank hosted models. Those rows are single laps, except DeepSeek at 13.</li>
+                <li>It does not claim local models match frontier models in general. The consultant bench is six bounded tasks over one database.</li>
+                <li>It does not explain the two-card prefill advantage. That is an open finding.</li>
+                <li>It does not show any model at its best. Speculative-decoding depth is inherited from each model's defaults and differs across the roster. <code>qwen3.8:27b</code> runs at a draft depth of 4 against a measured optimum of 8 on the 3090, so its speed figures are a floor.</li>
+                <li>It does not treat these numbers as fault-free. Fourteen measurement faults were caught while producing them, each one a number that looked like a finding. They are listed in the <a class="back-link" href="../instrument-log/">Instrument Log</a>.</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Related</h2>
+            <ul>
+                <li><a href="../layers/">Where the Layers Go</a>: interactive layer spill and the decode-to-wall-clock inversion.</li>
+                <li><a href="qwen38/">Qwen 3.6 vs 3.8</a>: same architecture, new weights, and the ceiling item the local field sits under.</li>
+                <li><a href="../instrument-log/">The Instrument Log</a>: every measurement fault caught in this program.</li>
+                <li><a href="../../capture-integrity/">Capture Integrity</a>: the model did not fail the protocol, the terminal did.</li>
+                <li>Papers: <a href="../../bulkhead-tau/generated-papers/the-default-draft-is-too-deep.html">The Default Draft Is Too Deep</a>, <a href="../../bulkhead-tau/generated-papers/dedicated-vs-unified-memory.html">Dedicated 24 GB Beats Unified 27 GB</a>, <a href="../../bulkhead-tau/generated-papers/slow-is-not-smart.html">Slow Is Not Smart</a>, <a href="../../bulkhead-tau/generated-papers/when-local-llm-clusters-do-not-help.html">When Local LLM Clusters Do Not Help</a>, <a href="../../bulkhead-tau/generated-papers/local-models-cost-frontier-tokens.html">Local Models Cost Frontier Tokens</a>.</li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <p>Bulkhead τ · Local Lane · rewritten 11 Sep 2026</p>
+            <p><a href="../../bulkhead-tau/index.html">Engineering Core</a> · <a href="../">Local Models</a> · <a href="qwen38/">3.6 vs 3.8</a> · <a href="../../papers/">All Papers</a></p>
+        </footer>
+    </div>
+</body>
+</html>

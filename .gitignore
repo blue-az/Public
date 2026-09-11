@@ -5,4 +5,6 @@ magic/
 deploy.env
 
 # Superseded local page snapshots; deploy.sh excludes these from publication.
-bulkhead-tau/local-lane/_archive/
+# Match at any depth: the old path-specific rule silently stopped applying when
+# local-lane/ moved out of bulkhead-tau/, and the snapshots landed in a commit.
+_archive/

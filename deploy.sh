@@ -4,7 +4,10 @@
 #   ./deploy.sh papers            — sync papers index only
 #   ./deploy.sh bulkhead-tau      — sync generated papers
 #   ./deploy.sh domains           — sync domains catalog index
-#   ./deploy.sh details           — sync Local Model Details and the Harness Layer
+#   ./deploy.sh local-models      — sync the Local Models umbrella and its nested pages
+#   ./deploy.sh operator-shell    — sync the Operator Shell page
+#   ./deploy.sh failure-details   — sync the Phoenix Boundary Results page
+#   ./deploy.sh local-model-role-suitability — sync the Local Model Role Suitability page
 #   ./deploy.sh honeywell         — sync Honeywell prototype
 #   ./deploy.sh honeywell-landing — sync standalone Honeywell landing page
 #   ./deploy.sh tour-agent       — sync TourAgent demo
@@ -100,8 +103,10 @@ case "$TARGET" in
         rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
         ;;
 
-    details)
-        rsync_push "$LOCAL_ROOT/details/" "$REMOTE_ROOT/details/"
+    local-models)
+        rsync_push "$LOCAL_ROOT/local-models/" "$REMOTE_ROOT/local-models/"
+        # the umbrella's URLs depend on the 301s in the root .htaccess
+        rsync_push "$LOCAL_ROOT/.htaccess" "$REMOTE_ROOT/.htaccess"
         ;;
     sensor-simulation)
         rsync_push "$LOCAL_ROOT/sensor-simulation/" "$REMOTE_ROOT/sensor-simulation/"
@@ -111,7 +116,7 @@ case "$TARGET" in
         ;;
     domains)
         rsync_push "$LOCAL_ROOT/domains/" "$REMOTE_ROOT/domains/"
-        rsync_push "$LOCAL_ROOT/details/" "$REMOTE_ROOT/details/"
+        rsync_push "$LOCAL_ROOT/local-models/" "$REMOTE_ROOT/local-models/"
         ;;
     honeywell)
         rsync_push "$LOCAL_ROOT/honeywell/" "$REMOTE_ROOT/honeywell/"
@@ -125,13 +130,22 @@ case "$TARGET" in
     capture-integrity)
         rsync_push "$LOCAL_ROOT/capture-integrity/" "$REMOTE_ROOT/capture-integrity/"
         ;;
+    operator-shell)
+        rsync_push "$LOCAL_ROOT/operator-shell/" "$REMOTE_ROOT/operator-shell/"
+        ;;
+    failure-details)
+        rsync_push "$LOCAL_ROOT/failure-details/" "$REMOTE_ROOT/failure-details/"
+        ;;
+    local-model-role-suitability)
+        rsync_push "$LOCAL_ROOT/local-model-role-suitability/" "$REMOTE_ROOT/local-model-role-suitability/"
+        ;;
     deep-dive-tennis-paper)
         rsync_push "$LOCAL_ROOT/bulkhead-tau/generated-papers/deep-dive-tennis-match-pool.html" "$REMOTE_ROOT/bulkhead-tau/generated-papers/"
         remote_mkdir "$REMOTE_ROOT/bulkhead-tau/domains/SensorAgents/TennisAgent/data/papers/match_pool_2023"
         rsync_push "$LOCAL_ROOT/bulkhead-tau/domains/SensorAgents/TennisAgent/data/papers/match_pool_2023/" "$REMOTE_ROOT/bulkhead-tau/domains/SensorAgents/TennisAgent/data/papers/match_pool_2023/"
         ;;
     local-lane-qwen38)
-        rsync_push "$LOCAL_ROOT/bulkhead-tau/local-lane/qwen38/" "$REMOTE_ROOT/bulkhead-tau/local-lane/qwen38/"
+        rsync_push "$LOCAL_ROOT/local-models/local-lane/qwen38/" "$REMOTE_ROOT/local-models/local-lane/qwen38/"
         ;;
     pose-showcase)
         rsync_push "$LOCAL_ROOT/pose-showcase/" "$REMOTE_ROOT/pose-showcase/"
@@ -154,12 +168,16 @@ case "$TARGET" in
     all)
         rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
         rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
+        rsync_push "$LOCAL_ROOT/local-models/" "$REMOTE_ROOT/local-models/"
         rsync_push "$LOCAL_ROOT/sensor-simulation/" "$REMOTE_ROOT/sensor-simulation/"
         rsync_push "$LOCAL_ROOT/domains/" "$REMOTE_ROOT/domains/"
         rsync_push "$LOCAL_ROOT/honeywell/" "$REMOTE_ROOT/honeywell/"
         rsync_push "$LOCAL_ROOT/honeywell-landing/" "$REMOTE_ROOT/honeywell-landing/"
         rsync_push "$LOCAL_ROOT/tour-agent/" "$REMOTE_ROOT/tour-agent/"
         rsync_push "$LOCAL_ROOT/capture-integrity/" "$REMOTE_ROOT/capture-integrity/"
+        rsync_push "$LOCAL_ROOT/operator-shell/" "$REMOTE_ROOT/operator-shell/"
+        rsync_push "$LOCAL_ROOT/failure-details/" "$REMOTE_ROOT/failure-details/"
+        rsync_push "$LOCAL_ROOT/local-model-role-suitability/" "$REMOTE_ROOT/local-model-role-suitability/"
         rsync_push "$LOCAL_ROOT/pose-showcase/" "$REMOTE_ROOT/pose-showcase/"
         rsync_push "$LOCAL_ROOT/labwired-serve-hud/" "$REMOTE_ROOT/labwired-serve-hud/"
         rsync_push "$LOCAL_ROOT/skeleton-study/" "$REMOTE_ROOT/skeleton-study/"
@@ -169,7 +187,7 @@ case "$TARGET" in
         rsync_push "$LOCAL_ROOT/.htaccess" "$REMOTE_ROOT/.htaccess"
         ;;
     *)
-        echo "Usage: $0 [papers|bulkhead-tau|domains|honeywell|honeywell-landing|tour-agent|capture-integrity|deep-dive-tennis-paper|local-lane-qwen38|pose-showcase|labwired-serve-hud|skeleton-study|skeleton-hud|groundstroke-demos|kernelcad-mount|all]"
+        echo "Usage: $0 [papers|bulkhead-tau|local-models|domains|honeywell|honeywell-landing|tour-agent|capture-integrity|operator-shell|failure-details|local-model-role-suitability|deep-dive-tennis-paper|local-lane-qwen38|pose-showcase|labwired-serve-hud|skeleton-study|skeleton-hud|groundstroke-demos|kernelcad-mount|all]"
         exit 1
         ;;
 esac

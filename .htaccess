@@ -10,3 +10,16 @@ RedirectMatch 301 ^/bulkhead-tau-core(/.*)?$ /bulkhead-tau/
 
 # 3. Redirect root to bulkhead-tau
 RedirectMatch 301 ^/$ /bulkhead-tau/
+
+# 4. Local Models umbrella, 11 Sep 2026. details/ was renamed local-models/, and
+#    local-lane, layers and instrument-log moved out of bulkhead-tau/ to sit
+#    under it. Paired rules so deep links keep their path instead of landing on
+#    the index: /details/harness/ -> /local-models/harness/.
+RedirectMatch 301 ^/details/?$ /local-models/
+RedirectMatch 301 ^/details/(.*)$ /local-models/$1
+RedirectMatch 301 ^/bulkhead-tau/local-lane/?$ /local-models/local-lane/
+RedirectMatch 301 ^/bulkhead-tau/local-lane/(.*)$ /local-models/local-lane/$1
+RedirectMatch 301 ^/bulkhead-tau/layers/?$ /local-models/layers/
+RedirectMatch 301 ^/bulkhead-tau/layers/(.*)$ /local-models/layers/$1
+RedirectMatch 301 ^/bulkhead-tau/instrument-log/?$ /local-models/instrument-log/
+RedirectMatch 301 ^/bulkhead-tau/instrument-log/(.*)$ /local-models/instrument-log/$1
