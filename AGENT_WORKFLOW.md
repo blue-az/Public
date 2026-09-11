@@ -153,8 +153,8 @@ showcase/check-consistency.sh
 
 | Setting | Value |
 |---------|-------|
-| Server | access993872858.webspace-data.io |
-| User | u115257687 |
+| Server | see `deploy.env`, gitignored |
+| User | see `deploy.env`, gitignored |
 | Port | 22 |
 | Protocol | SSH (key authenticated) |
 | Remote Path | /homepages/1/d993872858/htdocs/prototypes |

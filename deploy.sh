@@ -19,10 +19,17 @@
 
 set -euo pipefail
 
-HOST="access993872858.webspace-data.io"
-PORT="22"
-USER="u115257687"
-REMOTE_ROOT="prototypes"
+# Target lives outside the repo: this file is public. Put the real values in
+# deploy.env next to this script (gitignored) or export them before running.
+# See deploy.env.example.
+if [[ -f "$(dirname "$0")/deploy.env" ]]; then
+    # shellcheck disable=SC1091
+    source "$(dirname "$0")/deploy.env"
+fi
+HOST="${IONOS_HOST:?IONOS_HOST is not set -- copy deploy.env.example to deploy.env and fill it in}"
+USER="${IONOS_USER:?IONOS_USER is not set -- copy deploy.env.example to deploy.env and fill it in}"
+PORT="${IONOS_PORT:-22}"
+REMOTE_ROOT="${IONOS_REMOTE_ROOT:-prototypes}"
 LOCAL_ROOT="$(cd "$(dirname "$0")" && pwd)"
 # Prefer an explicit deploy key; fall back to the account key, then to the
 # agent's default identities. Passing -i for a file that does not exist makes

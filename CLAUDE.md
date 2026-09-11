@@ -42,7 +42,7 @@ Use modern, responsive HTML5:
 
 ## Deploy Details
 
-- **Server:** access993872858.webspace-data.io
+- **Server:** see `deploy.env` (gitignored); this repo is public
 - **Path:** /homepages/1/d993872858/htdocs/prototypes/
 - **URL:** https://proto.efehnconsulting.com/<slug>/
 - **Access:** SSH key authenticated
