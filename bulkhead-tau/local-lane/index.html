@@ -25,7 +25,9 @@
             <a href="../demos.html">Demos</a>
             <a href="../reflect.html">Reflect</a>
             <a class="active" href="./">Local Lane</a>
+            <a href="../layers/">MoE or not</a>
             <a href="qwen38/">3.6 vs 3.8</a>
+            <a href="../instrument-log/">Instrument Log</a>
         </nav>
 
         <div class="pullquote">
@@ -38,12 +40,35 @@
             <p>The Qwen3.6 → 3.8 drop has its own page: <a class="back-link" href="qwen38/">3.6 vs 3.8</a>. Faster, not measurably more correct. This page is the field.</p>
         </section>
 
+        <a class="geo-banner" href="../layers/">
+            <span class="geo-banner-side geo-banner-side-left">
+                <svg class="geo-banner-image geo-banner-image-ball" viewBox="0 0 24 30" width="46" height="58" role="img" aria-label="Layer stack, three layers spilled">
+                    <rect x="2" y="2"  width="20" height="4" fill="#1F9E93"/>
+                    <rect x="2" y="8"  width="20" height="4" fill="#1F9E93"/>
+                    <rect x="2" y="14" width="20" height="4" fill="#1F9E93"/>
+                    <rect x="2" y="20" width="20" height="4" fill="#D8722C"/>
+                    <rect x="2" y="26" width="20" height="2" fill="#D8722C"/>
+                </svg>
+            </span>
+
+            <span class="geo-banner-main">
+                <span class="geo-banner-kicker">Interactive · measured 9 Sep 2026</span>
+                <span class="geo-banner-title">Where the Layers Go</span>
+                <span class="geo-banner-copy">Drag the context and watch layers spill to the CPU &middot; 3 of 66 costs 27.6% &middot; flip decode to wall clock and the ranking inverts</span>
+            </span>
+
+            <span class="geo-banner-side geo-banner-side-right">
+                <span class="geo-banner-cta">Open</span>
+                <span class="geo-banner-mini">RTX 3090 &middot; MAX 390</span>
+            </span>
+        </a>
+
         <section class="section">
             <h2>Two chips</h2>
             <div class="grid">
                 <article class="card">
                     <h3>NVIDIA RTX 3090</h3>
-                    <p>24&nbsp;GB dedicated GDDR6X. Stock TDP 350&nbsp;W, <strong>capped at 320&nbsp;W</strong>. Every 3090 rate is therefore conservative. Q4, flash attention, KV <code>q8_0</code>. A second 3090 is installed and unpowered (wrong cord). Dual-card numbers do not exist yet. Machine shorthand in the logs: desktop.</p>
+                    <p>24&nbsp;GB dedicated GDDR6X. Stock TDP 350&nbsp;W, <strong>capped at 320&nbsp;W</strong>. Every 3090 rate is therefore conservative. Q4, flash attention, KV <code>q8_0</code>. Machine shorthand in the logs: desktop.</p>
                 </article>
                 <article class="card">
                     <h3>AMD Ryzen AI MAX 390</h3>
@@ -54,6 +79,195 @@
 
         <section id="index" class="section">
             <h2>Power ranking — RTX 3090 vs Ryzen AI MAX 390</h2>
+                <div class="note">
+                    <p><strong>Correction — 7 Sep 2026. The ranking below is superseded and three of its
+                    load-bearing numbers are wrong.</strong> It is retained unaltered as the published
+                    record; do not cite it.</p>
+                    <ul>
+                        <li><strong>The speed baseline is wrong.</strong> Every Speed figure here is
+                        normalised against <code>gemma4:26b</code> at <strong>133.0 tok/s</strong>. That
+                        figure was measured on the unpinned base tag, whose default context is 262,144 —
+                        the KV cache takes the model to 39.3&nbsp;GB, past one 24&nbsp;GB card, so it
+                        <em>splits across both</em> at a 35% decode penalty. Pinned to one card it is
+                        <strong>226 tok/s</strong> (n=6, 224.4–229.0). The whole Speed column is
+                        normalised against a two-card split figure.</li>
+                        <li><strong>The speed axis measures the wrong thing.</strong> Decode tok/s does not
+                        predict task completion time. <code>gemma4:26b</code> decodes 2.9× faster than
+                        <code>qwen3.8:27b</code> and finishes the same task <em>1.5× slower</em>, because it
+                        emits 7,004 output tokens to 27b's 1,362. The protocol now uses measured task
+                        wall clock.</li>
+                        <li><strong>The L1 claim inverts under correct configuration.</strong> The text below
+                        reads “26b is 14/18 and 3.8 is 7/18 (p=0.04)”. Those trials ran on unpinned tags with
+                        thinking on. Pinned with thinking off, on the same fixtures and machine, it reverses:
+                        <code>gemma4:26b</code> <strong>66.7%</strong> (40/60) against
+                        <code>qwen3.8:27b</code> <strong>88.3%</strong> (53/60).</li>
+                    </ul>
+                    <p><strong>The seat has moved to <code>qwen3.8:27b</code></strong> (operator decision,
+                    7 Sep 2026). <code>gemma4:26b</code> is the least reliable model in the clean field at
+                    83.7%.</p>
+                    <p><strong>No corrected cross-chip table is offered.</strong> The MAX 390 has 96 trials
+                    and <em>none</em> in the corrected configuration, so a like-for-like two-chip ranking
+                    cannot currently be produced. The table below this note is RTX 3090 only.</p>
+                </div>
+
+                <h3>RTX 3090 — corrected ranking, 7 Sep 2026</h3>
+                <p>Speed is measured task wall clock (warm trials, two E9 fixtures), not decode.
+                Quality is the clean L2 seat corpus: pinned tags, thinking off, canonical prompts,
+                zero-work harness stalls removed. Seat <code>gemma4:26b</code> = 1.00 on both axes.</p>
+                <div class="note">
+                    <p><strong>Revised again 7 Sep (evening): the earlier wall-clock figures were
+                    inflated.</strong> The harness timer started before a ledger bookkeeping call that
+                    shells out to a CLI twice, putting roughly <strong>+4.5&nbsp;s per trial</strong>
+                    inside the measurement. A fixed cost on a variable quantity inflates an 11&nbsp;s
+                    task by 40% and a 46&nbsp;s task by 10%, so it did not cancel in a ratio. Fixed at
+                    source; figures below are re-measured.</p>
+                </div>
+                <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th class="num">#</th><th>Model</th><th>Arch</th>
+                    <th class="num">short</th><th class="num">long</th>
+                    <th class="num">Speed</th><th class="num">L2 clean</th><th class="num">Eff.</th></tr></thead>
+                    <tbody>
+                    <tr><td class="num">1</td><td><strong><code>qwen3.6:35b</code></strong></td><td>MoE</td>
+                        <td class="num">8.8</td><td class="num">15.6</td>
+                        <td class="num">1.99</td><td class="num">51/51</td><td class="num">1.59</td></tr>
+                    <tr><td class="num">—</td><td><strong><code>qwen3.8:27b</code></strong> — seat</td><td>Dense</td>
+                        <td class="num">18.1</td><td class="num">32.4</td>
+                        <td class="num">0.96</td><td class="num">63/63</td><td class="num">1.08</td></tr>
+                    <tr><td class="num">—</td><td><code>gemma4:26b</code></td><td>MoE</td>
+                        <td class="num">13.0</td><td class="num">38.9</td>
+                        <td class="num">1.00</td><td class="num">149/178</td><td class="num">1.00</td></tr>
+                    <tr><td class="num">—</td><td><code>gpt-oss:120b</code></td><td>MoE</td>
+                        <td class="num">31.1</td><td class="num">53.4</td>
+                        <td class="num">0.57</td><td class="num">60/60</td><td class="num">0.88</td></tr>
+                    <tr><td class="num">5</td><td><code>gemma4:31b</code></td><td>Dense</td>
+                        <td class="num">36.4</td><td class="num">128.4</td>
+                        <td class="num">0.33</td><td class="num">28/33</td><td class="num">0.67</td></tr>
+                    <tr><td class="num">6</td><td><code>qwen3-next</code></td><td>MoE</td>
+                        <td class="num">92.0</td><td class="num">325.7</td>
+                        <td class="num">0.13</td><td class="num">19/22</td><td class="num">0.58</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="note">
+                    <p><strong>Rows 2 and 3 are joint second. They are not ordered — the rest of the
+                    table is.</strong> Bootstrapping the whole ranking (4,000 resamples over warm
+                    trials and pass counts) gives, for each adjacent pair, the probability the upper
+                    row really beats the lower:</p>
+                    <div class="table-wrap">
+                    <table class="table">
+                        <thead><tr><th>pair</th><th class="num">P(beats)</th><th>verdict</th></tr></thead>
+                        <tbody>
+                        <tr><td><code>qwen3.6:35b</code> &gt; <code>qwen3.8:27b</code></td><td class="num">100%</td><td>ordered</td></tr>
+                        <tr><td><strong><code>qwen3.8:27b</code> &gt; <code>gemma4:26b</code></strong></td><td class="num"><strong>79.1%</strong></td><td><strong>not separable</strong></td></tr>
+                        <tr><td><code>gemma4:26b</code> &gt; <code>gpt-oss:120b</code></td><td class="num">99.9%</td><td>ordered</td></tr>
+                        <tr><td><code>gpt-oss:120b</code> &gt; <code>gemma4:31b</code></td><td class="num">100%</td><td>ordered</td></tr>
+                        <tr><td><code>gemma4:31b</code> &gt; <code>qwen3-next</code></td><td class="num">98.7%</td><td>ordered</td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <p><code>qwen3.6:35b</code> takes rank 1 in <strong>100%</strong> of draws.
+                    Two caveats on the intervals: normalising to <code>gemma4:26b</code> gives the
+                    baseline zero variance by construction, so uncertainty in comparisons against it
+                    is <em>understated</em> and the “ordered” verdicts are mildly optimistic; and
+                    within-cell wall-clock spreads at n=3 run 1.3×–4.2×, which is the noise the
+                    bootstrap is propagating.</p>
+                    <p>The quality axis is separately <strong>saturated</strong> — three models at
+                    exactly 100%, statistically indistinguishable on quality alone, so the ordering
+                    above is carried by speed. Finding a repeatable quality differentiator is an open
+                    problem, not a solved one, and more trials cannot fix a ceiling.</p>
+                    <p>Five models in the superseded table are <strong>absent rather than demoted</strong> —
+                    <code>qwen3.6:27b</code>, <code>qwen3-vl:30b</code>, <code>qwen3:32b</code>,
+                    <code>qwen2.5-coder:14b</code>, <code>gemma3:27b</code> — for lack of wall-clock
+                    data. <code>gemma3:27b</code> additionally cannot run the battery under the
+                    corrected controls: 6/6 trials returned zero tokens in ~5&nbsp;s.</p>
+                </div>
+
+                <h3>Both chips, corrected protocol — 7 Sep 2026</h3>
+                <p>This is the two-chip comparison the page has been promising. Speed is measured
+                task wall clock on the corrected harness, normalised to <code>gemma4:26b</code> on the
+                RTX 3090. Quality is the clean L2 seat corpus on each machine.</p>
+                <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th class="num">#</th><th>Chip</th><th>Model</th><th>Arch</th>
+                    <th class="num">short</th><th class="num">long</th>
+                    <th class="num">Speed</th><th class="num">L2 clean</th></tr></thead>
+                    <tbody>
+                    <tr><td class="num">1</td><td>RTX 3090</td><td><strong><code>qwen3.6:35b</code></strong></td><td>MoE</td>
+                        <td class="num">8.8</td><td class="num">15.6</td><td class="num"><strong>1.99</strong></td><td class="num">100%</td></tr>
+                    <tr><td class="num">2=</td><td>RTX 3090</td><td><code>gemma4:26b</code></td><td>MoE</td>
+                        <td class="num">13.0</td><td class="num">38.9</td><td class="num">1.00</td><td class="num">84%</td></tr>
+                    <tr><td class="num">2=</td><td>RTX 3090</td><td><code>qwen3.8:27b</code> — seat</td><td>Dense</td>
+                        <td class="num">18.1</td><td class="num">32.4</td><td class="num">0.96</td><td class="num">100%</td></tr>
+                    <tr><td class="num">4</td><td>MAX 390</td><td><strong><code>qwen3.6:35b</code></strong></td><td>MoE</td>
+                        <td class="num">27.3</td><td class="num">40.6</td><td class="num">0.72</td><td class="num">100%</td></tr>
+                    <tr><td class="num">5=</td><td>MAX 390</td><td><code>gemma4:26b</code></td><td>MoE</td>
+                        <td class="num">26.3</td><td class="num">132.4</td><td class="num">0.39</td><td class="num">89%</td></tr>
+                    <tr><td class="num">5=</td><td>MAX 390</td><td><code>qwen3.8:27b</code></td><td>Dense</td>
+                        <td class="num">35.3</td><td class="num">96.8</td><td class="num">0.39</td><td class="num">100%</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="note">
+                    <p><strong>Quality rank transfers between chips. Speed rank does not.</strong>
+                    Both machines put <code>qwen3.6:35b</code> and <code>qwen3.8:27b</code> at ceiling
+                    with <code>gemma4:26b</code> below — on a discrete GPU and on an integrated
+                    APU. A third machine (RTX 2080, 8&nbsp;GB) agrees for the one model tested there.
+                    The practical consequence: <strong>measure quality once per model, speed once per
+                    machine.</strong></p>
+                    <p><strong>There is no chip multiplier.</strong> The MAX 390 penalty ranges
+                    <strong>1.95×–3.40×</strong> and reverses between tasks — <code>gemma4:26b</code> is
+                    the least penalised on the short task and the most on the long one. Any single
+                    “N times slower” figure for this chip is wrong.</p>
+                    <p><strong>Decode is not the story on the constrained chip.</strong> On the MAX 390
+                    <code>qwen3.8:27b</code> decodes at <strong>22.4 tok/s</strong> against the two MoE
+                    models' 53–55 — a 2.4× deficit — and finishes the same work at the
+                    <em>same speed</em>, because it emits far fewer tokens. An earlier version of this
+                    page's data argued dense models are punished on this chip; corrected, the decode
+                    penalty and the token-economy advantage almost exactly cancel.</p>
+                    <p><em>Stated confound:</em> the MAX 390 runs ollama 0.32.13 against the desktop's
+                    0.32.12. That affects cross-chip magnitudes, not within-chip ordering. MAX 390
+                    quality is an <code>/18</code> floor-scale score (n=6/fixture), not the deeper
+                    desktop corpus, and is shown as a rate so the two are comparable without implying a
+                    shared denominator.</p>
+                </div>
+
+                <h3><code>gemma4:26b</code> across three cards — and the default that costs everyone throughput</h3>
+                <p>Same model, same probe (<code>num_ctx 16384</code>, <code>temperature 0</code>,
+                128-token generation), ollama 0.32.12. Decode tok/s, measured with nothing else resident.</p>
+                <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Card</th><th class="num">VRAM used</th><th class="num">decode tok/s</th><th>Placement</th></tr></thead>
+                    <tbody>
+                    <tr><td>RTX 3090, <code>num_ctx</code> pinned</td><td class="num">19,296 MiB</td>
+                        <td class="num"><strong>226</strong></td><td>one card, 31/31 layers</td></tr>
+                    <tr><td>RTX 3090 pair, <em>unpinned</em></td><td class="num">39,335 MiB</td>
+                        <td class="num">140</td><td><strong>split across both cards</strong></td></tr>
+                    <tr><td>RTX 2080, real 8&nbsp;GB card</td><td class="num">7,416 MiB</td>
+                        <td class="num">31.0</td><td>one card, 31/31 layers</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="note">
+                    <p><strong>The most useful thing on this page, if you run this model:
+                    pin <code>num_ctx</code>.</strong> <code>gemma4:26b</code> ships with a default context
+                    of <strong>262,144</strong>. Unpinned, the KV cache takes it from 19.3&nbsp;GB to
+                    <strong>39.3&nbsp;GB</strong>, and what happens next depends entirely on your hardware:
+                    on a two-card box it splits across both and costs ~35% of decode; on a
+                    <em>single</em> 24&nbsp;GB card it does not fit at all and spills to CPU. That is the
+                    likely reason published figures for this model vary so widely — most of them are
+                    measuring the default.</p>
+                    <p>The 226 figure is not a favourable slice. It holds at 128, 512 and 2048-token
+                    generations (221.2 / 214.6 / 217.9) and gives <strong>203.7 tok/s end-to-end</strong>
+                    at 2048 tokens including prompt processing. It is also the only rate consistent with
+                    the arithmetic: 25.2B at Q4_K_M is ~15.2&nbsp;GB of weights, and a 3090's 936&nbsp;GB/s
+                    caps a <em>dense</em> model of that size near <strong>62 tok/s</strong>. Measuring 220
+                    is 3.6× above that ceiling, which is only possible because 8 of 128 experts are active
+                    per token — roughly 4.2&nbsp;GB read per token, not 15.2.</p>
+                </div>
+
+                <h3>Superseded — the 26 Aug decode-based cross-chip ranking</h3>
+
             <p>A row is ranked if it has an L2 score on that chip <em>and</em> it runs there. Speed is always against <strong>3090</strong> <code>gemma4:26b</code> at 133.0 tok/s — MAX 390 is on the same axis, not renormalized to itself. 26b vs-26b 1.00 is still 36/54 (E11). 35b vs-26b uses the same-run E9 control (24/30 on both chips).</p>
             <p><strong>Rubric.</strong> Two axes, equal weight. <code>Eff. = (Speed + vs&nbsp;26b) / 2</code>. Order is Eff., then Speed on a tie. Seat is 26b on both chips. The top two rows are MoE. MAX 390 26b is still second. 35b is on the table: 4% lip on the 3090, 100% iGPU on the MAX 390.</p>
             <p class="note">3090 <code>qwen3.8:27b</code> is the daily <code>qwen38-mtp-2</code> tag (50.3 tok/s). Stock library draft 4 is 44.6. MAX 390 Qwen 27B rows stay @8k (3.8 OOMs at 16k). MAX 390 26b/35b decode is AC / <code>balanced</code>, 17 Aug. See <a href="qwen38/#mtp">MTP</a>. <strong>18 Aug:</strong> depth 2 is the empty-KV optimum measured here; under occupied context (15k+) depth 8 wins — 65.0 tok/s at 15k vs 57.5 for depth 2. See the <a href="../generated-papers/the-default-draft-is-too-deep.html">draft-depth addendum</a>.</p>
@@ -391,7 +605,7 @@
         </section>
 
         <section class="section">
-            <h2>Why 26b is still the seat on both chips</h2>
+            <h2>Why 26b was the seat on both chips (superseded 7 Sep 2026 — see correction above)</h2>
             <p>Tied with 31b on L2. Far faster on the 3090 (133 vs 34). On the MAX 390 it is still the interactive pick (55 t/s, 24/30). 35b is the speed pick on the MAX 390 (59 t/s, 100% GPU) and loses the battery (18/30) on one fixture. At L1 — the prompt a human actually types — 26b is 14/18 and 3.8 is 7/18 (p=0.04). Nano is a speed demon that does not implement the task.</p>
             <p>Published cards put 31b a notch above 26b. That can be true and still not be the pick on either chip.</p>
         </section>

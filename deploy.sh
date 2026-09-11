@@ -4,6 +4,7 @@
 #   ./deploy.sh papers            — sync papers index only
 #   ./deploy.sh bulkhead-tau      — sync generated papers
 #   ./deploy.sh domains           — sync domains catalog index
+#   ./deploy.sh details           — sync Local Model Details and the Harness Layer
 #   ./deploy.sh honeywell         — sync Honeywell prototype
 #   ./deploy.sh honeywell-landing — sync standalone Honeywell landing page
 #   ./deploy.sh tour-agent       — sync TourAgent demo
@@ -91,6 +92,10 @@ case "$TARGET" in
     bulkhead-tau)
         rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
         ;;
+
+    details)
+        rsync_push "$LOCAL_ROOT/details/" "$REMOTE_ROOT/details/"
+        ;;
     sensor-simulation)
         rsync_push "$LOCAL_ROOT/sensor-simulation/" "$REMOTE_ROOT/sensor-simulation/"
         ;;
@@ -99,6 +104,7 @@ case "$TARGET" in
         ;;
     domains)
         rsync_push "$LOCAL_ROOT/domains/" "$REMOTE_ROOT/domains/"
+        rsync_push "$LOCAL_ROOT/details/" "$REMOTE_ROOT/details/"
         ;;
     honeywell)
         rsync_push "$LOCAL_ROOT/honeywell/" "$REMOTE_ROOT/honeywell/"

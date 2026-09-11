@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Instrument Log | Bulkhead τ</title>
+    <meta name="description" content="A running count of harness and instrumentation faults caught in local-model benchmarking, and the false finding each one would have produced.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Living log · 11 Sep 2026</span>
+            <h1>The Instrument Log</h1>
+            <p class="subtitle">Every measurement fault caught in this program, and the finding it would have been published as.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="../index.html">Home</a>
+            <a href="../../papers/">Research Papers</a>
+            <a href="../index.html#engine-room">Tau-Bench</a>
+            <a href="../demos.html">Demos</a>
+            <a href="../reflect.html">Reflect</a>
+            <a href="../local-lane/">Local Lane</a>
+            <a href="../layers/">MoE or not</a>
+            <a href="../local-lane/qwen38/">3.6 vs 3.8</a>
+            <a class="active" href="./">Instrument Log</a>
+        </nav>
+
+        <div class="pullquote">
+            <p>The harness doesn't just decide outcomes. It decides what you're able to believe about outcomes.</p>
+        </div>
+
+        <section class="section">
+            <h2>What this is</h2>
+            <p>Fourteen faults, caught over roughly a week of local-model benchmarking on two RTX 3090s. Not one of them was a model behaving badly. Every one was the instrument, the daemon, the log parser, or my own code.</p>
+            <p>They are collected here because of a property they share: <strong>each one produced a number rather than an error.</strong> A crashed run announces itself. A daemon quietly using two cards while the row says "solo" does not. It produces a clean, plausible, publishable figure that happens to be false, and nothing downstream can tell the difference.</p>
+            <p>That is the argument for the log. Anyone can report what their system did. The question worth asking is how many of these were sitting inside the run that produced the report.</p>
+        </section>
+
+        <section class="section">
+            <h2>Upstream and tooling</h2>
+            <p>Five faults in things I did not write. These are the expensive ones, because there is no commit to review.</p>
+            <table>
+                <thead><tr><th>What broke</th><th>What it looked like</th><th>What it was</th></tr></thead>
+                <tbody>
+                <tr><td><code>CUDA_VISIBLE_DEVICES</code> does not hide a card from Vulkan</td><td>A valid single-card measurement</td><td>Two cards. The daemon enumerated <code>Vulkan0</code> as the other GPU and allocated on it. One config died on "failed to allocate Vulkan0 buffer". Requires <code>OLLAMA_LLM_LIBRARY=cuda_v13</code> as well.</td></tr>
+                <tr><td><code>utilization.gpu</code></td><td>"One card computes while the other idles, so layer-split is a pipeline"</td><td>The idle card was drawing <strong>234 W</strong> against a measured idle baseline of 26-37 W, and climbing 70 to 78 degrees C while its reported utilization <em>fell</em> from 5% to 1%. Both cards were working. Power is the signal that holds.</td></tr>
+                <tr><td><code>pcie.link.gen</code></td><td>Flaky hardware: a slot that "flipped gen1 x16 to gen3 x16 in one day"</td><td>Link power management. The gen downshifts at idle and negotiates up under load, so it means nothing unless sampled during generation. Width is topology and is stable.</td></tr>
+                <tr><td><code>ollama ps</code></td><td>Model footprint, placement and context depth</td><td>Reported 29 GB against 34,728 MiB actually allocated. Reported "100% GPU" for a runner with a layer explicitly held back on CPU. Reported a 262,144 context that was not allocated at that depth.</td></tr>
+                <tr><td><code>load_duration</code></td><td>Cold-load cost</td><td>0.001 s on one daemon and 0.52 s on another, for the same already-resident model. A reporting difference between versions, not a load.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>My own code</h2>
+            <p>Nine faults in code I wrote or maintain. More than the upstream count, which is the honest ratio and the reason this page exists.</p>
+            <table>
+                <thead><tr><th>What broke</th><th>What it looked like</th><th>What it was</th></tr></thead>
+                <tbody>
+                <tr><td>Layer capture parsed <code>journalctl -u ollama</code></td><td><code>status: ok</code>, no placement concern</td><td>A hand-started daemon is not under that systemd unit, so its placement was never visible. A configuration with a fifth of the model on CPU recorded as a clean pass. Only a VRAM shortfall and a 5x throughput drop gave it away.</td></tr>
+                <tr><td>Eviction check used bare <code>ollama</code></td><td>Checking the daemon under test</td><td>Always talked to :11434 regardless of which daemon was being measured, so a solo run's eviction check inspected the wrong process entirely.</td></tr>
+                <tr><td>Dashboard glob card</td><td>One card failing to render</td><td>An unguarded <code>relative_to</code> on a path outside the repo took down the entire dashboard render, not just that card, in a generator whose own documentation says cards must degrade to an explicit empty state.</td></tr>
+                <tr><td>Hardware snapshot captured <code>power_limit</code></td><td>Provenance</td><td>A static 320.0 on every row forever. The field that turned out to be the reliable activity signal, <code>power.draw</code>, was not captured at all.</td></tr>
+                <tr><td>Ledger writes inside the wall-clock timer</td><td>A 25% difference between daemon versions, 11-12 s against 15-16 s</td><td>Bookkeeping overhead. Two correction sections were written attributing it to the ollama version before anyone opened the traces.</td></tr>
+                <tr><td><code>prompt_s_median</code> stored to one decimal</td><td>"Prefill is dead flat at 0.872 ms/token across three context depths"</td><td>Flat within the recorded precision. All three depths logged 11.2 s, so the identical figures were partly a rounding artifact. The conclusion survived. The phrasing did not.</td></tr>
+                <tr><td>Bench task authored out of scope</td><td>A model failing a task</td><td>The task reached outside its own fixture, so the failure was the bench.</td></tr>
+                <tr><td>Token usage discarded on every turn</td><td>"This endpoint does not return usage, so subscription spend is unmeasurable"</td><td>The endpoint returns it richly, including reasoning tokens and a per-message attribution breakdown. The client parsed it correctly and the caller bound it to a variable it never read again. Every lap since the file was written was unpriceable for that reason alone.</td></tr>
+                <tr><td>State-block generator was not idempotent</td><td>A working tool</td><td>The document gained a newline on every regeneration. Caught by the tool's own <code>--check</code> mode on its first run, which is the only reason it is a line in this table instead of a slow corruption.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>The one that was not a tool</h2>
+            <p>Five consecutive correction sections were written into a working handoff about a single wall-clock discrepancy. Four of the five were wrong in whole or in part. The only correct one was the only one that opened a fixture before writing.</p>
+            <p>The first asserted an attribution from reasoning. The second inherited that premise without checking and turned it into a standing instruction about which figures to cite. The third read the traces and found the arms inverted. The fourth confirmed the third and caught two further defects. A fifth then retracted the third's mechanism as well.</p>
+            <p>The measurements were never the problem. The fixtures were on disk the entire time. What failed was documents asserting things about artifacts nobody had reopened, and each one made the next reader more confident. <strong>"Correction #3 says X" is not evidence.</strong> It is a claim with exactly the standing of the one being corrected.</p>
+        </section>
+
+        <section class="section">
+            <h2>The earliest one, and it has its own paper</h2>
+            <p>This log starts in September because that is when I started counting. The oldest entry is older and was written up properly at the time: subprocess capture embedded VT100 terminal sequences that corrupted multi-line JSON for thinking-mode models, and a model took the blame for a protocol failure it did not commit. Under clean REST capture it passes all six probes.</p>
+            <p>That finding is Papers 1.16 and 1.19, and it stated the thesis of this page in a better sentence than the one at the top: <a class="back-link" href="../../capture-integrity/">The Model Did Not Fail The Protocol. The Terminal Did.</a></p>
+        </section>
+
+        <section class="section">
+            <h2>How to tell the difference</h2>
+            <p>Two tests, both cheap, both used above.</p>
+            <p><strong>When every seat agrees, suspect the harness.</strong> One task in the consultant bench fails on the local 27B, the local 35B, a headless 2080, a Ryzen AI MAX 390, a hosted DeepSeek control at n=13, and a frontier model with reasoning enabled. Seven seats, one failure. That is a bench defect, not a ranking.</p>
+            <p><strong>Does it survive a change of harness?</strong> A 2080 reproducing another card's exact failure fingerprint says the failure belongs to the model. The same model truncating mid-JSON on a different machine says it belongs to the harness.</p>
+        </section>
+
+        <section class="section">
+            <h2>What this page is not</h2>
+            <p>It is not a claim that the tooling is bad. Most of these are reasonable behaviours being read for something they were never reporting, and more of them are mine than anyone else's.</p>
+            <p>It is not finished. It is a count, and the count goes up every week that measurement continues. A week without a new row would be the surprising outcome.</p>
+            <p>And it is not an argument against publishing results. It is an argument for publishing the instrument alongside them.</p>
+        </section>
+
+    </div>
+</body>
+</html>
