@@ -3,3 +3,6 @@ magic/
 
 # Real deploy target: host and account. Never committed.
 deploy.env
+
+# Superseded local page snapshots; deploy.sh excludes these from publication.
+bulkhead-tau/local-lane/_archive/
