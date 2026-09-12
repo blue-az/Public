@@ -34,7 +34,7 @@
 
         <section class="section">
             <h2>What this is</h2>
-            <p>Fourteen faults, caught over roughly a week of local-model benchmarking on two RTX 3090s. Not one of them was a model behaving badly. Every one was the instrument, the daemon, the log parser, or my own code.</p>
+            <p>Sixteen faults, caught over roughly a week of local-model benchmarking across two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390. Not one of them was a model behaving badly. Every one was the instrument, the daemon, the log parser, or my own code.</p>
             <p>They are collected here because of a property they share: <strong>each one produced a number rather than an error.</strong> A crashed run announces itself. A daemon quietly using two cards while the row says "solo" does not. It produces a clean, plausible, publishable figure that happens to be false, and nothing downstream can tell the difference.</p>
             <p>That is the argument for the log. Anyone can report what their system did. The question worth asking is how many of these were sitting inside the run that produced the report.</p>
         </section>
@@ -69,6 +69,8 @@
                 <tr><td>Bench task authored out of scope</td><td>A model failing a task</td><td>The task reached outside its own fixture, so the failure was the bench.</td></tr>
                 <tr><td>Token usage discarded on every turn</td><td>"This endpoint does not return usage, so subscription spend is unmeasurable"</td><td>The endpoint returns it richly, including reasoning tokens and a per-message attribution breakdown. The client parsed it correctly and the caller bound it to a variable it never read again. Every lap since the file was written was unpriceable for that reason alone.</td></tr>
                 <tr><td>State-block generator was not idempotent</td><td>A working tool</td><td>The document gained a newline on every regeneration. Caught by the tool's own <code>--check</code> mode on its first run, which is the only reason it is a line in this table instead of a slow corruption.</td></tr>
+                <tr><td><code>localhost:11434</code> is not this machine</td><td>A normal benchmark run on the 8 GB card in this box</td><td>An <code>ssh -L 11434:127.0.0.1:11434</code> tunnel to the other machine held <code>[::1]:11434</code>, and <code>localhost</code> resolves to <code>::1</code> first. The runner and the agent config both hardcoded <code>localhost</code>, so the harness reached the <em>other</em> host's daemon. The same model tag exists on both and both report the same ollama version, so a misrouted run loads cleanly and attributes a 24 GB card's work to an 8 GB one. The machine label is set by hand and witnesses nothing. Only surfaced because a separate mistake crashed the run first.</td></tr>
+                <tr><td>A hardware spec carried from a three-month-old finding</td><td>A controlled comparison: "same RAM, only the CPU differs"</td><td>The other machine has <strong>32 GB</strong>, not the 15.9 GB the older document's header implied. Measured live only after the run: 99% swap and ~200 MB free on one side against 125 MB of swap used on the other. The variable the experiment was built to isolate was never controlled, so the registered predictions were untestable before the first trial started.</td></tr>
                 </tbody>
             </table>
         </section>
