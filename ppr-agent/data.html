@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database | PPR_Agent</title>
-    <meta name="description" content="SQLite database with 2,374 devices and 57.8 million implants.">
+    <meta name="description" content="SQLite database with 3,576 devices and 92.1 million implants, covering 2008–2025.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
         <header class="header">
             <div class="badge">Project Phoenix Domain</div>
             <h1>PPR_Agent Database</h1>
-            <p class="subtitle">2,374 Devices | 57.8M Implants | 17 Years</p>
+            <p class="subtitle">3,576 Devices | 92M Implants | 18 Years (2008–2025)</p>
         </header>
 
         <nav class="nav">
@@ -49,7 +49,7 @@
                     <tr>
                         <td><code>year</code></td>
                         <td>INTEGER</td>
-                        <td>Report year (2008-2024)</td>
+                        <td>Report year (2008–2025)</td>
                     </tr>
                     <tr>
                         <td><code>device_category</code></td>
@@ -127,32 +127,38 @@
                     <tr>
                         <td>Pacemaker</td>
                         <td>844</td>
-                        <td>35.8M</td>
+                        <td>60.2M</td>
                         <td><span class="tech-tag green">Complete</span></td>
                     </tr>
                     <tr>
                         <td>ICD</td>
                         <td>902</td>
-                        <td>12.0M</td>
+                        <td>17.4M</td>
                         <td><span class="tech-tag green">Complete</span></td>
                     </tr>
                     <tr>
                         <td>CRT-D</td>
                         <td>511</td>
-                        <td>8.5M</td>
+                        <td>11.5M</td>
                         <td><span class="tech-tag green">Complete</span></td>
                     </tr>
                     <tr>
                         <td>CRT-P</td>
                         <td>116</td>
-                        <td>1.4M</td>
+                        <td>2.6M</td>
                         <td><span class="tech-tag green">Complete</span></td>
                     </tr>
                     <tr>
-                        <td>TPS (Leadless)</td>
+                        <td>TPS</td>
+                        <td>8</td>
+                        <td>330K</td>
+                        <td><span class="tech-tag green">Observed</span></td>
+                    </tr>
+                    <tr>
+                        <td>S-ICD</td>
                         <td>1</td>
-                        <td>100K</td>
-                        <td><span class="tech-tag green">Complete</span></td>
+                        <td>2.8K</td>
+                        <td><span class="tech-tag green">Observed</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -165,12 +171,12 @@ PDF Reports (ABT, BSX, MDT)
          |
          v
 +-------------------+
-|  extract_pdfs.py  |   Company-specific parsing patterns
+|  extract_pdfs.py  |   Historical extraction narrative; not verified in this bundled extract
 +-------------------+
          |
          v
 +-------------------+
-|  CSV Files (51)   |   extracted_data/*.csv
+|  Historical CSV extraction (not bundled)   |   extracted_data/*.csv
 +-------------------+
          |
          v
@@ -180,7 +186,7 @@ PDF Reports (ABT, BSX, MDT)
          |
          v
 +-------------------+
-|  ppr_agent.db     |   SQLite with 2,374 devices
+|  ppr_agent.db     |   SQLite with 3,576 devices
 +-------------------+</div>
         </section>
 
@@ -232,26 +238,26 @@ sqlite3 -header -csv ppr_agent.db "SELECT * FROM market_share;" > market_share.c
                 <tbody>
                     <tr>
                         <td>Abbott (ABT)</td>
-                        <td>1,202</td>
-                        <td>94.9%</td>
+                        <td>1,271</td>
+                        <td>Unavailable (revenue NULL)</td>
                         <td><span class="tech-tag green">Excellent</span></td>
                     </tr>
                     <tr>
                         <td>Boston Scientific (BSX)</td>
-                        <td>163</td>
-                        <td>100.0%</td>
+                        <td>413</td>
+                        <td>Unavailable (revenue NULL)</td>
                         <td><span class="tech-tag green">Complete</span></td>
                     </tr>
                     <tr>
                         <td>Medtronic (MDT)</td>
-                        <td>924</td>
-                        <td>96.0%</td>
+                        <td>1,892</td>
+                        <td>Unavailable (revenue NULL)</td>
                         <td><span class="tech-tag green">Excellent</span></td>
                     </tr>
                     <tr>
                         <td><strong>Overall</strong></td>
                         <td><strong>2,289</strong></td>
-                        <td><strong>95.7%</strong></td>
+                        <td><strong>Unavailable (revenue NULL)</strong></td>
                         <td><span class="tech-tag green">Production Ready</span></td>
                     </tr>
                 </tbody>
