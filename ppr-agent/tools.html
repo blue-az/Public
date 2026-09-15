@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tools | PPR_Agent</title>
-    <meta name="description" content="6 analytical tools for medical device market intelligence.">
+    <meta name="description" content="15 registered deterministic tools; 6 canonical public tools for medical device market intelligence.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
         <header class="header">
             <div class="badge">Project Phoenix Domain</div>
             <h1>PPR_Agent Tools</h1>
-            <p class="subtitle">6 Analytical Capabilities</p>
+            <p class="subtitle">15 Registered Tools · 6 Canonical Public Tools</p>
         </header>
 
         <nav class="nav">
@@ -26,11 +26,11 @@
 
         <section class="section">
             <h2>Tool Overview</h2>
-            <p>PPR_Agent provides 6 analytical tools for comprehensive market intelligence. Tools are distributed across 4 variations based on use case.</p>
+            <p>PPR_Agent provides 15 registered deterministic tools; this page documents a 6-tool canonical public subset for comprehensive market intelligence. Tools are distributed across 4 variations based on use case.</p>
             <div class="stats-row">
                 <div class="stat-box">
-                    <div class="number">6</div>
-                    <div class="label">Total Tools</div>
+                    <div class="number">15</div>
+                    <div class="label">Registered Tools</div>
                 </div>
                 <div class="stat-box">
                     <div class="number">73</div>
@@ -44,7 +44,7 @@
         </section>
 
         <section class="section">
-            <h2>GetTopDevicesByImplants</h2>
+            <h2>get_top_devices</h2>
             <div class="badge">Rankings</div>
             <p>Retrieves the top devices ranked by US implant volume for a specified year. Optionally filter by company or device category.</p>
             <h3>Parameters</h3>
@@ -62,7 +62,7 @@
                         <td><code>year</code></td>
                         <td>integer</td>
                         <td>Yes</td>
-                        <td>Report year (2008-2024)</td>
+                        <td>Report year (2008-2025)</td>
                     </tr>
                     <tr>
                         <td><code>limit</code></td>
@@ -85,11 +85,11 @@
                 </tbody>
             </table>
             <h3>Example</h3>
-            <div class="code">get_top_devices_by_implants(year=2024, limit=10, company="ABT", device_category="CRT-D")</div>
+            <div class="code">get_top_devices(year=2024, limit=10, company="ABT", device_category="CRT-D")</div>
         </section>
 
         <section class="section">
-            <h2>GetMarketShareTrend</h2>
+            <h2>get_market_share_trend</h2>
             <div class="badge">Market Analysis</div>
             <p>Calculates market share percentages for each company over a time period. Shows how Abbott, Boston Scientific, and Medtronic compare year-by-year.</p>
             <h3>Parameters</h3>
@@ -107,13 +107,13 @@
                         <td><code>start_year</code></td>
                         <td>integer</td>
                         <td>Yes</td>
-                        <td>Starting year (2008-2024)</td>
+                        <td>Starting year (2008-2025)</td>
                     </tr>
                     <tr>
                         <td><code>end_year</code></td>
                         <td>integer</td>
                         <td>Yes</td>
-                        <td>Ending year (2008-2024)</td>
+                        <td>Ending year (2008-2025)</td>
                     </tr>
                     <tr>
                         <td><code>device_category</code></td>
@@ -128,7 +128,7 @@
         </section>
 
         <section class="section">
-            <h2>CompareCompanies</h2>
+            <h2>compare_companies</h2>
             <div class="badge">Competitive Intelligence</div>
             <p>Compares specified companies across multiple metrics including device count, device families, and total implants over a time period.</p>
             <h3>Parameters</h3>
@@ -173,7 +173,7 @@
         </section>
 
         <section class="section">
-            <h2>GetDeviceLongevity</h2>
+            <h2>get_device_longevity</h2>
             <div class="badge">Lifecycle Analysis</div>
             <p>Finds device families that have been in the market for the longest time, showing their market longevity and lifetime implant volumes.</p>
             <h3>Parameters</h3>
@@ -206,7 +206,7 @@
         </section>
 
         <section class="section">
-            <h2>GetYearOverYearGrowth</h2>
+            <h2>get_year_over_year_growth</h2>
             <div class="badge">Trend Analysis</div>
             <p>Calculates year-over-year growth rates showing how implant volumes changed between consecutive years.</p>
             <h3>Parameters</h3>
@@ -251,7 +251,7 @@
         </section>
 
         <section class="section">
-            <h2>SearchDevices</h2>
+            <h2>search_devices</h2>
             <div class="badge">Search</div>
             <p>Searches for devices by name or model number using partial text matching.</p>
             <h3>Parameters</h3>
@@ -303,42 +303,42 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>GetTopDevicesByImplants</td>
+                        <td>get_top_devices</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td>-</td>
                         <td>-</td>
                     </tr>
                     <tr>
-                        <td>GetMarketShareTrend</td>
+                        <td>get_market_share_trend</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td>-</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td><span class="tech-tag green">Yes</span></td>
                     </tr>
                     <tr>
-                        <td>CompareCompanies</td>
+                        <td>compare_companies</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td>-</td>
                         <td><span class="tech-tag green">Yes</span></td>
                     </tr>
                     <tr>
-                        <td>GetDeviceLongevity</td>
+                        <td>get_device_longevity</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td>-</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td>-</td>
                     </tr>
                     <tr>
-                        <td>GetYearOverYearGrowth</td>
+                        <td>get_year_over_year_growth</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td>-</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td>-</td>
                     </tr>
                     <tr>
-                        <td>SearchDevices</td>
+                        <td>search_devices</td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td><span class="tech-tag green">Yes</span></td>
                         <td>-</td>
