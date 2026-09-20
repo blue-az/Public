@@ -16,25 +16,30 @@
             <p class="subtitle">Evidence-backed agent systems and deterministic substrates.</p>
         </header>
 
-        <nav class="nav">
+        <nav class="nav" aria-label="Bulkhead τ">
             <a href="index.html">Home</a>
-            <a href="../papers/">Research Papers</a>
-            <a href="../local-models/">Local Models</a>
             <a href="index.html#engine-room">Tau-Bench</a>
-            <a href="../sensor-simulation/">Simulation Lab</a>
+            <a href="../domains/">Domains</a>
+            <a href="../papers/">Research Papers</a>
             <a href="../local-llm-tsp/">Benchmarks</a>
             <a href="demos.html">Demos</a>
-            <a href="reflect.html">Reflect</a>
-            <a href="../domains/">Domains</a>
         </nav>
+        <div class="nav-related">
+            <h2 class="nav-kicker">Related</h2>
+            <nav class="nav nav-labs" aria-label="Related">
+                <a href="../local-models/">Local Models</a>
+                <a href="../sensor-simulation/">Simulation Lab</a>
+                <a href="reflect.html">Reflect</a>
+            </nav>
+        </div>
 
         <div class="pullquote">
             <p>Aligning agent execution with charter specifications, grounded in logbook evidence.</p>
         </div>
 
         <section class="section">
-            <h2>The Evidence tracks</h2>
-            <p style="margin-bottom: 2rem;">Start here to explore the deterministic governance substrate through four primary lenses:</p>
+            <h2>The Substrate</h2>
+            <p style="margin-bottom: 2rem;">Four surfaces of the engine room. Labs (local models, simulation, Reflect) sit in their own section below.</p>
 
             <div class="grid evidence-grid">
                 <a class="card" href="../papers/" style="text-decoration: none; color: inherit;">
@@ -43,40 +48,22 @@
                     <span style="color: var(--accent); font-weight: bold;">Explore Research &rarr;</span>
                 </a>
 
-                <a class="card" href="../sensor-simulation/" style="text-decoration: none; color: inherit;">
-                    <h3>Sensor Simulation Lab</h3>
-                    <p>Live validation environment. Firmware validators for future hardware and physics microscopes for legacy sensor forensic data.</p>
-                    <span style="color: var(--accent); font-weight: bold;">Enter Simulation Lab &rarr;</span>
-                </a>
-
-                <a class="card" href="../local-llm-tsp/" style="text-decoration: none; color: inherit;">
-                    <h3>Benchmarks &amp; Proofs</h3>
-                    <p>Real-world evidence. Geographic TSP scale ladders and solver-backed orchestration proofs demonstrating where correctness must live.</p>
-                    <span style="color: var(--accent); font-weight: bold;">View Benchmarks &rarr;</span>
-                </a>
-
-                <a class="card" href="demos.html" style="text-decoration: none; color: inherit;">
-                    <h3>Boundary Series Demos</h3>
-                    <p>Playable proofs. Two browser demos dogfooding real <code>.pbc.md</code> charters — bounding a flight envelope and bounding derivatives risk — each with deterministic enforcement and replay.</p>
-                    <span style="color: var(--accent); font-weight: bold;">Play the Demos &rarr;</span>
-                </a>
-
-                <a class="card" href="reflect.html" style="text-decoration: none; color: inherit;">
-                    <h3>Reflect Manuals</h3>
-                    <p>Generated owner's-manuals. Repos run through <strong>Stewie Reflect</strong> — structured chapters plus flagged attention cards — then refined by hand and reviewed against source.</p>
-                    <span style="color: var(--accent); font-weight: bold;">Read the Manuals &rarr;</span>
-                </a>
-
                 <a class="card" href="../domains/" style="text-decoration: none; color: inherit;">
                     <h3>Domains</h3>
                     <p>The full catalog. Every domain agent and industry intelligence site built on the substrate — personal agents, enterprise verticals, and research demos.</p>
                     <span style="color: var(--accent); font-weight: bold;">Browse Domains &rarr;</span>
                 </a>
 
-                <a class="card" href="../local-models/" style="text-decoration: none; color: inherit;">
-                    <h3>Local Models</h3>
-                    <p>The measured field. Chip-to-chip results, what a spilled layer costs, and a running count of the measurement faults caught along the way.</p>
-                    <span style="color: var(--accent); font-weight: bold;">Open Local Models &rarr;</span>
+                <a class="card" href="../local-llm-tsp/" style="text-decoration: none; color: inherit;">
+                    <h3>Benchmarks &amp; Proofs</h3>
+                    <p>Geographic TSP scale ladders and solver-backed orchestration proofs showing where correctness must live.</p>
+                    <span style="color: var(--accent); font-weight: bold;">View Benchmarks &rarr;</span>
+                </a>
+
+                <a class="card" href="demos.html" style="text-decoration: none; color: inherit;">
+                    <h3>Boundary Series Demos</h3>
+                    <p>Playable proofs of charter and boundary enforcement — browser games plus sensor/CAD demos, each with deterministic rules and replay.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Play the Demos &rarr;</span>
                 </a>
             </div>
         </section>
@@ -100,8 +87,8 @@
                 <!-- Engine Room Column -->
                 <div class="card" id="engine-room">
                     <h3>Engine Room (Bulkhead τ)</h3>
-                    <p><strong>Core Substrate.</strong> A custom, deterministic expert system built locally for implementation engagements, layered on the open-source <code>tau-bench</code> foundation (originally authored by Sierra Research, licensed under the MIT License). Operates under a strict supervisor/implementer pattern, utilizing cross-audit agent rotation, phase discipline, and a four-phase execution framework (Glass Box &rarr; Human-in-the-Loop &rarr; Progressive Disclosure &rarr; Multi-Modal Output).</p>
-                    <p><strong>What tau-bench is.</strong> tau-bench (Sierra Research) is an open-source framework for evaluating AI agents on realistic work: the agent must call domain-specific API tools and hold a multi-turn conversation with a <em>simulated user</em> while following written policy rules, and every run is graded against the ground-truth state of a domain database. It measures <strong>reliability</strong> &mdash; the same task passed consistently across repeated trials (Pass^k), not a single lucky run &mdash; over domains like retail and airline. Bulkhead τ builds on that deterministic tool-and-policy substrate, adding supervisor/implementer control, phase discipline, and human-in-the-loop gating.</p>
+                    <p><strong>Core Substrate.</strong> A custom, deterministic expert system built locally for implementation engagements. It uses the open-source <code>tau-bench</code> <em>grammar</em> (domain, policy/SOPs, tools, tasks, database, variations) from Sierra Research (MIT License) on personal and consulting data. Runtime is a pattern-matcher over grounded tools, not an LLM talking to a simulated user. Supervisor/implementer rotation, phase discipline, and the four-phase framework (Glass Box &rarr; Human-in-the-Loop &rarr; Progressive Disclosure &rarr; Multi-Modal Output) sit on that grammar.</p>
+                    <p><strong>What tau-bench is, and is not here.</strong> Sierra’s τ-bench evaluates a model as the agent: tool calls, a simulated user, written policy, graded against database state, scored for reliability (Pass^k) on domains like retail and airline. Bulkhead τ keeps that tool-and-policy substrate. It does not ship Sierra’s airline/retail eval as the product, and it does not treat the language model as the production runtime.</p>
                     <p style="font-size: 0.85rem; margin-top: 1rem;"><a href="https://github.com/sierra-research/tau-bench" target="_blank" style="color: var(--accent);">tau-bench Foundation (MIT) &rarr;</a></p>
                 </div>
 
@@ -125,9 +112,31 @@
             <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--ink-muted);">Provenance note: The PBC anchoring path is upstream-aligned through provider-neutral specification guidelines. The trust-state verification logic is a custom parallel implementation, inheriting its conceptual structure from the gt-kb design.</p>
         </section>
 
+        <section id="labs" class="section">
+            <h2>Labs</h2>
+            <p style="margin-bottom: 2rem;">Supporting surfaces. They are not the engine room. They measure models, simulate sensors, and generate owner manuals.</p>
+            <div class="grid">
+                <a class="card" href="../local-models/" style="text-decoration: none; color: inherit;">
+                    <h3>Local Models</h3>
+                    <p>The measured field. Chip-to-chip results, what a spilled layer costs, and a running count of the measurement faults caught along the way.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Open Local Models &rarr;</span>
+                </a>
+                <a class="card" href="../sensor-simulation/" style="text-decoration: none; color: inherit;">
+                    <h3>Simulation Lab</h3>
+                    <p>Firmware validators for future hardware and physics microscopes for legacy sensor forensic data.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Enter Simulation Lab &rarr;</span>
+                </a>
+                <a class="card" href="reflect.html" style="text-decoration: none; color: inherit;">
+                    <h3>Reflect</h3>
+                    <p>Owner's manuals. Repos run through <strong>Stewie Reflect</strong> — structured chapters plus flagged attention cards — then refined by hand against source.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Read the Manuals &rarr;</span>
+                </a>
+            </div>
+        </section>
+
         <footer class="footer">
             <p>Bulkhead τ · Built from the underlying engineering core</p>
-            <p>Papers: <a href="../papers/">/papers/</a></p>
+            <p>Papers: <a href="../papers/">/papers/</a> · Domains: <a href="../domains/">/domains/</a> · Labs: <a href="#labs">Local Models / Simulation / Reflect</a></p>
             <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
         </footer>
     </div>
