@@ -53,6 +53,49 @@ fi
 
 TARGET="${1:-all}"
 
+# --- git parity ------------------------------------------------------------
+# rsync publishes the WORKING TREE, so the working tree is what "live" means.
+# Commit it before syncing, or the repo quietly becomes a stale second canon
+# that the next reader mistakes for the record. Set DEPLOY_AUTOCOMMIT=0 to skip.
+REPO_ROOT="$(git -C "$LOCAL_ROOT" rev-parse --show-toplevel 2>/dev/null || true)"
+if [[ -n "$REPO_ROOT" && "${DEPLOY_AUTOCOMMIT:-1}" == "1" ]]; then
+    if [[ -n "$(git -C "$REPO_ROOT" status --porcelain)" ]]; then
+        echo "[*] Working tree is dirty; committing before deploy."
+        git -C "$REPO_ROOT" add -A
+        git -C "$REPO_ROOT" commit -q -m "deploy($TARGET): publish working tree
+
+Committed by deploy.sh: rsync ships the working tree, so this is the
+state that went live."
+    fi
+    git -C "$REPO_ROOT" push -q origin HEAD 2>/dev/null \
+        || echo "[!] git push failed; the commit is local only." >&2
+fi
+
+# The stamp makes the live site self-describing: one curl says which commit
+# is serving, instead of byte-diffing every page against the repo to find out.
+write_stamp() {
+    [[ -n "$REPO_ROOT" ]] || return 0
+    local sha dirty stamp
+    sha="$(git -C "$REPO_ROOT" rev-parse HEAD 2>/dev/null || echo unknown)"
+    dirty=false
+    [[ -n "$(git -C "$REPO_ROOT" status --porcelain 2>/dev/null)" ]] && dirty=true
+    stamp="$(mktemp)"
+    # mktemp is 0600 and rsync -a preserves it, which Apache serves as 403.
+    chmod 644 "$stamp"
+    cat > "$stamp" <<JSON
+{
+  "commit": "$sha",
+  "target": "$TARGET",
+  "deployed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "deployed_from": "$(hostname -s 2>/dev/null || echo unknown)",
+  "working_tree_dirty_at_deploy": $dirty
+}
+JSON
+    rsync_push "$stamp" "$REMOTE_ROOT/deploy-stamp.json"
+    rm -f "$stamp"
+}
+
+
 CONTROL_SOCKET="/tmp/ionos_deploy_$$"
 
 start_master() {
@@ -191,5 +234,7 @@ case "$TARGET" in
         exit 1
         ;;
 esac
+
+write_stamp
 
 echo "[✓] Deploy complete."
