@@ -240,6 +240,16 @@
 <header id="title-block-header">
 <h1 class="title">Operator Control Plane — Owner's Manual</h1>
 </header>
+<aside class="snapshot-note" style="border:1px solid #c9a227;background:rgba(201,162,39,.08);border-radius:8px;padding:16px 20px;margin:18px 0 26px;">
+<p style="margin:0 0 8px;font-weight:700;letter-spacing:.02em;">This is a snapshot, not current documentation</p>
+<p style="margin:0 0 10px;">This owner&rsquo;s manual was generated from a Reflect scan of repository snapshot <code>cab4a7a</code> and published here on 2026-09-16. Its chapters are Reflect&rsquo;s; its command reference and configuration notes were copied from the repository README at that snapshot. For current behaviour, use the <a href="https://github.com/blue-az/operator-control-plane#readme">repository README</a>.</p>
+<p style="margin:0 0 6px;">Superseded since the snapshot:</p>
+<ul style="margin:0;padding-left:20px;">
+<li>The P3 authority broker is now installed as a root-managed service, and the <code>operator</code> CLI resolves enrollment against it. No production ledger is enrolled yet, so current ledgers keep their local trust properties, including the self-amendable policy gate.</li>
+<li>In the default <code>single_user</code> mode, a &ldquo;verified&rdquo; status is advisory &mdash; the builder&rsquo;s own assertion, not an independent check. Only <code>uid_isolated</code> verification means a different OS identity checked the work.</li>
+<li>The subcommand count below is out of date; run <code>./operator --help</code> for the current list.</li>
+</ul>
+</aside>
 <section id="visual-package">
 <p><strong>Visual package</strong> (live ledger orientation, not a Reflect rescan):</p>
 <ul>
