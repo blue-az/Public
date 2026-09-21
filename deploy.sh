@@ -157,6 +157,12 @@ case "$TARGET" in
     periodic-agent)
         rsync_push "$LOCAL_ROOT/periodic-agent/" "$REMOTE_ROOT/periodic-agent/"
         ;;
+    showcase)
+        rsync_push "$LOCAL_ROOT/showcase/" "$REMOTE_ROOT/showcase/"
+        ;;
+    tennis-agent)
+        rsync_push "$LOCAL_ROOT/tennis-agent/" "$REMOTE_ROOT/tennis-agent/"
+        ;;
     domains)
         rsync_push "$LOCAL_ROOT/domains/" "$REMOTE_ROOT/domains/"
         rsync_push "$LOCAL_ROOT/local-models/" "$REMOTE_ROOT/local-models/"
@@ -214,6 +220,8 @@ case "$TARGET" in
         rsync_push "$LOCAL_ROOT/local-models/" "$REMOTE_ROOT/local-models/"
         rsync_push "$LOCAL_ROOT/sensor-simulation/" "$REMOTE_ROOT/sensor-simulation/"
         rsync_push "$LOCAL_ROOT/domains/" "$REMOTE_ROOT/domains/"
+        rsync_push "$LOCAL_ROOT/showcase/" "$REMOTE_ROOT/showcase/"
+        rsync_push "$LOCAL_ROOT/tennis-agent/" "$REMOTE_ROOT/tennis-agent/"
         rsync_push "$LOCAL_ROOT/honeywell/" "$REMOTE_ROOT/honeywell/"
         rsync_push "$LOCAL_ROOT/honeywell-landing/" "$REMOTE_ROOT/honeywell-landing/"
         rsync_push "$LOCAL_ROOT/tour-agent/" "$REMOTE_ROOT/tour-agent/"
