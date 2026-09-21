@@ -106,8 +106,8 @@
             <p>Operational safety is maintained by separating historical governance milestones from current evidence-derived states through an active trust loop:</p>
             <ul style="line-height: 1.6; margin-top: 1rem;">
                 <li><strong>The Charter:</strong> Authored, stable, and provider-neutral specifications maintained upstream by <code>stewie-sh</code>.</li>
-                <li><strong>The Engine Room:</strong> The core Bulkhead τ substrate, gating execution authority and enforcing phase discipline.</li>
-                <li><strong>The Logbook:</strong> An append-only SQLite trust database that monitors real-time passing, failing, stale, or disputed states, actively gating execution.</li>
+                <li><strong>The Engine Room:</strong> The core Bulkhead τ substrate, holding execution authority and enforcing phase discipline.</li>
+                <li><strong>The Logbook:</strong> An append-only SQLite trust database recording behavior assertions against PBC anchors on a verification lease, resolving each to passing, failing, expired or untrusted. It records state; downstream gating is not yet wired.</li>
             </ul>
             <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--ink-muted);">Provenance note: The PBC anchoring path is upstream-aligned through provider-neutral specification guidelines. The trust-state verification logic is a custom parallel implementation, inheriting its conceptual structure from the gt-kb design.</p>
         </section>
