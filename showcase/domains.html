@@ -199,7 +199,7 @@ class BaseDomainAdapter(ABC):
         """LangChain tools for direct mode (500+ tools)"""
 
     def get_meta_tool(self) -> StructuredTool:
-        """Single aggregated tool for meta mode (14 tools)"""
+        """Single aggregated tool for meta mode"""
 
     def execute(self, query: str) -> str:
         """Execute natural language query"""
