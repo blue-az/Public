@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>BT Inc Platform Owner Manual</title>
+  <title>Reflect calibration artifact: BT Inc (synthetic)</title>
   <style>
     html {
       color: #1a1a1a;
@@ -182,8 +182,15 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">BT Inc Platform Owner Manual</h1>
+<h1 class="title">Reflect calibration artifact: BT Inc (synthetic)</h1>
 </header>
+<aside class="calibration-note" style="border:1px solid #c9a227;background:rgba(201,162,39,.08);border-radius:8px;padding:16px 20px;margin:18px 0 26px;">
+<p style="margin:0 0 8px;font-weight:700;letter-spacing:.02em;">What this page is</p>
+<p style="margin:0 0 10px;">This is not documentation of Bulkhead &tau;. It is the output of a test.</p>
+<p style="margin:0 0 10px;"><code>bt-inc-platform</code> is a synthetic repository &mdash; a fictional cross-sector firm assembled from six separate research desks &mdash; built on 2026-06-20 to probe the product-fit bar of <strong>Stewie Reflect</strong>, a tool that generates owner&rsquo;s manuals from code. Nobody runs it; there is no BT Inc.</p>
+<p style="margin:0 0 10px;">Before Reflect&rsquo;s recalibration, the repo failed its product-fit check as a bundle of unrelated domains. After it, the repo passed &mdash; and this manual stayed honest about the fragmentation: it keeps the desks separate and states that the shared router was never verified at runtime. It did not fake a unified product to get through.</p>
+<p style="margin:0;">That is the result this page preserves. The manual below was generated on 2026-06-22 from repository snapshot <code>9950f21</code> and is kept as evidence about the tool, not as a description of any running system. Where it says &ldquo;verified,&rdquo; it is reporting what Reflect checked in that snapshot.</p>
+</aside>
 <h1 id="owners-manual-for-blue-azbt-inc-platform">Owner’s Manual for
 blue-az/bt-inc-platform</h1>
 <p><em>6 generated chapters from the reviewed repository
@@ -1878,15 +1885,22 @@ flowchart LR
     B --> C[Blocking review state]
     C --> D[Later hypotheses stay blocked]
   end
-  subgraph R[Missing or unreadable score state]
-    E[No usable score log] --> F[Empty score state]
+  subgraph M[Missing or empty score log]
+    E[No score file] --> F[Empty score state]
     F --> G[Later hypotheses remain open]
+  end
+  subgraph U[Unreadable score log]
+    H[Corrupt JSON or not a list] --> I[Blocked: score_history_unreadable]
+    I --> J[Later hypotheses blocked until repaired]
   end
 </pre>
 <p>When score rows are present, the latest review state can be blocking
 and later hypotheses stay blocked. When the score log is missing or
-unreadable, the desk falls back to an empty score state, and later
-hypotheses remain open instead of being blocked.</p>
+empty, the desk falls back to an empty score state and later hypotheses
+remain open. When it exists but is unreadable &mdash; corrupt JSON, or
+not a list &mdash; the desk now fails closed with
+<code>score_history_unreadable</code> and blocks later hypotheses until
+the file is repaired or archived.</p>
 <blockquote>
 <p><strong>Figure:</strong> The score writer persists caller-supplied
 reviewer and gate decision values and verifies only that the file was
