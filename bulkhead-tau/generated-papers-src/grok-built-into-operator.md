@@ -16,8 +16,8 @@ Agentic development systems face a recurring governance question as new
 frontier coding harnesses ship: how does a harness earn operational
 standing inside an existing multi-agent system, without that decision
 collapsing into brand rank or a private relationship? This paper answers
-with a case study: xAI's Grok CLI was registered as a peer harness inside
-Bulkhead τ's Operator system (commit `2b46544`), and its subsequent
+with a case study: xAI's Grok CLI was registered as a peer harness in
+Operator, a standalone control plane (commit `2b46544`), and its subsequent
 admission was tested empirically rather than assumed. A single Grok
 session produced two independently verified git commits and one
 standalone analytical artifact, one of which — a commit adding
