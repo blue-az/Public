@@ -8,3 +8,7 @@ deploy.env
 # Match at any depth: the old path-specific rule silently stopped applying when
 # local-lane/ moved out of bulkhead-tau/, and the snapshots landed in a commit.
 _archive/
+
+# Private token-usage dashboard. `cac dashboard --also-proto` writes it here, and
+# deploy.sh runs `git add -A` then pushes this PUBLIC repo; never let it be swept in.
+consumer-api-cost-private/
