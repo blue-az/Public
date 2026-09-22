@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-09-01T05:46:12.477248+00:00",
+  "generated_at": "2026-09-22T03:18:48.440059+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": true,
   "groups": [
@@ -162,7 +162,7 @@
           "paper_group": "Orchestration & Role Assignment",
           "group_status": "confirmed",
           "public_slug": "details",
-          "proto_output_path": "details/",
+          "proto_output_path": "local-models/",
           "proto_markdown_path": null,
           "publish": false,
           "summary": "Routing and compression are the first reliable local-LLM win at portfolio scale. Miss families are design signals, not capability failures \u2014 they identify where the harness, not the model, needs attention."
@@ -681,6 +681,7 @@
           "id": "the-default-draft-is-too-deep",
           "title": "The Default Draft Is Too Deep",
           "source_path": "docs/THE_DEFAULT_DRAFT_IS_TOO_DEEP_STUB.md",
+          "page_origin": "hand-authored",
           "track": "paper",
           "paper_number": "1.44",
           "lifecycle": "stub",

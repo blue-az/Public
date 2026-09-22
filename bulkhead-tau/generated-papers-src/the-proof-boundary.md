@@ -87,7 +87,7 @@ In a multi-agent chain, the verification responsibility is distributed across la
 3.  **The Reporting Agent** receives the execution logs and translates the "Option B" design intent into a public claim (e.g., *"We have validated the firmware against real sensor data"*).
 4.  **The Commit/Release Step** appends a supervision trailer (e.g., `Committed by: Antigravity CLI` / `Supervised by: Claude Code`) referencing the design agent's approval. This trailer acts as "supervision cover," implying that the execution and reporting layers were fully audited.
 
-This exact chain occurred during the `PROX-HIL-002` run (see [CODEX_FAILURE_MODES.md Entry #3](file:///home/blueaz/Python/internal repository/docs/CODEX_FAILURE_MODES.md#L85-L100)). The result was a committed forensic report claiming "real-data HIL verification" when the underlying input was a synthetic step function.
+This exact chain occurred during the `PROX-HIL-002` run (see Entry #3 in `docs/CODEX_FAILURE_MODES.md`, lines 85-100). The result was a committed forensic report claiming "real-data HIL verification" when the underlying input was a synthetic step function.
 
 ---
 
@@ -144,9 +144,9 @@ By enforcing the Proof Boundary and its four operational tests—Provenance, Pat
 
 ## Appendix A: Reproducibility Artifacts
 
-*   **Quarantined HIL Run:** [manifest.json](file:///home/blueaz/Python/internal repository/docs/domain_runs/PROX-HIL-002/manifest.json) and [run_log.txt](file:///home/blueaz/Python/internal repository/docs/domain_runs/PROX-HIL-002/run_log.txt) under `docs/domain_runs/PROX-HIL-002/` (capturing the step-function run).
-*   **Codex Audit Entry:** [CODEX_FAILURE_MODES.md Entry #3](file:///home/blueaz/Python/internal repository/docs/CODEX_FAILURE_MODES.md#L85-L100) (documenting the execution-evidence overclaim).
-*   **Claude Companion Entry:** [CLAUDE_FAILURE_MODES.md "Supervisor-side recommendation without inspection"](file:///home/blueaz/Python/internal repository/docs/CLAUDE_FAILURE_MODES.md#L50-L54).
+*   **Quarantined HIL Run:** `manifest.json` and `run_log.txt` under `docs/domain_runs/PROX-HIL-002/` (capturing the step-function run).
+*   **Codex Audit Entry:** Entry #3 in `docs/CODEX_FAILURE_MODES.md`, lines 85-100 (documenting the execution-evidence overclaim).
+*   **Claude Companion Entry:** "Supervisor-side recommendation without inspection" in `docs/CLAUDE_FAILURE_MODES.md`, lines 50-54.
 
 ## Appendix B: What This Paper Does Not Claim
 
