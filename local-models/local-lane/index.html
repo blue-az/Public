@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Lane | Local benchmark program | Bulkhead τ</title>
-    <meta name="description" content="What two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026: task wall clock over decode speed, context and placement, the quality ceiling, a tool-grounded consultant bench, and what reasoning effort costs.">
+    <meta name="description" content="What a single RTX 3090, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026: task wall clock over decode speed, context and placement, the quality ceiling, a tool-grounded consultant bench, and what reasoning effort costs.">
     <link rel="stylesheet" href="../../bulkhead-tau/style.css">
 </head>
 <body>
@@ -13,22 +13,12 @@
         <header class="header">
             <span class="badge">Benchmark program · rewritten 11 Sep 2026</span>
             <h1>Local Lane</h1>
-            <p class="subtitle">What two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026, and what the instrument got wrong along the way.</p>
+            <p class="subtitle">What an RTX 3090, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026, one model on one card, and what the instrument got wrong along the way.</p>
         </header>
 
-        <nav class="nav">
+        <nav class="nav" aria-label="Bulkhead τ">
             <a href="../../bulkhead-tau/index.html">Home</a>
-            <a href="../../papers/">Research Papers</a>
-            <a href="../../bulkhead-tau/index.html#engine-room">Tau-Bench</a>
-            <a href="../../sensor-simulation/">Simulation Lab</a>
-            <a href="../../local-llm-tsp/">Benchmarks</a>
-            <a href="../../bulkhead-tau/demos.html">Demos</a>
-            <a href="../../bulkhead-tau/reflect.html">Reflect</a>
-            <a class="active" href="./">Local Lane</a>
-            <a href="../layers/">MoE or not</a>
-            <a href="qwen38/">3.6 vs 3.8</a>
-            <a href="../instrument-log/">Instrument Log</a>
-            <a href="../benchmarks/">Definitions</a>
+            <a href="../">Local Models</a>
         </nav>
 
         <div class="pullquote">
@@ -39,7 +29,7 @@
             <h2>What this is</h2>
             <p>I benchmark the three chips I have:</p>
             <ul>
-                <li><strong>RTX 3090, 24 GB</strong>, two of them, power capped at 320 W. <em>Moved after this page was written:</em> they now sit in the test bench, which is where every measurement dated 21 Sep 2026 or later was taken. The rows below were produced while they were in the desktop (i9-9900KF).</li>
+                <li><strong>RTX 3090, 24 GB</strong>, power capped at 320 W. I own two and <strong>run them singly</strong>: every ranked measurement on this page is one model on one card. The pair is a capacity arrangement, not a faster machine. <em>Moved after this page was written:</em> they now sit in the test bench, which is where every measurement dated 21 Sep 2026 or later was taken. The rows below were produced while they were in the desktop (i9-9900KF).</li>
                 <li><strong>RTX 2080, 8 GB</strong>, originally in a headless test bench (i3-9100F, 15 GB RAM, Debian 12); now in the controller desktop. Its rows below predate the swap.</li>
                 <li><strong>Ryzen AI MAX 390</strong> with Radeon 8050S and 27 GB of unified memory, in a Flow Z13, running Vulkan rather than ROCm.</li>
             </ul>
@@ -60,16 +50,26 @@
                     <tr><td>2=</td><td>RTX 3090</td><td><code>gemma4:26b</code></td><td>MoE</td><td>13.0</td><td>38.9</td><td>1.00</td><td>149/178</td></tr>
                     <tr><td>2=</td><td>RTX 3090</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>18.1</td><td>32.4</td><td>0.96</td><td>63/63</td></tr>
                     <tr><td>4</td><td>MAX 390</td><td><code>qwen3.6:35b</code></td><td>MoE</td><td>27.3</td><td>40.6</td><td>0.72</td><td>18/18</td></tr>
-                    <tr><td>5</td><td>RTX 3090</td><td><code>gpt-oss:120b</code></td><td>MoE</td><td>31.1</td><td>53.4</td><td>0.57</td><td>60/60</td></tr>
-                    <tr><td>6=</td><td>MAX 390</td><td><code>gemma4:26b</code></td><td>MoE</td><td>26.3</td><td>132.4</td><td>0.39</td><td>16/18</td></tr>
-                    <tr><td>6=</td><td>MAX 390</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>35.3</td><td>96.8</td><td>0.39</td><td>18/18</td></tr>
-                    <tr><td>8</td><td>RTX 3090</td><td><code>gemma4:31b</code></td><td>dense</td><td>36.4</td><td>128.4</td><td>0.33</td><td>28/33</td></tr>
-                    <tr><td>9</td><td>RTX 2080</td><td><code>gemma4:26b</code></td><td>MoE</td><td>41.3</td><td>171.6</td><td>0.27 (0.23 to 0.31)</td><td>15/15</td></tr>
-                    <tr><td>10</td><td>RTX 3090</td><td><code>qwen3-next</code></td><td>MoE</td><td>92.0</td><td>325.7</td><td>0.13</td><td>19/22</td></tr>
+                    <tr><td>5=</td><td>MAX 390</td><td><code>gemma4:26b</code></td><td>MoE</td><td>26.3</td><td>132.4</td><td>0.39</td><td>16/18</td></tr>
+                    <tr><td>5=</td><td>MAX 390</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>35.3</td><td>96.8</td><td>0.39</td><td>18/18</td></tr>
+                    <tr><td>7</td><td>RTX 3090</td><td><code>gemma4:31b</code></td><td>dense</td><td>36.4</td><td>128.4</td><td>0.33</td><td>28/33</td></tr>
+                    <tr><td>8</td><td>RTX 2080</td><td><code>gemma4:26b</code></td><td>MoE</td><td>41.3</td><td>171.6</td><td>0.27 (0.23 to 0.31)</td><td>15/15</td></tr>
                     </tbody>
                 </table>
             </div>
-            <p><strong>Ten is the whole list, not a cut from a longer one.</strong> Six models have wall clock in the corrected configuration on the RTX 3090, three on the MAX 390 and one on the RTX 2080, which comes to ten. Several further models have quality data but no wall clock under the corrected protocol, so they cannot be placed here at all. The ranking grows when those are re-run, not when the cutoff is moved.</p>
+            <p><strong>Every row is one card.</strong> This is a single-GPU ranking: one RTX 3090,
+            one MAX 390, one RTX 2080, each running the model by itself. That is how I run them, and
+            it is the only configuration these numbers describe.</p>
+
+            <p><strong>Two models were removed rather than re-measured</strong>, because they cannot
+            be measured here at all. <code>gpt-oss:120b</code> is a 60.9 GB blob and
+            <code>qwen3-next</code> is 46.9 GB, against 24 GB of VRAM. Any figure either one ever
+            produced on this machine was a multi-card or partly-host-RAM number wearing a
+            single-card label. They are mentioned under
+            <a href="#capacity">what a second card is for</a> and are not ranked. Their quality
+            counts are unaffected by this and stand where they are cited.</p>
+
+            <p><strong>Eight is the whole list, not a cut from a longer one.</strong> Four models have wall clock in the corrected configuration on a single RTX 3090, three on the MAX 390 and one on the RTX 2080, which comes to eight. Several further models have quality data but no wall clock under the corrected protocol, so they cannot be placed here at all. The ranking grows when those are re-run, not when the cutoff is moved.</p>
             <p>Rows 2 and 3 are joint second. Bootstrapping the RTX 3090 ranking over warm trials and pass counts puts <code>qwen3.8:27b</code> ahead of <code>gemma4:26b</code> in only 79.1% of draws, which is not separable. Every other adjacent pair on that chip is ordered at 98.7% or better, and <code>qwen3.6:35b</code> takes first in every draw.</p>
             <p><strong>The RTX 2080 row is the weakest evidence in the table.</strong> That fixture ran three trials rather than four, so its warm mean rests on n=2 where every other row has n=3, and its long task was still falling across those two trials, 218.6 s then 124.5 s. Its two per-task ratios spread from 0.23 to 0.31, wider than the gap between several adjacent rows above it. Read the row as placing the card in this neighbourhood, not as fixing it at 0.27, and note the direction: with the long task still coming down, 0.27 more likely understates the card than flatters it. It is also the only roster member that runs on the 8 GB card at a usable rate, so there is no second 2080 row to check it against. Note it does not <em>fit</em> that card: its experts run from host RAM, as the correction further down sets out.</p>
             <p><strong>The quality column is not poolable across chips.</strong> The RTX 3090 counts accumulate over the seat corpus, the MAX 390 figures are an 18-cell floor battery, and the RTX 2080 is 15 cells at n=3 over five tasks. The denominators are printed because they are not interchangeable, and a rate computed across them would be arithmetic rather than a measurement.</p>
@@ -148,6 +148,17 @@
                 </table>
             </div>
             <p>The exception is prefill. Two of four models read their prompt much faster on two cards, <code>gemma4:31b</code> by 40% and <code>qwen3.6:35b</code> by 19%. I do not know why. My first explanation, that they were short of headroom on one card, was tested the same evening and did not hold.</p>
+            <p id="capacity"><strong>What a second card is for, and what it is not.</strong> It buys
+            capacity: room for a model that does not fit, or a longer configured context, or two
+            models resident at once. It does not buy speed. Splitting a model that already fits cost
+            1.4 GB and moved decode between -4.7% and +9.3% &mdash; noise, because decode walks the
+            layers in order and the two cards never work at once. If you are choosing hardware on
+            the strength of this page, <strong>buy one good card, not two</strong>. The two models
+            dropped from the ranking above, <code>gpt-oss:120b</code> at 60.9 GB and
+            <code>qwen3-next</code> at 46.9 GB, are exactly the case where a second card is the only
+            way to run the thing at all &mdash; and both finished slower than models a third their
+            size.</p>
+
             <p><strong>Where the second card earns its place.</strong> At a configured context of 131,072 with a ~12.8k-token prompt, <code>qwen3.8:27b</code> ran at 61.4 tok/s on two cards and 11.2 on one, about 5.5x apart. This is a configured-capacity sweep, not a prompt-length sweep, and placement on the one-card side was not captured, so how much of that comes from spilling to CPU is provisional. Two models also fit side by side on the pair up to a context of 32,768, which makes switching between them take 0.6 s instead of a full reload.</p>
             <p><strong>Spilling to the CPU is expensive.</strong> Forcing layers of <code>gemma4:26b</code> onto the CPU (empty-cache probe, n=3) took it from 224.8 tok/s at 31 of 31 layers on the GPU to 172.7 at 30 of 31. One layer cost 23%. All four measured points fit a fixed 1.34 ms per CPU-resident layer. Whether that cost carries over to other models is not established. A rough estimate for <code>qwen3.8:27b</code> comes out near 5.5 ms per layer, but it divides a VRAM shortfall by an assumed layer count rather than counting layers, so it is arithmetic, not a measurement. And a dense model near its memory limit does not slow down smoothly: <code>gemma4:31b</code> at a reduced GPU layer count passed two tasks 3/3 and timed out on others. The limit is a stall with task-dependent odds, not a wall.</p>
             <p>The interactive version of this is <a class="back-link" href="../layers/">Where the Layers Go</a>.</p>

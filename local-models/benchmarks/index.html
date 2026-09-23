@@ -18,17 +18,7 @@
 
         <nav class="nav">
             <a href="../../bulkhead-tau/index.html">Home</a>
-            <a href="../../papers/">Research Papers</a>
-            <a href="../../bulkhead-tau/index.html#engine-room">Tau-Bench</a>
-            <a href="../../sensor-simulation/">Simulation Lab</a>
-            <a href="../../local-llm-tsp/">Benchmarks</a>
-            <a href="../../bulkhead-tau/demos.html">Demos</a>
-            <a href="../../bulkhead-tau/reflect.html">Reflect</a>
-            <a href="../local-lane/">Local Lane</a>
-            <a href="../layers/">MoE or not</a>
-            <a href="../local-lane/qwen38/">3.6 vs 3.8</a>
-            <a href="../instrument-log/">Instrument Log</a>
-            <a class="active" href="./">Definitions</a>
+            <a href="../">Local Models</a>
         </nav>
 
         <div class="pullquote">
@@ -79,7 +69,7 @@
             <h2>How a result stands against the published rows</h2>
             <div class="table-wrap"><table class="table"><thead><tr><th>Class</th><th>Meaning</th></tr></thead><tbody><tr><td><code>exact</code></td><td>All identity-critical components match and no blocking-until-bridged component differs. A recorded patch-level delta does not disqualify a row.</td></tr><tr><td><code>constrained</code></td><td>Identity-critical components match, but a blocking-until-bridged component differs, or the operator recorded the run as constrained at the time. A valid measurement of the model; not by itself proof that the historical row reproduces. The September z13 L2 rows are constrained because their closeout says so — that label is the operator&#x27;s, and a bridge run is what would revisit it, not a re-reading of the version numbers.</td></tr><tr><td><code>original</code></td><td>A first measurement with no historical counterpart — the L0/L1 extensions, and every native Testbench row.</td></tr></tbody></table></div>
             <p>One harness across three point releases, run weeks apart: historical 0.85.1, testbench 0.86.0, z13 0.86.1. Drift is normal and cannot be prevented — work that spans months will span releases. Recording it is the requirement; freezing it is not.</p>
-            <div class="table-wrap"><table class="table"><thead><tr><th>Bucket</th><th>Rule</th><th>Components</th></tr></thead><tbody><tr><td>identity critical</td><td>must match, or rows are not comparable at all</td><td><code>task hashes</code>, <code>rendered fixture hash</code>, <code>model tag and digest</code>, <code>sampling options</code>, <code>leg structure</code>, <code>host class</code></td></tr><tr><td>recorded not blocking</td><td>Stamped on every row so a question can be asked later, but does not by itself demote a row or require a re-run. A patch-level harness or server bump lands here until there is evidence it moved a number.</td><td><code>harness patch version</code>, <code>ollama patch version</code>, <code>runner revisions that do not touch measurement</code></td></tr><tr><td>blocking until bridged</td><td>Known to change what is measured, so rows either side are not pooled until a bridge run says otherwise.</td><td><code>runner changes that alter the measurement (2026-09-07 ledger removal, 09-11 residency gate and endpoint pin, 09-16 host gate)</code>, <code>harness major or minor bumps</code></td></tr></tbody></table></div>
+            <div class="table-wrap"><table class="table"><thead><tr><th>Bucket</th><th>Rule</th><th>Components</th></tr></thead><tbody><tr><td>identity critical</td><td>must match, or rows are not comparable at all</td><td><code>task hashes</code>, <code>rendered fixture hash</code>, <code>model tag and digest</code>, <code>sampling options</code>, <code>leg structure</code>, <code>host class</code>, <code>card count</code></td></tr><tr><td>recorded not blocking</td><td>Stamped on every row so a question can be asked later, but does not by itself demote a row or require a re-run. A patch-level harness or server bump lands here until there is evidence it moved a number.</td><td><code>harness patch version</code>, <code>ollama patch version</code>, <code>runner revisions that do not touch measurement</code></td></tr><tr><td>blocking until bridged</td><td>Known to change what is measured, so rows either side are not pooled until a bridge run says otherwise.</td><td><code>runner changes that alter the measurement (2026-09-07 ledger removal, 09-11 residency gate and endpoint pin, 09-16 host gate)</code>, <code>harness major or minor bumps</code></td></tr></tbody></table></div>
             <p><strong>Bridge run.</strong> The cheap way to settle a suspected-material change: re-run one cell class on both versions on ONE host, small n, and compare. A bridge run answers the question for the whole corpus. Absent one, do not assume a version delta explains a result — and do not assume it does not.</p>
         </section>
 
