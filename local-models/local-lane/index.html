@@ -28,6 +28,7 @@
             <a href="../layers/">MoE or not</a>
             <a href="qwen38/">3.6 vs 3.8</a>
             <a href="../instrument-log/">Instrument Log</a>
+            <a href="../benchmarks/">Definitions</a>
         </nav>
 
         <div class="pullquote">
@@ -38,8 +39,8 @@
             <h2>What this is</h2>
             <p>I benchmark the three chips I have:</p>
             <ul>
-                <li><strong>RTX 3090, 24 GB</strong>, two of them in the desktop (i9-9900KF), power capped at 320 W.</li>
-                <li><strong>RTX 2080, 8 GB</strong>, in a headless test bench (i3-9100F, 15 GB RAM, Debian 12).</li>
+                <li><strong>RTX 3090, 24 GB</strong>, two of them, power capped at 320 W. <em>Moved after this page was written:</em> they now sit in the test bench, which is where every measurement dated 21 Sep 2026 or later was taken. The rows below were produced while they were in the desktop (i9-9900KF).</li>
+                <li><strong>RTX 2080, 8 GB</strong>, originally in a headless test bench (i3-9100F, 15 GB RAM, Debian 12); now in the controller desktop. Its rows below predate the swap.</li>
                 <li><strong>Ryzen AI MAX 390</strong> with Radeon 8050S and 27 GB of unified memory, in a Flow Z13, running Vulkan rather than ROCm.</li>
             </ul>
             <p>Every figure below comes from a committed run in my evaluation tree, and each one carries its run date, sample size and configuration. Where a number was later found to be wrong, the correction is stated rather than the number quietly replaced.</p>
@@ -221,10 +222,63 @@
         </section>
 
         <section class="section">
+            <h2>Correction and re-measurement, 22 Sep 2026</h2>
+            <p>Every E9 row on this page was re-run on 22 Sep with a harness that records
+            what it was measuring. 130 cells across both hosts, <strong>none of them
+            unproven</strong>. The protocol those runs followed is now published separately, at
+            <a href="../benchmarks/">Benchmark definitions</a>, and generated from the same file
+            the harness reads rather than restated here.</p>
+
+            <p><strong>The hardware moved.</strong> The two 3090s are now in the test bench and
+            the 2080 is in the controller desktop. The bullets above are marked accordingly. No
+            row below was re-normalised for the swap, because a row means the machine it ran on.</p>
+
+            <p><strong>Two claims above no longer hold.</strong></p>
+            <ul>
+                <li>The MAX 390 ran <code>qwen3.8:27b</code>'s long task in <strong>48.0 s</strong>,
+                not 96.8 s. That breaks the joint sixth place: <code>qwen3.8</code> now separates
+                from <code>gemma4:26b</code> on that chip rather than tying it.</li>
+                <li>&ldquo;The MAX 390's fastest model on the short task is <code>gemma4:26b</code>&rdquo;
+                is no longer true: the seat reads the prompt quicker, 20.2 s against 22.0 s.</li>
+            </ul>
+            <p>The stated MAX 390 penalty of 1.95x to 3.40x also widens to roughly 1.5x to 4.0x
+            against the same models on a 3090. The point that no single multiplier exists for this
+            chip stands; the published range does not.</p>
+
+            <p><strong>Placement is now proved per cell, and it was not before.</strong> The
+            September native rows ran with the residency gate disabled and an empty process list
+            captured at preflight, so where those models sat was never established. Runs now
+            attribute GPU memory to the measuring daemon's own process tree and fail closed if a
+            model spans cards. The 22 Sep rows were taken on one pinned card.</p>
+
+            <p><strong>Some failures were never capability failures.</strong> Two kinds were being
+            summed into one pass count:</p>
+            <ul>
+                <li><strong>Out-of-scope files.</strong> <code>gemma4:26b</code> writes scratch
+                test files (<code>test_tmp.py</code>, <code>test_solution.py</code>,
+                <code>repro.py</code>) while solving a task, and the scope check counts that as a
+                failure. Most of its published L2 gap is this, not a wrong answer.</li>
+                <li><strong>Context truncation.</strong> Nine failed cells across both hosts ended
+                at the pinned 16,384-token ceiling with no answer to grade &mdash; the battery then
+                reported an empty result, which reads exactly like a wrong implementation. Part of
+                <code>gemma4:26b</code>'s collapse at the easier rungs is this.</li>
+            </ul>
+            <p>Both are now recorded as their own classes. A pass count that mixes them with
+            capability misses is measuring three things and reporting one.</p>
+
+            <p><strong>And one instrument fault, caught live.</strong> Loading
+            <code>gemma4:26b</code> on 22 Sep, <code>ollama ps</code> reported 1.17 GB while
+            <code>nvidia-smi</code> showed 19,282 MiB held by that process. The
+            <a href="../instrument-log/">Instrument Log</a> already lists this API as unreliable for
+            footprint; it remains unreliable, and no placement claim here rests on it.</p>
+        </section>
+
+        <section class="section">
             <h2>Related</h2>
             <ul>
                 <li><a href="../layers/">Where the Layers Go</a>: interactive layer spill and the decode-to-wall-clock inversion.</li>
                 <li><a href="qwen38/">Qwen 3.6 vs 3.8</a>: same architecture, new weights, and the ceiling item the local field sits under.</li>
+                <li><a href="../benchmarks/">Benchmark definitions</a>: what each benchmark measures, generated from the harness's own definition file.</li>
                 <li><a href="../instrument-log/">The Instrument Log</a>: every measurement fault caught in this program.</li>
                 <li><a href="../../capture-integrity/">Capture Integrity</a>: the model did not fail the protocol, the terminal did.</li>
                 <li>Papers: <a href="../../bulkhead-tau/generated-papers/the-default-draft-is-too-deep.html">The Default Draft Is Too Deep</a>, <a href="../../bulkhead-tau/generated-papers/dedicated-vs-unified-memory.html">Dedicated 24 GB Beats Unified 27 GB</a>, <a href="../../bulkhead-tau/generated-papers/slow-is-not-smart.html">Slow Is Not Smart</a>, <a href="../../bulkhead-tau/generated-papers/when-local-llm-clusters-do-not-help.html">When Local LLM Clusters Do Not Help</a>, <a href="../../bulkhead-tau/generated-papers/local-models-cost-frontier-tokens.html">Local Models Cost Frontier Tokens</a>.</li>

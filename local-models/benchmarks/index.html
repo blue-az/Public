@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark definitions | Bulkhead &tau;</title>
+    <meta name="description" content="What each local benchmark actually measures: the two legs, the pinned configuration, what makes a cell unproven, and what may never be pooled. Generated from the same file the internal dashboard reads.">
+    <link rel="stylesheet" href="../../bulkhead-tau/style.css">
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Definitions &middot; generated from <code>benchmark_definitions.yaml</code></span>
+            <h1>Benchmark definitions</h1>
+            <p class="subtitle">What each benchmark measures, how many cells it takes, what voids a run, and what may never be pooled. The numbers live elsewhere; this page is the protocol behind them.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="../../bulkhead-tau/index.html">Home</a>
+            <a href="../../papers/">Research Papers</a>
+            <a href="../../bulkhead-tau/index.html#engine-room">Tau-Bench</a>
+            <a href="../../sensor-simulation/">Simulation Lab</a>
+            <a href="../../local-llm-tsp/">Benchmarks</a>
+            <a href="../../bulkhead-tau/demos.html">Demos</a>
+            <a href="../../bulkhead-tau/reflect.html">Reflect</a>
+            <a href="../local-lane/">Local Lane</a>
+            <a href="../layers/">MoE or not</a>
+            <a href="../local-lane/qwen38/">3.6 vs 3.8</a>
+            <a href="../instrument-log/">Instrument Log</a>
+            <a class="active" href="./">Definitions</a>
+        </nav>
+
+        <div class="pullquote">
+            <p>A result is only as reproducible as the stack that produced it. Where a value was not recorded, this page says so rather than leaving it out.</p>
+        </div>
+
+        <section class="section">
+            <h2>Why this page exists</h2>
+            <p>A benchmark result without its protocol cannot be checked, and a protocol
+            restated in prose drifts away from the runs it describes. Every definition here is
+            generated from the file the harness and the internal dashboard both read, so there
+            is one source rather than three descriptions that agree until they do not.</p>
+        </section>
+
+        <section class="section">
+            <h2>The benchmarks</h2>
+            <div class="table-wrap"><table class="table"><thead><tr><th>Definition</th><th>Status</th><th>What it is</th></tr></thead><tbody><tr><td><code>e9-standard-l2</code></td><td>published standard</td><td>The published local-lane E9 standard. Two linked legs over different task sets: a bounded L2 quality gate and a wall-clock battery. Wall clock ranks; quality gates.</td></tr><tr><td><code>e9-extension-l1</code></td><td>extension</td><td>The same two legs at L1. Run because the roster tops out the L2 quality gate. An extension, not the published standard.</td></tr><tr><td><code>e9-extension-l0</code></td><td>extension</td><td>The same two legs at L0, the level that currently separates the roster. An extension, not the published standard.</td></tr><tr><td><code>fusion-l3-retained</code></td><td>retained not reproducible</td><td>Six multi-step tool-use task classes over the TennisAgent fixture, three models, n=3 = 54 cells. A separate benchmark family from E9: not an E9 instruction level, not a Haiku adapter, and never pooled with either.</td></tr><tr><td><code>fusion-l3-z13-diagnostic</code></td><td>diagnostic only</td><td>A Z13 run against the Fusion L3 task lineage under a changed wrapper. Preserved as raw evidence; it is not a protocol anyone should re-run or score.</td></tr><tr><td><code>fusion-l3-v2</code></td><td>current not yet dashboarded</td><td>A deliberately new, separately versioned packet built after the retained one could not be recovered: one six-task manifest, one native runner, one deterministic grader, model-free boundary tests and a native-host contract.</td></tr><tr><td><code>haiku-staged-control</code></td><td>separate control</td><td>The E9 task lineage run through a staged carrier -- text planner, deterministic fixture executor, synthesis, deterministic grader -- as a frontier control. Not a fourth local model and not a GPU speed measurement.</td></tr><tr><td><code>blind-read-eval</code></td><td>single observations</td><td>Anonymised delegate-brief responses judged by a sandboxed Claude, with the operator&#x27;s own ranking recorded separately. Four rounds, one attempt each.</td></tr></tbody></table></div>
+        </section>
+
+        <section class="section">
+            <h2>The E9 standard is two legs, not one</h2>
+            <p>The quality leg and the wall-clock leg run over <strong>different task sets, in
+            separate runs, to separate evidence roots</strong>. They share exactly one task.
+            A quality count therefore does not vouch for a time recorded beside it, and warm
+            means include failed trials unless a row says otherwise.</p>
+            <div class="table-wrap"><table class="table"><thead><tr><th></th><th>Quality leg</th><th>Wall-clock leg</th></tr></thead><tbody><tr><td><strong>Measures</strong></td><td>correctness</td><td>end-to-end task wall clock</td></tr><tr><td><strong>Tasks</strong></td><td><code>ambiguous-anchor</code>, <code>csv-summarize-repair</code>, <code>strict-log-format</code></td><td><code>constant-and-callers</code>, <code>csv-summarize-repair</code></td></tr><tr><td><strong>Trials per task</strong></td><td>6</td><td>4 (discard cold t1)</td></tr><tr><td><strong>Reports</strong></td><td>pass count over 18 cells</td><td>warm t2-t4 mean, plus individual warm trials</td></tr><tr><td><strong>Role</strong></td><td>bounded gate and noise floor — NOT the model differentiator</td><td>the differentiator, once the quality gate is cleared</td></tr></tbody></table></div>
+            <p>Pinned across every E9 definition:
+            <code>tag=e9pin</code>, <code>num_ctx=16384</code>, <code>temperature=0.8</code>, <code>thinking=off</code>, <code>ledger=none</code>.
+            Everything else runs as the model ships, so a ranking here ranks each model at its
+            shipped defaults, not at its best.</p>
+        </section>
+
+        <section class="section">
+            <h2>A cell has three outcomes</h2>
+            <p>Pass and fail are not enough, because a harness fault and a wrong answer look
+            identical in a pass count. Both produce a number rather than an error.</p>
+            <ul>
+                <li><strong>pass</strong> &mdash; graded correct, with every proof below satisfied</li>
+                <li><strong>fail</strong> &mdash; graded incorrect AND every proof below satisfied. Only this counts as evidence about the model.</li>
+                <li><strong>unproven</strong> &mdash; any proof missing or failed. Not a model result, not poolable, and never rendered as a score. Recorded with its raw trace for forensics.</li>
+            </ul>
+            <p>A failing cell is promoted to <code>fail</code> only when all five proofs hold:</p>
+            <div class="table-wrap"><table class="table"><thead><tr><th>Proof</th><th>What it establishes</th></tr></thead><tbody><tr><td><code>dispatch</code></td><td>the call happened — non-zero tokens, a resolved model identity, no no-dispatch state</td></tr><tr><td><code>scope</code></td><td>the graded fixture is byte-identical apart from the model&#x27;s own intended edits</td></tr><tr><td><code>placement</code></td><td>the model ran where the row says it ran, from the host&#x27;s own telemetry</td></tr><tr><td><code>grader</code></td><td>the failure survives a grader spot-check. A deterministic grader that has never been boundary-tested against negation, synonyms and section headings is a suspect, not an oracle.</td></tr><tr><td><code>timing</code></td><td>the trial completed without timeout, and the recorded time excludes harness bookkeeping</td></tr></tbody></table></div>
+            <p>Default to unproven. Promoting unproven to fail requires the proofs, not an argument that the model probably was wrong. Mixed results across a roster are the signature of an unproven cell class, so triage the instrument before interpreting the spread.</p>
+        </section>
+
+        <section class="section">
+            <h2>How a result stands against the published rows</h2>
+            <div class="table-wrap"><table class="table"><thead><tr><th>Class</th><th>Meaning</th></tr></thead><tbody><tr><td><code>exact</code></td><td>All identity-critical components match and no blocking-until-bridged component differs. A recorded patch-level delta does not disqualify a row.</td></tr><tr><td><code>constrained</code></td><td>Identity-critical components match, but a blocking-until-bridged component differs, or the operator recorded the run as constrained at the time. A valid measurement of the model; not by itself proof that the historical row reproduces. The September z13 L2 rows are constrained because their closeout says so — that label is the operator&#x27;s, and a bridge run is what would revisit it, not a re-reading of the version numbers.</td></tr><tr><td><code>original</code></td><td>A first measurement with no historical counterpart — the L0/L1 extensions, and every native Testbench row.</td></tr></tbody></table></div>
+            <p>One harness across three point releases, run weeks apart: historical 0.85.1, testbench 0.86.0, z13 0.86.1. Drift is normal and cannot be prevented — work that spans months will span releases. Recording it is the requirement; freezing it is not.</p>
+            <div class="table-wrap"><table class="table"><thead><tr><th>Bucket</th><th>Rule</th><th>Components</th></tr></thead><tbody><tr><td>identity critical</td><td>must match, or rows are not comparable at all</td><td><code>task hashes</code>, <code>rendered fixture hash</code>, <code>model tag and digest</code>, <code>sampling options</code>, <code>leg structure</code>, <code>host class</code></td></tr><tr><td>recorded not blocking</td><td>Stamped on every row so a question can be asked later, but does not by itself demote a row or require a re-run. A patch-level harness or server bump lands here until there is evidence it moved a number.</td><td><code>harness patch version</code>, <code>ollama patch version</code>, <code>runner revisions that do not touch measurement</code></td></tr><tr><td>blocking until bridged</td><td>Known to change what is measured, so rows either side are not pooled until a bridge run says otherwise.</td><td><code>runner changes that alter the measurement (2026-09-07 ledger removal, 09-11 residency gate and endpoint pin, 09-16 host gate)</code>, <code>harness major or minor bumps</code></td></tr></tbody></table></div>
+            <p><strong>Bridge run.</strong> The cheap way to settle a suspected-material change: re-run one cell class on both versions on ONE host, small n, and compare. A bridge run answers the question for the whole corpus. Absent one, do not assume a version delta explains a result — and do not assume it does not.</p>
+        </section>
+
+        <section class="section">
+            <h2>What may never be pooled</h2>
+            <p>Pooling is forbidden by default: results may only be compared within one
+            definition, on one host.</p>
+            <ul><li>e9-standard-l2 &amp;mdash; e9-extension-l1 &amp;mdash; e9-extension-l0</li><li>z13-max390 &amp;mdash; testbench-native</li><li>testbench-native &amp;mdash; testbench-hybrid</li><li>e9 local rows &amp;mdash; Haiku staged control</li><li>fusion-l3-retained &amp;mdash; fusion-l3-v2</li><li>blind-read rounds with each other &amp;mdash; since each is one observation</li><li>different model digests or tags</li></ul>
+            <p>Counts accumulate over different corpora with different denominators. A rate computed across them is arithmetic, not a measurement.
+            Quality rank transfers between chips; speed rank does not. The Z13 penalty against the 3090 varies by task and reverses, so no single multiplier exists.</p>
+        </section>
+
+        <section class="section">
+            <h2>Related</h2>
+            <ul>
+                <li><a href="../local-lane/">Local Lane</a> &mdash; the measurements these definitions describe.</li>
+                <li><a href="../instrument-log/">The Instrument Log</a> &mdash; every measurement fault caught in this program.</li>
+            </ul>
+            <p class="back-link"><a href="../">&larr; Local models</a></p>
+        </section>
+
+        <footer class="footer">
+            <p>Bulkhead &tau; &middot; Benchmark definitions &middot; generated from <code>magic_bridge/benchmark_definitions.yaml</code></p>
+        </footer>
+    </div>
+</body>
+</html>
