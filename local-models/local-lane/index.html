@@ -263,6 +263,26 @@
             attribute GPU memory to the measuring daemon's own process tree and fail closed if a
             model spans cards. The 22 Sep rows were taken on one pinned card.</p>
 
+            <p><strong>Pinning a card is not the same as clearing it.</strong> The 22 Sep rows ran
+            on one pinned card that was not verified <em>empty</em> first, and a partly occupied
+            card is slower in a way nothing in the trace records. Runs now check the card down to
+            its idle floor before launch. The effect is not uniform: re-measured on a cleared card,
+            <code>qwen3.6:35b</code>'s long task came in at 19.8 s against 28.2 s, while
+            <code>qwen3.8:27b</code>'s held at 20.1 s against 18.8 s.</p>
+
+            <p><strong>The long-task gap between the two qwen models is not established.</strong>
+            The ranking above has them 2.1x apart on the long task on a 3090, 15.6 s against 32.4 s.
+            A paired run on 25 Sep &mdash; single 3090, same daemon, minutes apart, cleared card,
+            <code>num_ctx</code> 16,384 and temperature 0.8 on both, six warm trials each &mdash;
+            put them <strong>1.6% apart</strong>: 19.8 s against 20.1 s, with ranges that overlap
+            almost entirely. The short task is not in question and moved the other way, widening to
+            2x with non-overlapping ranges, 7.6 s against 15.1 s. That run is on the test bench's
+            3090 rather than the desktop's, so it does not re-normalise the row; what it removes is
+            the <em>finding</em>. The long task's spread reaches 84% of its own mean between
+            identical trials, so at n=3 it cannot resolve a difference this size and the draw
+            decides the ordering. The seat's first place rests on the short task and on quality,
+            both of which hold; its <strong>1.99</strong> speed figure does not.</p>
+
             <p><strong>Some failures were never capability failures.</strong> Two kinds were being
             summed into one pass count:</p>
             <ul>
