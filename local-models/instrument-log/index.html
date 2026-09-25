@@ -85,7 +85,7 @@
         <section class="section">
             <h2>How to tell the difference</h2>
             <p>Two tests, both cheap, both used above.</p>
-            <p><strong>When every seat agrees, suspect the harness.</strong> One task in the consultant bench fails on the local 27B, the local 35B, a headless 2080, a Ryzen AI MAX 390, a hosted DeepSeek control at n=13, and a frontier model with reasoning enabled. Seven seats, one failure. That is a bench defect, not a ranking.</p>
+            <p><strong>When every seat agrees, inspect the mechanism before naming a defect.</strong> One consultant-bench task fails on the local 27B, the local 35B, a headless 2080, a Ryzen AI MAX 390, a hosted DeepSeek control at n=13, and a frontier model with reasoning enabled. The task is nevertheless solvable: three <code>get_year_over_year_growth</code> calls, one per company, fit inside its five-action budget, but require aggregation across category rows and company-level YoY arithmetic. Every tested model instead chose the intuitive six-call portfolio route and spent its budget before committing. That is a reproducible planning-budget failure mode, not a bench defect or a general ranking.</p>
             <p><strong>Does it survive a change of harness?</strong> A 2080 reproducing another card's exact failure fingerprint says the failure belongs to the model. The same model truncating mid-JSON on a different machine says it belongs to the harness.</p>
         </section>
 
