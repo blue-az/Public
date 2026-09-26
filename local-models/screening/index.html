@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How models get ruled out | Local Models | Bulkhead &tau;</title>
+    <meta name="description" content="Screening for a single 24 GB card: eligibility before quality, what disqualifies, what saturated, and the ruling made before the run rather than after it.">
+    <link rel="stylesheet" href="../../bulkhead-tau/style.css">
+    <style>
+        td.num, th.num { text-align: right; font-family: "Courier New", monospace; white-space: nowrap; }
+        .out { color: #8c4a2f; font-weight: bold; }
+        .in { color: var(--accent); font-weight: bold; }
+        .ladder { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.8rem 0; }
+        .rung { border: 1px solid var(--border); padding: 0.6rem 0.9rem; flex: 1 1 14rem; }
+        .rung b { font-family: "Courier New", monospace; }
+        .rung.closed { background: var(--paper-dark); }
+        .rung.closed b { color: #8c4a2f; }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <header class="header">
+            <span class="badge">Draft &middot; 26 Sep 2026</span>
+            <h1>How models get ruled out</h1>
+            <p class="subtitle">Screening for one 24&nbsp;GB card. What disqualifies a model, what the battery can and cannot decide, and one ruling that was written down before the run so it could not be argued afterwards.</p>
+        </header>
+
+        <nav class="nav" aria-label="Bulkhead &tau;">
+            <a href="../../bulkhead-tau/index.html">Home</a>
+            <a href="../">Local Models</a>
+        </nav>
+
+        <div class="pullquote">
+            <p>Both rungs that have been run are at the ceiling. The battery cannot rank the models that survived it &mdash; and finding that out is the result, not a failure of the run.</p>
+        </div>
+
+        <section class="section">
+            <h2>Eligibility comes before quality</h2>
+            <p>A model that cannot hold itself on one card is <strong>out of scope, not bottom of the table</strong>. That distinction is the whole first stage, and getting it wrong is how multi-card and host-RAM figures ended up published under a single-card label.</p>
+            <p>Four checks, all of which must pass before a single quality cell is graded:</p>
+            <ul>
+                <li>The whole model resident on one 24&nbsp;GB card at the pinned context.</li>
+                <li>Resident share at least 0.9 of the blob size the daemon reports.</li>
+                <li>Placement proved from host telemetry, attributed to the measuring daemon's own process tree &mdash; not from <code>ollama ps</code>, which reports dense layers and will happily say <code>100%</code> for a mixture-of-experts model whose experts are in system RAM.</li>
+                <li>The card cleared to its idle floor before load. Pinning a card is not clearing it.</li>
+            </ul>
+
+            <h3>Ruled out, and on what grounds</h3>
+            <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Model</th><th class="num">size</th><th>Why</th></tr></thead>
+                <tbody>
+                <tr><td><code>gpt-oss:120b</code></td><td class="num">60.9 GB</td><td><span class="out">ineligible</span> &mdash; cannot produce a single-card number at all. Any figure it ever carried was multi-card or partly host RAM.</td></tr>
+                <tr><td><code>qwen3-next</code></td><td class="num">46.9 GB</td><td><span class="out">ineligible</span> &mdash; same.</td></tr>
+                <tr><td><code>gemma4:31b</code></td><td class="num">19 GB</td><td><span class="out">off-roster</span> &mdash; fits, but marginal in exactly the way this stage exists to catch. At the daemon's default 32k context it puts 7% on the CPU and takes <strong>74&ndash;213&nbsp;s per call</strong>. At the pinned 16k it runs in about 10&nbsp;s. Not incapable; not an E9 model.</td></tr>
+                <tr><td><code>qwen3.6:35b</code></td><td class="num">22 GB</td><td><span class="in">eligible</span> &mdash; 22,456 MiB attributed against a 21,573 MiB blob.</td></tr>
+                <tr><td><code>qwen3.8:27b</code></td><td class="num">17 GB</td><td><span class="in">eligible</span> &mdash; 18,444 MiB against 16,919 MiB.</td></tr>
+                <tr><td><code>gemma4:26b</code></td><td class="num">18 GB</td><td><span class="in">eligible</span> &mdash; 19,002 MiB against 17,742 MiB. Mixture-of-experts, so the layer counter cannot be used and this figure is per-device measurement instead.</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p class="note">The <code>gemma4:31b</code> row is the useful one. It is a capable model that is simply outside the operating envelope of this configuration, and a quality score for it would really have been a placement score.</p>
+        </section>
+
+        <section class="section">
+            <h2>The ladder, and where it ran out</h2>
+            <p>Three instruction levels over the same tasks, fixtures and postconditions. Only the prompt's specificity changes, and the grader never softens: at L0 the exact byte match required at L2 is still required. <strong>The numbers run opposite to difficulty</strong> &mdash; L2 gives the most help.</p>
+            <div class="ladder">
+                <div class="rung closed"><b>L2 &mdash; fully specified</b><br>Numbered steps, exact strings named.<br><span class="out">Saturated 25 Sep.</span> Retained as the admission gate.</div>
+                <div class="rung closed"><b>L1 &mdash; stated plainly</b><br>One paragraph, the intent, no literals.<br><span class="out">Saturated 26 Sep.</span> Measured, and it does not order the roster.</div>
+                <div class="rung"><b>L0 &mdash; oblique</b><br>How a colleague would actually ask. Nothing named.<br>Where the ordering goes next.</div>
+            </div>
+            <p>L2 was known to be exhausted. L1 was the rung the screening design picked to order the roster, and the campaign measured it directly:</p>
+            <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Model</th><th class="num">L1 answer-correctness</th><th class="num">scope violations</th><th>capability misses</th></tr></thead>
+                <tbody>
+                <tr><td><code>qwen3.6:35b</code></td><td class="num">18/18</td><td class="num">0</td><td>none</td></tr>
+                <tr><td><code>qwen3.8:27b</code></td><td class="num">18/18</td><td class="num">0</td><td>none</td></tr>
+                <tr><td><code>gemma4:26b</code></td><td class="num">17/18</td><td class="num">3</td><td>one</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p class="note">87 cells, one card cleared to 54&nbsp;MiB and evicted between models, placement proved per cell, <strong>zero unproven</strong>. Every eligible model is at or within one cell of the ceiling, so L1 joins L2: closed for ranking, kept as a gate, ordering moves down a rung.</p>
+            <p><strong>One earlier claim dies here.</strong> "L1 still separates models" was published on the strength of <code>gemma4:31b</code> and <code>gpt-oss:120b</code> at 30/30 against two lower scores. Both of those models are now off the single-card roster, so the spread that made L1 look discriminating was carried mostly by models that are not in the race. On the models that remain, it separates nothing.</p>
+        </section>
+
+        <section class="section">
+            <h2>The ruling written down first</h2>
+            <p><code>gemma4:26b</code> writes scratch files while it works &mdash; <code>test_implementation.py</code>, <code>test_fix.py</code>, <code>repro.py</code> &mdash; and the scope check counts each one as a failed cell. Most of its published gap was this rather than a wrong answer.</p>
+            <p>Two defensible options, and they produce different rosters: treat a scratch write as a behavioural disqualifier, or grade the cell on its answer and count scope violations in their own column. <strong>The second was chosen and recorded on 26 September, before the campaign ran</strong>, along with the consequence: gemma4:26b's counts would rise and the ordering might move.</p>
+            <p>They did. Three of its four L1 failures were files created out of scope, not wrong answers, so <strong>17/18 answer-correctness against the 14/18 the unmodified harness scored</strong>. One cell is a genuine capability miss.</p>
+            <p class="note">Writing a repro and testing it is what a competent engineer does; the failure is not cleaning up, which is hygiene rather than capability. The reason to pre-declare is that the same argument made <em>after</em> the numbers would be indefensible &mdash; and a column is reversible where a summed failure is not. You can apply a cut later from a column; you cannot recover answer-correctness from a number that has already absorbed it.</p>
+        </section>
+
+        <section class="section">
+            <h2>What actually separates them</h2>
+            <p>Quality cannot rank this roster. Speed can &mdash; but only once you know what the clock is measuring. Across a full day of trials, decode rate held constant per model while the number of tokens each model chose to write varied by nearly five times. <strong>Wall clock tracks output tokens at r&nbsp;&ge;&nbsp;0.99.</strong></p>
+            <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Model</th><th class="num">short task</th><th class="num">long task</th><th class="num">out-tokens, long</th><th class="num">decode</th></tr></thead>
+                <tbody>
+                <tr><td><code>qwen3.6:35b</code></td><td class="num">7.20 s</td><td class="num">14.70 s</td><td class="num">1,434</td><td class="num">134 tok/s</td></tr>
+                <tr><td><code>qwen3.8:27b</code></td><td class="num">13.10 s</td><td class="num">20.85 s</td><td class="num">1,072</td><td class="num">77 tok/s</td></tr>
+                <tr><td><code>gemma4:26b</code></td><td class="num">12.03 s</td><td class="num">45.63 s</td><td class="num">6,843</td><td class="num">207 tok/s</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p><strong>The fastest decoder on the roster is the slowest finisher, by three times.</strong> <code>gemma4:26b</code> generates at 207 tok/s and takes 45.6 s, because it writes 4.8&times; the tokens. <code>qwen3.8:27b</code> writes <em>fewer</em> tokens than the seat and still loses, purely on decode rate. The arithmetic closes in all three cases: tokens divided by decode, plus about 27% for prefill and tool execution.</p>
+            <p class="note"><strong>What is resolvable at n=6, by 95% confidence interval.</strong> The seat separates from both on the short task. <code>qwen3.8:27b</code> and <code>gemma4:26b</code> do <em>not</em> separate on it (&minus;2.6 to +4.7&nbsp;s). <code>gemma4:26b</code> separates from both on the long task. The seat and <code>qwen3.8:27b</code> still do not (&minus;12.9 to +0.6&nbsp;s). Differences that are not listed as separated are not findings.</p>
+        </section>
+
+        <section class="section">
+            <h2>How many trials, and why</h2>
+            <p>Trial counts are fixed per task by that task's own spread, not per battery. <code>csv-summarize-repair</code> varies by up to 84% of its own mean between identical trials, so at three warm trials the draw picks the winner and picks differently on another night. An n=3 reading once put two models 2.1&times; apart on it; a paired n=6 run put the same two 1.6% apart.</p>
+            <p>The obvious suspect was sampling temperature, since 0.8 is high for a battery graded on exact postconditions. It was tested rather than assumed: t0 against t0.8, same model, same task, one cleared card, six warm trials each.</p>
+            <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Arm</th><th class="num">mean</th><th class="num">range</th><th class="num">sd</th></tr></thead>
+                <tbody>
+                <tr><td>temperature 0.8</td><td class="num">16.58 s</td><td class="num">9.5&ndash;26.0</td><td class="num">6.85</td></tr>
+                <tr><td>temperature 0.0</td><td class="num">21.48 s</td><td class="num">16.1&ndash;29.9</td><td class="num">5.20</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p class="note">Neither moved detectably. The mean difference is +4.90&nbsp;s with a 95% interval of &minus;2.8 to +12.6&nbsp;s, which includes zero, and the variance ratio is F=1.74 against a critical value near 7.15. <strong>Temperature is not the lever.</strong> At greedy decoding the same task still varied over 4&ndash;10 tool calls and 1,615&ndash;2,985 output tokens, so the variation is over <em>solution paths</em>, not sampled tokens &mdash; which is why n&ge;6 samples behaviour and cannot be tuned away.</p>
+        </section>
+
+        <section class="section">
+            <h2>What this does not say</h2>
+            <ul>
+                <li>It does not rank the roster on quality. Both rungs that have been run are at the ceiling, and a pass count at a ceiling buys precision about the ceiling rather than about the models.</li>
+                <li>It does not cull anyone. Nothing in this campaign can remove a model that is already seated &mdash; disqualification happens at eligibility and at the gate. The seat is chosen from interactive use; the ranking informs that choice and does not make it.</li>
+                <li>It does not set a speed cut. Every catastrophically slow case so far was a placement problem that eligibility already removes. A resident-but-slow model is a usability question, governed separately by a 20 tok/s interactive decode floor.</li>
+                <li>It does not travel between sessions. The same model, task and trial count read 19.75&nbsp;s one day and 14.70&nbsp;s the next, both on a cleared card. The ranges overlap, so it is one population &mdash; but the mean moved 26%. Compare arms within a run, not figures across runs.</li>
+                <li>It does not screen settings. Which configuration becomes the pin is a separate question with its own history, and two of the four pinned values were justified after the fact rather than derived.</li>
+                <li>It does not claim the earlier screening covered these models. It did not: the original span screened an earlier generation, and two of the three models here had never been measured at this rung before.</li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <p>Bulkhead &tau; &middot; Draft &middot; How models get ruled out &middot; 26 Sep 2026</p>
+            <p><a href="../../bulkhead-tau/index.html">Home</a> &nbsp;&middot;&nbsp; <a href="../">Local Models</a> &nbsp;&middot;&nbsp; <a href="../benchmarks/">Benchmark definitions</a></p>
+        </footer>
+    </div>
+</body>
+</html>
