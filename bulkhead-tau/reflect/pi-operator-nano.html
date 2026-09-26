@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pi Operator Extension — Owner Manual</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="bt-manual.css" />
+  <script type="module" src="bt-manual.js"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pi Operator Extension — Owner Manual</h1>
+</header>
+<h1 id="owners-manual-for-pi-operator-extension">Owner’s Manual for Pi
+Operator Extension</h1>
+<p><em>6 generated chapters from the reviewed repository
+snapshot</em></p>
+<blockquote>
+<p>Source:
+blue-az/pi-operator-nano:master@8709d6ebd16ddfdeda3d5830867a64614d59dd25</p>
+</blockquote>
+<h2 id="what-the-pi-operator-extension-is">What the Pi Operator
+Extension Is</h2>
+<p><em>The Pi Operator Extension is the owner-facing Pi surface for
+operating against a separate Operator checkout and external ledger. It
+does not own the ledger state itself. Its main shape is a named command
+registry: safe orientation comes first, then confirmed writes, then
+delegation and review paths that carry extra authority.</em></p>
+<h3 id="one-minute-snapshot">One-Minute Snapshot</h3>
+<p>The Pi Operator Extension is the owner-facing Pi surface for
+operating against a separate Operator checkout and external ledger. It
+does not own the ledger state itself. Its main shape is a named command
+registry: safe orientation comes first, then confirmed writes, then
+delegation and review paths that carry extra authority. The next chapter
+handles installation and topology; this one only fixes the identity
+boundary and the reading map.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat the extension as a
+local control layer that routes outward, not as the system of record.
+That keeps deployment and recovery decisions pointed at the real
+external boundary.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  A[Pi Operator Extension]
+  B[Local command surface]
+  C[Local routing config]
+  D[Separate Operator checkout]
+  E[External ledger]
+  A --&gt; B
+  A --&gt; C
+  C --&gt; D
+  C --&gt; E
+  D --&gt; E</code></pre>
+<p>The diagram shows the Pi Operator Extension at the center, with a
+local command surface and local routing configuration inside its
+boundary, and a separate Operator checkout plus an external ledger
+outside it. The routing configuration can point outward, but the state
+of record stays outside the extension. For the owner, the consequence is
+that deployment and recovery notes must keep the external boundary
+explicit.</p>
+<h3 id="what-you-should-be-able-to-explain">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>You can tell the extension apart from the separate Operator checkout
+and the external ledger it works against.</li>
+<li>You can start with safe orientation without mistaking command order
+for access control.</li>
+<li>You can keep reviewer, verifier, operator, and implementer roles
+separate instead of collapsing them into one authority model.</li>
+<li>You can treat target editing and popup launch plumbing as secondary
+support surfaces, not the product’s identity.</li>
+<li>You know which later chapters own setup, orientation, writes,
+delegation, review, and recovery.</li>
+</ul>
+<h3 id="mental-model">Mental Model</h3>
+<p>Think of the product as a Pi extension package with a carrier-neutral
+client and a local target registry that binds to an external Operator
+ledger. The owner decides policy and acceptable risk; the operator uses
+the Pi command surface; the reviewer is the model or harness label used
+for review bundles; the verifier is a separate Unix identity for
+distinct-identity review runs; and the implementer is the delegated
+harness target. The command registry is the real surface, not one file
+pretending to be everything. It is ordered so orientation comes first,
+then confirmed writes, then optional or authority-bearing paths.</p>
+<h3 id="how-it-works">How It Works</h3>
+<p>The extension binds to the external ledger through an explicit
+contract or a sibling Operator checkout, so the boundary is visible
+before any later workflow starts. The command surface is ordered with
+read-only orientation first, which helps a reader get bearings, but that
+ordering is only a convention and does not itself prove a permission
+model. Once the operator moves beyond orientation, the product separates
+delegation routing, review bundles, and privileged verifier launch into
+different authority paths. Popup stays in the background as askpass
+launch plumbing.</p>
+<h3 id="verified-facts">Verified Facts</h3>
+<p>The package loads as a consumer-local Pi extension from the current
+checkout, not by parent-directory search. The external ledger is
+discovered through an explicit contract or a sibling Operator checkout,
+and current task display state is not treated as writable state. The
+local target registry is configuration state, not live task assignment,
+and it is saved atomically. Review authority and verifier authority are
+separate, and the distinct-identity review path is not a sandbox.
+Verify-run is a guarded privileged launcher, while popup is only askpass
+plumbing.</p>
+<blockquote>
+<p><strong>Figure:</strong> The three surfaces solve different problems:
+review labels route review work, privileged verification launches
+guarded checks, and popup launching only provides askpass plumbing.
+Keeping them separate prevents the manual from overstating isolation or
+authority.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  S[Separate surfaces]
+  S --&gt; R[Review routing]
+  S --&gt; V[Privileged verification]
+  S --&gt; P[Popup askpass plumbing]
+  R --&gt; R1[Reviewer label and review bundle]
+  V --&gt; V1[Guarded launch path]
+  P --&gt; P1[Launch helper only]</code></pre>
+<p>The diagram compares three separate surfaces. One branch is review
+routing, which is about reviewer labels and review bundles. One branch
+is privileged verification, which is a guarded launch path. The last
+branch is popup askpass plumbing, which only helps launch and does not
+verify anything. The consequence is that the owner should describe and
+govern these paths separately.</p>
+<h3 id="strengths">Strengths</h3>
+<p>The strongest thing this package gives the owner is a safe reading
+path: orientation first, then more consequential actions. That makes the
+manual easier to use without pretending that order alone is security. It
+also keeps three kinds of state separate: local extension configuration,
+the external ledger, and authority-bearing review or verification paths.
+That separation makes drift easier to spot and later chapters easier to
+trust.</p>
+<h3 id="attention-cards">Attention Cards</h3>
+<h4 id="the-extension-is-not-the-backend-attention-high">⚠ The extension
+is not the backend <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> This package talks to an external
+Operator checkout and ledger contract; it does not own the ledger state
+itself.</p>
+<p><strong>Why it matters:</strong> If the owner treats it as the
+backend, setup, write, and recovery decisions will be pointed at the
+wrong system boundary.</p>
+<p><strong>What to do:</strong> Assign one owner to keep the Operator
+checkout and ledger contract explicit in every deployment and recovery
+note before rollout.</p>
+<p><strong>Revisit when:</strong> When pi operator identity and
+boundaries behavior or related owner decisions change.</p>
+<h4
+id="read-first-ordering-can-be-mistaken-for-permission-attention-medium">⚠
+Read-first ordering can be mistaken for permission <em>(attention ·
+medium)</em></h4>
+<p><strong>What happens:</strong> Read-only commands are listed first,
+but that ordering only helps the reader start safely.</p>
+<p><strong>Why it matters:</strong> If the manual reads the order as a
+permission rule, an operator may trust a path that is still capable of
+mutation elsewhere.</p>
+<p><strong>What to do:</strong> Keep command order and access policy
+separate in the manual, and put the real authority boundary in the
+chapter that owns setup and writes.</p>
+<p><strong>Revisit when:</strong> When pi operator identity and
+boundaries behavior or related owner decisions change.</p>
+<h4
+id="reviewer-verifier-and-popup-are-different-surfaces-attention-high">⚠
+Reviewer, verifier, and popup are different surfaces <em>(attention ·
+high)</em></h4>
+<p><strong>What happens:</strong> Reviewer labels, verifier identity,
+and popup launch plumbing are separate surfaces. The distinct-identity
+review path is an authority boundary, not a sandbox.</p>
+<p><strong>Why it matters:</strong> If the owner collapses them, the
+manual overstates isolation and understates who can actually run
+privileged checks.</p>
+<p><strong>What to do:</strong> Keep review routing, verifier identity,
+and askpass launch instructions separate, and do not describe verifier
+runs as sandbox-safe by default.</p>
+<p><strong>Revisit when:</strong> When pi operator identity and
+boundaries behavior or related owner decisions change.</p>
+<h3 id="owner-decisions">Owner Decisions</h3>
+<h4
+id="should-the-manual-describe-read-only-ordering-as-a-convention-or-do-you-want-a-stronger-permission-model-documented-elsewhere-owner-decision-open">⚖
+Should the manual describe read-only ordering as a convention, or do you
+want a stronger permission model documented elsewhere? <em>(owner
+decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This determines whether readers may
+infer access control from command order.</p>
+<p><strong>Revisit when:</strong> Before changing the related pi
+operator identity and boundaries behavior.</p>
+<h4
+id="should-the-install-chapter-foreground-the-contract-file-or-the-sibling-checkout-fallback-first-owner-decision-open">⚖
+Should the install chapter foreground the contract file or the sibling
+checkout fallback first? <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This shapes how quickly owners learn
+that the ledger boundary is explicit.</p>
+<p><strong>Revisit when:</strong> Before changing the related pi
+operator identity and boundaries behavior.</p>
+<h3 id="evidence-boundary">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - I reviewed the
+command ordering and command registry behavior that define the safe
+starting surface. - I reviewed the explicit ledger discovery rule, the
+local extension loading rule, and the local target registry boundary. -
+I reviewed the separate review, verifier, verify-run, and popup paths
+because they change the owner’s authority model.</p>
+</blockquote>
+<p>Not reviewed: - I did not verify live behavior on a real host or the
+separate Operator checkout. - I did not test host-specific account
+rules, sudo policy, or provider costs and availability. - I did not
+validate any runtime compatibility claims beyond the reviewed
+evidence.</p>
+<p>Recheck the command registry and README after any change to command
+grouping, loading rules, target routing, or privileged review behavior.
+Then revalidate the setup and authority chapters in the intended
+deployment environment before tightening owner guidance.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="installing-it-into-a-real-operator-environment">Installing It
+Into a Real Operator Environment</h2>
+<p><em>This chapter is about binding the extension into a real Operator
+environment, not just copying files into a folder. The owner needs to
+decide where the extension is installed, which external ledger contract
+it will trust, and whether the local routing registry points at real
+harness records instead of invented placeholders.</em></p>
+<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
+<p>This chapter is about binding the extension into a real Operator
+environment, not just copying files into a folder. The owner needs to
+decide where the extension is installed, which external ledger contract
+it will trust, and whether the local routing registry points at real
+harness records instead of invented placeholders. The important boundary
+is simple: the package is a local Pi extension that supports the
+owner-facing command surface, while the separate Operator checkout and
+external ledger remain outside it. If that boundary is wrong, the tool
+may still load, but it will not govern the ledger you think it does.
+After setup, the next safe step is read-only orientation.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner has to treat installation as
+checkout-local and the other pieces as separate systems. If that
+boundary is blurred, the extension may be present without governing the
+ledger the owner expects it to govern.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  subgraph C[&quot;Each consumer checkout&quot;]
+    P[&quot;Pi loads the local extension here&quot;]
+    E[&quot;Local extension&quot;]
+  end
+  O[&quot;Separate Operator checkout&quot;]
+  L[&quot;External ledger&quot;]
+  P --&gt; E
+  E -. &quot;setup contract reaches across&quot; .-&gt; O
+  O --&gt; L</code></pre>
+<p>The extension lives inside each consumer checkout where Pi loads it.
+The separate Operator checkout and the external ledger sit outside that
+install boundary. The consequence is that a shared global-install
+assumption is wrong: the package can exist locally while the ledger
+remains a separate system.</p>
+<h3 id="what-you-should-be-able-to-explain-1">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Know whether this extension is installed per consumer checkout or
+treated as some shared global install.</li>
+<li>Understand that the ledger boundary is contract-backed and
+fail-closed, not guessed from nearby folders.</li>
+<li>Separate local routing configuration from live task authority,
+especially for targets and harness records.</li>
+<li>Recognize that the Pi command surface is the main operating surface,
+while the local client logic supports it rather than replacing it.</li>
+</ul>
+<h3 id="mental-model-1">Mental Model</h3>
+<p>Treat this as a local Pi extension that must sit inside the consumer
+checkout where Pi will load it. It does not become the Operator backend,
+and it does not become the external ledger.</p>
+<p>The owner-facing mental model is: the extension provides the command
+surface, the separate Operator environment provides the ledger boundary,
+and the setup contract decides whether those two parts are pointing at
+the same real system. The local client code exists to support that
+surface. It does not replace the separate checkout or turn the
+repository into the ledger itself.</p>
+<p>That is why setup is an ownership decision, not a cosmetic one. If
+the install location, ledger contract, and local routing registry are
+not aligned, the extension can be present but still be attached to the
+wrong environment.</p>
+<blockquote>
+<p><strong>Figure:</strong> Ledger trust is chosen by explicit inputs,
+not by nearby folders or guesswork. The practical consequence is
+fail-closed behavior: when the sources disagree, the setup should stop
+instead of silently binding to the wrong ledger.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  A[&quot;Start&quot;]
+  B[&quot;Look for a sibling Operator checkout&quot;]
+  C[&quot;Read the ledger contract file&quot;]
+  D[&quot;Do the two sources agree?&quot;]
+  E[&quot;Trust that ledger&quot;]
+  F[&quot;Stop and report the mismatch&quot;]
+  A --&gt; B
+  A --&gt; C
+  B --&gt; D
+  C --&gt; D
+  D -- &quot;yes&quot; --&gt; E
+  D -- &quot;no&quot; --&gt; F</code></pre>
+<p>The extension checks for a sibling Operator checkout and also reads
+an explicit ledger contract file. It then compares those sources. If
+they agree, it trusts that ledger. If they disagree, it stops and
+reports the mismatch instead of guessing.</p>
+<h3 id="how-it-works-1">How It Works</h3>
+<p>The extension looks for the external ledger through a bounded
+contract: either a sibling Operator checkout or an explicit ledger
+contract file. It does not wander the tree and guess. The current task
+shown by the ledger is display state only, so it helps the operator
+understand context, but it is not treated as the thing that decides
+where writes go.</p>
+<p>Routing for delegation lives in a local targets registry. That
+registry is configuration state, not live authority. It rejects
+duplicate aliases and empty registries, saves atomically, and must point
+to real harness records and a real model. In other words, the registry
+can route work, but it cannot invent the target it names.</p>
+<p>The Pi slash-command surface is the main operating surface the owner
+should think about first. The local client logic serves that surface and
+its setup contract; it does not replace the separate Operator
+environment. Once setup is correct, the first safe use belongs to
+read-only orientation, and the write chapters come later.</p>
+<blockquote>
+<p><strong>Figure:</strong> Routing remains safe only while it stays
+configuration, not authority. That means a bad target does not quietly
+become live work: it is rejected before it can steer delegation.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  subgraph Local[&quot;Local configuration&quot;]
+    D[&quot;Delegate command&quot;]
+    R[&quot;Targets registry&quot;]
+  end
+  H[&quot;Real harness record&quot;]
+  I[&quot;Invented target&quot;]
+  X[&quot;Rejected before routing&quot;]
+  D --&gt; R
+  R --&gt; H
+  R -. &quot;rejects broken entries&quot; .-&gt; I
+  I --&gt; X</code></pre>
+<p>The delegate command reads from a local targets registry, and the
+registry can route only to a real harness record. Invented targets are
+rejected before routing. The consequence is that the registry is
+configuration state, not live task authority.</p>
+<h3 id="verified-facts-1">Verified Facts</h3>
+<p>The reviewed evidence supports three stable setup facts. First, the
+extension is loaded as a local Pi extension from the current consumer
+checkout rather than by parent-directory search. Second, the external
+ledger is discovered through a contract-backed boundary, either by a
+sibling Operator checkout or by an explicit ledger contract file. Third,
+local routing is stored in a targets registry that is saved atomically
+and is allowed to change routing only when it points at real harness
+records.</p>
+<p>The evidence also supports one important warning about
+interpretation: the read-only command cluster appears before write and
+optional workflows, but that order is an ordering convention, not a
+permission boundary. Owners should read it as a safe reading order, not
+as proof that the read-only commands have special access control.</p>
+<h3 id="strengths-1">Strengths</h3>
+<p>The setup contract is explicit. That is a strength because it makes
+the external boundary visible instead of hiding it behind guesswork.</p>
+<p>The local routing registry is also strong in one specific way: it
+saves atomically and rejects broken shapes before they become live
+routing state. That reduces the chance that a partial edit silently
+changes delegation behavior.</p>
+<p>A final strength is the reading order itself. Safe orientation comes
+first, which helps an owner understand the environment before any
+mutable workflow is attempted.</p>
+<h3 id="attention-cards-1">Attention Cards</h3>
+<h4 id="choose-the-install-topology-before-rollout-attention-medium">⚠
+Choose the install topology before rollout <em>(attention ·
+medium)</em></h4>
+<p><strong>What happens:</strong> The extension is loaded as a local Pi
+extension from the consumer checkout, not by parent-directory search. If
+a team expects one shared install to appear everywhere, the extension
+will not be found where they expect it.</p>
+<p><strong>Why it matters:</strong> A wrong install assumption blocks
+rollout and creates false confidence that the extension is available in
+a place where Pi will not load it.</p>
+<p><strong>What to do:</strong> Decide whether each target checkout gets
+its own install path, then write that rule into the deployment runbook
+and the preflight check.</p>
+<p><strong>Revisit when:</strong> When setup topology and configuration
+contract behavior or related owner decisions change.</p>
+<h4 id="bind-the-ledger-by-contract-not-by-guesswork-attention-high">⚠
+Bind the ledger by contract, not by guesswork <em>(attention ·
+high)</em></h4>
+<p><strong>What happens:</strong> The external ledger is discovered
+through a sibling checkout or an explicit ledger contract, and the
+current task shown by the ledger is display state only. If the contract
+and checkout disagree, the extension should stop instead of assuming the
+right ledger.</p>
+<p><strong>Why it matters:</strong> Using the wrong ledger boundary can
+send owners into the wrong environment and make later writes or reviews
+attach to the wrong system.</p>
+<p><strong>What to do:</strong> Pick the supported discovery path and
+make the setup preflight fail clearly when the ledger contract is
+missing or inconsistent.</p>
+<p><strong>Revisit when:</strong> When setup topology and configuration
+contract behavior or related owner decisions change.</p>
+<h3 id="owner-decisions-1">Owner Decisions</h3>
+<h4
+id="should-the-manual-teach-this-as-a-per-consumer-install-step-or-as-a-global-extension-install-owner-decision-open">⚖
+Should the manual teach this as a per-consumer install step or as a
+global extension install? <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This determines whether owners treat
+installation as checkout-local setup or as a shared system-wide
+install.</p>
+<p><strong>Revisit when:</strong> Before changing the related setup
+topology and configuration contract behavior.</p>
+<h3 id="evidence-boundary-1">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - I reviewed the fact
+that the extension is loaded as a local Pi extension inside the consumer
+checkout, and that it depends on a separate Operator environment rather
+than becoming the backend itself. - I reviewed the fact that the
+external ledger boundary is contract-backed and fail-closed, with the
+current task used only as display context. - I reviewed the fact that
+local routing lives in a targets registry, which is configuration state
+that saves atomically and must point at real harness records. - I
+reviewed the fact that the read-only command cluster is presented first,
+but only as a safe ordering convention. - I also reviewed the open setup
+decisions about ledger-discovery order and install topology, because
+they directly affect how the owner should interpret this chapter.</p>
+</blockquote>
+<p>Not reviewed: - I did not inspect the source tree or run the
+extension in a live host, so I did not verify real Pi, Node, host, or
+account compatibility. - I did not verify the separately installed
+Operator checkout at runtime, so live ledger behavior, deployment
+policy, and host permissions remain outside this chapter. - I did not
+review the later mutable workflow chapters here, so claim, evidence,
+handoff, delegation, review, and recovery behavior are intentionally
+left to their own chapters.</p>
+<p>Recheck the current command registry and setup documentation against
+a real consumer checkout, confirm which ledger discovery path is
+intended in the target environment, and validate the deployment on the
+host that will actually carry Pi, the separate Operator checkout, and
+the local extension.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="getting-oriented-in-the-ledger">Getting Oriented in the
+Ledger</h2>
+<p><em>This chapter is the safe first pass through the Pi Operator
+Extension. It shows the read-only commands you use to inspect status,
+current tasks, and next steps before you touch claims, evidence,
+handoffs, delegation, or review. The code-backed output here tells you
+what the product does today, not what you may want it to become, and
+some of the text you see is only for orientation, not a ledger
+record.</em></p>
+<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
+<p>This chapter is the safe first pass through the Pi Operator
+Extension. It shows the read-only commands you use to inspect status,
+current tasks, and next steps before you touch claims, evidence,
+handoffs, delegation, or review. The code-backed output here tells you
+what the product does today, not what you may want it to become, and
+some of the text you see is only for orientation, not a ledger
+record.</p>
+<h3 id="what-you-should-be-able-to-explain-2">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain why the chapter starts with read-only inspection instead of
+mutable work.</li>
+<li>Describe the next-step warning as a narrow cue, not a completion
+verdict.</li>
+<li>Say which outputs are only for orientation and which later chapters
+handle writes or authority-bearing paths.</li>
+<li>State, in plain words, that the extension works against a separate
+Operator checkout and ledger contract.</li>
+</ul>
+<h3 id="the-safe-starting-lane">The Safe Starting Lane</h3>
+<h3 id="why-this-lane-comes-first">Why this lane comes first</h3>
+<p>Treat the read-only path as the default way to find out where the
+product stands before you commit to anything more consequential. That is
+the point of the opening order in this chapter: it leads with inspection
+because inspection is the lowest-risk way to orient yourself. The
+important boundary is that this is an ordering choice, not a permission
+claim. The fact that the read-only cluster appears first helps readers
+start safely, but it does not mean the order itself is what grants or
+withholds authority.</p>
+<p>For an owner, that distinction matters. If you are still trying to
+understand the current state, the current task, or the next prompt, you
+should stay in this lane. If you are already deciding whether to make a
+write, record evidence, or move into a higher-authority path, this
+chapter should function as the checkpoint that tells you to stop
+inspecting and hand off to the chapter that owns that work. The chapter
+is not asking you to do everything here; it is teaching you when not to
+go further yet.</p>
+<h3 id="how-to-read-the-warning">How to read the warning</h3>
+<p>The next-step warning should be read as a conservative hint, not as a
+verdict that the work is complete. The reviewed evidence shows that the
+warning is triggered by specific stale patterns, such as wording that
+already says a claim is verified, repeated handoff guidance after a
+handoff already exists, or terminal prompts about claim or evidence
+work. That makes it useful as a signal that the prompt you are looking
+at may be out of date, but it does not make it a general completion
+judge.</p>
+<p>That boundary is easy to miss if you want a simple yes-or-no answer.
+The warning can tell you, “this looks stale,” but it cannot tell you,
+“nothing more remains anywhere.” A real example: if a task page keeps
+telling you to hand off even though a handoff has already been recorded,
+the warning helps you notice the repetition. It does not prove the whole
+task is closed, and it does not erase any later cleanup the external
+ledger may still require.</p>
+<h3 id="the-decision-this-chapter-supports">The decision this chapter
+supports</h3>
+<p>Use this chapter as the place where you decide between two states:
+you are still in inspection, or you need to move to a later chapter. If
+the outputs you are reading are helping you understand status, health,
+or the next action prompt, then you are still doing orientation. If the
+question in front of you is now about writing, authority, or a more
+specialized workflow, the safe move is to stop treating this chapter as
+the whole answer and hand off.</p>
+<p>A practical way to think about it is this: inspection tells you what
+is there; later chapters tell you what to change. When the warning is
+quiet and the read-only surfaces are answering your questions, stay with
+the safe starting lane. When the warning suggests the prompt is stale,
+or when your own goal has moved beyond reading, use that as the signal
+to change chapters rather than forcing more meaning out of the
+inspection view.</p>
+<blockquote>
+<p><strong>Figure:</strong> The chapter is showing a safe reading
+sequence, not a permission ladder. Later write paths still need their
+own authority checks, so order should not be read as access control.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  A[Read-only commands first] --&gt; B[Safe place to start]
+  C[Later write paths] --&gt; D[Their own gates still apply]
+  B --&gt; E[Order helps you orient safely]
+  D --&gt; F[Access is decided elsewhere]</code></pre>
+<p>The figure contrasts two ideas. On one side, read-only commands come
+first so the owner can inspect status and next-step prompts safely. On
+the other side, later write paths still have their own gates. The
+takeaway is that the order of the chapter helps with orientation, but it
+does not grant or remove authority.</p>
+<h3 id="what-the-read-only-path-actually-does">What the Read-Only Path
+Actually Does</h3>
+<p>The published command order puts the read-only cluster first, before
+the confirmed-write paths and the optional workflows that come later.
+That matters as a reading convention: it tells the owner where the
+manual wants the eye to go first. It does not, by itself, decide who may
+do what. The ordering in the command table and the registration sequence
+in the code are presentation choices, so a later write path is not
+forbidden just because it appears later on the page. If a workflow has a
+real gate, that gate lives in the workflow itself, not in its position
+in the list.</p>
+<h3 id="where-the-warning-draws-the-line">Where the warning draws the
+line</h3>
+<p>The next-step warning is built as a narrow pattern check. It looks
+for a few specific stale forms of text: wording that still says a claim
+is verified, guidance that keeps pointing to handoff after a handoff
+already exists, and terminal prompts that end on claim or evidence
+rather than on a fresh next step. This is why the warning should be read
+as a conservative hint. It is good at noticing when the displayed next
+action has drifted out of date, but it is not trying to decide the full
+completion state of the work.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Stale pattern</th>
+<th>What the detector flags</th>
+<th>What the owner should infer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verified-claim wording</td>
+<td>Text that still presents a claim as verified</td>
+<td>The displayed next step may be carrying an older status forward, so
+it should not be treated as proof that the work is fully settled</td>
+</tr>
+<tr>
+<td>Repeated handoff-go guidance after a handoff already exists</td>
+<td>Guidance that keeps telling the operator to go to handoff even
+though a handoff is already present</td>
+<td>The prompt is likely replaying an earlier state, so the owner should
+treat it as stale guidance rather than a fresh instruction</td>
+</tr>
+<tr>
+<td>Terminal claim or evidence prompts</td>
+<td>Prompts that end on claim or evidence language instead of a new
+action</td>
+<td>The warning is catching a closing phrase, not certifying that every
+later step is complete</td>
+</tr>
+</tbody>
+</table>
+<p>Because the detector checks these patterns rather than every possible
+completion shape, it can stay conservative without pretending to know
+more than the text shows. That protects the owner from overreading a
+stale prompt as a final verdict. A practical example is a task note that
+still says a claim is verified after the work has already moved on to a
+handoff draft: the detector can flag the stale wording, but the owner
+still has to decide whether the underlying work is actually finished,
+whether a later write is pending, or whether the displayed text simply
+has not been refreshed.</p>
+<blockquote>
+<p><strong>Figure:</strong> The warning is narrow on purpose. It is
+useful when those stale text patterns appear, but it should trigger
+review rather than automatic closure.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  A[Read the next prompt] --&gt; B[Check for verified-claim wording]
+  B --&gt; C[Check for repeated handoff guidance]
+  C --&gt; D[Check for terminal claim or evidence wording]
+  D --&gt; E{One of these patterns appears?}
+  E -- Yes --&gt; F[Treat the warning as a stale hint]
+  E -- No --&gt; G[Do not treat it as a full done verdict]</code></pre>
+<p>The figure shows a short check. First read the next prompt, then look
+for verified-claim wording, repeated handoff guidance, or wording that
+ends on claim or evidence. If one of those patterns is present, treat
+the warning as a stale hint. If none of them is present, do not treat
+the warning as proof that all work is finished.</p>
+<h3 id="facts-the-reviewed-evidence-confirms">Facts the Reviewed
+Evidence Confirms</h3>
+<h3 id="loaded-from-the-current-checkout">Loaded from the current
+checkout</h3>
+<p>This package is loaded as a consumer-local extension from the
+checkout you are already in. In plain terms, Pi looks at the current
+working copy for the extension entry point instead of wandering upward
+through parent directories to hunt for another copy. That matters
+because it keeps the installation boundary obvious: if the extension is
+not present in this checkout, Pi does not silently discover it somewhere
+above you and pretend the setup is complete. The boundary is also
+limited: the evidence confirms this loading rule for the reviewed
+installation path, but it does not establish broader portability across
+unrelated repositories or global installs.</p>
+<h3 id="the-ledger-stays-external">The ledger stays external</h3>
+<p>The extension expects a separate Operator checkout and a valid ledger
+contract. It can discover the ledger through either a sibling Operator
+checkout or an explicit contract file, and the evidence shows that this
+is a deliberate contract-based lookup rather than guesswork. For an
+owner, the consequence is straightforward: the extension is not the
+backend and it is not the ledger itself. It is the thing that works
+against those external pieces. If neither the sibling checkout nor the
+explicit contract is present, it does not infer a ledger location from
+hints and carry on as if the environment were valid. That is the useful
+operational boundary here, even though the reviewed evidence does not
+map every possible external layout.</p>
+<h3 id="task-text-is-display-state">Task text is display state</h3>
+<p>The current task text is treated as display state. That means the
+text you see in the interface is there to orient you, not to redefine
+the ledger or write back to it. An owner should read it the same way
+they would read a status line on a console: it can tell you what the
+product thinks is current, but it is not itself the authoritative
+record. For example, if the display says the next step is to continue
+inspection, that tells you what the interface is presenting now; it does
+not create a new ledger entry or overwrite the underlying task history.
+The reviewed evidence is specific on this point, but it does not claim a
+broader model of every status field in the system.</p>
+<blockquote>
+<p><strong>Figure:</strong> The extension can show local text for
+orientation, but the ledger remains a separate authority. Before any
+consequential action, the owner should check the external ledger rather
+than trusting screen text alone.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  subgraph Local[Local checkout]
+    A[Extension]
+    B[Display-only task text]
+  end
+  subgraph External[Separate ledger]
+    C[Contract file or sibling checkout]
+    D[Ledger state]
+  end
+  A --&gt; B
+  A -. reads through the contract .-&gt; C
+  C --&gt; D
+  B -. is only for orientation .-&gt; D</code></pre>
+<p>The figure splits the world into a local checkout and a separate
+ledger. Inside the local checkout, the extension reads display-only task
+text for orientation. The extension reaches the ledger only through a
+contract file or a sibling checkout, and that separate ledger holds the
+authoritative state. The consequence is simple: screen text can help you
+orient, but it should not be treated as the record for consequential
+decisions.</p>
+<h3 id="what-is-solid-here">What Is Solid Here</h3>
+<h3 id="a-safe-first-lane">A Safe First Lane</h3>
+<p>The first thing this chapter gets right is the shape of the entry
+path. Read-only orientation comes first, so an owner can look at status,
+current tasks, and next-step prompts before deciding whether anything
+more consequential should happen. That matters because first contact
+with a product is where confusion is most expensive: if the opening path
+already asks for mutable work, the owner can mistake exploration for
+action. Here, the safe lane lowers that risk. The important boundary is
+that this is an ordering convention, not a privilege rule. The evidence
+supports a deliberate presentation of safer commands ahead of
+write-oriented ones, but it does not support reading that order as
+enforcement. A first-time operator can therefore use the chapter as
+intended: inspect, orient, then decide whether to move on.</p>
+<h3 id="conservative-warnings">Conservative Warnings</h3>
+<p>The warning logic is also strong because it errs on the side of
+caution rather than certainty. It does not try to judge every possible
+notion of completion; instead, it watches for a small set of stale
+patterns, including verified-claim wording, repeated handoff guidance,
+and terminal claim or evidence prompts. That narrowness is a feature. It
+reduces the chance that the product will hand back a false done signal
+just because the text happens to look similar to a finished state. For
+the owner, that means a warning should trigger review, not automatic
+closure. If a handoff prompt appears again after one already exists, the
+signal is not “everything is complete” but “this path has gone stale
+enough to deserve another look.” The boundary is equally important:
+because the detector is pattern-based, it can miss completion states
+that are phrased differently, and it cannot stand in for a broader
+workflow model that the reviewed evidence does not establish.</p>
+<h3 id="clear-boundary-lines">Clear Boundary Lines</h3>
+<p>The chapter is strongest where it keeps the extension, the consumer
+checkout, and the separate ledger visibly distinct. The reviewed
+evidence says Pi loads this package from the current checkout as a local
+extension, not by wandering up through parent directories, and it also
+says the ledger is discovered through an explicit contract or a sibling
+Operator checkout. That makes the runtime boundary legible: the
+extension is the place where the owner reads and acts, but it is not the
+ledger itself, and it is not the backend of record. This matters because
+display state can otherwise feel authoritative when it is only
+orientation. The current task text is treated as display-only state, so
+the owner should read it as a view onto ledger-related work rather than
+as the thing the extension writes or defines. In a practical scenario,
+an operator might see a task summary in the extension and use it to
+orient themselves, but still confirm the actual ledger state before
+making any write-oriented decision.</p>
+<p>Taken together, these are the chapter’s solid points: the starting
+lane is low risk, the warning is conservative, and the boundary between
+local display and external ledger state is explicit. That combination
+does not solve every downstream question, but it gives the owner a
+dependable place to begin without overreading what the interface is
+telling them.</p>
+<h3 id="attention-cards-2">Attention Cards</h3>
+<h4 id="the-stale-warning-can-be-overread-attention-medium">⚠ The stale
+warning can be overread <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The next-step detector only catches a
+few stale patterns, including repeated handoff-go guidance and terminal
+claim or evidence prompts.</p>
+<p><strong>Why it matters:</strong> An owner can stop too early if they
+treat the warning as a general completion check, or keep working when
+the warning has already gone stale.</p>
+<p><strong>What to do:</strong> Choose the final check the owner should
+use before trusting a stale next-step warning and say it explicitly in
+the manual.</p>
+<p><strong>Revisit when:</strong> When core orientation and inspection
+workflows behavior or related owner decisions change.</p>
+<h4 id="display-text-is-not-the-record-attention-medium">⚠ Display text
+is not the record <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> Some of the orientation text comes
+from display-only state, not from the ledger record itself.</p>
+<p><strong>Why it matters:</strong> If the owner treats screen text as
+the source of truth, later write or delegation decisions can be based on
+the wrong state.</p>
+<p><strong>What to do:</strong> Mark the orientation text as
+display-only in the manual and require a ledger check before any
+consequential action.</p>
+<p><strong>Revisit when:</strong> When core orientation and inspection
+workflows behavior or related owner decisions change.</p>
+<h3 id="owner-decisions-2">Owner Decisions</h3>
+<h4
+id="should-the-stale-warning-be-explained-as-a-conservative-hint-or-should-the-manual-define-a-broader-completion-model-owner-decision-open">⚖
+Should the stale warning be explained as a conservative hint, or should
+the manual define a broader completion model? <em>(owner decision ·
+open)</em></h4>
+<p><strong>Why it matters:</strong> This changes whether the reader
+treats the warning as a narrow pattern check or as a signal that the
+work is actually finished.</p>
+<p><strong>Revisit when:</strong> Before changing the related core
+orientation and inspection workflows behavior.</p>
+<h3 id="evidence-boundary-2">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The read-only
+command group, its ordering relative to write and optional commands, and
+the narrow stale-next-step warning. - How the extension locates the
+separate Operator ledger and treats current task text as display-only
+state. - The local extension loading rule that keeps the package in the
+consumer checkout.</p>
+</blockquote>
+<p>Not reviewed: - Claim, evidence, and handoff write workflows. -
+Delegation, review, and verifier authority paths. - Live host
+compatibility, install troubleshooting, and recovery behavior.</p>
+<p>Recheck the command ordering, the stale-warning rule, and the ledger
+lookup behavior whenever the command set, warning wording, or external
+ledger contract changes. Recheck local extension loading whenever the
+install topology or Pi loader behavior changes.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="recording-claims-evidence-and-handoffs">Recording Claims,
+Evidence, and Handoffs</h2>
+<p><em>This chapter is about the three write paths that can change the
+external Operator ledger: creating a claim, attaching evidence, and
+closing out with a handoff. They are related, but they are not the same
+action. Claim creation is gated by the current live session and task
+context, evidence attachment binds to a locator and does not make the
+claim verified by itself, and handoff only changes the follow-up field
+when…</em></p>
+<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
+<p>This chapter is about the three write paths that can change the
+external Operator ledger: creating a claim, attaching evidence, and
+closing out with a handoff. They are related, but they are not the same
+action. Claim creation is gated by the current live session and task
+context, evidence attachment binds to a locator and does not make the
+claim verified by itself, and handoff only changes the follow-up field
+when the draft actually contains a Next action section. This is built
+from the code, so it shows what the product does today, not what you may
+intend it to mean; that part is yours to confirm.</p>
+<h3 id="what-you-should-be-able-to-explain-3">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Explain the difference between a claim write, an evidence
+attachment, and a handoff closeout in the external Operator ledger.</li>
+<li>Describe which live gates must exist before a claim write can
+proceed, and how evidence and handoff choose what they affect.</li>
+<li>Tell the difference between a confirmed write and a failed attempt
+that may not have been cleaned up.</li>
+<li>Decide which parts of this write lane match the policy you want and
+which parts need correction.</li>
+</ul>
+<h3 id="how-to-think-about-the-three-write-steps">How to Think About the
+Three Write Steps</h3>
+<h3 id="three-separate-moments">Three separate moments</h3>
+<p>Treat claim, evidence, and handoff as three different write moments
+against the external Operator ledger. They are related because they
+often happen in sequence, but they do not do the same work. A claim
+creates the record that says, in effect, this task is being asserted
+into the ledger. Evidence attachment adds supporting material to that
+record. Handoff closes the loop by updating the follow-up field, but
+only when the draft includes a Next action section. Thinking of them as
+one generic save action hides the real boundaries and makes it easy to
+assume one step accomplished another.</p>
+<h3 id="why-the-claim-gate-is-the-tightest">Why the claim gate is the
+tightest</h3>
+<p>The claim step is the one most closely tied to the live session and
+the current task. That is the step where the product insists on the
+active operating context before it will let the write proceed. The
+practical effect for an owner is simple: claim creation is not a loose
+note-taking action that can happen later from anywhere. It depends on
+the task being live and on the session that is currently carrying the
+action, so the system is using the present operating context to decide
+whether the claim should be allowed at all.</p>
+<p>That matters because it makes claim creation the first real
+commitment in the write lane. If the live context is missing, the write
+does not belong to the claim path. If the context is present, the claim
+can go forward as a guided write. The reviewed evidence does not
+establish a broader product-wide authority model here, so the safe
+reading is narrower: claim creation is intentionally anchored to the
+live task moment, and that anchor is what keeps it from becoming a
+casual background write.</p>
+<h3 id="evidence-does-not-mean-verified">Evidence does not mean
+verified</h3>
+<p>Evidence attachment works differently. It records evidence, but it
+does not turn that attachment into verification by itself. The owner
+consequence is important: adding proof is not the same thing as changing
+the claim’s status. You can attach a screenshot, log excerpt, or other
+locator-based evidence to support a claim, but that action alone does
+not certify the claim as verified. The evidence remains evidence; the
+verification meaning is separate.</p>
+<p>A useful way to picture this is a claim that says, “We believe this
+issue is real,” followed by evidence that shows why the belief is
+justified. The evidence strengthens the record, but it does not collapse
+the remaining review or verification step into the attachment itself.
+That separation is what keeps evidence from being mistaken for an
+automatic seal of approval.</p>
+<h3 id="handoff-is-the-closeout-write">Handoff is the closeout
+write</h3>
+<p>Handoff is the closeout step. It is narrower than a full rewrite
+because it only changes the follow-up field when the draft actually
+carries a Next action section. If that section is missing, the handoff
+does not get to overwrite the follow-up text as if nothing mattered. For
+an owner, this means the handoff write is structured around explicit
+closeout content, not around a free-form attempt to replace whatever
+follow-up already exists.</p>
+<p>A concrete example makes the difference clear. Suppose an operator
+creates a claim for a broken export, attaches evidence that shows the
+failure, and later prepares a handoff draft. If the draft includes a
+Next action section that says to recheck the export job after
+deployment, that is the part that can update the follow-up field. If the
+draft omits that section, the handoff may still be a written step, but
+it does not have the right shape to change the follow-up record. That is
+the boundary that keeps closeout from becoming a vague replacement for
+the whole task history.</p>
+<blockquote>
+<p><strong>Figure:</strong> The claim path does not behave like a casual
+save: the live UI, current task record, and session-derived provenance
+all have to be in place before the write is allowed to cross into the
+external Operator ledger, which is why the shortcut is a protected
+boundary.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  A[Live UI]
+  B[Current task record]
+  C[Session-derived provenance]
+  D{All gates present?}
+  E[Claim write reaches the external Operator ledger]
+  F[Stop before the ledger]
+  A --&gt; D
+  B --&gt; D
+  C --&gt; D
+  D -- yes --&gt; E
+  D -- no --&gt; F</code></pre>
+<p>The diagram shows three required inputs on the left: the live UI, the
+current task record, and session-derived provenance. Those feed a gate.
+If all gates are present, the claim write reaches the external Operator
+ledger. If any gate is missing, the write stops before the ledger. The
+consequence is that claim creation is a controlled boundary, not a
+background save.</p>
+<h3 id="what-happens-during-each-write">What Happens During Each
+Write</h3>
+<p>These three writes share one important trait: each one is gated
+before it can mutate the external Operator ledger, and each one has a
+different target. The owner should read them as separate operating
+paths, not as a single save action with three labels. That distinction
+matters because the checks that open the path, the thing each path
+changes, and the condition for calling the write successful are not the
+same.</p>
+<h3 id="claim-write">Claim write</h3>
+<p>A claim write does not start from a blank prompt. It begins only when
+the live interface is present, the current task record exists, and the
+action can be attributed to the active session. Only after those pieces
+are in place does the path preview the write and ask for confirmation.
+In other words, the claim flow is not just about having permission in
+the abstract; it is about having the right live context in front of the
+operator at the moment the ledger update is about to happen.</p>
+<p>For the owner, that means a claim cannot be treated as a background
+update that will find its own way through later. If the session context
+is stale or the task record is missing, the claim path stops before the
+ledger change is attempted. A practical case is an operator returning to
+an old screen after the session has moved on: the write should not
+proceed until the current live context is restored and confirmed. The
+reviewed evidence does not establish the full external claim lifecycle
+or the wider supervision policy, so the safe boundary here is the gate
+itself, not a promise about every downstream state the ledger may
+support.</p>
+<h3 id="evidence-attachment">Evidence attachment</h3>
+<p>Evidence attachment works from the locator outward. The path resolves
+the evidence location first, then decides which claim to bind to. In
+normal use, it points to the latest unverified claim, or to the latest
+claim overall if there is no unverified one available. In edit mode, it
+can instead target a specific claim, which makes the attachment step
+more precise when the operator is correcting or supplementing an earlier
+write. That selection rule is the opposite of a claim-first workflow:
+the evidence path does not begin by asking which claim should be
+verified.</p>
+<p>The consequence for the owner is easy to miss but important:
+attaching evidence does not itself change verification status. It
+records evidence against a claim, but it does not turn that attachment
+into a verified claim. So if an operator attaches a screenshot, note, or
+file to a claim, the claim remains in whatever verification state it
+already had until a separate verification step changes it. The evidence
+flow therefore carries record value without claiming to settle the claim
+on its own. A good example is an edit-session correction where evidence
+is attached directly to a specific older claim; the attachment is
+useful, but it is not the same thing as verification.</p>
+<h3 id="handoff">Handoff</h3>
+<p>Handoff is the draft-first closeout path. The draft cannot be empty,
+the write is confirmed before it runs, and only a draft that actually
+contains a Next action section can overwrite the follow-up field. That
+keeps handoff from behaving like a free-form overwrite of whatever
+follow-up text happened to be there before. The path is structured
+because the follow-up field only changes when the draft supplies the
+section that owns that change.</p>
+<p>For the owner, this means handoff is best understood as a controlled
+closeout rather than a generic end-of-task note. If the draft lacks a
+Next action section, the follow-up field should not be expected to
+change. If the draft is empty, the path does not even get to the point
+of making the overwrite decision. A useful scenario is a handoff draft
+that summarizes the work but forgets the Next action section: the
+closeout can still be acknowledged as a draft, but the follow-up field
+stays untouched.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Write step</th>
+<th>What must happen first</th>
+<th>What it targets or changes</th>
+<th>What counts as success</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claim write</td>
+<td>The live interface, current task record, and active-session
+attribution must be present, then the write is previewed and
+confirmed</td>
+<td>Creates the claim entry in the external ledger</td>
+<td>The launched write command exits cleanly and a record id can be
+parsed</td>
+</tr>
+<tr>
+<td>Evidence attachment</td>
+<td>The evidence locator is resolved first, then the path chooses the
+claim to bind to</td>
+<td>Binds evidence to the chosen claim; in normal use it defaults to the
+latest unverified claim, or the latest claim overall when needed; in
+edit mode it can target a specific claim</td>
+<td>The launched write command exits cleanly and a record id can be
+parsed</td>
+</tr>
+<tr>
+<td>Handoff write</td>
+<td>The draft must be non-empty, the write is confirmed, and the draft
+must include a Next action section</td>
+<td>Overwrites the follow-up field only when that section is
+present</td>
+<td>The launched write command exits cleanly and a record id can be
+parsed</td>
+</tr>
+</tbody>
+</table>
+<p>That table is the practical boundary line for the owner. Claim,
+evidence, and handoff are separate gated writes with different mutation
+scope, but they share the same success rule: a clean exit plus a parsed
+record id. If either part is missing, the write path reports failure.
+The reviewed evidence does not show built-in retry or rollback behavior,
+so a failed attempt should not be assumed to have been cleaned up for
+you.</p>
+<blockquote>
+<p><strong>Figure:</strong> Evidence attachment is locator-first and
+choice-driven, but it stays inside the attachment step: the claim can
+receive evidence without becoming verified, so the owner should not read
+the bind as proof of verification.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  A[Resolve the evidence locator first]
+  B[Latest unverified claim]
+  C[Latest claim when no unverified one exists]
+  D[Specific claim in edit mode]
+  E[Bind evidence to the chosen claim]
+  F[Verification status stays unchanged]
+  A --&gt; B --&gt; E
+  A --&gt; C --&gt; E
+  A --&gt; D --&gt; E
+  E --&gt; F</code></pre>
+<p>The diagram starts with resolving the evidence locator first. From
+there, normal use can point to the latest unverified claim or to the
+latest claim when no unverified one exists. Edit mode can point to a
+specific claim. All of those choices feed the same evidence bind step.
+After the bind, the claim’s verification status stays unchanged. The
+consequence is that attaching evidence records support, but it does not
+verify the claim.</p>
+<blockquote>
+<p><strong>Figure:</strong> Handoff is narrow on purpose: the draft, the
+confirmation, and the Next action section all have to line up before the
+follow-up text can change, which keeps a loose closeout note from
+rewriting the next step by accident.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  A{Draft is non-empty?}
+  B{Write is confirmed?}
+  C{Has Next action section?}
+  D[Overwrite follow-up field]
+  E[Leave follow-up field untouched]
+  A -- yes --&gt; B
+  A -- no --&gt; E
+  B -- yes --&gt; C
+  B -- no --&gt; E
+  C -- yes --&gt; D
+  C -- no --&gt; E</code></pre>
+<p>The flow begins by checking whether the draft is non-empty. If it is,
+the write must also be confirmed. After that, the draft must include a
+Next action section. Only when all three conditions are satisfied can
+the follow-up field be overwritten. If any condition fails, the
+follow-up field stays untouched. The consequence is a controlled
+closeout, not a free-form overwrite.</p>
+<h3 id="what-the-reviewed-evidence-confirms">What the Reviewed Evidence
+Confirms</h3>
+<h3 id="claim-writes-are-not-free-floating">Claim writes are not
+free-floating</h3>
+<p>The reviewed evidence confirms that claim creation is context-bound.
+Before the write can reach the ledger, the flow checks for a live
+writing context, the current task record, and session-derived
+provenance. In plain terms, the system does not treat a claim as
+something you can emit from nowhere; it wants to know which live session
+is speaking, which task is being acted on, and who the write is
+attributed to.</p>
+<p>That matters for an owner because it narrows the chance of accidental
+writes from stale state. If the live session is gone, or the task
+context is missing, the claim path refuses to proceed rather than
+guessing. A practical example is a reopened workspace after
+interruption: the claim shortcut is not supposed to behave like a
+generic save button; it should stop until the current session and task
+context are present again.</p>
+<p>The boundary is also important. The evidence establishes the gate,
+but it does not establish the full external ledger lifecycle or any
+broader supervision policy beyond that live-session requirement. So the
+safe reading is not “claims are always blocked unless authority is
+perfect”; it is narrower: this write path requires the current live
+context that the claim needs, and it is explicit about that
+dependency.</p>
+<h3 id="evidence-attaches-to-a-locator-first-not-to-a-verdict">Evidence
+attaches to a locator first, not to a verdict</h3>
+<p>The evidence flow is confirmed to work from the evidence locator
+first. In normal use it defaults to the latest unverified claim, and if
+nothing unverified is available it falls back to the latest claim
+overall. In edit mode, the operator may explicitly choose a claim
+instead of taking the default. The important fact is that the evidence
+attachment itself does not change the claim’s verification status.</p>
+<p>For the owner, that means evidence and verification are related but
+separate outcomes. Attaching a screenshot, note, or other evidence does
+not magically turn the claim into a verified one. It only binds the
+evidence to a chosen claim after the locator has been resolved. That is
+a useful restraint because it keeps the evidence trail honest: the
+system records attachment, not a false impression that verification
+already happened.</p>
+<p>A concrete scenario makes the boundary clear. Suppose the newest
+claim is still unverified and there is also an older claim in the task.
+In normal use, the attachment routine reaches for the latest unverified
+claim first. In edit mode, an operator can point the attachment at a
+specific claim if the default would be wrong. Either way, the attachment
+does not promote the claim to verified status. The evidence record is
+added; the verification status stays what it was until the separate
+verification step occurs.</p>
+<p>The qualifier here is that the exact external verification workflow
+lives outside this reviewed set. What is confirmed is the selector
+behavior and the non-verifying nature of the attachment, not the whole
+lifecycle of how verification is later performed in the ledger.</p>
+<h3
+id="handoff-only-changes-the-follow-up-field-when-the-draft-has-the-right-section">Handoff
+only changes the follow-up field when the draft has the right
+section</h3>
+<p>The handoff flow is section-guarded. The evidence confirms that the
+draft must be non-empty, the write is confirmed before it runs, and the
+follow-up field changes only when the draft contains a Next action
+section. That makes handoff a structured closeout write rather than a
+blanket overwrite of whatever follow-up text already exists.</p>
+<p>The owner consequence is straightforward: a handoff can be safely
+narrow. If the draft lacks that section, the system does not treat the
+whole draft as permission to rewrite the next action. It preserves the
+existing follow-up field instead of assuming the closeout text should
+replace it. In effect, the draft has to earn the right to change the
+follow-up field by including the section the flow is looking for.</p>
+<p>For example, an operator might prepare a closeout note that
+summarizes work done but forget to include the Next action section. The
+evidence says that omission matters. The handoff can still be drafted
+and confirmed, but the follow-up field is not overwritten by that draft.
+That is a useful limit because it prevents a loose summary from
+accidentally becoming the new next step.</p>
+<p>The boundary is narrow but clear: this section proves the guard
+around the follow-up field, not the policy for every possible handoff
+style. It does not say the handoff draft is always the preferred
+closeout path, only that when this flow is used, the section gate
+controls whether the next-action text changes.</p>
+<h3 id="success-requires-a-clean-exit-and-a-readable-record-id">Success
+requires a clean exit and a readable record id</h3>
+<p>The shared write helper is conservative about success. It only
+acknowledges a successful write when the underlying write run exits
+cleanly and the returned output contains a parsed record id. If the run
+fails, or the id cannot be read back, the helper reports failure. It
+does not automatically retry, and it does not claim to roll the write
+back for you.</p>
+<p>That matters because a failed attempt is not the same thing as a
+clean no-op. The evidence does not prove that nothing reached the
+external ledger when the run fails; it only proves that the helper will
+not mark the operation as successful unless the clean exit and record-id
+parse both succeed. For the owner, that is a warning against reading a
+failure message as proof that the ledger was untouched.</p>
+<p>A simple example: imagine the write command starts, produces partial
+output, and then exits badly. The helper will not hand back a successful
+ledger id just because something started. It needs the clean exit and a
+parseable id before it treats the write as acknowledged. If either piece
+is missing, the result is failure, not a confirmed write.</p>
+<p>The remaining boundary is exactly the one the evidence leaves open.
+It does not establish any built-in recovery, retry, or rollback
+guarantee. So the right owner expectation is conservative: a success
+message means the helper saw a clean write result with an id; anything
+else is an unsuccessful attempt whose persistence state is not cleaned
+up by the wrapper itself.</p>
+<blockquote>
+<p><strong>Figure:</strong> Success is strict here: the helper only
+accepts the write after a clean exit and a readable record id. Anything
+else stays a failure, and the owner should not assume the wrapper
+cleaned up partial persistence.</p>
+</blockquote>
+<pre class="mermaid"><code>sequenceDiagram
+  participant O as Operator
+  participant H as Shared write helper
+  participant W as Write run
+  O-&gt;&gt;H: Ask to record the write
+  H-&gt;&gt;W: Launch the write
+  alt Clean exit and record id
+    W--&gt;&gt;H: Return a record id
+    H--&gt;&gt;O: Count the write as successful
+  else Bad exit or no id
+    W--&gt;&gt;H: Do not provide a usable id
+    H--&gt;&gt;O: Report failure and leave persistence uncertain
+  end</code></pre>
+<p>The sequence shows the operator asking the shared write helper to
+record a write. The helper launches the write run. In the success path,
+the run exits cleanly and returns a record id, and the helper counts the
+write as successful. In the failure path, the run exits badly or does
+not return a usable id, and the helper reports failure while leaving
+persistence uncertain. The consequence is that a failed subprocess is
+not treated as a cleanly handled write.</p>
+<h3 id="what-is-solid-here-1">What Is Solid Here</h3>
+<h3 id="clear-boundaries-between-write-steps">Clear boundaries between
+write steps</h3>
+<p>The strongest thing about this write lane is that it does not blur
+the three write moments together. Claim creation, evidence attachment,
+and handoff closeout each run through its own gate, perform its own
+write, and check its own result. That matters to an owner because it
+keeps the external Operator ledger from behaving like a single catch-all
+save action. A claim is not silently treated as evidence, and evidence
+is not silently treated as a handoff. The system makes each step earn
+its own result.</p>
+<p>That structure is valuable even before you care about the details of
+any one workflow. It gives the operator a clearer expectation of what
+changed, and it gives the manual a sharper line between one record type
+and the next. The boundary is also important because it prevents the
+reader from assuming that a successful action in one lane proves success
+in another. The claim lane can succeed, while the evidence lane still
+needs its own locator and the handoff lane still needs its own draft
+section. Those are separate checks, not one shared promise.</p>
+<h3 id="narrower-mutations-reduce-accidental-spillover">Narrower
+mutations reduce accidental spillover</h3>
+<p>The evidence and handoff paths are especially strong because they
+change less than a generic overwrite would. Evidence attachment binds to
+a locator and leaves claim verification status alone. Handoff closeout
+only changes the follow-up field when the draft actually contains a Next
+action section. In both cases, the write is constrained to the piece of
+ledger state that the workflow is meant to own.</p>
+<p>For an owner, that narrower mutation scope reduces a common failure
+mode: a user thinks they are adding support material or closing out a
+task, but the system quietly rewrites more than that. Here, the evidence
+path can add evidence without pretending that verification happened, and
+the handoff path can update follow-up text without replacing the rest of
+the draft. If an operator is attaching a screenshot to a claim, the
+system is not also reclassifying the claim as verified. If they are
+closing a task with a handoff note, the system is not rewriting
+follow-up text unless that note contains the section the flow is looking
+for. That makes the write behavior easier to reason about and harder to
+misuse.</p>
+<p>The boundary is still real: narrower mutation does not mean no risk.
+It means the change is more local and therefore less likely to conflate
+records or overwrite unrelated follow-up text. It does not prove the
+surrounding ledger model is exhaustive or that every desired cleanup
+rule exists elsewhere.</p>
+<h3 id="conservative-success-reporting-is-a-real-safeguard">Conservative
+success reporting is a real safeguard</h3>
+<p>The failure handling is also a strength because it does not dress up
+a failed write attempt as if the ledger accepted it cleanly. The shared
+write path only counts success when the underlying command exits cleanly
+and a record id can be parsed. If either part is missing, the helper
+reports failure instead of pretending the result is settled.</p>
+<p>That conservatism matters because it protects the owner from false
+confidence. A returned id only means something when the write finished
+in the normal way. If the command exits badly, or the id cannot be read
+back, the system does not quietly convert that into a success story. In
+practical terms, that means an operator reviewing the ledger after a bad
+attempt should treat the state as uncertain rather than assuming the
+write either happened or was cleanly rolled back. The manual can say the
+system was cautious because the evidence supports caution; it cannot
+promise that a failed attempt left no trace.</p>
+<p>A concrete example makes the value clear. Suppose an operator opens a
+handoff, confirms it, and the write command then fails before returning
+a usable record id. The system should not report that as a completed
+ledger write. That restraint is useful because it preserves the
+difference between a confirmed attempt and a verified result. It also
+leaves the owner with the right next question: whether the write needs
+to be checked again, not whether the tool already guaranteed
+success.</p>
+<p>Taken together, these are the solid parts of the lane. The workflows
+are separated, the mutations stay narrow, and the success check stays
+strict. Those three qualities do not solve every operational question,
+but they do make the write lane more legible and less likely to mislead
+the owner about what actually changed.</p>
+<h3 id="attention-cards-3">Attention Cards</h3>
+<h4 id="claim-writes-are-not-free-form-attention-high">⚠ Claim writes
+are not free-form <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> A claim only reaches the ledger after
+the live session, current task, and attribution gates are satisfied, so
+the shortcut can fail before anything is recorded.</p>
+<p><strong>Why it matters:</strong> If the owner treats the shortcut as
+enough on its own, they can think a claim is official when the product
+never had the right context to write it.</p>
+<p><strong>What to do:</strong> Assign a policy owner for claim writes
+and require a live-session confirmation before any claim is treated as
+official.</p>
+<p><strong>Revisit when:</strong> When claim evidence handoff write
+workflows behavior or related owner decisions change.</p>
+<h4 id="evidence-does-not-verify-the-claim-by-itself-attention-high">⚠
+Evidence does not verify the claim by itself <em>(attention ·
+high)</em></h4>
+<p><strong>What happens:</strong> Attaching evidence resolves the
+locator first and leaves claim verification status unchanged, so the
+attachment can look complete without actually changing the claim
+state.</p>
+<p><strong>Why it matters:</strong> An owner can easily mistake evidence
+attachment for proof that the claim is verified, which weakens audit
+clarity.</p>
+<p><strong>What to do:</strong> Decide whether every evidence attachment
+must be followed by a separate verify step, and document which claim
+should be bound when more than one exists.</p>
+<p><strong>Revisit when:</strong> When claim evidence handoff write
+workflows behavior or related owner decisions change.</p>
+<h4
+id="handoff-only-changes-follow-up-text-when-the-draft-includes-it-attention-high">⚠
+Handoff only changes follow-up text when the draft includes it
+<em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> The handoff write is section-guarded,
+so a draft without Next action leaves the follow-up field untouched.</p>
+<p><strong>Why it matters:</strong> If the template is inconsistent,
+stale follow-up direction can survive even after the operator thinks the
+handoff closed the work.</p>
+<p><strong>What to do:</strong> Standardize the handoff template so the
+Next action section is always present when you want follow-up state to
+change.</p>
+<p><strong>Revisit when:</strong> When claim evidence handoff write
+workflows behavior or related owner decisions change.</p>
+<h4 id="a-failed-write-may-not-be-cleaned-up-attention-high">⚠ A failed
+write may not be cleaned up <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> Success is only acknowledged on a
+clean exit plus a parsed record id, and the helper does not retry or
+roll back when that does not happen.</p>
+<p><strong>Why it matters:</strong> In an authoritative external ledger,
+an apparently failed attempt can still leave persistence uncertain,
+which is a data and trust risk.</p>
+<p><strong>What to do:</strong> Define the recovery check that must
+happen before retrying or telling the owner the write failed safely.</p>
+<p><strong>Revisit when:</strong> When claim evidence handoff write
+workflows behavior or related owner decisions change.</p>
+<h3 id="owner-decisions-3">Owner Decisions</h3>
+<h4
+id="should-claim-creation-be-framed-as-a-guided-write-requirement-or-as-an-authority-boundary-owner-decision-open">⚖
+Should claim creation be framed as a guided-write requirement or as an
+authority boundary? <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This decides whether readers focus
+on usability gates or on who is allowed to make the ledger change.</p>
+<p><strong>Revisit when:</strong> Before changing the related claim
+evidence handoff write workflows behavior.</p>
+<h4
+id="should-the-manual-call-out-locator-first-validation-and-task-only-attachments-explicitly-owner-decision-open">⚖
+Should the manual call out locator-first validation and task-only
+attachments explicitly? <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This determines whether readers
+understand that evidence attachment does not auto-verify a claim and
+does not choose the claim before validating the locator.</p>
+<p><strong>Revisit when:</strong> Before changing the related claim
+evidence handoff write workflows behavior.</p>
+<h4
+id="should-handoff-be-shown-as-the-preferred-closeout-path-or-as-a-structured-fallback-to-a-generated-draft-owner-decision-open">⚖
+Should handoff be shown as the preferred closeout path or as a
+structured fallback to a generated draft? <em>(owner decision ·
+open)</em></h4>
+<p><strong>Why it matters:</strong> This changes whether the reader
+treats handoff as the main way to end work or as one controlled option
+among several.</p>
+<p><strong>Revisit when:</strong> Before changing the related claim
+evidence handoff write workflows behavior.</p>
+<h4
+id="should-failed-writes-be-described-as-absent-records-or-as-attempted-writes-with-unknown-persistence-owner-decision-open">⚖
+Should failed writes be described as absent records or as attempted
+writes with unknown persistence? <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This changes how the manual explains
+failure, recovery, and whether the operator should trust the external
+ledger to be untouched.</p>
+<p><strong>Revisit when:</strong> Before changing the related claim
+evidence handoff write workflows behavior.</p>
+<h3 id="evidence-boundary-3">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The command and
+write handlers that separate claim, evidence, and handoff behavior. -
+The success-report logic that decides when a write counts as successful.
+- The product notes that describe the external ledger boundary and the
+fact that this is an extension surface, not the ledger itself.</p>
+</blockquote>
+<p>Not reviewed: - Live behavior in a real Operator environment. -
+Host-specific permissions, account policy, and recovery behavior outside
+the reviewed code. - Delegation, review, verifier, install-topology, and
+runtime-compatibility behavior beyond this write lane.</p>
+<p>Rerun the claim, evidence, and handoff workflows in a real Pi plus
+Operator setup and check four things: claim writes block without the
+live session and current task context, evidence attachment preserves
+claim verification status, handoff only updates follow-up text when the
+draft contains a Next action section, and a write is only accepted when
+the subprocess exits cleanly and produces a record id.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="delegation-review-and-adjunct-paths">Delegation, Review, and
+Adjunct Paths</h2>
+<p><em>This chapter covers the advanced lane the owner reaches when work
+leaves ordinary operator flow and enters delegation, review, or verifier
+authority. The main point is not that these paths are broader, but that
+they add extra roles, extra routing choices, and extra risk.</em></p>
+<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
+<p>This chapter covers the advanced lane the owner reaches when work
+leaves ordinary operator flow and enters delegation, review, or verifier
+authority. The main point is not that these paths are broader, but that
+they add extra roles, extra routing choices, and extra risk. The
+reviewed evidence shows that the routing registry, reviewer choice, and
+verifier identity are all separate controls, and that some helper flows
+are only launcher plumbing rather than proof of trust or approval.</p>
+<h3 id="what-you-should-be-able-to-explain-4">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Tell when the product is routing work to an implementer, asking for
+review, or launching a verifier with a separate authority boundary.</li>
+<li>Separate reviewer choice, verifier identity, and implementer routing
+so they are not treated as the same thing.</li>
+<li>See what the local target registry can change, and what it cannot
+prove about support, funding, or approval in a live environment.</li>
+<li>Notice when delegation, review, or fallback behavior changes the
+real outcome instead of assuming the first selected route is the final
+one.</li>
+</ul>
+<h3 id="mental-model-2">Mental Model</h3>
+<p>The owner should think of this chapter as the advanced lane that sits
+beside, not above, the core operator journey. The ordinary path is still
+the main one: learn the task, inspect the ledger, and use the confirmed
+write flows when needed. This chapter starts when the product begins
+routing bounded work to an implementer, when a reviewer is chosen for a
+review bundle, or when a verifier launch needs a separate identity and a
+visible approval step. In that lane, configuration can shape the route,
+but configuration alone does not prove that the route is actually
+supported or approved in the real environment.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner can change routing, select a
+reviewer, or launch verifier work, but those are separate controls. A
+writable target registry can redirect delegation without proving
+approval, and the verifier path still carries verifier authority instead
+of sandbox isolation.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  subgraph C[Editable controls]
+    R[Local target registry]
+    U[Reviewer choice]
+  end
+  subgraph A[Authority-bearing path]
+    X[Verifier launch]
+    Y[Privileged verifier run]
+  end
+  R --&gt; D[Delegation route]
+  U --&gt; B[Review bundle]
+  X --&gt; Y
+  P[Askpass launcher] -. &quot;only launch plumbing&quot; .-&gt; X
+  D -. &quot;changes routing, not approval&quot; .-&gt; X
+  B -. &quot;separate from verifier identity&quot; .-&gt; X
+  Y --&gt; Z[Runs with verifier authority]</code></pre>
+<p>The figure separates editable controls from authority-bearing
+execution. The local target registry changes the delegation route, and
+reviewer choice produces a review bundle, but neither one proves live
+approval. A verifier launch leads to a privileged verifier run, while
+the askpass launcher is only plumbing that helps start the launch. The
+consequence is that routing, review, and verifier authority must be
+governed separately; changing one does not turn the others into proof of
+safety or approval.</p>
+<h3 id="how-it-works-2">How It Works</h3>
+<p>Delegation starts with a target registry that lives locally and
+controls aliases plus routing expectations. The owner can use it to
+express carrier, model, isolation, and routing choices, but the reviewed
+evidence does not turn those choices into a promise that the target is
+funded, approved, or safe to use in production. Routing is
+route-sensitive: if the selected target is already the task’s assigned
+harness, the parent path stays intact; if the target is unrouted or
+review-only, the work can become a child task; if the target conflicts
+with self-delegation or a dual-role case, the flow is refused. The
+delegate path prefers a brief plus adapter route when the preconditions
+are met, but task creation, session start, or adapter failure can still
+force a paste or export fallback. Reviewer, verifier, and implementer
+are different roles: reviewer is the selected review label, verifier is
+the authority-bearing launch identity, and implementer is the delegated
+harness that receives bounded work.</p>
+<p>The verifier path is more restrictive than a generic check. The
+reviewed evidence shows a UI-gated launch, a named verifier bundle, a
+preflight check, askpass resolution, and a fixed privileged launch built
+from validated fields. That makes the path policy-sensitive, because the
+launch decision is explicit and the resulting run still uses the
+verifier’s permissions and credentials. The popup helper stays secondary
+here: it is only askpass launch plumbing and does not itself verify
+claims or define trust.</p>
+<blockquote>
+<p><strong>Figure:</strong> Delegate dispatch is not a single straight
+path. The owner needs to plan for parent routing, child-task creation,
+refusal, and a later downgrade from the adapter path when the first
+choice cannot finish cleanly.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  S[Delegate choice]
+  P[Remain on parent task]
+  C[Create child task]
+  R[Refuse]
+  A[Adapter path]
+  F[Paste or export fallback]
+  S --&gt; P
+  S --&gt; C
+  S --&gt; R
+  S --&gt; A
+  A -. &quot;later task, session, or adapter failure&quot; .-&gt; F</code></pre>
+<p>The flow begins with a delegate choice. From there, the work can
+remain on the parent task, become a child task, be refused, or start on
+the adapter path. Even after the adapter path is chosen, later task,
+session, or adapter failure can push the run to paste or export
+fallback. The consequence is operational: the first selected route is
+not always the final delivery mode.</p>
+<h3 id="verified-facts-2">Verified Facts</h3>
+<p>The read-only command cluster is presented first, but that is only an
+ordering convention, not a privilege boundary. That matters because the
+manual can lead with safe orientation without pretending that the
+command order itself enforces access control.</p>
+<p>Evidence attachment resolves its locator first, then chooses a claim
+default in non-edit mode, and it does not auto-verify the claim. Handoff
+writes are structured closeout writes: they need a non-empty draft, they
+are confirmed before they run, and they only overwrite the next action
+when that section is present. Successful writes are only acknowledged
+when the underlying run exits cleanly and returns a parsed record
+id.</p>
+<h3 id="strengths-2">Strengths</h3>
+<p>This lane gives the owner precise control over who does the work and
+under which authority. The local target registry keeps routing explicit
+instead of hidden, the review path keeps reviewer choice separate from
+verifier authority, and the verifier launch forces a visible approval
+step before privileged execution. The parent-routed child-task split is
+also useful because it keeps already-assigned work from being rewritten
+into a different routing shape just because a delegate command was used.
+Taken together, those choices make route choice, authority, and fallback
+visible enough for an owner to govern rather than guess.</p>
+<h3 id="attention-cards-4">Attention Cards</h3>
+<h4 id="verifier-identity-is-not-a-safety-box-attention-critical">⚠
+Verifier identity is not a safety box <em>(attention ·
+critical)</em></h4>
+<p><strong>What happens:</strong> Distinct-identity review is an
+authority boundary, not a sandbox. The reviewed evidence says the
+launched code still runs with verifier permissions and credentials, so a
+successful launch does not prove the code was isolated from harm or from
+the verifier’s own authority.</p>
+<p><strong>Why it matters:</strong> If the owner treats this path like a
+sandbox, they can approve risky review launches while believing the
+system has already contained the risk.</p>
+<p><strong>What to do:</strong> Decide the verifier policy for
+production use, then document the approval step and the residual
+authority risk plainly.</p>
+<p><strong>Revisit when:</strong> When delegation review verifier and
+adjunct workflows behavior or related owner decisions change.</p>
+<h4
+id="editable-targets-are-not-proof-of-approved-execution-attention-high">⚠
+Editable targets are not proof of approved execution <em>(attention ·
+high)</em></h4>
+<p><strong>What happens:</strong> The target registry can define aliases
+and route expectations, but editable configuration does not prove that a
+target is funded, approved, or actually supported in the current
+environment.</p>
+<p><strong>Why it matters:</strong> An owner can mistake a writable
+target list for a live approved deployment list and end up authorizing
+work that should have stayed experimental or blocked.</p>
+<p><strong>What to do:</strong> Publish the approved target set and
+separate editable routing settings from live execution approval.</p>
+<p><strong>Revisit when:</strong> When delegation review verifier and
+adjunct workflows behavior or related owner decisions change.</p>
+<h4 id="delegation-can-change-route-after-selection-attention-high">⚠
+Delegation can change route after selection <em>(attention ·
+high)</em></h4>
+<p><strong>What happens:</strong> The delegate flow can start on the
+adapter path and still downgrade to paste or export after task creation,
+session start, or adapter failure.</p>
+<p><strong>Why it matters:</strong> The owner cannot assume that the
+first route choice is the final delivery mode, which means operational
+expectations and follow-up steps can change mid-flow.</p>
+<p><strong>What to do:</strong> Document the fallback report and make
+sure operators know how to recognize and accept, retry, or reject a
+downgraded dispatch.</p>
+<p><strong>Revisit when:</strong> When delegation review verifier and
+adjunct workflows behavior or related owner decisions change.</p>
+<h4
+id="optional-helpers-can-distort-the-book-if-promoted-too-early-attention-medium">⚠
+Optional helpers can distort the book if promoted too early
+<em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The reviewed evidence keeps the safe
+orientation cluster first and shows that popup is only askpass launcher
+plumbing. That supports a chapter structure where these helpers stay
+downstream of the main delegation and review story.</p>
+<p><strong>Why it matters:</strong> If optional helpers are given the
+same weight as the main authority paths, the owner can come away with
+the wrong mental model of what actually governs the product.</p>
+<p><strong>What to do:</strong> Keep the optional lane visually
+subordinate unless later owner intent says those helpers are the primary
+path.</p>
+<p><strong>Revisit when:</strong> When delegation review verifier and
+adjunct workflows behavior or related owner decisions change.</p>
+<h3 id="owner-decisions-4">Owner Decisions</h3>
+<h4
+id="should-targets.json-be-treated-as-the-authoritative-routing-registry-when-present-or-only-as-an-optional-override-file-owner-decision-open">⚖
+Should targets.json be treated as the authoritative routing registry
+when present, or only as an optional override file? <em>(owner decision
+· open)</em></h4>
+<p><strong>Why it matters:</strong> This sets how much routing authority
+the owner should assign to local configuration.</p>
+<p><strong>Revisit when:</strong> Before changing the related delegation
+review verifier and adjunct workflows behavior.</p>
+<h4
+id="should-the-manual-teach-parent-routed-and-child-task-outcomes-separately-owner-decision-open">⚖
+Should the manual teach parent-routed and child-task outcomes
+separately? <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This decides whether the owner sees
+delegation as a route-sensitive decision tree or as a single child-task
+flow.</p>
+<p><strong>Revisit when:</strong> Before changing the related delegation
+review verifier and adjunct workflows behavior.</p>
+<h4
+id="do-you-want-the-manual-to-highlight-the-adapter-path-first-and-document-fallback-branches-immediately-after-it-owner-decision-open">⚖
+Do you want the manual to highlight the adapter path first and document
+fallback branches immediately after it? <em>(owner decision ·
+open)</em></h4>
+<p><strong>Why it matters:</strong> This determines whether the owner
+reads delegation as a primary route with explicit downgrades or as a
+simple happy-path flow.</p>
+<p><strong>Revisit when:</strong> Before changing the related delegation
+review verifier and adjunct workflows behavior.</p>
+<h4
+id="should-the-manual-explain-advisory-review-versus-uid-isolated-review-in-separate-subsections-owner-decision-open">⚖
+Should the manual explain advisory review versus uid-isolated review in
+separate subsections? <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This keeps reviewer labels and
+verifier identities from collapsing into one concept.</p>
+<p><strong>Revisit when:</strong> Before changing the related delegation
+review verifier and adjunct workflows behavior.</p>
+<h4
+id="should-the-manual-state-this-as-a-trust-and-authority-boundary-rather-than-a-security-sandbox-owner-decision-open">⚖
+Should the manual state this as a trust and authority boundary rather
+than a security sandbox? <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> This decides whether the manual
+promises isolation that the reviewed evidence does not support.</p>
+<p><strong>Revisit when:</strong> Before changing the related delegation
+review verifier and adjunct workflows behavior.</p>
+<h3 id="evidence-boundary-4">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - I reviewed the
+command ordering that presents safe orientation before write and
+optional workflows, and I treated that as an ordering convention rather
+than a permission model. - I reviewed delegation routing, including the
+local target registry, route-sensitive child-task behavior, and the
+fallback path when the preferred delegation route cannot complete. - I
+reviewed the review and verifier split, including the guarded verifier
+launch, the separate reviewer role, and the fact that distinct-identity
+review is not a sandbox. - I reviewed the installation and
+ledger-discovery boundary that keeps the extension local to the consumer
+checkout and tied to an external Operator environment. - I reviewed the
+write semantics that matter to this chapter only where they affect
+authority and closeout behavior, including locator-first evidence
+attachment, section-guarded handoffs, and success only after a clean
+exit with a parsed record id.</p>
+</blockquote>
+<p>Not reviewed: - I did not verify live production approval, funding,
+or support status for any specific delegation target, carrier, model, or
+external harness. - I did not verify host-specific sudo policy, verifier
+account setup, askpass behavior, or the real effects of running verifier
+code on a live machine. - I did not verify compatibility across the
+separately installed Operator checkout, the external ledger, and the
+declared runtime targets. - I did not separately revalidate other
+adjunct workflow families beyond the reviewed popup launcher
+boundary.</p>
+<p>Recheck the command registry, target registry, review-launch
+behavior, and installation contract whenever command grouping, routing
+rules, or verifier policy changes. Re-run the relevant flows in a real
+Operator environment before treating delegation or review behavior as
+production-approved. Revisit the external ledger contract if the
+consumer checkout or discovery rules change.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<hr />
+<h2 id="recovery-limits-and-safe-operation">Recovery, Limits, and Safe
+Operation</h2>
+<p><em>This chapter is the owner’s map for failure handling. It tells
+you which problems are local to the extension, which belong to the
+external Operator ledger or host policy, and which can only be handled
+by retrying or escalating under a different authority. The key boundary
+is simple: safe reading is not the same as safe recovery, and some
+advanced paths can still reach external state even when the local launch
+fails.</em></p>
+<h3 id="one-minute-snapshot-5">One-Minute Snapshot</h3>
+<p>This chapter is the owner’s map for failure handling. It tells you
+which problems are local to the extension, which belong to the external
+Operator ledger or host policy, and which can only be handled by
+retrying or escalating under a different authority. The key boundary is
+simple: safe reading is not the same as safe recovery, and some advanced
+paths can still reach external state even when the local launch
+fails.</p>
+<h3 id="what-you-should-be-able-to-explain-5">What You Should Be Able To
+Explain</h3>
+<ul>
+<li>Tell a local failure from an external boundary problem before
+retrying.</li>
+<li>Know which write paths can be retried, which may already have
+reached the ledger, and which do not promise rollback.</li>
+<li>Recognize when delegation or review has crossed into
+authority-bearing execution.</li>
+<li>Route setup, write, delegation, and verifier problems back to the
+right chapter instead of guessing.</li>
+<li>Avoid assuming that a guarded launch, a duplicate close, or a stale
+warning proves the underlying state you want.</li>
+</ul>
+<h3 id="mental-model-3">Mental Model</h3>
+<p>This chapter is about fault lines, not normal operation. The product
+starts with safe orientation, but that order is a reading choice, not a
+permission model. When something breaks, ask first whether the failure
+is in the local extension, the external Operator ledger, host policy,
+harness execution, adapter or provider behavior, or verifier and account
+setup. If the answer is unclear, do not retry blindly: move back to
+installation for placement and configuration, to orientation for
+read-only diagnosis, or to the write and delegation chapters for the
+workflow you were in. The stale next-action warning is also narrow on
+purpose; it is a pattern check, not a general completion judge.</p>
+<blockquote>
+<p><strong>Figure:</strong> Recovery is decided by where the failure
+lands, not by the order in which commands are listed. Once a path
+reaches the external ledger, review, or verifier side, the owner has
+left local-only recovery and must check outside state or use the right
+authority path.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  A[Local extension] --&gt;|breaks here| B[Local recovery]
+  A --&gt;|touches external state| C[External ledger]
+  A --&gt;|enters review path| D[Review authority]
+  A --&gt;|enters verifier path| E[Verifier authority]
+  C --&gt;|check before retry| F[External state check]
+  D --&gt;|use the right chapter| B
+  E --&gt;|treat as authority, not isolation| B</code></pre>
+<p>The diagram places the local extension at the center and shows four
+different outcomes. A problem that stays inside the local extension can
+be handled as local recovery. A problem that reaches the external ledger
+needs an external state check before retrying. A problem that enters
+review or verifier authority is no longer a local-only issue and should
+be routed through the correct chapter or authority path. The consequence
+is that read-only ordering does not tell you where recovery belongs.</p>
+<h3 id="how-it-works-3">How It Works</h3>
+<p>Write flows are gated and uneven. Claim creation needs a live
+interface, an active task, an existing task record, and session-derived
+provenance before it reaches the ledger. Evidence attachment resolves
+the locator first, then binds to a claim only after that, and it does
+not auto-verify the claim. Handoff is a structured closeout write: it
+needs a non-empty draft, asks for confirmation, and only changes next
+action when that section exists. For all of these, a clean subprocess
+exit with a parsed record id is the only success signal the wrapper
+treats as success. There is no built-in retry or rollback guarantee, so
+a failed write can leave you with unknown persistence and an external
+state check becomes the next decision.</p>
+<p>Delegation behaves like configuration until it becomes a live route.
+The target registry is local and saved atomically, but a delegate choice
+can stay on the parent, become a child task, or be refused. Even the
+adapter path can downgrade to paste or export after a later failure, so
+the owner should treat the route as conditional. Session close can
+collapse duplicate close attempts into success, but that only normalizes
+the close operation itself; it does not prove the first close wrote
+anything new.</p>
+<p>Verifier-related paths are more sensitive. Verify-run is a guarded
+privileged launch with UI authorization, preflight, and askpass, while
+popup is only askpass plumbing. Distinct-UID review is an authority
+path, not a sandbox, and reviewer labels are not the same thing as
+verifier identity.</p>
+<h3 id="verified-facts-3">Verified Facts</h3>
+<p>The reviewed evidence establishes a few stable facts the owner can
+rely on. Read-only commands are presented first for navigation, but that
+is an ordering convention rather than a permission boundary. The stale
+next-action detector only flags specific outdated patterns, including
+repeated handoff guidance and claim or evidence prompts that no longer
+fit the record. Ledger discovery is contract-bound and fail-closed, and
+the extension loads as a consumer-local package from the current
+checkout rather than by wandering across parent directories. The
+verifier path is explicitly not a sandbox, and the review path keeps
+reviewer identity separate from verifier authority.</p>
+<h3 id="strengths-3">Strengths</h3>
+<p>The strongest part of the design is that it exposes failure
+boundaries early. Orientation comes first, write paths confirm before
+spawn, target routing is saved atomically, and verifier-related paths
+refuse to pretend they are safer than they are. The product also
+normalizes some duplicates, like already-closed sessions, which reduces
+noise when you are recovering from interrupted work. Those strengths
+help operators reason about failure, but they do not erase external
+responsibility or make recovery reversible by default.</p>
+<h3 id="attention-cards-5">Attention Cards</h3>
+<p>These are the failure domains that matter most for owners. They are
+not all equally dangerous, but each one can change whether the right
+move is retry, check external state, or escalate to a different
+authority. The important habit is to separate local confirmation from
+external persistence before you treat a step as finished.</p>
+<h4
+id="local-install-and-ledger-discovery-are-strict-attention-medium">⚠
+Local install and ledger discovery are strict <em>(attention ·
+medium)</em></h4>
+<p><strong>What happens:</strong> The extension loads from the current
+checkout and resolves the ledger through a contract-bound discovery
+path.</p>
+<p><strong>Why it matters:</strong> If the package lands in the wrong
+place, troubleshooting will fail closed and the owner may think the
+product is broken when the setup is wrong.</p>
+<p><strong>What to do:</strong> Confirm the supported install topology
+and the external ledger contract before standardizing deployment
+instructions.</p>
+<p><strong>Revisit when:</strong> When failure recovery operating limits
+and troubleshooting behavior or related owner decisions change.</p>
+<h3 id="owner-decisions-5">Owner Decisions</h3>
+<p>The evidence leaves several policy choices open. Failed writes may
+need to be treated as unknown persistence, or your manual may want to
+describe them differently. Delegation may need the adapter path
+foregrounded first, with fallback branches called out immediately after
+it. Verifier behavior may need to be framed as a trust and authority
+boundary rather than as a sandbox. Installation may need to be
+documented as a consumer-local setup, not as a global install. Ledger
+discovery may need the contract file or the sibling checkout to be
+described first, depending on how you want owners to think about setup
+and recovery.</p>
+<h3 id="evidence-boundary-5">Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed: - The command surface
+was reviewed for ordering and for the split between read-only, write,
+delegation, and verifier-related flows. - The claim, evidence, and
+handoff write paths were reviewed for their gating, confirmation, and
+success rules. - Delegation routing, fallback behavior, session close
+handling, and the local target registry were reviewed as
+recovery-relevant behavior. - Verifier-related review and popup behavior
+were reviewed as authority-sensitive paths, along with the external
+ledger discovery contract and local extension loading model.</p>
+</blockquote>
+<p>Not reviewed: - Live host policy, real sudo or askpass behavior, and
+account setup on an actual machine were not exercised here. - The
+current contents and state of a real external Operator ledger were not
+re-run or validated in this stage. - Provider billing, approval policy,
+and live runtime compatibility were not established by this review. -
+The owner’s preferred primary workflow emphasis and installation
+topology were not supplied as confirmed intent.</p>
+<p>Recheck the current command registry and manual against a real
+approved install, then exercise one claim write, one evidence attach,
+one handoff, one delegation flow, and one verifier flow on a host that
+matches the intended policy. Confirm whether a failed run leaves unknown
+persistence, whether the fallback route still appears after adapter
+failure, whether the ledger discovery contract still resolves the same
+way, and whether the verifier path still behaves as an authority
+boundary rather than a sandbox.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime
+and owner context</p>
+</blockquote>
+<h1 id="accepted-owner-policy">Accepted Owner Policy</h1>
+<p>This appendix records the conservative owner decisions applied after
+review.</p>
+<ul>
+<li>Read-first ordering is a convention, not permission.</li>
+<li>The explicit ledger contract is primary; sibling discovery is a
+checked fallback.</li>
+<li>Installation is per consumer checkout, not a global backend
+install.</li>
+<li>Targets are routing configuration, not execution approval.</li>
+<li>Parent-routed, child-task, refusal, and fallback delegation outcomes
+remain distinct.</li>
+<li>The adapter route is primary when available; paste/export fallback
+is reported.</li>
+<li>Advisory reviewer choice and UID-isolated verifier identity remain
+separate.</li>
+<li>Verifier identity is an authority boundary, not a sandbox.</li>
+<li>Failed writes are treated as unknown persistence until external
+state is checked.</li>
+</ul>
+<p>This policy does not claim live host approval, provider support,
+funding, or sandbox isolation.</p>
+<p><em>Reflect scan source: <code>blue-az/pi-operator-nano</code> commit
+<code>8709d6e</code>; policy implementation: commit
+<code>6b38ddc</code>.</em></p>
+</body>
+</html>
