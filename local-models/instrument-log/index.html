@@ -11,7 +11,7 @@
     <div class="page">
 
         <header class="header">
-            <span class="badge">Living log · 11 Sep 2026</span>
+            <span class="badge">Living log · 11 Sep 2026 · revised 26 Sep 2026</span>
             <h1>The Instrument Log</h1>
             <p class="subtitle">Every measurement fault caught in this program, and the finding it would have been published as.</p>
         </header>
@@ -27,7 +27,7 @@
 
         <section class="section">
             <h2>What this is</h2>
-            <p>Seventeen faults, caught over roughly a week of local-model benchmarking across two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390. Not one of them was a model behaving badly. Every one was the instrument, the daemon, the log parser, or my own code.</p>
+            <p>Seventeen faults, caught over roughly a week of local-model benchmarking across two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390. Not one of them was a model behaving badly. <strong>Fifteen more have been caught in the three weeks since, listed at the end. The ratio did not change.</strong> Every one was the instrument, the daemon, the log parser, or my own code.</p>
             <p>They are collected here because of a property they share: <strong>each one produced a number rather than an error.</strong> A crashed run announces itself. A daemon quietly using two cards while the row says "solo" does not. It produces a clean, plausible, publishable figure that happens to be false, and nothing downstream can tell the difference.</p>
             <p>That is the argument for the log. Anyone can report what their system did. The question worth asking is how many of these were sitting inside the run that produced the report.</p>
         </section>
@@ -87,6 +87,32 @@
             <p>Two tests, both cheap, both used above.</p>
             <p><strong>When every seat agrees, inspect the mechanism before naming a defect.</strong> One consultant-bench task fails on the local 27B, the local 35B, a headless 2080, a Ryzen AI MAX 390, a hosted DeepSeek control at n=13, and a frontier model with reasoning enabled. The task is nevertheless solvable: three <code>get_year_over_year_growth</code> calls, one per company, fit inside its five-action budget, but require aggregation across category rows and company-level YoY arithmetic. Every tested model instead chose the intuitive six-call portfolio route and spent its budget before committing. That is a reproducible planning-budget failure mode, not a bench defect or a general ranking.</p>
             <p><strong>Does it survive a change of harness?</strong> A 2080 reproducing another card's exact failure fingerprint says the failure belongs to the model. The same model truncating mid-JSON on a different machine says it belongs to the harness.</p>
+        </section>
+
+        <section class="section">
+            <h2>Since this page was published</h2>
+            <p>Fifteen more, 12&ndash;26 September. Three upstream, twelve mine &mdash; the same ratio, and the same property: each produced a number rather than an error. Two of them are the reason the cell model now has a third outcome, <code>unproven</code>, which is not a score and is never pooled.</p>
+            <table>
+                <thead><tr><th>What broke</th><th>What it looked like</th><th>What it was</th></tr></thead>
+                <tbody>
+                <tr><td><code>offloaded N/N layers to GPU</code></td><td>A fully GPU-resident mixture-of-experts model</td><td>The counter counts <em>dense</em> layers. Ollama resolves an oversized MoE by moving every expert tensor to system RAM, keeps the dense weights on the device, and logs <code>31/31</code> anyway. A 17.33 GB model on an 8 GB card had never been resident and could not be — and the row was published as fully resident.</td></tr>
+                <tr><td>LiteLLM's <code>ollama_chat/</code> provider</td><td>A model that cannot use tools: it calls one, then calls it again, and loops</td><td>The provider drops tool results, so the agent never sees its own output. Routing as <code>openai/&lt;model&gt;</code> against <code>:PORT/v1</code> fixes it entirely.</td></tr>
+                <tr><td><code>pkill -f</code> issued over ssh</td><td>A cleanup that reported success</td><td>The pattern matches the <code>pkill</code> command's own line, so it kills itself and leaves the target running. Resolve PIDs via <code>/proc/PID/environ</code> and signal those.</td></tr>
+                <tr><td>Pinning a card is not clearing it</td><td>A slower model</td><td>Residual occupancy. Same model, same task, same pin: <strong>28.23 s</strong> on a card that was pinned but never verified empty, <strong>19.75 s</strong> with the card checked down to its 54 MiB idle floor first.</td></tr>
+                <tr><td>My own placement probe</td><td>A 7x slowdown in a repeat run</td><td>The probe loaded a second model on the unpinned endpoint with a ten-minute keep-alive. The benchmark model then got 4,468 MiB of a 17,742 MiB blob. The run was voided and a residency-magnitude check added.</td></tr>
+                <tr><td>Turn loop recorded each turn <em>after</em> parsing it</td><td>“found 0 JSON objects” — a model emitting nothing usable</td><td>The evidence was discarded on the failure path, so the cell retained the previous turn's text. The turn is now recorded before parsing, and an empty response is a carrier fault rather than a model result.</td></tr>
+                <tr><td>Wall-clock trial count</td><td>A 2.1x speed gap between two models</td><td>n=3 on a task whose spread reaches <strong>84% of its own mean</strong>. A paired n=6 run puts the same two models 1.6% apart with overlapping ranges. At three trials the draw was picking the winner, and would pick differently on another night.</td></tr>
+                <tr><td><code>pgrep -c dispatch.py</code></td><td>A healthy run reported dead</td><td>No <code>-f</code>, so the pattern never matched a script name sitting in an argument list. The same watcher also read MST timestamps as UTC and invented an hour-long gap.</td></tr>
+                <tr><td>A deterministic grader that had never been boundary-tested</td><td>17 failed cells across a matrix</td><td>False negatives. A grader untested against negation, synonyms and section headings is a suspect, not an oracle — which is why grader is now one of the five proofs a cell must satisfy.</td></tr>
+                <tr><td>Fixture path resolution on the Z13</td><td>Three different pass counts for one model: 12, 10, 9</td><td>The data client resolved <code>~/Downloads/SensorDownload/Current</code> ahead of the project's own data directory, so each run graded against whatever happened to be there.</td></tr>
+                <tr><td>Scope check counted the carrier's own files</td><td>A model capped at 6/18</td><td>Runtime pollution — <code>.pi-agent</code>, <code>.pi-sessions</code>, <code>.tmp</code> — written inside the fixture root by the harness. The model's edits were correct.</td></tr>
+                <tr><td>Scorer searched for literal scope markers</td><td>Six cells failing a scope check</td><td>It recorded no evidence at all, so a genuine pass and a miss were indistinguishable after the fact. v0.2 records which markers it searched for and what it matched.</td></tr>
+                <tr><td><code>--placement-profile</code> set as an environment variable</td><td>Placement silently unproved</td><td>The runner takes it as a CLI flag. Set in the environment it was ignored, and every cell recorded <code>placement: false</code> while the run otherwise looked normal.</td></tr>
+                <tr><td>Unified-memory placement read a cold daemon</td><td>“no loaded model reported by the local daemon”, every cell unproven</td><td><code>/api/ps</code> is empty until something is loaded, and the proof ran before the model did, so it never had a chance to pass. It now warms the model once and re-asks.</td></tr>
+                <tr><td>Dashboard row filtered by benchmark name</td><td>A completed run simply absent from the dashboard</td><td>Name-matching dropped a paired comparison that arrived under its own label — the same defect that had already dropped a whole generation of rows once and been fixed only in the one place it was noticed. The test meant to catch it asserted per <em>definition</em>, not per row, so a dropped row inside a populated definition passed it.</td></tr>
+                </tbody>
+            </table>
+            <p class="note"><strong>Still not one of them was the model.</strong> Thirty-two faults now, across four weeks. The closest thing to a model result in the whole set is the invention rate &mdash; how often a model answers instead of saying it does not know &mdash; and that only became visible once a benchmark stopped scoring “invented” and “abstained” identically.</p>
         </section>
 
         <section class="section">

@@ -270,6 +270,19 @@
             <code>qwen3.6:35b</code>'s long task came in at 19.8 s against 28.2 s, while
             <code>qwen3.8:27b</code>'s held at 20.1 s against 18.8 s.</p>
 
+            <p><strong>The evidence that L1 still separates models is thinner than it reads.</strong>
+            Above, the L1 result is given as <code>gemma4:31b</code> and <code>gpt-oss:120b</code>
+            at 30/30, <code>qwen3.8:27b</code> at 26/30 and <code>gemma4:26b</code> at 24/30. Both
+            models at the top of that list are now off the single-card roster:
+            <code>gpt-oss:120b</code> at 60.9&nbsp;GB cannot produce a single-card number at all,
+            and <code>gemma4:31b</code> was ruled off on 26 Sep &mdash; at Ollama's default 32k
+            context it puts 7% on the CPU and takes 74&ndash;213&nbsp;s per call, and at the
+            pinned 16k it runs in about 10&nbsp;s but is still not an E9 model. So the spread that
+            makes L1 look discriminating is carried largely by models that are not in the race.
+            Whether L1 separates the <em>eligible</em> roster is an open question, not a
+            finding &mdash; and it matters, because L2 is saturated and L1 is where the ordering
+            would have to come from.</p>
+
             <p><strong>The long-task gap between the two qwen models is not established.</strong>
             The ranking above has them 2.1x apart on the long task on a 3090, 15.6 s against 32.4 s.
             A paired run on 25 Sep &mdash; single 3090, same daemon, minutes apart, cleared card,
