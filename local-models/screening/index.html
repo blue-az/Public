@@ -131,6 +131,30 @@
         </section>
 
         <section class="section">
+            <h2>Why it fails</h2>
+            <p>A pass count says a model failed. It does not say whether the model tried. Those are different failures, and the trajectory already records which one happened &mdash; every cell logs the tools the model actually called.</p>
+            <p>On <code>ambiguous-anchor</code> at L0, across 34 cells per model:</p>
+            <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Model</th><th class="num">attempted an edit</th><th class="num">passed, given it tried</th><th class="num">never tried</th></tr></thead>
+                <tbody>
+                <tr><td><code>qwen3.8:27b</code></td><td class="num">33/34</td><td class="num">21/33 (64%)</td><td class="num">1/34</td></tr>
+                <tr><td><code>qwen3.6:35b</code></td><td class="num">23/34</td><td class="num">11/23 (48%)</td><td class="num">11/34</td></tr>
+                <tr><td><code>gemma4:26b</code></td><td class="num out">0/34</td><td class="num">&mdash;</td><td class="num out">34/34</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p><strong><code>gemma4:26b</code> never once calls an edit tool.</strong> It uses only <code>bash</code> and <code>read</code>: it explores the repository and stops. In seven of the thirty-four it says so plainly &mdash; one of them, verbatim:</p>
+            <div class="pullquote"><p>&ldquo;Since I don&rsquo;t have a task, I&rsquo;ll just conclude this initial exploration&hellip; Please let me know what you would like me to do!&rdquo;</p></div>
+            <p>The instruction was delivered. It is the first user message in the transcript, byte-identical to what the other two models received &mdash; checked, not assumed, because &ldquo;the prompt never arrived&rdquo; would be the more comfortable explanation.</p>
+            <p><strong>Everything is in whether the model acts.</strong> Attempt rate separates all three (qwen3.8 against qwen3.6, p&nbsp;=&nbsp;0.003; either qwen against gemma4, p&nbsp;&lt;&nbsp;0.00000001). But <em>given</em> an attempt, the two qwen models are indistinguishable &mdash; 64% against 48%, p&nbsp;=&nbsp;0.28. So the L0 result above is real and is not what it looks like: <code>qwen3.8:27b</code> does not edit better, it acts more often.</p>
+            <h3>The control that settles it</h3>
+            <p>Same task, same models, same fixture, one rung up at L1 &mdash; where the instruction is stated plainly rather than obliquely:</p>
+            <p><strong>All three models pass 6/6, and all three attempt the edit 6/6. <code>gemma4:26b</code> included.</strong></p>
+            <p class="note">So gemma4 can make this edit, and does, every time it is asked directly. Change &ldquo;in <code>runbook.md</code>, change the Staging line&rdquo; to &ldquo;Staging needs the force flag when we bounce it&rdquo;, and it stops registering that anything has been asked of it &mdash; thirty-four times out of thirty-four, without one exception. <strong>A total, perfectly repeatable failure sitting on top of an intact capability.</strong> Which means 0/34 is not, by itself, evidence that a model cannot do something. At this rung the task is not an editing test at all; it is a test of whether the model notices it has been given work.</p>
+        </section>
+
+        <section class="section">
             <h2>The ruling written down first</h2>
             <p><code>gemma4:26b</code> writes scratch files while it works &mdash; <code>test_implementation.py</code>, <code>test_fix.py</code>, <code>repro.py</code> &mdash; and the scope check counts each one as a failed cell. Most of its published gap was this rather than a wrong answer.</p>
             <p>Two defensible options, and they produce different rosters: treat a scratch write as a behavioural disqualifier, or grade the cell on its answer and count scope violations in their own column. <strong>The second was chosen and recorded on 26 September, before the campaign ran</strong>, along with the consequence: gemma4:26b's counts would rise and the ordering might move.</p>
