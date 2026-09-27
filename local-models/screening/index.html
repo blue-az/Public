@@ -88,28 +88,46 @@
 
         <section class="section">
             <h2>Where they actually differ</h2>
-            <p>L0 was run twice on a repaired harness &mdash; six trials, then twelve &mdash; for <strong>18 cells per model per task</strong>. Read summed, it says almost nothing. Read per task, it says a great deal.</p>
+            <p>L0 was run three times on a repaired harness &mdash; six trials, then twelve, then sixteen &mdash; for <strong>34 cells per model per task</strong>. Read summed, it says almost nothing. Read per task, it says a great deal.</p>
             <div class="table-wrap">
             <table class="table">
                 <thead><tr><th>Task</th><th class="num">qwen3.8:27b</th><th class="num">qwen3.6:35b</th><th class="num">gemma4:26b</th></tr></thead>
                 <tbody>
-                <tr><td><code>ambiguous-anchor</code></td><td class="num">11/18</td><td class="num">6/18</td><td class="num out">0/18</td></tr>
-                <tr><td><code>csv-summarize-repair</code></td><td class="num in">18/18</td><td class="num">17/18</td><td class="num">10/18</td></tr>
-                <tr><td><code>strict-log-format</code></td><td class="num">17/18</td><td class="num">11/18</td><td class="num in">18/18</td></tr>
+                <tr><td><code>ambiguous-anchor</code></td><td class="num">21/34</td><td class="num">11/34</td><td class="num out">0/34</td></tr>
+                <tr><td><code>csv-summarize-repair</code></td><td class="num in">34/34</td><td class="num">33/34</td><td class="num">18/34</td></tr>
+                <tr><td><code>strict-log-format</code></td><td class="num">33/34</td><td class="num">22/34</td><td class="num">31/34</td></tr>
                 </tbody>
             </table>
             </div>
-            <p><strong>Three shapes, not three positions.</strong> <code>gemma4:26b</code> is simultaneously the worst model in this battery and the best one: it never once passes <code>ambiguous-anchor</code> across eighteen attempts, and never once fails <code>strict-log-format</code>. Which model &ldquo;wins&rdquo; depends entirely on which task you ask, so a single ordering throws the finding away.</p>
-            <p class="note">The differences that clear significance are all per task: gemma4 0/18 against qwen3.8&rsquo;s 11/18 on <code>ambiguous-anchor</code>, <strong>p&nbsp;=&nbsp;0.0001</strong>; gemma4 18/18 against qwen3.6&rsquo;s 11/18 on <code>strict-log-format</code>, <strong>p&nbsp;=&nbsp;0.008</strong>; qwen3.8 18/18 against gemma4&rsquo;s 10/18 on <code>csv-summarize-repair</code>, <strong>p&nbsp;=&nbsp;0.003</strong>. The extremes are also the steadiest numbers here: across two independent runs gemma4 scored 0% and 0% on one task, and 100% and 100% on another.</p>
+            <p><strong>Three shapes, not three positions.</strong> <code>gemma4:26b</code> is simultaneously the worst model in this battery and the best one: it never once passes <code>ambiguous-anchor</code> across <strong>thirty-four</strong> attempts, while beating the seat on <code>strict-log-format</code>. Which model &ldquo;wins&rdquo; depends entirely on which task you ask, so a single ordering throws the finding away.</p>
+            <p class="note">The per-task differences were significant long before the summed one was. <code>gemma4:26b</code> has now failed <code>ambiguous-anchor</code> <strong>thirty-four times out of thirty-four</strong> &mdash; and on <code>strict-log-format</code> it beats <code>qwen3.6:35b</code>, 31/34 against 22/34. The same model is last overall and second on that task. A single ordering hides that completely, which is why the summed column is not the one to read.</p>
         </section>
 
         <section class="section">
-            <h2>The test that failed, and why it is on this page</h2>
+            <h2>The test that failed, then passed</h2>
             <p>Two runs at six trials had <code>qwen3.8:27b</code> ahead of the seat by four to five cells at L0 &mdash; enough to look like an inversion, since the seat ties at L1 and wins every speed comparison. So it was tested properly: twelve trials, with the decision rule written into the run directory <em>before the run started</em>.</p>
             <p>The rule was a two-sided Fisher test on that run alone, p&nbsp;&lt;&nbsp;0.05, deliberately not pooled with the earlier runs. The result was <strong>31/36 against 23/36, p&nbsp;=&nbsp;0.055</strong>.</p>
-            <p><strong>That fails.</strong> So the L0 advantage between those two models is not established, and the word &ldquo;inversion&rdquo; is withdrawn.</p>
+            <p><strong>That fails.</strong> So on that evidence the L0 advantage was not established.</p>
             <p class="note">Disclosed because leaving it out would be the dishonest version: a <em>one-sided</em> test on the same data gives p&nbsp;=&nbsp;0.027, and the direction genuinely was predicted by two prior runs. But two-sided is what was registered, and choosing the test after seeing the numbers is the thing pre-registration exists to stop. The lesson is for the next one: register one-sided when the direction is predicted in advance, not afterwards.</p>
-            <p><strong>The control, which was also pre-registered, is significant.</strong> <code>gemma4:26b</code> is the same size class as <code>qwen3.8:27b</code>. If the effect were about parameter count, the two should sit together. Instead gemma4 scored 18/36 &mdash; worse than qwen3.8 at p&nbsp;=&nbsp;0.002, and indistinguishable from the 35b at p&nbsp;=&nbsp;0.34. Whatever separates these models at L0, <strong>it is not size</strong>.</p>
+            <h3>The fourth run</h3>
+            <p>It was run once more at sixteen trials &mdash; 48 cells per model &mdash; with the rule again fixed in advance, and this time registered <em>one-sided</em>, because the direction had been predicted by three prior runs and the lesson from the previous failure was to say so beforehand rather than afterwards.</p>
+            <p><strong>qwen3.8:27b 42/48 against qwen3.6:35b 32/48. One-sided p&nbsp;=&nbsp;0.014 &mdash; established.</strong> It also clears two-sided at p&nbsp;=&nbsp;0.027, so the result does not depend on the choice that was registered.</p>
+            <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Run</th><th class="num">qwen3.8:27b</th><th class="num">qwen3.6:35b</th></tr></thead>
+                <tbody>
+                <tr><td>6 trials, leaky harness</td><td class="num">15/18 (83%)</td><td class="num">10/18 (56%)</td></tr>
+                <tr><td>6 trials, repaired</td><td class="num">15/18 (83%)</td><td class="num">11/18 (61%)</td></tr>
+                <tr><td>12 trials</td><td class="num">31/36 (86%)</td><td class="num">23/36 (64%)</td></tr>
+                <tr><td>16 trials</td><td class="num in">42/48 (88%)</td><td class="num">32/48 (67%)</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p class="note"><strong>Four runs, two harnesses, three points of drift, and it took about 150 cells per model to establish something visible in the first eighteen.</strong> The six-trial result pointed the right way and could not carry the claim. That is the cost of a denominator chosen by convention rather than by the size of the difference being tested.</p>
+            <p><strong>What this does and does not mean.</strong> The seat, <code>qwen3.6:35b</code>, ties at L1, wins every speed comparison, and loses this one. That is a difference between two models at one rung &mdash; not a roster-wide inversion, and not a statement about architectures, since there is one model of each here.</p>
+
+            <p><strong>The control, which was also pre-registered, is significant.</strong> <code>gemma4:26b</code> is the same size class as <code>qwen3.8:27b</code>. If the effect were about parameter count, the two should sit together. Instead gemma4 came last. At twelve trials it was worse than qwen3.8 (p&nbsp;=&nbsp;0.002) and indistinguishable from the 35b (p&nbsp;=&nbsp;0.34); at sixteen it separates from the 35b as well (21/48 against 32/48, p&nbsp;=&nbsp;0.040), so the earlier phrasing &mdash; that it &ldquo;tracks the 35b rather than its size-mate&rdquo; &mdash; is withdrawn. It tracks nothing; it is simply last. The claim that survives is the one that mattered: <strong>gemma4 is worst despite sharing qwen3.8&rsquo;s size class, so the ordering is not parameter count.</strong></p>
+            <p class="note">Worth noticing what happened there. A <em>null</em> result was doing load-bearing work &mdash; &ldquo;indistinguishable from the 35b&rdquo; &mdash; and more data dissolved it. Absence of a detectable difference is not a finding that survives its own denominator growing, and a conclusion resting on one has to shrink when it does.</p>
         </section>
 
         <section class="section">
@@ -164,7 +182,7 @@
             <h2>What this does not say</h2>
             <ul>
                 <li>It does not rank the roster on quality. L2 and L1 are at the ceiling, and at L0 the three models differ by task rather than by position &mdash; there is no ordering to state.</li>
-                <li>It does not establish an L0 advantage between the two qwen models. That was tested at twelve trials against a rule fixed beforehand and came back p&nbsp;=&nbsp;0.055, which fails.</li>
+                <li>It does not extend the L0 result beyond the pair that was tested. <code>qwen3.8:27b</code> over <code>qwen3.6:35b</code> at L0 is established across four runs; nothing here licenses a general ordering, a claim at another rung, or a claim about other models.</li>
                 <li>It does not say the difference is architectural. One model per architecture means &ldquo;dense wins&rdquo; and &ldquo;this particular model wins&rdquo; cannot be told apart here, and neither is claimed.</li>
                 <li>It does not cull anyone. Nothing in this campaign can remove a model that is already seated &mdash; disqualification happens at eligibility and at the gate. The seat is chosen from interactive use; the ranking informs that choice and does not make it.</li>
                 <li>It does not set a speed cut. Every catastrophically slow case so far was a placement problem that eligibility already removes. A resident-but-slow model is a usability question, governed separately by a 20 tok/s interactive decode floor.</li>
