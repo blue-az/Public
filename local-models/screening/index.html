@@ -21,9 +21,9 @@
     <div class="page">
 
         <header class="header">
-            <span class="badge">Draft &middot; 26 Sep 2026</span>
+            <span class="badge">Draft &middot; 26 Sep 2026 &middot; revised 27 Sep 2026</span>
             <h1>How models get ruled out</h1>
-            <p class="subtitle">Screening for one 24&nbsp;GB card. What disqualifies a model, what the battery can and cannot decide, and one ruling that was written down before the run so it could not be argued afterwards.</p>
+            <p class="subtitle">Screening for one 24&nbsp;GB card. What disqualifies a model, what the battery can and cannot decide, and why the number you sum is the wrong one to read.</p>
         </header>
 
         <nav class="nav" aria-label="Bulkhead &tau;">
@@ -32,7 +32,7 @@
         </nav>
 
         <div class="pullquote">
-            <p>Both rungs that have been run are at the ceiling. The battery cannot rank the models that survived it &mdash; and finding that out is the result, not a failure of the run.</p>
+            <p>The same cells gave <strong>p&nbsp;=&nbsp;0.055</strong> summed and <strong>p&nbsp;=&nbsp;0.0001</strong> split by task. Adding a model&rsquo;s strengths to its weaknesses lands everyone in the middle. These three models are sharply different &mdash; just not in a line.</p>
         </div>
 
         <section class="section">
@@ -69,7 +69,7 @@
             <div class="ladder">
                 <div class="rung closed"><b>L2 &mdash; fully specified</b><br>Numbered steps, exact strings named.<br><span class="out">Saturated 25 Sep.</span> Retained as the admission gate.</div>
                 <div class="rung closed"><b>L1 &mdash; stated plainly</b><br>One paragraph, the intent, no literals.<br><span class="out">Saturated 26 Sep.</span> Measured, and it does not order the roster.</div>
-                <div class="rung"><b>L0 &mdash; oblique</b><br>How a colleague would actually ask. Nothing named.<br>Where the ordering goes next.</div>
+                <div class="rung"><b>L0 &mdash; oblique</b><br>How a colleague would actually ask. Nothing named.<br><span class="in">Measured 27 Sep.</span> The only rung that separates anything &mdash; per task.</div>
             </div>
             <p>L2 was known to be exhausted. L1 was the rung the screening design picked to order the roster, and the campaign measured it directly:</p>
             <div class="table-wrap">
@@ -87,6 +87,32 @@
         </section>
 
         <section class="section">
+            <h2>Where they actually differ</h2>
+            <p>L0 was run twice on a repaired harness &mdash; six trials, then twelve &mdash; for <strong>18 cells per model per task</strong>. Read summed, it says almost nothing. Read per task, it says a great deal.</p>
+            <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Task</th><th class="num">qwen3.8:27b</th><th class="num">qwen3.6:35b</th><th class="num">gemma4:26b</th></tr></thead>
+                <tbody>
+                <tr><td><code>ambiguous-anchor</code></td><td class="num">11/18</td><td class="num">6/18</td><td class="num out">0/18</td></tr>
+                <tr><td><code>csv-summarize-repair</code></td><td class="num in">18/18</td><td class="num">17/18</td><td class="num">10/18</td></tr>
+                <tr><td><code>strict-log-format</code></td><td class="num">17/18</td><td class="num">11/18</td><td class="num in">18/18</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p><strong>Three shapes, not three positions.</strong> <code>gemma4:26b</code> is simultaneously the worst model in this battery and the best one: it never once passes <code>ambiguous-anchor</code> across eighteen attempts, and never once fails <code>strict-log-format</code>. Which model &ldquo;wins&rdquo; depends entirely on which task you ask, so a single ordering throws the finding away.</p>
+            <p class="note">The differences that clear significance are all per task: gemma4 0/18 against qwen3.8&rsquo;s 11/18 on <code>ambiguous-anchor</code>, <strong>p&nbsp;=&nbsp;0.0001</strong>; gemma4 18/18 against qwen3.6&rsquo;s 11/18 on <code>strict-log-format</code>, <strong>p&nbsp;=&nbsp;0.008</strong>; qwen3.8 18/18 against gemma4&rsquo;s 10/18 on <code>csv-summarize-repair</code>, <strong>p&nbsp;=&nbsp;0.003</strong>. The extremes are also the steadiest numbers here: across two independent runs gemma4 scored 0% and 0% on one task, and 100% and 100% on another.</p>
+        </section>
+
+        <section class="section">
+            <h2>The test that failed, and why it is on this page</h2>
+            <p>Two runs at six trials had <code>qwen3.8:27b</code> ahead of the seat by four to five cells at L0 &mdash; enough to look like an inversion, since the seat ties at L1 and wins every speed comparison. So it was tested properly: twelve trials, with the decision rule written into the run directory <em>before the run started</em>.</p>
+            <p>The rule was a two-sided Fisher test on that run alone, p&nbsp;&lt;&nbsp;0.05, deliberately not pooled with the earlier runs. The result was <strong>31/36 against 23/36, p&nbsp;=&nbsp;0.055</strong>.</p>
+            <p><strong>That fails.</strong> So the L0 advantage between those two models is not established, and the word &ldquo;inversion&rdquo; is withdrawn.</p>
+            <p class="note">Disclosed because leaving it out would be the dishonest version: a <em>one-sided</em> test on the same data gives p&nbsp;=&nbsp;0.027, and the direction genuinely was predicted by two prior runs. But two-sided is what was registered, and choosing the test after seeing the numbers is the thing pre-registration exists to stop. The lesson is for the next one: register one-sided when the direction is predicted in advance, not afterwards.</p>
+            <p><strong>The control, which was also pre-registered, is significant.</strong> <code>gemma4:26b</code> is the same size class as <code>qwen3.8:27b</code>. If the effect were about parameter count, the two should sit together. Instead gemma4 scored 18/36 &mdash; worse than qwen3.8 at p&nbsp;=&nbsp;0.002, and indistinguishable from the 35b at p&nbsp;=&nbsp;0.34. Whatever separates these models at L0, <strong>it is not size</strong>.</p>
+        </section>
+
+        <section class="section">
             <h2>The ruling written down first</h2>
             <p><code>gemma4:26b</code> writes scratch files while it works &mdash; <code>test_implementation.py</code>, <code>test_fix.py</code>, <code>repro.py</code> &mdash; and the scope check counts each one as a failed cell. Most of its published gap was this rather than a wrong answer.</p>
             <p>Two defensible options, and they produce different rosters: treat a scratch write as a behavioural disqualifier, or grade the cell on its answer and count scope violations in their own column. <strong>The second was chosen and recorded on 26 September, before the campaign ran</strong>, along with the consequence: gemma4:26b's counts would rise and the ordering might move.</p>
@@ -95,8 +121,8 @@
         </section>
 
         <section class="section">
-            <h2>What actually separates them</h2>
-            <p>Quality cannot rank this roster. Speed can &mdash; but only once you know what the clock is measuring. Across a full day of trials, decode rate held constant per model while the number of tokens each model chose to write varied by nearly five times. <strong>Wall clock tracks output tokens at r&nbsp;&ge;&nbsp;0.99.</strong></p>
+            <h2>Speed, and what the clock is really counting</h2>
+            <p>Quality differs by task rather than by rank. Speed gives an ordering &mdash; but only once you know what the clock is counting. Across a full day of trials, decode rate held constant per model while the number of tokens each model chose to write varied by nearly five times. <strong>Wall clock tracks output tokens at r&nbsp;&ge;&nbsp;0.99.</strong></p>
             <div class="table-wrap">
             <table class="table">
                 <thead><tr><th>Model</th><th class="num">short task</th><th class="num">long task</th><th class="num">out-tokens, long</th><th class="num">decode</th></tr></thead>
@@ -109,6 +135,13 @@
             </div>
             <p><strong>The fastest decoder on the roster is the slowest finisher, by three times.</strong> <code>gemma4:26b</code> generates at 207 tok/s and takes 45.6 s, because it writes 4.8&times; the tokens. <code>qwen3.8:27b</code> writes <em>fewer</em> tokens than the seat and still loses, purely on decode rate. The arithmetic closes in all three cases: tokens divided by decode, plus about 27% for prefill and tool execution.</p>
             <p class="note"><strong>What is resolvable at n=6, by 95% confidence interval.</strong> The seat separates from both on the short task. <code>qwen3.8:27b</code> and <code>gemma4:26b</code> do <em>not</em> separate on it (&minus;2.6 to +4.7&nbsp;s). <code>gemma4:26b</code> separates from both on the long task. The seat and <code>qwen3.8:27b</code> still do not (&minus;12.9 to +0.6&nbsp;s). Differences that are not listed as separated are not findings.</p>
+        </section>
+
+        <section class="section">
+            <h2>The harness was handing over the answer</h2>
+            <p>Every number above was re-measured, because the sandbox the models work in was found to contain the benchmark itself. The carrier bound the whole harness directory next to the fixture, so <code>tasks/*.yaml</code> &mdash; each task&rsquo;s exact grading pattern and all three prompt levels &mdash; sat one <code>ls</code> away from the model. It was there to supply a single two-line script.</p>
+            <p>It is fixed, and L1 and L0 were re-run on the repaired harness. At the level of whole batteries the results reproduced within a cell, so the leak was reachable without being much used.</p>
+            <p class="note"><strong>But that summary was wrong once too, in exactly the way this page is about.</strong> Checked per task rather than per battery, one pair moves: <code>gemma4:26b</code> on <code>ambiguous-anchor</code> scored 3/6 with the leak and 0/18 without, p&nbsp;=&nbsp;0.010. That is the only cell where the leak clearly helped, and it reads as genuine exploitation. Everywhere else it was neutral or made things worse &mdash; models burning turns exploring the harness instead of doing the task. An aggregate that reproduces does not license &ldquo;the defect had no effect&rdquo;; check at the level the defect could act on.</p>
         </section>
 
         <section class="section">
@@ -130,7 +163,9 @@
         <section class="section">
             <h2>What this does not say</h2>
             <ul>
-                <li>It does not rank the roster on quality. Both rungs that have been run are at the ceiling, and a pass count at a ceiling buys precision about the ceiling rather than about the models.</li>
+                <li>It does not rank the roster on quality. L2 and L1 are at the ceiling, and at L0 the three models differ by task rather than by position &mdash; there is no ordering to state.</li>
+                <li>It does not establish an L0 advantage between the two qwen models. That was tested at twelve trials against a rule fixed beforehand and came back p&nbsp;=&nbsp;0.055, which fails.</li>
+                <li>It does not say the difference is architectural. One model per architecture means &ldquo;dense wins&rdquo; and &ldquo;this particular model wins&rdquo; cannot be told apart here, and neither is claimed.</li>
                 <li>It does not cull anyone. Nothing in this campaign can remove a model that is already seated &mdash; disqualification happens at eligibility and at the gate. The seat is chosen from interactive use; the ranking informs that choice and does not make it.</li>
                 <li>It does not set a speed cut. Every catastrophically slow case so far was a placement problem that eligibility already removes. A resident-but-slow model is a usability question, governed separately by a 20 tok/s interactive decode floor.</li>
                 <li>It does not travel between sessions. The same model, task and trial count read 19.75&nbsp;s one day and 14.70&nbsp;s the next, both on a cleared card. The ranges overlap, so it is one population &mdash; but the mean moved 26%. Compare arms within a run, not figures across runs.</li>
@@ -140,7 +175,7 @@
         </section>
 
         <footer class="footer">
-            <p>Bulkhead &tau; &middot; Draft &middot; How models get ruled out &middot; 26 Sep 2026</p>
+            <p>Bulkhead &tau; &middot; Draft &middot; How models get ruled out &middot; 26 Sep 2026, revised 27 Sep 2026</p>
             <p><a href="../../bulkhead-tau/index.html">Home</a> &nbsp;&middot;&nbsp; <a href="../">Local Models</a> &nbsp;&middot;&nbsp; <a href="../benchmarks/">Benchmark definitions</a></p>
         </footer>
     </div>
