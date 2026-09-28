@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Model Per Card Costs Nothing — One Card Is an Eviction Tax</title>
+  <meta name="description" content="DRAFT. Two different local models served one per card on dual RTX 3090s do not slow each other: decode stays within ~6% of each model alone at up to N=4, across two model pairs. Forcing both onto one card costs 3x (gemma) to 5.4x (qwen) wall clock, all of it reload, because one card cannot batch across different models. With one model already loaded and idle, the second can starve until the first&#x27;s keep_alive expires: 158.9 s at 2m, 938.7 s at 15m (3 of 4 tries). Placement, not capacity. Not frozen; not UID-verified.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · active draft</div>
+    <h1>One Model Per Card Costs Nothing — One Card Is an Eviction Tax</h1>
+    <p class="meta">DRAFT. Two different local models served one per card on dual RTX 3090s do not slow each other: decode stays within ~6% of each model alone at up to N=4, across two model pairs. Forcing both onto one card costs 3x (gemma) to 5.4x (qwen) wall clock, all of it reload, because one card cannot batch across different models. With one model already loaded and idle, the second can starve until the first&#x27;s keep_alive expires: 158.9 s at 2m, 938.7 s at 15m (3 of 4 tries). Placement, not capacity. Not frozen; not UID-verified.</p>
+    <p class="meta">Canonical source: <code>docs/ONE_MODEL_PER_CARD_COSTS_NOTHING.md</code></p>
+    <p><strong>Status:</strong> active draft <strong>Date:</strong> 2026-09-27 (first measured 2026-08-27) <strong>Project:</strong> Bulkhead τ / Bulkhead Tau <strong>Paper group:</strong> Local LLM Operator Judgment (provisional) <strong>Publication posture:</strong> public draft. Not frozen. Not UID-verified.</p>
+<h2>Abstract</h2>
+<p>Two different local models served at the same time on two GPUs, one model per card, do not slow each other down. Measured on two model pairs and two dual-3090 machines, one-per-card decode stays within about 6% of each model running alone at up to four concurrent requests, and within noise at one or two.</p>
+<p>Putting both models on one card that cannot hold them both costs a great deal. The cost is not slower decoding. The card cannot batch across two different models, so it swaps them, and every swap is a reload: <strong>3x the wall clock for a gemma pair and 5.4x for a qwen pair.</strong> With one model already loaded and idle, the swap can also fail to happen. The resident model serves its own requests, the scheduler logs an eviction it does not perform, and the second model waits until the first model&#x27;s <code>keep_alive</code> expires: 158.9 s at a 2-minute keep_alive, 938.7 s at 15 minutes.</p>
+<p>Whether a second GPU is needed for mixed-model serving is therefore a placement question, not a capacity question. <strong>Give each model its own card.</strong></p>
+<h2>Setup</h2>
+<ul>
+<li><strong>Hardware:</strong> two dual-RTX-3090 machines. The desktop (2026-08-27, 320 W) ran   the original measurement. The headless testbench (2026-09-27, 350 W) ran the   follow-ups.</li>
+<li><strong>Pairs:</strong> <code>gemma4:26b</code> (MoE, 17 GB) + <code>gemma4:31b</code> (dense, 19 GB), and   <code>qwen2.5-coder:32b</code> (dense, 19.9 GB) + <code>qwen3.8:27b</code> (dense, 17.7 GB).</li>
+<li><strong>Serve:</strong> one Ollama daemon per card, each gated to exactly one CUDA device   on the expected PCI bus, and a per-cell placement gate (the model is on the   intended card by <code>nvidia-smi</code> memory). Flash attention, q8_0 KV cache,   ctx 8192, temp 0, 256-token generations, the MULTI-MODEL-SERVE-001 prompt.</li>
+<li><strong>Cells:</strong> A = model 1 alone on its card; B = model 2 alone on its card;   C = both, one per card; D = both on one card.</li>
+<li><strong>Metric:</strong> per-request decode (<code>eval_count / eval_duration</code>) for   interference; wall clock per request pair for the one-card cost. Aggregate   tok/s across two models is not a throughput sum. It is bounded by whichever   model finishes last, and it is not used for interference.</li>
+</ul>
+<p>A pass without <code>OLLAMA_VULKAN=0</code> let each daemon see the other card through Vulkan. It is kept in the packet, marked invalid, and not analysed.</p>
+<h2>Results</h2>
+<h3>1. One model per card: no interference</h3>
+<p>Change in per-request decode, cell C against the same model alone:</p>
+<table class="paper-table">
+<thead><tr><th>pair</th><th>model</th><th>N=1</th><th>N=2</th><th>N=4</th></tr></thead>
+<tbody>
+<tr><td>gemma, desktop, 2026-08-27</td><td>26b</td><td>+0.1%</td><td>—</td><td>—</td></tr>
+<tr><td>gemma, desktop, 2026-08-27</td><td>31b</td><td>−1.9%</td><td>—</td><td>—</td></tr>
+<tr><td>gemma, <code>NUM_PARALLEL=2</code></td><td>26b</td><td>+1%</td><td>−4%</td><td>—</td></tr>
+<tr><td>gemma, <code>NUM_PARALLEL=2</code></td><td>31b</td><td>+0%</td><td>−1%</td><td>—</td></tr>
+<tr><td>gemma, <code>NUM_PARALLEL=4</code></td><td>26b</td><td>−5%</td><td>−9%</td><td>−6%</td></tr>
+<tr><td>gemma, <code>NUM_PARALLEL=4</code></td><td>31b</td><td>−0%</td><td>−2%</td><td>−4%</td></tr>
+<tr><td>qwen, <code>NUM_PARALLEL=2</code></td><td>32b</td><td>−0%</td><td>−1%</td><td>—</td></tr>
+<tr><td>qwen, <code>NUM_PARALLEL=2</code></td><td>27b</td><td>+5%</td><td>+3%</td><td>—</td></tr>
+</tbody>
+</table>
+<p>The harness noise floor is about 1.5% typical and up to 3%. Under <code>NUM_PARALLEL=4</code> 26b shows a small, consistent penalty (−5% to −9%) that n=3 per cell cannot separate from noise.</p>
+<h3>2. Both on one card: the eviction tax</h3>
+<p>The two models cannot be co-resident on one 24 GB card. <code>/api/ps</code> shows one loaded at a time, and each request for the other model reloads it.</p>
+<table class="paper-table">
+<thead><tr><th>pair, config</th><th>one per card (C)</th><th>both on one card (D)</th><th>cost</th></tr></thead>
+<tbody>
+<tr><td>gemma, <code>NUM_PARALLEL=2</code></td><td>8.4 s</td><td>25.2 s</td><td><strong>3.0x</strong></td></tr>
+<tr><td>gemma, <code>NUM_PARALLEL=4</code></td><td>15.8 s</td><td>33.5 s</td><td>2.1x</td></tr>
+<tr><td>qwen, <code>NUM_PARALLEL=2</code></td><td>7.3 s</td><td>39.8 s</td><td><strong>5.4x</strong></td></tr>
+</tbody>
+</table>
+<p>Wall clock is for one request to each model, N=1. Per-request decode in D is nearly unchanged (gemma 26b −5% to −8%, 31b +3% to +5%, qwen 32b −0%). The one exception, qwen3.8:27b at +18% in D, is n=3 and unexplained, and is not interpreted. The cost is reload: <code>load_duration</code> in D is 6.6–7.2 s for 31b and 15.7–21.2 s for 26b per request, against 0.6 s in C.</p>
+<p>How the card swaps depends on <code>NUM_PARALLEL</code>. At 4 it batches each model&#x27;s requests and swaps once. At 2 it thrashes, swapping more than once, and the last of four requests finishes at 64–83 s.</p>
+<h3>3. Starvation from an idle resident model</h3>
+<p>On one card with 26b already loaded and idle, a burst of two 26b and two 31b requests (<code>NUM_PARALLEL=4</code>):</p>
+<table class="paper-table">
+<thead><tr><th>run</th><th>26b requests</th><th>31b requests</th><th>outcome</th></tr></thead>
+<tbody>
+<tr><td>keep_alive 2m, rep 1</td><td>3.0 s</td><td>38.7 s</td><td>normal swap</td></tr>
+<tr><td>keep_alive 2m, rep 2</td><td>3.1 s</td><td><strong>158.9 s</strong></td><td>stall</td></tr>
+<tr><td>keep_alive 15m, rep 1</td><td>3.1 s</td><td><strong>938.7 s</strong></td><td>stall</td></tr>
+</tbody>
+</table>
+<p>In the 15-minute stall, 26b finished its requests at 21:41:35, which set its expiry to 21:56:35. The scheduler had already logged &quot;predicted to exceed available memory, evicting&quot;, yet 26b stayed loaded and idle. The 31b requests completed at 21:57:11: the expiry plus one ~20 s load. The 2-minute stall has the same shape.</p>
+<p>From this preloaded state the stall occurred 3 times in 4 tries, counting the first, unplanned occurrence on the morning of 2026-09-27. From an empty card it did not occur in any of 7 tries (6 with the gemma pair, 1 with the qwen pair), at keep_alive 1m, 2m and 15m and at both <code>NUM_PARALLEL</code> settings. <strong>A long keep_alive turns a request for the second model into a wait of up to the keep_alive.</strong> One model per card avoids it entirely.</p>
+<h3>4. A residency cost of <code>NUM_PARALLEL</code> itself</h3>
+<p>At <code>NUM_PARALLEL=4</code>, 31b is 91.4% GPU-resident (59/61 layers) even alone on its own card, because the daemon reserves KV cache for four 8192-token slots. Its alone rate drops from 33.8 to 18.3 tok/s. This is a configuration cost, separate from interference, and it only appears for a model near the card&#x27;s capacity.</p>
+<h2>What Is New Relative to Earlier Work</h2>
+<table class="paper-table">
+<thead><tr><th>study</th><th>configuration</th><th>established</th></tr></thead>
+<tbody>
+<tr><td>DUAL-GPU-EXPANSION-001 (+ MATCHED-PAIR-001)</td><td>one model split across two cards</td><td>Splitting pays only in proportion to overflow; an unnecessary split on a matched pair is free (+1.6%).</td></tr>
+<tr><td>DUAL-SERVE-001, corrected by CONCURRENCY-001</td><td>the same model on both cards, requests split</td><td>A pinned pair beats one batching card by +33% to +52% (N=2–8); one card gains +144% from batching, N=1 to N=8.</td></tr>
+<tr><td><strong>this paper</strong></td><td><strong>two different models</strong></td><td>Cross-model interference is measured and is zero within noise. One card cannot batch across different models, only swap, so its cost is reload (3x–5.4x). It can also starve the second model for up to its keep_alive.</td></tr>
+</tbody>
+</table>
+<h2>The Debugging Trail Is Part of the Finding</h2>
+<p>The first measurement took three rounds of daemon debugging before it could be trusted, and each wrong round would have produced a publishable-looking number:</p>
+<ol>
+<li>A manually started second <code>ollama</code> daemon did not inherit the systemd unit&#x27;s    environment. Missing flash attention and KV-cache settings spilled 11 of 61    <code>gemma4:31b</code> layers to CPU, at ~8 tok/s. That reads as &quot;31b cannot serve    concurrently.&quot;</li>
+<li>Pinning <code>OLLAMA_CONTEXT_LENGTH</code> did not fix the rest of the spill. Reserved KV    context is <code>NUM_PARALLEL</code> x per-request context, so the default of 4    reserved 32k for a test that never sent more than two concurrent requests.</li>
+<li>Matching <code>NUM_PARALLEL</code> to the run&#x27;s real concurrency restored full    residency.</li>
+</ol>
+<p>The September testbench run found a fourth: without <code>OLLAMA_VULKAN=0</code>, a CUDA-gated daemon can still reach the other card through Vulkan. <strong>An unexplained throughput number in a local-inference benchmark is at least as likely to be a daemon-configuration artifact as a capacity or contention finding.</strong> Every cell in this paper passed both a backend gate and a placement gate for that reason.</p>
+<h2>Limits</h2>
+<ul>
+<li>n=3 per cell for interference. The −5% to −9% on 26b at <code>NUM_PARALLEL=4</code> is   unresolved.</li>
+<li>Two pairs, both 17–20 GB models on 24 GB cards. Small models that <em>can</em>   co-reside on one card are a different case; see <em>Parameter Count Does Not Price   the Card</em> for two mid-size models co-resident on a 48 GB pool.</li>
+<li>Starvation was observed only with the gemma pair at <code>NUM_PARALLEL=4</code>, on the   testbench&#x27;s installed Ollama. The preloaded state at <code>NUM_PARALLEL=2</code>, the qwen   pair, and other Ollama versions are untested. It is intermittent (3 of 4), and   what decides whether a given burst stalls is not known.</li>
+<li>The August desktop run and the September testbench runs differ in power limit   (320 W vs 350 W) and in machine. They are compared by direction, not pooled.</li>
+</ul>
+<h2>Before Freezing</h2>
+<ul>
+<li>UID-verified review (op-* reviewer identity).</li>
+<li>Starvation from the preloaded state with the qwen pair and at   <code>NUM_PARALLEL=2</code>, to bound its scope.</li>
+<li>A check against a current Ollama release, since the stall looks like   scheduler behaviour that a version could change.</li>
+</ul>
+<h2>Provenance</h2>
+<ul>
+<li>Original measurement: <code>docs/domain_runs/MULTI-MODEL-SERVE-001/findings.md</code>   (2026-08-27), <code>PLAN.md</code> (2026-08-23), and four timestamped evidence sets   (three from the debugging trail, one clean).</li>
+<li>N=4, placement, second pair, starvation, cross-reference:   <code>docs/domain_runs/ONE-MODEL-PER-CARD-N4-001/findings.md</code> and its evidence   directories, including per-request JSON and daemon logs for each stall.</li>
+<li>Related: <code>docs/domain_runs/CONCURRENCY-001/findings.md</code>,   <code>docs/domain_runs/DUAL-GPU-EXPANSION-001/</code>.</li>
+<li>Harness contract: <code>docs/LOCAL_INFERENCE_BENCH_HARNESS.md</code>.</li>
+<li>The stub this draft supersedes: git history of   <code>docs/ONE_MODEL_PER_CARD_COSTS_NOTHING_STUB.md</code>.</li>
+</ul>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-09-22T03:18:48.440059+00:00",
+  "generated_at": "2026-09-28T05:02:28.956649+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": true,
   "groups": [
@@ -679,12 +679,11 @@
         },
         {
           "id": "the-default-draft-is-too-deep",
-          "title": "The Default Draft Is Too Deep",
-          "source_path": "docs/THE_DEFAULT_DRAFT_IS_TOO_DEEP_STUB.md",
-          "page_origin": "hand-authored",
+          "title": "The Default Draft Depth Is Wrong: Multi-Token Prediction Depth on a 3090 and a Strix Halo Laptop",
+          "source_path": "docs/THE_DEFAULT_DRAFT_IS_TOO_DEEP.md",
           "track": "paper",
           "paper_number": "1.44",
-          "lifecycle": "stub",
+          "lifecycle": "active draft",
           "publication_status": "published",
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "provisional",
@@ -692,7 +691,23 @@
           "proto_output_path": "bulkhead-tau/generated-papers/the-default-draft-is-too-deep.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-default-draft-is-too-deep.md",
           "publish": true,
-          "summary": "STUB. Ollama's stock qwen3.8:27b already runs multi-token prediction, so the remaining speed is not in enabling MTP but in how deep the head is allowed to draft. On a 24 GB 3090 and a 2025 Strix Halo the stock depth of 4 is slower than 2: the vendor default carried over the separate-draft-model convention and is the wrong depth for this card class. Measured 16 Aug 2026; not frozen and not UID-verified."
+          "summary": "DRAFT. Ollama's stock qwen3.8:27b already runs multi-token prediction at draft depth 4, and 4 is not the best depth in any condition measured. On a 24 GB 3090, depth 2 is fastest at empty context (58.1 vs 50.2 tok/s) and depth 8 under occupied context from ~15k tokens; on a Ryzen AI MAX 390 laptop depth 2 is never worse than 4 and depth 8 is slower than no speculation. The 'acceptance decays with depth' mechanism is refuted: acceptance rises with depth. Set draft_num_predict explicitly, per machine and workload, never above 8. Not frozen; not UID-verified."
+        },
+        {
+          "id": "one-model-per-card-costs-nothing",
+          "title": "One Model Per Card Costs Nothing \u2014 One Card Is an Eviction Tax",
+          "source_path": "docs/ONE_MODEL_PER_CARD_COSTS_NOTHING.md",
+          "track": "paper",
+          "paper_number": "1.48",
+          "lifecycle": "active draft",
+          "publication_status": "published",
+          "paper_group": "Local LLM Operator Judgment",
+          "group_status": "provisional",
+          "public_slug": "one-model-per-card-costs-nothing",
+          "proto_output_path": "bulkhead-tau/generated-papers/one-model-per-card-costs-nothing.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/one-model-per-card-costs-nothing.md",
+          "publish": true,
+          "summary": "DRAFT. Two different local models served one per card on dual RTX 3090s do not slow each other: decode stays within ~6% of each model alone at up to N=4, across two model pairs. Forcing both onto one card costs 3x (gemma) to 5.4x (qwen) wall clock, all of it reload, because one card cannot batch across different models. With one model already loaded and idle, the second can starve until the first's keep_alive expires: 158.9 s at 2m, 938.7 s at 15m (3 of 4 tries). Placement, not capacity. Not frozen; not UID-verified."
         }
       ]
     },

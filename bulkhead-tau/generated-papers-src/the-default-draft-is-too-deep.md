@@ -1,110 +1,61 @@
-# The Default Draft Is Too Deep
+# The Default Draft Depth Is Wrong
+## Multi-Token Prediction Depth on a 24 GB 3090 and a Strix Halo Laptop
 
-## Status
+**Status:** active draft
+**Date:** 2026-09-27 (first measured 2026-08-16)
+**Project:** Bulkhead τ / Bulkhead Tau
+**Paper group:** Local LLM Operator Judgment (provisional)
+**Publication posture:** public draft. Not frozen. Not UID-verified.
 
-Stub. Measured 16 Aug 2026. Not frozen. Not UID-verified.
+Published as a stub on 2026-08-16 under the title *The Default Draft Is Too
+Deep*. The page URL is unchanged. The retitle is explained in *What changed
+since the stub*.
 
-Companion numbers live on the public local-lane note:
-https://bulkheadtau.com/bulkhead-tau/local-lane/qwen38/#mtp
+## Abstract
 
-## Working claim
+Ollama's stock `qwen3.8:27b` already runs multi-token prediction (MTP) with a
+draft depth of 4. Turning MTP on does not recover the remaining speed; choosing
+the depth does. The stock depth of 4 is not the best setting in any condition
+we measured on two machines.
 
-Ollama's stock `qwen3.8:27b` already turns on multi-token prediction. The leftover speed is not "enable MTP." It is **how many tokens the head is allowed to draft**. On a 24 GB 3090 and on a 2025 Strix Halo, the stock depth of **4** is slower than **2**. The vendor default copied the separate-draft-model convention. It is the wrong depth for this card class.
+- **RTX 3090, empty context:** depth 2 is fastest (58.1 tok/s vs 50.2 stock).
+- **RTX 3090, occupied context from ~15k tokens:** depth 8 is fastest, +8.5
+  tok/s over stock at 15k.
+- **Ryzen AI MAX 390 laptop (z13):** depth 2 is never worse than depth 4, is
+  steadier, and pulls ahead as output grows. Depth 8 is slower than no
+  speculation at all.
 
-## The fix
+The default carries over the convention for *separate* draft models, where 4 is
+standard. It was not chosen for embedded MTP on this card class. The operator
+rule is short: **set `draft_num_predict` explicitly, per machine and per
+workload, and never above 8.**
 
-Same Q4_K_M blob. Do not pull the Ollama library `:27b-mtp-` tag (a same-weekend report had that path 2× slower). Derive the stock tag and set:
+## The Setting
+
+Same Q4_K_M blob as the stock tag. Derive the stock tag and set:
 
 ```
 PARAMETER draft_num_predict 2
 ```
 
-Serve as `qwen38-mtp-2`. Daily on both machines.
+served as `qwen38-mtp-2`, and likewise `qwen38-mtp-0/4/8`. Do not pull the
+Ollama library `:27b-mtp-` tag; a same-weekend community report had that path
+2x slower.
 
-## The improvement
+Ollama documents `draft_num_predict` as defaulting to 4 for separate draft
+models and says embedded MTP tensors "require setting this parameter." Stock
+`qwen3.8:27b` ships with 4. That value is a library convention, not a
+measurement on this hardware.
 
-Method: Ollama 0.32.12/0.32.13, `think` off, temp 0.8, 128-token generations, cold load each, decode = `eval_count / eval_duration`.
+## Results
 
-### Desktop — RTX 3090 24 GB @ 320 W, ctx 16384, n=4, 100% GPU
+### 3090, empty context
 
-| Tag | draft | tok/s | sd | vs draft 0 |
-|---|---:|---:|---:|---|
-| `qwen3.6:27b` | — | 37.5 | 0.55 | — |
-| `qwen38-mtp-0` | 0 | 40.3 | 0.05 | 1.00 |
-| `qwen3.8:27b` stock | 4 | 41.4 | 4.21 | +3% |
-| `qwen38-mtp-4` | 4 | 42.5 | 3.68 | +5% |
-| **`qwen38-mtp-2`** | **2** | **50.3** | 2.71 | **+25%** |
+RTX 3090 24 GB, ctx 16384 allocated, 128-token generations from a short prompt,
+`think` off, temp 0.8, cold load each run, n=4, 100% GPU. Re-measured 2026-08-18
+under the protocol of the 2026-08-16 stub.
 
-Split of the earlier "+20% vs 3.6" figure:
-
-- weights only: 40.3 vs 37.5 (~+8%)
-- MTP at depth 2: another +25% on 3.8
-- stock depth 4: noisy, barely above off
-
-vs `gemma4:26b` at 133 tok/s, 50.3 is still 0.38×. Seat does not move. Interactive 3.8 does.
-
-### z13 — Ryzen AI MAX 390 / 8050S, ctx 8192 (16k OOMs), n=3, 100% GPU
-
-AC plugged in. Governor was `powersave`/`balanced` — conservative versus the earlier 16.3 @ `performance`.
-
-| Tag | draft | tok/s | vs draft 0 |
-|---|---:|---:|---|
-| `qwen38-mtp-0` | 0 | 13.0 | 1.00 |
-| `qwen38-mtp-4` | 4 | 17.7 | +36% |
-| **`qwen38-mtp-2`** | **2** | **21.4** | **+65%** |
-
-Draft 2 is the first time 3.8 clears the ~20 tok/s "I am watching this" floor on this laptop.
-
-## Likely cause
-
-Not proven. Consistent with the traces and with the llama.cpp MTP table that appeared the same weekend.
-
-1. **Acceptance decays with draft depth.** The head proposes n tokens; the main model verifies them in one pass. Rejected drafts waste the verify. Community 24 GB rows peak at `n-max 2`. Deeper drafts help code and hurt prose. Our stock-4 arms are the noisy ones (sd 3.7–4.2). The off arm is a flat line (sd 0.05). That is what a decaying hit-rate looks like when you average mixed short generations.
-
-2. **The default is the other kind of speculation.** Ollama documents `draft_num_predict` as defaulting to 4 for *separate* draft models, and says embedded MTP tensors "require setting this parameter." Stock `qwen3.8:27b` ships with 4. That is a library convention, not a 3090 measurement. We did not choose it.
-
-3. **Bandwidth-poor decode pays more for a good depth and loses more for a bad one.** z13's +65% at depth 2 versus the 3090's +25% is the same shape as the community APU/iGPU rows: MTP amortises a starved weight read. Depth 4 still loses to 2 on both of our machines, so the miss is not "MTP off." It is "one click too deep."
-
-What would falsify (1): a paired run that logs draft acceptance, with depth 4 showing equal or higher acceptance and still losing tok/s. We did not collect acceptance. The next measurement is that log, not another Elo cell.
-
-## What this does not say
-
-- It does not say 3.8 is more correct than 3.6. The seat battery is still a wash.
-- It does not say 3.8 becomes the 3090 seat. 26b remains ~3×.
-- It does not say llama.cpp would match these Ollama numbers. Different serve.
-- It does not say depth 2 is universal. A 5090-class card in the community table peaks deeper. Measure the card you own.
-
-## Open
-
-- Log draft acceptance at 0/2/4 on both machines.
-- Repeat z13 at `performance` (this stub's z13 arm was balanced/powersave).
-- Do not use this as a ranking paper. It is a serve-parameter paper.
-
----
-
-## Addendum — 18 Aug 2026: depth 2 is right at empty KV, depth 8 is right under load
-
-The stub above stands as measured. A follow-up of 448 generations on the 3090 answers both of its Open items and changes the daily recommendation for one condition it did not sample: **occupied context**.
-
-### The Open item is closed: acceptance was logged
-
-`llama-server` reports per-position acceptance at INFO level (`#acc rate/pos`, `#mean acc len`). Mean accepted length rises monotonically with depth:
-
-| draft depth | 1 | 2 | 4 | 6 | 8 |
-|---|---:|---:|---:|---:|---:|
-| mean accepted length | 1.88 | 2.56 | 3.53 | 4.05 | 4.13 |
-
-### The stated falsification test fired
-
-The stub asked for "a paired run that logs draft acceptance, with depth 4 showing equal or higher acceptance and still losing tok/s." That is exactly what depth **6** does: it accepts more per pass than depth 4 (4.05 vs 3.53) and is 11% slower (46.07 vs 51.99 tok/s at 45k context, t = −12.03).
-
-**So hypothesis (1) — "acceptance decays with draft depth" — is not the mechanism.** Acceptance does not decay with depth; it rises. The cost is in the draft generation pass itself. No working mechanism has replaced it.
-
-### Allocated context is not occupied context
-
-This stub's protocol runs 128-token generations from a short prompt at `num_ctx 16384`. That **allocates** a 16k window the model never **occupies** — KV residency during those runs is near zero. Re-measured under this stub's exact protocol (temp 0.8, 128 tokens, think off, cold load, n=4):
-
-| tag | draft | tok/s | sd |
+| tag | depth | tok/s | sd |
 |---|---:|---:|---:|
 | `qwen38-mtp-0` | 0 | 40.67 | 0.19 |
 | **`qwen38-mtp-2`** | **2** | **58.05** | 3.06 |
@@ -112,31 +63,127 @@ This stub's protocol runs 128-token generations from a short prompt at `num_ctx 
 | `qwen38-mtp-4` | 4 | 50.86 | 4.05 |
 | `qwen38-mtp-8` | 8 | 53.39 | 3.68 |
 
-`mtp-0` reproduces the stub's 40.3 at 40.67. **Depth 2 wins at empty KV, as the stub says.**
+The original stub run (Ollama 0.32.12/0.32.13, 320 W) gave 40.3 / 50.3 / 41.4
+for depths 0 / 2 / stock-4. The ordering is the same; the depth-4 arms are the
+noisy ones in both runs.
 
-### Under real occupied context, depth 8 wins
+### 3090, occupied context
 
-Seven content corpora (Rust, Python, prose, agent scrollback, mixed, CSV, journald logs), 400-token generations, fixed seed:
+Seven content corpora (Rust, Python, prose, agent scrollback, mixed, CSV,
+journald logs), 400-token generations, fixed seed; 448 generations in all.
 
-| draft depth | 15k ctx | 30k ctx | 45k ctx |
-|---|---:|---:|---:|
+| depth | 15k ctx | 30k ctx | 45k ctx |
+|---:|---:|---:|---:|
 | 2 | 57.50 | 52.82 | 49.80 |
 | 4 | 56.52 | 52.70 | 51.99 |
 | **8** | **65.04** | **57.89** | **52.53** |
 | 12 | 58.99 | 52.62 | 30.92 |
 | 16 | 29.10 | 8.26 | 5.88 |
 
-Depth 8 beats stock by +8.52 tok/s at 15k (t = 3.33) and +5.19 at 30k (t = 2.48). **The stub stopped one power of two early.**
+Depth 8 beats stock by +8.52 tok/s at 15k (t = 3.33) and +5.19 at 30k
+(t = 2.48). At 45k the lead is within noise. Depth 12 falls to break-even with
+no speculation at 45k, and depth 16 is about 5x worse than no speculation at
+every context length. Depths 5, 6 and 7 are all worse than both 4 and 8.
 
-### Revised guidance
+The split does not follow a code/prose line. Rust prefers depth 2 at every
+context length; Python, prose, scrollback, logs and CSV all prefer deeper. Rust
+is the one corpus of seven that wants shallow drafts.
 
-- **Short prompts, interactive one-liners:** depth 2, as published.
-- **Loaded context — agent sessions, long files, anything past ~10k:** depth 8.
-- **Never exceed 8.** Depth 12 is break-even with no speculation at 45k; depth 16 is ~5× *worse* than no speculation at every context length.
-- **Only powers of two.** Depths 5, 6, 7 are all worse than both 4 and 8; 7 is worse than 6.
+### z13 (Ryzen AI MAX 390 / Radeon 8050S)
 
-### One correction
+ctx 8192 (16k OOMs), `performance` governor, Ollama 0.32.12, cold load each run,
+100% GPU, prompts recorded (`MTP-Z13-GOVERNOR-001`, `MTP-Z13-LONGCTX-001`; 81
+runs).
 
-The stub says "deeper drafts help code and hurt prose." Across seven corpora the split does not follow that line: Rust prefers depth 2 at every context length, while Python, prose, scrollback, logs and CSV all prefer deeper. Rust is the only one of seven that wants shallow drafts. "Code" is not the category.
+| workload | depth 0 | depth 2 | depth 4 | depth 8 |
+|---|---:|---:|---:|---:|
+| prose, 128 tokens, n=6 | 13.0 | 22.6 (+74%) | 23.2 (+79%) | — |
+| Rust, 128 tokens, n=6 | 13.0 | 25.7 (+99%) | 25.6 (+97%) | — |
+| 1024-token output, n=3 | 12.7 | 23.5 (+86%) | 21.8 (+72%) | 9.5 (−25%) |
+| ~7.2k-token prose context, n=3 | 12.3 | 22.4 (+82%) | 20.2 (+64%) | 10.2 (−17%) |
+| ~7.4k-token Rust context, n=3 | 12.3 | 20.4 (+65%) | 20.2 (+64%) | 8.8 (−29%) |
 
-Full study, 448 generations: `MTP_SPECULATIVE_DECODING_STUDY_2026-08-17.md`.
+- At 128 tokens depth 2 and depth 4 tie. Depth 2 has about half of depth 4's
+  run-to-run spread on prose and about a third on Rust.
+- With long output depth 2 leads (+86% vs +72%, no overlap across reps).
+- **Depth 8 is slower than no speculation in every z13 workload.** The 3090's
+  "depth 8 under load" result does not transfer: z13 cannot reach the context
+  lengths where it applies, and below ~7.4k depth 8 is the worst setting.
+- The governor does not matter. Balanced and `performance` give the same
+  numbers on the same prompt.
+
+At depth 2 z13 gains +74% to +99%, against the 3090's +25% (stub protocol) to
++43% (re-measure). MTP pays more on the bandwidth-poor machine.
+
+## Mechanism: What Is and Is Not Established
+
+The stub offered three candidate causes. One is now refuted, one stands as
+documentation, and one is strengthened.
+
+1. **"Acceptance decays with depth": refuted.** The `llama-server` backend that
+   Ollama launches logs per-position acceptance. Mean accepted length *rises* with depth: 1.88, 2.56, 3.53, 4.05,
+   4.13 for depths 1, 2, 4, 6, 8. The stub's own falsification test fired: depth
+   6 accepts more per pass than depth 4 (4.05 vs 3.53) and is 11% slower (46.07
+   vs 51.99 tok/s at 45k, t = −12.03). The cost is in generating the draft, not
+   in rejecting it. **No mechanism has replaced it.**
+2. **The default is the separate-draft convention: documented.** This explains
+   why the default is 4. It does not explain why 4 is slow.
+3. **Bandwidth-poor decode gains more from a good depth: strengthened.** The z13
+   vs 3090 gap now rests on recorded, reproducible prompts and is wider than the
+   stub reported.
+
+The paper therefore makes an empirical claim about settings. It does not make a
+causal claim about why deeper drafts cost what they do.
+
+## Operator Guidance
+
+| machine | workload | depth |
+|---|---|---:|
+| 24 GB 3090 | short prompts, interactive one-liners | 2 |
+| 24 GB 3090 | loaded context (agent sessions, long files, past ~10k) | 8 |
+| 24 GB 3090 | Rust-heavy context | 2 |
+| z13 / Strix Halo | everything | 2 |
+| any | — | never above 8; powers of two only |
+
+A 5090-class card in the community table peaks deeper. Measure the card you own.
+
+## What Changed Since the Stub
+
+- **Title.** "Too deep" was right for the empty-context case the stub measured
+  and wrong for occupied context on the 3090, where the best depth is *deeper*
+  than the default. What holds everywhere is that 4 is not the right number.
+- **z13 depth 2 over 4.** The stub's +65% vs +36% did not replicate at 128
+  tokens; its 17.7 tok/s is below every recorded-prompt depth-4 run. The stub's
+  z13 prompt was not recorded. The ordering returns with long output.
+- **"Deeper drafts help code and hurt prose."** Wrong. Only Rust wants shallow
+  drafts.
+- **Mechanism (1)** is refuted (above).
+
+## What This Does Not Say
+
+- That 3.8 is more correct than 3.6. The seat battery is a wash.
+- That 3.8 becomes the 3090 seat. `gemma4:26b` remains roughly 3x faster.
+- That a standalone llama.cpp serve would match these numbers. Every table here
+  ran through Ollama 0.32.x. The acceptance counters come from the
+  `llama-server` backend that Ollama launches, read from its INFO log.
+- That depth 2 or depth 8 is universal. This is a serve-parameter paper, not a
+  model ranking.
+
+## Before Freezing
+
+- UID-verified review (op-* reviewer identity).
+- Bring the occupied-context study into the repo (it currently lives in the
+  operator's notes vault) so its tables can be checked from the record.
+- A mechanism for the draft-generation cost, or an explicit statement in the
+  frozen text that none was found.
+
+## Provenance
+
+- Stub, 2026-08-16, and its addenda: git history of
+  `docs/THE_DEFAULT_DRAFT_IS_TOO_DEEP_STUB.md`.
+- 448-generation occupied-context study:
+  `MTP_SPECULATIVE_DECODING_STUDY_2026-08-17.md`, in the operator's private notes
+  (not yet in this repo).
+- z13 recorded-prompt runs: `docs/domain_runs/MTP-Z13-GOVERNOR-001/`,
+  `docs/domain_runs/MTP-Z13-LONGCTX-001/`.
+- Companion numbers: https://bulkheadtau.com/bulkhead-tau/local-lane/qwen38/#mtp
