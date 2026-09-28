@@ -3,7 +3,18 @@
 **Date:** 2026-06-18
 **Project:** Bulkhead τ
 **Domain:** AGY-GEMINI-QUOTA-001
-**Status:** DRAFT (Analysis Complete)
+**Status:** frozen and published 2026-09-28, as a dated field note
+**Paper number:** 1.47
+
+> **Scope of this freeze.** This is a field observation from one development
+> session: five game surfaces, one supervisor/implementer pairing, and one quota
+> regime (Gemini CLI's coarse, turn-metered meter, since sunset). That regime no
+> longer exists, so the evidence cannot be extended. The paper is frozen as a
+> record of it, not as a general law. A controlled replication is planned as a
+> separate paper, *Can One Abundant Implementer Exhaust Three Frontier
+> Supervisors?* (stub). The per-segment token deltas were re-summed from
+> `docs/domain_runs/AGY-GEMINI-QUOTA-001/measurement_result.md` at freeze:
+> 806,430 + 2,477,952 + 1,638,581 + 929,003 = 5,851,966 input tokens.
 
 ## Abstract
 
@@ -82,6 +93,7 @@ Under coarse quota regimes, large bounded tasks are more efficient. Small turns 
 
 - **Regime Specificity:** These findings are unique to the coarse, turn-limited transition period of the Gemini CLI and may not apply to fine-grained usage-based APIs.
 - **Sample Size:** Limited to five game surfaces in a single development session.
+- **No replication:** The quota regime has been sunset, so this exact measurement cannot be repeated. Replication has to happen under a different metering regime and is a separate paper.
 
 ## 8. Conclusion
 

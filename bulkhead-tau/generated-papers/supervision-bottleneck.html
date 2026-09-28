@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>When Tokens Are Plentiful, Supervision Becomes the Bottleneck (Under Coarse Quota Regimes)</title>
-  <meta name="description" content="DRAFT. Auto-ethnographic finding from the Bulkhead tau game build: under coarse, turn-limited quota regimes, implementation tokens are abundant but barely register on coarse meters, so the binding constraint shifts to human supervision, specification clarity, and verification. Per-segment token deltas audited against measurement_result.md.">
+  <meta name="description" content="FIELD NOTE, frozen 2026-09-28. From one Bulkhead tau game-build session under Gemini CLI&#x27;s coarse, turn-metered quota (since sunset): ~5.85M input tokens of implementation activity barely moved the visible meter, while supervisor and spec work registered clearly. The binding constraint shifted to human supervision, specification clarity and verification (the &#x27;agentic overhang&#x27;). Per-segment token deltas re-summed against measurement_result.md at freeze. One session, five surfaces; replication is a separate paper.">
   <style>
     body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
     .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
@@ -31,11 +31,20 @@
 </head>
 <body>
   <div class="page">
-    <div class="badge">Paper · active draft</div>
+    <div class="badge">Paper · published</div>
     <h1>When Tokens Are Plentiful, Supervision Becomes the Bottleneck (Under Coarse Quota Regimes)</h1>
-    <p class="meta">DRAFT. Auto-ethnographic finding from the Bulkhead tau game build: under coarse, turn-limited quota regimes, implementation tokens are abundant but barely register on coarse meters, so the binding constraint shifts to human supervision, specification clarity, and verification. Per-segment token deltas audited against measurement_result.md.</p>
+    <p class="meta">FIELD NOTE, frozen 2026-09-28. From one Bulkhead tau game-build session under Gemini CLI&#x27;s coarse, turn-metered quota (since sunset): ~5.85M input tokens of implementation activity barely moved the visible meter, while supervisor and spec work registered clearly. The binding constraint shifted to human supervision, specification clarity and verification (the &#x27;agentic overhang&#x27;). Per-segment token deltas re-summed against measurement_result.md at freeze. One session, five surfaces; replication is a separate paper.</p>
     <p class="meta">Canonical source: <code>docs/WHEN_TOKENS_ARE_PLENTIFUL_SUPERVISION_BECOMES_THE_BOTTLENECK.md</code></p>
-    <p><strong>Date:</strong> 2026-06-18 <strong>Project:</strong> Bulkhead τ <strong>Domain:</strong> AGY-GEMINI-QUOTA-001 <strong>Status:</strong> DRAFT (Analysis Complete)</p>
+    <p><strong>Date:</strong> 2026-06-18 <strong>Project:</strong> Bulkhead τ <strong>Domain:</strong> AGY-GEMINI-QUOTA-001 <strong>Status:</strong> frozen and published 2026-09-28, as a dated field note <strong>Paper number:</strong> 1.47</p>
+<blockquote><p><strong>Scope of this freeze.</strong> This is a field observation from one development</p></blockquote>
+<blockquote><p>session: five game surfaces, one supervisor/implementer pairing, and one quota</p></blockquote>
+<blockquote><p>regime (Gemini CLI&#x27;s coarse, turn-metered meter, since sunset). That regime no</p></blockquote>
+<blockquote><p>longer exists, so the evidence cannot be extended. The paper is frozen as a</p></blockquote>
+<blockquote><p>record of it, not as a general law. A controlled replication is planned as a</p></blockquote>
+<blockquote><p>separate paper, *Can One Abundant Implementer Exhaust Three Frontier</p></blockquote>
+<blockquote><p>Supervisors?* (stub). The per-segment token deltas were re-summed from</p></blockquote>
+<blockquote><p><code>docs/domain_runs/AGY-GEMINI-QUOTA-001/measurement_result.md</code> at freeze:</p></blockquote>
+<blockquote><p>806,430 + 2,477,952 + 1,638,581 + 929,003 = 5,851,966 input tokens.</p></blockquote>
 <h2>Abstract</h2>
 <p>This paper analyzes the operational dynamics of multi-agent development under the specific coarse quota regimes of the late-Gemini CLI transition. Using the Bulkhead τ game suite as a testbed, we demonstrate that while raw model implementation capacity appears effectively limitless on visible percentage meters, the true bottleneck remains the human-supervised &quot;command and control&quot; layer. Operational evidence suggests that in environments with abundant but opaque implementation tokens, scarcity shifts to specification clarity, role discipline, and the cognitive cost of verification — a dynamic we term the <strong>agentic overhang</strong>: implementation throughput that outruns the human&#x27;s capacity to direct and audit it.</p>
 <h2>1. Operational Context</h2>
@@ -111,6 +120,7 @@
 <ul>
 <li><strong>Regime Specificity:</strong> These findings are unique to the coarse, turn-limited transition period of the Gemini CLI and may not apply to fine-grained usage-based APIs.</li>
 <li><strong>Sample Size:</strong> Limited to five game surfaces in a single development session.</li>
+<li><strong>No replication:</strong> The quota regime has been sunset, so this exact measurement cannot be repeated. Replication has to happen under a different metering regime and is a separate paper.</li>
 </ul>
 <h2>8. Conclusion</h2>
 <p>The transition to a supervision-scarce environment requires shifting engineering focus from &quot;token efficiency&quot; to &quot;attention efficiency.&quot; When implementation activity is high but barely registers on coarse meters, the highest-ROI activities are precise specification, rigorous role boundaries, and final human playtesting.</p>

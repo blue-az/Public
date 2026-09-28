@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-09-28T05:02:28.956649+00:00",
+  "generated_at": "2026-09-28T07:48:45.399609+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": true,
   "groups": [
@@ -619,7 +619,7 @@
           "source_path": "docs/WHEN_TOKENS_ARE_PLENTIFUL_SUPERVISION_BECOMES_THE_BOTTLENECK.md",
           "track": "paper",
           "paper_number": "1.47",
-          "lifecycle": "active draft",
+          "lifecycle": "published",
           "publication_status": "published",
           "paper_group": "Local LLM Operator Judgment",
           "group_status": "provisional",
@@ -627,7 +627,7 @@
           "proto_output_path": "bulkhead-tau/generated-papers/supervision-bottleneck.html",
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/supervision-bottleneck.md",
           "publish": true,
-          "summary": "DRAFT. Auto-ethnographic finding from the Bulkhead tau game build: under coarse, turn-limited quota regimes, implementation tokens are abundant but barely register on coarse meters, so the binding constraint shifts to human supervision, specification clarity, and verification. Per-segment token deltas audited against measurement_result.md."
+          "summary": "FIELD NOTE, frozen 2026-09-28. From one Bulkhead tau game-build session under Gemini CLI's coarse, turn-metered quota (since sunset): ~5.85M input tokens of implementation activity barely moved the visible meter, while supervisor and spec work registered clearly. The binding constraint shifted to human supervision, specification clarity and verification (the 'agentic overhang'). Per-segment token deltas re-summed against measurement_result.md at freeze. One session, five surfaces; replication is a separate paper."
         },
         {
           "id": "encoding-converts-synthesis-into-lookup",
