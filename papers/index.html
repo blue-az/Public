@@ -7,6 +7,14 @@
     <meta name="description" content="Bulkhead &tau; paper inventory, generated from PAPERS_MANIFEST.json and grouped by research cluster.">
     <link rel="stylesheet" href="style.css">
     <style>
+.cluster-nav {
+    margin: -1rem 0 2rem;
+    font-size: var(--font-size-sm);
+    line-height: 1.9;
+}
+.cluster-nav a {
+    color: var(--ink-muted);
+}
 .cluster-blurb {
     max-width: 62ch;
     margin: 0.35rem 0 1.1rem;
@@ -77,35 +85,23 @@
         </header>
 
         <div class="stats">
-            <div class="stat"><span class="num">47</span><span class="label">Primary Papers</span></div>
-            <div class="stat"><span class="num">12</span><span class="label">Research Clusters</span></div>
-            <div class="stat"><span class="num">2</span><span class="label">Articles</span></div>
+            <a class="stat" href="#framework"><span class="num">47</span><span class="label">Primary Papers</span></a>
+            <a class="stat" href="#clusters"><span class="num">12</span><span class="label">Research Clusters</span></a>
+            <a class="stat" href="#articles"><span class="num">2</span><span class="label">Articles</span></a>
             <div class="stat"><span class="num">12</span><span class="label">Live Sites</span></div>
             <div class="stat"><span class="num">2026</span><span class="label">Active</span></div>
         </div>
 
-        <div class="callout"><p><strong>Operating front:</strong> these papers are the evidence base behind <a href="../bulkhead-tau/">Bulkhead &tau;</a> &mdash; the public release line for a deterministic governance substrate. Bulkhead Tau is the engineering core under that name; both surfaces will run in parallel for now, with <a href="../bulkhead-tau/">/bulkhead-tau/</a> as the external front.</p></div>
+        <nav class="cluster-nav" id="clusters"><a href="#framework">Framework</a> &nbsp;·&nbsp; <a href="#local-inference-offline-systems">Local Inference &amp; Offline Systems</a> &nbsp;·&nbsp; <a href="#grounding">Grounding</a> &nbsp;·&nbsp; <a href="#orchestration-role-assignment">Orchestration &amp; Role Assignment</a> &nbsp;·&nbsp; <a href="#failure-modes-boundary-conditions">Failure Modes &amp; Boundary Conditions</a> &nbsp;·&nbsp; <a href="#ml-evaluation-cross-domain-benchmarks">ML Evaluation &amp; Cross-Domain Benchmarks</a> &nbsp;·&nbsp; <a href="#measurement-integrity-operator-layer">Measurement Integrity &amp; Operator Layer</a> &nbsp;·&nbsp; <a href="#applied-production-evidence">Applied / Production Evidence</a> &nbsp;·&nbsp; <a href="#local-llm-operator-judgment">Local LLM Operator Judgment</a> &nbsp;·&nbsp; <a href="#agentic-engineering-field-studies">Agentic Engineering Field Studies</a> &nbsp;·&nbsp; <a href="#sensor-to-simulation-engineering">Sensor-to-Simulation Engineering</a> &nbsp;·&nbsp; <a href="#agent-path-evaluation">Agent Path Evaluation</a> &nbsp;·&nbsp; <a href="#articles">Articles</a></nav>
 
-        <div class="callout"><p><strong>The finding:</strong> For grounded domain tasks — well-defined task classes with deterministic substrates — harness configuration is the binding constraint. Model identity is not. These papers prove this claim under stress test conditions: local models, which cannot compensate for a weak harness, converge with frontier models at the semantic usefulness level when the harness is sufficient. This scope is deliberate. Outside it, model capability matters in ways the framework does not cover.</p></div>
-
-        <div class="callout"><p><strong>Local Model Addendum:</strong> the <a href="../local-models/">Bulkhead Tau Local Model Details</a> page covers the three supporting papers that feed the orchestration synthesis: TourAgent (1.13), ShowcaseAgent (1.12), and Local Model Role Suitability (1.11).</p></div>
-
-        <div class="callout"><p><strong>Boundary Results:</strong> the <a href="../failure-details/">Bulkhead Tau Boundary Results</a> page covers three papers that map where the organized stack hits its limits: Grounded Agent Failure Is Structurally Determined (1.10), True Ski Chalet Boundary Result (1.14), and When The Organized Stack Loses (1.15).</p></div>
-
-        <div class="callout"><p><strong>RVH / ML Evaluation:</strong> <a href="../rough-volatility/">Rough Volatility as ML Benchmark</a> covers Papers 1.8 and 1.9 — why domain expertise, not ML capability, is the binding constraint in rough volatility forecasting and the cross-domain benchmark principle it reveals.</p></div>
-
-        <div class="callout"><p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Bulkhead Tau as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.26, 1.30, 1.31, and 1.34–1.37 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, token-cost attention, substitution discipline, multi-agent HIL workflow boundaries, cross-audit failure cataloging, narration-surface failure analysis, deterministic validator discipline, and image-generation prompt discipline. Papers 1.39–1.45 extend the cluster: a negative result on heterogeneous local clustering, repository-fact encoding that converts cold-start architecture recovery into lookup, a governance case study admitting a new frontier harness as a peer through evidence rather than brand rank, a residency-verified hardware measurement showing dedicated VRAM beats unified memory for local inference, a code-graph tool's reduction ratio traced to graph density rather than code quality after two prior hypotheses were each falsified by a real contrasting corpus, an MTP draft-depth stub, and a draft R6 grid on local-model delegation (Syntax Wall measured; R3-on-grid still pending).</p></div>
-
-        <div class="callout"><p><strong>Sensor-to-Simulation Engineering:</strong> Paper 1.27 establishes the data landscape and fidelity boundaries for wearable sport sensors, showing why sensor-driven HIL is necessarily event-driven rather than waveform-driven. Paper 1.28 publishes the LabWired platform boundary for register-level firmware simulation. Paper 1.29 closes the sensor-driven HIL loop with a documented physical proximity replay. Paper 1.32 applies the sensor-corpus framing to a single dual-sensor-instrumented match at depth, Paper 1.33 defines the proof boundary separating harness testing from component verification, and Paper 1.46 measures the CPU/GPU simulation crossover across tiny sensor kernels, generic articulated scenes, and a measured-pose TennisAgent serve workload.</p></div>
-
-        <section class="section">
+        <section class="section" id="framework">
     <div class="cluster-heading">Framework &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <div class="grid-2">
             <a class="paper-card phoenix-paper-card" href="../bulkhead-tau/"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-published">published</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Bulkhead Tau — Open-Core Standards</h3><p class="paper-thesis">Bulkhead Tau is best understood as an open-core framework for grounded domain systems — not a single agent or benchmark story. Useful agentic systems require domain grounding, explicit validation, clear trust boundaries, and operating discipline. Standards, not prompt optimism.</p><span class="paper-link">Open paper →</span></a>
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="local-inference-offline-systems">
     <div class="cluster-heading">Local Inference &amp; Offline Systems &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Papers 1.2, 1.3, 1.5 form a cluster: offline grounded agent → ski chalet hardware boundary → TSP solver-backed orchestration. The common argument: harness level, not model size, drives usefulness.</p>
     <div class="grid-2">
@@ -115,14 +111,14 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="grounding">
     <div class="cluster-heading">Grounding &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <div class="grid-2">
             <a class="paper-card phoenix-paper-card" href="../fab-rvh/"><span class="paper-num"><span class="phoenix-badge phoenix-badge--lifecycle phoenix-badge--lifecycle-published">published</span><span class="phoenix-badge phoenix-badge--publication phoenix-badge--publication-published">published</span></span><h3>Fab Simulation &amp; RVH</h3><p class="paper-thesis">Semiconductor fab defectivity should be modeled as a dynamic rough process (RVH — Rough Volatility Hypothesis), not a static mean. Moving from a stable to an unstable fab produces a 7.1% loss in shippable output — a result that emerges from the path, not the average. Product complexity and process instability are separable causes of yield loss.</p><span class="paper-link">Open paper →</span></a>
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="orchestration-role-assignment">
     <div class="cluster-heading">Orchestration &amp; Role Assignment &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Papers 1.5, 1.6, 1.11, 1.12, 1.13 address where correctness should live and how grounding, routing, and repair beat raw power in identifiable regimes.</p>
     <div class="grid-2">
@@ -133,7 +129,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="failure-modes-boundary-conditions">
     <div class="cluster-heading">Failure Modes &amp; Boundary Conditions &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Papers 1.7, 1.10, 1.14, 1.15 cover the failure taxonomy, empirical failure prediction, the true local ceiling, and the five conditions under which the organized stack&#x27;s advantage collapses.</p>
     <div class="grid-2">
@@ -144,7 +140,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="ml-evaluation-cross-domain-benchmarks">
     <div class="cluster-heading">ML Evaluation &amp; Cross-Domain Benchmarks &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Papers 1.8 and 1.9 establish why realized volatility forecasting is high-signal benchmark territory — and what the same structural argument implies across semiconductor defectivity and other rough-process domains.</p>
     <div class="grid-2">
@@ -153,7 +149,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="measurement-integrity-operator-layer">
     <div class="cluster-heading">Measurement Integrity &amp; Operator Layer &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Papers 1.16, 1.17, and 1.19 address the infrastructure surrounding the Bulkhead Tau system. 1.16: capture pipeline failures produce false evaluation verdicts. 1.17: an operator shell can expose the deterministic stack without replacing it as the authority. 1.19: when stronger models override literal substrate inspection, the model itself becomes part of the non-neutrality.</p>
     <div class="grid-2">
@@ -163,7 +159,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="applied-production-evidence">
     <div class="cluster-heading">Applied / Production Evidence &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Paper 1.18 is the first numbered production case — PPR Agent running against government-mandated cardiac device data for 18 years. This is field validation, not lane validation — the framework operating against regulated disclosures from three manufacturers.</p>
     <div class="grid-2">
@@ -171,7 +167,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="local-llm-operator-judgment">
     <div class="cluster-heading">Local LLM Operator Judgment &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Papers 1.20–1.26, 1.30, 1.31, and 1.34–1.37 turn the Bulkhead Tau evidence base into operating guidance for local LLM decisions: handoff discipline, privacy tradeoffs, model sizing, token-cost attention, when a model call should not be a model call, multi-agent HIL workflows, cross-audit cataloging, narration-surface failure analysis, validator discipline, and image-generation prompt discipline. Papers 1.39–1.45 add: a local-cluster negative result, encoding-as-lookup for cold-start architecture recovery, evidence-based harness governance, dedicated-vs-unified hardware measurement, a graph-density explanation for a code-compression tool&#x27;s reduction ratio, a stub on Qwen3.8 MTP draft depth (stock 4 is slower than 2 at empty KV; a follow-up of 448 generations finds depth 8 wins under occupied context), and a draft four-model R6 grid whose Syntax Wall is measured and whose R3 fix is still pending. Paper 1.47 adds the supervision-cost argument: under coarse quota regimes, plentiful implementer tokens move the bottleneck to the supervisor.</p>
     <div class="grid-2">
@@ -198,7 +194,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="agentic-engineering-field-studies">
     <div class="cluster-heading">Agentic Engineering Field Studies &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Paper 1.26 studies two AI coding agents deployed sequentially across a hardware-in-the-loop stack spanning firmware, Python orchestration, and cloud observability. The finding is that the quality of the interface between agents -- the handoff artifact -- predicts success better than the peak reasoning capability of any single model.</p>
     <div class="grid-2">
@@ -206,7 +202,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="sensor-to-simulation-engineering">
     <div class="cluster-heading">Sensor-to-Simulation Engineering &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Papers 1.27, 1.28, 1.29, 1.32, 1.33, and 1.46 characterize wearable sport sensors through a fidelity-boundary lens (1.27), define the LabWired simulation platform boundary (1.28), close the physical-replay HIL loop (1.29), apply the corpus framing to a single instrumented match at depth (1.32), define the proof boundary separating harness testing from component verification (1.33), and measure when CPU MuJoCo gives way to GPU MJX for simulation workloads (1.46).</p>
     <div class="grid-2">
@@ -219,7 +215,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="agent-path-evaluation">
     <div class="cluster-heading">Agent Path Evaluation &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-confirmed">confirmed</span></div>
     <p class="cluster-blurb">Paper 1.38 compares implementation paths rather than model identities. In the Amkor/xAmkor case study, the useful result is compositional: xAmkor owns the verifier surface, while Amkor owns broader cockpit/application surface.</p>
     <div class="grid-2">
@@ -227,7 +223,7 @@
     </div>
 </section>
 
-        <section class="section">
+        <section class="section" id="articles">
     <div class="cluster-heading">Articles &nbsp;·&nbsp; <span class="phoenix-badge phoenix-badge--group_status phoenix-badge--group_status-provisional">provisional</span></div>
     <p class="cluster-blurb">Shorter essays written for LinkedIn from the same evidence base: what agents forget, where decisions should live, and what determinism actually buys. Unnumbered; not part of the numbered paper series.</p>
     <div class="grid-2">
@@ -236,8 +232,22 @@
     </div>
 </section>
 
+        <div class="callout"><p><strong>Operating front:</strong> these papers are the evidence base behind <a href="../bulkhead-tau/">Bulkhead &tau;</a> &mdash; the public release line for a deterministic governance substrate. Bulkhead Tau is the engineering core under that name; both surfaces will run in parallel for now, with <a href="../bulkhead-tau/">/bulkhead-tau/</a> as the external front.</p></div>
+
+        <div class="callout"><p><strong>The finding:</strong> For grounded domain tasks — well-defined task classes with deterministic substrates — harness configuration is the binding constraint. Model identity is not. These papers prove this claim under stress test conditions: local models, which cannot compensate for a weak harness, converge with frontier models at the semantic usefulness level when the harness is sufficient. This scope is deliberate. Outside it, model capability matters in ways the framework does not cover.</p></div>
+
+        <div class="callout"><p><strong>Local Model Addendum:</strong> the <a href="../local-models/">Bulkhead Tau Local Model Details</a> page covers the three supporting papers that feed the orchestration synthesis: TourAgent (1.13), ShowcaseAgent (1.12), and Local Model Role Suitability (1.11).</p></div>
+
+        <div class="callout"><p><strong>Boundary Results:</strong> the <a href="../failure-details/">Bulkhead Tau Boundary Results</a> page covers three papers that map where the organized stack hits its limits: Grounded Agent Failure Is Structurally Determined (1.10), True Ski Chalet Boundary Result (1.14), and When The Organized Stack Loses (1.15).</p></div>
+
+        <div class="callout"><p><strong>RVH / ML Evaluation:</strong> <a href="../rough-volatility/">Rough Volatility as ML Benchmark</a> covers Papers 1.8 and 1.9 — why domain expertise, not ML capability, is the binding constraint in rough volatility forecasting and the cross-domain benchmark principle it reveals.</p></div>
+
+        <div class="callout"><p><strong>Measurement Integrity, Operator Layer &amp; Applied Evidence:</strong> Papers 1.16–1.19 extend the framework outward. Paper 1.16 shows that evaluation infrastructure can fail at the capture boundary — a VT100 terminal artifact was corrupting protocol scores for thinking-mode models. Paper 1.17 documents the operator shell pattern: how OpenClaw wraps Bulkhead Tau as an access layer without becoming the authority. Paper 1.18 is the framework's first numbered production case — <a href="../ppr-agent/">PPR Agent</a>, 92M regulated cardiac device implants across 18 years, behind a deterministic SQLite substrate. Paper 1.19 is a short companion to 1.16 on the other side of the apparatus: when stronger models override literal substrate inspection, capability itself becomes a source of non-neutrality. Papers 1.20–1.26, 1.30, 1.31, and 1.34–1.37 add the Local LLM Operator Judgment cluster: strict handoff discipline, privacy cost accounting, local model sizing, token-cost attention, substitution discipline, multi-agent HIL workflow boundaries, cross-audit failure cataloging, narration-surface failure analysis, deterministic validator discipline, and image-generation prompt discipline. Papers 1.39–1.45 extend the cluster: a negative result on heterogeneous local clustering, repository-fact encoding that converts cold-start architecture recovery into lookup, a governance case study admitting a new frontier harness as a peer through evidence rather than brand rank, a residency-verified hardware measurement showing dedicated VRAM beats unified memory for local inference, a code-graph tool's reduction ratio traced to graph density rather than code quality after two prior hypotheses were each falsified by a real contrasting corpus, an MTP draft-depth stub, and a draft R6 grid on local-model delegation (Syntax Wall measured; R3-on-grid still pending).</p></div>
+
+        <div class="callout"><p><strong>Sensor-to-Simulation Engineering:</strong> Paper 1.27 establishes the data landscape and fidelity boundaries for wearable sport sensors, showing why sensor-driven HIL is necessarily event-driven rather than waveform-driven. Paper 1.28 publishes the LabWired platform boundary for register-level firmware simulation. Paper 1.29 closes the sensor-driven HIL loop with a documented physical proximity replay. Paper 1.32 applies the sensor-corpus framing to a single dual-sensor-instrumented match at depth, Paper 1.33 defines the proof boundary separating harness testing from component verification, and Paper 1.46 measures the CPU/GPU simulation crossover across tiny sensor kernels, generic articulated scenes, and a measured-pose TennisAgent serve workload.</p></div>
+
         <footer style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--ink-muted); font-size:var(--font-size-sm); text-align:center;">
-            <p>Showing published papers only. Generated 2026-09-28T23:04:39.656976+00:00 from <code>docs/PAPERS_MANIFEST.json</code> via <code>scripts/publish_papers_index.py</code>.</p>
+            <p>Showing published papers only. Generated 2026-09-28T23:28:03.094586+00:00 from <code>docs/PAPERS_MANIFEST.json</code> via <code>scripts/publish_papers_index.py</code>.</p>
         </footer>
 
     </div>
