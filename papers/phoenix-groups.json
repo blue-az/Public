@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-09-28T07:48:45.399609+00:00",
+  "generated_at": "2026-09-28T23:04:39.656976+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": true,
   "groups": [
@@ -857,6 +857,45 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/codex-vs-claude-false-choice.md",
           "publish": true,
           "summary": "Case study arguing that Codex vs Claude Code is usually the wrong abstraction for Bulkhead Tau domain building. In the Amkor/xAmkor comparison, the artifact-backed claim is compositional: xAmkor was stronger on the benchmark/verifier surface, while Amkor carried broader cockpit/application surface."
+        }
+      ]
+    },
+    {
+      "group": "Articles",
+      "group_status": "provisional",
+      "description": "Shorter essays written for LinkedIn from the same evidence base: what agents forget, where decisions should live, and what determinism actually buys. Unnumbered; not part of the numbered paper series.",
+      "papers": [
+        {
+          "id": "my-agents-have-zombies",
+          "title": "My Agents Have Zombies",
+          "source_path": "docs/ARTICLE_MY_AGENTS_HAVE_ZOMBIES.md",
+          "track": "article",
+          "paper_number": null,
+          "lifecycle": "active draft",
+          "publication_status": "published",
+          "paper_group": "Articles",
+          "group_status": "provisional",
+          "public_slug": "my-agents-have-zombies",
+          "proto_output_path": "bulkhead-tau/generated-papers/my-agents-have-zombies.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/my-agents-have-zombies.md",
+          "publish": true,
+          "summary": "ARTICLE, active draft. A benchmark rule overruled on Sep 5 kept coming back in new sessions and folders. Doom loops are the same failure on a shorter clock: rejections that only lived somewhere temporary. Two graves: /op:life-boat inside a session (draft spec), and a rejected status for PBC across sessions (with Vinh Nguyen, pbc-spec PR #13). Includes the crystal whose validator passed empty sections, and ghosts: open claims that keep resurfacing because they were never closed."
+        },
+        {
+          "id": "the-substrate-is-the-decisions",
+          "title": "The Substrate Is the Decisions",
+          "source_path": "docs/ARTICLE_THE_SUBSTRATE_IS_THE_DECISIONS.md",
+          "track": "article",
+          "paper_number": null,
+          "lifecycle": "active draft",
+          "publication_status": "published",
+          "paper_group": "Articles",
+          "group_status": "provisional",
+          "public_slug": "the-substrate-is-the-decisions",
+          "proto_output_path": "bulkhead-tau/generated-papers/the-substrate-is-the-decisions.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-substrate-is-the-decisions.md",
+          "publish": true,
+          "summary": "ARTICLE, active draft. 247 questions about cardiac implant data on three local models (E9 config): alone, right 5-11% and one model invented 47% of its answers; answering from the deterministic database lookup, right 100% at about a second, with the lookup itself at 0.02 ms. Determinism bought correctness, not speed. Also states the substrate's own extraction defects and why a source of truth still needs sign-off."
         }
       ]
     }

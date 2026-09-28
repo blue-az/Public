@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Agents Have Zombies</title>
+  <meta name="description" content="ARTICLE, active draft. A benchmark rule overruled on Sep 5 kept coming back in new sessions and folders. Doom loops are the same failure on a shorter clock: rejections that only lived somewhere temporary. Two graves: /op:life-boat inside a session (draft spec), and a rejected status for PBC across sessions (with Vinh Nguyen, pbc-spec PR #13). Includes the crystal whose validator passed empty sections, and ghosts: open claims that keep resurfacing because they were never closed.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · active draft</div>
+    <h1>My Agents Have Zombies</h1>
+    <p class="meta">ARTICLE, active draft. A benchmark rule overruled on Sep 5 kept coming back in new sessions and folders. Doom loops are the same failure on a shorter clock: rejections that only lived somewhere temporary. Two graves: /op:life-boat inside a session (draft spec), and a rejected status for PBC across sessions (with Vinh Nguyen, pbc-spec PR #13). Includes the crystal whose validator passed empty sections, and ghosts: open claims that keep resurfacing because they were never closed.</p>
+    <p class="meta">Canonical source: <code>docs/ARTICLE_MY_AGENTS_HAVE_ZOMBIES.md</code></p>
+    <p><strong>Status:</strong> active draft <strong>Date:</strong> 2026-09-27 <strong>Project:</strong> Bulkhead τ / Bulkhead Tau <strong>Paper group:</strong> Articles <strong>Publication posture:</strong> public draft, written for LinkedIn. Not numbered.</p>
+<p>I killed a rule on September 5th. I wrote its obituary into my agent instructions in plain English:</p>
+<p>&quot;Full GPU residency is not a gate. Logged placement is the gate.&quot;</p>
+<p>By September 21st it was item 6 on a list I keep called &quot;Recurrent Mistakes to Avoid.&quot;</p>
+<p>The rule was reasonable, which is the problem. When I benchmark local models, some of them spill part of themselves from the GPU onto the CPU. An agent looks at that and decides, sensibly, that a spilled model shouldn&#x27;t be run. Except the spill is already logged, the penalty is already in the measured speed, and some of those models are fast anyway. So the gate kept skipping runs I had already proven.</p>
+<p>I overruled it. It came back. New session, new folder, same gate. Nobody reintroduced it on purpose. An agent just derived it again from the same reasonable-looking evidence, and nothing it could read told it the question had been settled.</p>
+<h2>Same zombie, smaller</h2>
+<p>I&#x27;ve seen this failure before, on a shorter clock.</p>
+<p>Back in February I was complaining about doom loops: an agent cycling through variations of the same 5 or 6 &quot;solutions,&quot; forever. That&#x27;s the same thing inside one session. The failed attempts fall out of the context window, and once they&#x27;re gone, attempt number 3 looks brand new again.</p>
+<p>Doom loop: rejected ideas come back within a session. Zombie rule: rejected ideas come back across sessions.</p>
+<p>Different clock, same cause. The rejection only ever lived somewhere temporary. My head. A chat. A context window that got compacted.</p>
+<p>Deleting a rule doesn&#x27;t bury it. It just hides the body.</p>
+<h2>Graves, not deletions</h2>
+<p>What both problems need is somewhere for a rejection to live that the next agent will actually read.</p>
+<p>Inside a session, I&#x27;ve been doing this by hand for months. When I get that déjà vu feeling:</p>
+<ol>
+<li>Tell the agent I think it&#x27;s in a loop.</li>
+<li>Have it write down every attempt so far and commit that record outside the session.</li>
+<li>Spin up a fresh supervisor to read the record.</li>
+<li>The supervisor points the original agent at the next attempt, one that isn&#x27;t on the list.</li>
+</ol>
+<p>It works because the list of failures stops depending on the agent&#x27;s memory. I&#x27;ve now written it up as a draft spec for a command in my operator tooling, <code>/op:life-boat</code>. Nothing&#x27;s built yet. The tell stays human on purpose: the operator&#x27;s déjà vu, not an automatic detector.</p>
+<p>Across sessions, the fix belongs in the spec itself. I use Vinh Nguyen&#x27;s Product Behavior Contract format for my charters. It can already say a rule is trusted, provisional, or scaffolding. What it couldn&#x27;t say was &quot;we considered this and said no.&quot; So a rejected rule got deleted, and then it got rediscovered.</p>
+<p>I proposed a <code>rejected</code> status: the rule stays in the file, it&#x27;s never enforced, it has to carry its reason, and reversing it has to be deliberate. Vinh&#x27;s side liked the direction and asked for a worked example. The example is my residency gate, sitting next to the placement-logging rule that replaced it. It&#x27;s a draft PR now, and we&#x27;re still tightening the semantics together: https://github.com/stewie-sh/pbc-spec/pull/13</p>
+<h2>The part where my own tool proved the point</h2>
+<p>Here&#x27;s the bit I didn&#x27;t plan.</p>
+<p>To keep a long thread of work from getting lost between sessions, I used a crystal: a structured save-point for an agent&#x27;s context, from Vinh&#x27;s agent-crystallize tool. It has sections for decisions, findings, and open loops.</p>
+<p>I only filled in the summary. The tool filled every empty section with polite filler like &quot;No separate decisions captured beyond Current Focus.&quot; Then I ran its strict validator. Zero warnings.</p>
+<p>And the one decision that mattered most, &quot;don&#x27;t bring back the residency gate,&quot; was buried in the middle of a paragraph where no skimming agent would ever find it.</p>
+<p>That&#x27;s the whole problem in miniature. The rejection existed. It just wasn&#x27;t anywhere a future reader would look. (I filed it as an issue. It&#x27;s a one-line fix. Everyone&#x27;s tools have zombies.)</p>
+<h2>Ghosts</h2>
+<p>Not every zombie is a bug.</p>
+<p>My ledger has one that keeps showing up at the end of my sessions: &quot;have another model verify this claim.&quot; That one isn&#x27;t a failure of memory. The system remembered perfectly. The claim is recorded, it&#x27;s open, and it gets flagged every time.</p>
+<p>It&#x27;s a ghost with unfinished business. The only way to lay it to rest is to finish the business, or formally say you won&#x27;t. Quieting the reminder isn&#x27;t the same thing.</p>
+<h2>Headstones</h2>
+<p>Vinh&#x27;s work is mostly about prevention: write the decision down before an agent has to guess it. I agree that&#x27;s the primary job. This is the fallback for when it drifts anyway.</p>
+<p>And the thing I keep relearning is that a &quot;no&quot; is a decision too. It needs the same treatment as a &quot;yes&quot;: written down, with a reason, somewhere the next agent will read it.</p>
+<p>Every rule you kill needs a headstone. Otherwise the next agent digs it up.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>
