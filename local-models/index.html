@@ -11,7 +11,7 @@
     <div class="page">
 
         <header class="header">
-            <span class="badge">Umbrella · 11 Sep 2026 · revised 26 Sep 2026</span>
+            <span class="badge">Umbrella · 11 Sep 2026 · revised 29 Sep 2026</span>
             <h1>Local Models</h1>
             <p class="subtitle">Field notes from local models actually in use. What the measurements say, what the instrument got wrong, and which layer was carrying the result.</p>
         </header>
@@ -19,14 +19,6 @@
         <nav class="nav" aria-label="Bulkhead τ">
             <a href="../bulkhead-tau/index.html">Home</a>
         </nav>
-        <div class="nav-related">
-            <h2 class="nav-kicker">Related</h2>
-            <nav class="nav nav-labs" aria-label="Related">
-                <a class="active" href="./">Local Models</a>
-                <a href="../sensor-simulation/">Simulation Lab</a>
-                <a href="../bulkhead-tau/reflect.html">Reflect</a>
-            </nav>
-        </div>
 
         <div class="pullquote">
             <p>Nothing here ranks a model until the instrument that measured it has been checked.</p>
@@ -58,6 +50,27 @@
         </section>
 
         <section class="section">
+            <h2>When one card is not enough</h2>
+            <p>Measured 28-29 Sep 2026 on two RTX 3090s in a headless test bench, one card against both. Most of the roster fits one 24&nbsp;GB card and gains nothing from a second. Two models do not fit, and they behave differently.</p>
+
+            <table class="table">
+                <thead>
+                    <tr><th>Model</th><th>Size</th><th>One card</th><th>Two cards</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>qwen3-next (80B MoE)</td><td>50&nbsp;GB</td><td>46% in VRAM, 25.6 tok/s</td><td>92-96% in VRAM, 72.6 tok/s</td></tr>
+                    <tr><td>nemotron-3.5-lightning (30B MoE)</td><td>25.4&nbsp;GB</td><td>87.5% in VRAM, 49-58 tok/s</td><td>100% in VRAM, 75-88 tok/s</td></tr>
+                </tbody>
+            </table>
+
+            <p><strong>qwen3-next needs both cards.</strong> On one it runs at about a third of the speed with more than half the model on the CPU. <strong>nemotron-3.5-lightning is borderline:</strong> its weights nearly fit one card, but with its context and working memory about an eighth spills to the CPU. It still runs there at roughly two-thirds of its two-card speed, and holds that speed as context fills (75 tok/s at 115k tokens on two cards).</p>
+
+            <p>On the same five repair tasks, with every sampling parameter pinned identical, nemotron-3.5-lightning, qwen3-next Instruct and qwen3.6:35b scored 30, 27 and 29 of 30. At six trials per task that is a tie, not a ranking. Where they differ is wall clock: 8.6, 25.0 and 5.7 minutes for the thirty cells.</p>
+
+            <p class="note">Earlier qwen3-next results on this site used the Thinking variant run in non-thinking mode. They describe that configuration, not the model.</p>
+        </section>
+
+        <section class="section">
             <h2>When the instrument was wrong</h2>
             <p>Two pages about measurement rather than models. Both exist because a number looked like a finding and was not.</p>
 
@@ -82,7 +95,7 @@
 
                 <a class="card" href="instrument-log/" style="text-decoration: none; color: inherit;">
                     <h3>The Instrument Log</h3>
-                    <p>Thirty-two measurement faults, and the finding each one would have been published as. Seventeen in the first week, fifteen in the three weeks after. None of them were the model.</p>
+                    <p>Thirty-seven measurement faults, and the finding each one would have been published as. Seventeen in the first week, twenty since. None of them were the model.</p>
                     <span style="color: var(--accent); font-weight: bold;">Read the count &rarr;</span>
                 </a>
 

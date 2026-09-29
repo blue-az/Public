@@ -11,7 +11,7 @@
     <div class="page">
 
         <header class="header">
-            <span class="badge">Draft · 16 Aug 2026</span>
+            <span class="badge">Draft · 16 Aug 2026 · corrected 29 Sep 2026</span>
             <h1>Qwen 3.6 vs 3.8</h1>
             <p class="subtitle">Same architecture, new weights. The only clean A/B in the field.</p>
         </header>
@@ -149,6 +149,7 @@
                     </tbody>
                 </table>
             </div>
+            <p class="note"><strong>Correction, 29 Sep 2026.</strong> The z13 rows above did not replicate. Their prompt was not recorded. Re-measured with recorded prompts (45 runs at 128 tokens, then 36 with 1024-token output and a nearly full context): depth 2 and depth 4 tie at 128 tokens under both <code>balanced</code> and <code>performance</code> (22.6 vs 23.2 tok/s at <code>performance</code>), so the governor was not the cause. With 1024-token output depth 2 does lead depth 4, 23.5 vs 21.8, far less than shown above. Depth 8 is slower than no drafting on z13 in every workload tested. Depth 2 stays the z13 setting: never worse than 4, and steadier.</p>
             <p>Draft 2 is the z13 setting too. It is the first time 3.8 clears the ~20 tok/s “I’m watching this” floor on this laptop. Stock draft 4 is slower. Daily: <code>ollama run qwen38-mtp-2</code> on both machines. Same layers as stock. Do not use the Ollama library <code>:27b-mtp-</code> tag — a same-weekend report had that path 2× slower.</p>
             <p>Stub writeup — fix, gain, likely cause: <a href="../../../bulkhead-tau/generated-papers/the-default-draft-is-too-deep.html">Paper 1.44 · The Default Draft Is Too Deep</a>.</p>
         </section>

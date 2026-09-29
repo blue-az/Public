@@ -11,7 +11,7 @@
     <div class="page">
 
         <header class="header">
-            <span class="badge">Living log · 11 Sep 2026 · revised 26 Sep 2026</span>
+            <span class="badge">Living log · 11 Sep 2026 · revised 29 Sep 2026</span>
             <h1>The Instrument Log</h1>
             <p class="subtitle">Every measurement fault caught in this program, and the finding it would have been published as.</p>
         </header>
@@ -27,7 +27,7 @@
 
         <section class="section">
             <h2>What this is</h2>
-            <p>Seventeen faults, caught over roughly a week of local-model benchmarking across two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390. Not one of them was a model behaving badly. <strong>Fifteen more have been caught in the three weeks since, listed at the end. The ratio did not change.</strong> Every one was the instrument, the daemon, the log parser, or my own code.</p>
+            <p>Seventeen faults, caught over roughly a week of local-model benchmarking across two RTX 3090s, an RTX 2080 and a Ryzen AI MAX 390. Not one of them was a model behaving badly. <strong>Twenty more have been caught since, listed at the end. The ratio did not change.</strong> Every one was the instrument, the daemon, the log parser, or my own code.</p>
             <p>They are collected here because of a property they share: <strong>each one produced a number rather than an error.</strong> A crashed run announces itself. A daemon quietly using two cards while the row says "solo" does not. It produces a clean, plausible, publishable figure that happens to be false, and nothing downstream can tell the difference.</p>
             <p>That is the argument for the log. Anyone can report what their system did. The question worth asking is how many of these were sitting inside the run that produced the report.</p>
         </section>
@@ -91,7 +91,7 @@
 
         <section class="section">
             <h2>Since this page was published</h2>
-            <p>Fifteen more, 12&ndash;26 September. Three upstream, twelve mine &mdash; the same ratio, and the same property: each produced a number rather than an error. Two of them are the reason the cell model now has a third outcome, <code>unproven</code>, which is not a score and is never pooled.</p>
+            <p>Twenty more, 12&ndash;28 September. Four upstream, sixteen mine &mdash; the same ratio, and the same property: each produced a number rather than an error. Two of them are the reason the cell model now has a third outcome, <code>unproven</code>, which is not a score and is never pooled.</p>
             <table>
                 <thead><tr><th>What broke</th><th>What it looked like</th><th>What it was</th></tr></thead>
                 <tbody>
@@ -110,9 +110,14 @@
                 <tr><td><code>--placement-profile</code> set as an environment variable</td><td>Placement silently unproved</td><td>The runner takes it as a CLI flag. Set in the environment it was ignored, and every cell recorded <code>placement: false</code> while the run otherwise looked normal.</td></tr>
                 <tr><td>Unified-memory placement read a cold daemon</td><td>“no loaded model reported by the local daemon”, every cell unproven</td><td><code>/api/ps</code> is empty until something is loaded, and the proof ran before the model did, so it never had a chance to pass. It now warms the model once and re-asks.</td></tr>
                 <tr><td>Dashboard row filtered by benchmark name</td><td>A completed run simply absent from the dashboard</td><td>Name-matching dropped a paired comparison that arrived under its own label — the same defect that had already dropped a whole generation of rows once and been fixed only in the one place it was noticed. The test meant to catch it asserted per <em>definition</em>, not per row, so a dropped row inside a populated definition passed it.</td></tr>
+                <tr><td>The carrier sandbox held the answer key</td><td>A model solving a task</td><td><code>native_carrier.sh</code> bound the whole harness directory beside the fixture, so every task's postcondition regex sat one <code>ls</code> away. Largely unexploited, except gemma4 on ambiguous-anchor: 3/6 with the leak, 0/18 without.</td></tr>
+                <tr><td>The pin named five sampling parameters too few</td><td>Model-versus-model gaps</td><td>It fixed context, temperature and thinking, and left <code>top_k</code>, <code>top_p</code>, <code>min_p</code>, presence and repeat penalty at each model's default, so no two seats shared a sampler. One parameter alone moved qwen3.6 from 4/16 to 9/16 on one task. Every tag is now pinned on all fourteen options and checked before launch, and every request is checked in flight.</td></tr>
+                <tr><td>A repair fixture shipped already repaired</td><td>Six clean passes per model on the booking task</td><td>A 15 September edit left the corrected code in the fixture, so the task passed without a change. The runner now grades every repair fixture untouched and refuses to dispatch one that already passes.</td></tr>
+                <tr><td><code>qwen3-next:latest</code> is the Thinking model</td><td>A weak seat: 10/30</td><td>The library's <code>latest</code> tag is the Thinking variant, which has no non-thinking mode. Run with thinking off in a 16k context, one trial produced 56,000 characters of reasoning against 2,700 of answer. The Instruct variant, fully pinned, scores 27/30.</td></tr>
+                <tr><td>The Vulkan guard, again</td><td>GPU1 running slower than GPU0</td><td>The first row on this page, reintroduced in a new script that set <code>CUDA_VISIBLE_DEVICES</code> but not <code>OLLAMA_VULKAN=0</code>, so each daemon also ran models on the other card. A per-cell placement gate caught it and the run was discarded.</td></tr>
                 </tbody>
             </table>
-            <p class="note"><strong>Still not one of them was the model.</strong> Thirty-two faults now, across four weeks. The closest thing to a model result in the whole set is the invention rate &mdash; how often a model answers instead of saying it does not know &mdash; and that only became visible once a benchmark stopped scoring “invented” and “abstained” identically.</p>
+            <p class="note"><strong>Still not one of them was the model.</strong> Thirty-seven faults now. The closest thing to a model result in the whole set is the invention rate &mdash; how often a model answers instead of saying it does not know &mdash; and that only became visible once a benchmark stopped scoring “invented” and “abstained” identically.</p>
         </section>
 
         <section class="section">

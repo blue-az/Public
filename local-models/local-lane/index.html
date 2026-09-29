@@ -11,7 +11,7 @@
     <div class="page">
 
         <header class="header">
-            <span class="badge">Benchmark program · rewritten 11 Sep 2026</span>
+            <span class="badge">Benchmark program · rewritten 11 Sep 2026 · revised 29 Sep 2026</span>
             <h1>Local Lane</h1>
             <p class="subtitle">What an RTX 3090, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026, one model on one card, and what the instrument got wrong along the way.</p>
         </header>
@@ -66,8 +66,10 @@
             <code>qwen3-next</code> is 46.9 GB, against 24 GB of VRAM. Any figure either one ever
             produced on this machine was a multi-card or partly-host-RAM number wearing a
             single-card label. They are mentioned under
-            <a href="#capacity">what a second card is for</a> and are not ranked. Their quality
-            counts are unaffected by this and stand where they are cited.</p>
+            <a href="#capacity">what a second card is for</a> and are not ranked.
+            <code>gpt-oss:120b</code>'s quality counts stand where they are cited.
+            <code>qwen3-next</code>'s are withdrawn: they were measured with the Thinking variant
+            run in non-thinking mode (see the <a href="../instrument-log/">Instrument Log</a>).</p>
 
             <p><strong>Eight is the whole list, not a cut from a longer one.</strong> Four models have wall clock in the corrected configuration on a single RTX 3090, three on the MAX 390 and one on the RTX 2080, which comes to eight. Several further models have quality data but no wall clock under the corrected protocol, so they cannot be placed here at all. The ranking grows when those are re-run, not when the cutoff is moved.</p>
             <p>Rows 2 and 3 are joint second. Bootstrapping the RTX 3090 ranking over warm trials and pass counts puts <code>qwen3.8:27b</code> ahead of <code>gemma4:26b</code> in only 79.1% of draws, which is not separable. Every other adjacent pair on that chip is ordered at 98.7% or better, and <code>qwen3.6:35b</code> takes first in every draw.</p>
@@ -149,15 +151,29 @@
             </div>
             <p>The exception is prefill. Two of four models read their prompt much faster on two cards, <code>gemma4:31b</code> by 40% and <code>qwen3.6:35b</code> by 19%. I do not know why. My first explanation, that they were short of headroom on one card, was tested the same evening and did not hold.</p>
             <p id="capacity"><strong>What a second card is for, and what it is not.</strong> It buys
-            capacity: room for a model that does not fit, or a longer configured context, or two
-            models resident at once. It does not buy speed. Splitting a model that already fits cost
-            1.4 GB and moved decode between -4.7% and +9.3% &mdash; noise, because decode walks the
-            layers in order and the two cards never work at once. If you are choosing hardware on
-            the strength of this page, <strong>buy one good card, not two</strong>. The two models
-            dropped from the ranking above, <code>gpt-oss:120b</code> at 60.9 GB and
-            <code>qwen3-next</code> at 46.9 GB, are exactly the case where a second card is the only
-            way to run the thing at all &mdash; and both finished slower than models a third their
-            size.</p>
+            capacity: room for a model that does not fit, a longer context that stays on the GPU,
+            or two models resident at once. For a model that already fits, at a short context, it
+            does not buy decode speed: splitting cost 1.4 GB and moved decode between -4.7% and
+            +9.3%, because decode walks the layers in order and the two cards never work at once.
+            If you run one model that fits, at modest context, one good card is enough.</p>
+
+            <p><strong>Where capacity turns into speed</strong> (measured 28-29 Sep 2026 on a headless
+            test bench with two RTX 3090s, a different host from the rows above, so compare ratios,
+            not absolute figures):</p>
+            <ul>
+                <li><strong>A filled context.</strong> <code>gemma4:31b</code> with 118k tokens actually
+                in context decoded at 17.7 tok/s on two cards and 1.2 on one, once the cache pushed
+                layers to the CPU.</li>
+                <li><strong>A long prompt.</strong> Two cards read prompts 157% faster at 118k tokens.
+                The gain holds even at 7k (41% faster), where the model still fits on one card.</li>
+                <li><strong>Two different models at once.</strong> One per card, neither slows the
+                other measurably. Both on one card, they cannot batch together and must swap: 3 to
+                5.4 times slower, all of it reload.</li>
+                <li><strong>A model that does not fit.</strong> <code>qwen3-next</code> (50 GB) ran at
+                72.6 tok/s on two cards against 25.6 on one. <code>nemotron-3.5-lightning</code>
+                (25.4 GB) is borderline: it runs on one card at about two-thirds of its two-card
+                speed.</li>
+            </ul>
 
             <p><strong>Where the second card earns its place.</strong> At a configured context of 131,072 with a ~12.8k-token prompt, <code>qwen3.8:27b</code> ran at 61.4 tok/s on two cards and 11.2 on one, about 5.5x apart. This is a configured-capacity sweep, not a prompt-length sweep, and placement on the one-card side was not captured, so how much of that comes from spilling to CPU is provisional. Two models also fit side by side on the pair up to a context of 32,768, which makes switching between them take 0.6 s instead of a full reload.</p>
             <p><strong>Spilling to the CPU is expensive.</strong> Forcing layers of <code>gemma4:26b</code> onto the CPU (empty-cache probe, n=3) took it from 224.8 tok/s at 31 of 31 layers on the GPU to 172.7 at 30 of 31. One layer cost 23%. All four measured points fit a fixed 1.34 ms per CPU-resident layer. Whether that cost carries over to other models is not established. A rough estimate for <code>qwen3.8:27b</code> comes out near 5.5 ms per layer, but it divides a VRAM shortfall by an assumed layer count rather than counting layers, so it is arithmetic, not a measurement. And a dense model near its memory limit does not slow down smoothly: <code>gemma4:31b</code> at a reduced GPU layer count passed two tasks 3/3 and timed out on others. The limit is a stall with task-dependent odds, not a wall.</p>
