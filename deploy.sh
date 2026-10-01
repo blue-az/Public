@@ -5,6 +5,7 @@
 #   ./deploy.sh bulkhead-tau      — sync generated papers
 #   ./deploy.sh domains           — sync domains catalog index
 #   ./deploy.sh local-models      — sync the Local Models umbrella and its nested pages
+#   ./deploy.sh local-lane        — sync only the Local Lane report index
 #   ./deploy.sh operator-shell    — sync the Operator Shell page
 #   ./deploy.sh failure-details   — sync the Phoenix Boundary Results page
 #   ./deploy.sh local-model-role-suitability — sync the Local Model Role Suitability page
@@ -193,6 +194,9 @@ case "$TARGET" in
         remote_mkdir "$REMOTE_ROOT/bulkhead-tau/domains/SensorAgents/TennisAgent/data/papers/match_pool_2023"
         rsync_push "$LOCAL_ROOT/bulkhead-tau/domains/SensorAgents/TennisAgent/data/papers/match_pool_2023/" "$REMOTE_ROOT/bulkhead-tau/domains/SensorAgents/TennisAgent/data/papers/match_pool_2023/"
         ;;
+    local-lane)
+        rsync_push "$LOCAL_ROOT/local-models/local-lane/index.html" "$REMOTE_ROOT/local-models/local-lane/index.html"
+        ;;
     local-lane-qwen38)
         rsync_push "$LOCAL_ROOT/local-models/local-lane/qwen38/" "$REMOTE_ROOT/local-models/local-lane/qwen38/"
         ;;
@@ -238,7 +242,7 @@ case "$TARGET" in
         rsync_push "$LOCAL_ROOT/.htaccess" "$REMOTE_ROOT/.htaccess"
         ;;
     *)
-        echo "Usage: $0 [papers|bulkhead-tau|local-models|domains|honeywell|honeywell-landing|tour-agent|capture-integrity|operator-shell|failure-details|local-model-role-suitability|deep-dive-tennis-paper|local-lane-qwen38|pose-showcase|labwired-serve-hud|skeleton-study|skeleton-hud|groundstroke-demos|kernelcad-mount|all]"
+        echo "Usage: $0 [papers|bulkhead-tau|local-models|domains|honeywell|honeywell-landing|tour-agent|capture-integrity|operator-shell|failure-details|local-model-role-suitability|deep-dive-tennis-paper|local-lane|local-lane-qwen38|pose-showcase|labwired-serve-hud|skeleton-study|skeleton-hud|groundstroke-demos|kernelcad-mount|all]"
         exit 1
         ;;
 esac

@@ -4,56 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Lane | Local benchmark program | Bulkhead τ</title>
-    <meta name="description" content="What a single RTX 3090, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026: task wall clock over decode speed, context and placement, the quality ceiling, a tool-grounded consultant bench, and what reasoning effort costs.">
+    <meta name="description" content="Local-model results through 1 Oct 2026: Bonsai wins the matched native Fusion cohort on task time with the same 36/36 pass count. Separate L0/L1/L2 quality, loaded decode and task wall-clock results, with historical hardware comparisons retained.">
     <link rel="stylesheet" href="../../bulkhead-tau/style.css">
 </head>
 <body>
     <div class="page">
 
         <header class="header">
-            <span class="badge">Benchmark program · rewritten 11 Sep 2026 · revised 29 Sep 2026</span>
+            <span class="badge">Benchmark program · rewritten 11 Sep 2026 · revised 1 Oct 2026</span>
             <h1>Local Lane</h1>
-            <p class="subtitle">What an RTX 3090, an RTX 2080 and a Ryzen AI MAX 390 measured between 17 Aug and 10 Sep 2026, one model on one card, and what the instrument got wrong along the way.</p>
+            <p class="subtitle">Matched model comparisons, quality at each instruction level, native tool-use quality, loaded decode and task wall clock. Latest results first; the older RTX 3090, RTX 2080 and MAX 390 measurements remain dated historical cohorts.</p>
         </header>
 
         <nav class="nav" aria-label="Bulkhead τ">
             <a href="../../bulkhead-tau/index.html">Home</a>
             <a href="../">Local Models</a>
+            <a href="#fusion-bonsai">Fusion results</a>
+            <a href="#standard-l012">L0 / L1 / L2</a>
         </nav>
 
         <div class="pullquote">
-            <p>Measure quality once per model and speed once per machine. Neither one is decode tok/s.</p>
+            <p><strong>Latest: Bonsai wins this native Fusion cohort.</strong> Both models passed 36/36; Bonsai used 37% less total task time. <a href="#fusion-bonsai">See the matched results</a>, with repair quality and speed reported separately below.</p>
         </div>
 
         <section class="section">
             <h2>What this is</h2>
             <p>I benchmark the three chips I have:</p>
             <ul>
-                <li><strong>RTX 3090, 24 GB</strong>, power capped at 320 W. I own two and <strong>run them singly</strong>: every ranked measurement on this page is one model on one card. The pair is a capacity arrangement, not a faster machine. <em>Moved after this page was written:</em> they now sit in the test bench, which is where every measurement dated 21 Sep 2026 or later was taken. The rows below were produced while they were in the desktop (i9-9900KF).</li>
+                <li><strong>RTX 3090, 24 GB</strong>, power capped at 320 W. I own two and <strong>run them singly</strong>: every ranked measurement on this page is one model on one card. The pair is a capacity arrangement, not a faster machine. <em>Moved after this page was written:</em> they now sit in the test bench, which is where every measurement dated 21 Sep 2026 or later was taken. The historical hardware-ranking rows below were produced while they were in the desktop (i9-9900KF).</li>
                 <li><strong>RTX 2080, 8 GB</strong>, originally in a headless test bench (i3-9100F, 15 GB RAM, Debian 12); now in the controller desktop. Its rows below predate the swap.</li>
                 <li><strong>Ryzen AI MAX 390</strong> with Radeon 8050S and 27 GB of unified memory, in a Flow Z13, running Vulkan rather than ROCm.</li>
             </ul>
-            <p>Every figure below comes from a committed run in my evaluation tree, and each one carries its run date, sample size and configuration. Where a number was later found to be wrong, the correction is stated rather than the number quietly replaced.</p>
-            <p><strong>The measurement standard, as of 8 Sep.</strong> Models run as shipped. Only context length, temperature, thinking (off), the prompt and the probe length are pinned. Speed means measured task wall clock under a realistic prompt, not decode rate on an empty cache. So a ranking here is a ranking of each model at its shipped defaults, not of the model at its best.</p>
+            <p>The latest results below come from retained run packets identified by name, with their sample sizes and configurations. Older measurements remain historical evidence, not extra trials to add to the new scores. Corrections are stated rather than numbers quietly replaced.</p>
+            <p><strong>The earlier measurement standard, as of 8 Sep.</strong> Models run as shipped. Only context length, temperature, thinking (off), the prompt and the probe length are pinned. Speed means measured task wall clock under a realistic prompt, not decode rate on an empty cache. That historical ranking describes each model at its shipped defaults, not at its best; the new matched cohorts declare their shared sampler separately.</p>
             <p><strong>The seat is <code>qwen3.6:35b</code>.</strong> I pick the seat from interactive use. The ranking informs that choice, it does not make it.</p>
             <p>An earlier version of this page ranked the two chips by decode rate. It is archived in the site repository, and the sections below explain which of its numbers were wrong and why.</p>
         </section>
 
-        <section class="section">
-            <h2>The ranking</h2>
-            <p>One table, all three chips. Speed is measured task wall clock on two E9 fixtures, the mean of the warm trials with the first of each run discarded, normalised to <code>gemma4:26b</code> on the RTX 3090 = 1.00. Quality is the clean L2 pass count. Configuration: <code>num_ctx</code> 16384, temperature 0.8, thinking off, ollama 0.32.12 except the MAX 390 at 0.32.13.</p>
+        <section class="section" id="fusion-bonsai">
+            <h2>Latest: Bonsai wins the native Fusion comparison</h2>
+            <p><strong>Bonsai finished this cohort in 37% less total task time, with the same measured quality: both models passed 36 of 36.</strong> This is a task-completion win, not just faster token generation.</p>
+            <p>TennisAgent Fusion v2, formerly called Fusion L3, is a separate multi-step tool-use benchmark. Six tasks cover linked evidence, missing and invalid data, weather provenance, count reconciliation and contrasting evidence states. Six trials per task, one RTX 3090 on Testbench, both models on the same PrismML CUDA fork.</p>
             <div class="table-wrap">
                 <table class="table">
-                    <thead><tr><th>#</th><th>Chip</th><th>Model</th><th>Arch</th><th>short task s</th><th>long task s</th><th>Speed</th><th>L2 clean</th></tr></thead>
+                    <thead><tr><th>Model</th><th>Fusion passes</th><th>Median task s</th><th>Total task min, 36 cells</th><th>Unproven</th></tr></thead>
                     <tbody>
-                    <tr><td>1</td><td>RTX 3090</td><td><code>qwen3.6:35b</code> (seat)</td><td>MoE</td><td>8.8</td><td>15.6</td><td><strong>1.99</strong></td><td>51/51</td></tr>
-                    <tr><td>2=</td><td>RTX 3090</td><td><code>gemma4:26b</code></td><td>MoE</td><td>13.0</td><td>38.9</td><td>1.00</td><td>149/178</td></tr>
-                    <tr><td>2=</td><td>RTX 3090</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>18.1</td><td>32.4</td><td>0.96</td><td>63/63</td></tr>
-                    <tr><td>4</td><td>MAX 390</td><td><code>qwen3.6:35b</code></td><td>MoE</td><td>27.3</td><td>40.6</td><td>0.72</td><td>18/18</td></tr>
-                    <tr><td>5=</td><td>MAX 390</td><td><code>gemma4:26b</code></td><td>MoE</td><td>26.3</td><td>132.4</td><td>0.39</td><td>16/18</td></tr>
-                    <tr><td>5=</td><td>MAX 390</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>35.3</td><td>96.8</td><td>0.39</td><td>18/18</td></tr>
-                    <tr><td>7</td><td>RTX 3090</td><td><code>gemma4:31b</code></td><td>dense</td><td>36.4</td><td>128.4</td><td>0.33</td><td>28/33</td></tr>
-                    <tr><td>8</td><td>RTX 2080</td><td><code>gemma4:26b</code></td><td>MoE</td><td>41.3</td><td>171.6</td><td>0.27 (0.23 to 0.31)</td><td>15/15</td></tr>
+                    <tr><td>Qwen3.8 27B Q4_K_M</td><td>36/36</td><td>10.58</td><td>6.50</td><td>0</td></tr>
+                    <tr><td><strong>Bonsai 2 27B PQ2_0</strong></td><td><strong>36/36</strong></td><td><strong>5.84</strong></td><td><strong>4.08</strong></td><td>0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Runner, tools, frozen databases, model server and telemetry all ran on Testbench. The six-task canary passed for each model and is excluded from the table. All 224 request-gate checks, including canaries, passed. Model loading, fixture checks and before/after placement verification are outside the reported task timer.</p>
+            <p class="note">Same measured quality means the same pass count under this frozen, bounded, partly lexical grader. It does not establish general quality equivalence. The shared settings were 16K context, 4,096-token output cap, temperature 0.7, top_p 0.8, top_k 20, seed 1234, and thinking/speculation off. Models ran sequentially on GPU0. Conversation cache was erased between cells, with normal reuse within a task. Placement was attributed before and after each cell, not monitored continuously.</p>
+            <p class="note">Evidence packet: <code>fusion-native-llama-20260930</code>, complete. Tasks and grader were unchanged; the new transport adapter and runtime settings make this a separate cohort from the historical Ollama Fusion runs. Required fixture states and counts passed; optional missing weather-column and unrelated Babolat-data warnings remain documented in the packet.</p>
+        </section>
+
+        <section class="section" id="standard-l012">
+            <h2>Repair quality: L0, L1 and L2, not one blended score</h2>
+            <p>The fresh repair packet runs the same five tasks six times at <em>each</em> instruction level: 30 cells per level, 90 per model. L0 supplies the goal, L1 names files, and L2 supplies a plan. It uses Pi as the coding-agent carrier, unlike the native Fusion tool loop above.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Model</th><th>L0 passes</th><th>L1 passes</th><th>L2 passes</th><th>Loaded decode tok/s</th><th>L2 median task s</th><th>Total task min, all 90 cells</th></tr></thead>
+                    <tbody>
+                    <tr><td>Qwen3.8 27B Q4_K_M</td><td>24/30</td><td>30/30</td><td>30/30</td><td>41.1</td><td>11.8</td><td>27.88</td></tr>
+                    <tr><td>Bonsai 2 27B PQ2_0</td><td>19/30</td><td>27/30</td><td>30/30</td><td><strong>67.1</strong></td><td><strong>9.2</strong></td><td>45.80</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>L2 alone would have hidden the difference.</strong> Both models completed all 30 plan-shaped tasks. With less instruction structure, Qwen passed more cells, and Bonsai's total time across all three levels was longer despite its faster decode. These are observed counts, not a general quality ranking from six repeats per task.</p>
+            <p>Loaded decode is a separate probe: 12,811 actual prompt tokens, 128 generated tokens, temperature 0, one discarded warmup and three measured calls, reported as the median. Bonsai decoded about 63% faster here. It is not an agent-turn throughput measurement.</p>
+            <p class="note">Evidence packet: <code>standard-l012-20260930-r2</code>, complete. Same 3090 GPU0 and PrismML <code>prism-b10743-adfffbe</code> CUDA 12.8 fork, shared 0.7/0.8/top_k 20 sampler, 16K context, 4,096 output cap and seed 1234. Independent cells start with erased conversation cache and warm weights; Pi compaction is off. All 180 scored cells have attributed before/after placement captures, zero qualified-unproven outcomes, and all 1,581 request verdicts, including qualification, passed. Verification overhead is excluded from task times. Other hardware/engine configurations have not yet run this new packet.</p>
+            <details>
+                <summary>Earlier 29 Sep L2-only cohort: the two Bonsai loops still stand</summary>
+                <p>The separate <code>bonsai-l2-20260929</code> run recorded Qwen at 30/30, median 13.2 s, total 6.0 min and 121 agent turns; Bonsai at 28/30, median 7.5 s, total 8.7 min and 252 turns. Both used the same fork, GPU and sampler within that run.</p>
+                <p>Two Bonsai CSV-repair trials looped until they exhausted the 16K context. The runner classified those two nonpasses as unproven; placement was checked before each model's batch, not per cell. The fresh 30/30 L2 result does not erase those observations, prove looping is fixed, or establish which protocol difference caused the change. Keep the cohorts separate.</p>
+            </details>
+        </section>
+
+        <section class="section" id="historical-ranking">
+            <h2>Historical hardware ranking</h2>
+            <p>These are the earlier hardware rows, not the new matched model comparison. Speed is measured task wall clock on two E9 fixtures, the mean of the warm trials with the first of each run discarded, normalised to <code>gemma4:26b</code> on the RTX 3090 = 1.00. Configuration: <code>num_ctx</code> 16384, temperature 0.8, thinking off, ollama 0.32.12 except the MAX 390 at 0.32.13. The mixed-denominator quality column has been removed; current quality is reported by campaign above.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>#</th><th>Chip</th><th>Model</th><th>Arch</th><th>short task s</th><th>long task s</th><th>Speed</th></tr></thead>
+                    <tbody>
+                    <tr><td>1</td><td>RTX 3090</td><td><code>qwen3.6:35b</code> (seat)</td><td>MoE</td><td>8.8</td><td>15.6</td><td><strong>1.99</strong></td></tr>
+                    <tr><td>2=</td><td>RTX 3090</td><td><code>gemma4:26b</code></td><td>MoE</td><td>13.0</td><td>38.9</td><td>1.00</td></tr>
+                    <tr><td>2=</td><td>RTX 3090</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>18.1</td><td>32.4</td><td>0.96</td></tr>
+                    <tr><td>4</td><td>MAX 390</td><td><code>qwen3.6:35b</code></td><td>MoE</td><td>27.3</td><td>40.6</td><td>0.72</td></tr>
+                    <tr><td>5=</td><td>MAX 390</td><td><code>gemma4:26b</code></td><td>MoE</td><td>26.3</td><td>132.4</td><td>0.39</td></tr>
+                    <tr><td>5=</td><td>MAX 390</td><td><code>qwen3.8:27b</code></td><td>dense</td><td>35.3</td><td>96.8</td><td>0.39</td></tr>
+                    <tr><td>7</td><td>RTX 3090</td><td><code>gemma4:31b</code></td><td>dense</td><td>36.4</td><td>128.4</td><td>0.33</td></tr>
+                    <tr><td>8</td><td>RTX 2080</td><td><code>gemma4:26b</code></td><td>MoE</td><td>41.3</td><td>171.6</td><td>0.27 (0.23 to 0.31)</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -74,8 +116,10 @@
             <p><strong>Eight is the whole list, not a cut from a longer one.</strong> Four models have wall clock in the corrected configuration on a single RTX 3090, three on the MAX 390 and one on the RTX 2080, which comes to eight. Several further models have quality data but no wall clock under the corrected protocol, so they cannot be placed here at all. The ranking grows when those are re-run, not when the cutoff is moved.</p>
             <p>Rows 2 and 3 are joint second. Bootstrapping the RTX 3090 ranking over warm trials and pass counts puts <code>qwen3.8:27b</code> ahead of <code>gemma4:26b</code> in only 79.1% of draws, which is not separable. Every other adjacent pair on that chip is ordered at 98.7% or better, and <code>qwen3.6:35b</code> takes first in every draw.</p>
             <p><strong>The RTX 2080 row is the weakest evidence in the table.</strong> That fixture ran three trials rather than four, so its warm mean rests on n=2 where every other row has n=3, and its long task was still falling across those two trials, 218.6 s then 124.5 s. Its two per-task ratios spread from 0.23 to 0.31, wider than the gap between several adjacent rows above it. Read the row as placing the card in this neighbourhood, not as fixing it at 0.27, and note the direction: with the long task still coming down, 0.27 more likely understates the card than flatters it. It is also the only roster member that runs on the 8 GB card at a usable rate, so there is no second 2080 row to check it against. Note it does not <em>fit</em> that card: its experts run from host RAM, as the correction further down sets out.</p>
-            <p><strong>The quality column is not poolable across chips.</strong> The RTX 3090 counts accumulate over the seat corpus, the MAX 390 figures are an 18-cell floor battery, and the RTX 2080 is 15 cells at n=3 over five tasks. The denominators are printed because they are not interchangeable, and a rate computed across them would be arithmetic rather than a measurement.</p>
-            <p>Quality does not carry this ordering. Five of the ten rows sit at exactly 100%, so the order comes from speed. Finding a repeatable quality differentiator is open, and more trials cannot fix a ceiling.</p>
+            <details>
+                <summary>Why the old quality column was removed</summary>
+                <p>It mixed accumulated RTX 3090 seat-corpus counts (51/51, 149/178, 63/63 and 28/33), an 18-cell MAX 390 floor battery (18/18, 16/18 and 18/18), and a 15-cell RTX 2080 battery (15/15). Those denominators are not interchangeable. The historical counts remain here for provenance, not as a matched comparison or a score to combine with the fresh L0/L1/L2 and Fusion tables.</p>
+            </details>
         </section>
 
         <section class="section">
