@@ -21,11 +21,11 @@
             <a href="../">Local Models</a>
             <a href="#headline-results">Headline table</a>
             <a href="#fusion-bonsai">Fusion results</a>
-            <a href="#standard-l012">L0 / L1 / L2</a>
+            <a href="#standard-l012">Prompt guidance results</a>
         </nav>
 
         <div class="pullquote">
-            <p><strong>Headline:</strong> task time, L0/L1/L2 results, loaded decode and direct streamed TTFT are shown together for four RTX 3090 Testbench runs. Profile markers identify which rows share a serving setup; the rows are ordered by task time, not a global model ranking.</p>
+            <p><strong>Headline:</strong> task time, prompt-guidance results, loaded decode and direct streamed TTFT are shown together for four RTX 3090 Testbench runs. Profile markers identify which rows share a serving setup; the rows are ordered by task time, not a global model ranking.</p>
         </div>
 
         <section class="section">
@@ -39,20 +39,21 @@
             <p>The latest results below come from retained run packets identified by name, with their sample sizes and configurations. Older measurements remain historical evidence, not extra trials to add to the new scores. Corrections are stated rather than numbers quietly replaced.</p>
             <p><strong>The earlier measurement standard, as of 8 Sep.</strong> Models run as shipped. Only context length, temperature, thinking (off), the prompt and the probe length are pinned. Speed means measured task wall clock under a realistic prompt, not decode rate on an empty cache. That historical ranking describes each model at its shipped defaults, not at its best; the new matched cohorts declare their shared sampler separately.</p>
             <p><strong>The seat is <code>qwen3.6:35b</code>.</strong> I pick the seat from interactive use. The ranking informs that choice, it does not make it.</p>
+            <p>The descriptive guidance names apply to the current matched repair battery. Archived experiments retain their original L0/L1/L2 identifiers because older protocols may use different rung semantics; do not map those historical labels onto the guidance conditions above.</p>
             <p>An earlier version of this page ranked the two chips by decode rate. It is archived in the site repository, and the sections below explain which of its numbers were wrong and why.</p>
         </section>
 
         <section class="section" id="headline-results">
             <h2>Headline results: repair quality and speed</h2>
-            <p>Each model ran the same 90-cell L0/L1/L2 repair battery on one RTX 3090 (30 cells per level). Rows are sorted by total task time, fastest first, for easy scanning—not as a cross-profile ranking. Pass, fail and unproven outcomes stay distinct. Total task time sums the 90 recorded wall-clock times; the median is per task cell. Read task times alongside the quality columns.</p>
+            <p>Each model ran the same 90-cell repair battery on one RTX 3090: 30 cells in each prompt-guidance condition. Columns run from most to least guidance: <strong>Plan supplied</strong> (former L2), <strong>Files named</strong> (former L1), and <strong>Goal only</strong> (former L0). Less guidance makes these tasks harder; the labels describe prompt support, not a task-difficulty ranking. Rows are sorted by total task time, fastest first, for scanning—not as a cross-profile ranking. Pass, fail and unproven outcomes stay distinct.</p>
             <div class="table-wrap">
                 <table class="table">
-                    <thead><tr><th>Model / profile</th><th>L0</th><th>L1</th><th>L2</th><th>Total task time · 90 cells</th><th>Median task time</th><th>Loaded decode</th><th>TTFT (median, n=3)</th></tr></thead>
+                    <thead><tr><th>Model / profile</th><th>Plan supplied<br><small>former L2</small></th><th>Files named<br><small>former L1</small></th><th>Goal only<br><small>former L0</small></th><th>Total task time · 90 cells</th><th>Median task time</th><th>Loaded decode</th><th>TTFT (median, n=3)</th></tr></thead>
                     <tbody>
-                    <tr><td>Qwen3.6 35B Q4_K_M<sup>2</sup></td><td>29 pass / 1 fail</td><td>30 pass</td><td>30 pass</td><td>15.08 min</td><td>8.10 s</td><td>153.5 tok/s<sup>3</sup></td><td>4.947 s<sup>4</sup></td></tr>
-                    <tr><td>Qwen3.8 27B Q4_K_M<sup>1</sup></td><td>24 pass / 6 fail</td><td>30 pass</td><td>30 pass</td><td>27.88 min</td><td>18.35 s</td><td>41.1 tok/s</td><td>9.840 s<sup>5</sup></td></tr>
-                    <tr><td>Bonsai 2 27B PQ2_0<sup>1</sup></td><td>19 pass / 11 fail</td><td>27 pass / 3 fail</td><td>30 pass</td><td>45.80 min</td><td>18.15 s</td><td>67.1 tok/s</td><td>9.307 s<sup>5</sup></td></tr>
-                    <tr><td>Gemma4 26B Q4_K_M<sup>2</sup></td><td>17 pass / 13 fail</td><td>25 pass / 4 fail / 1 unproven</td><td>30 pass</td><td>56.35 min</td><td>12.80 s</td><td>116.4 tok/s<sup>3</sup></td><td>3.839 s<sup>4</sup></td></tr>
+                    <tr><td>Qwen3.6 35B Q4_K_M<sup>2</sup></td><td>30 pass</td><td>30 pass</td><td>29 pass / 1 fail</td><td>15.08 min</td><td>8.10 s</td><td>153.5 tok/s<sup>3</sup></td><td>4.947 s<sup>4</sup></td></tr>
+                    <tr><td>Qwen3.8 27B Q4_K_M<sup>1</sup></td><td>30 pass</td><td>30 pass</td><td>24 pass / 6 fail</td><td>27.88 min</td><td>18.35 s</td><td>41.1 tok/s</td><td>9.840 s<sup>5</sup></td></tr>
+                    <tr><td>Bonsai 2 27B PQ2_0<sup>1</sup></td><td>30 pass</td><td>27 pass / 3 fail</td><td>19 pass / 11 fail</td><td>45.80 min</td><td>18.15 s</td><td>67.1 tok/s</td><td>9.307 s<sup>5</sup></td></tr>
+                    <tr><td>Gemma4 26B Q4_K_M<sup>2</sup></td><td>30 pass</td><td>25 pass / 4 fail / 1 unproven</td><td>17 pass / 13 fail</td><td>56.35 min</td><td>12.80 s</td><td>116.4 tok/s<sup>3</sup></td><td>3.839 s<sup>4</sup></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -80,24 +81,24 @@
         </section>
 
         <section class="section" id="standard-l012">
-            <h2>Repair quality: L0, L1 and L2, not one blended score</h2>
-            <p>The fresh repair packet runs the same five tasks six times at <em>each</em> instruction level: 30 cells per level, 90 per model. L0 supplies the goal, L1 names files, and L2 supplies a plan. It uses Pi as the coding-agent carrier, unlike the native Fusion tool loop above.</p>
+            <h2>Repair quality by prompt guidance, not one blended score</h2>
+            <p>The fresh repair packet runs the same five tasks six times in each guidance condition: 30 cells per condition, 90 per model. <strong>Goal only</strong> (former L0) supplies the goal; <strong>Files named</strong> (former L1) supplies filenames; <strong>Plan supplied</strong> (former L2) includes a plan. These labels describe prompt support, not a difficulty scale: less guidance makes the task harder. The packet and raw records retain their original L0/L1/L2 identifiers. It uses Pi as the coding-agent carrier, unlike the native Fusion tool loop above.</p>
             <div class="table-wrap">
                 <table class="table">
-                    <thead><tr><th>Model</th><th>L0 passes</th><th>L1 passes</th><th>L2 passes</th><th>Loaded decode tok/s</th><th>L2 median task s</th><th>Total task min, all 90 cells</th></tr></thead>
+                    <thead><tr><th>Model</th><th>Plan supplied passes<br><small>former L2</small></th><th>Files named passes<br><small>former L1</small></th><th>Goal only passes<br><small>former L0</small></th><th>Loaded decode tok/s</th><th>Plan supplied median task s</th><th>Total task min, all 90 cells</th></tr></thead>
                     <tbody>
-                    <tr><td>Qwen3.8 27B Q4_K_M</td><td>24/30</td><td>30/30</td><td>30/30</td><td>41.1</td><td>11.8</td><td>27.88</td></tr>
-                    <tr><td>Bonsai 2 27B PQ2_0</td><td>19/30</td><td>27/30</td><td>30/30</td><td><strong>67.1</strong></td><td><strong>9.2</strong></td><td>45.80</td></tr>
+                    <tr><td>Qwen3.8 27B Q4_K_M</td><td>30/30</td><td>30/30</td><td>24/30</td><td>41.1</td><td>11.8</td><td>27.88</td></tr>
+                    <tr><td>Bonsai 2 27B PQ2_0</td><td>30/30</td><td>27/30</td><td>19/30</td><td><strong>67.1</strong></td><td><strong>9.2</strong></td><td>45.80</td></tr>
                     </tbody>
                 </table>
             </div>
-            <p><strong>L2 alone would have hidden the difference.</strong> Both models completed all 30 plan-shaped tasks. With less instruction structure, Qwen passed more cells, and Bonsai's total time across all three levels was longer despite its faster decode. These are observed counts, not a general quality ranking from six repeats per task.</p>
+            <p><strong>Plan supplied alone would have hidden the difference.</strong> Both models completed all 30 plan-guided tasks. With less prompt support, Qwen passed more cells, and Bonsai's total time across all three conditions was longer despite its faster decode. These are observed counts, not a general quality ranking from six repeats per task.</p>
             <p>Loaded decode is a separate probe: 12,811 actual prompt tokens, 128 generated tokens, temperature 0, one discarded warmup and three measured calls, reported as the median. Bonsai decoded about 63% faster here. It is not an agent-turn throughput measurement.</p>
             <p class="note">Evidence packet: <code>standard-l012-20260930-r2</code>, complete. Same 3090 GPU0 and PrismML <code>prism-b10743-adfffbe</code> CUDA 12.8 fork, shared 0.7/0.8/top_k 20 sampler, 16K context, 4,096 output cap and seed 1234. Independent cells start with erased conversation cache and warm weights; Pi compaction is off. All 180 scored cells have attributed before/after placement captures, zero qualified-unproven outcomes, and all 1,581 request verdicts, including qualification, passed. Verification overhead is excluded from task times. The Ollama C1 runs use the same 90-cell task battery but are a separate serving-profile cohort, summarized in the headline table above.</p>
             <details>
-                <summary>Earlier 29 Sep L2-only cohort: the two Bonsai loops still stand</summary>
+                <summary>Earlier 29 Sep plan-supplied-only cohort (archival L2): the two Bonsai loops still stand</summary>
                 <p>The separate <code>bonsai-l2-20260929</code> run recorded Qwen at 30/30, median 13.2 s, total 6.0 min and 121 agent turns; Bonsai at 28/30, median 7.5 s, total 8.7 min and 252 turns. Both used the same fork, GPU and sampler within that run.</p>
-                <p>Two Bonsai CSV-repair trials looped until they exhausted the 16K context. The runner classified those two nonpasses as unproven; placement was checked before each model's batch, not per cell. The fresh 30/30 L2 result does not erase those observations, prove looping is fixed, or establish which protocol difference caused the change. Keep the cohorts separate.</p>
+                <p>Two Bonsai CSV-repair trials looped until they exhausted the 16K context. The runner classified those two nonpasses as unproven; placement was checked before each model's batch, not per cell. The fresh 30/30 plan-supplied result does not erase those observations, prove looping is fixed, or establish which protocol difference caused the change. Keep the cohorts separate.</p>
             </details>
         </section>
 
@@ -138,7 +139,7 @@
             <p><strong>The RTX 2080 row is the weakest evidence in the table.</strong> That fixture ran three trials rather than four, so its warm mean rests on n=2 where every other row has n=3, and its long task was still falling across those two trials, 218.6 s then 124.5 s. Its two per-task ratios spread from 0.23 to 0.31, wider than the gap between several adjacent rows above it. Read the row as placing the card in this neighbourhood, not as fixing it at 0.27, and note the direction: with the long task still coming down, 0.27 more likely understates the card than flatters it. It is also the only roster member that runs on the 8 GB card at a usable rate, so there is no second 2080 row to check it against. Note it does not <em>fit</em> that card: its experts run from host RAM, as the correction further down sets out.</p>
             <details>
                 <summary>Why the old quality column was removed</summary>
-                <p>It mixed accumulated RTX 3090 seat-corpus counts (51/51, 149/178, 63/63 and 28/33), an 18-cell MAX 390 floor battery (18/18, 16/18 and 18/18), and a 15-cell RTX 2080 battery (15/15). Those denominators are not interchangeable. The historical counts remain here for provenance, not as a matched comparison or a score to combine with the fresh L0/L1/L2 and Fusion tables.</p>
+                <p>It mixed accumulated RTX 3090 seat-corpus counts (51/51, 149/178, 63/63 and 28/33), an 18-cell MAX 390 floor battery (18/18, 16/18 and 18/18), and a 15-cell RTX 2080 battery (15/15). Those denominators are not interchangeable. The historical counts remain here for provenance, not as a matched comparison or a score to combine with the fresh prompt-guidance and Fusion tables.</p>
             </details>
         </section>
 
@@ -245,9 +246,9 @@
         </section>
 
         <section class="section">
-            <h2>The quality ceiling and the noise floor</h2>
+            <h2>Archived E9 ladder: the quality ceiling and the noise floor</h2>
             <p><strong>Small samples lie.</strong> One cell, <code>gemma4:26b</code> on <code>csv-summarize-repair</code>, had produced 5/6, 6/6 and 6/6 in separate runs, two of them read as clean results. At n=100 its true pass rate is 75/100. Six trials cannot distinguish that from 100%. Every result is now labelled with the evidence tier its sample size supports.</p>
-            <p><strong>The battery is saturated at the hard rung and still works at the easier one.</strong> At L2 the current roster tops out the E9 tasks. At L1 the same tasks still separate models: <code>gemma4:31b</code> and <code>gpt-oss:120b</code> 30/30, <code>qwen3.8:27b</code> 26/30, <code>gemma4:26b</code> 24/30. Three fixtures that had been written and never run came back 18/18 for all seven models tested. The top of the ladder is exhausted.</p>
+            <p><strong>In this archived E9 ladder, the hard rung was saturated while the easier rung still separated models.</strong> These legacy L0/L1/L2 rungs are from an older protocol, not the prompt-guidance conditions in the current table. At legacy L2 the roster tops out the E9 tasks. At legacy L1 the same tasks still separate models: <code>gemma4:31b</code> and <code>gpt-oss:120b</code> 30/30, <code>qwen3.8:27b</code> 26/30, <code>gemma4:26b</code> 24/30. Three fixtures that had been written and never run came back 18/18 for all seven models tested. The top of the ladder is exhausted.</p>
             <p>Decode class does not predict correctness either. <code>nemotron-3-nano</code> decodes at 121.2 tok/s and passed 0 of 18 cells, missing the implementation rather than timing out.</p>
         </section>
 
@@ -350,8 +351,8 @@
             <code>qwen3.6:35b</code>'s long task came in at 19.8 s against 28.2 s, while
             <code>qwen3.8:27b</code>'s held at 20.1 s against 18.8 s.</p>
 
-            <p><strong>The evidence that L1 still separates models is thinner than it reads.</strong>
-            Above, the L1 result is given as <code>gemma4:31b</code> and <code>gpt-oss:120b</code>
+            <p><strong>The evidence that legacy L1 still separates models is thinner than it reads.</strong>
+            Above, the legacy L1 result is given as <code>gemma4:31b</code> and <code>gpt-oss:120b</code>
             at 30/30, <code>qwen3.8:27b</code> at 26/30 and <code>gemma4:26b</code> at 24/30. Both
             models at the top of that list are now off the single-card roster:
             <code>gpt-oss:120b</code> at 60.9&nbsp;GB cannot produce a single-card number at all,
@@ -359,9 +360,9 @@
             context it puts 7% on the CPU and takes 74&ndash;213&nbsp;s per call, and at the
             pinned 16k it runs in about 10&nbsp;s but is still not an E9 model. So the spread that
             makes L1 look discriminating is carried largely by models that are not in the race.
-            Whether L1 separates the <em>eligible</em> roster is an open question, not a
-            finding &mdash; and it matters, because L2 is saturated and L1 is where the ordering
-            would have to come from.</p>
+            Whether legacy L1 separates the <em>eligible</em> roster is an open question, not a
+            finding &mdash; and it matters, because legacy L2 is saturated and legacy L1 is where
+            the ordering would have to come from.</p>
 
             <p><strong>The long-task gap between the two qwen models is not established.</strong>
             The ranking above has them 2.1x apart on the long task on a 3090, 15.6 s against 32.4 s.
@@ -382,11 +383,11 @@
                 <li><strong>Out-of-scope files.</strong> <code>gemma4:26b</code> writes scratch
                 test files (<code>test_tmp.py</code>, <code>test_solution.py</code>,
                 <code>repro.py</code>) while solving a task, and the scope check counts that as a
-                failure. Most of its published L2 gap is this, not a wrong answer.</li>
+                failure. Most of its published legacy L2 gap is this, not a wrong answer.</li>
                 <li><strong>Context truncation.</strong> Nine failed cells across both hosts ended
                 at the pinned 16,384-token ceiling with no answer to grade &mdash; the battery then
                 reported an empty result, which reads exactly like a wrong implementation. Part of
-                <code>gemma4:26b</code>'s collapse at the easier rungs is this.</li>
+                <code>gemma4:26b</code>'s collapse at the easier legacy rungs is this.</li>
             </ul>
             <p>Both are now recorded as their own classes. A pass count that mixes them with
             capability misses is measuring three things and reporting one.</p>
