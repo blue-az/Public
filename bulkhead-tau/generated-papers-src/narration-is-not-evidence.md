@@ -64,9 +64,23 @@ That answer worked because it had a decision, a reason, a cost, and a date. The 
 
 ## The part I forgot entirely
 
-They asked for a specific doom loop where the ledger changed what I did next. I'd used it for exactly that two days earlier.
+They asked for a specific time the record changed what I did next. I had a perfect one from that same week.
 
 I couldn't remember it. I told a different story, realized halfway through it didn't fit, and said so out loud.
+
+Here's the one I should have told.
+
+One of the models I benchmark, qwen3-next, scored 10 out of 30 on my coding-agent battery, with three of its runs timing out at 600 seconds. It looked weak. I was already asking whether a 5090, or unified memory, would rescue it. That's the hardware-shaped fix, and it's the expensive one.
+
+But the day before, I'd written down a plan in a session save-point: pin every sampler setting, add a check that refuses to launch a comparison if the configs don't match, then re-run.
+
+So I ran that instead. No new hardware. The Thinking variant went from 10 out of 30 to 29. The timeouts were gone. The 10/30 had been the Thinking model run with thinking switched off, in a 16k context, with unpinned settings.
+
+My own findings file says it better than I can: "the earlier suggestion that a faster card might rescue those timeouts is superseded: the configuration did."
+
+Without the written plan, I'd have blamed the hardware. Maybe bought some.
+
+And the story I did tell? It was real too, from about an hour before the interview. My crystal command refused to run because it's pinned to one reviewed version of the tool, and I had a newer one installed. That's not a doom loop. It's the system failing closed on purpose, which is a fine answer to a different question.
 
 Which is, if you think about it, the best possible argument for the thing I was describing. Memory is a terrible place to keep evidence. Mine included.
 
