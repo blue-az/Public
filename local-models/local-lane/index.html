@@ -44,14 +44,14 @@
 
         <section class="section" id="headline-results">
             <h2>Headline results: repair quality and speed</h2>
-            <p>Each model ran the same 90-cell L0/L1/L2 repair battery on one RTX 3090 (30 cells per level). Pass, fail and unproven outcomes stay distinct. Total task time sums the 90 recorded wall-clock times; the median is per task cell. Read task times alongside the quality columns.</p>
+            <p>Each model ran the same 90-cell L0/L1/L2 repair battery on one RTX 3090 (30 cells per level). Rows are sorted by total task time, fastest first, for easy scanning—not as a cross-profile ranking. Pass, fail and unproven outcomes stay distinct. Total task time sums the 90 recorded wall-clock times; the median is per task cell. Read task times alongside the quality columns.</p>
             <div class="table-wrap">
                 <table class="table">
                     <thead><tr><th>Model / profile</th><th>L0</th><th>L1</th><th>L2</th><th>Total task time · 90 cells</th><th>Median task time</th><th>Loaded decode</th><th>TTFT</th></tr></thead>
                     <tbody>
+                    <tr><td>Qwen3.6 35B Q4_K_M<sup>2</sup></td><td>29 pass / 1 fail</td><td>30 pass</td><td>30 pass</td><td>15.08 min</td><td>8.10 s</td><td>Invalid probe<sup>3</sup></td><td>Not measured</td></tr>
                     <tr><td>Qwen3.8 27B Q4_K_M<sup>1</sup></td><td>24 pass / 6 fail</td><td>30 pass</td><td>30 pass</td><td>27.88 min</td><td>18.35 s</td><td>41.1 tok/s</td><td>Not measured</td></tr>
                     <tr><td>Bonsai 2 27B PQ2_0<sup>1</sup></td><td>19 pass / 11 fail</td><td>27 pass / 3 fail</td><td>30 pass</td><td>45.80 min</td><td>18.15 s</td><td>67.1 tok/s</td><td>Not measured</td></tr>
-                    <tr><td>Qwen3.6 35B Q4_K_M<sup>2</sup></td><td>29 pass / 1 fail</td><td>30 pass</td><td>30 pass</td><td>15.08 min</td><td>8.10 s</td><td>Invalid probe<sup>3</sup></td><td>Not measured</td></tr>
                     <tr><td>Gemma4 26B Q4_K_M<sup>2</sup></td><td>17 pass / 13 fail</td><td>25 pass / 4 fail / 1 unproven</td><td>30 pass</td><td>56.35 min</td><td>12.80 s</td><td>116.7 tok/s</td><td>Not measured</td></tr>
                     </tbody>
                 </table>
