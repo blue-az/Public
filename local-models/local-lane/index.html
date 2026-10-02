@@ -4,27 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Lane | Local benchmark program | Bulkhead τ</title>
-    <meta name="description" content="Local-model results through 1 Oct 2026: Bonsai wins the matched native Fusion cohort on task time with the same 36/36 pass count. Separate L0/L1/L2 quality, loaded decode and task wall-clock results, with historical hardware comparisons retained.">
+    <meta name="description" content="Local-model results through 2 Oct 2026: one at-a-glance table for repair quality, task time, loaded decode and TTFT status, with serving profiles marked and historical evidence retained.">
     <link rel="stylesheet" href="../../bulkhead-tau/style.css">
 </head>
 <body>
     <div class="page">
 
         <header class="header">
-            <span class="badge">Benchmark program · rewritten 11 Sep 2026 · revised 1 Oct 2026</span>
+            <span class="badge">Benchmark program · updated 2 Oct 2026</span>
             <h1>Local Lane</h1>
-            <p class="subtitle">Matched model comparisons, quality at each instruction level, native tool-use quality, loaded decode and task wall clock. Latest results first; the older RTX 3090, RTX 2080 and MAX 390 measurements remain dated historical cohorts.</p>
+            <p class="subtitle">One headline table for repair quality and speed, with small markers identifying serving profiles. Native Fusion, loaded decode and historical hardware results remain separately labelled.</p>
         </header>
 
         <nav class="nav" aria-label="Bulkhead τ">
             <a href="../../bulkhead-tau/index.html">Home</a>
             <a href="../">Local Models</a>
+            <a href="#headline-results">Headline table</a>
             <a href="#fusion-bonsai">Fusion results</a>
             <a href="#standard-l012">L0 / L1 / L2</a>
         </nav>
 
         <div class="pullquote">
-            <p><strong>Latest: Bonsai wins this native Fusion cohort.</strong> Both models passed 36/36; Bonsai used 37% less total task time. <a href="#fusion-bonsai">See the matched results</a>, with repair quality and speed reported separately below.</p>
+            <p><strong>Headline:</strong> task time and L0/L1/L2 results are shown together for four RTX 3090 Testbench runs. Profile markers identify which rows share a serving setup; they are not one global model ranking. Direct streamed TTFT has not yet been measured, so the table marks it explicitly as pending.</p>
         </div>
 
         <section class="section">
@@ -41,22 +42,42 @@
             <p>An earlier version of this page ranked the two chips by decode rate. It is archived in the site repository, and the sections below explain which of its numbers were wrong and why.</p>
         </section>
 
-        <section class="section" id="fusion-bonsai">
-            <h2>Latest: Bonsai wins the native Fusion comparison</h2>
-            <p><strong>Bonsai finished this cohort in 37% less total task time, with the same measured quality: both models passed 36 of 36.</strong> This is a task-completion win, not just faster token generation.</p>
-            <p>TennisAgent Fusion v2, formerly called Fusion L3, is a separate multi-step tool-use benchmark. Six tasks cover linked evidence, missing and invalid data, weather provenance, count reconciliation and contrasting evidence states. Six trials per task, one RTX 3090 on Testbench, both models on the same PrismML CUDA fork.</p>
+        <section class="section" id="headline-results">
+            <h2>Headline results: repair quality and speed</h2>
+            <p>Each model ran the same 90-cell L0/L1/L2 repair battery on one RTX 3090 (30 cells per level). Pass, fail and unproven outcomes stay distinct. Total task time sums the 90 recorded wall-clock times; the median is per task cell. Read task times alongside the quality columns.</p>
             <div class="table-wrap">
                 <table class="table">
-                    <thead><tr><th>Model</th><th>Fusion passes</th><th>Median task s</th><th>Total task min, 36 cells</th><th>Unproven</th></tr></thead>
+                    <thead><tr><th>Model / profile</th><th>L0</th><th>L1</th><th>L2</th><th>Total task time · 90 cells</th><th>Median task time</th><th>Loaded decode</th><th>TTFT</th></tr></thead>
                     <tbody>
-                    <tr><td>Qwen3.8 27B Q4_K_M</td><td>36/36</td><td>10.58</td><td>6.50</td><td>0</td></tr>
-                    <tr><td><strong>Bonsai 2 27B PQ2_0</strong></td><td><strong>36/36</strong></td><td><strong>5.84</strong></td><td><strong>4.08</strong></td><td>0</td></tr>
+                    <tr><td>Qwen3.8 27B Q4_K_M<sup>1</sup></td><td>24 pass / 6 fail</td><td>30 pass</td><td>30 pass</td><td>27.88 min</td><td>18.35 s</td><td>41.1 tok/s</td><td>Not measured</td></tr>
+                    <tr><td>Bonsai 2 27B PQ2_0<sup>1</sup></td><td>19 pass / 11 fail</td><td>27 pass / 3 fail</td><td>30 pass</td><td>45.80 min</td><td>18.15 s</td><td>67.1 tok/s</td><td>Not measured</td></tr>
+                    <tr><td>Qwen3.6 35B Q4_K_M<sup>2</sup></td><td>29 pass / 1 fail</td><td>30 pass</td><td>30 pass</td><td>15.08 min</td><td>8.10 s</td><td>Invalid probe<sup>3</sup></td><td>Not measured</td></tr>
+                    <tr><td>Gemma4 26B Q4_K_M<sup>2</sup></td><td>17 pass / 13 fail</td><td>25 pass / 4 fail / 1 unproven</td><td>30 pass</td><td>56.35 min</td><td>12.80 s</td><td>116.7 tok/s</td><td>Not measured</td></tr>
                     </tbody>
                 </table>
             </div>
-            <p>Runner, tools, frozen databases, model server and telemetry all ran on Testbench. The six-task canary passed for each model and is excluded from the table. All 224 request-gate checks, including canaries, passed. Model loading, fixture checks and before/after placement verification are outside the reported task timer.</p>
-            <p class="note">Same measured quality means the same pass count under this frozen, bounded, partly lexical grader. It does not establish general quality equivalence. The shared settings were 16K context, 4,096-token output cap, temperature 0.7, top_p 0.8, top_k 20, seed 1234, and thinking/speculation off. Models ran sequentially on GPU0. Conversation cache was erased between cells, with normal reuse within a task. Placement was attributed before and after each cell, not monitored continuously.</p>
-            <p class="note">Evidence packet: <code>fusion-native-llama-20260930</code>, complete. Tasks and grader were unchanged; the new transport adapter and runtime settings make this a separate cohort from the historical Ollama Fusion runs. Required fixture states and counts passed; optional missing weather-column and unrelated Babolat-data warnings remain documented in the packet.</p>
+            <p class="note"><sup>1</sup> PrismML <code>prism-b10743-adfffbe</code>, CUDA 12.8, 16K context. <sup>2</sup> Ollama 0.32.12 C1 profile, 16K context. All rows are Testbench RTX 3090 single-card runs with the same task battery and declared sampler; the serving profiles and model weights differ, so compare task time within a marker, not across markers. <sup>3</sup> The Qwen3.6 decode request generated only 24 of 128 requested tokens; its speed is excluded. Bonsai/Qwen3.8 decode probes used 12,811 prompt tokens; Gemma4 used 14,595. Decode is not agent-task time. TTFT means client-observed time to first streamed output token; it is not present in the retained non-streaming probes and is intentionally left unreported pending a dedicated measurement.</p>
+            <p>Evidence: <code>standard-l012-20260930-r2</code> and <code>comparison-c1-3090-20261001-r3</code>, each complete for its declared outcomes. No single overall winner is implied by this table.</p>
+        </section>
+
+        <section class="section" id="fusion-bonsai">
+            <h2>Native Fusion results (separate workload)</h2>
+            <p>Fusion is a separate multi-step tool-use workload, not part of the repair table or its ranking. The median task times below are model- and profile-specific; the two serving profiles must not be pooled.</p>
+            <p>TennisAgent Fusion v2, formerly called Fusion L3, is a separate multi-step tool-use benchmark. Six tasks cover linked evidence, missing and invalid data, weather provenance, count reconciliation and contrasting evidence states. Each profile ran six trials per task on one RTX 3090 on Testbench. The task set is shared; the serving profiles are not.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Model / profile</th><th>Fusion passes</th><th>Median task s</th><th>Total task min, 36 cells</th><th>Unproven</th></tr></thead>
+                    <tbody>
+                    <tr><td>Qwen3.8 27B Q4_K_M<sup>1</sup></td><td>36/36</td><td>10.583</td><td>6.50</td><td>0</td></tr>
+                    <tr><td>Bonsai 2 27B PQ2_0<sup>1</sup></td><td>36/36</td><td>5.837</td><td>4.08</td><td>0</td></tr>
+                    <tr><td>Qwen3.6 35B Q4_K_M<sup>2</sup></td><td>36/36</td><td>3.261</td><td>1.96</td><td>0</td></tr>
+                    <tr><td>Gemma4 26B Q4_K_M<sup>2</sup></td><td>36/36</td><td>3.330</td><td>2.00</td><td>0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Runner, tools, frozen databases, model server and telemetry all ran on Testbench. The six-task canary passed for each model and is excluded from the table. All 224 request-gate checks, including canaries, passed in the Prism cohort. Model loading, fixture checks and before/after placement verification are outside the reported task timer. <sup>1</sup> PrismML CUDA 12.8 cohort; <sup>2</sup> Ollama 0.32.12 C1 cohort. Fusion medians are reported within each cohort only.</p>
+            <p class="note">Same measured quality means the same pass count under this frozen, bounded, partly lexical grader. It does not establish general quality equivalence. Shared settings were 16K context, 4,096-token output cap, temperature 0.7, top_p 0.8, top_k 20, seed 1234, and thinking/speculation off. Models ran sequentially on GPU0; conversation cache was erased between cells, with normal reuse within a task. Placement was attributed before and after each cell, not monitored continuously.</p>
+            <p class="note">Evidence packets: <code>fusion-native-llama-20260930</code> (Prism profile) and <code>fusion-native-c1-20261001</code> (Ollama C1 profile), complete. Tasks and grader were unchanged. Required fixture states and counts passed; optional missing weather-column and unrelated Babolat-data warnings remain documented in the Prism packet.</p>
         </section>
 
         <section class="section" id="standard-l012">
@@ -73,7 +94,7 @@
             </div>
             <p><strong>L2 alone would have hidden the difference.</strong> Both models completed all 30 plan-shaped tasks. With less instruction structure, Qwen passed more cells, and Bonsai's total time across all three levels was longer despite its faster decode. These are observed counts, not a general quality ranking from six repeats per task.</p>
             <p>Loaded decode is a separate probe: 12,811 actual prompt tokens, 128 generated tokens, temperature 0, one discarded warmup and three measured calls, reported as the median. Bonsai decoded about 63% faster here. It is not an agent-turn throughput measurement.</p>
-            <p class="note">Evidence packet: <code>standard-l012-20260930-r2</code>, complete. Same 3090 GPU0 and PrismML <code>prism-b10743-adfffbe</code> CUDA 12.8 fork, shared 0.7/0.8/top_k 20 sampler, 16K context, 4,096 output cap and seed 1234. Independent cells start with erased conversation cache and warm weights; Pi compaction is off. All 180 scored cells have attributed before/after placement captures, zero qualified-unproven outcomes, and all 1,581 request verdicts, including qualification, passed. Verification overhead is excluded from task times. Other hardware/engine configurations have not yet run this new packet.</p>
+            <p class="note">Evidence packet: <code>standard-l012-20260930-r2</code>, complete. Same 3090 GPU0 and PrismML <code>prism-b10743-adfffbe</code> CUDA 12.8 fork, shared 0.7/0.8/top_k 20 sampler, 16K context, 4,096 output cap and seed 1234. Independent cells start with erased conversation cache and warm weights; Pi compaction is off. All 180 scored cells have attributed before/after placement captures, zero qualified-unproven outcomes, and all 1,581 request verdicts, including qualification, passed. Verification overhead is excluded from task times. The Ollama C1 runs use the same 90-cell task battery but are a separate serving-profile cohort, summarized in the headline table above.</p>
             <details>
                 <summary>Earlier 29 Sep L2-only cohort: the two Bonsai loops still stand</summary>
                 <p>The separate <code>bonsai-l2-20260929</code> run recorded Qwen at 30/30, median 13.2 s, total 6.0 min and 121 agent turns; Bonsai at 28/30, median 7.5 s, total 8.7 min and 252 turns. Both used the same fork, GPU and sampler within that run.</p>
