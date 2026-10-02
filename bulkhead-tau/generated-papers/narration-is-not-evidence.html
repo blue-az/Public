@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narration Is Not Evidence. Not Even Mine.</title>
+  <meta name="description" content="ARTICLE, active draft. An AI interviewer asked two questions about Operator Control Plane, a claim-evidence ledger: what happens when a verification is wrong, and how do you know the record is complete. The author answered both with narration. What the answers should have been: advisory vs UID-isolated verification, an identity-stamped hash-chained event history that doctor audits, and the honest limit that the ledger enforces who checked and what was attached, not whether the judgment was right. Plus the one answer that landed (harness names to OS UID, July) and the example the author forgot.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · active draft</div>
+    <h1>Narration Is Not Evidence. Not Even Mine.</h1>
+    <p class="meta">ARTICLE, active draft. An AI interviewer asked two questions about Operator Control Plane, a claim-evidence ledger: what happens when a verification is wrong, and how do you know the record is complete. The author answered both with narration. What the answers should have been: advisory vs UID-isolated verification, an identity-stamped hash-chained event history that doctor audits, and the honest limit that the ledger enforces who checked and what was attached, not whether the judgment was right. Plus the one answer that landed (harness names to OS UID, July) and the example the author forgot.</p>
+    <p class="meta">Canonical source: <code>docs/ARTICLE_NARRATION_IS_NOT_EVIDENCE.md</code></p>
+    <p><strong>Status:</strong> active draft <strong>Date:</strong> 2026-10-01 <strong>Project:</strong> Bulkhead τ / Bulkhead Tau <strong>Paper group:</strong> Articles <strong>Publication posture:</strong> public draft, written for LinkedIn. Not numbered.</p>
+<p>I built a system whose whole job is to not take an agent&#x27;s word for it.</p>
+<p>Then an AI interviewed me about it for 25 minutes, and I was the one making claims without evidence.</p>
+<h2>The setup</h2>
+<p>It was a screening interview for contract coding work, run by an AI interviewer. No coding, no whiteboard. Just &quot;walk me through a project you&#x27;re proud of.&quot; Easy, I thought. I picked Operator Control Plane, the ledger I&#x27;ve been building since June.</p>
+<p>The pitch is short. Your coding agent says &quot;done, tests pass.&quot; Do you actually know that&#x27;s true? OCP makes that claim checkable. A claim needs evidence attached, and a verification only counts as independent if it comes from a different OS user than the one that made the claim.</p>
+<p>I gave that part fine. Then the follow-ups started.</p>
+<h2>Question one</h2>
+<p>&quot;What would happen to users if the ledger recorded or verified a claim incorrectly?&quot;</p>
+<p>My answer, more or less verbatim: &quot;That would be on the user.&quot; Followed by &quot;it&#x27;s hard to know exactly what you&#x27;re asking.&quot;</p>
+<p>It was not hard to know what it was asking. It was asking the most important question you can ask about a verification system, and I shrugged at it.</p>
+<h2>Question two</h2>
+<p>&quot;How did you verify that UID mode produced a complete record?&quot;</p>
+<p>My answer: &quot;It&#x27;s continuously verified. It&#x27;s designed by principle that way.&quot;</p>
+<p>Read that again. Somebody asked a claim-evidence system&#x27;s author for evidence, and the author gave a claim.</p>
+<p>That&#x27;s the exact sentence my ledger exists to reject. An agent saying &quot;it&#x27;s tested, trust me&quot; is narration. I was narrating.</p>
+<h2>What I should have said</h2>
+<p>The annoying part is the answers exist. They&#x27;re in the repo. I just didn&#x27;t have them loaded.</p>
+<p>What happens if a verification is wrong? Three things.</p>
+<ol>
+<li>The ledger labels how much to trust each verification. If the same OS user who made a claim also verifies it, it&#x27;s recorded as advisory: the builder vouching for their own work. Only a separate verifier account gets recorded as independent. The system doesn&#x27;t pretend a self-check was a second opinion.</li>
+<li>A wrong verification is traceable. Every write records which OS user made it, and every event is hash-chained to the one before it. You can find a bad verification, see who made it, and supersede it. It doesn&#x27;t get quietly overwritten.</li>
+<li>And the honest limit: the ledger can&#x27;t tell whether the verifier was right. If a different identity looks at bad evidence and approves it, the ledger records that faithfully. It enforces who checked and what they attached. Not whether their judgment was any good.</li>
+</ol>
+<p>That third one is the real answer, and it&#x27;s not a weakness I should have been embarrassed about. It&#x27;s the boundary. I learned it doing V&amp;V under ISO 13485: a signature on a design review doesn&#x27;t make the design correct. It makes the review accountable. Same thing here.</p>
+<p>How do you know the record is complete? The <code>doctor</code> command walks the event history and fails on any version gap, any broken hash link, any record that doesn&#x27;t match its history. Evidence carries a sha256 fingerprint. There are 600+ tests behind it. And again the honest limit: the chain proves nothing was changed or dropped after it was written. It can&#x27;t prove an agent wrote down everything it did. Which is why claims need attached evidence instead of being taken from the agent&#x27;s summary.</p>
+<p>Thirty seconds each. I had neither.</p>
+<h2>The part I got right</h2>
+<p>One answer did land, and it&#x27;s worth saying why.</p>
+<p>They asked about the hardest decision. I told them the truth: I started by identifying reviewers by harness name. Claude reviewed this, Codex reviewed that. It was intuitive and easy to explain. Audits kept flagging it, and an outside user pointed out a hole. One OS user can type any reviewer name. A different harness name buys nothing.</p>
+<p>So in July I switched to OS user IDs. It costs real friction. True enforced mode means a second account and copy-pasting between two windows. I kept an advisory mode for daily use, and it labels itself as advisory.</p>
+<p>That answer worked because it had a decision, a reason, a cost, and a date. The other answers had a feeling.</p>
+<h2>The part I forgot entirely</h2>
+<p>They asked for a specific doom loop where the ledger changed what I did next. I&#x27;d used it for exactly that two days earlier.</p>
+<p>I couldn&#x27;t remember it. I told a different story, realized halfway through it didn&#x27;t fit, and said so out loud.</p>
+<p>Which is, if you think about it, the best possible argument for the thing I was describing. Memory is a terrible place to keep evidence. Mine included.</p>
+<h2>So</h2>
+<p>I spend a lot of time telling people not to trust an agent that says &quot;done, it works.&quot; Turns out the rule doesn&#x27;t care who&#x27;s narrating.</p>
+<p>If you build verification tooling, try this: have something ask you &quot;what happens when it&#x27;s wrong?&quot; and &quot;how do you know it&#x27;s complete?&quot; and answer without opening a file. If you can&#x27;t, you don&#x27;t have an answer yet. You have a repo.</p>
+<p>Narration is not evidence. Not even mine.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>

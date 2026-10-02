@@ -1,7 +1,7 @@
 {
   "feed": "phoenix-papers",
   "version": 1,
-  "generated_at": "2026-09-28T23:28:03.094586+00:00",
+  "generated_at": "2026-10-02T04:02:34.428260+00:00",
   "source_manifest": "docs/PAPERS_MANIFEST.json",
   "public_only": true,
   "groups": [
@@ -896,6 +896,22 @@
           "proto_markdown_path": "bulkhead-tau/generated-papers-src/the-substrate-is-the-decisions.md",
           "publish": true,
           "summary": "ARTICLE, active draft. 247 questions about cardiac implant data on three local models (E9 config): alone, right 5-11% and one model invented 47% of its answers; answering from the deterministic database lookup, right 100% at about a second, with the lookup itself at 0.02 ms. Determinism bought correctness, not speed. Also states the substrate's own extraction defects and why a source of truth still needs sign-off."
+        },
+        {
+          "id": "narration-is-not-evidence",
+          "title": "Narration Is Not Evidence. Not Even Mine.",
+          "source_path": "docs/ARTICLE_NARRATION_IS_NOT_EVIDENCE.md",
+          "track": "article",
+          "paper_number": null,
+          "lifecycle": "active draft",
+          "publication_status": "published",
+          "paper_group": "Articles",
+          "group_status": "provisional",
+          "public_slug": "narration-is-not-evidence",
+          "proto_output_path": "bulkhead-tau/generated-papers/narration-is-not-evidence.html",
+          "proto_markdown_path": "bulkhead-tau/generated-papers-src/narration-is-not-evidence.md",
+          "publish": true,
+          "summary": "ARTICLE, active draft. An AI interviewer asked two questions about Operator Control Plane, a claim-evidence ledger: what happens when a verification is wrong, and how do you know the record is complete. The author answered both with narration. What the answers should have been: advisory vs UID-isolated verification, an identity-stamped hash-chained event history that doctor audits, and the honest limit that the ledger enforces who checked and what was attached, not whether the judgment was right. Plus the one answer that landed (harness names to OS UID, July) and the example the author forgot."
         }
       ]
     }
