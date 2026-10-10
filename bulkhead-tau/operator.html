@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Control Plane | Bulkhead τ</title>
+    <meta name="description" content="Operator is a standalone, domain-neutral control plane for making agent work checkable with tasks, claims, evidence, and verification.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Related · Standalone project</span>
+            <h1>Operator Control Plane</h1>
+            <p class="subtitle">Make agent completion claims checkable, not assumed.</p>
+        </header>
+        <nav class="nav" aria-label="Bulkhead τ">
+            <a href="index.html">Home</a>
+            <a href="index.html#engine-room">Tau-Bench</a>
+            <a href="../domains/">Domains</a>
+            <a href="../papers/">Research Papers</a>
+            <a href="../local-llm-tsp/">Benchmarks</a>
+            <a href="demos.html">Demos</a>
+            <a class="active" aria-current="page" href="operator.html">Operator</a>
+        </nav>
+        <div class="pullquote">
+            <p>Operator records tasks, claims, evidence, and verification so an agent’s report of completion can be checked against recorded evidence.</p>
+        </div>
+        <main>
+            <section class="section" aria-labelledby="about-operator">
+                <h2 id="about-operator">A separate control plane</h2>
+                <p>Operator is a standalone, domain-neutral project for tracking agent work and the evidence behind completion claims. It is designed to distinguish a claim from the evidence and verification recorded against it; recording a verification does not by itself guarantee correctness.</p>
+                <p>Bulkhead τ may use Operator, but Operator does not depend on Bulkhead τ. Operator is not part of Bulkhead τ’s engine room, is not bundled with Bulkhead τ, and is not required to use it.</p>
+                <p>In Operator’s default single-user mode, verification is advisory: the same OS user can enter a reviewer’s name. An identity-isolated verification requires enforced identity configuration and a verifier running under a distinct registered OS identity. Do not treat advisory verification as an independent check.</p>
+                <p><a href="https://github.com/blue-az/operator-control-plane">Read the Operator Control Plane repository and README</a></p>
+            </section>
+            <section class="section" aria-labelledby="pi-integration">
+                <h2 id="pi-integration">Pi integration (separate path)</h2>
+                <p>The Pi extension is an optional integration for using Operator workflows inside Pi; it is not the whole Operator control plane. See the dedicated overview for its core workflows, prerequisites, and current alpha status.</p>
+                <p><a href="pi-operator-extension.html">Read the Pi Operator extension overview</a></p>
+            </section>
+        </main>
+        <footer class="footer">
+            <p>Bulkhead τ · Operator is an independent related project</p>
+            <p><a href="index.html">Return to Bulkhead τ</a> · <a href="https://github.com/blue-az/operator-control-plane">Operator source</a></p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+        </footer>
+    </div>
+</body>
+</html>

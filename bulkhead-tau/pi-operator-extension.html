@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi Operator Extension | Bulkhead τ</title>
+    <meta name="description" content="The Pi integration for Operator Control Plane: core workflows, prerequisites, alpha status, and links to public source documentation.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Pi integration · alpha</span>
+            <h1>Pi Operator Extension</h1>
+            <p class="subtitle">Operator workflows inside Pi, with the control plane kept separate.</p>
+        </header>
+        <nav class="nav" aria-label="Bulkhead τ and Operator">
+            <a href="index.html">Bulkhead τ</a>
+            <a href="operator.html">Operator</a>
+            <a class="active" aria-current="page" href="pi-operator-extension.html">Pi extension</a>
+        </nav>
+        <div class="pullquote">
+            <p>A Pi front end for a separately installed Operator control plane. The extension is one integration, not the whole product.</p>
+        </div>
+        <main>
+            <section class="section" aria-labelledby="what-it-is">
+                <h2 id="what-it-is">What it is</h2>
+                <p>The Pi Operator extension adds slash-command workflows for working with Operator from Pi. It connects to a separate Operator checkout and local ledger; it does not bundle the Python control plane or ledger data.</p>
+                <p>Operator remains usable independently of Pi. The extension is optional, and installing it does not make Operator a Bulkhead τ dependency.</p>
+            </section>
+            <section class="section" aria-labelledby="core-workflows">
+                <h2 id="core-workflows">Core workflows</h2>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Inspect</h3>
+                        <p>Use <code>/op:doctor</code>, <code>/op:status</code>, and <code>/op:tasks</code> to inspect local ledger state and consistency.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Work with a task</h3>
+                        <p>Select a task, then use confirmed shortcuts for claims, evidence, and handoffs. Writes are shown for confirmation before they are recorded.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Optional workflows</h3>
+                        <p>Delegation, supervisor review, PBC authoring, and crystal workflows are optional. Several are experimental and need additional local configuration or tools.</p>
+                    </article>
+                </div>
+            </section>
+            <section class="section" aria-labelledby="requirements-status">
+                <h2 id="requirements-status">Requirements and status</h2>
+                <ul>
+                    <li>The control plane is a separate checkout with a local Operator ledger.</li>
+                    <li>Core workflows require Python 3.12 or later and PyYAML.</li>
+                    <li>The extension documentation names Pi 0.87.1 as a compatibility target observed during static preparation. It is not a validated support matrix.</li>
+                    <li>The public source repository contains the <code>v0.1.0-alpha.1</code> Git tag. GitHub lists the associated prerelease as a draft, not a published release. Some preparation docs still describe tag approval as pending, so check the source tag and GitHub Releases page for current status before installation.</li>
+                </ul>
+                <p>Single-user Operator verification is advisory, not an independent identity-isolated review. Additional identity enforcement requires separate configuration.</p>
+            </section>
+            <section class="section" aria-labelledby="public-resources">
+                <h2 id="public-resources">Public source and documentation</h2>
+                <ul>
+                    <li><a href="https://github.com/blue-az/operator-control-plane/tree/v0.1.0-alpha.1/.pi/extensions/operator">Inspect the alpha-tagged extension source</a></li>
+                    <li><a href="https://github.com/blue-az/operator-control-plane/blob/master/.pi/extensions/operator/README.md">Extension README and workflow details</a></li>
+                    <li><a href="https://github.com/blue-az/operator-control-plane/blob/master/.pi/extensions/operator/install-guide.md">Cross-project setup guide</a></li>
+                    <li><a href="https://github.com/blue-az/operator-control-plane">Operator Control Plane repository</a></li>
+                    <li><a href="https://github.com/blue-az/operator-control-plane/releases">GitHub Releases and publication status</a></li>
+                </ul>
+            </section>
+        </main>
+        <footer class="footer">
+            <p>Pi is an optional Operator integration.</p>
+            <p><a href="operator.html">Return to the general Operator overview</a> · <a href="index.html">Return to Bulkhead τ</a></p>
+            <p>Contact: <a href="mailto:erik@efehnconsulting.com">erik@efehnconsulting.com</a></p>
+        </footer>
+    </div>
+</body>
+</html>
