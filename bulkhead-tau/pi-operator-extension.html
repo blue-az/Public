@@ -23,6 +23,42 @@
             <p>A Pi front end for a separately installed Operator control plane. The extension is one integration, not the whole product.</p>
         </div>
         <main>
+            <section class="section" aria-labelledby="flow-title">
+                <h2 id="flow-title">How the integration works</h2>
+                <p>Pi is the interaction surface. The extension routes supported commands to the separate Operator control plane, then shows the result in Pi.</p>
+                <figure class="pi-flow" aria-labelledby="flow-title flow-caption">
+                    <div class="pi-flow__track">
+                        <article class="pi-flow__node pi-flow__node--pi">
+                            <span class="pi-flow__eyebrow">01 · Pi session</span>
+                            <h3>Choose a workflow</h3>
+                            <div class="pi-flow__commands">
+                                <code>/op:tasks</code>
+                                <code>/op:use</code>
+                                <code>/op:claim</code>
+                                <code>/op:evidence</code>
+                            </div>
+                        </article>
+                        <div class="pi-flow__arrow" aria-hidden="true"><span>command</span></div>
+                        <article class="pi-flow__node">
+                            <span class="pi-flow__eyebrow">02 · Pi extension</span>
+                            <h3>Route and confirm</h3>
+                            <ul>
+                                <li>Calls the supported Operator workflow</li>
+                                <li>Requests confirmation before writes</li>
+                                <li>Returns a readable result to Pi</li>
+                            </ul>
+                        </article>
+                        <div class="pi-flow__arrow" aria-hidden="true"><span>local CLI</span></div>
+                        <article class="pi-flow__node pi-flow__node--ledger">
+                            <span class="pi-flow__eyebrow">03 · Operator</span>
+                            <h3>Record the work</h3>
+                            <p>The separate control plane manages task, claim, evidence, and verification records in its local ledger.</p>
+                        </article>
+                    </div>
+                    <p class="pi-flow__rule">Read-only inspection is distinct from confirmed, state-changing actions.</p>
+                    <figcaption id="flow-caption">Conceptual workflow diagram, not a screenshot of a live Pi session.</figcaption>
+                </figure>
+            </section>
             <section class="section" aria-labelledby="what-it-is">
                 <h2 id="what-it-is">What it is</h2>
                 <p>The Pi Operator extension adds slash-command workflows for working with Operator from Pi. It connects to a separate Operator checkout and local ledger; it does not bundle the Python control plane or ledger data.</p>

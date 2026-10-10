@@ -370,6 +370,119 @@ body {
     letter-spacing: 0.2px;
 }
 
+.pi-flow {
+    margin-top: 1.25rem;
+}
+
+.pi-flow__track {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 4.5rem minmax(0, 1fr) 4.5rem minmax(0, 1fr);
+    align-items: stretch;
+    gap: 0.55rem;
+}
+
+.pi-flow__node {
+    min-width: 0;
+    padding: 1.1rem;
+    border: 1px solid var(--border);
+    background: #fff8ee;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.pi-flow__node--pi {
+    color: var(--paper);
+    background: var(--ink);
+}
+
+.pi-flow__node--pi h3 {
+    color: var(--paper);
+}
+
+.pi-flow__node--ledger {
+    background: var(--highlight);
+}
+
+.pi-flow__eyebrow {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.pi-flow__node--pi .pi-flow__eyebrow {
+    color: #e7dccb;
+}
+
+.pi-flow__node h3 {
+    font-size: 1.12rem;
+    margin-bottom: 0.65rem;
+}
+
+.pi-flow__node p,
+.pi-flow__node li {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.pi-flow__node ul {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.pi-flow__commands {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.pi-flow__commands code {
+    padding: 0.35rem 0.45rem;
+    border: 1px solid var(--border);
+    background: #fff8ee;
+    color: var(--ink);
+    font-size: 0.76rem;
+}
+
+.pi-flow__arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    text-align: center;
+}
+
+.pi-flow__arrow::before {
+    content: "→";
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.pi-flow__arrow span {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.pi-flow__rule {
+    margin: 1rem 0 0.5rem !important;
+    padding: 0.75rem;
+    border: 1px dashed var(--accent);
+    background: var(--highlight);
+    text-align: center;
+}
+
+.pi-flow figcaption {
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
 .back-link {
     display: inline-block;
     margin-top: 1rem;
@@ -402,6 +515,18 @@ body {
 @media (max-width: 720px) {
     .grid.evidence-grid {
         grid-template-columns: 1fr;
+    }
+
+    .pi-flow__track {
+        grid-template-columns: 1fr;
+    }
+
+    .pi-flow__arrow {
+        min-height: 2.5rem;
+    }
+
+    .pi-flow__arrow::before {
+        content: "↓";
     }
 
     .page {
