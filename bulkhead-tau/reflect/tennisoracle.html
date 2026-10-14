@@ -1,1211 +1,696 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>TennisOracle Owner's Manual</title>
-  <style>
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-    @media print {
-      html {
-        background-color: white;
-      }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
-      }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-      }
-      h2, h3, h4 {
-        page-break-after: avoid;
-      }
-    }
-    p {
-      margin: 1em 0;
-    }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    code {
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      border: none;
-      border-top: 1px solid #1a1a1a;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    /* The extra [class] is a hack that increases specificity enough to
-       override a similar rule in reveal.js */
-    ul.task-list[class]{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      font-size: inherit;
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
-    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-  </style>
-  <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";mermaid.initialize({startOnLoad:true});</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TennisOracle Shot Capture — Owner’s Manual</title>
   <style>body{max-width:52em;margin:2em auto;font-family:sans-serif;line-height:1.5;padding:0 1em}pre.mermaid{background:none;text-align:center}</style>
   <link rel="stylesheet" href="bt-manual.css" />
   <script type="module" src="bt-manual.js"></script>
 </head>
 <body>
-<header id="title-block-header">
-<h1 class="title">TennisOracle Owner's Manual</h1>
-</header>
-<h1 id="owners-manual-for-blue-aztennisoracle">Owner’s Manual for
-blue-az/TennisOracle</h1>
-<p><em>5 generated chapters from the reviewed repository
-snapshot</em></p>
+<header id="title-block-header"><h1 class="title">TennisOracle Shot Capture — Owner’s Manual</h1></header>
+<h1>Owner&#39;s Manual for TennisOracle Shot Capture</h1>
+<p><em>6 generated chapters from the reviewed repository snapshot</em></p>
 <blockquote>
-<p>Source:
-blue-az/TennisOracle:main@692fca9ea9def57319368f04ec9a190603d040fa</p>
+<p>Source: blue-az/TennisOracle:main@37b914d212a7dbdec3d4dff11a1b97eac7dfd3cd</p>
 </blockquote>
-<hr />
-<h2 id="review-notes">Review Notes</h2>
-<p>This lean review edition removes the repeated Reflect attention and
-owner-decision cards from the chapters and consolidates them into one
-appendix. The source package pinned <code>blue-az/TennisOracle</code> at
-<code>692fca9ea9def57319368f04ec9a190603d040fa</code>; one backend
-startup fix was made after the scan and pushed as
-<code>37b914d</code>.</p>
-<p>Verification boundary: the Swift/watchOS app was reviewed by reading
-source only. It was not built or run on this Linux machine. Watch
-runtime behavior still needs on-device confirmation before any
-Swift-side change is trusted.</p>
-<h2 id="the-tennis-oracle-session-loop">The Tennis Oracle Session
-Loop</h2>
-<p><em>Tennis Oracle matters to the owner because it is one live session
-loop, not three separate apps. The watch captures the player’s motion
-and live feedback, the iPhone acts as the relay gateway, and the backend
-decides whether a sensor batch becomes a shot event and stores that
-result.</em></p>
-<h3 id="one-minute-snapshot">One-Minute Snapshot</h3>
-<p>Tennis Oracle matters to the owner because it is one live session
-loop, not three separate apps. The watch captures the player’s motion
-and live feedback, the iPhone acts as the relay gateway, and the backend
-decides whether a sensor batch becomes a shot event and stores that
-result. The current manual boundary is narrower than the full operating
-environment, so this chapter stays with the observed live loop and does
-not assume broader dashboards, coaching workflows, or external services
-that were not confirmed.</p>
-<h3 id="what-you-should-be-able-to-explain">What You Should Be Able To
-Explain</h3>
+<hr>
+<h2>What TennisOracle Shot Capture Is For</h2>
+<p><em>This matters because it is the part of the product that turns a live tennis session into local shot history the owner can judge. TennisOracle Shot Capture is a local three-device system, not a cloud service: the player captures on the Watch, the operator keeps the iPhone relay and Mac backend running, and the Mac side turns incoming shot batches into local session history and feedback.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>This matters because it is the part of the product that turns a live tennis session into local shot history the owner can judge. TennisOracle Shot Capture is a local three-device system, not a cloud service: the player captures on the Watch, the operator keeps the iPhone relay and Mac backend running, and the Mac side turns incoming shot batches into local session history and feedback. The owner should read it as a local-first research system whose core path is visible on the Watch and whose secondary boundaries are permissions, local history, and the documented Zepp calibration path. The supplied evidence does not settle whether the product is mainly for live feedback, post-session logging, calibration, or a mix, so this chapter keeps that decision open.</p>
+<h3>What You Should Be Able To Explain</h3>
 <ul>
-<li>Explain Tennis Oracle as one live session loop from wrist capture to
-returned shot feedback.</li>
-<li>Separate what the player does on the watch from what the operator
-keeps running on the phone and backend.</li>
-<li>Recognize which session state is live only, which state is stored,
-and which state can look current even when it is stale.</li>
-<li>See the unresolved risks that can change session continuity,
-recovery, or trust.</li>
+<li>See the product as a local Watch-to-iPhone-to-Mac capture chain, not a cloud platform.</li>
+<li>Separate the player, operator, and owner roles.</li>
+<li>Recognize the Watch capture surface, iPhone relay surface, and Mac backend session surface.</li>
+<li>Notice the highest-risk boundaries before deciding what to trust or change.</li>
+<li>Keep Zepp, permissions, and history in their secondary place.</li>
 </ul>
-<h3 id="what-this-product-is-from-the-owners-point-of-view">What this
-product is, from the owner’s point of view</h3>
-<p>Tennis Oracle is a live tennis capture loop. The player wears the
-watch and starts capture there. The phone is not the analysis surface;
-it is the gateway that keeps the watch connected to the Mac backend. The
-backend is where the sensor batch is judged and where a shot event is
-produced.</p>
-<p>That division matters to the owner because each surface carries a
-different responsibility. The watch owns the player’s immediate
-experience. The phone owns relay continuity. The backend owns detection
-and session state. The chapter on watch capture goes deeper on the
-player’s on-wrist controls and outputs, the iPhone chapter goes deeper
-on relay posture, the detection chapter goes deeper on the shot
-decision, and the continuity chapter takes the storage and scope
-boundaries.</p>
+<h3>Mental Model</h3>
+<p>The simplest way to picture the product is as a chain with three roles around it. The player wears the Watch and uses the product&#39;s native capture modes, strokes and serve. The operator keeps the iPhone relay and Mac backend alive. The owner is the reader who has to decide what the product is mainly for, because the evidence does not settle whether live feedback, post-session logging, calibration research, or a mix is the true center.</p>
+<p>The Watch is the front door of the product. The iPhone is a relay, not the main logic. The Mac backend is where local history and shot records become visible. Permissions, local history, and Zepp linkage matter because they can block or reinterpret the core path, but they do not replace it.</p>
 <blockquote>
-<p><strong>Figure:</strong> The owner should read the phone as a relay
-bridge, not a place where shot logic happens. That separation makes the
-operating roles clear: the watch captures, the backend judges, and the
-phone keeps the path moving.</p>
+<p><strong>Figure:</strong> The product has a clear operating chain, but the owner question sits above it. That means the manual can explain who handles capture, relay, and history without pretending the product&#39;s main purpose has already been settled.</p>
 </blockquote>
-<pre class="mermaid">
-flowchart LR
-  W[Watch\nplayer capture console]
-  P[Phone\nrelay gateway]
-  B[Backend\nshot judgment]
-  S[Live session\ncurrent state]
-  W -->|live batches| P
-  P -->|forwards batches| B
-  B -->|returns shot feedback| W
-  B -->|updates current state| S
-</pre>
-<p>The watch sends live batches to the phone, the phone forwards them to
-the backend, and the backend returns shot feedback while maintaining the
-live session state. The phone sits in the middle as relay only; it does
-not own shot judgment.</p>
-<h3 id="how-a-live-session-moves-through-the-loop">How a live session
-moves through the loop</h3>
-<p>A live session begins on the watch. While idle, the watch exposes
-mode selection and a single start and stop control. Starting capture
-turns on recording, clears the buffered samples, starts the tennis
-workout stack, starts motion capture, and tries heart-rate sampling only
-when Apple health data is available.</p>
-<p>The watch packages a sensor batch with samples, timestamp, and mode,
-hands that batch to the phone gateway, and then clears its local buffer.
-The phone gateway shows whether the Mac backend is connected, forwards
-batches to the backend, and sends shot events back toward the watch. On
-the backend, the batch is accepted, the detector applies its thresholds,
-only literal serve is treated as special, and the detected shot is
-written into the current session and emitted back into the loop.</p>
-<p>This is a live path, not a broad product tour. The owner should read
-it as a session loop with clear roles, not as a generic analytics
-stack.</p>
+<pre class="mermaid"><code>flowchart TD
+  O[Owner]
+  P[Player]
+  R[Operator]
+  W[Watch capture]
+  I[iPhone relay]
+  M[Mac history]
+  H[Local shot history]
+  O -.-&gt;|decides what the product is mainly for| C[Capture chain]
+  P --&gt;|captures shots on| W
+  R --&gt;|keeps alive| I
+  W --&gt;|sends batches through| I
+  I --&gt;|forwards batches to| M
+  M --&gt;|turns batches into| H
+</code></pre>
+<p>The owner sits above a three-device capture chain. The player captures shots on the Watch, the operator keeps the iPhone relay alive, and the Mac turns incoming batches into local shot history. The consequence is that the product is understandable as a local chain, while the owner still has to decide what outcome the product is primarily for.</p>
+<h3>How It Works</h3>
+<p>A supported run starts on the Watch. The player chooses a mode, starts capture, and the Watch begins collecting motion and producing live feedback. That data goes to the iPhone relay, which shows connection state and forwards batches over a fixed local network path to the Mac backend. The Mac backend turns incoming batches into shot records and session feedback.</p>
+<p>That chain is fragile in the places an owner cares about. Supported capture depends on the Watch&#39;s health and workout permissions, and the source does not establish a graceful denial path. If the relay drops, the current batch can be lost rather than queued. If the backend reconnects, the live session view starts fresh instead of recovering durable history. The readiness number shown back to the player is derived feedback, not a measured physiology signal.</p>
 <blockquote>
-<p><strong>Figure:</strong> A session only becomes meaningful after the
-batch clears the relay and the backend accepts it as a shot. If any link
-in that path breaks, the loop keeps capturing but the feedback path is
-interrupted.</p>
+<p><strong>Figure:</strong> The intended chain is not the same as the protected boundary. Because the Mac side is reachable beyond the Watch and iPhone pair, network reachability matters before the session history should be treated as trusted.</p>
 </blockquote>
-<pre class="mermaid">
-flowchart LR
-  A[Start capture on the watch]
-  B[Watch groups motion into a batch]
-  C[Phone relays the batch]
-  D{Backend treats it as a shot?}
-  E[Shot is stored in the live session]
-  F[Shot feedback returns to the watch]
-  A --> B --> C --> D
-  D -- yes --> E --> F --> B
-  D -- no --> B
-</pre>
-<p>The watch starts capture, groups motion into a batch, and hands it to
-the phone. The phone relays the batch to the backend. The backend
-decides whether it counts as a shot, stores it when it does, and returns
-feedback to the watch. If the batch is not accepted, the loop simply
-continues capturing.</p>
-<h3 id="what-is-confirmed-in-the-current-code-backed-evidence">What is
-confirmed in the current code-backed evidence</h3>
-<ul>
-<li>The watch is the live capture console. It exposes STROKES and SERVE
-mode selection only while idle, then shows live status and shot readouts
-during capture.</li>
-<li>Starting capture sets the recording state, clears buffered samples,
-starts motion capture, and attempts heart-rate sampling only when health
-data is available.</li>
-<li>Stopping capture turns off recording, stops motion updates, and
-stops the workout, but it does not reset the published shot
-metrics.</li>
-<li>The iPhone is a gateway. It shows connection state, forwards watch
-batches to the backend, and relays shot events back to the watch.</li>
-<li>Relay is manual rather than self-healing. A lost connection stays
-lost until the operator reconnects.</li>
-<li>The backend keeps a live session view in memory and writes
-detections during that session. The latest-session read returns that
-live view rather than a durable history feed.</li>
-<li>Only literal serve is special in detection. Any other mode value
-falls back to the strokes threshold.</li>
-<li>The watch capture stack depends on Apple workout and runtime
-services, but the permission-failure path is still not proven.</li>
-</ul>
-<blockquote>
-<p><strong>Figure:</strong> Stopping capture is operationally final but
-visually incomplete. The watch can still show the previous shot after
-recording ends, so a stopped screen must not be treated as live
-feedback.</p>
-</blockquote>
-<pre class="mermaid">
-stateDiagram-v2
-  [*] --> Ready
-  Ready --> Live: start capture
-  Live --> Stopped: stop capture
-  Stopped --> Ready: new capture begins
-  note right of Stopped : Capture is off, but the last shot values can still be visible.
-</pre>
-<p>The state diagram moves from Ready to Live when capture starts, then
-to Stopped when capture stops, and back to Ready when a new capture
-begins. The stopped state keeps the last shot values visible, which is
-why the screen can look live even though capture is off.</p>
-<blockquote>
-<p><strong>Figure:</strong> The owner should not treat the
-latest-session view as history. It reads live in-memory state, while
-shot records are stored separately, so the visible current session is
-not a durable log.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-  Q[Latest session view]
-  subgraph B[Backend side]
-    M[Live session memory]
-    R[Stored shot records]
+<pre class="mermaid"><code>flowchart LR
+  subgraph T[ Intended path ]
+    W[Watch]
+    I[iPhone relay]
+    M[Mac backend]
+    W --&gt; I --&gt; M
   end
-  Q -->|reads current state| M
-  M -->|writes detected shots| R
-</pre>
-<p>The diagram separates the latest-session view from the backend side.
-The latest-session view reads the live in-memory session, and the
-backend writes detected shots into stored records. That means the
-latest-session path shows current state, not a historical archive.</p>
-<h3 id="what-this-loop-does-well">What this loop does well</h3>
-<p>The product has a clean owner-facing shape: the player starts capture
-on the watch, the operator keeps the gateway alive on the phone, and the
-backend turns sensor motion into a shot result. That split makes the
-live session easier to explain and easier to audit.</p>
-<p>The loop also keeps the meaningful state visible. The watch shows the
-player immediate feedback, the phone shows relay status, and the backend
-keeps a current session view that can be read back during play. The
-downside is that some of that state is live only, so the manual must be
-precise about what is current, what is stored, and what is merely still
-on screen.</p>
-<h2 id="player-capture-and-on-wrist-feedback">Player Capture and
-On-Wrist Feedback</h2>
-<p><em>This chapter is the player’s live on-wrist console: choose
-strokes or serve while idle, start and stop a Tennis Oracle session on
-the watch, and see live status, shot speed, clean contact, readiness,
-and heart rate while play is active. It is built from the code, so it
-describes what the product does today, not a broader coaching workflow
-you still need to confirm.</em></p>
-<h3 id="one-minute-snapshot-1">One-Minute Snapshot</h3>
-<p>This chapter is the player’s live on-wrist console: choose strokes or
-serve while idle, start and stop a Tennis Oracle session on the watch,
-and see live status, shot speed, clean contact, readiness, and heart
-rate while play is active. It is built from the code, so it describes
-what the product does today, not a broader coaching workflow you still
-need to confirm. Capture continuity also depends on Apple workout and
-runtime services, and stopping capture does not clear the last shot
-values, so a finished session can still look current until new data
-replaces it.</p>
-<h3 id="what-you-should-be-able-to-explain-1">What You Should Be Able To
-Explain</h3>
+  X[Other reachable client]
+  X -.-&gt;|can also reach the Mac side| M
+</code></pre>
+<p>The intended path runs from the Watch to the iPhone relay and then to the Mac backend. A separate reachable client can also reach the Mac side, so the real boundary is not the device chain by itself. The consequence is that the owner should treat network reachability as part of trust, not just device identity.</p>
+<h3>Verified Facts</h3>
 <ul>
-<li>Explain why the watch is the live capture console and what the
-player can do from it.</li>
-<li>Describe the exact start and stop behavior, including idle-only mode
-selection and what remains visible after stop.</li>
-<li>State which live cues the player sees while the session is
-active.</li>
-<li>Explain the continuity dependency on Apple workout and runtime
-services, and the meaning of the serve-versus-strokes mode rule.</li>
+<li>The Watch is the primary player-facing surface, and it shows mode choice, start/stop control, live feedback, and haptics.</li>
+<li>Supported capture depends on the Watch&#39;s health and workout permissions, and denied-permission behavior is not established here.</li>
+<li>The iPhone app acts as a fixed local-network relay and shows backend connection state plus batch count.</li>
+<li>Failed relay sends are not queued, so a broken link can lose a batch.</li>
+<li>The Mac backend accepts any reachable client on its live connection path.</li>
+<li>Readiness is synthetic feedback in this path.</li>
+<li>Shot persistence is not idempotent.</li>
+<li>Reconnecting creates a fresh live session view instead of durable history.</li>
+<li>Zepp is documented here as a manual calibration workflow, but live first-party support is unverified in this snapshot.</li>
+<li>Session tags drift between UTC runtime behavior and local-date linkage notes.</li>
 </ul>
-<h3 id="the-watch-as-a-live-capture-console">The Watch As A Live Capture
-Console</h3>
-<h2 id="live-console-not-a-record">Live Console, Not A Record</h2>
-<p>Think of the watch as the player’s on-court console for the current
-Tennis Oracle session. Its job is to let the player begin capture, end
-it, and choose the mode that shapes what the live session means. That
-framing matters because the watch is not presenting a separate coaching
-workspace or a retrospective dashboard; it is the surface that stays
-attached to the session while play is happening. In practice, that means
-the owner should expect the watch to answer a simple question: what is
-this session doing right now?</p>
-<h2 id="live-readouts-mean-the-current-session">Live Readouts Mean The
-Current Session</h2>
-<p>The readouts on the watch are live feedback from the active session.
-Shot speed, clean contact, readiness, heart rate, and the session status
-are useful because they give the player immediate state while the ball
-is still in play. They are not a history view, and they are not trying
-to explain everything after the fact. One practical consequence is that
-the last shot values can remain visible even after capture stops, so the
-display can still look current even though the session is no longer
-recording new data. That is a console behavior, not a report
-behavior.</p>
-<p>Example: if a player ends a rally, glances at the watch, and sees the
-last shot speed and readiness number still on screen, the correct
-reading is “this was the last live result,” not “the watch is still
-actively measuring.” The manual should keep that distinction clear so an
-owner does not mistake persistent values for an ongoing recording.</p>
-<h2 id="continuity-depends-on-apple-services">Continuity Depends On
-Apple Services</h2>
-<p>Capture continuity is also not just a question of whether the player
-pressed the button. The watch relies on Apple workout and runtime
-services underneath the control surface, which means the session is
-supported by the watch operating environment rather than by the button
-alone. The code evidence shows that the watch requests HealthKit access
-during setup, starts an extended runtime session before the workout
-session, and invalidates that runtime support when capture stops. That
-makes the live console more durable than a simple timer, but it also
-means the continuity story has an external dependency the owner should
-not ignore.</p>
-<p>The boundary is important: the reviewed evidence does not establish
-how the watch behaves if HealthKit access is absent, denied, or revoked.
-So the right mental model is “workout-backed live capture with
-unresolved permission-failure behavior,” not “capture always succeeds
-once the player taps start.” If continuity matters operationally, that
-dependency belongs in planning, testing, and release readiness, not just
-in the UI story.</p>
-<h2 id="scope-of-this-chapter">Scope Of This Chapter</h2>
-<p>This section stays inside what the reviewed code proves about the
-watch console today. It does not expand into a broader coaching workflow
-or pretend the watch is doing more than the evidence shows. The safe
-owner view is narrow and practical: the watch is the player’s live
-capture surface, its readouts reflect the active session, and its
-persistence depends on Apple watch services underneath. Anything beyond
-that needs separate evidence before it can be promised.</p>
-<h3 id="start-stop-and-mode-rules">Start, Stop, And Mode Rules</h3>
-<p>The watch behaves like a live capture console, but the important part
-is not just that there is a start and stop button. The mechanics are
-stateful: mode selection is only available before recording begins,
-starting capture flips the watch into an active session, and stopping
-capture shuts the session down without fully wiping the last readouts.
-That means the player is not working with a fresh screen every time they
-stop; they are working with a live session state that has to be read in
-context.</p>
+<h3>Strengths</h3>
+<p>What is genuinely strong here is the shape of the system. It is easy to name the core chain, easy to separate the player and operator roles, and easy to see that the Watch is the main surface rather than a hidden backend concern. The iPhone gives the operator connection state instead of burying the relay. The documented Zepp path also stays visibly separate, which helps the owner keep calibration from swallowing the capture story.</p>
+<p>Those strengths do not erase the trust boundary or recovery gaps. They just mean the product is understandable at a glance, which is a real advantage when the owner has to decide what to keep, what to fix, and what to verify next.</p>
+<h3>Attention Cards</h3>
+<h4>⚠ Open backend access  <em>(attention · critical)</em></h4>
+<p><strong>What happens:</strong> The Mac backend will accept any reachable client, not just the Watch and iPhone pair.</p>
+<p><strong>Why it matters:</strong> If that network path is reachable outside the intended devices, shot records and session events are not protected by the boundary shown in this snapshot.</p>
+<p><strong>What to do:</strong> Decide whether the backend needs device binding or another gate before you treat its session history as trusted.</p>
+<p><strong>Revisit when:</strong> When product frame behavior or related owner decisions change.</p>
+<h4>⚠ Dropped relay can lose shots  <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> A relay failure can discard a batch instead of saving it for resend.</p>
+<p><strong>Why it matters:</strong> A short network failure can turn into missing capture data, not just a temporary pause.</p>
+<p><strong>What to do:</strong> Choose whether unsent batches should be buffered and replayed, or document the loss plainly for operators.</p>
+<p><strong>Revisit when:</strong> When product frame behavior or related owner decisions change.</p>
+<h4>⚠ Reconnect starts a fresh live session  <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> After reconnect, the backend shows a new live session view rather than durable history.</p>
+<p><strong>Why it matters:</strong> An interrupted run may not read back as one continuous session, which affects how the owner interprets recovery.</p>
+<p><strong>What to do:</strong> Decide whether reconnect should resume the prior session or intentionally create a new one, then make the manual match that choice.</p>
+<p><strong>Revisit when:</strong> When product frame behavior or related owner decisions change.</p>
+<h4>⚠ Day boundary drifts  <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The runtime uses UTC for session tags, while the linkage notes expect local date.</p>
+<p><strong>Why it matters:</strong> Crossing late evening sessions or day edges can split or mislabel history.</p>
+<p><strong>What to do:</strong> Pick one day-boundary rule for session tags and linked sessions, then align the runtime and the manual to it.</p>
+<p><strong>Revisit when:</strong> When product frame behavior or related owner decisions change.</p>
+<h3>Owner Decisions</h3>
+<h4>⚖ Which outcome should lead the manual: live feedback, post-session shot logging, calibration research, or a combination?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The opening chapter and the later chapter order change if one of those is primary.</p>
+<p><strong>Revisit when:</strong> Before changing the related product frame behavior.</p>
+<h4>⚖ Is the Mac backend meant to run on one fixed lab machine, a configurable local network target, or another local topology?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The iPhone relay currently reads like a fixed local-network bridge, and setup guidance depends on whether that stays true.</p>
+<p><strong>Revisit when:</strong> Before changing the related product frame behavior.</p>
+<h4>⚖ Should Zepp be presented as a supported operator workflow or only as documented calibration material?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The snapshot proves a documented manual workflow, but not a live first-party surface.</p>
+<p><strong>Revisit when:</strong> Before changing the related product frame behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>I reviewed the Watch capture surface, the iPhone relay surface, the Mac backend session path, the Watch health and workout permission setup, the connection-state behavior, the session write and readback behavior, and the documented Zepp calibration workflow.</li>
+<li>I also reviewed the session-date mismatch between runtime behavior and the linkage notes, because it changes how local history is interpreted.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>I did not verify denied-permission runtime behavior, so the exact player experience when authorization is refused remains open.</li>
+<li>I did not verify whether Zepp is still a live supported path or only documented calibration material.</li>
+<li>I did not verify a broader deployment model beyond the fixed local-network snapshot shown here.</li>
+</ul>
+<p>Re-run the Watch-to-iPhone-to-Mac flow on the intended devices, then check three things in the real session: whether missing permissions block capture the way you expect, whether a dropped relay loses data or preserves it for resend, and whether reconnect and day boundaries behave the way the manual says they should. If Zepp still matters, verify whether it is a live operator path or only a documented calibration procedure.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+<hr>
+<h2>Running a Capture Session</h2>
+<p><em>The capture session is one local chain: the player starts on the Apple Watch, chooses strokes or serve, and stops the run from the Watch while the iPhone forwards watch batches to the Mac backend. The player sees live speed, readiness, contact, and haptic feedback during the run, so this chapter is about the felt session loop, not three separate apps.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>The capture session is one local chain: the player starts on the Apple Watch, chooses strokes or serve, and stops the run from the Watch while the iPhone forwards watch batches to the Mac backend. The player sees live speed, readiness, contact, and haptic feedback during the run, so this chapter is about the felt session loop, not three separate apps.</p>
+<p>Some results may persist locally for later review, but the reviewed evidence does not settle whether the product’s primary supported outcome is live feedback, post-session logging, calibration work, or some mix. Later chapters own setup, signal meaning, history, and recovery.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should read the session as one local loop: the Watch starts and stops capture, the iPhone carries batches, the Mac turns them into shot feedback, and the live feedback comes back while the same run is still active.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  P[Player on Watch]
+  I[iPhone relay]
+  M[Shot feedback on Mac]
+  L[Live feedback on Watch]
+  P --&gt; I --&gt; M --&gt; L --&gt; P
+</code></pre>
+<p>The diagram shows the player on the Watch starting the run, the iPhone relaying batches, the Mac turning those batches into shot feedback, and live feedback returning to the Watch. The consequence is that the session should be understood as one connected local loop, not as three separate products.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>Understand the session as one continuous Watch-to-iPhone-to-Mac chain.</li>
+<li>Know what the player does on the Watch and what feedback comes back during a run.</li>
+<li>Recognize which outputs are operational feedback and which still need owner validation.</li>
+<li>See the main risks that can lose batches, duplicate shots, or reset live-session state.</li>
+<li>Know which adjacent chapters own setup, signal meaning, history, and recovery.</li>
+</ul>
+<h3>Mental Model</h3>
+<p>This chapter is the owner-facing picture of a single session. The player is not moving between unrelated tools; they start capture on the Watch, the iPhone acts as the relay surface, and the Mac backend turns incoming batches into shot feedback. That is why the owner should read the session as one local chain and not as three independent products.</p>
+<p>Modes matter here because the Watch lets the player choose between strokes and serve before starting the run. The Watch also shows live speed, readiness, contact, and haptic feedback, but the meaning of those numbers still needs care: readiness is derived feedback, not a validated performance claim. Permission and network prerequisites belong in the setup chapter; this one stays on the runtime loop.</p>
+<h3>How It Works</h3>
+<p>A normal session begins on the Watch. The player selects strokes or serve, then starts Oracle. The Watch collects motion and workout data, shows the live session feedback, and can stop the run from the same surface.</p>
+<p>The iPhone is the relay surface. It shows backend connection status and batch count, and it forwards watch batch messages to the Mac over a fixed local-network websocket. If the connection drops, failed sends are not queued; the operator has to recover the relay instead of expecting automatic replay.</p>
+<p>On the Mac, incoming batches become shot feedback events and local shot records. That output is useful for the session story, but it is not the same as a validated performance measure. A reconnect also does not pick up a durable historical view; it starts a fresh live session state.</p>
+<h3>Verified Facts</h3>
+<ul>
+<li>The Watch is the primary player-facing capture surface, with mode selection, Start Oracle and STOP controls, live feedback, and haptics.</li>
+<li>Supported capture depends on HealthKit and workout entitlements and on authorization requests on the Watch.</li>
+<li>The iPhone acts as a fixed local-network relay with visible connection state and reconnect controls.</li>
+<li>Failed relay sends are not queued, so a dropped connection can lose a batch instead of replaying it later.</li>
+<li>The Mac backend accepts reachable websocket clients, emits shot events, and persists local shot records.</li>
+<li>Readiness is synthetic feedback in this path, and reconnects recreate the live session object rather than returning durable history.</li>
+<li>Zepp appears as documented manual calibration material, but active first-party support is not established in the reviewed snapshot.</li>
+</ul>
+<blockquote>
+<p><strong>Figure:</strong> Continuity is fragile at this boundary: a dropped relay batch is gone, a reconnect opens a fresh live session, and any reachable client can still reach the Mac path unless something else blocks it.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  W[Watch batches]
+  I[iPhone relay]
+  M[Mac shot path]
+  C[Any reachable client]
+  R[Reconnect]
+  F[Fresh live session]
+  X[Lost batch]
+  W --&gt; I --&gt; M
+  I -. dropped relay .-&gt; X
+  C --&gt; M
+  M --&gt; R --&gt; F
+</code></pre>
+<p>The diagram shows Watch batches going to the iPhone relay and then to the Mac shot path. It also shows a dropped relay leading to a lost batch, any reachable client reaching the Mac path, and a reconnect leading to a fresh live session. The consequence is that a relay break can erase work and the Mac entry point can weaken trust in session records.</p>
+<blockquote>
+<p><strong>Figure:</strong> Owners should treat Zepp as calibration-only evidence in this snapshot; the reviewed material does not justify presenting a confirmed live first-party Zepp surface.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  Z[Zepp in this snapshot]
+  D[Documented calibration workflow]
+  L[Live first-party surface]
+  S[Shown in the reviewed notes]
+  U[Not established here]
+  Z --&gt; D
+  Z --&gt; L
+  D --&gt; S
+  L --&gt; U
+</code></pre>
+<p>The diagram compares two readings of Zepp: a documented calibration workflow that appears in the reviewed material, and a live first-party surface that is not established here. The consequence is that the manual should stay calibration-only until a live path is confirmed.</p>
+<h3>Strengths</h3>
+<p>The product gives the owner a clear, local story to explain: one capture screen on the Watch, one relay surface on the iPhone, and one detection surface on the Mac. That makes the session easier to describe to a player or operator without teaching implementation details.</p>
+<p>The session also gives immediate visible feedback. The player can see mode choice, live metrics, and haptics on the Watch, while the iPhone shows relay state. That clarity is useful, even though the reviewed evidence also shows that some numbers are derived feedback and that the live session can still lose continuity when connectivity drops or the backend reconnects.</p>
+<h3>Attention Cards</h3>
+<h4>⚠ Shot persistence can write duplicates.  <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> Shot writes are not idempotent, so repeated emission or an alternate path can create duplicate rows.</p>
+<p><strong>Why it matters:</strong> Later review can overstate how many shots happened in a session, which weakens trust in the history.</p>
+<p><strong>What to do:</strong> Add a dedupe rule or a replay-safe write policy before presenting shot counts as durable history.</p>
+<p><strong>Revisit when:</strong> When capture session behavior or related owner decisions change.</p>
+<h4>⚠ Readiness is operational feedback, not a measured metric.  <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The readiness number in the shot path is generated from a synthetic input, even though the Watch presents it like a live score.</p>
+<p><strong>Why it matters:</strong> Owners could mistake a derived hint for a validated performance measure and make the wrong product or coaching decision.</p>
+<p><strong>What to do:</strong> Label readiness as derived session feedback unless calibration validation is added.</p>
+<p><strong>Revisit when:</strong> When capture session behavior or related owner decisions change.</p>
+<h3>Owner Decisions</h3>
+<h4>⚖ What should the player see when workout or heart-rate permission is denied on device?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The reviewed evidence confirms the permission boundary, but not the denial experience, so the manual cannot promise a specific failure state yet.</p>
+<p><strong>Revisit when:</strong> Before changing the related capture session behavior.</p>
+<h4>⚖ Should session tags normalize to local date or should the UTC/local split be documented explicitly?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The day boundary affects how later session history and linkage are read, especially near midnight.</p>
+<p><strong>Revisit when:</strong> Before changing the related capture session behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>The player-facing Watch capture surface, the iPhone relay surface, and the Mac shot-detection path were reviewed together to confirm the live session arc.</li>
+<li>Watch permission and workout entitlements were reviewed to confirm the supported-session boundary.</li>
+<li>Relay-loss behavior, shot persistence, reconnect behavior, and readiness output were reviewed to understand what can be lost, duplicated, or misread during a run.</li>
+<li>Documentation-backed Zepp linkage material was reviewed only as a provisional operator procedure.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>The exact player-visible behavior when workout or heart-rate permission is denied.</li>
+<li>A live first-party Zepp integration surface.</li>
+<li>The final product emphasis between live feedback, post-session logging, calibration work, or a mix.</li>
+</ul>
+<p>Run a normal session in a runtime build, then repeat the run with a relay loss and a denied-permission launch. Compare what the player sees on the Watch, what the iPhone reports about connection state, and what the Mac keeps after reconnect. Treat Zepp as supported only after a live path is confirmed.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+<hr>
+<h2>Setup and Session Preconditions</h2>
+<p><em>This chapter is about the three-device setup your product needs before a session can reasonably work: the Apple Watch capture app, the iPhone gateway app, and the Mac backend. The Watch asks for workout and heart-rate permission, the iPhone relays batches over a fixed local-network connection, and the Mac side receives and stores the shots.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>This chapter is about the three-device setup your product needs before a session can reasonably work: the Apple Watch capture app, the iPhone gateway app, and the Mac backend. The Watch asks for workout and heart-rate permission, the iPhone relays batches over a fixed local-network connection, and the Mac side receives and stores the shots. This is built from the code, so it shows what your product does today, not what you mean it to be, and that part is yours to confirm.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>Explain the three-device readiness chain and why the Watch, iPhone, and Mac all matter before a supported session.</li>
+<li>Explain which Watch permissions are blocking setup, not just optional background settings.</li>
+<li>Explain what the iPhone gateway is doing, including the fixed local network address and manual reconnect.</li>
+<li>Explain which setup failures can drop data or leave the backend boundary too loose.</li>
+</ul>
+<h3>Setup Is One Local Chain</h3>
+<h1>Setup Is One Local Chain</h1>
+<h2>One chain, three roles</h2>
+<p>TennisOracle Shot Capture only makes sense as one local chain. The Watch is where capture begins, the iPhone is the relay point, and the Mac backend is where session data lands. That matters because readiness is not something you can judge by looking at just one device. A Watch that opens cleanly but cannot hand off data is not enough, and an iPhone that is ready to relay is not enough if the Mac side is unreachable. The chain is the unit of support, so this chapter treats all three surfaces as one precondition rather than as independent apps.</p>
+<p>For the owner, the consequence is simple but important: the question is not whether each device merely exists, but whether they are all present in the same working arrangement at the same time. If any link is missing, the session is not yet a reasonable expectation. A practical example is a player who has the Watch on and the capture view open while the iPhone is nearby but the Mac is asleep or off the reachable network. In that case, the wrist device is not the whole story; the chain is still incomplete.</p>
+<h2>What local-first means here</h2>
+<p>The reviewed snapshot points to a local-first operating model. The iPhone gateway is configured around a fixed local-network backend address, which means the operator&#39;s first question is whether the nearby devices can see one another on the same local network, not whether a remote account has been entered. That changes readiness from a cloud-style login problem into a proximity-and-reachability problem. Power state, Wi-Fi state, and whether the Mac backend is present on the expected local network become part of the setup story.</p>
+<p>This is the place where the manual should stay precise about scope. The snapshot shows a local-network operating path; it does not establish the full deployment shape of the product, and it does not prove that no other access path exists elsewhere. So the safe reading is narrower: the supported setup model visible here depends on nearby device state, not on a cloud login flow. If the local path is not healthy, the chain is not ready, even if one device by itself looks fine.</p>
+<h2>Boundary of this chapter</h2>
+<p>Because no owner-confirmed product intent was supplied, this section stays inside the evidence boundary. It describes the local chain that the current snapshot supports, not the product direction the owner may eventually prefer. That distinction matters because a product that later becomes cloud-mediated, multi-site, or account-centered would need a different readiness model. For now, the manual should teach the owner to think in one frame: Watch capture, iPhone relay, and Mac reception are parts of the same setup condition, and the session is only reasonable when all three line up.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner has to treat readiness as one local chain: the Watch starts capture, the iPhone carries it across the local network, and the Mac must be reachable before the session is truly supported. One device looking ready is not enough.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  W[&quot;Watch capture starts on the wrist&quot;]
+  I[&quot;iPhone relay handles the local handoff&quot;]
+  M[&quot;Mac backend must be reachable&quot;]
+  S[&quot;Supported session&quot;]
+  W --&gt; I --&gt; M
+  W -.-&gt; S
+  I -.-&gt; S
+  M -.-&gt; S
+</code></pre>
+<p>The diagram shows three linked parts: Watch capture on the wrist, the iPhone relay in the middle, and the Mac backend at the end. A supported session only exists when all three are ready together, so checking one device by itself can miss an incomplete setup.</p>
+<h3>What Must Be Ready Before Capture Starts</h3>
+<h2>Readiness Gates</h2>
+<p>Before capture starts, the system has to clear three different gates. The watch gate is about authorization and getting the workout path started, the iPhone gate is about reaching the Mac backend on the local network, and the relay-loss case is a warning that today’s path does not keep failed traffic around for later. That means readiness is not a single yes or no; it is a chain in which each link can fail differently, and the operator has to check the link that matters at that moment.</p>
 <table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr>
-<th>Condition</th>
-<th>Mode control</th>
-<th>Capture and workout behavior</th>
-<th>HealthKit or heart-rate effect</th>
+<th>Readiness gate</th>
+<th>What must be true</th>
+<th>Operator action</th>
+<th>If it is not ready</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>Idle mode selection</td>
-<td>The player can choose strokes or serve.</td>
-<td>Capture is not yet running.</td>
-<td>No heart-rate sampling is started from this choice alone.</td>
+<tbody><tr>
+<td>Watch authorization and workout startup</td>
+<td>The watch has the required workout and heart-rate authorization, and the workout path has started successfully.</td>
+<td>Grant the requested permissions and start the workout path before treating the session as supported.</td>
+<td>The rest of the chain is not ready; supported capture should not be assumed available, and the denial behavior itself is not established in the snapshot.</td>
 </tr>
 <tr>
-<td>Starting capture</td>
-<td>The mode control is locked out once recording starts.</td>
-<td>Recording turns on, buffered samples are cleared, the workout stack
-starts, and motion capture begins.</td>
-<td>Heart-rate sampling is attempted only if health data is
-available.</td>
+<td>iPhone local-network relay</td>
+<td>The iPhone can reach the Mac backend on the fixed local network target, and the relay connection is active.</td>
+<td>Bring the iPhone and Mac onto the same reachable local network, then connect or reconnect from the iPhone gateway.</td>
+<td>The iPhone cannot hand batches to the Mac backend until the relay is reachable.</td>
 </tr>
 <tr>
-<td>Stopping capture</td>
-<td>The mode control remains out of play until the session is idle
-again.</td>
-<td>Recording turns off, motion updates stop, and the workout stops, but
-the last shot readouts stay visible.</td>
-<td>Heart-rate sampling is no longer active as part of capture.</td>
+<td>Relay drop during send</td>
+<td>The relay link stays up long enough to finish the send, or the operator reconnects before assuming the batch survived.</td>
+<td>Reconnect manually after the drop and verify readiness again; do not assume the missed batch will be replayed.</td>
+<td>Failed relay traffic can disappear instead of being preserved for later delivery.</td>
 </tr>
-<tr>
-<td>Exactly serve mode value</td>
-<td>The player must have selected serve before recording started.</td>
-<td>The live session follows the serve path rather than the strokes
-path.</td>
-<td>The watch still depends on the same live capture stack.</td>
-</tr>
-<tr>
-<td>Any other mode value</td>
-<td>The player still has a mode, but it is treated as strokes.</td>
-<td>The session follows the strokes path even if the mode name looks
-different.</td>
-<td>No separate heart-rate behavior is implied by the mode name.</td>
-</tr>
-</tbody>
-</table>
-<p>What this means for the player is simple but easy to misread if you
-expect the watch to behave like a free-form settings screen. Mode choice
-is a pre-session decision, not a live toggle. Once the player starts
-capture, the watch is committed to the current session until it is
-stopped; the active session is what drives the live feedback, and the
-chapter on live readouts explains those outputs in more detail.</p>
-<p>The start path also matters because it does more than begin
-recording. It clears buffered samples before the session proceeds, then
-brings up the workout-backed runtime and motion capture that keep the
-watch session alive on court. That sequence is why the watch experience
-is tied to Apple’s workout and runtime services rather than to a simple
-on-screen timer. The consequence for the owner is that session
-continuity on the watch should be described as supported by those
-services, not as guaranteed by the button alone. The boundary is
-important: the reviewed evidence shows a heart-rate attempt only when
-health data is available, but it does not prove exactly how the app
-behaves when access is missing, denied, or revoked.</p>
-<p>Stopping capture is equally specific. The watch turns recording off,
-stops motion updates, and ends the workout session, but it does not
-clear the last shot values that were already published. So a finished
-session can still look current until new data arrives. That is not a
-cosmetic footnote; it changes how the owner should explain the watch
-state to a player. If the player stops after a hard serve, the shot
-speed, clean contact, and readiness display may remain on screen even
-though capture is no longer running. The correct reading is not that the
-watch is still detecting, but that the last published values are still
-sitting there.</p>
-<p>The mode rule is the strictest boundary in the whole sequence. Only
-the literal serve mode is treated as serve. Anything else falls back to
-strokes, even if the string looks close or sounds plausible. In
-practice, that means the naming matters exactly: if a player or upstream
-screen sends any non-serve value, the detector does not invent a third
-mode, and it does not create a special branch. It behaves like strokes.
-A simple example makes the consequence plain: if the player selects
-serve before starting and then begins capture, the session follows the
-serve path; if the mode is mistyped, renamed, or passed through as
-something else, the session is processed as strokes instead. That
-exactness is why the manual should avoid loose language here and keep
-the mode names literal.</p>
+</tbody></table>
+<h3>Watch gate</h3>
+<p>The watch side is a hard precondition because the inspected build asks for workout and heart-rate authorization as part of startup. In practical terms, that makes the watch more than a passive sensor; it is the place where the player either crosses into a supported session or stays outside it. If the authorization gate does not clear, the rest of the chain does not matter yet, because the session has not entered the supported operating path. The one thing the evidence does not establish is what the player sees when permission is denied, so the manual should stop at the boundary: permission failure is blocking, but the denial experience itself remains unverified.</p>
+<h3>iPhone relay gate</h3>
+<p>The iPhone is not looking for an arbitrary Mac backend address in this snapshot. It points at one fixed local network target, which means readiness depends on locality and reachability, not on a user-entered destination. For the operator, that changes setup from a general pairing problem into a network-bound check: the iPhone and Mac have to be on a reachable local network, and then the operator uses connect or reconnect to bring the relay up. The consequence is simple. If the backend is not reachable at that fixed local address, the iPhone is not just less ready; it cannot act as the handoff point for watch batches at all. The snapshot does not show a configurable backend address path, so any broader deployment story would need separate confirmation.</p>
+<h3>When a relay drop loses data</h3>
+<p>The lossy part is the one owners tend to underestimate. In the current path, failed relay sends are not held for later resend, and the watch batch is cleared after the send attempt. Put together, that means a disconnect can erase unsent samples rather than parking them safely until the connection returns. This is not just a backend concern: it changes how the operator interprets a temporary drop during a session. If the relay breaks while the player is still swinging, the safe assumption is that the in-flight batch may be gone, not waiting in a recovery buffer. The only automatic retry described in the reviewed material is a periodic connectivity check once the link has already been established, which is a check on reachability, not a durable resend path. So the practical boundary is strict: reconnect manually, then continue only after readiness is rechecked, because the missed batch may never come back.</p>
+<p>For example, if the watch has started and the player hits several shots, but the iPhone loses the Mac backend connection midway through the exchange, the operator cannot treat that gap as temporary storage. The supported path today is restore the relay and continue, not restore the relay and replay what was missed.</p>
 <blockquote>
-<p><strong>Figure:</strong> The watch session is decided before
-recording starts, and stopping ends capture without wiping the last
-published shot values. That is why a finished session can still look
-live even though the watch is no longer recording.</p>
+<p><strong>Figure:</strong> Readiness clears in order, starting with Watch permission and then local reachability, and a mid-send disconnect can lose a batch instead of holding it for later replay. The operator has to think in gates, not a single all-clear signal.</p>
 </blockquote>
-<pre class="mermaid">
-stateDiagram-v2
-    [*] --> Idle
-    state "Idle, mode can be chosen" as Idle
-    state "Serve armed" as Serve
-    state "Strokes armed" as Strokes
-    state "Recording" as Recording
-    state "Stopped, last values still shown" as Stopped
-
-    Idle --> Serve: choose serve
-    Idle --> Strokes: choose strokes or any other mode
-    Serve --> Recording: start capture
-    Strokes --> Recording: start capture
-    Recording --> Stopped: stop capture
-    Stopped --> [*]
-</pre>
-<p>When the watch is idle, the player can choose serve or strokes.
-Choosing either mode arms the session, and starting capture moves it
-into recording. Stopping capture ends the session, but the last shot
-values can remain on screen. The consequence for the owner is that a
-stopped watch can still look current, so the display must be read as the
-last live result, not as proof that recording is still active.</p>
-<h3 id="checkable-facts-from-the-reviewed-evidence">Checkable Facts From
-The Reviewed Evidence</h3>
-<p>The reviewed evidence supports a narrow set of checkable facts about
-what the watch exposes during a live session and what the watch build
-needs in order to run that session. These are not broad workflow claims;
-they are the specific on-wrist behaviors and packaging requirements the
-code snapshot establishes.</p>
-<h3 id="live-readouts">Live Readouts</h3>
-<p>The watch screen directly shows live status, heart rate, shot speed,
-clean-contact status, and readiness percentage from the session state
-the product is already publishing. In other words, the watch is not
-waiting for a later report before it shows the player something useful;
-the values are meant to update while the session is still active. That
-matters because the player can glance down mid-rally and see the current
-capture picture, not just a finished summary.</p>
-<p>A concrete example makes the shape clear: if a player starts a
-session, hits a forehand, and then looks at the watch, the speed and
-clean-contact readouts are part of the live session display rather than
-a separate review screen. The boundary is important, though: the
-evidence supports live rendering of these values, not a promise that
-every value resets cleanly at stop or that the screen behaves like a
-historical log.</p>
-<h3 id="what-happens-at-start">What Happens At Start</h3>
-<p>When capture starts, the watch clears the buffered samples and begins
-motion capture at 100 Hz. That is a meaningful operational reset. The
-new session is not continuing on top of old captured samples; it begins
-with a fresh buffer and a high-frequency stream of new motion data.</p>
-<p>For the owner, the consequence is straightforward: the first captured
-swings of the new session are treated as the new run, not as leftovers
-from a previous one. If a player stops, waits, and starts again for the
-next drill, the new start path is the point where the old sample buffer
-is discarded and the new motion stream begins. The evidence here is
-specific to the start path; it does not claim anything about broader
-session continuity beyond that reset.</p>
-<h3 id="watch-build-and-heart-rate">Watch Build And Heart Rate</h3>
-<p>The watch build is configured for HealthKit and workout capture,
-including the required permission text, the workout background mode, and
-the watch-side entitlement. That packaging matters because it shows the
-watch experience is not just a visual shell; it is built to run as a
-workout-backed capture surface with the Apple services it depends
-on.</p>
-<p>The heart-rate path is conditional. The reviewed code only attempts
-heart-rate sampling when HealthKit reports that health data is
-available. That is a narrower statement than saying heart rate is always
-available or that permission failure has already been fully resolved. It
-establishes a gate, not the outcome on every device or permission state.
-So the reliable owner takeaway is: heart-rate feedback is part of the
-live watch experience, but it depends on Apple health data being
-available, and the evidence does not prove what happens when that
-availability is absent, denied, or revoked.</p>
+<pre class="mermaid"><code>flowchart TD
+  A[&quot;Watch permissions and workout start&quot;]
+  B[&quot;iPhone can reach the Mac&quot;]
+  C[&quot;Batch is being sent&quot;]
+  D[&quot;Relay drops&quot;]
+  E[&quot;Batch may be lost&quot;]
+  F[&quot;Reconnect manually&quot;]
+  A --&gt; B --&gt; C
+  C --&gt; D
+  D --&gt; E
+  D --&gt; F
+  F --&gt; B
+</code></pre>
+<p>The diagram shows the setup gates in order: the Watch permissions and workout start first, then the iPhone has to reach the Mac, then a batch can be sent. If the relay drops during send, the batch may be lost, so the operator has to reconnect manually and check readiness again.</p>
+<h3>What The Snapshot Confirms</h3>
+<h3>Watch capture surface</h3>
+<p>The Watch opens into the capture view rather than a passive status screen. In the inspected build, that view gives the player mode selection, a clear Start Oracle / STOP control, and live feedback for speed, readiness, and contact. That matters because it shows the Watch is not just present in the chain; it is the place where the operator-facing capture interaction begins. The boundary is important too: this tells you what the snapshot exposes on screen, not how the whole session should be interpreted or governed. For example, a player can start a capture in one mode, switch to another mode before a drill, and immediately see changing feedback on the Watch without needing to infer whether the device is working.</p>
+<h3>iPhone gateway surface</h3>
+<p>The iPhone gateway presents the operator with backend status and batch count, plus controls to connect or reconnect. That is a concrete readiness surface, not a hidden background relay: the operator can look at the phone and tell whether the Mac side is currently reachable and whether batches are accumulating. The practical consequence is that the phone is where connection state becomes visible before the player notices a problem on the Watch. The qualifier is that this section only establishes the exposed controls and status readout; it does not establish the full recovery story. In practice, an operator might see the backend status fall out of sync, check the batch count, and use reconnect as the obvious next action instead of guessing whether the relay is alive.</p>
+<h3>Fixed backend address</h3>
+<p>The inspected iPhone client points at one fixed local-network backend address rather than asking the operator to type a destination. That is a narrow but important fact: in this snapshot, the relay path is anchored to a specific local endpoint, so setup depends on that endpoint being the one the client expects. For the owner, the consequence is that the address is not part of ordinary operator configuration in what was inspected; the system is behaving like a preset local gateway, not a user-routed connection target. The limit is equally clear: the snapshot does not show a configurable backend address path, so it does not prove that the product is permanently fixed that way or that no other deployment shape exists elsewhere. A concrete example is an operator bringing up the iPhone at the court and seeing that it is already aimed at the known Mac endpoint, which makes the question &quot;is the backend reachable?&quot; more immediate than &quot;where should I point this phone?&quot;.</p>
 <blockquote>
-<p><strong>Figure:</strong> The watch button starts the live capture
-path, but the session depends on Apple services underneath it. Because
-the permission-failure path is not resolved in the evidence, continuity
-risk does not end at the watch screen.</p>
+<p><strong>Figure:</strong> The consequence of the loose boundary is exposure: the snapshot shows a fixed local endpoint, but it does not show an access gate or device binding, so any reachable client can touch the write path and create shot records and session events unless another boundary exists outside the snapshot.</p>
 </blockquote>
-<pre class="mermaid">
-flowchart LR
-    P[Player]
-    W[Watch controls]
-    S[Live capture]
-    H[Health data access]
-    R[Workout and runtime support]
-    U[Permission failure path remains unresolved]
-
-    P --> W --> S
-    S --> H
-    S --> R
-    H --> U
-    R --> U
-</pre>
-<p>The player uses the watch controls to start live capture. Once
-capture is running, the session depends on Health data access and on
-workout and runtime support underneath the watch UI. The reviewed
-evidence does not prove what happens when that access is missing,
-denied, or revoked. The consequence for the owner is that continuity is
-partly outside the watch screen and the failure path is still
-unresolved.</p>
-<h3 id="what-is-solid-here">What Is Solid Here</h3>
-<h3 id="small-legible-on-wrist-surface">Small, legible on-wrist
-surface</h3>
-<p>The strongest thing about the watch experience is how little it asks
-the player to hold in view at once. The live surface stays narrow: one
-start/stop control, one mode choice that only appears while idle, and a
-short list of live readouts that matter during play. That gives the
-owner a clean story to explain: the watch is not trying to be a full
-coaching console or a history browser; it is a focused live capture
-surface. In practice, that matters because the player can glance down
-between points and understand what state the session is in without
-sorting through extra screens or secondary settings. A player starting a
-rally, for example, does not need to hunt through menus to know whether
-the session is live, what mode is armed, or whether the current readouts
-are still updating.</p>
-<h3 id="session-timing-stays-separate-from-the-rest-of-the-app">Session
-timing stays separate from the rest of the app</h3>
-<p>Another solid part of the design is that the watch’s capture timing
-is treated as its own live session concern instead of being blended into
-a broader app workflow. That keeps the on-wrist experience disciplined:
-the watch is responsible for the active session and the feedback that
-belongs to it, while longer-lived concerns stay elsewhere in the
-product. For the owner, that separation reduces ambiguity. It is easier
-to describe what the watch does, easier to test the live state, and
-easier to avoid promising a wider workflow that the evidence does not
-establish. The practical effect is that the player experiences the
-session as something immediate and local to the court, not as a piece of
-a larger interface that needs interpretation before play can
-continue.</p>
-<h3
-id="continuity-is-backed-by-apple-services-not-a-loose-timer">Continuity
-is backed by Apple services, not a loose timer</h3>
-<p>The watch stack is also stronger than a simple screen timer because
-it is built around Apple workout and runtime services. That means the
-product is not relying on a decorative clock to keep the session alive;
-it is using the platform’s continuity model to support the live capture
-run. For the owner, that is the right kind of dependency to have on a
-watch: the session can stay tied to the operating system services that
-are meant to preserve activity during motion, rather than depending on
-an always-awake interface alone. The qualifier is important, though. The
-evidence shows the dependency, but it does not prove exactly how the
-product behaves if HealthKit access is absent, denied, or revoked. So
-the safe claim is that the continuity model is real and load-bearing,
-while the edge case around permission failure remains unconfirmed.</p>
-<h3 id="why-that-matters">Why that matters</h3>
-<p>Taken together, these strengths make the watch easy to reason about
-in live play. The player gets a small control surface, the owner gets a
-clean boundary around what the watch is responsible for, and the live
-session is supported by platform services that fit the job. What is
-solid here is not breadth; it is discipline. The product stays centered
-on the current session and on immediate feedback, which is exactly what
-an on-wrist tennis capture surface should do. The chapter on session
-flow can cover the rest of the loop; this section’s point is that the
-watch side already has a coherent shape and the right dependencies for a
-live court experience.</p>
-<h2 id="the-iphone-gateway-during-play">The iPhone Gateway During
-Play</h2>
-<p><em>The iPhone is the relay bridge, not the main analysis surface.
-During play, it keeps the live path between the watch and the Mac
-backend visible to the operator, shows connection health and the watch
-batch count, and carries session traffic in both directions. That
-matters because the phone is part of live session continuity, not just a
-background accessory.</em></p>
-<h3 id="one-minute-snapshot-2">One-Minute Snapshot</h3>
-<p>The iPhone is the relay bridge, not the main analysis surface. During
-play, it keeps the live path between the watch and the Mac backend
-visible to the operator, shows connection health and the watch batch
-count, and carries session traffic in both directions.</p>
-<p>That matters because the phone is part of live session continuity,
-not just a background accessory. When the bridge drops, the current
-evidence says recovery depends on the operator rather than on an
-automatic self-healing path.</p>
-<h3 id="what-you-should-be-able-to-explain-2">What You Should Be Able To
-Explain</h3>
+<pre class="mermaid"><code>flowchart TD
+  C[&quot;Any reachable client&quot;]
+  subgraph L[&quot;Local setup&quot;]
+    I[&quot;iPhone relay&quot;]
+    B[&quot;Mac backend&quot;]
+    S[&quot;Shot records and session events&quot;]
+    I --&gt;|fixed local address| B
+    B --&gt; S
+  end
+  C --&gt;|can reach the open side| B
+</code></pre>
+<p>The diagram places the iPhone relay and Mac backend inside the local setup, with a reachable client outside it. The iPhone points at one fixed local address, and a client that can reach the open side can connect to the backend. The consequence is that the write path is exposed unless something outside the snapshot adds a stronger boundary.</p>
+<h3>What Is Already Solid</h3>
+<h3>Clear places to check</h3>
+<p>The strongest part of the current setup story is that it is visible where the operator actually has to act. The Watch presents the capture surface directly, and the iPhone gateway presents its relay state directly. That matters because setup work is not hidden behind a silent background process: the operator can look at the Watch to judge whether the player-side capture surface is alive, and look at the iPhone to judge whether the relay is ready to move batches toward the Mac backend. In practice, that shortens the path from uncertainty to a concrete next step. If something is wrong, the operator is not guessing which device owns the problem; the visible state points them to the right place first.</p>
+<h3>Permissions are not buried</h3>
+<p>The Watch permission boundary is also a real strength because it is explicit in both the build and the startup path. The product asks for workout and heart-rate authorization up front, rather than letting the player drift into a session and discover later that capture depended on a missing grant. For an owner, that reduces a common failure mode: the setup requirement is part of the supported path, not an implied background dependency. The boundary is still narrow, though. The evidence establishes that the authorization request exists and that it is part of startup, but it does not establish what denial should look like to the player. So the manual can say the prerequisite is clear; it cannot yet promise a complete denial experience.</p>
+<h3>Relay readiness is observable</h3>
+<p>The iPhone gateway is similarly strong because it gives the operator immediate feedback about whether the relay is healthy enough to matter. It shows backend status, it shows how many batches are waiting, and it exposes connect and reconnect controls. That combination is useful because it turns readiness into a visible operating condition instead of an invisible one. An operator does not need to assume that watch data is flowing; they can see whether the relay has a backend link, whether data has accumulated, and whether a manual reconnect is the right move. The fixed local-network backend address in this snapshot makes that even more concrete: the relay is not waiting on a user-entered destination, so the operator has fewer moving parts to misconfigure in the moment.</p>
+<p>A simple example shows why this is solid. Before a session starts, the Watch can show whether capture is initialized and the iPhone can show whether the Mac backend is reachable. If the Watch is ready but the iPhone still shows a disconnected backend, the operator knows the problem is not on the player’s wrist; it is in the local relay boundary. That is a good owner experience because it makes preflight checks legible without pretending the whole chain is self-healing. The remaining risk is still real: this snapshot does not establish the full deployment shape or guarantee what happens after a disconnect. That belongs with the recovery guidance. Here, the important point is narrower and stronger: the current surfaces already tell the operator where to look before they start.</p>
+<h3>Attention Cards</h3>
+<h4>⚠ Denied Watch permission can leave setup unsupported  <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The Watch needs authorization, but the reviewed source does not establish the denied-permission experience the owner can rely on.</p>
+<p><strong>Why it matters:</strong> If denial is not handled clearly, the player can launch the app and still not have a supported session.</p>
+<p><strong>What to do:</strong> Define the denied-permission message and fallback, then verify that branch on a real Watch.</p>
+<p><strong>Revisit when:</strong> When setup and preconditions behavior or related owner decisions change.</p>
+<h4>⚠ The Mac backend address is fixed, but the deployment shape is still unconfirmed  <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> The iPhone relay currently points at one hardcoded local backend address, while the intended deployment shape remains unresolved.</p>
+<p><strong>Why it matters:</strong> A fixed lab machine and a configurable local deployment require different setup instructions and different operator checks.</p>
+<p><strong>What to do:</strong> Choose one supported topology, document the expected backend address or configuration path, and verify the operator setup against it.</p>
+<p><strong>Revisit when:</strong> When setup and preconditions behavior or related owner decisions change.</p>
+<h3>Owner Decisions</h3>
+<h4>⚖ Should batch loss on relay drop be accepted, or should the product buffer and replay batches after reconnect?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> A disconnect can currently cost a batch.</p>
+<p><strong>Revisit when:</strong> Before changing the related setup and preconditions behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
 <ul>
-<li>You can explain the phone as the live relay bridge that keeps a
-session moving between watch and Mac.</li>
-<li>You know what the operator can see on the phone: backend connection
-state and the watch batch count.</li>
-<li>You can describe the traffic path in both directions, including
-watch batch data on the way out and shot feedback on the way back.</li>
-<li>You know the recovery boundary: reconnect is operator-driven unless
-the product policy changes.</li>
+<li>The Watch capture screen, start and stop controls, and live feedback.</li>
+<li>The Watch workout and heart-rate permission requirement.</li>
+<li>The iPhone relay screen, batch count, and fixed local backend address.</li>
+<li>The relay behavior when the connection drops.</li>
+<li>The Mac backend accepting reachable network clients and writing shot records.</li>
 </ul>
-<h3 id="why-the-phone-matters">Why the phone matters</h3>
-<p>The iPhone exists here to keep the session connected while play is
-happening. It is the operator’s continuity surface: the place that shows
-whether the Mac backend is connected and whether watch batches are
-moving through the relay.</p>
-<p>The wider live loop starts on the watch and the backend decides
-shots. This chapter stays on the phone’s job only, so the owner can
-treat the iPhone as a gateway rather than as a scoring tool or a second
-control room.</p>
-<h3 id="what-crosses-the-phone">What crosses the phone</h3>
-<p>The phone sits in the middle of the path. Watch batches move toward
-the Mac backend through the gateway, and shot feedback comes back the
-other way toward the watch.</p>
-<p>That makes the phone part of the current live session, not a durable
-history view. The latest session state is live state, so the owner
-should not read the phone as if it were building a long-term record on
-its own.</p>
-<blockquote>
-<p><strong>Figure:</strong> This makes the phone part of the live
-control loop, so losing it interrupts current play rather than just
-hiding a history record.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart TD
-  W[Watch batches]
-  G[iPhone gateway]
-  M[Mac backend]
-  F[Shot feedback]
-  W --> G --> M
-  M --> F --> W
-</pre>
-<p>The watch sends batches to the iPhone gateway, the gateway forwards
-them to the Mac backend, and shot feedback comes back from the backend
-to the watch. The consequence is that the phone is part of live session
-continuity, not a separate history view.</p>
-<h3 id="what-is-actually-visible">What is actually visible</h3>
-<p>The phone labels itself as the gateway, shows backend connection
-state, and shows the count of watch batches. It also exposes a connect
-or reconnect action, so the operator is expected to keep it available
-during play.</p>
-<p>The relay target is fixed to one configured backend address, and
-failures clear the connection state until the operator restores it. In
-practice, the phone gives continuity signals, not deep troubleshooting
-detail.</p>
-<blockquote>
-<p><strong>Figure:</strong> The important consequence is operational: a
-dropped link does not repair itself in the evidence, so the session
-stays down until the operator acts.</p>
-</blockquote>
-<pre class="mermaid">
-stateDiagram-v2
-  [*] --> Connected
-  Connected --> Disconnected: link drops
-  Disconnected --> Connected: operator reconnects
-  Disconnected --> [*]: play stops
-</pre>
-<p>The gateway begins connected. If the link drops, it moves into a
-disconnected state and the visible connection state clears. Recovery
-returns to connected only when the operator reconnects; the diagram does
-not show an automatic repair loop.</p>
-<blockquote>
-<p><strong>Figure:</strong> Continuity depends on deployment alignment.
-The phone cannot keep a session alive unless the configured target and
-the running Mac service point to the same live destination.</p>
-</blockquote>
-<pre class="mermaid">
-flowchart LR
-  subgraph Phone[Phone side]
-    O[Operator]
-    G[iPhone gateway]
-  end
-  subgraph Mac[Mac side]
-    A[Configured backend address]
-    M[Live Mac service]
-  end
-  O --> G
-  G --> A
-  A --> M
-</pre>
-<p>On the phone side, the operator uses the iPhone gateway. The gateway
-points at one configured backend address on the Mac side, and that
-address has to resolve to the live Mac service for the relay to work.
-The consequence is that session continuity depends on deployment
-alignment, not just on the app being open.</p>
-<h3 id="where-this-surface-helps">Where this surface helps</h3>
-<p>Its value is narrow and practical. The operator gets one visible
-place to watch relay health, and the session can keep moving in both
-directions without turning the phone into a larger admin or analytics
-tool.</p>
-<p>That narrowness is a strength if the owner wants a simple live relay,
-but it also means the phone does not absorb much recovery or
-configuration complexity on its own.</p>
-<h2 id="detection-service-and-shot-events">Detection Service and Shot
-Events</h2>
-<p><em>This chapter matters because it is where live tennis motion
-becomes a shot decision. The backend detection service takes the watch’s
-motion batches from the phone gateway, applies a narrow set of threshold
-and shape checks, and sends back a shot event for the rest of the live
-loop. It is not a broad review layer.</em></p>
-<h3 id="one-minute-snapshot-3">One-Minute Snapshot</h3>
-<p>This chapter matters because it is where live tennis motion becomes a
-shot decision. The backend detection service takes the watch’s motion
-batches from the phone gateway, applies a narrow set of threshold and
-shape checks, and sends back a shot event for the rest of the live loop.
-It is not a broad review layer. It keeps a live current-session view in
-memory, stores shot records as support, and can look healthy even when
-startup has hidden a schema-change problem.</p>
-<h3 id="what-you-should-be-able-to-explain-3">What You Should Be Able To
-Explain</h3>
+<p>Not reviewed:</p>
 <ul>
-<li>You can explain what enters the detector and what comes back out in
-a live session.</li>
-<li>You can tell where the service is rule-based and where the exact
-mode setting changes behavior.</li>
-<li>You can separate the live current-session view from stored shot
-records.</li>
-<li>You can spot the owner decisions that still affect whether the
-service is safe to rely on.</li>
+<li>The exact message or fallback when Watch permission is denied.</li>
+<li>The intended deployment shape for the Mac backend address.</li>
+<li>Whether the backend is supposed to be reachable only from trusted devices.</li>
+<li>Whether batches should survive a relay drop.</li>
+<li>Owner-confirmed product intent for whether the product is mainly for live feedback, post-session logging, calibration work, or a mix.</li>
 </ul>
-<h3 id="mental-model">Mental Model</h3>
-<p>Think of this service as the product’s decision point. The watch
-captures movement, the phone relays it, and this backend decides whether
-the movement counts as a shot. That makes it the narrow middle of the
-live loop: it is responsible for the shot decision and the shot event,
-while the gateway and the watch stay focused on capture and relay. The
-live session view belongs here too, but only as the current state of the
-ongoing connection, not as a long-term record.</p>
-<h3 id="how-it-works">How It Works</h3>
-<p>A batch arrives through the live connection from the gateway. Empty
-or malformed input does not become a successful shot. When the backend
-accepts a new connection, it resets the current live session so the next
-session starts cleanly.</p>
-<p>The detector is heuristic and threshold-based. Only the literal serve
-setting gets serve behavior; every other mode is treated as strokes.
-Even then, a shot is not accepted until the detector sees a gap since
-the last shot, enough dominant motion in one direction, and enough
-sustained samples around the peak. That keeps the output narrow and
-prevents a swing from turning into a shot too easily.</p>
-<p>When the detector accepts a shot, it appends it to the live session,
-stores a shot record with the timing and movement details, and sends the
-shot event back out on the same live connection. The stored record
-supports continuity, but it does not turn this service into a review
-product.</p>
+<p>Re-run the Watch permission flow on device, confirm what address the iPhone expects the Mac to use, test a dropped local connection, and check whether the backend is meant to be reachable only from trusted devices or from any client on the network.</p>
 <blockquote>
-<p><strong>Figure:</strong> Each accepted connection starts a fresh live
-session, detections accumulate only while that connection is open, and
-the latest-session view reflects memory-backed current state rather than
-durable history.</p>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
 </blockquote>
-<pre class="mermaid">
-stateDiagram-v2
-    [*] --> ready
-    ready --> live: accepted connection starts a fresh session
-    live --> live: shot is appended
-    live --> ready: connection ends
-    live --> latest: latest view is requested
-    latest --> live: returns memory-backed state
-</pre>
-<p>The session starts in a ready state. When the backend accepts a
-connection, it becomes a live session. While live, each detected shot is
-appended to that in-memory session. When the connection ends, the
-session returns to ready. A request for the latest-session view reads
-that live memory state, not a stored history, so the owner should treat
-it as current connection state only.</p>
 <blockquote>
-<p><strong>Figure:</strong> Only the literal serve mode changes which
-speed line the detector uses; every other mode string falls back to
-strokes behavior and still has to clear the same gates before a shot
-event is emitted.</p>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
 </blockquote>
-<pre class="mermaid">
-flowchart LR
-    A[serve mode] --> B[serve threshold]
-    C[any other mode] --> D[strokes threshold]
-    B --> E[same shot gates]
-    D --> E
-    E --> F[shot event]
-</pre>
-<p>One branch shows serve mode leading to the serve threshold. The other
-branch shows any other mode string leading to the strokes threshold.
-Both branches then meet the same shot gates and produce the same kind of
-shot event only after those gates pass. The consequence for the owner is
-that non-serve labels do not create a third behavior; they behave like
-strokes.</p>
-<h3 id="verified-facts">Verified Facts</h3>
+<hr>
+<h2>Session History, Shot Records, and Linkage</h2>
+<p><em>History here is local stewardship. The reviewed material shows the Watch as the capture surface, the Mac side as the place where shot records are kept, and the linkage notes as a separate operator workflow rather than a default part of live capture. For an owner, the key question is whether the records you expect to keep are durable, named consistently, and still trustworthy after interruption.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>History here is local stewardship. The reviewed material shows the Watch as the capture surface, the Mac side as the place where shot records are kept, and the linkage notes as a separate operator workflow rather than a default part of live capture. For an owner, the key question is whether the records you expect to keep are durable, named consistently, and still trustworthy after interruption.</p>
+<p>That trust is not automatic. The latest-session view is live state, not a durable archive; reconnects create a fresh live session view; and a dropped relay can lose a batch before it becomes history. Session dates also drift between the backend timestamp and the local-date wording in the linkage notes, so any cross-linking rule needs a deliberate owner choice.</p>
+<h3>What You Should Be Able To Explain</h3>
 <ul>
-<li>The live session starts over when the backend accepts a new
-connection.</li>
-<li>The backend returns a shot event only after the detector’s gates
-pass.</li>
-<li>The detector treats only the literal serve setting as special; all
-other values fall back to strokes behavior.</li>
-<li>The current-session view comes from memory, not from a stored
-history query.</li>
-<li>Startup can keep going even if a schema change fails, so a running
-service does not prove storage is ready.</li>
-<li>Stored shot records include timing and movement details, including
-shot speed and rotation-related fields.</li>
+<li>Distinguish the live session view from durable shot history.</li>
+<li>Know what local records are kept after capture and what linkage is separate.</li>
+<li>Judge what survives a disconnect, reconnect, or failed relay.</li>
+<li>Spot the date-boundary drift that can affect cross-linking and reporting.</li>
+<li>Decide whether Zepp remains a supported workflow or only calibration material.</li>
 </ul>
+<h3>What History Means Here</h3>
+<p>Think of this chapter as the owner&#39;s map for what history means in TennisOracle. The product keeps the live session moving during capture, writes shot records locally on the Mac side, and treats later linkage as a separate operator step. That separation matters because a live session and a durable record are not the same thing.</p>
+<p>The key owner decision is stewardship: what must remain understandable after the session ends. The reviewed material shows that replay is not guaranteed, duplicate shot records can still appear, and the linkage path is only documented as a manual calibration workflow. If the owner wants history to carry real operational weight, the manual has to treat preservation, naming, and date boundaries as product choices rather than background details.</p>
+<h3>How Records Move</h3>
+<p>When the player starts capture, the Watch produces batches, the iPhone relays them over the local network, and the Mac side accepts them as shot history. The reviewed relay path is fixed to one local address in this snapshot, so history depends on that local chain staying up long enough to move the batch through.</p>
+<p>Once the Mac side accepts a batch, the shot record is written locally and the latest-session view reflects the current live state. That live view is not a durable archive: a new connection starts a fresh session view, and the reviewed relay path does not keep unsent batches for later replay. If Zepp linkage is used at all, it sits outside this live path as a separate manual matching process that compares records by time window and then writes linked session records.</p>
 <blockquote>
-<p><strong>Figure:</strong> A running backend only proves the process
-reached startup, not that schema migration succeeded, because a
-suppressed migration error can leave storage readiness unverified.</p>
+<p><strong>Figure:</strong> The owner should treat the local relay chain as the only intended path into history, but not as a protected one. In this snapshot, a reachable client can also reach the history endpoint, and an interrupted relay can erase a batch before it ever becomes stored history.</p>
 </blockquote>
-<pre class="mermaid">
-flowchart TD
-    subgraph startup["startup path"]
-        A[startup begins] --> B[schema change step]
-    end
-    subgraph trust["what the running backend proves"]
-        C[running backend] --> D[storage readiness]
-    end
-    B -. hidden failure is suppressed .-> C
-</pre>
-<p>The startup path begins, then attempts the schema change step. If
-that failure is suppressed, the backend can still keep running. The
-running backend may look healthy, but that does not prove storage
-readiness. The owner should not treat startup alone as evidence that the
-SQLite schema is trustworthy.</p>
-<h3 id="strengths">Strengths</h3>
-<p>The service has a clear job, which makes it easier for an owner to
-reason about. It separates live decision-making from the watch and phone
-surfaces, so the rest of the product can treat the backend as the place
-where shot events are born. It also keeps a small live session view
-instead of pretending to be a full history system. That narrow shape is
-a strength as long as the owner does not mistake it for a broader
-analytics or coaching layer.</p>
-<h2 id="session-continuity-records-and-scope-boundaries">Session
-Continuity, Records, and Scope Boundaries</h2>
-<p><em>This chapter is the trust layer. It explains what keeps a live
-Tennis Oracle session usable long enough to matter, what gets remembered
-after the moment passes, and where the product stops proving a broader
-history story. The current evidence supports a live session snapshot
-plus saved shot records, but not a full review or coaching
-system.</em></p>
-<h3 id="one-minute-snapshot-4">One-Minute Snapshot</h3>
-<p>This chapter is the trust layer. It explains what keeps a live Tennis
-Oracle session usable long enough to matter, what gets remembered after
-the moment passes, and where the product stops proving a broader history
-story. The current evidence supports a live session snapshot plus saved
-shot records, but not a full review or coaching system. The main owner
-risks are continuity gaps in watch permissions and runtime support, and
-a backend startup path that can keep running even if part of the record
-setup is not healthy.</p>
-<h3 id="what-you-should-be-able-to-explain-4">What You Should Be Able To
-Explain</h3>
+<pre class="mermaid"><code>flowchart TD
+  subgraph T[Trusted local chain]
+    W[Watch batches] --&gt; I[iPhone relay]
+    I --&gt; M[Mac history]
+  end
+  A[Reachable client] --&gt; M
+  I -. dropped relay .-&gt; L[Batch lost]
+</code></pre>
+<p>The figure shows a trusted local chain from Watch batches to the iPhone relay and then to Mac history. It also shows a reachable client feeding the Mac history path directly, and a dropped relay causing a batch to be lost. The consequence is that local history can be both polluted and incomplete unless the owner sets a stronger boundary.</p>
+<h3>What the Reviewed Material Shows</h3>
+<p>The Watch capture surface is the primary player-facing entry point in the reviewed material.</p>
+<p>The Mac side accepts incoming shot batches and writes local shot records without a reviewed access gate.</p>
+<p>Shot persistence is a plain write, so duplicate rows remain possible if the same shot is emitted again outside the cooldown window.</p>
+<p>The latest-session view returns the current live session only, not a durable historical archive.</p>
+<p>The Zepp notes describe a manual calibration workflow, while the date notes show a split between the backend timestamp and local-date wording for linkage.</p>
+<blockquote>
+<p><strong>Figure:</strong> Late-day sessions can split across two calendar days if one side uses UTC and the other side uses the local day. The owner needs one rule, or cross-linking and reporting will drift around midnight.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  U[UTC day] --&gt; S[Session tag]
+  L[Local day] --&gt; N[Linked session note]
+  S -. different day near midnight .-&gt; N
+</code></pre>
+<p>The figure shows one path that stamps a session tag from the UTC day and another that records linkage using the local day. Near midnight, those two day boundaries can disagree. The consequence is that the same session can appear on different dates unless the rule is normalized.</p>
+<blockquote>
+<p><strong>Figure:</strong> Zepp linkage is an operator-side matching flow, not part of live capture. The owner should treat it as a separate calibration path until runtime support is proven.</p>
+</blockquote>
+<pre class="mermaid"><code>sequenceDiagram
+  participant O as Operator
+  participant Z as Zepp notes
+  participant M as Mac side
+
+  O-&gt;&gt;M: open stored session records
+  O-&gt;&gt;Z: match records by time window
+  O-&gt;&gt;M: write linked session record
+</code></pre>
+<p>The figure shows an operator opening stored session records on the Mac side, comparing them with Zepp notes by a time window, and then writing a linked session record. This is separate from live capture because the work happens after the records exist. The consequence is that Zepp should be treated as calibration until live support is confirmed.</p>
+<h3>Where This Model Helps</h3>
+<p>This history model does one useful thing well: it keeps the live session, the stored shot records, and the linkage workflow separate enough for an owner to reason about them. That is better than mixing everything into one vague history bucket.</p>
+<p>It also leaves the Zepp question visible instead of hiding it. The snapshot shows a manual calibration process, but it does not force the manual to pretend that Zepp is confirmed as a live first-party workflow. The date-boundary drift is also explicit, which is uncomfortable but useful because it prevents silent mismatches around late-day sessions.</p>
+<h3>Attention Cards</h3>
+<h4>⚠ Some sessions can lose or repeat shots  <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> A dropped relay can lose a batch before it becomes history, and repeated emits can still create duplicate rows.</p>
+<p><strong>Why it matters:</strong> The owner cannot assume every session count or shot count in local history is exact after a disconnect or retry path.</p>
+<p><strong>What to do:</strong> Decide whether the history path should buffer missed batches and dedupe writes before treating the record store as durable history.</p>
+<p><strong>Revisit when:</strong> When history and linkage behavior or related owner decisions change.</p>
+<h4>⚠ Zepp is still a support-status question  <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The reviewed material shows a manual Zepp calibration process, but not a confirmed live first-party integration.</p>
+<p><strong>Why it matters:</strong> If operators treat it as supported when it is only documented, they can overstate what the product actually guarantees.</p>
+<p><strong>What to do:</strong> Decide whether Zepp stays in the supported operator story or moves to appendix-only calibration material.</p>
+<p><strong>Revisit when:</strong> When history and linkage behavior or related owner decisions change.</p>
+<h3>Owner Decisions</h3>
+<h4>⚖ What must survive an interrupted session?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The current behavior can drop relay batches and does not restore a durable prior session on reconnect, so the owner must decide whether continuity or best-effort capture is the product promise.</p>
+<p><strong>Revisit when:</strong> Before changing the related history and linkage behavior.</p>
+<h4>⚖ Should reconnects continue the old session or start a new one?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The current latest-session view is not durable history, so reconnect behavior changes how an owner should read every interrupted run.</p>
+<p><strong>Revisit when:</strong> Before changing the related history and linkage behavior.</p>
+<h4>⚖ What boundary protects the Mac history path?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The reviewed connection point accepts any reachable client, so the product needs a deliberate boundary if history is meant to be authoritative.</p>
+<p><strong>Revisit when:</strong> Before changing the related history and linkage behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
 <ul>
-<li>Understand which pieces keep a live session alive versus which
-pieces only record it.</li>
-<li>Tell the difference between a live session snapshot and a durable
-history product.</li>
-<li>Spot the continuity, permission, and startup risks that can make the
-product look healthier than it is.</li>
-<li>Know which missing workflows and external operating details still
-need confirmation before promising more.</li>
+<li>I reviewed the Watch capture surface, the Mac-side shot record path, the live latest-session view, and the documented linkage notes that mention linked session records.</li>
+<li>I also reviewed the session-date notes that compare the backend timestamp with the local-date wording used for linkage.</li>
 </ul>
-<h3 id="mental-model-1">Mental Model</h3>
-<p>Think of this part of Tennis Oracle as the support rail for the live
-loop. The watch and phone keep the session moving; this chapter covers
-whether the session stays alive, whether a record is kept, and whether
-the record is strong enough to trust later. The live session view is
-narrow by design. That narrowness is useful, but it means the owner
-should not mistake a current-session snapshot for a long-term history
-product.</p>
+<p>Not reviewed:</p>
+<ul>
+<li>I did not verify a retention schedule, backup routine, cleanup rule, or migration procedure for local history.</li>
+<li>I did not verify a live first-party Zepp connection path or a complete compatibility matrix.</li>
+<li>I did not confirm any owner-prioritized product intent beyond the evidence-based history and linkage questions in this chapter.</li>
+</ul>
+<p>Run a real session from Watch to iPhone to Mac, then check what remains after a relay loss, a reconnect, and a local midnight boundary. If Zepp is still meant to matter, verify the operator matching flow against a live path before treating it as supported.</p>
 <blockquote>
-<p><strong>Figure:</strong> Owners should treat the live read as current
-state, not as a replayable archive. The saved shot rows matter, but they
-are a different promise from a durable history surface.</p>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
 </blockquote>
-<pre class="mermaid">
-flowchart LR
-  subgraph Live side
-    A[Live session snapshot] --> B[Latest-session read]
-  end
-  subgraph Saved side
-    C[Saved shot records] --> D[Later review]
-  end
-  B --> E[Current state only]
-  D --> F[Separate history path]
-
-</pre>
-<p>The left side shows the live session snapshot and the latest-session
-read returning that current state. The right side shows saved shot
-records that could support later review, but that is separate from the
-live read. The consequence is that the owner should not present the
-latest-session path as a durable history feed.</p>
-<h3 id="how-it-works-1">How It Works</h3>
-<p>The watch capture stack relies on workout and runtime services to
-stay active, so capture continuity depends on an outside permission and
-service boundary rather than only on the start button. As the backend
-accepts shot events, it keeps a live session view and stores shot
-records for that session. Those records support continuity, but they do
-not prove a full archive, reporting surface, or coaching workflow. The
-latest-session read returns the current live session directly, so it is
-only as durable as that live session. Startup can continue even when
-some schema changes are not fully proven, which makes a running backend
-a weaker signal than it first appears. Mode handling is also narrow:
-serve is treated specially, and every other mode value falls back to the
-strokes path.</p>
 <blockquote>
-<p><strong>Figure:</strong> Capture continuity depends on Apple
-services, not just the local start control. Because the
-denied-or-revoked path is not proven, the owner still has a live
-continuity risk at the permission boundary.</p>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
 </blockquote>
-<pre class="mermaid">
-flowchart TD
-  A[Watch app] -->|needs| B[HealthKit access]
-  subgraph Apple services
-    B --> C[Extended runtime session]
-    C --> D[Workout services]
-  end
-  D --> E[Live capture loop]
-  X[Permission denied or revoked] -. unresolved .-> B
-  X -. unresolved .-> E
-
-</pre>
-<p>The watch app depends on HealthKit access, an extended runtime
-session, and workout services before the live capture loop can keep
-going. The evidence does not show what happens if permission is denied
-or later revoked. The consequence is that capture continuity is still
-exposed to an unresolved permission boundary.</p>
-<h3 id="verified-facts-1">Verified Facts</h3>
-<p>The watch capture stack starts its workout and runtime support before
-motion capture and tears that support down on stop. The backend resets
-its session snapshot when a new session connection starts, appends shot
-records during that session, and returns the same live snapshot from the
-latest-session read. Only literal serve gets a special detector path;
-all other mode values reuse the strokes threshold. Startup may hide some
-schema errors, so a healthy launch does not prove that saved records are
-healthy. The evidence also does not establish a broader history feed,
-only a live session view with lightweight saved records.</p>
+<hr>
+<h2>Interpreting Shot Signals Responsibly</h2>
+<p><em>This chapter is the owner’s line between useful shot feedback and claims the product cannot yet support. The Watch shows speed, readiness, and contact-style feedback during a session, while the Mac turns incoming watch data into the shot-detected event and saved shot records. That is valuable feedback for a player, but the reviewed evidence does not establish calibration approval or validated coaching meaning.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>This chapter is the owner’s line between useful shot feedback and claims the product cannot yet support. The Watch shows speed, readiness, and contact-style feedback during a session, while the Mac turns incoming watch data into the shot-detected event and saved shot records.</p>
+<p>That is valuable feedback for a player, but the reviewed evidence does not establish calibration approval or validated coaching meaning. Treat the numbers as bounded outputs until a separate review says the thresholds and formulas deserve stronger trust.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>Distinguish session feedback from validated performance or coaching claims.</li>
+<li>Explain what the shot-detected event means in the live capture story.</li>
+<li>Recognize the current calibration limits, including synthetic readiness and unresolved threshold and formula approval.</li>
+<li>Spot the day-boundary and Zepp risks before documenting them as supported behavior.</li>
+<li>Know which later chapters own live capture, history, and recovery.</li>
+</ul>
+<h3>Mental Model</h3>
+<p>Think of the signals as the product’s interpretation layer. The player sees live feedback on the Watch, but the owner should not confuse that reaction with a certified measure of swing quality or fitness.</p>
+<p>The named shot event marks the point where the backend decides the incoming motion looks like a shot. Speed, readiness, and contact-style feedback are the player-facing names for that output, but the reviewed evidence does not show that those names carry validated calibration meaning.</p>
+<h3>How It Works</h3>
+<p>During live capture, the Watch gathers motion, the iPhone relays it over the local connection, and the Mac decides whether the data becomes a shot-detected event and a stored shot record. The same path also feeds the player-facing speed, readiness, and contact-style text.</p>
+<p>The owner boundary is simple but important: this path is a detector path, not a measurement claim. Readiness is especially narrow here because the current shot path uses a synthetic input, so the number should be read as operational feedback only.</p>
 <blockquote>
-<p><strong>Figure:</strong> A green startup is not enough to bless the
-record path. If schema errors can be hidden, the owner still needs an
-explicit readiness rule before trusting saved records.</p>
+<p><strong>Figure:</strong> The intended route runs from the Watch through the iPhone to the Mac, but this snapshot still leaves the Mac open to any reachable client, so shot writes stop being device-bound protection at that boundary.</p>
 </blockquote>
-<pre class="mermaid">
-flowchart TD
-  A[Backend starts] --> B[Startup]
-  B --> C[Schema change runs]
-  subgraph Record setup
-    C
-    D[Saved records]
+<pre class="mermaid"><code>flowchart TD
+  subgraph T[Expected capture path]
+    W[Watch live capture] --&gt; I[iPhone relay] --&gt; M[Mac live connection]
+    M --&gt; S[Saved shot records]
   end
-  C -. hidden error .-> B
-  C --> D
-  B --> E[Server keeps running]
-  E --> F[Not enough proof]
+  C[Any reachable client] --&gt;|can also connect| M
+</code></pre>
+<p>The Watch sends live capture to the iPhone relay, which passes it to the Mac live connection, and the Mac writes saved shot records. A separate reachable client can also connect to the Mac. The consequence is that the intended relay path exists, but the protection boundary ends at the Mac unless another access control layer is added.</p>
+<h3>Verified Facts</h3>
+<p>The Watch is the primary player surface, with mode selection, Start Oracle, STOP, live speed, readiness, and contact-style feedback, plus haptics tied to shot-state changes. The iPhone shows backend status, batch count, and connect or reconnect controls, and this snapshot uses a fixed local relay to the Mac backend. The Mac backend accepts incoming data, emits the shot-detected event, and stores shot records.</p>
+<p>The same reviewed snapshot shows that readiness is synthetic, the session date can drift between UTC code and local-date documentation, and Zepp appears in the documentation as a manual calibration workflow rather than a confirmed live surface.</p>
+<blockquote>
+<p><strong>Figure:</strong> Because the current path starts from synthetic input, the readiness number is operational feedback, not proof of body state or coaching performance.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  subgraph Current[Current shot path]
+    C1[Synthetic input] --&gt; C2[Readiness number]
+  end
+  subgraph Needed[What would support coaching truth]
+    N1[Measured input] --&gt; N2[Validated signal]
+  end
+  C2 -.-&gt;|today| N2
+</code></pre>
+<p>On the current shot path, synthetic input produces the readiness number. In the stronger case, a measured input would need validation before the signal could be treated as coaching truth. The consequence is that readiness should stay framed as session feedback until a separate validation review approves it.</p>
+<h3>Strengths</h3>
+<p>The current design is strong on visibility. The player sees live feedback immediately, and the operator can see relay state instead of guessing whether the Mac link is alive.</p>
+<p>The second strength is boundary control. The review keeps live capture, calibration interpretation, and later history separate, which gives the owner a clearer line between what the product does now and what still needs validation.</p>
+<h3>Attention Cards</h3>
+<p>These risks are about trust and meaning, not just completeness. The biggest one is source trust: the backend accepts any reachable client on its live connection and can create shot records and the shot event without a device-bound gate. A second risk is wording: readiness is synthetic in the current path, so it is easy to overstate it as a performance or coaching metric. A third is date drift: the code and the documentation disagree on whether linked sessions follow UTC or local date. Zepp remains provisional as well, because the reviewed material describes a manual calibration workflow but does not establish a confirmed live surface.</p>
+<h3>Owner Decisions</h3>
+<p>This chapter leaves three policy choices open. The first is whether speed, readiness, and contact-style feedback stay framed as session feedback or graduate to stronger coaching language after a separate validation review. The second is whether Zepp stays in the supported story or moves to calibration notes only. The third is whether session tags should follow local date or whether the manual should state the UTC and local split explicitly.</p>
+<h4>⚖ Should speed, readiness, and contact-style feedback stay framed as session feedback, or should the manual reserve stronger coaching language until a separate validation review approves the thresholds and formulas?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The reviewed evidence shows detector-derived outputs, but not a completed approval story for calibration-grade claims.</p>
+<p><strong>Revisit when:</strong> Before changing the related signals and calibration behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>The Watch is the main player-facing capture surface, with live speed, readiness, contact-style feedback, and haptics.</li>
+<li>The Watch needs fitness and workout permissions for supported capture.</li>
+<li>The iPhone acts as a fixed local relay to the Mac backend and shows connection state.</li>
+<li>The Mac backend creates shot records from incoming data and emits the shot-detected event.</li>
+<li>Readiness in the current shot path is synthetic rather than a measured physiology reading.</li>
+<li>Session dates can drift between UTC code and local-date documentation.</li>
+<li>Zepp is described in the reviewed documentation as a manual calibration workflow.</li>
+<li>No owner-confirmed product intent was supplied, so the chapter stays evidence-bound.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>Calibration accuracy, threshold approval, and formula validity.</li>
+<li>The exact behavior when workout or heart-rate permission is denied.</li>
+<li>Whether Zepp is a confirmed live supported workflow.</li>
+<li>The broader deployment shape beyond the reviewed local relay.</li>
+</ul>
+<p>Run a live Watch-to-iPhone-to-Mac session and confirm the player-facing outputs and shot event together. Then verify who is allowed to create shot records on the live connection if that history is meant to stay protected, test a denied-permission device, run a session that crosses local midnight, and repeat any Zepp-linked calibration run only if that path is meant to remain in scope. If the owner wants stronger claims than session feedback, require a separate validation review before using the numbers as coaching truth.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+<hr>
+<h2>Keeping the Three-Device Chain Running</h2>
+<p><em>TennisOracle only keeps a session alive while the Watch, iPhone gateway, and Mac backend stay in step. The Watch starts the capture flow and shows live feedback, the iPhone relays batches over a fixed local network path, and the Mac backend turns incoming batches into shot records.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>TennisOracle only keeps a session alive while the Watch, iPhone gateway, and Mac backend stay in step. The Watch starts the capture flow and shows live feedback, the iPhone relays batches over a fixed local network path, and the Mac backend turns incoming batches into shot records. The operational risk is recovery: failed relay sends are not queued, reconnects create a fresh live session view, and some permission and Zepp boundaries are still not verified. For the owner, this chapter is about deciding which interruptions are acceptable and which need a supported recovery path.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>See the three-device failure surface as one chain, not three separate apps.</li>
+<li>Know which breaks can lose batches or split a session.</li>
+<li>Know which permission and connectivity conditions block supported capture.</li>
+<li>Separate confirmed recovery behavior from unverified lab or documentation-only material.</li>
+<li>Decide what recovery support the product should actually promise.</li>
+</ul>
+<h3>The operating shape</h3>
+<p>Think of TennisOracle as a fragile local chain, not three independent apps. The Watch is where the player starts capture and sees live feedback. The iPhone is the relay gate. The Mac backend is where shot records and the current live session live. If any link is weak, the product does not automatically guarantee that the session will recover as one continuous record.</p>
+<blockquote>
+<p><strong>Figure:</strong> The live path is only as strong as its weakest link. For the owner, that means recovery has to be treated as one chain decision across permission setup, capture, relay, and recording, not as three independent app problems.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  P[Permissions ready] --&gt; W[Watch starts capture]
+  W --&gt; I[iPhone gateway relays batches]
+  I --&gt; M[Mac backend records shots]
+  M --&gt; V[Live session view]
+</code></pre>
+<p>The figure shows a permission gate leading into the Watch, then the iPhone gateway, then the Mac backend, and finally the live session view. The consequence is that a break anywhere in the chain can stop the live session from staying continuous, so recovery has to be designed across the whole path.</p>
+<h3>What holds when it works</h3>
+<p>Normal operation begins on the Watch after the fitness and workout permissions are available. The player starts a session, the Watch emits motion-based shot feedback, and the iPhone forwards batches to the Mac over the local network. The Mac records the incoming shots and exposes the latest live session view. Recovery is only partially supported in the reviewed snapshot: a missing relay can drop a batch, and a reconnect creates a fresh live session instead of restoring the interrupted one.</p>
+<blockquote>
+<p><strong>Figure:</strong> Recovery does not restore the interrupted run. The owner should expect either lost unsent data or a new live view, which means a mid-run break can split the session instead of healing it.</p>
+</blockquote>
+<pre class="mermaid"><code>stateDiagram-v2
+  state &quot;Live session&quot; as Live
+  state &quot;Relay interrupted&quot; as Break
+  state &quot;Unsent batch lost&quot; as Lost
+  state &quot;Fresh live session&quot; as Fresh
 
-</pre>
-<p>The backend starts, then runs a schema change during startup. If that
-error is hidden, the server can keep running even though the
-saved-record path may still be unhealthy. The consequence is that a
-running backend does not prove persistence readiness.</p>
-<h3 id="strengths-1">Strengths</h3>
-<p>The product stays narrow instead of pretending to be a full analytics
-platform. That makes its promise easier to police: live capture stays
-live, and the records stay limited to what the current session can
-support. The mode rules are also simple enough for an owner to explain
-without inventing extra behavior. Most importantly, the manual boundary
-stays honest. It does not turn a live snapshot into a fake history
-system.</p>
-<h2 id="appendix-deduped-reflect-cards-and-dispositions">Appendix:
-Deduped Reflect Cards And Dispositions</h2>
-<h3 id="fixed-after-scan">Fixed After Scan</h3>
-<h4
-id="backend-startup-could-hide-schema-initialization-failure">Backend
-startup could hide schema initialization failure</h4>
-<p>Disposition: fixed in <code>37b914d</code>.</p>
-<p>Reflect correctly identified a real silent-gap bug. The backend
-previously attempted only additive <code>ALTER TABLE</code> statements
-and swallowed every <code>sqlite3.OperationalError</code>, which could
-hide a missing <code>oracle_shots</code> table or another schema
-failure. The fix creates <code>oracle_shots</code> first with
-<code>CREATE TABLE IF NOT EXISTS</code>, then suppresses only
-duplicate-column migration errors and re-raises all other SQLite startup
-failures.</p>
-<p>Verified locally with a fresh temporary SQLite database and two
-consecutive <code>init_db()</code> calls. The full backend import was
-not available in this Linux environment because <code>fastapi</code> is
-not installed, so the verification isolated the schema initializer with
-lightweight dependency stubs.</p>
-<p>Important deployment note: this fix was applied and pushed in the
-standalone <code>blue-az/TennisOracle</code> repo. The canonical Mac
-runtime copy was not present in the accessible Linux filesystem, so the
-same one-file change still needs to be propagated to
-<code>Mac/TennisOracle/backend/app/main.py</code> on the Mac copy before
-the running app benefits.</p>
-<h3 id="known-deferred-risk">Known Deferred Risk</h3>
-<h4
-id="healthkit-workout-and-extended-runtime-startup-are-not-gated-strongly-enough">HealthKit,
-workout, and extended-runtime startup are not gated strongly enough</h4>
-<p>Disposition: document and defer.</p>
-<p>The source shows a real risk: HealthKit authorization ignores
-success/error, <code>startSession()</code> marks recording true before
-workout startup is proven, and the live workout collection callback sets
-active without checking success/error. The app has HealthKit entitlement
-and workout background-mode configuration, so this is not a
-missing-packaging finding. It is a runtime behavior risk that must be
-tested on an Apple Watch before shipping a Swift fix.</p>
-<p>Recommended later change: gate capture on known authorization state
-and workout startup result, then test on Watch with allowed, denied, and
-revoked HealthKit states.</p>
-<h3 id="documented-design-decisions">Documented Design Decisions</h3>
-<h4 id="stop-leaves-last-shot-values-visible">Stop leaves last shot
-values visible</h4>
-<p>Disposition: document, do not fix now.</p>
-<p>Stopping capture turns off recording, motion updates, and workout
-support, but does not clear <code>lastShotMph</code>, readiness,
-fatigue, or contact state. The stopped screen can therefore show the
-previous live result. Treat this as accepted behavior unless Erik
-chooses a UI reset.</p>
-<h4 id="relay-is-fixed-address-and-operator-driven">Relay is
-fixed-address and operator-driven</h4>
-<p>Disposition: document, do not fix now.</p>
-<p>The iPhone gateway points at one hardcoded backend WebSocket URL and
-reconnect is manual. This is an operational constraint rather than a
-correctness bug for the current private workflow.</p>
-<h4 id="relay-delivery-is-best-effort">Relay delivery is
-best-effort</h4>
-<p>Disposition: document, do not fix now.</p>
-<p>The watch hands off batches through WatchConnectivity and clears its
-buffer after handoff. The phone forwards only when a WebSocket task
-exists. The manual should avoid guaranteed-delivery language.</p>
-<h4 id="latest-session-is-live-memory-not-durable-history">Latest
-session is live memory, not durable history</h4>
-<p>Disposition: document, do not fix now.</p>
-<p><code>/sessions/latest</code> returns the process-global current
-session object. Shot rows are persisted separately, but latest-session
-is not a durable history API.</p>
-<h4 id="only-literal-serve-gets-serve-behavior">Only literal serve gets
-serve behavior</h4>
-<p>Disposition: document, do not fix now.</p>
-<p>The backend uses the serve threshold only when
-<code>mode == "serve"</code>; all other values use strokes behavior. The
-Swift UI only exposes <code>serve</code> and <code>strokes</code>, so
-this is mainly an external/malformed-input boundary.</p>
-<h4 id="phone-health-surface-shows-status-not-root-cause">Phone health
-surface shows status, not root cause</h4>
-<p>Disposition: document, do not fix now.</p>
-<p>The iPhone UI reports backend connection state and watch batch count.
-It does not diagnose why the relay is down.</p>
-<h3 id="meta-cards">Meta Cards</h3>
-<p>Disposition: folded into manual wording.</p>
-<p>Cards asking whether to broaden the watch workflow, promise stronger
-relay behavior, or describe more durable history are manual-scope
-decisions. The lean edition keeps the promise narrow: live watch
-capture, iPhone relay, backend detection, live session state, and stored
-shot rows only where the source proves them.</p>
-<h3 id="reflect-and-swiftwatchos-verdict">Reflect And Swift/watchOS
-Verdict</h3>
-<p>Reflect handled this Swift/watchOS repository well enough for manual
-refinement. It correctly identified the watch app, iPhone relay, backend
-WebSocket path, HealthKit/workout dependency, live-only session
-boundary, and backend detection rules. The main cleanup need was
-deduplication and disposition, not correction of a
-language-understanding failure.</p>
+  [*] --&gt; Live
+  Live --&gt; Break : relay drops
+  Break --&gt; Lost : batch is not kept
+  Break --&gt; Fresh : backend reconnects
+  Lost --&gt; Fresh
+  Fresh --&gt; [*]
+</code></pre>
+<p>The figure starts with a live session, then shows a relay interruption. From that interruption, unsent data can be lost, or a backend reconnect can create a fresh live session instead. The consequence is that a break does not reliably restore the same run; it can turn one session into a new one.</p>
+<h3>What the snapshot confirms</h3>
+<p>The reviewed snapshot confirms these operational facts:</p>
+<ul>
+<li>The Watch opens to the primary capture screen, with mode selection, Start Oracle and STOP controls, and live speed, readiness, and contact feedback.</li>
+<li>Capture depends on HealthKit and workout permissions.</li>
+<li>The iPhone uses a fixed local-network backend address and shows connection state and batch count.</li>
+<li>Failed relay sends are not queued.</li>
+<li>The Mac backend writes shot records locally and emits shot-detected events.</li>
+<li>Readiness is synthetic feedback, not a measured physiology signal.</li>
+<li>Zepp is documented as a manual calibration workflow, and session date labels drift between UTC code and local-date guidance.</li>
+</ul>
+<h3>Where the design is clear</h3>
+<p>Operationally, the product is easy to explain because each device has one visible job. The Watch is the player-facing surface, the iPhone makes relay state visible to the operator, and the Mac keeps the live session local. The numbers shown on the Watch are framed as feedback from the current shot path, not as a broad promise of sport-science measurement. That clarity is a strength even though it does not solve recovery.</p>
+<h3>Attention Cards</h3>
+<p>The main operational risk is not one bug; it is that the three-device chain can fail in different ways and the reviewed snapshot does not yet prove a single supported recovery story. The risks below are the ones that can lose batches, split sessions, expose the live connection to unintended clients, or make linked history disagree at the day boundary.</p>
+<h3>Owner Decisions</h3>
+<p>These are the decisions that shape whether recovery can be promised at all. The chapter does not invent the answers; it surfaces them because the reviewed evidence shows that the current behavior or documentation is split.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>The Watch capture screen, its live feedback, and the permissions needed to start a supported session.</li>
+<li>The iPhone gateway as a fixed local-network relay, including its visible connection state and the fact that failed sends are not queued.</li>
+<li>The Mac backend&#39;s current live-session behavior, local shot recording, and the way reconnects create a fresh live session view.</li>
+<li>The documented Zepp calibration procedure and the date-label drift between UTC-based code and local-date guidance.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>A verified recovery procedure that survives a Watch disconnect, an iPhone relay loss, or a backend restart.</li>
+<li>The on-device experience when workout or heart-rate permission is denied.</li>
+<li>Any live first-party Zepp workflow beyond the documented procedure.</li>
+<li>Any alternate deployment shape beyond the fixed local-network address visible in the snapshot.</li>
+<li>Any extra access control outside the reviewed live connection path.</li>
+</ul>
+<p>Before promising supported recovery, rerun the Watch start-up path, drop and restore the iPhone-to-Mac connection, reconnect the backend during an active session, and compare the stored session dates and linked history against a live build. If permission or Zepp support matters to the owner, verify those paths on device rather than assuming the snapshot is enough.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+
 </body>
 </html>

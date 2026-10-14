@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TennisSensor Session Capture — Owner’s Manual</title>
+  <style>body{max-width:52em;margin:2em auto;font-family:sans-serif;line-height:1.5;padding:0 1em}pre.mermaid{background:none;text-align:center}</style>
+  <link rel="stylesheet" href="bt-manual.css" />
+  <script type="module" src="bt-manual.js"></script>
+</head>
+<body>
+<header id="title-block-header"><h1 class="title">TennisSensor Session Capture — Owner’s Manual</h1></header>
+<h1>Owner&#39;s Manual for TennisSensor Session Capture System</h1>
+<p><em>6 generated chapters from the reviewed repository snapshot</em></p>
+<blockquote>
+<p>Source: blue-az/TennisSensor:main@237c60c572be406abe5ed35b2e76fa3a8ae66365</p>
+</blockquote>
+<hr>
+<h2>How A Tennis Session Moves Through The System</h2>
+<p><em>This product is a session-first tennis motion capture system. The user starts on the Apple Watch, the iPhone keeps a local archive and can relay batches onward, and the Mac backend can ingest, mirror, and query sessions for an operator or browser viewer. The owner should treat the session as the main record; swings are derived output layered on top of captured motion, not a separate source of truth.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>This product is a session-first tennis motion capture system. The user starts on the Apple Watch, the iPhone keeps a local archive and can relay batches onward, and the Mac backend can ingest, mirror, and query sessions for an operator or browser viewer. The owner should treat the session as the main record; swings are derived output layered on top of captured motion, not a separate source of truth.</p>
+<p>The important boundary is that the product is split across surfaces. The watch depends on HealthKit approval and an active workout session before capture is stable; the phone can keep data locally and fall back to USB Mode when the Mac is not reachable; and the backend and export surfaces shown in the snapshot do not include an in-app authentication gate. That makes this a product about capture, storage, and controlled movement of tennis data, not a generic dashboard.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>See how one tennis session moves from watch capture to phone archive and then to backend or export surfaces.</li>
+<li>Tell the difference between the session record and derived swing output.</li>
+<li>Recognize which surfaces are core, which are fallback paths, and which are operator-managed extensions.</li>
+<li>Spot the biggest risks around watch prerequisites, network exposure, and recovery assumptions.</li>
+<li>Know which later chapter owns permissions, storage, backend operation, export recovery, and swing interpretation.</li>
+</ul>
+<h3>The Product Shape</h3>
+<p>Think of the product as one tennis session moving through three layers. The Apple Watch is the recorder. The iPhone is the relay and local archive. The Mac backend is an operator-managed extension that can accept data, store it, and expose live or read-only views to a browser viewer.</p>
+<p>The owner should not flatten those layers into one app. Some paths are core to capture, some are fallback or export paths, and some are optional depending on deployment. That matters because the product can still preserve a session locally when the backend is absent, but that does not mean every surface is equally safe or equally complete.</p>
+<p>Sessions are the main record. Swings are derived from captured motion and should be read as interpretation, not the original event. That distinction matters later when you decide how much weight to give the analytics output.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat the watch and phone as the core record path, with backend and export acting as later movement surfaces for the same session data rather than replacements for it.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  W[Watch recorder]
+  S[One tennis session]
+  P[Phone local archive]
+  B[Mac backend]
+  E[Export download]
+  W --&gt;|captures| S
+  S --&gt;|is kept locally on| P
+  P --&gt;|moves onward when reachable| B
+  P --&gt;|can be shared as a download| E
+</code></pre>
+<p>The watch records one tennis session, the phone keeps that session in its local archive, and the phone can then move the same session onward to the Mac backend or expose it through export. The consequence is that capture and local storage are the core path, while backend and export are later transport surfaces.</p>
+<h3>The Session Path</h3>
+<p>On the watch, the user starts a session and the device prepares the workout and motion capture path first. The phone receives sensor batches, stores them locally, and can relay them to the Mac when a configured host responds. If the Mac is not reachable, the phone remains useful as a local archive and can later move data through USB Mode or the export flow.</p>
+<p>The Mac backend accepts session traffic, can mirror live batches to a viewer, and can answer session and swing queries. One important wrinkle is that the backend does not only wait for an explicit session start: a sensor batch can also create backend session state. That makes the live path more flexible, but it also means later chapters need to be precise about what started the session and where the record actually lives.</p>
+<h3>What The Snapshot Supports</h3>
+<ul>
+<li>The watch requests HealthKit approval at startup and starts the workout and extended runtime before motion capture; continuous capture should not be promised without that prerequisite.</li>
+<li>The watch resend path queues stored batches and marks the session transferred afterward, so it is replay-based rather than delivery-confirmed.</li>
+<li>The iPhone probes only two fixed hosts on one port, then falls back to USB Mode if neither responds.</li>
+<li>The iPhone keeps saving sessions and batches locally even when the backend is unavailable.</li>
+<li>The export control starts a local web listener on port 8080 and serves the phone archive as a download.</li>
+<li>The backend exposes ingest, relay, health, list, and detail surfaces directly, and a sensor batch can begin backend session state without a prior start.</li>
+<li>The live backend uses stronger swing settings than the packaged defaults and examples.</li>
+</ul>
+<h3>What Is Strong Here</h3>
+<p>Three strengths stand out. First, the product keeps capture local before it tries to be clever, so a session does not vanish just because the Mac is absent. Second, the system makes the capture, archive, backend, and export surfaces visible enough that an owner can reason about them as separate responsibilities. Third, the product keeps the session record and derived swing output distinct enough that later chapters can discuss analytics without pretending it is the raw record.</p>
+<p>The weakness inside those strengths is that flexibility creates boundary risk. The same architecture that gives you local fallback, export, and live backend access also gives you more places for drift, exposure, and ambiguity to appear.</p>
+<blockquote>
+<p><strong>Figure:</strong> The practical security boundary is network reachability, not an in-app gate. If the operator leaves the network too open, the backend and export surfaces become reachable to clients that should not have them.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  Outside[Any reachable client]
+  subgraph Net[Operator-controlled network]
+    Backend[Backend routes]
+    Export[Phone export listener]
+  end
+  Outside --&gt;|can reach if the network allows it| Backend
+  Outside --&gt;|can reach if the network allows it| Export
+</code></pre>
+<p>An outside client can reach the backend routes and the phone export listener only if the operator-controlled network allows it. There is no shown in-app gate in front of either surface. The consequence is that access control depends on network containment, so exposure becomes a deployment decision.</p>
+<h3>Attention Cards</h3>
+<h4>⚠ Watch resend is queued, not confirmed  <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> Stored batches are replayed and marked transferred afterward, so resend does not wait for delivery confirmation.</p>
+<p><strong>Why it matters:</strong> The owner could mistake queued replay for guaranteed recovery and miss a race that leaves the retry story weaker than it sounds.</p>
+<p><strong>What to do:</strong> Decide whether successful resend must mean confirmed delivery or only queued replay.</p>
+<p><strong>Revisit when:</strong> When session operating model behavior or related owner decisions change.</p>
+<h4>⚠ Backend access depends on network containment  <em>(attention · critical)</em></h4>
+<p><strong>What happens:</strong> The backend surfaces are exposed directly in the snapshot, with no internal gate shown.</p>
+<p><strong>Why it matters:</strong> If the service can be reached beyond the intended network, another client could ingest, mirror, or read product data without the product itself stopping it.</p>
+<p><strong>What to do:</strong> Set the allowed network boundary for the backend and verify it before treating the service as safe to expose.</p>
+<p><strong>Revisit when:</strong> When session operating model behavior or related owner decisions change.</p>
+<h4>⚠ Phone export is a real download surface  <em>(attention · critical)</em></h4>
+<p><strong>What happens:</strong> Starting export opens a local listener that serves the phone archive as a download.</p>
+<p><strong>Why it matters:</strong> Any nearby device that can reach it can fetch the archive, so this is a privacy boundary, not just a helper button.</p>
+<p><strong>What to do:</strong> Choose the allowed exposure for export and treat it as an operator rule.</p>
+<p><strong>Revisit when:</strong> When session operating model behavior or related owner decisions change.</p>
+<h4>⚠ A sensor batch can open a session  <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The backend can create session state from batch traffic even when no prior session start arrived.</p>
+<p><strong>Why it matters:</strong> That changes the meaning of session start and can make lifecycle reporting or troubleshooting misleading if the owner assumes a single entry point.</p>
+<p><strong>What to do:</strong> Decide whether this alternate entry path is intended or should be tightened away.</p>
+<p><strong>Revisit when:</strong> When session operating model behavior or related owner decisions change.</p>
+<h3>Owner Decisions</h3>
+<h4>⚖ Should non-local deployments require an explicit Mac address in the manual?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The phone only probes two fixed hosts, so the owner needs to know whether backend reachability is a setup step or a development assumption.</p>
+<p><strong>Revisit when:</strong> Before changing the related session operating model behavior.</p>
+<h4>⚖ Should the manual say that deployment containment is the only shown access control for the backend?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The inspected backend surfaces do not show an internal gate, so the manual must decide how strongly to warn about network reachability.</p>
+<p><strong>Revisit when:</strong> Before changing the related session operating model behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>The watch startup path, watch resend behavior, iPhone local archive, export listener, and the main backend ingest and read surfaces.</li>
+<li>The way sessions move across watch, phone, and backend, including the distinction between the session record and derived swing output.</li>
+<li>The product scope framing that keeps this chapter on TennisSensor, WatchTennisSensor, and the backend snapshot rather than legacy naming.</li>
+<li>The live swing-setting split, so the manual can warn about drift without confusing packaged defaults with live behavior.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>Deployment-level network containment and who can actually reach the backend or export listener in production.</li>
+<li>The production backend address and topology outside the snapshot.</li>
+<li>Real-device proof that watch resend confirms delivery, or that watch capture always stays alive under every device state.</li>
+<li>Real-world swing accuracy and threshold suitability.</li>
+</ul>
+<p>Recheck the watch start path on a real device, then confirm the phone connection and export screens and the backend routes from the intended network. Verify whether resend now confirms delivery before marking a session transferred, whether the backend is intentionally reachable only inside a controlled network, and whether the live swing settings still differ from the packaged defaults. Rerun this chapter after any change to watchOS, phone networking, backend routing, or export behavior.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+<hr>
+<h2>Recording Sessions Reliably On Apple Watch And iPhone</h2>
+<p><em>This chapter is about readiness, not features. The watch path depends on HealthKit approval and an active workout session before motion capture can keep running, and the phone is the boundary where live handoff, local saving, and fallback behavior start to matter. Live status is useful, but it is not the same as durable delivery.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>This chapter is about readiness, not features. The watch path depends on HealthKit approval and an active workout session before motion capture can keep running, and the phone is the boundary where live handoff, local saving, and fallback behavior start to matter. Live status is useful, but it is not the same as durable delivery. If the Mac connection is part of the intended workflow, the iPhone treats that as a fixed setup problem and falls back to USB Mode when the known connection checks do not respond.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>Know which watch-side approvals and runtime conditions should be in place before asking a user to start a session.</li>
+<li>Understand why a live recording state is not the same as confirmed delivery to the next device.</li>
+<li>See why the iPhone can still be a valid capture boundary even when the Mac is unavailable.</li>
+<li>Know which later chapters take over storage, backend operation, and recovery after the session starts.</li>
+</ul>
+<h3>The Capture Gate</h3>
+<p>Treat session start as a chain of gates. The watch must have the right permission and workout state before motion capture can be trusted, and the phone must be ready to receive or at least retain the data locally. That means the owner should read the start of a session as a readiness check, not as proof that every sample has already reached a durable destination.</p>
+<blockquote>
+<p><strong>Figure:</strong> The watch start path is a gate, not a promise: uninterrupted capture depends on approval, workout readiness, and keep-awake support being in place before the owner trusts the session.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  A[Start session] --&gt; B[Health approval]
+  B --&gt; C[Active workout]
+  C --&gt; D[Keep-awake support]
+  D --&gt; E[Reliable motion capture]
+</code></pre>
+<p>The watch session begins with a start action, but it does not become reliable just because the app is open. Health approval has to be in place, then an active workout has to be running, and then keep-awake support has to hold. Only after those conditions are satisfied can motion capture be treated as reliable.</p>
+<h3>What Has To Be True Before Start</h3>
+<p>On the watch, authorization is requested during startup, and the workout and extended runtime session are started before motion capture begins. The user therefore needs both the permission boundary and the active workout boundary to be in place for continuous recording. On the phone, the connection path to the Mac is not open-ended discovery; the app checks two known hosts and, if neither responds, switches to USB Mode while still saving locally. The watch-to-phone handoff uses WatchConnectivity, but the retry path is queue-based rather than delivery-confirmed, so a live session indicator should not be read as proof of durable delivery.</p>
+<blockquote>
+<p><strong>Figure:</strong> The iPhone treats reachability as a fixed setup decision. The local archive stays protected in either branch, but only a responded host keeps the Mac path open.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  A[Check two known hosts] --&gt; B[Mac route responds]
+  A --&gt; C[Neither host responds]
+  B --&gt; D[Keep the Mac path open]
+  C --&gt; E[Switch to USB Mode]
+  B --&gt; F[Keep saving locally]
+  E --&gt; F
+</code></pre>
+<p>The iPhone checks two known hosts on the fixed health route. If one responds, it can keep the Mac path open. If neither responds, it switches to USB Mode. In both cases it continues saving locally, so capture can keep going even when the Mac is not reachable.</p>
+<h3>What The Evidence Shows</h3>
+<p>The watch flow requests HealthKit approval when it initializes. The watch flow also starts the workout session before motion capture and warns that recording without an active workout session may be interrupted by screen sleep. The watch resend path queues stored batches and only then marks them transferred, so it does not wait for a delivery acknowledgment before moving on. The iPhone probes only two known Mac targets on one health route, then falls back to USB Mode if neither responds, while keeping local saving active. Those facts establish a clear boundary: capture can be live even when the next hop is not yet proven durable.</p>
+<blockquote>
+<p><strong>Figure:</strong> Live capture can be true before delivery is proven, because the retry path queues stored batches first and only marks them transferred afterward.</p>
+</blockquote>
+<pre class="mermaid"><code>stateDiagram-v2
+  [*] --&gt; Live capture
+  Live capture --&gt; Batches queued: store batches and resend them
+  Batches queued --&gt; Transfer flagged: mark transferred later
+  Transfer flagged --&gt; [*]
+</code></pre>
+<p>The watch can be in live capture while stored batches are still waiting in a resend queue. Those batches are handed off first, and the transferred flag is updated afterward. That means the session can look active before the next device has confirmed delivery.</p>
+<h3>What This Design Gets Right</h3>
+<p>The design makes the risky parts visible early. It forces the watch permission and workout boundary into the start path, rather than letting the user assume recording is fine in the background. It also gives the phone a local fallback, so the session can still be retained even when the Mac connection is missing. The resend path adds a recovery step for interrupted transfer, which is useful as long as the owner does not mistake it for a delivery guarantee.</p>
+<h3>Attention Cards</h3>
+<p>The main risk is authority drift: the user may think a session is ready when the watch still lacks the permission or workout state it needs for uninterrupted capture. The second risk is delivery drift: a live session can exist before the data is safely handed off to the next device. The third risk is configuration drift: the iPhone does not search broadly for a Mac, so the expected connection has to be set up deliberately or the app will stay in its fallback mode.</p>
+<h4>⚠ Health And Workout Setup Is Not Optional  <em>(attention · critical)</em></h4>
+<p><strong>What happens:</strong> The watch asks for approval on startup, but continuous motion capture depends on an active workout session and extended runtime support before recording begins.</p>
+<p><strong>Why it matters:</strong> If the user starts a session without those prerequisites, the owner may believe capture is safe when it can still be interrupted by the device sleeping.</p>
+<p><strong>What to do:</strong> Make the start-of-session checklist explicit, and decide whether the product should block or strongly warn when watch approval or workout readiness is missing.</p>
+<p><strong>Revisit when:</strong> When capture prerequisites behavior or related owner decisions change.</p>
+<h4>⚠ The Mac Link Is A Fixed Setup  <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The iPhone only checks two known hosts on one health route before falling back to USB Mode, while still keeping local saving active.</p>
+<p><strong>Why it matters:</strong> If the owner expects any nearby Mac to work, sessions may look connected in one place and unavailable in another.</p>
+<p><strong>What to do:</strong> Decide whether owners must configure the Mac address explicitly and whether USB Mode should be documented as the normal fallback.</p>
+<p><strong>Revisit when:</strong> When capture prerequisites behavior or related owner decisions change.</p>
+<h3>Owner Decisions</h3>
+<p>Decide whether the watch should present HealthKit approval and workout setup as mandatory prerequisites in the start flow, or whether the product should merely warn and let the user continue. Decide whether live status should be described as capture started or as data safely delivered, because those are not the same thing in the reviewed behavior. Decide whether Mac reachability is a required setup step for the owner or an operator-managed extension that can be absent without breaking the product story.</p>
+<h4>⚖ Should the manual require HealthKit approval and workout setup before promising uninterrupted watch capture?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The watch capture path can be interrupted without an active workout session, and approval is requested during initialization.</p>
+<p><strong>Revisit when:</strong> Before changing the related capture prerequisites behavior.</p>
+<h4>⚖ Should the manual describe live capture as started only after durable delivery is confirmed?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The current retry path is queue-based and does not wait for a delivery acknowledgment, so live status and safe delivery are different states.</p>
+<p><strong>Revisit when:</strong> Before changing the related capture prerequisites behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>The watch startup path was reviewed for its permission request, workout start, and runtime support before motion capture begins.</li>
+<li>The watch-to-phone transfer path was reviewed for its queued resend behavior and its difference from delivery confirmation.</li>
+<li>The iPhone connection path was reviewed for its fixed Mac probe list, local saving, and USB Mode fallback.</li>
+<li>This chapter was kept within the capture-prerequisites scope so it does not retell storage, export, or swing analysis.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>We did not verify every real watchOS device state or prove uninterrupted capture under all conditions.</li>
+<li>We did not verify the exact production backend deployment shape or network containment.</li>
+<li>We did not verify the later storage, export, recovery, or swing-accuracy chapters here.</li>
+</ul>
+<p>Run the current watch and phone on a real device pair, start a session from a clean state, confirm that approval and workout setup appear before capture begins, and check whether the phone reaches the Mac through the known connection path or falls back to USB Mode. If the product promise changes, recheck whether the UI should block, warn, or allow capture to continue when readiness is incomplete.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+<hr>
+<h2>Where Session Data Lives And What Counts As The Record</h2>
+<p><em>Session data lives in layers, not in one place. The watch keeps the first local copy so a session can be retried later. The iPhone keeps the owner&#39;s local archive and can also expose or erase it. When the Mac backend is reachable, it keeps its own retained copy and may add derived swing or shot records.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>Session data lives in layers, not in one place. The watch keeps the first local copy so a session can be retried later. The iPhone keeps the owner&#39;s local archive and can also expose or erase it. When the Mac backend is reachable, it keeps its own retained copy and may add derived swing or shot records. Transfer, resend, and export all create more copies; the reviewed evidence does not prove that any one of them becomes the only record.</p>
+<p>For the owner, the key question is not where data exists at all, but which copy is treated as the record, which copy is a duplicate, and which copy may be safely removed.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>Separate the watch copy, the iPhone archive, and the backend record without collapsing them into one story.</li>
+<li>See why transfer and export add copies instead of proving that earlier copies disappeared.</li>
+<li>Recognize where resend, batch retries, and local clear can change the storage trail.</li>
+<li>Decide what backup and retention rule should exist before the phone archive can be deleted.</li>
+<li>Understand that the evidence does not settle one final source of truth after transfer.</li>
+</ul>
+<h3>Mental Model</h3>
+<p>Think in layers. The watch is the first storage point and keeps batches so capture can be retried. The iPhone is the owner&#39;s local archive and remains useful even when the backend cannot be reached. The backend chapter owns operator duties and queries; here the storage fact is simply that a backend copy can exist independently of the phone archive. These layers can overlap, so a session may exist on more than one of them at once, and moving data does not automatically erase the earlier copy.</p>
+<p>The practical rule is simple: watch storage protects capture, phone storage protects the local archive, and backend storage protects the operator-side retained record. That is enough to make the product resilient, but it is not enough to prove a single final authority.</p>
+<blockquote>
+<p><strong>Figure:</strong> Redundancy is real, but it does not settle ownership. The owner should treat transfer and export as copy-making paths until a separate policy says which copy, if any, is authoritative.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+    W[Watch copy]
+    P[iPhone archive]
+    B[Backend copy]
+    S[One session can live here]
+    M[Transfer or export adds another copy]
+    R[No sole record is proven]
+
+    W --&gt; S
+    P --&gt; S
+    B --&gt; S
+    S --&gt; M
+    M --&gt; R
+</code></pre>
+<p>The diagram shows three places where one session can exist at the same time: the watch, the iPhone archive, and the backend copy. Those copies can overlap, and transfer or export can add another copy instead of removing the earlier ones. The consequence is that the reviewed evidence does not prove a single final record, so deletion and retention rules need a separate policy.</p>
+<h3>How It Works</h3>
+<p>On the watch, stored session batches are queued for resend later, so recovery is based on retrying stored data rather than on a delivery-confirmed handoff. On the iPhone, batches and sessions are saved locally first, and the phone can still fall back to its local archive path when the Mac is not available. On the backend, incoming sensor batches are written into stored session and raw motion records, and derived swing results or shot records can also be created from that flow.</p>
+<p>One lifecycle wrinkle matters to owners: a backend batch can create session state even when the explicit start message never arrived. That means the record trail can begin from more than one path, which is useful for recovery but awkward for cleanup and audit. The export chapter owns the mechanics of moving data out; here the key point is that export adds another copy, while Clear Database removes only the phone-local archive.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should read resend and export as copy-producing paths, while the clear action is the only one that actually erases the local archive on the phone.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+    C[Stored session]
+    R[Watch resend]
+    E[Archive download]
+    X[Phone archive wipe]
+    A[Retries stored batches without delivery proof]
+    B[Creates another copy]
+    D[Removes the phone archive]
+
+    C --&gt; R --&gt; A
+    C --&gt; E --&gt; B
+    C --&gt; X --&gt; D
+</code></pre>
+<p>From stored session data, watch resend retries saved batches without proving delivery, archive download creates another copy that can be fetched from the phone, and the wipe action removes the phone-local archive. The consequence is that two paths add copies while only one path deletes the local copy, so cleanup rules must not treat all three the same.</p>
+<blockquote>
+<p><strong>Figure:</strong> Backend session state can begin from either a start message or batch traffic, so the owner cannot assume one required first event.</p>
+</blockquote>
+<pre class="mermaid"><code>stateDiagram-v2
+    state &quot;Waiting for first event&quot; as W
+    state &quot;Session starts here&quot; as S
+    state &quot;Batch traffic starts here&quot; as B
+    state &quot;Backend session state&quot; as A
+
+    [*] --&gt; W
+    W --&gt; S: session start arrives
+    W --&gt; B: batch traffic arrives first
+    S --&gt; A: creates backend session state
+    B --&gt; A: also creates backend session state
+    A --&gt; [*]
+</code></pre>
+<p>The lifecycle starts in a waiting state. From there, a session can begin when a start message arrives, or it can begin when batch traffic arrives first. Either path leads to backend session state. The consequence is that the record trail can start from more than one event, so provenance and cleanup rules cannot assume one fixed entry point.</p>
+<h3>Verified Facts</h3>
+<ul>
+<li>The watch keeps session data locally and only queues resend from stored batches after its connection path is active.</li>
+<li>The iPhone saves every batch and session locally, can fall back to USB Mode when its Mac probes do not answer, and can start a download listener for the local archive.</li>
+<li>Clear Database permanently deletes the phone-local session and raw motion rows and then compacts the file.</li>
+<li>The backend stores sessions, raw motion records, and derived swing or shot records, and a sensor batch can create backend session state without a prior start message.</li>
+<li>The reviewed snapshot does not settle one final record-of-truth policy after transfer or export.</li>
+</ul>
+<h3>Strengths</h3>
+<p>The strongest part of this lifecycle is redundancy. The same session can survive on the watch, on the phone, and on the backend, so one failed link does not automatically destroy the only copy. The product also keeps local archive behavior explicit: the owner can see when the phone is holding data, when it can be exported, and when it can be wiped. Finally, the backend keeps raw motion records separate from derived output, which makes it possible to treat interpretation as a layer on top of capture rather than as the capture itself.</p>
+<p>Those strengths stop where authority becomes ambiguous. Redundancy helps recovery, but it does not answer which copy should be treated as final.</p>
+<h3>Attention Cards</h3>
+<h4>⚠ Record authority is unsettled  <em>(attention · critical)</em></h4>
+<p><strong>What happens:</strong> The watch, phone, export surface, and backend can all hold copies of the same session, but the evidence does not prove which copy becomes the final record after transfer or export.</p>
+<p><strong>Why it matters:</strong> If the owner assumes one copy has replaced the others, deletion, backup, and downstream use can all be wrong.</p>
+<p><strong>What to do:</strong> Assign one record policy for each transfer path, then verify the watch, phone, and backend behavior against that policy before any deletion rule is written.</p>
+<p><strong>Revisit when:</strong> When session data lifecycle behavior or related owner decisions change.</p>
+<h4>⚠ Resend can double back on itself  <em>(attention · high)</em></h4>
+<p><strong>What happens:</strong> The watch queues stored batches and marks the session transferred afterward, without waiting for a delivery acknowledgment.</p>
+<p><strong>Why it matters:</strong> Repeated resend attempts can produce ambiguous recovery outcomes and make duplicate handling harder to reason about.</p>
+<p><strong>What to do:</strong> Either block repeated resend taps until the transfer state settles or add explicit delivery acknowledgment before the manual calls recovery complete.</p>
+<p><strong>Revisit when:</strong> When session data lifecycle behavior or related owner decisions change.</p>
+<h4>⚠ Clear removes the phone archive  <em>(attention · critical)</em></h4>
+<p><strong>What happens:</strong> The Clear Database action permanently deletes the local session and raw motion rows on the iPhone, then compacts the file.</p>
+<p><strong>Why it matters:</strong> If the phone archive is the only retained copy, this action can remove the working record entirely.</p>
+<p><strong>What to do:</strong> Require an export or backup step before allowing the clear action, or state plainly that the local archive may be lost.</p>
+<p><strong>Revisit when:</strong> When session data lifecycle behavior or related owner decisions change.</p>
+<h3>Owner Decisions</h3>
+<h4>⚖ Should the manual require a backup or export before the phone archive can be cleared?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> Clear Database is an irreversible local wipe, so the owner needs a policy for whether the archive must be saved elsewhere first.</p>
+<p><strong>Revisit when:</strong> Before changing the related session data lifecycle behavior.</p>
+<h4>⚖ Should resend wait for explicit delivery acknowledgment before recovery is called complete?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The current resend path is queue-based and can race its own transfer flag, so the manual should not promise confirmed delivery unless the behavior changes.</p>
+<p><strong>Revisit when:</strong> Before changing the related session data lifecycle behavior.</p>
+<h4>⚖ Should the manual tell owners to restrict network exposure before starting the archive download listener?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The listener serves the local archive without a caller identity check, so exposure policy directly changes who can copy the data.</p>
+<p><strong>Revisit when:</strong> Before changing the related session data lifecycle behavior.</p>
+<h4>⚖ Should backend batch traffic be treated as an intended way for a session record to begin?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> A batch can create backend session state even when the explicit start message never arrived, which changes how the owner should think about provenance and cleanup.</p>
+<p><strong>Revisit when:</strong> Before changing the related session data lifecycle behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>I reviewed the session lifecycle across the watch, the phone archive, and the backend store so this chapter stays within the storage boundary.</li>
+<li>I reviewed the watch resend path, the phone clear action, and the archive download surface because they change what remains stored and who can copy it.</li>
+<li>I reviewed the backend persistence path, including stored sessions, raw motion records, and derived swing or shot records, because it affects what counts as retained data.</li>
+<li>I reviewed the backend batch-driven start path because record timing can begin from more than one event.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>I did not verify production deployment topology, host containment, or any external proxy rules around the backend or the phone download listener.</li>
+<li>I did not verify delivery acknowledgments for watch resend or real-world duplicate suppression after repeated retries.</li>
+<li>I did not verify real-world swing accuracy or any broader analytics promise beyond the fact that some backend output is derived.</li>
+</ul>
+<p>After any change to resend, export, or clear behavior, rerun the full session path and check what remains on the watch, the phone, and the backend. If the owner wants one final record policy, compare the observed copies before and after transfer or deletion and write that policy down before allowing cleanup. If network exposure or deployment changes, recheck who can reach the backend and the archive download listener.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+<hr>
+<h2>When The Mac Backend Matters</h2>
+<p><em>The Mac backend matters when the owner wants this product to do more than keep capture local. It does not replace the watch or iPhone path; it adds an operator-managed layer that can accept live session data, mirror it into a browser viewer, and answer questions about stored sessions and swings. The viewer is only the mirrored browser surface.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>The Mac backend matters when the owner wants this product to do more than keep capture local. It does not replace the watch or iPhone path; it adds an operator-managed layer that can accept live session data, mirror it into a browser viewer, and answer questions about stored sessions and swings.</p>
+<p>The viewer is only the mirrored browser surface. The operator owns whether the Mac service is reachable, how it is exposed, and whether the deployment boundary is strong enough for the data it carries. The reviewed evidence also shows two sharp risks: the inspected backend does not show an in-app access gate, and a batch can create backend session state even when a separate start signal was never seen.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>Understand that the Mac backend extends capture instead of replacing the watch and iPhone workflow.</li>
+<li>Tell the difference between the operator-facing backend and the browser viewer that only mirrors live data.</li>
+<li>See how live ingest, stored-session queries, and swing queries fit together on the backend.</li>
+<li>Notice the two most important drift points: access control and unexpected session start behavior.</li>
+<li>Know which questions belong in the backend chapter and which ones belong to the storage, capture, or export chapters.</li>
+</ul>
+<h3>What The Mac Backend Is For</h3>
+<p>The Mac backend is the operator-managed part of the system. It sits behind the watch and iPhone capture path, not in place of it. Its job is to accept live session data, keep stored sessions queryable, and mirror live activity into a browser viewer when the operator wants that extra surface.</p>
+<p>That makes the backend a meaningfully different experience from device-local capture. When it is part of the product flow, the owner is no longer just asking whether the watch recorded a session. The owner is also asking whether the Mac service is reachable, whether the browser mirror is useful, and whether the deployment boundary is actually strong enough for live data.</p>
+<blockquote>
+<p><strong>Figure:</strong> The browser viewer is only a mirrored surface, not the protection layer. If the backend is reachable, the real guard has to live in deployment containment outside the inspected app code.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  O[operator] --&gt; B[Mac backend]
+  B --&gt; R[ingest, mirror, and read surfaces]
+  B --&gt; V[browser viewer]
+  V --&gt; M[mirrors live data]
+  C[deployment containment] -. protects the edge .-&gt; B
+</code></pre>
+<p>The operator runs the Mac backend. The backend exposes ingest, mirror, and read surfaces, and the browser viewer only mirrors live data from that backend. The deployment boundary is the thing that would have to protect the edge, because the inspected app code does not show an in-app gate. The consequence for the owner is that safe exposure depends on containment outside the app, not on the viewer.</p>
+<h3>Operator And Viewer</h3>
+<p>The operator runs the Mac backend and keeps its ingest, mirror, and query surfaces available. The viewer is not a second operator role. It is a browser client that mirrors live batches so someone can watch the data flow without taking over the capture devices.</p>
+<p>The backend can accept live session start signals and batch traffic. It stores incoming motion in its local store, can derive swing records while it is doing that work, and exposes read pages for health, stored sessions, one session at a time, and swings. The reviewed snapshot does not show an in-app access gate around those surfaces, so reachability itself is the visible boundary in the evidence we have.</p>
+<h3>Facts The Manual Can State</h3>
+<p>Three facts are stable enough to write down. First, the backend persists session records, swing records, and raw motion buffers in its local store. Second, the live backend uses stronger swing-detection settings than the reusable detector defaults and example code. Third, the runtime can create backend session state from batch traffic even if a separate start signal never arrived.</p>
+<p>These are not cosmetic implementation details. They change how an owner should read a missing start, a live mirror, or a swing count. If the chapter treats the live backend as a simple helper, it will understate the way the backend can change the meaning of the data it receives.</p>
+<h3>Why This Layer Exists</h3>
+<p>The backend gives the owner a single place to centralize live ingest, keep stored sessions available for later questions, and let a browser viewer watch the live feed without touching the watch or iPhone. That is useful when the product needs more than local capture, especially for review and operator oversight.</p>
+<p>It is also honest about one important thing the manual should preserve: the live backend settings are explicit. The chapter can say what the backend actually runs, instead of pretending the reusable default numbers are the same thing. That clarity is a strength only if the manual keeps the live path and the generic default path separate.</p>
+<h3>Attention Cards</h3>
+<h4>⚠ Live Swing Settings Do Not Match The Defaults  <em>(attention · medium)</em></h4>
+<p><strong>What happens:</strong> The running backend uses different swing-detection values from the reusable detector defaults and example code.</p>
+<p><strong>Why it matters:</strong> If operators or scripts assume the default numbers are the live numbers, they will read the backend behavior incorrectly.</p>
+<p><strong>What to do:</strong> Document the live values separately from the reusable defaults and keep tests pointed at the same numbers the backend actually runs.</p>
+<p><strong>Revisit when:</strong> When backend operator model behavior or related owner decisions change.</p>
+<h3>Owner Decisions</h3>
+<h4>⚖ Should the manual separate the live swing settings from the reusable detector defaults?  <em>(owner decision · open)</em></h4>
+<p><strong>Why it matters:</strong> The live backend and the reusable detector class do not use the same numbers, so a reader can be misled if the manual presents only one set of values.</p>
+<p><strong>Revisit when:</strong> Before changing the related backend operator model behavior.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>I reviewed the scoped product evidence that keeps the manual inside the TennisSensor and WatchTennisSensor snapshot and uses session, swing, and raw motion buffer as the working nouns.</li>
+<li>I reviewed the backend evidence showing live ingest, browser mirroring, stored session and swing records, and query pages for health and lookups.</li>
+<li>I reviewed the evidence that the inspected backend does not show an in-app access gate and that its live swing settings differ from the reusable detector defaults.</li>
+<li>I reviewed the evidence that a batch can create backend session state even when a separate start signal never arrived.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>I did not review deployment-layer containment, real host setup, or any proxy or firewall policy outside the app code.</li>
+<li>I did not review real-world analytics accuracy, host discovery beyond the hard-coded probe behavior, or whether the batch-start behavior is intended.</li>
+<li>I did not review any external infrastructure or missing services that are outside the scoped snapshot.</li>
+</ul>
+<p>Recheck this chapter when the backend app, deployment shape, or analytics settings change. Verify the exposed Mac service entry points, confirm whether a lone batch is accepted as a start point, and confirm where access control actually lives before treating the backend as safe to expose.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+<hr>
+<h2>Export, Resend, And Recovery Responsibilities</h2>
+<p><em>Export and recovery are the parts of the product where session data leaves the normal recording path or is intentionally cleared. The watch can resend stored session batches, the iPhone can keep saving locally when the Mac is unreachable and switch to USB Mode, and the iPhone can expose the local archive as a web download.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>Export and recovery are the parts of the product where session data leaves the normal recording path or is intentionally cleared. The watch can resend stored session batches, the iPhone can keep saving locally when the Mac is unreachable and switch to USB Mode, and the iPhone can expose the local archive as a web download. The hard boundary is that the reviewed evidence does not support a promise of delivery-confirmed recovery, duplicate-proof resend, or safe public exposure by default.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>See which actions are recovery tools and which are destructive cleanup.</li>
+<li>Understand that watch resend is queued replay, not delivery-confirmed recovery.</li>
+<li>Know that the iPhone keeps local data, falls back to USB Mode, and can expose the archive over a local web download.</li>
+<li>Know where the manual stops short of promising duplicate-free or end-to-end recovery.</li>
+</ul>
+<h3>Mental Model</h3>
+<p>Think of this chapter as the system&#39;s exit controls for session data. Normal capture produces local records first; from there, the product can retry movement from the watch, move the archive out through the phone, or remove the local copy entirely.</p>
+<p>These are not interchangeable. A resend tries to recover transfer. An export creates a new copy outside the phone. Clear Database removes the current local copy. The owner&#39;s job is to decide which exits are allowed in practice and who is responsible for the copy after it leaves the device.</p>
+<h3>How It Works</h3>
+<p>On the watch, resend walks through the stored batches and queues them through the watch connection, then marks the session as transferred afterward. That means the retry path is based on queueing, not on a confirmed delivery signal. If the user taps resend more than once, the behavior can race its own transfer flag.</p>
+<p>On the iPhone, the app checks only two known backend addresses. If neither responds, it switches to USB Mode and continues saving locally. When the operator starts the HTTP export surface, the phone offers the local database file as a download to any caller that can reach it. The evidence does not say who should receive that file, so the owner has to set the containment rule.</p>
+<p>Clear Database is separate from export. It deletes the phone-local session and raw motion records and then compacts the file. That is a cleanup action, not a recovery action.</p>
+<blockquote>
+<p><strong>Figure:</strong> Resend is a queued replay path, so the watch can move stored work forward without proving that delivery finished. Owners should read this as best-effort recovery, not confirmed completion.</p>
+</blockquote>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as user
+    participant W as watch app
+    participant S as stored batches
+    participant L as watch connection
+    participant F as transferred flag
+    U-&gt;&gt;W: taps resend
+    W-&gt;&gt;S: reads stored batches
+    loop for each stored batch
+        W-&gt;&gt;L: queues the batch
+    end
+    W--&gt;&gt;F: marks the session transferred
+    Note over W,F: transfer marking happens after queueing, not after a delivery signal
+</code></pre>
+<p>The user taps resend. The watch reads the stored batches, queues each batch through the watch connection, and only after that marks the session transferred. The consequence is that resend is replay-based and does not prove delivery before the session state changes.</p>
+<blockquote>
+<p><strong>Figure:</strong> The phone can stay in a local-saving path when the Mac is unavailable, but starting HTTP export crosses a real exposure boundary. Once that listener is up, reachability becomes the owner’s containment problem.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+    subgraph P[&quot;iPhone local side&quot;]
+        A[&quot;Mac is unreachable&quot;] --&gt; B[&quot;USB Mode&quot;] --&gt; C[&quot;Keep saving locally&quot;] --&gt; D[&quot;Local archive&quot;]
+        D --&gt; E[&quot;HTTP export listener&quot;]
+    end
+    N[&quot;Any caller on the network&quot;]
+    N -. reaches .-&gt; E
+    E --&gt; F[&quot;Caller gets the archive&quot;]
+</code></pre>
+<p>When the Mac is unreachable, the iPhone falls back to USB Mode and keeps saving locally into the phone-local archive. If HTTP export is started, any caller that can reach the listener can get the archive. The consequence is that export is a network exposure boundary, not just a convenience feature.</p>
+<h3>Verified Facts</h3>
+<p>The watch retry path stores session batches locally and resends them through the watch connection, then marks them transferred afterward. It does not wait for delivery confirmation before making that state change.</p>
+<p>The iPhone keeps saving locally even when the Mac is not reachable. It only checks two known backend addresses, and if neither answers it falls back to USB Mode.</p>
+<p>The phone can start a local web download service for the database file. Once that listener is active, the file is available to any caller that can reach it.</p>
+<p>Clear Database permanently removes the phone-local archive and compacts it afterward.</p>
+<p>The reviewed backend surfaces are directly reachable in the code snapshot, so export and recovery cannot assume an internal access gate on the destination side.</p>
+<blockquote>
+<p><strong>Figure:</strong> Clear Database is not a soft reset. It removes the phone-local archive and then compacts the file, so the owner loses the local record unless it was already exported or backed up.</p>
+</blockquote>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; Present
+    Present: phone-local archive exists
+    Present --&gt; Wiping: Clear Database
+    Wiping: delete sessions and raw sensor records
+    Wiping --&gt; Compacted: compact the file
+    Compacted --&gt; [*]
+</code></pre>
+<p>The lifecycle starts with a phone-local archive. Clear Database moves that archive into a wiping state, deletes the sessions and raw sensor records, and then compacts the file before ending. The consequence is irreversible local deletion, not a recovery-preserving reset.</p>
+<h3>Strengths</h3>
+<p>The product is explicit about its fallback and exit paths. That is useful for owners because recovery is not hidden inside the capture flow: the watch can retry stored work, the phone can keep operating offline, and the archive can be moved out through a deliberate export step.</p>
+<p>The same explicitness is also the limit. The reviewed evidence makes the transfer and cleanup steps visible, but it does not make them safe by default. Safety still depends on the owner deciding who can reach export, when to clear, and what counts as a successful recovery.</p>
+<h3>Attention Cards</h3>
+<h3>Owner Decisions</h3>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>The watch retry path stores session batches locally, resends them through the watch connection, and marks them transferred afterward.</li>
+<li>The iPhone keeps saving locally, checks only two known backend addresses, and falls back to USB Mode if neither responds.</li>
+<li>The phone can start a local web download service for the database file.</li>
+<li>Clear Database permanently removes the phone-local archive and compacts it.</li>
+<li>The reviewed backend surfaces are directly reachable in the code snapshot, so export and recovery cannot assume an internal access gate.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>Who is allowed to reach the export listener or the backend in production.</li>
+<li>Whether resend has delivery acknowledgment, duplicate suppression, or full end-to-end recovery guarantees.</li>
+<li>Whether the product is expected to use a non-local backend deployment by default.</li>
+<li>Whether owners should always back up before clearing local data.</li>
+<li>Whether exported files are meant for an operator, a support person, or another system.</li>
+</ul>
+<p>Recheck the current watch resend flow, the iPhone&#39;s backend reachability test, the export listener, and the clear action in a live build. Then confirm whether deployment containment, delivery acknowledgments, and pre-clear backup rules are now enforced or still only operational choices.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+<hr>
+<h2>What Swings And Speed Estimates Mean</h2>
+<p><em>Swings and speed estimates sit downstream of session capture, storage, and backend handling. They are derived output, not the core record. This chapter comes after the capture, storage, and backend chapters because it explains what the numbers mean after the session exists. The current evidence keeps that meaning cautious.</em></p>
+<h3>One-Minute Snapshot</h3>
+<p>Swings and speed estimates sit downstream of session capture, storage, and backend handling. They are derived output, not the core record. This chapter comes after the capture, storage, and backend chapters because it explains what the numbers mean after the session exists.</p>
+<p>The current evidence keeps that meaning cautious. The live backend uses different swing settings from the reusable detector defaults, and the backend can also accept a batch that creates session state before a clean start is seen. The owner should talk about swing output as a reading of the session, not as proof that the product has solved classification or speed measurement.</p>
+<h3>What You Should Be Able To Explain</h3>
+<ul>
+<li>Distinguish the captured session from the swing output derived from it.</li>
+<li>Explain why this chapter comes after capture, storage, and backend coverage.</li>
+<li>Describe counts and speed estimates without overstating what they prove.</li>
+<li>Notice that the live backend tuning differs from the reusable defaults.</li>
+<li>Know when to ask for the raw session instead of relying on the count alone.</li>
+<li>Understand what would have to change if analytics became the main product promise.</li>
+</ul>
+<h3>Sessions First, Swing Output Second</h3>
+<p>The owner should read swing output as a later interpretation of a session, not as the session itself. The recorded session and its raw motion data are the primary record; the swing count and speed estimate are readings derived from that record. That is why this chapter belongs after the capture, storage, and backend chapters. Those chapters explain how the record is created and retained. This one explains what the derived numbers can and cannot claim.</p>
+<p>One extra caution matters here. The backend can accept a batch and build session state even before a clean start message has arrived, so early swing output should be treated carefully rather than as proof that the lifecycle began exactly where the owner expected.</p>
+<blockquote>
+<p><strong>Figure:</strong> The owner should treat the session as the evidence and the numbers as interpretations of that evidence. If the count or speed estimate looks surprising, the first question is whether the underlying session supports it, not whether the output should replace the record.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  A[Captured session and raw motion] --&gt; B[Primary record]
+  A --&gt; C[Swing count]
+  A --&gt; D[Speed estimate]
+  C --&gt; E[Later reading]
+  D --&gt; E
+</code></pre>
+<p>The diagram shows a captured session and its raw motion as the primary record. From that same session, the product produces a swing count and a speed estimate as later readings. The practical consequence is that the owner should explain the numbers as derived output, not as the source of truth.</p>
+<h3>How The Numbers Are Produced</h3>
+<p>The running backend does not use the same swing settings as the reusable detector defaults. In the live path it uses a larger motion buffer, a higher motion threshold, and a wider minimum gap between counted swings. That split matters because it means the numbers the product actually runs with are not the same as the numbers shown by the reusable default configuration.</p>
+<p>Speed is also derived, not measured directly. The backend estimates speed from the motion it sees, then suppresses near-duplicate peaks so the same motion is not counted twice too easily. When real-time detection is turned off, the session-end path records a zero shot count instead of pretending a swing total was measured live. The result is useful output, but still output: it is a calculation layered on top of the session, not a second source of truth.</p>
+<blockquote>
+<p><strong>Figure:</strong> The shipped behavior and the reusable defaults do not tell the same story. If documentation quotes the smaller defaults as though they were the live runtime, the owner will understate what the product actually runs with and future edits can drift unnoticed.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart LR
+  subgraph L[Live backend]
+    A[Shipped runtime] --&gt; B[300-sample buffer, 10.0 rad/s threshold, 150-sample gap]
+  end
+  subgraph D[Reusable detector and example code]
+    C[Library defaults] --&gt; E[Smaller settings]
+  end
+  B -. do not blur together .- E
+</code></pre>
+<p>The comparison shows two separate branches. One branch is the live backend, which runs the stronger 300-sample buffer, 10.0 rad/s threshold, and 150-sample gap. The other branch is the reusable detector and example code, which still show smaller defaults. The consequence is that the owner must document the live runtime separately so shipped behavior is not confused with library defaults.</p>
+<h3>What The Snapshot Proves</h3>
+<p>The reviewed evidence supports four plain statements. First, the live backend uses a 300-sample buffer, a 10.0 rad/s threshold, and a 150-sample minimum distance. Second, the reusable detector still ships with smaller default settings for standalone callers and example code. Third, the backend estimates speed from motion rather than reading a measured speed value from the session itself. Fourth, a batch can create backend session state even when no prior start message arrived.</p>
+<p>These facts matter because they change how the owner should read a number on the screen. A swing count is not the same thing as a validated claim about play quality, and a speed estimate is not the same thing as a directly measured speed reading.</p>
+<blockquote>
+<p><strong>Figure:</strong> A batch can cross into the backend and start session handling on its own, so a missing clean start is not proof that the lifecycle never began. The consequence is that early swing output needs cautious reading until the session path is confirmed.</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+  subgraph Outside[Outside the backend]
+    A[Sensor batch message]
+    B[Clean start message]
+  end
+  subgraph Inside[Inside the backend]
+    C[Session state appears]
+    D[Detector is created]
+    E[Batch keeps processing]
+    F[Early output stays provisional]
+  end
+  A --&gt; C
+  C --&gt; D --&gt; E --&gt; F
+  B -. not required first .-&gt; C
+</code></pre>
+<p>The diagram separates what arrives from outside the backend from what happens inside it. A sensor batch message can create session state, cause a detector to be created, and keep the batch moving forward even if a clean start message has not arrived first. The practical consequence is that a missing start message does not prove the lifecycle never began, so early output should be treated as provisional.</p>
+<h3>Why The Split Is Useful</h3>
+<p>The product keeps the raw session material and the derived swing output side by side instead of collapsing everything into one opaque summary. That gives the owner a clean way to speak about the product honestly: the session remains the record, and the swing count remains interpretation. It also keeps the live backend settings visible enough that the gap between shipped behavior and reusable defaults can be named instead of guessed.</p>
+<p>That clarity is the main strength here. It lets the manual preserve the difference between what was captured, what was derived, and what still needs more evidence before it can be promoted into a stronger claim.</p>
+<h3>Attention Cards</h3>
+<h3>Owner Decisions</h3>
+<p>If the owner later wants swing analytics to become the headline promise instead of a secondary reading of sessions, this chapter should become more central in the book and its cautions should become stricter. For now, the safest positioning is capture-first: the session is the thing the product proves first, and the swing output is the thing it interprets afterward.</p>
+<p>The practical consequence is simple. Until the owner elevates analytics on purpose, the manual should keep treating swing counts and speed estimates as support for the session story rather than a replacement for it.</p>
+<h3>Evidence Boundary</h3>
+<blockquote>
+<p><strong>Evidence boundary</strong> — Reviewed:</p>
+</blockquote>
+<ul>
+<li>I reviewed the scoped product evidence that keeps the manual inside the TennisSensor and WatchTennisSensor snapshot and preserves session, swing, and raw motion data as the working vocabulary.</li>
+<li>I reviewed the live backend swing settings, the reusable default settings, and the motion-based speed estimate.</li>
+<li>I reviewed the backend path where a batch can create session state before a clean start message is seen.</li>
+</ul>
+<p>Not reviewed:</p>
+<ul>
+<li>I did not review real-world swing accuracy or whether the current tuning matches actual play.</li>
+<li>I did not review a final product decision that makes analytics the primary promise.</li>
+<li>I did not review deployment-layer access control or network containment around the backend.</li>
+</ul>
+<p>Recheck the live backend settings and the reusable default settings whenever the analytics code changes. If the owner later changes product positioning, reread this chapter alongside the capture and storage chapters and decide whether swing output should move closer to the front of the manual.</p>
+<blockquote>
+<p>Reviewed: Reviewed repository snapshot, Founder/owner context</p>
+</blockquote>
+<blockquote>
+<p>Not reviewed: External runtime and integrations, Unreviewed runtime and owner context</p>
+</blockquote>
+
+</body>
+</html>
