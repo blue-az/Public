@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short-prompt service responsiveness | Bulkhead &tau;</title>
+    <meta name="description" content="Five matched short prompts per service on TestBench, Z13, and hosted GPT-6 Luna. Client-observed latency, not a hardware ranking.">
+    <link rel="stylesheet" href="../../../bulkhead-tau/style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Interactive responsiveness &middot; five prompts per service</span>
+            <h1>Short-prompt service responsiveness</h1>
+            <p class="subtitle">A practical service-latency branch: matched short user prompts across the resident TestBench Qwen service, Z13 Qwen, and hosted GPT-6 Luna.</p>
+        </header>
+        <nav class="nav" aria-label="Bulkhead tau">
+            <a href="../../../bulkhead-tau/index.html">Home</a>
+            <a href="../../">Local Models</a>
+            <a href="../">Benchmark definitions</a>
+        </nav>
+        <div class="pullquote">
+            <p>Warm median completion was 0.891 s on TestBench, 2.345 s on Z13, and 2.080 s on Luna. These are descriptive service observations, not a hardware-only comparison or general speed ranking.</p>
+        </div>
+        <section class="section">
+            <h2>Five matched short prompts</h2>
+            <p>Each service received the same five prompt byte strings in sequence, with a 128-token output cap. Temperature was omitted; Qwen used <code>think:false</code>. No answers were quality-graded.</p>
+            <div class="table-wrap"><table class="table">
+                <thead><tr><th>Service / observed setup</th><th>n</th><th>TTFT median</th><th>TTFT p95*</th><th>Completion median</th><th>Completion p95*</th><th>Output tokens median</th></tr></thead>
+                <tbody><tr><td>TestBench system Ollama / Qwen3.6 35B (resident across two RTX 3090s)</td><td>5</td><td>0.169 s</td><td>0.176 s</td><td>0.891 s</td><td>0.973 s</td><td>77</td></tr><tr><td>Z13 Radeon 8050S / Qwen3.6 35B</td><td>5</td><td>1.111 s</td><td>1.118 s</td><td>2.345 s</td><td>2.482 s</td><td>79</td></tr><tr><td>Hosted GPT-6 Luna</td><td>5</td><td>1.478 s</td><td>1.840 s</td><td>2.080 s</td><td>2.648 s</td><td>81</td></tr></tbody>
+            </table></div>
+            <p>* Nearest-rank p95 with n=5; descriptive only. Output token counts differ by service and tokenizer.</p>
+        </section>
+        <section class="section">
+            <h2>What the timings include</h2>
+            <ul><li>The same short prompt bytes were sent for each repeat across lanes; tokenization is model-specific.</li><li>Temperature was omitted, so each service used its native/default behavior.</li><li>Local Ollama timings are measured on the model host; Luna wall/TTFT includes Pi SDK work from before streamSimple through completion.</li><li>Luna&#x27;s onPayload observation is not wire-confirmed; the Pi Codex builder may inject its default helpful-assistant instruction despite the observed empty instructions field.</li><li>The TestBench 64K Pi alias is absent; the existing system Ollama 32K tag was used.</li><li>Descriptive service timings only; no quality, hardware-only, or general-ranking claim.</li></ul>
+            <p>The Z13 model was not resident at the start; its 7.14 s load occurred during the excluded warm-up. The measured requests followed that warm-up. TestBench's pre-existing model remained resident. Thus these are service-level warm observations under their recorded conditions, not a cold-start comparison.</p>
+        </section>
+        <section class="section">
+            <h2>Interpretation boundary</h2>
+            <p>Local Ollama timings were measured on each model host. Luna timing was measured from the desktop and includes Pi SDK work from before <code>streamSimple</code> through completion; it is not provider-side TTFT, prefill, or decode. Luna's observed payload callback is not wire-confirmed, and the Pi Codex builder may supply its default assistant instruction.</p>
+            <p>This branch answers how quickly these services returned visible text for this small prompt set. It does not measure answer quality, isolate hardware as the cause, or predict long-context behavior. In particular, the earlier 31k-token Z13 stress prompt is not a proxy for this workload.</p>
+        </section>
+        <footer class="footer">
+            <p>Bulkhead &tau; &middot; Local Models &middot; Client-observed interactive service latency</p>
+        </footer>
+    </div>
+</body>
+</html>

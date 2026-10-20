@@ -4,31 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Lane | Local benchmark program | Bulkhead τ</title>
-    <meta name="description" content="Local-model results through 2 Oct 2026: one at-a-glance table for repair quality, task time, loaded decode and streamed TTFT, with serving profiles marked and historical evidence retained.">
+    <meta name="description" content="A single comparison table of repair outcomes, task time, loaded decode and TTFT across RTX 3090 local models and a GPT-6 Luna subscription reference.">
     <link rel="stylesheet" href="../../bulkhead-tau/style.css">
 </head>
 <body>
     <div class="page">
 
         <header class="header">
-            <span class="badge">Benchmark program · updated 2 Oct 2026</span>
+            <span class="badge">Benchmark program · updated 16 Oct 2026</span>
             <h1>Local Lane</h1>
-            <p class="subtitle">One headline table for repair quality and speed, with small markers identifying serving profiles. Native Fusion, loaded decode and historical hardware results remain separately labelled.</p>
+            <p class="subtitle">One table compares repair outcomes, task time, loaded decode and TTFT across local model profiles and a hosted subscription reference. Routes, sample sizes and metric provenance are explicit; it is not a single rank.</p>
         </header>
 
         <nav class="nav" aria-label="Bulkhead τ">
             <a href="../../bulkhead-tau/index.html">Home</a>
             <a href="../">Local Models</a>
-            <a href="#headline-results">Headline table</a>
+            <a href="#headline-results">Metrics Power Rankings</a>
             <a href="#fusion-bonsai">Fusion results</a>
             <a href="#standard-l012">Prompt guidance results</a>
         </nav>
 
-        <div class="pullquote">
-            <p><strong>Headline:</strong> task time, prompt-guidance results, loaded decode and direct streamed TTFT are shown together for four RTX 3090 Testbench runs. Profile markers identify which rows share a serving setup; the rows are ordered by task time, not a global model ranking.</p>
-        </div>
-
-        <section class="section">
+        <section class="section" id="headline-results">
+            <h2>Metrics Power Rankings</h2>
+            <p>All six rows use the same five repair tasks and three prompt-guidance levels: <strong>Plan supplied</strong> (former L2), <strong>Files named</strong> (former L1), and <strong>Goal only</strong> (former L0). Each has six draws per task/level (90 cells). Task time is observed task wall-clock. Rows are sorted by total observed task time, ascending. Loaded decode and TTFT retain their probe provenance; Bolt and Luna use one warm-up plus one measured streamed request (n=1), not three repeatability draws.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Model / serving route</th><th>Plan supplied<br><small>former L2</small></th><th>Files named<br><small>former L1</small></th><th>Goal only<br><small>former L0</small></th><th>Overall P / F / U</th><th>Total task time<br><small>recorded cells</small></th><th>Median task time</th><th>Loaded decode / streamed output rate</th><th>TTFT</th></tr></thead>
+                    <tbody>
+                    <tr><td>Qwen3.6 35B Q4_K_M<br><small>Ollama C1 · RTX 3090</small></td><td>30 pass</td><td>30 pass</td><td>29 pass / 1 fail</td><td>89 / 1 / 0<br><small>n=90</small></td><td>20 min</td><td>8 s</td><td>200 tok/s</td><td>5 s</td></tr>
+                    <tr><td>GPT-6 Luna<br><small>OpenAI Codex Responses · subscription</small></td><td>30 pass</td><td>30 pass</td><td>26 pass / 4 fail</td><td>86 / 4 / 0<br><small>n=90</small></td><td>30 min</td><td>10 s</td><td>100 tok/s</td><td>2 s</td></tr>
+                    <tr><td>Nemotron 3.5 Bolt 74B-A9B IQ2_XXS<br><small>llama.cpp · RTX 3090</small></td><td>30 pass</td><td>30 pass</td><td>29 pass / 1 fail</td><td>89 / 1 / 0<br><small>n=90</small></td><td>30 min</td><td>10 s</td><td>80 tok/s</td><td>20 s</td></tr>
+                    <tr><td>Qwen3.8 27B Q4_K_M<br><small>PrismML · RTX 3090</small></td><td>30 pass</td><td>30 pass</td><td>24 pass / 6 fail</td><td>84 / 6 / 0<br><small>n=90</small></td><td>30 min</td><td>20 s</td><td>40 tok/s</td><td>10 s</td></tr>
+                    <tr><td>Bonsai 2 27B PQ2_0<br><small>PrismML · RTX 3090</small></td><td>30 pass</td><td>27 pass / 3 fail</td><td>19 pass / 11 fail</td><td>76 / 14 / 0<br><small>n=90</small></td><td>50 min</td><td>20 s</td><td>70 tok/s</td><td>9 s</td></tr>
+                    <tr><td>Gemma4 26B Q4_K_M<br><small>Ollama C1 · RTX 3090</small></td><td>30 pass</td><td>25 pass / 4 fail / 1 unproven</td><td>17 pass / 13 fail</td><td>72 / 17 / 1<br><small>n=90</small></td><td>60 min</td><td>10 s</td><td>100 tok/s</td><td>4 s</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">Measurement readings are rounded to one significant figure; exact outcome and sample counts are retained. Rows are ordered by the unrounded observed total task times, while median task time is per cell. Each task-time total covers 90 recorded cells. Existing Qwen/Prism serving metrics retain their original prompt and route contracts: C1 and Prism used one warm-up plus three measured 128-token calls, with prompt lengths varying by profile. Bolt's displayed 80 tok/s and 20 s TTFT are n=1 client-stream measurements on a loaded prompt with llama.cpp on one RTX 3090; its separate short-prompt probe is not substituted. Luna's 100 tok/s and 2 s are n=1 Pi-client streamed measurements on a loaded hosted request; TTFT includes Pi process/OAuth overhead and output rate is not provider server decode. These probes are useful diagnostics, not a perfectly controlled server-side ranking. Luna's six-draw task evidence combines <code>evidence_luna_control_20261016T043229Z_retry3</code> with <code>evidence_luna_control_20261016T084220Z_draws2to6_draw*</code>. The run did not capture a before/after subscription quota meter; token events are not quota deltas, and no API-list-price estimate is a subscription charge. The older GPT-5.6 Luna results farther below are a different benchmark.</p>
             <h2>What this is</h2>
             <p>I benchmark the three chips I have:</p>
             <ul>
@@ -36,28 +48,11 @@
                 <li><strong>RTX 2080, 8 GB</strong>, originally in a headless test bench (i3-9100F, 15 GB RAM, Debian 12); now in the controller desktop. Its rows below predate the swap.</li>
                 <li><strong>Ryzen AI MAX 390</strong> with Radeon 8050S and 27 GB of unified memory, in a Flow Z13, running Vulkan rather than ROCm.</li>
             </ul>
-            <p>The latest results below come from retained run packets identified by name, with their sample sizes and configurations. Older measurements remain historical evidence, not extra trials to add to the new scores. Corrections are stated rather than numbers quietly replaced.</p>
+            <p>The latest results below come from retained run packets identified by name, with their sample sizes and configurations. Luna's hosted battery now has six draws per task/level, matching the local rows' 90-cell denominator; its provider and sampler remain distinct. Older measurements remain historical evidence, not extra trials to add to new scores. Corrections are stated rather than numbers quietly replaced.</p>
             <p><strong>The earlier measurement standard, as of 8 Sep.</strong> Models run as shipped. Only context length, temperature, thinking (off), the prompt and the probe length are pinned. Speed means measured task wall clock under a realistic prompt, not decode rate on an empty cache. That historical ranking describes each model at its shipped defaults, not at its best; the new matched cohorts declare their shared sampler separately.</p>
             <p><strong>The seat is <code>qwen3.6:35b</code>.</strong> I pick the seat from interactive use. The ranking informs that choice, it does not make it.</p>
             <p>The descriptive guidance names apply to the current matched repair battery. Archived experiments retain their original L0/L1/L2 identifiers because older protocols may use different rung semantics; do not map those historical labels onto the guidance conditions above.</p>
             <p>An earlier version of this page ranked the two chips by decode rate. It is archived in the site repository, and the sections below explain which of its numbers were wrong and why.</p>
-        </section>
-
-        <section class="section" id="headline-results">
-            <h2>Headline results: repair quality and speed</h2>
-            <p>Each model ran the same 90-cell repair battery on one RTX 3090: 30 cells in each prompt-guidance condition. Columns run from most to least guidance: <strong>Plan supplied</strong> (former L2), <strong>Files named</strong> (former L1), and <strong>Goal only</strong> (former L0). Less guidance makes these tasks harder; the labels describe prompt support, not a task-difficulty ranking. Rows are sorted by total task time, fastest first, for scanning—not as a cross-profile ranking. Pass, fail and unproven outcomes stay distinct.</p>
-            <div class="table-wrap">
-                <table class="table">
-                    <thead><tr><th>Model / profile</th><th>Plan supplied<br><small>former L2</small></th><th>Files named<br><small>former L1</small></th><th>Goal only<br><small>former L0</small></th><th>Total task time · 90 cells</th><th>Median task time</th><th>Loaded decode</th><th>TTFT (median, n=3)</th></tr></thead>
-                    <tbody>
-                    <tr><td>Qwen3.6 35B Q4_K_M<sup>2</sup></td><td>30 pass</td><td>30 pass</td><td>29 pass / 1 fail</td><td>15.08 min</td><td>8.10 s</td><td>153.5 tok/s<sup>3</sup></td><td>4.947 s<sup>4</sup></td></tr>
-                    <tr><td>Qwen3.8 27B Q4_K_M<sup>1</sup></td><td>30 pass</td><td>30 pass</td><td>24 pass / 6 fail</td><td>27.88 min</td><td>18.35 s</td><td>41.1 tok/s</td><td>9.840 s<sup>5</sup></td></tr>
-                    <tr><td>Bonsai 2 27B PQ2_0<sup>1</sup></td><td>30 pass</td><td>27 pass / 3 fail</td><td>19 pass / 11 fail</td><td>45.80 min</td><td>18.15 s</td><td>67.1 tok/s</td><td>9.307 s<sup>5</sup></td></tr>
-                    <tr><td>Gemma4 26B Q4_K_M<sup>2</sup></td><td>30 pass</td><td>25 pass / 4 fail / 1 unproven</td><td>17 pass / 13 fail</td><td>56.35 min</td><td>12.80 s</td><td>116.4 tok/s<sup>3</sup></td><td>3.839 s<sup>4</sup></td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="note"><sup>1</sup> PrismML <code>prism-b10743-adfffbe</code>, CUDA 12.8, 16K context. <sup>2</sup> Ollama 0.32.12 C1 profile, 16K context. All rows are Testbench RTX 3090 single-card runs with the same task battery and declared sampler. Serving profiles and model weights differ; rows are ordered by task time for display, not as one cross-profile ranking. Compare task time, decode and TTFT only within a marker and a shared probe contract. <sup>3</sup> C1 loaded decode uses a matched r4 <code>/api/chat</code> prompt: one discarded warmup and three valid 128-token measured calls per model, at 12,895 prompt tokens for Qwen3.6 and 14,681 for Gemma4. Medians are 153.5 and 116.4 tok/s. This supersedes the prior Qwen3.6 probe, which stopped at 24/128; the old Gemma raw-completion result is not pooled with this new request contract. Prism decode values used a separate raw-completion probe at 12,811 tokens. Decode is not agent-task time. <sup>4</sup> C1 TTFT is the median client time to the first non-empty streamed <code>message.content</code> event from Ollama <code>/api/chat</code>, after one discarded warmup and three 128-token measured calls: Qwen3.6 prompt 12,895 tokens; Gemma4 prompt 14,681. <sup>5</sup> Prism TTFT is the median client time to the first non-empty SSE content delta from <code>/v1/chat/completions</code>, on the same 12,895-token prompt and 128-token cap, also one warmup plus three measured calls. These are streamed first-content measurements, not server prompt-eval estimates. Evidence packets: <code>standard-l012-20260930-r2</code>, <code>comparison-c1-3090-20261001-r3</code>, <code>comparison-c1-ttft-r1-20261002</code> and <code>comparison-prism-ttft-r2-20261002</code>. No single overall winner is implied by this table.</p>
         </section>
 
         <section class="section" id="fusion-bonsai">

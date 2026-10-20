@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen placement crossover | Bulkhead &tau;</title>
+    <meta name="description" content="Five-sweep, within-host repeatability intervals for synthetic Qwen prompt-prefill measurements. Not answer-quality scores.">
+    <link rel="stylesheet" href="../../../bulkhead-tau/style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Synthetic prefill &middot; 15 complete sweeps &middot; QWEN-PLACEMENT-CROSSOVER-001</span>
+            <h1>Qwen placement crossover</h1>
+            <p class="subtitle">Session-level repeatability for synthetic prompt-prefill time across three distinct RTX 3090 configurations. These measurements are not answer-quality scores.</p>
+        </header>
+        <nav class="nav" aria-label="Bulkhead tau">
+            <a href="../../../bulkhead-tau/index.html">Home</a>
+            <a href="../../">Local Models</a>
+            <a href="../">Benchmark definitions</a>
+        </nav>
+        <div class="pullquote">
+            <p>The narrow intervals are the result: repeated sessions on this host were highly repeatable for these synthetic prefill cells. They do not rank model quality or establish a causal PCIe effect.</p>
+        </div>
+        <section class="section">
+            <h2>Five-sweep results</h2>
+            <p>Fifteen complete fresh-daemon sweeps (five per lane), 24 measured requests per sweep. Within each cell, two request repetitions were reduced to a sweep median; intervals are 95% Student-t intervals across five sweep medians. Tight intervals indicate within-host repeatability for synthetic prefill, not answer quality or cross-day performance. GPU0/GPU1 does not isolate slot causality; Qwen3.6 dual is a separate model/card-count cohort.</p><figure style="margin:12px 0;"><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" width="1476" height="710" viewBox="0 0 1476 710">
+<style>text{font-family: sans-serif;fill:#172033}.grid{stroke:#d7dce4;stroke-width:1}.axis{stroke:#64748b;stroke-width:1}.ci{stroke-width:2.5}.point{stroke:#fff;stroke-width:1}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="24" y="22" font-size="15" font-weight="bold">Mean prefill seconds; shared y-axis within each workload row; whiskers show 95% t interval (n=5 sweeps)</text>
+<text x="32" y="53" font-size="14" font-weight="bold">qwen38-gpu0 · low workload*</text>
+<line class="grid" x1="82" y1="294.0" x2="460" y2="294.0"/>
+<text x="75" y="298.0" text-anchor="end" font-size="10">0</text>
+<line class="grid" x1="82" y1="239.5" x2="460" y2="239.5"/>
+<text x="75" y="243.5" text-anchor="end" font-size="10">21</text>
+<line class="grid" x1="82" y1="185.0" x2="460" y2="185.0"/>
+<text x="75" y="189.0" text-anchor="end" font-size="10">42</text>
+<line class="grid" x1="82" y1="130.5" x2="460" y2="130.5"/>
+<text x="75" y="134.5" text-anchor="end" font-size="10">63</text>
+<line class="grid" x1="82" y1="76.0" x2="460" y2="76.0"/>
+<text x="75" y="80.0" text-anchor="end" font-size="10">83</text>
+<line class="axis" x1="82" y1="76" x2="82" y2="294"/>
+<line class="axis" x1="82" y1="294" x2="460" y2="294"/>
+<text x="37" y="185.0" transform="rotate(-90 37 185.0)" text-anchor="middle" font-size="10">Prefill duration (s)</text>
+<circle class="point" fill="#2563eb" cx="82.0" cy="272.8" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="82.0" y1="272.6" x2="82.0" y2="273.0"/>
+<line class="ci" stroke="#2563eb" x1="77.0" y1="272.6" x2="87.0" y2="272.6"/>
+<line class="ci" stroke="#2563eb" x1="77.0" y1="273.0" x2="87.0" y2="273.0"/>
+<text x="82.0" y="311" text-anchor="middle" font-size="9">32k</text>
+<circle class="point" fill="#2563eb" cx="157.6" cy="272.8" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="157.6" y1="272.7" x2="157.6" y2="272.9"/>
+<line class="ci" stroke="#2563eb" x1="152.6" y1="272.7" x2="162.6" y2="272.7"/>
+<line class="ci" stroke="#2563eb" x1="152.6" y1="272.9" x2="162.6" y2="272.9"/>
+<text x="157.6" y="311" text-anchor="middle" font-size="9">65k</text>
+<circle class="point" fill="#2563eb" cx="233.2" cy="260.0" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="233.2" y1="259.9" x2="233.2" y2="260.0"/>
+<line class="ci" stroke="#2563eb" x1="228.2" y1="259.9" x2="238.2" y2="259.9"/>
+<line class="ci" stroke="#2563eb" x1="228.2" y1="260.0" x2="238.2" y2="260.0"/>
+<text x="233.2" y="311" text-anchor="middle" font-size="9">98k</text>
+<circle class="point" fill="#2563eb" cx="308.8" cy="252.0" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="308.8" y1="251.1" x2="308.8" y2="252.9"/>
+<line class="ci" stroke="#2563eb" x1="303.8" y1="251.1" x2="313.8" y2="251.1"/>
+<line class="ci" stroke="#2563eb" x1="303.8" y1="252.9" x2="313.8" y2="252.9"/>
+<text x="308.8" y="311" text-anchor="middle" font-size="9">131k</text>
+<circle class="point" fill="#2563eb" cx="384.4" cy="235.7" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="384.4" y1="235.3" x2="384.4" y2="236.0"/>
+<line class="ci" stroke="#2563eb" x1="379.4" y1="235.3" x2="389.4" y2="235.3"/>
+<line class="ci" stroke="#2563eb" x1="379.4" y1="236.0" x2="389.4" y2="236.0"/>
+<text x="384.4" y="311" text-anchor="middle" font-size="9">196k</text>
+<circle class="point" fill="#2563eb" cx="460.0" cy="225.9" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="460.0" y1="225.2" x2="460.0" y2="226.7"/>
+<line class="ci" stroke="#2563eb" x1="455.0" y1="225.2" x2="465.0" y2="225.2"/>
+<line class="ci" stroke="#2563eb" x1="455.0" y1="226.7" x2="465.0" y2="226.7"/>
+<text x="460.0" y="311" text-anchor="middle" font-size="9">262k</text>
+<text x="516" y="53" font-size="14" font-weight="bold">qwen38-gpu1 · low workload*</text>
+<line class="grid" x1="566" y1="294.0" x2="944" y2="294.0"/>
+<text x="559" y="298.0" text-anchor="end" font-size="10">0</text>
+<line class="grid" x1="566" y1="239.5" x2="944" y2="239.5"/>
+<text x="559" y="243.5" text-anchor="end" font-size="10">21</text>
+<line class="grid" x1="566" y1="185.0" x2="944" y2="185.0"/>
+<text x="559" y="189.0" text-anchor="end" font-size="10">42</text>
+<line class="grid" x1="566" y1="130.5" x2="944" y2="130.5"/>
+<text x="559" y="134.5" text-anchor="end" font-size="10">63</text>
+<line class="grid" x1="566" y1="76.0" x2="944" y2="76.0"/>
+<text x="559" y="80.0" text-anchor="end" font-size="10">83</text>
+<line class="axis" x1="566" y1="76" x2="566" y2="294"/>
+<line class="axis" x1="566" y1="294" x2="944" y2="294"/>
+<text x="521" y="185.0" transform="rotate(-90 521 185.0)" text-anchor="middle" font-size="10">Prefill duration (s)</text>
+<circle class="point" fill="#dc2626" cx="566.0" cy="267.6" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="566.0" y1="264.9" x2="566.0" y2="270.2"/>
+<line class="ci" stroke="#dc2626" x1="561.0" y1="264.9" x2="571.0" y2="264.9"/>
+<line class="ci" stroke="#dc2626" x1="561.0" y1="270.2" x2="571.0" y2="270.2"/>
+<text x="566.0" y="311" text-anchor="middle" font-size="9">32k</text>
+<circle class="point" fill="#dc2626" cx="641.6" cy="267.9" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="641.6" y1="267.5" x2="641.6" y2="268.3"/>
+<line class="ci" stroke="#dc2626" x1="636.6" y1="267.5" x2="646.6" y2="267.5"/>
+<line class="ci" stroke="#dc2626" x1="636.6" y1="268.3" x2="646.6" y2="268.3"/>
+<text x="641.6" y="311" text-anchor="middle" font-size="9">65k</text>
+<circle class="point" fill="#dc2626" cx="717.2" cy="228.0" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="717.2" y1="227.8" x2="717.2" y2="228.1"/>
+<line class="ci" stroke="#dc2626" x1="712.2" y1="227.8" x2="722.2" y2="227.8"/>
+<line class="ci" stroke="#dc2626" x1="712.2" y1="228.1" x2="722.2" y2="228.1"/>
+<text x="717.2" y="311" text-anchor="middle" font-size="9">98k</text>
+<circle class="point" fill="#dc2626" cx="792.8" cy="195.6" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="792.8" y1="195.6" x2="792.8" y2="195.7"/>
+<line class="ci" stroke="#dc2626" x1="787.8" y1="195.6" x2="797.8" y2="195.6"/>
+<line class="ci" stroke="#dc2626" x1="787.8" y1="195.7" x2="797.8" y2="195.7"/>
+<text x="792.8" y="311" text-anchor="middle" font-size="9">131k</text>
+<circle class="point" fill="#dc2626" cx="868.4" cy="138.4" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="868.4" y1="138.2" x2="868.4" y2="138.5"/>
+<line class="ci" stroke="#dc2626" x1="863.4" y1="138.2" x2="873.4" y2="138.2"/>
+<line class="ci" stroke="#dc2626" x1="863.4" y1="138.5" x2="873.4" y2="138.5"/>
+<text x="868.4" y="311" text-anchor="middle" font-size="9">196k</text>
+<circle class="point" fill="#dc2626" cx="944.0" cy="99.5" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="944.0" y1="99.4" x2="944.0" y2="99.7"/>
+<line class="ci" stroke="#dc2626" x1="939.0" y1="99.4" x2="949.0" y2="99.4"/>
+<line class="ci" stroke="#dc2626" x1="939.0" y1="99.7" x2="949.0" y2="99.7"/>
+<text x="944.0" y="311" text-anchor="middle" font-size="9">262k</text>
+<text x="1000" y="53" font-size="14" font-weight="bold">qwen36-dual · low workload*</text>
+<line class="grid" x1="1050" y1="294.0" x2="1428" y2="294.0"/>
+<text x="1043" y="298.0" text-anchor="end" font-size="10">0</text>
+<line class="grid" x1="1050" y1="239.5" x2="1428" y2="239.5"/>
+<text x="1043" y="243.5" text-anchor="end" font-size="10">21</text>
+<line class="grid" x1="1050" y1="185.0" x2="1428" y2="185.0"/>
+<text x="1043" y="189.0" text-anchor="end" font-size="10">42</text>
+<line class="grid" x1="1050" y1="130.5" x2="1428" y2="130.5"/>
+<text x="1043" y="134.5" text-anchor="end" font-size="10">63</text>
+<line class="grid" x1="1050" y1="76.0" x2="1428" y2="76.0"/>
+<text x="1043" y="80.0" text-anchor="end" font-size="10">83</text>
+<line class="axis" x1="1050" y1="76" x2="1050" y2="294"/>
+<line class="axis" x1="1050" y1="294" x2="1428" y2="294"/>
+<text x="1005" y="185.0" transform="rotate(-90 1005 185.0)" text-anchor="middle" font-size="10">Prefill duration (s)</text>
+<circle class="point" fill="#059669" cx="1050.0" cy="286.8" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1050.0" y1="286.4" x2="1050.0" y2="287.2"/>
+<line class="ci" stroke="#059669" x1="1045.0" y1="286.4" x2="1055.0" y2="286.4"/>
+<line class="ci" stroke="#059669" x1="1045.0" y1="287.2" x2="1055.0" y2="287.2"/>
+<text x="1050.0" y="311" text-anchor="middle" font-size="9">32k</text>
+<circle class="point" fill="#059669" cx="1125.6" cy="287.7" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1125.6" y1="287.7" x2="1125.6" y2="287.7"/>
+<line class="ci" stroke="#059669" x1="1120.6" y1="287.7" x2="1130.6" y2="287.7"/>
+<line class="ci" stroke="#059669" x1="1120.6" y1="287.7" x2="1130.6" y2="287.7"/>
+<text x="1125.6" y="311" text-anchor="middle" font-size="9">65k</text>
+<circle class="point" fill="#059669" cx="1201.2" cy="287.7" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1201.2" y1="287.7" x2="1201.2" y2="287.7"/>
+<line class="ci" stroke="#059669" x1="1196.2" y1="287.7" x2="1206.2" y2="287.7"/>
+<line class="ci" stroke="#059669" x1="1196.2" y1="287.7" x2="1206.2" y2="287.7"/>
+<text x="1201.2" y="311" text-anchor="middle" font-size="9">98k</text>
+<circle class="point" fill="#059669" cx="1276.8" cy="287.7" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1276.8" y1="287.6" x2="1276.8" y2="287.7"/>
+<line class="ci" stroke="#059669" x1="1271.8" y1="287.6" x2="1281.8" y2="287.6"/>
+<line class="ci" stroke="#059669" x1="1271.8" y1="287.7" x2="1281.8" y2="287.7"/>
+<text x="1276.8" y="311" text-anchor="middle" font-size="9">131k</text>
+<circle class="point" fill="#059669" cx="1352.4" cy="287.6" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1352.4" y1="287.6" x2="1352.4" y2="287.7"/>
+<line class="ci" stroke="#059669" x1="1347.4" y1="287.6" x2="1357.4" y2="287.6"/>
+<line class="ci" stroke="#059669" x1="1347.4" y1="287.7" x2="1357.4" y2="287.7"/>
+<text x="1352.4" y="311" text-anchor="middle" font-size="9">196k</text>
+<circle class="point" fill="#059669" cx="1428.0" cy="286.9" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1428.0" y1="286.9" x2="1428.0" y2="286.9"/>
+<line class="ci" stroke="#059669" x1="1423.0" y1="286.9" x2="1433.0" y2="286.9"/>
+<line class="ci" stroke="#059669" x1="1423.0" y1="286.9" x2="1433.0" y2="286.9"/>
+<text x="1428.0" y="311" text-anchor="middle" font-size="9">262k</text>
+<text x="32" y="385" font-size="14" font-weight="bold">qwen38-gpu0 · high workload*</text>
+<line class="grid" x1="82" y1="626.0" x2="460" y2="626.0"/>
+<text x="75" y="630.0" text-anchor="end" font-size="10">0</text>
+<line class="grid" x1="82" y1="571.5" x2="460" y2="571.5"/>
+<text x="75" y="575.5" text-anchor="end" font-size="10">546</text>
+<line class="grid" x1="82" y1="517.0" x2="460" y2="517.0"/>
+<text x="75" y="521.0" text-anchor="end" font-size="10">1093</text>
+<line class="grid" x1="82" y1="462.5" x2="460" y2="462.5"/>
+<text x="75" y="466.5" text-anchor="end" font-size="10">1639</text>
+<line class="grid" x1="82" y1="408.0" x2="460" y2="408.0"/>
+<text x="75" y="412.0" text-anchor="end" font-size="10">2186</text>
+<line class="axis" x1="82" y1="408" x2="82" y2="626"/>
+<line class="axis" x1="82" y1="626" x2="460" y2="626"/>
+<text x="37" y="517.0" transform="rotate(-90 37 517.0)" text-anchor="middle" font-size="10">Prefill duration (s)</text>
+<circle class="point" fill="#2563eb" cx="82.0" cy="623.9" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="82.0" y1="623.9" x2="82.0" y2="623.9"/>
+<line class="ci" stroke="#2563eb" x1="77.0" y1="623.9" x2="87.0" y2="623.9"/>
+<line class="ci" stroke="#2563eb" x1="77.0" y1="623.9" x2="87.0" y2="623.9"/>
+<text x="82.0" y="643" text-anchor="middle" font-size="9">32k</text>
+<circle class="point" fill="#2563eb" cx="157.6" cy="621.2" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="157.6" y1="621.2" x2="157.6" y2="621.3"/>
+<line class="ci" stroke="#2563eb" x1="152.6" y1="621.2" x2="162.6" y2="621.2"/>
+<line class="ci" stroke="#2563eb" x1="152.6" y1="621.3" x2="162.6" y2="621.3"/>
+<text x="157.6" y="643" text-anchor="middle" font-size="9">65k</text>
+<circle class="point" fill="#2563eb" cx="233.2" cy="614.2" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="233.2" y1="614.2" x2="233.2" y2="614.2"/>
+<line class="ci" stroke="#2563eb" x1="228.2" y1="614.2" x2="238.2" y2="614.2"/>
+<line class="ci" stroke="#2563eb" x1="228.2" y1="614.2" x2="238.2" y2="614.2"/>
+<text x="233.2" y="643" text-anchor="middle" font-size="9">98k</text>
+<circle class="point" fill="#2563eb" cx="308.8" cy="605.8" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="308.8" y1="605.5" x2="308.8" y2="606.1"/>
+<line class="ci" stroke="#2563eb" x1="303.8" y1="605.5" x2="313.8" y2="605.5"/>
+<line class="ci" stroke="#2563eb" x1="303.8" y1="606.1" x2="313.8" y2="606.1"/>
+<text x="308.8" y="643" text-anchor="middle" font-size="9">131k</text>
+<circle class="point" fill="#2563eb" cx="384.4" cy="580.8" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="384.4" y1="580.6" x2="384.4" y2="581.0"/>
+<line class="ci" stroke="#2563eb" x1="379.4" y1="580.6" x2="389.4" y2="580.6"/>
+<line class="ci" stroke="#2563eb" x1="379.4" y1="581.0" x2="389.4" y2="581.0"/>
+<text x="384.4" y="643" text-anchor="middle" font-size="9">196k</text>
+<circle class="point" fill="#2563eb" cx="460.0" cy="551.5" r="2.5"/>
+<line class="ci" stroke="#2563eb" x1="460.0" y1="551.1" x2="460.0" y2="552.0"/>
+<line class="ci" stroke="#2563eb" x1="455.0" y1="551.1" x2="465.0" y2="551.1"/>
+<line class="ci" stroke="#2563eb" x1="455.0" y1="552.0" x2="465.0" y2="552.0"/>
+<text x="460.0" y="643" text-anchor="middle" font-size="9">262k</text>
+<text x="516" y="385" font-size="14" font-weight="bold">qwen38-gpu1 · high workload*</text>
+<line class="grid" x1="566" y1="626.0" x2="944" y2="626.0"/>
+<text x="559" y="630.0" text-anchor="end" font-size="10">0</text>
+<line class="grid" x1="566" y1="571.5" x2="944" y2="571.5"/>
+<text x="559" y="575.5" text-anchor="end" font-size="10">546</text>
+<line class="grid" x1="566" y1="517.0" x2="944" y2="517.0"/>
+<text x="559" y="521.0" text-anchor="end" font-size="10">1093</text>
+<line class="grid" x1="566" y1="462.5" x2="944" y2="462.5"/>
+<text x="559" y="466.5" text-anchor="end" font-size="10">1639</text>
+<line class="grid" x1="566" y1="408.0" x2="944" y2="408.0"/>
+<text x="559" y="412.0" text-anchor="end" font-size="10">2186</text>
+<line class="axis" x1="566" y1="408" x2="566" y2="626"/>
+<line class="axis" x1="566" y1="626" x2="944" y2="626"/>
+<text x="521" y="517.0" transform="rotate(-90 521 517.0)" text-anchor="middle" font-size="10">Prefill duration (s)</text>
+<circle class="point" fill="#dc2626" cx="566.0" cy="623.5" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="566.0" y1="623.5" x2="566.0" y2="623.6"/>
+<line class="ci" stroke="#dc2626" x1="561.0" y1="623.5" x2="571.0" y2="623.5"/>
+<line class="ci" stroke="#dc2626" x1="561.0" y1="623.6" x2="571.0" y2="623.6"/>
+<text x="566.0" y="643" text-anchor="middle" font-size="9">32k</text>
+<circle class="point" fill="#dc2626" cx="641.6" cy="620.5" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="641.6" y1="620.4" x2="641.6" y2="620.6"/>
+<line class="ci" stroke="#dc2626" x1="636.6" y1="620.4" x2="646.6" y2="620.4"/>
+<line class="ci" stroke="#dc2626" x1="636.6" y1="620.6" x2="646.6" y2="620.6"/>
+<text x="641.6" y="643" text-anchor="middle" font-size="9">65k</text>
+<circle class="point" fill="#dc2626" cx="717.2" cy="605.0" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="717.2" y1="605.0" x2="717.2" y2="605.1"/>
+<line class="ci" stroke="#dc2626" x1="712.2" y1="605.0" x2="722.2" y2="605.0"/>
+<line class="ci" stroke="#dc2626" x1="712.2" y1="605.1" x2="722.2" y2="605.1"/>
+<text x="717.2" y="643" text-anchor="middle" font-size="9">98k</text>
+<circle class="point" fill="#dc2626" cx="792.8" cy="582.1" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="792.8" y1="582.1" x2="792.8" y2="582.2"/>
+<line class="ci" stroke="#dc2626" x1="787.8" y1="582.1" x2="797.8" y2="582.1"/>
+<line class="ci" stroke="#dc2626" x1="787.8" y1="582.2" x2="797.8" y2="582.2"/>
+<text x="792.8" y="643" text-anchor="middle" font-size="9">131k</text>
+<circle class="point" fill="#dc2626" cx="868.4" cy="517.0" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="868.4" y1="516.9" x2="868.4" y2="517.0"/>
+<line class="ci" stroke="#dc2626" x1="863.4" y1="516.9" x2="873.4" y2="516.9"/>
+<line class="ci" stroke="#dc2626" x1="863.4" y1="517.0" x2="873.4" y2="517.0"/>
+<text x="868.4" y="643" text-anchor="middle" font-size="9">196k</text>
+<circle class="point" fill="#dc2626" cx="944.0" cy="431.4" r="2.5"/>
+<line class="ci" stroke="#dc2626" x1="944.0" y1="431.4" x2="944.0" y2="431.5"/>
+<line class="ci" stroke="#dc2626" x1="939.0" y1="431.4" x2="949.0" y2="431.4"/>
+<line class="ci" stroke="#dc2626" x1="939.0" y1="431.5" x2="949.0" y2="431.5"/>
+<text x="944.0" y="643" text-anchor="middle" font-size="9">262k</text>
+<text x="1000" y="385" font-size="14" font-weight="bold">qwen36-dual · high workload*</text>
+<line class="grid" x1="1050" y1="626.0" x2="1428" y2="626.0"/>
+<text x="1043" y="630.0" text-anchor="end" font-size="10">0</text>
+<line class="grid" x1="1050" y1="571.5" x2="1428" y2="571.5"/>
+<text x="1043" y="575.5" text-anchor="end" font-size="10">546</text>
+<line class="grid" x1="1050" y1="517.0" x2="1428" y2="517.0"/>
+<text x="1043" y="521.0" text-anchor="end" font-size="10">1093</text>
+<line class="grid" x1="1050" y1="462.5" x2="1428" y2="462.5"/>
+<text x="1043" y="466.5" text-anchor="end" font-size="10">1639</text>
+<line class="grid" x1="1050" y1="408.0" x2="1428" y2="408.0"/>
+<text x="1043" y="412.0" text-anchor="end" font-size="10">2186</text>
+<line class="axis" x1="1050" y1="408" x2="1050" y2="626"/>
+<line class="axis" x1="1050" y1="626" x2="1428" y2="626"/>
+<text x="1005" y="517.0" transform="rotate(-90 1005 517.0)" text-anchor="middle" font-size="10">Prefill duration (s)</text>
+<circle class="point" fill="#059669" cx="1050.0" cy="625.3" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1050.0" y1="625.3" x2="1050.0" y2="625.3"/>
+<line class="ci" stroke="#059669" x1="1045.0" y1="625.3" x2="1055.0" y2="625.3"/>
+<line class="ci" stroke="#059669" x1="1045.0" y1="625.3" x2="1055.0" y2="625.3"/>
+<text x="1050.0" y="643" text-anchor="middle" font-size="9">32k</text>
+<circle class="point" fill="#059669" cx="1125.6" cy="624.5" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1125.6" y1="624.5" x2="1125.6" y2="624.6"/>
+<line class="ci" stroke="#059669" x1="1120.6" y1="624.5" x2="1130.6" y2="624.5"/>
+<line class="ci" stroke="#059669" x1="1120.6" y1="624.6" x2="1130.6" y2="624.6"/>
+<text x="1125.6" y="643" text-anchor="middle" font-size="9">65k</text>
+<circle class="point" fill="#059669" cx="1201.2" cy="623.5" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1201.2" y1="623.5" x2="1201.2" y2="623.5"/>
+<line class="ci" stroke="#059669" x1="1196.2" y1="623.5" x2="1206.2" y2="623.5"/>
+<line class="ci" stroke="#059669" x1="1196.2" y1="623.5" x2="1206.2" y2="623.5"/>
+<text x="1201.2" y="643" text-anchor="middle" font-size="9">98k</text>
+<circle class="point" fill="#059669" cx="1276.8" cy="622.3" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1276.8" y1="622.3" x2="1276.8" y2="622.3"/>
+<line class="ci" stroke="#059669" x1="1271.8" y1="622.3" x2="1281.8" y2="622.3"/>
+<line class="ci" stroke="#059669" x1="1271.8" y1="622.3" x2="1281.8" y2="622.3"/>
+<text x="1276.8" y="643" text-anchor="middle" font-size="9">131k</text>
+<circle class="point" fill="#059669" cx="1352.4" cy="619.3" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1352.4" y1="619.3" x2="1352.4" y2="619.4"/>
+<line class="ci" stroke="#059669" x1="1347.4" y1="619.3" x2="1357.4" y2="619.3"/>
+<line class="ci" stroke="#059669" x1="1347.4" y1="619.4" x2="1357.4" y2="619.4"/>
+<text x="1352.4" y="643" text-anchor="middle" font-size="9">196k</text>
+<circle class="point" fill="#059669" cx="1428.0" cy="614.6" r="2.5"/>
+<line class="ci" stroke="#059669" x1="1428.0" y1="614.6" x2="1428.0" y2="614.6"/>
+<line class="ci" stroke="#059669" x1="1423.0" y1="614.6" x2="1433.0" y2="614.6"/>
+<line class="ci" stroke="#059669" x1="1423.0" y1="614.6" x2="1433.0" y2="614.6"/>
+<text x="1428.0" y="643" text-anchor="middle" font-size="9">262k</text>
+</svg><figcaption><strong>* Different y-axis scales by row:</strong> low workload uses 0–83 s ticks; high workload uses 0–2,186 s ticks. Each row shares its linear scale across all three configurations, so compare vertical heights only within a row. The broad upward trend is descriptive, not one shared scaling law: Qwen3.6 dual low workload stays nearly flat while its high workload rises.</figcaption></figure><h4>qwen38-gpu0</h4><div class="table-wrap"><table class="table"><thead><tr><th>CONFIGURED CONTEXT</th><th>WORKLOAD</th><th>MEAN PREFILL (s)</th><th>95% t INTERVAL (s)</th><th>ACTUAL PROMPT TOKENS</th></tr></thead><tbody><tr><td>32,768</td><td>low</td><td>8.124</td><td>[8.050, 8.198]</td><td>10,013</td></tr><tr><td>32,768</td><td>high</td><td>21.415</td><td>[21.320, 21.509]</td><td>24,587</td></tr><tr><td>65,536</td><td>low</td><td>8.113</td><td>[8.085, 8.140]</td><td>10,013</td></tr><tr><td>65,536</td><td>high</td><td>47.805</td><td>[47.593, 48.018]</td><td>49,165</td></tr><tr><td>98,304</td><td>low</td><td>13.030</td><td>[12.995, 13.065]</td><td>10,013</td></tr><tr><td>98,304</td><td>high</td><td>118.231</td><td>[117.916, 118.546]</td><td>73,742</td></tr><tr><td>131,072</td><td>low</td><td>16.085</td><td>[15.736, 16.435]</td><td>10,014</td></tr><tr><td>131,072</td><td>high</td><td>202.496</td><td>[199.202, 205.790]</td><td>98,321</td></tr><tr><td>196,608</td><td>low</td><td>22.331</td><td>[22.203, 22.459]</td><td>10,014</td></tr><tr><td>196,608</td><td>high</td><td>452.963</td><td>[451.170, 454.756]</td><td>147,470</td></tr><tr><td>262,144</td><td>low</td><td>26.049</td><td>[25.766, 26.332]</td><td>10,014</td></tr><tr><td>262,144</td><td>high</td><td>746.614</td><td>[742.113, 751.116]</td><td>196,620</td></tr></tbody></table></div><h4>qwen38-gpu1</h4><div class="table-wrap"><table class="table"><thead><tr><th>CONFIGURED CONTEXT</th><th>WORKLOAD</th><th>MEAN PREFILL (s)</th><th>95% t INTERVAL (s)</th><th>ACTUAL PROMPT TOKENS</th></tr></thead><tbody><tr><td>32,768</td><td>low</td><td>10.120</td><td>[9.122, 11.119]</td><td>10,013</td></tr><tr><td>32,768</td><td>high</td><td>24.741</td><td>[24.291, 25.191]</td><td>24,587</td></tr><tr><td>65,536</td><td>low</td><td>9.975</td><td>[9.823, 10.128]</td><td>10,013</td></tr><tr><td>65,536</td><td>high</td><td>55.558</td><td>[54.567, 56.548]</td><td>49,165</td></tr><tr><td>98,304</td><td>low</td><td>25.275</td><td>[25.216, 25.334]</td><td>10,013</td></tr><tr><td>98,304</td><td>high</td><td>210.131</td><td>[209.750, 210.513]</td><td>73,742</td></tr><tr><td>131,072</td><td>low</td><td>37.649</td><td>[37.624, 37.675]</td><td>10,014</td></tr><tr><td>131,072</td><td>high</td><td>439.977</td><td>[439.585, 440.369]</td><td>98,321</td></tr><tr><td>196,608</td><td>low</td><td>59.565</td><td>[59.515, 59.614]</td><td>10,014</td></tr><tr><td>196,608</td><td>high</td><td>1093.422</td><td>[1093.078, 1093.766]</td><td>147,470</td></tr><tr><td>262,144</td><td>low</td><td>74.433</td><td>[74.365, 74.500]</td><td>10,014</td></tr><tr><td>262,144</td><td>high</td><td>1951.087</td><td>[1950.473, 1951.700]</td><td>196,620</td></tr></tbody></table></div><h4>qwen36-dual</h4><div class="table-wrap"><table class="table"><thead><tr><th>CONFIGURED CONTEXT</th><th>WORKLOAD</th><th>MEAN PREFILL (s)</th><th>95% t INTERVAL (s)</th><th>ACTUAL PROMPT TOKENS</th></tr></thead><tbody><tr><td>32,768</td><td>low</td><td>2.753</td><td>[2.610, 2.897]</td><td>10,013</td></tr><tr><td>32,768</td><td>high</td><td>7.255</td><td>[7.116, 7.393]</td><td>24,587</td></tr><tr><td>65,536</td><td>low</td><td>2.402</td><td>[2.398, 2.406]</td><td>10,013</td></tr><tr><td>65,536</td><td>high</td><td>14.569</td><td>[14.534, 14.604]</td><td>49,165</td></tr><tr><td>98,304</td><td>low</td><td>2.406</td><td>[2.402, 2.410]</td><td>10,013</td></tr><tr><td>98,304</td><td>high</td><td>24.670</td><td>[24.609, 24.731]</td><td>73,742</td></tr><tr><td>131,072</td><td>low</td><td>2.423</td><td>[2.413, 2.433]</td><td>10,014</td></tr><tr><td>131,072</td><td>high</td><td>36.732</td><td>[36.652, 36.812]</td><td>98,321</td></tr><tr><td>196,608</td><td>low</td><td>2.434</td><td>[2.419, 2.449]</td><td>10,014</td></tr><tr><td>196,608</td><td>high</td><td>66.709</td><td>[66.517, 66.901]</td><td>147,470</td></tr><tr><td>262,144</td><td>low</td><td>2.717</td><td>[2.704, 2.731]</td><td>10,014</td></tr><tr><td>262,144</td><td>high</td><td>114.372</td><td>[114.050, 114.695]</td><td>196,620</td></tr></tbody></table></div>
+        </section>
+        <section class="section">
+            <h2>Downloads and provenance</h2>
+            <ul>
+                <li><a href="error_bars.csv">Cell means, 95% t intervals, and five per-sweep medians (CSV)</a></li>
+                <li><a href="sweep_cell_medians.csv">Per-sweep cell medians and prompt-token ranges (CSV)</a></li>
+            </ul>
+            <p>Rendered from the Project Phoenix local benchmark-dashboard card. The three lanes remain separate: Qwen3.8 GPU0 and GPU1 are pinned-placement configurations, while Qwen3.6 dual is a different model/card-count cohort. Incomplete sweeps are excluded; raw result packets and full telemetry are not included.</p>
+        </section>
+        <footer class="footer">
+            <p>Bulkhead &tau; &middot; Local Models &middot; Synthetic prefill characterization</p>
+        </footer>
+    </div>
+</body>
+</html>
