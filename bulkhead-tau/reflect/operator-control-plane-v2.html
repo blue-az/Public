@@ -1,428 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Operator Control Plane — Owner's Manual (Refactored)</title>
-<link rel="stylesheet" href="bt-manual.css"/>
-<script type="module" src="bt-manual.js"></script>
-<style>
-body{max-width:42em;margin:0 auto;padding:3em 2em;font-family:Georgia,serif;line-height:1.6;color:#1a1a1a;background:#fdfdfd}
-h1{font-size:2em;margin-bottom:0.3em}
-h2{font-size:1.45em;margin-top:2.2em;padding-bottom:0.3em;border-bottom:1px solid #e0e0e0}
-h3{font-size:1.15em;margin-top:1.6em;color:#333}
-h4{font-size:1em;margin-top:1.2em;color:#555}
-p{margin:0.8em 0}
-code{font-family:'Courier New',monospace;font-size:0.9em}
-pre{background:#f5f5f5;padding:1em 1.4em;overflow-x:auto;border-radius:4px;font-size:0.88em;line-height:1.5}
-pre code{background:none;padding:0}
-blockquote{border-left:3px solid #c9a227;margin:1em 0;padding:0.6em 1em 0.6em 1.2em;color:#444;background:rgba(201,162,39,0.04)}
-blockquote strong{color:#333}
-a{color:#1a5276}
-table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:0.9em}
-th,td{padding:0.5em 0.8em;text-align:left;border-bottom:1px solid #ddd}
-th{background:#f8f8f8;font-weight:600}
-.snapped{border:1px solid #c9a227;background:rgba(201,162,39,0.06);border-radius:8px;padding:14px 18px;margin:1.5em 0}
-.snapped strong{color:#7a6200}
-.attention{border-left:3px solid #c0392b;padding:0.6em 1em;margin:1em 0;background:rgba(192,57,43,0.04)}
-.attention strong{color:#c0392b}
-.note{border-left:3px solid #2980b9;padding:0.6em 1em;margin:1em 0;background:rgba(41,128,185,0.04)}
-.note strong{color:#2980b9}
-.summary{background:#f0faf0;border-left:3px solid #27ae60;padding:0.6em 1em;margin:1em 0}
-.summary strong{color:#1e8449}
-.decision{background:#fff8f0;border-left:3px solid #e67e22;padding:0.6em 1em;margin:1em 0}
-.decision strong{color:#d35400}
-.nav{background:#f8f8f8;padding:1em 1.5em;border-radius:4px;margin:1.5em 0;font-size:0.9em}
-.nav ul{margin:0;padding-left:1.4em}
-.nav li{margin:0.25em 0}
-.nav a{color:#1a5276}
-.footer{margin-top:3em;padding-top:1.5em;border-top:1px solid #ddd;font-size:0.82em;color:#888}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A concise, essence-first guide to Operator’s task, claim, evidence, and verification workflow.">
+  <title>Operator Control Plane — Essence-First Guide</title>
+  <style>
+    :root { color-scheme:light; --ink:#162238; --muted:#53627a; --accent:#087e72; --line:#d7deea; --wash:#f3f6fa; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:#f7f9fc; font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { max-width:820px; margin:0 auto; padding:32px 22px 70px; background:white; }
+    header { border-bottom:3px solid var(--accent); padding-bottom:20px; }
+    h1 { line-height:1.15; font-size:clamp(2rem,5vw,3rem); margin:.3em 0; }
+    h2 { margin-top:2em; padding-bottom:.3em; border-bottom:1px solid var(--line); }
+    a { color:#075f83; }
+    code { background:var(--wash); padding:.12em .3em; border-radius:3px; }
+    pre { overflow:auto; padding:15px; background:#132238; color:#eaf3ff; border-radius:6px; }
+    pre code { background:none; padding:0; }
+    .eyebrow { color:var(--accent); font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .lead { color:var(--muted); font-size:1.1rem; }
+    .flow { color:var(--accent); font-weight:750; font-size:1.12rem; }
+    .note { padding:14px 18px; background:var(--wash); border-left:4px solid var(--accent); }
+    footer { margin-top:3em; border-top:1px solid var(--line); padding-top:16px; color:var(--muted); }
+    @media(max-width:600px) { main { padding:24px 16px 48px; } }
+  </style>
 </head>
 <body>
-
-<header style="margin-bottom:2.5em;text-align:center">
-<h1>Operator Control Plane</h1>
-<p style="font-size:1.15em;color:#555;margin-top:0.3em">Owner's Manual — Refactored Edition</p>
-<div class="snapped" style="margin:1.5em auto 0;max-width:700px;text-align:left">
-<strong>This is a snapshot.</strong> Generated from repository snapshot <code>cab4a7a</code>, published 2026-09-16.
-For current behavior, see the <a href="https://github.com/blue-az/operator-control-plane#readme">repository README</a>.
-<ul style="margin:0.5em 0 0;padding-left:1.4em;font-size:0.92em">
-<li>P3 authority broker is now a root-managed service; operator CLI resolves enrollment against it.</li>
-<li>In <code>single_user</code> mode, "verified" is advisory — only <code>uid_isolated</code> means independent identity.</li>
-<li>Subcommand count below may be out of date — run <code>./operator --help</code> for current list.</li>
-</ul>
-</div>
+<main>
+<header>
+  <div class="eyebrow">Reflect · concise guide</div>
+  <h1>Operator Control Plane</h1>
+  <p class="lead">The essence: record what an agent says it did, attach evidence, and make verification inspectable.</p>
+  <p><a href="../reflect.html">← Reflect shelf</a> · <a href="operator-control-plane-detailed.html">Detailed manual</a> · <a href="operator-control-plane.html">Original manual</a></p>
 </header>
-<nav class="nav"><strong>Contents</strong>
+
+<p>Operator is a local, domain-neutral ledger for agent work. It does not make an agent’s claim true merely by recording it. It gives the claim a place in a workflow where evidence and verification can be examined.</p>
+<p class="flow">task → claim → evidence → verification → session and usage record</p>
+
+<h2 id="start">The everyday path</h2>
+<p>Initialize a ledger in the project you intend to track, then use the CLI to create a task, make specific claims, attach evidence, and record a verifier’s assessment.</p>
+<pre><code>pip install -r requirements.txt
+/path/to/operator-control-plane/operator init
+/path/to/operator-control-plane/operator doctor</code></pre>
+<p><code>init</code> creates a gitignored <code>.operator/</code> ledger in the current directory. The command sequence is only a starting point; use <code>./operator --help</code> for current command syntax and <code>examples/verified-work/run.sh</code> for a runnable walkthrough.</p>
+
+<h2 id="independence">The identity boundary</h2>
+<p>In default <code>single_user</code> mode, verification is advisory: a reviewer name is not proof of an independent reviewer. In <code>enforced</code> mode, independent verification requires a registered verifier operating under an OS UID different from the claim author’s UID. Two agents or harnesses under the same OS user are not distinct identities. Operator does not provision that OS-level separation.</p>
+<p class="note">A stored verification command is not proof it ran. The verifier must run the check and record the result; <code>doctor</code> never executes stored commands.</p>
+
+<h2 id="evidence">Evidence and integrity checks</h2>
+<p>Local evidence is retained and fingerprinted. Trust-relevant writes are recorded in local SQLite history, with YAML projections. <code>doctor</code> checks ledger consistency, evidence, and applicable verification requirements. It is read-only: it does not repair records or run checks.</p>
+<p>This is local auditability, not an off-machine backup or a tamper-proof boundary against someone who controls the host. Protect and back up the data your workflow depends on. Pay attention to the severity of findings: draft warnings and errors on verified records have different meanings.</p>
+
+<h2 id="other-tools">Everything else supports the ledger</h2>
+<p>Broker administration, delegation, harness studies, sessions, usage reports, and local comparisons can support particular deployments or workflows. They do not replace the task → claim → evidence → verification path. Harness names route work or describe accounting; they do not grant verification authority. Configured harnesses are not automatically proof of compatibility across providers or environments.</p>
+
+<h2 id="recovery">When something goes wrong</h2>
 <ul>
-<li><a href="#what-it-is">What It Is</a></li>
-<li><a href="#quickstart">Quickstart</a></li>
-<li><a href="#the-trust-model">The Trust Model</a></li>
-<li><a href="#core-workflow">Core Workflow</a></li>
-<li><a href="#ledger-governance">Ledger Governance</a></li>
-<li><a href="#enrolled-authority">Enrolled Authority</a></li>
-<li><a href="#recovery">Recovery</a></li>
-<li><a href="#harnesses">Harnesses &amp; Study Work</a></li>
-<li><a href="#command-reference">Command Reference</a></li>
-<li><a href="#configuration">Configuration</a></li>
-<li><a href="#open-decisions">Open Decisions</a></li>
-<li><a href="#operating-caveats">Operating Caveats</a></li>
-</ul></nav>
-
-<!-- WHAT IT IS -->
-<h2 id="what-it-is">What Operator Control Plane Is</h2>
-
-<p>A <strong>local-first control plane for AI coding work</strong>. Its center of gravity is a repository-local ledger that records claims, evidence, verification, and the doctor audit trail. It is a <em>trust record for work</em>, not a generic workspace or hosted service.</p>
-
-<p>The roles are distinct:</p>
-<table>
-<tr><th>Role</th><th>What they do</th></tr>
-<tr><td><strong>Builder</strong></td><td>Creates claims and drafts evidence</td></tr>
-<tr><td><strong>Verifier</strong></td><td>Establishes trusted sign-off from a distinct OS identity</td></tr>
-<tr><td><strong>Administrator</strong></td><td>Handles enrolled authority boundary and host prerequisites</td></tr>
-<tr><td><strong>Harness</strong></td><td>Runs delegated or study work — <em>not a trust authority</em></td></tr>
-<tr><td><strong>Owner</strong></td><td>The person reading this manual and deciding what the product should promise</td></tr>
-</table>
-
-<div class="note"><strong>Key boundary:</strong> Operator is <em>not</em> Bulkhead Tau, Project Phoenix, or an internal component of another product. It is a standalone, domain-neutral control plane. BT, BN, PBC are external consumers, not architectural components. The dependency direction is one-way: Bulkhead Tau may use Operator; Operator must never import or require Bulkhead Tau code.</div>
-
-<!-- QUICKSTART -->
-<h2 id="quickstart">Quickstart</h2>
-
-<pre><code>pip install -r requirements.txt        # runtime: just PyYAML
-pip install -r requirements-dev.txt    # tests/lint: pytest, ruff, black, isort
-./operator --help
-
-mkdir /tmp/operator-demo && cd /tmp/operator-demo
-/path/to/operator init                 # creates .operator/ ledger in current dir
-/path/to/operator doctor               # consistency check → "All records consistent."
-</code></pre>
-
-<pre><code>python3 -m pytest tests/test_operator.py -q   # repo CLI, ledger layout, identity, doctor, usage
-python3 -m pytest tests/ -q                     # everything (some suites need Linux)</code></pre>
-
-<p>The ledger (<code>.operator/</code>) is gitignored — it's your work history, not the tool. Its durable local event history is stored in <code>.operator/ledger.sqlite3</code>.</p>
-
-<!-- THE TRUST MODEL -->
-<h2 id="the-trust-model">The Trust Model</h2>
-
-<p>Operator enforces a strict partition: an agent's <em>claim</em> ("I did X") is only trustworthy if it has <em>evidence</em> attached and is <em>verified by a distinct identity</em>. The system records: <strong>task → claim → evidence → verification → session → usage</strong>.</p>
-
-<h3>The handoff, not the blur</h3>
-<p>Work is not trusted until it passes from builder output into verifier judgment. Doctor keeps checking the result afterward — it is a continuing audit, not the step that creates trust.</p>
-
-<pre>
-Work → Builder → Draft claim + Evidence → Verifier → Trusted record → Doctor (ongoing)
-</pre>
-
-<h3>Draft vs. verified — different thresholds</h3>
-<p>The same problem (e.g., missing evidence) is <em>warning-level on a draft</em> but a <em>blocking failure on a verified record</em>. A warning on draft material is not proof that the trust boundary has failed.</p>
-
-<div class="attention"><strong>Closeout is provisional.</strong> A later negative verifier write on the transition claim can reopen the task and clear the closeout state. Closeout is not one-way.</div>
-
-<!-- CORE WORKFLOW -->
-<h2 id="core-workflow">Core Workflow</h2>
-
-<p>The everyday loop is the local path. By default, the product stays local:</p>
-
-<ol>
-<li><strong>Task creation</strong> — open a task with an objective, optional assignee and reviewer.</li>
-<li><strong>Claim registration</strong> — a builder registers a typed, gate-bound claim (e.g., <code>test_passes</code>, <code>file_exists</code>, <code>numeric_measurement</code>).</li>
-<li><strong>Evidence attachment</strong> — local files are copied into the ledger and fingerprinted with SHA-256, byte size, and modification time.</li>
-<li><strong>Verification</strong> — a <em>different OS UID</em> than the claim author writes status-bearing evidence.</li>
-<li><strong>Doctor audit</strong> — read-only consistency check across the ledger.</li>
-<li><strong>Session tracking</strong> — track coding session and cost, then close out with a handoff brief.</li>
-</ol>
-
-<h3>What the daily loop looks like</h3>
-
-<pre><code># Open a task
-./operator task-create --objective "Add retry to the uploader" --id up-retry
-
-# Builder registers a claim
-./operator claim-add --task up-retry --type test_passes \
-    --text "uploader retries 3x on 5xx" --gate tests/test_upload.py
-
-# Evidence + advisory verification
-./operator evidence-attach tests/out/upload.log --task up-retry --claim claim-0001 \
-    --type test_output --status verified --verified-by reviewer \
-    --verify-cmd "pytest -q tests/test_upload.py"
-
-# Doctor reads the record
-./operator doctor
-
-# Track session cost, generate handoff
-./operator session-start --task up-retry --harness claude
-./operator session-end usage-0001 --outcome useful --cost 12.50
-./operator handoff-add --task up-retry --changed "uploader.py" --verified "retry test" --open "tune backoff"
-./operator export-brief --for codex --task up-retry</code></pre>
-
-<p>A runnable version of this lives at <code>examples/verified-work/run.sh</code> and is executed on every CI run.</p>
-
-<h3>Verified facts</h3>
-<ul>
-<li>The local claim path writes a <em>draft</em> record with verification still <code>false</code>. Draft output can warn about the same problems that would block a verified record, but only verified records are enforced.</li>
-<li>Evidence attachment copies local files into <em>retained, hashed snapshots</em> — not just a status write.</li>
-<li>Doctor is <strong>not a repair tool</strong>. It is an audit that returns failure only when issues exist on verified records; warnings on drafts do not make the run fail.</li>
-<li>In enrolled mode, ordinary builder and verifier actions are role-separated, while root-only enrollment and rebind are separate privileged requests.</li>
-<li>A negative verifier write <em>can</em> reopen a task that had been closed.</li>
+  <li>If the host, permissions, socket, or enrollment is wrong, stop and restore the documented prerequisites before retrying privileged work.</li>
+  <li>If authority state changed, use the documented reconciliation process; do not silently adopt a replacement store.</li>
+  <li>Resume checkpointed work only when its workflow supports resume and the saved plan still matches.</li>
+  <li>If an integrity check fails, preserve the state for diagnosis. <code>doctor</code> is a checker, not a repair tool.</li>
 </ul>
+<p>Some later verification changes can reopen work that appeared complete. Treat completion as dependent on the current trusted records.</p>
 
-<!-- LEDGER GOVERNANCE -->
-<h2 id="ledger-governance">Ledger Governance</h2>
+<h2 id="limits">The short version of the limits</h2>
+<p>Operator records and checks workflow state. It is not a fleet scheduler, does not create OS identity isolation, does not replace backups, and cannot promise that every external harness works everywhere. The strength of a conclusion depends on the evidence, verifier identity, and host controls available.</p>
 
-<p>The ledger is the product's memory: it decides what work exists, which evidence supports it, and what can be trusted later.</p>
-
-<h3>What is durable, what is not</h3>
-<table>
-<tr><th>Surface</th><th>Durable?</th><th>Can be rebuilt?</th><th>Backup this?</th></tr>
-<tr><td><code>ledger.sqlite3</code> — append-only event history</td><td>✅ Yes</td><td>No — it's the source</td><td><strong>Yes, critical</strong></td></tr>
-<tr><td>YAML projections</td><td>✅ Yes (read-only)</td><td>Yes — from SQLite</td><td>Optional</td></tr>
-<tr><td>Compatibility read surface</td><td>✅ Yes</td><td>Yes — from SQLite</td><td>No</td></div></tr>
-<tr><td>Read-only snapshots</td><td>✅ Yes</td><td>Yes</td><td>No</td></tr>
-</table>
-
-<div class="summary"><strong>The rule:</strong> The append-only SQLite ledger is the only record that must survive restore and audit. The other surfaces can be rebuilt from it. Back up canonical history, not the projections.</div>
-
-<h3>Store replacement is never silent</h3>
-<p>When the authority store or projection layer has been replaced, the system <strong>does not silently adopt the new incarnation</strong>. It requires explicit reset acknowledgment:</p>
-
-<ol>
-<li>New store incarnation appears → system detects mismatch</li>
-<li>System asks for explicit reset acknowledgment</li>
-<li>After acknowledgment: resets sequence progress, drops prepared work tied to old store</li>
-<li>Retries prepared broker work idempotently</li>
-</ol>
-
-<h3>Recovery is not repair</h3>
-<p>Doctor reports divergence but does not silently repair either side. A changed verified source or retained snapshot fails closed; an unavailable original source is reported separately when its retained snapshot is still current. Remote evidence without a local snapshot is explicitly uncheckable.</p>
-
-<!-- ENROLLED AUTHORITY -->
-<h2 id="enrolled-authority">When to Use Enrolled Authority Mode</h2>
-
-<p>Enrolled authority is an <strong>optional privileged layer</strong> above the repo-local ledger. It matters when you need a separate host-managed trust boundary, not just local claim and evidence tracking.</p>
-
-<h3>The tradeoff</h3>
-<table>
-<tr><th></th><th><strong>Local ledger (default)</strong></th><th><strong>Enrolled authority</strong></th></tr>
-<tr><td><strong>Trust boundary</strong></td><td>Repository-local, per-repo</td><td>Host-managed, broker-enforced</td></tr>
-<tr><td><strong>Setup</strong></td><td><code>./operator init</code></td><td>Root-only, host preflight required</td></tr>
-<tr><td><strong>Role separation</strong></td><td>Advisory (single_user) or enforced (distinct UIDs)</td><td>Broker-gated, OS-identity-bound</td></tr>
-<tr><td><strong>Recovery</strong></td><td>Local restore</td><td>Explicit reconciliation step</td></tr>
-<tr><td><strong>Cost</strong></td><td>Low — works immediately</td><td>Host prerequisites, operational surface</td></tr>
-</table>
-
-<div class="decision"><strong>Owner decision:</strong> If the team only needs local evidence tracking, the local ledger is enough. If the team needs a separate host-managed trust boundary with stronger role separation and recovery discipline, enrolled authority is worth the cost.</div>
-
-<h3>What enrollment does</h3>
+<h2 id="more">Read more</h2>
 <ul>
-<li>Broker becomes the authority boundary for durable trusted-state changes</li>
-<li>Ordinary commits remain role-gated (builders → claims, verifiers → sign-off)</li>
-<li>Read-only snapshots stay separate from mutating commits</li>
-<li>Reconciliation refuses to silently adopt a replaced store</li>
-<li>Enrollment is pinned to a fixed registry path — a moved or altered repository does not silently inherit authority</li>
+  <li><a href="operator-control-plane-detailed.html">Detailed manual</a> — broader operational coverage</li>
+  <li><a href="operator-control-plane.html">Original manual</a></li>
+  <li><a href="https://github.com/blue-az/operator-control-plane/blob/master/README.md">Project README and current command reference</a></li>
 </ul>
-
-<h3>What enrollment does not do</h3>
-<div class="attention"><strong>Provisioning and rollback safety are not proven from source alone.</strong> A checkout is not a production install. Reading the code does not demonstrate that recovery works on a live host. This applies to the broker path specifically.</div>
-
-<!-- RECOVERY -->
-<h2 id="recovery">Operating Safely and Recovering Cleanly</h2>
-
-<p>Recovery follows the boundary that failed. Don't treat every stop the same way.</p>
-
-<table>
-<tr><th>When this happens</th><th>Use</th><th>What it does</th></tr>
-<tr><td>Host or enrollment boundary failed</td><td><code>re-stage</code></td><td>Trust the machine again — check privileges, socket, policy, registry</td></tr>
-<tr><td>Saved state changed underneath the product</td><td><code>reconcile</code></td><td>Explicitly adopt changed state with reset acknowledgment</td></tr>
-<tr><td>Checkpointed run can continue on same validated plan</td><td><code>resume</code></td><td>Continue from stored run ID inside the cataloged plan</td></tr>
-</table>
-
-<h3>Recovery principles</h3>
-<ul>
-<li><strong>Privilege comes first.</strong> The admin surface is root-only and stops until host preflight passes.</li>
-<li><strong>Enrollment lookup is pinned.</strong> Fixed registry path + absolute repository/socket paths. Changed identity = error, not silent inheritance.</li>
-<li><strong>Reconciliation is guarded.</strong> Explicit acknowledgment → reset progress → drop old work → retry idempotently.</li>
-<li><strong>Checkpointed replay is bounded.</strong> Only replays completed phases when the saved plan fingerprint still matches.</li>
-</ul>
-
-<h3>What looks solid</h3>
-<ul>
-<li>Privileged administration is root-only and host-gated</li>
-<li>Enrollment does not accept a casually moved registry entry</li>
-<li>The broker keeps read-only snapshots separate from mutating commits</li>
-<li>Reconciliation does not silently swallow a replaced store</li>
-<li>Study plans are catalog-validated; mutating phases require approval; quota exhaustion pauses (doesn't skip) the run</li>
-</ul>
-
-<!-- HARNESS AND STUDY -->
-<h2 id="harnesses">Harnesses, Delegation, and Study Work</h2>
-
-<h3>These are support paths, not a trust model</h3>
-<p>Harness and study work freeze a concrete execution shape. They make a run more specific by binding it to named harness profiles and explicit phases. But this structure is <strong>support infrastructure</strong>, not a replacement for the ledger's claim-evidence-verification story.</p>
-
-<div class="summary"><strong>The distinction:</strong> The ledger answers <em>whether a claim has been backed by evidence and verified</em>. A study plan answers <em>how a particular run should unfold, in what order, and under what limits</em>. If a study run pauses for approval or quota, that pause changes execution, not truth.</div>
-
-<h3>Three execution surfaces</h3>
-<table>
-<tr><th>Execution path</th><th>Entry control</th><th>Replay rule</th><th>Scope</th></tr>
-<tr><td><strong>Main study run</strong></td><td>Catalog validation, phase order, harness profile count, mutating vs. read-only shape</td><td>Completed phases replay idempotently; quota exhaustion pauses</td><td>Study execution with explicit phase states</td></tr>
-<tr><td><strong>Checkpointed dogfood</strong></td><td>Saved phase checkpoints + approval and quota gates</td><td>Replay only when saved plan fingerprint matches; failed work needs quota-reset acknowledgment</td><td>Dogfood replay with retained checkpoints</td></tr>
-<tr><td><strong>Local A/B race</strong></td><td>Only two local OpenCode arms</td><td>Local comparison only</td><td>Narrow comparison between two local arms</td></tr>
-</table>
-
-<h3>What is proven, what isn't</h3>
-<table>
-<tr><th></th><th>Confirmed here</th><th>Not proven here</th></tr>
-<tr><td><strong>Harness support</strong></td><td>12 cataloged profiles seeded at <code>operator init</code></td><td>Every named external provider binary works everywhere</td></tr>
-<tr><td><strong>Dogfood replay</strong></td><td>Checkpointed, fingerprint-validated</td><td>Every interrupted host interaction can safely continue</td></tr>
-<tr><td><strong>Local A/B</strong></td><td>Two local arms on one machine</td><td>General benchmark or provider matrix</td></tr>
-</table>
-
-<div class="note"><strong>Warning on overreading:</strong> The local A/B tool is deliberately narrow. Its output is a measurement of one machine on one day, not a general benchmark. The comparison is useful precisely because it stays bounded.</div>
-
-<!-- COMMAND REFERENCE -->
-<h2 id="command-reference">Command Reference</h2>
-
-<p>The <code>operator</code> CLI exposes ~23 subcommands across the task → claim → evidence → verification → session → usage lifecycle. Run <code>./operator &lt;command&gt; --help</code> for full flags.</p>
-
-<h3>Setup</h3>
-<table>
-<tr><th>Command</th><th>Purpose</th></tr>
-<tr><td><code>operator init</code></td><td>Create the <code>.operator/</code> ledger in the current repo. Re-running on an existing YAML-only ledger baselines those records into SQLite.</td></tr>
-</table>
-
-<h3>Tasks</h3>
-<table>
-<tr><th>Command</th><th>Purpose</th></tr>
-<tr><td><code>task-create --objective "..." [--id ID] [--repo R] [--assign A] [--review R]</code></td><td>Open a task</td></tr>
-<tr><td><code>task-show [ID]</code></td><td>Show a task's claims, evidence, and status</td></tr>
-<tr><td><code>task-route --task ID --review H</code> / <code>--clear-review</code></td><td>Append auditable correction to reviewer routing</td></tr>
-<tr><td><code>task-list</code></td><td>List all tasks with outcome summaries</td></tr>
-<tr><td><code>decide --claim ID --decision approve|reject|defer --rationale "..."</code></td><td>Operator ruling on a frozen proposal claim. Records UID; does not require a distinct verifier UID.</td></tr>
-</table>
-
-<h3>Claims</h3>
-<table>
-<tr><th>Command</th><th>Purpose</th></tr>
-<tr><td><code>claim-add --type TYPE --text "..." [--task ID] [--gate GATE] [--verify-cmd CMD] [--by WHO]</code></td><td>Register a claim. <code>--gate</code> is an artifact path; <code>--verify-cmd</code> is the command a verifier reruns.</td></tr>
-<tr><td><code>claim-show [ID]</code> / <code>claim-list [--task ID]</code></td><td>Inspect claims</td></tr>
-</table>
-
-<p><strong>Claim types:</strong> <code>file_exists</code>, <code>test_passes</code>, <code>numeric_measurement</code>, <code>real_data</code>, <code>model_output</code>, <code>firmware_behavior</code>, <code>deployment_state</code>, <code>supervision_credit</code>, <code>paper_or_report_claim</code></p>
-
-<h3>Evidence & Verification</h3>
-<table>
-<tr><th>Command</th><th>Purpose</th></tr>
-<tr><td><code>evidence-attach PATH --claim CID --type TYPE [--hash SHA256] [--status {verified,false,quarantined}] [--verified-by WHO] [--verify-cmd CMD]</code></td><td>Attach an artifact and optionally verify the claim. Local files copied into ledger, fingerprinted with SHA-256.</td></tr>
-<tr><td><code>verify RUN_DIR</code></td><td>Automated audit of a run directory's artifacts</td></tr>
-<tr><td><code>doctor [--audit]</code></td><td>Read-only consistency check. Flags unverified claims, self-verification, advisory verification, malformed UID-isolated metadata. <strong>Never executes anything.</strong></td></tr>
-</table>
-
-<p><strong>Evidence types:</strong> <code>run_log</code>, <code>manifest</code>, <code>database_query</code>, <code>test_output</code>, <code>git_commit</code>, <code>screenshot</code>, <code>transcript</code>, <code>paper_section</code>, <code>external_doc</code>, <code>session_crystal</code></p>
-
-<h3>Sessions</h3>
-<table>
-<tr><th>Command</th><th>Purpose</th></tr>
-<tr><td><code>session-start --harness H [--task ID] [--force]</code></td><td>Open a coding session</td></tr>
-<tr><td><code>session-end usage-XXXX --outcome {useful,partial,no_go,quarantined,reverted,unknown} --cost N</code></td><td>Close session with outcome and cost</td></tr>
-<tr><td><code>session-list [--open] [--task ID] [--harness H]</code></td><td>List sessions</td></tr>
-</table>
-
-<h3>Usage / Quota</h3>
-<table>
-<tr><th>Command</th><th>Purpose</th></tr>
-<tr><td><code>usage-add --harness H [--model M] [--outcome ...]</code></td><td>Capture a pasted usage snippet</td></tr>
-<tr><td><code>usage-import --harness {claude,codex,gemini-agy,prime-agent} [--since ...] [--dry-run]</code></td><td>Auto-ingest token/usage from harness session-log adapters</td></tr>
-<tr><td><code>usage-summary [--by-task] [--by-harness] [--by-model] [--by-lane] [--offload-audit] [--metering]</code></td><td>Aggregated usage view</td></tr>
-</table>
-
-<div class="note"><strong>Lane economics:</strong> Cost is the <em>driver's price</em>, not the author's (<code>usage-summary --by-lane</code>). Transcript chores (summaries, rehydration) are "cheap-lane" work; don't run them in expensive seats.</div>
-
-<h3>Briefs & Handoff</h3>
-<table>
-<tr><th>Command</th><th>Purpose</th></tr>
-<tr><td><code>brief --for H [--task ID]</code> / <code>export-brief --for H [--task ID]</code></td><td>Generate a harness-specific brief (copy-paste for the next agent)</td></tr>
-<tr><td><code>handoff-add [--task ID] [--changed ...] [--verified ...] [--claimed ...] [--open ...]</code></td><td>Record a closeout</td></tr>
-</table>
-
-<h3>Headless Delegation</h3>
-<pre><code>./delegate-brief --task ID --brief FILE --harness {claude,codex,grok,gemini-agy,fable,openrouter} [options]
-# Preserves brief under --deliver/.brief.md, optional --freeze path hashes, full log + exit code
-# --record writes an Operator handoff (dispatch outcome only, not acceptance)</code></pre>
-
-<!-- CONFIGURATION -->
-<h2 id="configuration">Configuration</h2>
-
-<p>Operator is driven by files under <code>.operator/</code> (created by <code>init</code>):</p>
-
-<h3><code>.operator/identity.yaml</code> — Identity-enforcement policy</h3>
-<pre><code>mode: enforced          # or: single_user (advisory)
-uids:
-  1001:
-    name: builder
-    roles: [builder]
-  1002:
-    name: reviewer
-    roles: [verifier]</code></pre>
-
-<p>In <code>enforced</code> mode, a verification only counts when the verifier's OS UID differs from the claim author's. A different harness name buys nothing. Two agents under one Unix user are one identity.</p>
-
-<p>In <code>single_user</code> mode, status writes remain available and are recorded as <code>advisory</code>, never <code>uid_isolated</code>. A "verified" status is advisory — the builder's own assertion, not an independent check.</p>
-
-<h3><code>.operator/ledger.sqlite3</code></h3>
-<p>Append-only, full-snapshot event versions for task, claim, evidence, handoff, and usage/session records. Event versions allocated transactionally, linked by per-record SHA-256 hashes, protected from UPDATE/DELETE through database triggers. Doctor reports divergence but does not silently repair.</p>
-
-<p>Because both SQLite and YAML live on the same writable disk, this improves local durability and auditability — it is <strong>not</strong> an off-machine backup or an adversarial tamper-proof boundary.</p>
-
-<h3><code>.operator/{tasks,claims,evidence,handoffs,usage}/</code></h3>
-<p>Current YAML projections (gitignored). These are compatibility read surfaces, not backup.</p>
-
-<h3>Root-managed external policy (P3b)</h3>
-<p>The <code>operator-admin</code> tool installs the standalone broker under fixed root-controlled paths. It supports strict generation-one install, append-only rotation, terminal revocation, audit, and conservative privilege preflight. This is <strong>not</strong> repo CLI integration — <code>operator</code> and existing <code>.operator</code> ledgers do not consult the external authority yet.</p>
-
-<!-- OPEN DECISIONS -->
-<h2 id="open-decisions">Open Decisions</h2>
-
-<div class="decision"><strong>These are owner decisions, not technical questions. The code can't answer them for you.</strong></div>
-
-<ol>
-<li><strong>Stay local, or enroll authority?</strong> The local path is the documented default. Enrollment buys a root-managed boundary and costs host prerequisites and operational surface.</li>
-<li><strong>Who owns reconciliation and store-reset acknowledgment?</strong> Should explicit acknowledgment be a first-class documented step rather than an implicit one?</li>
-<li><strong>Are study plans and phase catalogs owner-facing?</strong> They can be presented as supported product workflows or as operator-internal material.</li>
-<li><strong>Should dogfood stay administrator-only with one acknowledged retry?</strong></li>
-<li><strong>Is closeout provisional until the transition claim stays verified?</strong> (The current design says yes — this is the right answer, but should it be explicit in the owner-facing docs?)</li>
-<li><strong>Should quota exhaustion pause a study for resumption, or stop the run outright?</strong></li>
-<li><strong>Should root-only enrollment and rebind be documented as a separate privileged surface</strong> rather than as advanced options inside the main flow?</li>
-<li><strong>Should warning-only doctor output be described as advisory for drafts</strong> in owner-facing documentation?</li>
-</ol>
-
-<!-- OPERATING CAVEATS -->
-<h2 id="operating-caveats">Operating Caveats</h2>
-
-<div class="attention"><strong>Trusted verification needs a genuinely distinct verifier.</strong> Under <code>mode: enforced</code>, a verification only counts when the verifier's OS UID differs from the claim author's. A different harness name buys nothing. Two agents under one Unix user are one identity.</div>
-
-<div class="attention"><strong>A harness name is routing, not authority.</strong> <code>assigned_harness</code> and <code>review_harness</code> describe where work goes. Neither confers the right to bless a claim.</div>
-
-<div class="attention"><strong>Enrolled authority is a separate, root-managed surface.</strong> Enrollment, rotation, revocation and rebinding are privileged operations with host prerequisites. They are not part of the daily loop.</div>
-
-<div class="attention"><strong>A broker receipt is not local convergence.</strong> The broker accepting a protected change means the change was authorized, not that the repository has finished reconciling.</div>
-
-<div class="attention"><strong>Durable history is local, and projections are not backup.</strong> Compatibility views can be rebuilt; they do not reconstruct the authority store. Back up canonical history, not the projections derived from it.</div>
-
-<div class="attention"><strong>Status-bearing evidence can reopen finished work.</strong> Attaching evidence with a status can move a task backward or out of trusted state. Closeout is not one-way.</div>
-
-<div class="attention"><strong>Doctor is strict on verified records and advisory on drafts.</strong> A warning on draft material is not the same signal as an error on a verified claim. Read the level, not just the presence of output.</div>
-
-<div class="attention"><strong>Doctor never executes anything.</strong> It validates paths, bytes and identity. A recorded <code>required_gate</code> is an artifact path it checks for existence; the rerunnable command lives in <code>verify_cmd</code> and is run by a verifier, never by doctor.</div>
-
-<div class="attention"><strong>Rollback and provisioning safety are not proven from source alone.</strong> A checkout is not a production install, and reading the code does not demonstrate that recovery works on a live host.</div>
-
-<div class="footer">
-<p>Generated from repository snapshot <code>cab4a7a</code>. Published 2026-09-16.<br>
-Refactored edition: collapsed repetitive template structure, removed redundant "verified facts" sections, moved open decisions and caveats to dedicated chapters, eliminated mermaid diagrams that added no information beyond the prose.</p>
-</div>
-
+<p class="note"><strong>Scope:</strong> this is an essence-first overview, not release-specific proof of live deployment behavior. Check command names, authority integration, and recovery procedures against the release and host you use.</p>
+<footer><a href="../reflect.html">Reflect shelf</a></footer>
+</main>
 </body>
 </html>
