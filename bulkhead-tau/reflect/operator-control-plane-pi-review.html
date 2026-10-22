@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Operator Control Plane — Independent Review</title>
+<link rel="stylesheet" href="bt-manual.css"/>
+<script type="module" src="bt-manual.js"></script>
+<style>
+body{max-width:42em;margin:0 auto;padding:3em 2em;font-family:Georgia,serif;line-height:1.6;color:#1a1a1a;background:#fdfdfd}
+h1{font-size:2em;margin-bottom:0.3em}
+h2{font-size:1.45em;margin-top:2.2em;padding-bottom:0.3em;border-bottom:1px solid #e0e0e0}
+h3{font-size:1.15em;margin-top:1.6em;color:#333}
+p{margin:0.8em 0}
+code{font-family:'Courier New',monospace;font-size:0.9em}
+pre{background:#f5f5f5;padding:1em 1.4em;overflow-x:auto;border-radius:4px;font-size:0.88em;line-height:1.5}
+pre code{background:none;padding:0}
+blockquote{border-left:3px solid #c9a227;margin:1em 0;padding:0.6em 1em 0.6em 1.2em;color:#444;background:rgba(201,162,39,0.04)}
+a{color:#1a5276}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:0.9em}
+th,td{padding:0.5em 0.8em;text-align:left;border-bottom:1px solid #ddd}
+th{background:#f8f8f8;font-weight:600}
+.snapped{border:1px solid #c9a227;background:rgba(201,162,39,0.06);border-radius:8px;padding:14px 18px;margin:1.5em 0}
+.snapped strong{color:#7a6200}
+.attention{border-left:3px solid #c0392b;padding:0.6em 1em;margin:1em 0;background:rgba(192,57,43,0.04)}
+.attention strong{color:#c0392b}
+.note{border-left:3px solid #2980b9;padding:0.6em 1em;margin:1em 0;background:rgba(41,128,185,0.04)}
+.note strong{color:#2980b9}
+.summary{background:#f0faf0;border-left:3px solid #27ae60;padding:0.6em 1em;margin:1em 0}
+.summary strong{color:#1e8449}
+.decision{background:#fff8f0;border-left:3px solid #e67e22;padding:0.6em 1em;margin:1em 0}
+.decision strong{color:#d35400}
+.nav{background:#f8f8f8;padding:1em 1.5em;border-radius:4px;margin:1.5em 0;font-size:0.9em}
+.nav ul{margin:0;padding-left:1.4em}
+.nav li{margin:0.25em 0}
+.nav a{color:#1a5276}
+.footer{margin-top:3em;padding-top:1.5em;border-top:1px solid #ddd;font-size:0.82em;color:#888}
+.pro{border-left:3px solid #27ae60;padding:0.5em 1em;margin:0.6em 0;color:#1e8449}
+.con{border-left:3px solid #c0392b;padding:0.5em 1em;margin:0.6em 0;color:#c0392b}
+</style>
+</head>
+<body>
+
+<header style="margin-bottom:2.5em;text-align:center">
+<h1>Operator Control Plane</h1>
+<p style="font-size:1.15em;color:#555;margin-top:0.3em">Independent Review — by pi</p>
+<div class="snapped" style="margin:1.5em auto 0;max-width:700px;text-align:left">
+<strong>This is an independent review, not a manual.</strong> It analyzes the system from source at snapshot <code>cab4a7a</code>. It is not a substitute for the owner's manual or the operational documentation. It is my assessment of the design, its strengths, its risks, and its unresolved questions.
+</div>
+</header>
+
+<nav class="nav"><strong>In this review</strong>
+<ul>
+<li><a href="#what-it-does">What It Does</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#strengths">Strengths</a></li>
+<li><a href="#weaknesses">Weaknesses</a></li>
+<li><a href="#risks">Risks</a></li>
+<li><a href="#comparisons">Compared to the field</a></li>
+<li><a href="#verdict">Verdict</a></li>
+<li><a href="#open-questions">Open Questions</a></li>
+</ul></nav>
+
+<h2 id="what-it-does">What It Does</h2>
+
+<p>Operator Control Plane is a <strong>trust infrastructure for AI coding work</strong>. It doesn't execute code, manage repos, or orchestrate agents. It records <em>who claimed what, what evidence supports it, who verified it, and how much it cost</em> — and enforces rules about when those records can be trusted.</p>
+
+<p>The core loop is simple:</p>
+<ol>
+<li>Open a task</li>
+<li>Agent makes a claim ("I fixed the retry logic")</li>
+<li>Agent attaches evidence (test output, file hashes)</li>
+<li>A different identity verifies it</li>
+<li>Doctor checks the ledger for consistency</li>
+</ol>
+
+<p>Everything else — sessions, usage accounting, handoff briefs, delegate-brief, enrolled authority — is built around this loop.</p>
+
+<h2 id="architecture">Architecture</h2>
+
+<p>It's a Python CLI with SQLite as the durable store and YAML as the compatibility surface. The design is straightforward:</p>
+
+<div class="summary"><strong>SQLite → canonical history. YAML → compatibility view. Doctor → audit. Broker → enrolled authority.</strong></div>
+
+<h3>What's well-designed</h3>
+<div class="pro">✅ <strong>Append-only SQLite with SHA-256 event links.</strong> The durable history can't be silently rewritten. Events are linked by per-record hashes, protected from UPDATE/DELETE by triggers. This is the right call for an audit trail.</div>
+<div class="pro">✅ <strong>UID-isolated verification.</strong> A verification only counts if the verifier's OS UID differs from the claim author's. This is a real boundary, not a paper one — two agents under one Unix user are one identity.</div>
+<div class="pro">✅ <strong>Reconciliation requires explicit acknowledgment.</strong> When the authority store changes, the system doesn't silently adopt the new state. It asks the operator to confirm. This prevents "mysterious" state transitions.</div>
+<div class="pro">✅ <strong>Closeout is provisional.</strong> A later negative verifier write can reopen a task. This is honest about the nature of verification — it's not a one-way gate, it's a continuing signal.</div>
+<div class="pro">✅ <strong>Local-first by default.</strong> The product works immediately with <code>./operator init</code>. Enrolled authority is opt-in, not the default. This matches the actual use case of a single developer or small team.</div>
+<div class="pro">✅ <strong>Doctor never executes.</strong> The audit tool is read-only. It validates paths, bytes, hashes, and identity. It does not run <code>--verify-cmd</code>. This is an important separation — the checker is not the executor.</div>
+
+<h3>What's less well-designed</h3>
+<div class="con">⚠️ <strong>YAML + SQLite duplication is a maintenance burden.</strong> The YAML projections are gitignored "compatibility views" that can be rebuilt from SQLite. They serve no durable purpose — they're neither backup nor authoritative. They exist because someone wanted a human-readable format but also wanted SQLite's integrity. Neither format is the source of truth; SQLite is. The YAML adds complexity without adding durability.</div>
+<div class="con">⚠️ <strong>The command surface is sprawling.</strong> ~23 subcommands across tasks, claims, evidence, verification, sessions, usage, briefs, handoff, and delegation. For a tool that should be approachable, this is a lot of surface area. The navigation helps (local loop first, admin second), but the cognitive load is real.</div>
+<div class="con">⚠️ <strong>"Harness" naming is misleading.</strong> A harness is a routing profile (which agent CLI to use), not a trust authority. The name invites the false inference that the harness itself has any authority. "Lane" or "profile" would be less confusing.</div>
+<div class="con">⚠️ <strong>Enrolled authority is half-built.</strong> The broker is installed as a service, the CLI resolves enrollment against it, and <code>operator-admin</code> handles lifecycle. But "no production ledger is enrolled yet" and "initial installation must execute a root-owned staged copy." It's a real system, but it hasn't been exercised in production. The gap between "installed" and "enrolled" is meaningful.</div>
+
+<h2 id="strengths">Strengths</h2>
+
+<h3>1. The trust model is honest</h3>
+<p>Most verification systems pretend that a signature or a checkmark is sufficient. Operator's model is more nuanced:</p>
+<ul>
+<li>A claim is <em>not</em> a fact — it's a statement tied to a task</li>
+<li>Evidence is <em>not</em> verification — it's retained proof, hashed and stored</li>
+<li>Verification is <em>not</em> final — it's a signal that can be negated later</li>
+<li>Doctor is <em>not</em> a fix — it's a continuing audit</li>
+</ul>
+<p>These distinctions are easy to blur in practice. Operator makes them explicit in the data model and the CLI surface.</p>
+
+<h3>2. Lane economics are well-thought-out</h3>
+<p>The billing model — cost is the <em>driver's price</em>, not the author's — is a real insight. If Claude charges $20 and Claude Code charges $5 for the same work, the ledger should reflect that. This matters for teams that use multiple agents.</p>
+<p>The "cheap-lane" principle — transcript chores (summaries, rehydration) should run in cheap seats — is practical advice that most teams skip.</p>
+
+<h3>3. The separation of concerns is clean</h3>
+<table>
+<tr><th>Path</th><th>Purpose</th><th>Trust level</th></tr>
+<tr><td>Local ledger</td><td>Everyday work tracking</td><td>Advisory</td></tr>
+<tr><td>Enrolled authority</td><td>Host-managed trust boundary</td><td>Broker-enforced</td></tr>
+<tr><td>Admin surface</td><td>Enrollment, rotation, rebind</td><td>Root-only</td></tr>
+<tr><td>Doctor</td><td>Read-only audit</td><td>Non-executive</td></tr>
+<tr><td>Study/dogfood</td><td>Experimental runs</td><td>Support, not trust</td></tr>
+</table>
+<p>Each path has a clear purpose and a clear trust level. They don't blur together.</p>
+
+<h3>4. Session-derived IDs over role labels</h3>
+<p>Using <code>claude-019KSo7K</code> instead of <code>claude-builder</code> for <code>--by</code>, <code>--assign</code>, and <code>--review</code> is the right call. Session IDs are stable for the session; role labels drift. This prevents identity confusion in multi-session environments.</p>
+
+
+<h2 id="weaknesses">Weaknesses</h2>
+
+<h3>1. The product does too much</h3>
+<p>Operator started as a ledger for tracking claims and evidence. It has grown into a system that also handles:</p>
+<ul>
+<li>Task management</li>
+<li>Claim registration with typed assertions</li>
+<li>Evidence attachment and hashing</li>
+<li>Session tracking and cost accounting</li>
+<li>Usage import from multiple harness providers</li>
+<li>Handoff brief generation</li>
+<li>Headless delegation across 6+ agent CLIs</li>
+<li>Study plans with phase catalogs</li>
+<li>Checkpointed dogfood runs</li>
+<li>Local A/B comparison</li>
+<li>Enrolled authority with a broker</li>
+<li>Root-only administration</li>
+</ul>
+<p>That's not a ledger anymore. That's a platform. The question isn't whether it's useful (it is) — it's whether all of this belongs in one tool. The command surface reflects this bloat: ~23 subcommands, each with their own flags and mental model.</p>
+
+<h3>2. The "harness" abstraction is leaky</h3>
+<p>The harness system catalogs 12 profiles at <code>operator init</code>. It claims to support Claude Code, Codex, Gemini, Grok, and others. But the documentation is honest: "That they are cataloged is a fact about the source. That each provider's CLI still behaves as this product expects is not shown here."</p>
+<p>This is a real risk. Agent CLIs change. Their session formats change. Their APIs change. The harness system needs active maintenance that the current documentation doesn't reflect.</p>
+
+<h3>3. Dogfood is dangerous</h3>
+<p>The dogfood runner is "a privileged run" bound to "installed machine paths and a release digest." Treating it as a retry button "hands out a powerful command with less slack than people expect." This is understated — dogfood is effectively an arbitrary execution engine wrapped in checkpointing. The recovery path is narrow on purpose, but the entry point is powerful.</p>
+
+<h2 id="risks">Risks</h2>
+
+<h3>1. The local ledger is the single point of failure</h3>
+<p>Everything important lives in <code>.operator/ledger.sqlite3</code>. It's gitignored. There's no automatic backup. The documentation says "this is not an off-machine backup or an adversarial tamper-proof boundary." It's a SQLite file on a writable disk. If the disk dies, the audit trail dies with it. This is fine for a development tool, but it means the "trust record" has a very real vulnerability.</p>
+
+<h3>2. Enrolled authority is aspirational</h3>
+<p>The broker path is the "serious" version of this system — the one with real role separation, host-managed trust, and root-only administration. But:</p>
+<ul>
+<li>No production ledger is enrolled yet</li>
+<li>Real-host privilege proof remains issue #7</li>
+<li>Provisioning and rollback safety are "not proven from source alone"</li>
+</ul>
+<p>So the most important feature is untested in production. The local ledger works, but the local ledger is the "advisory" path. The gap between "works locally" and "works enrolled" is the biggest gap in the system.</p>
+
+<h3>3. The trust model depends on Unix UIDs</h3>
+<p>The UID-isolated verification model is strong in theory — but it depends on genuinely distinct OS users. In containerized or CI environments, UIDs can be shared or mapped. The documentation acknowledges this ("the CLI does not provision those users or containers") but the risk is real: if two "different" agents run under the same UID, the verification is meaningless.</p>
+
+<h3>4. The system is domain-neutral in name only</h3>
+<p>Operator claims to be "domain-neutral" but is deeply optimized for AI coding work. The claim types (<code>test_passes</code>, <code>file_exists</code>, <code>model_output</code>), the harness system (agent CLIs), the session tracking (coding sessions), and the brief generation (handoffs between agents) — all of this is coding-specific. "Domain-neutral" is aspirational marketing, not architecture.</p>
+
+<h2 id="comparisons">Compared to the Field</h2>
+
+<p>I searched GitHub for similar repos. Here's how Operator compares:</p>
+
+<table>
+<tr><th>System</th><th>Focus</th><th>How it differs</th></tr>
+<tr><td><strong>claims-ledger</strong></td><td>Docs/PR claim anchors</td><td>Focuses on preventing doc rot. Uses anchor schemes (<code>git://</code>, <code>doc://</code>, <code>adr://</code>). No agent verification. Smaller scope.</td></tr>
+<tr><td><strong>harmony</strong></td><td>Fleet orchestrator + GUI</td><td>Has an Electron GUI and DAG scheduling. More about running agent fleets than tracking trust. Different layer of the stack.</td></tr>
+<tr><td><strong>agent-completion-ledger</strong></td><td>Task completion verification</td><td>Narrower: just verifies whether a coding task's claim is supported by repo evidence. YAML contracts with SHA-256 protection. No ledger lifecycle, no sessions, no cost.</td></tr>
+<tr><td><strong>open-tui-orchestrator</strong></td><td>Parallel task distribution</td><td>Focuses on splitting work across TUI windows with memory-fit capacity. Has the same "evidence not verbal claims" philosophy but different architecture (JS/Node.js, Windows-only).</td></tr>
+</table>
+
+<p><strong>Operator's unique position:</strong> It's the only system that combines a full ledger lifecycle (task → claim → evidence → verification → session → usage) with lane economics, session-derived identity, and an enrolled authority path. The others are narrower. Operator is the most complete system in this niche.</p>
+
+
+<h2 id="verdict">Verdict</h2>
+
+<p>Operator Control Plane is a <strong>well-designed trust infrastructure that has outgrown its original scope</strong>. The core model — claims, evidence, verification, doctor — is sound. The separation of concerns (local ledger vs. enrolled authority, builder vs. verifier, audit vs. execution) is clean. The lane economics and session-derived identity are real insights that most systems miss.</p>
+
+<p>Its weaknesses are real too: the command surface is sprawling, the harness system needs active maintenance, the enrolled authority is untested in production, and the local ledger is a single point of failure. The "domain-neutral" claim is aspirational.</p>
+
+<p><strong>Bottom line:</strong> If you need a trust record for AI coding work, this is the best system I found. If you need a fleet orchestrator, look at harmony. If you need doc anchor verification, look at claims-ledger. If you need parallel task distribution, look at open-tui-orchestrator. But for tracking who claimed what, what evidence supports it, who verified it, and how much it cost — Operator is the most complete tool in this space.</p>
+
+<div class="summary"><strong>Recommendation:</strong> Stay on the local ledger unless you have a real need for enrolled authority. The local path is well-designed and works immediately. The enrolled authority path is important but untested — treat it as a future investment, not a current requirement.</div>
+
+<h2 id="open-questions">Open Questions</h2>
+
+<p>These are questions I have about the system after reviewing the source. They're not resolved by the documentation.</p>
+
+<ol>
+<li><strong>What happens when the SQLite file grows beyond practical size?</strong> Append-only is great for auditability but terrible for storage. Is there a pruning or archival mechanism? The documentation doesn't say.</li>
+<li><strong>What is the actual backup strategy?</strong> The SQLite file is gitignored. The YAML is gitignored. The documentation says "back up canonical history, not the projections." But how? Manually? Cron? The tool doesn't seem to include a backup command.</li>
+<li><strong>How does the broker handle concurrent operators?</strong> The broker is a "restricted Unix socket" that "ties requests to the connecting peer." But what happens when two operators try to reconcile at the same time? What about the "rebuilds a healthier state" scenario mentioned in the docs — is that a real risk?</li>
+<li><strong>What is the migration path from local to enrolled?</strong> The documentation says enrollment is "not a generic switch" and requires host preflight. But if someone starts with the local ledger (the documented default), what's the actual migration path? Is there a command? A procedure? The docs don't say.</li>
+<li><strong>Why is dogfood a separate system from study?</strong> Both are "privileged runs." Both have checkpointing. Both have narrow recovery paths. What's the conceptual difference? The documentation treats them as separate but doesn't clearly articulate the distinction.</li>
+<li><strong>Is the A/B comparison tool useful?</strong> It compares two local OpenCode arms. The documentation calls it "narrow" and "intentionally small." But is it actually useful, or is it a solution looking for a problem? The docs don't say.</li>
+<li><strong>What happens when a harness profile's format changes?</strong> The usage import system reads session logs from Claude Code, Codex, Gemini, etc. These formats change. What's the update process? Is there version detection? Graceful degradation? The docs don't say.</li>
+<li><strong>Should closeout be truly final?</strong> The current design says closeout is provisional — a later verifier write can reopen the task. This is honest, but is it useful? In practice, does this ever happen? Should there be a "final closeout" that cannot be reopened?</li>
+</ol>
+
+<div class="footer">
+<p>Review by pi — based on source at snapshot <code>cab4a7a</code>.<br>
+This is an independent assessment, not a manual. It reflects my analysis of the design, its strengths, its risks, and its unresolved questions.</p>
+<p>Published 2026-09-21.</p>
+</div>
+
+</body>
+</html>
