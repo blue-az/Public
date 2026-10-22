@@ -1,5 +1,8 @@
 # Agent Workflow (Landing Pages + Agent Documentation)
 
+> **Canonical public host:** `https://bulkheadtau.com/`. The legacy Efehn/Proto
+> alias is retired. Deploy and verify using only the canonical Bulkhead τ host.
+
 This repository supports two workflows:
 1) Fast static landing pages.
 2) Accurate agent documentation sites based on real implementations.
@@ -42,13 +45,11 @@ showcase/check-consistency.sh
 
 ```bash
 cd /home/blueaz/Public/Proto
-./deploy.sh <slug>
+./deploy.sh <target>
 ```
 
 ### Step 6: Return URL
-```
-Site live at: https://proto.efehnconsulting.com/<slug>/
-```
+Verify the canonical page under `https://bulkheadtau.com/<path>/` before reporting it live.
 
 ---
 
@@ -143,9 +144,9 @@ showcase/check-consistency.sh
 ```
 
 ```bash
-./deploy.sh <agent-slug>
-# Site live at: https://proto.efehnconsulting.com/<agent-slug>/
+./deploy.sh <target>
 ```
+Verify the result at the corresponding path under `https://bulkheadtau.com/`.
 
 ---
 
@@ -157,8 +158,8 @@ showcase/check-consistency.sh
 | User | see `deploy.env`, gitignored |
 | Port | 22 |
 | Protocol | SSH (key authenticated) |
-| Remote Path | /homepages/1/d993872858/htdocs/prototypes |
-| Public URL | https://proto.efehnconsulting.com/ |
+| Remote Path | `/homepages/1/d993872858/htdocs/prototypes` |
+| Public URL | `https://bulkheadtau.com/` (canonical; do not use the legacy alias) |
 
 ---
 

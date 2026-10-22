@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Deploy Proto assets to IONOS webspace.
+# Deploy static site assets to the configured IONOS webspace.
+# Bulkhead τ's canonical public host is https://bulkheadtau.com/; do not use the legacy alias.
 # Usage:
 #   ./deploy.sh papers            — sync papers index only
 #   ./deploy.sh bulkhead-tau      — sync generated papers
