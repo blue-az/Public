@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPU Unlock on Dual RTX 3090s: A Local Coding-Agent Workload Case Study</title>
+  <meta name="description" content="Matched exploratory stock/unlocked test of two local model routes on one dual-RTX-3090 coding-agent task. Both task-session medians were lower after enabling gpu-unlock, while incremental prefill fell for Qwen3.8-27B and rose for Qwen3.6-35B-A3B. Three unseeded trials per model and condition; variable tool paths; no general speed-up claim.">
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8f6f1; color: #1f1a17; }
+    .page { max-width: 880px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .badge { display: inline-block; padding: 0.35rem 0.7rem; border: 1px solid #c9bda8; border-radius: 999px; font-size: 0.8rem; color: #6b5a45; }
+    h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.2; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.35rem; }
+    h2 { margin-top: 2.2rem; font-size: 1.5rem; border-top: 1px solid #ddd2c0; padding-top: 1rem; }
+    p, li { font-size: 1.02rem; line-height: 1.7; }
+    code { background: #efe7d8; padding: 0.1rem 0.28rem; border-radius: 4px; font-size: 0.95em; }
+    pre { background: #201a17; color: #f6efe6; padding: 1rem; overflow-x: auto; border-radius: 8px; }
+    pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: 0.92rem; line-height: 1.55; }
+    blockquote { margin: 1.25rem 0; padding-left: 1rem; border-left: 4px solid #c9bda8; color: #5a4c3e; }
+    hr { border: 0; border-top: 1px solid #ddd2c0; margin: 2rem 0; }
+    a { color: #8b4513; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; margin: 1.5rem auto; }
+    .meta { color: #6b5a45; margin-bottom: 2rem; }
+    .paper-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .paper-table th, .paper-table td { border: 1px solid #d7ccb9; padding: 0.6rem; text-align: left; vertical-align: top; }
+    .paper-table th { background: #eee3d1; }
+    .release-line { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd2c0; color: #6b5a45; font-size: 0.92rem; }
+    .release-line a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="badge">Paper · published</div>
+    <h1>GPU Unlock on Dual RTX 3090s: A Local Coding-Agent Workload Case Study</h1>
+    <p class="meta">Matched exploratory stock/unlocked test of two local model routes on one dual-RTX-3090 coding-agent task. Both task-session medians were lower after enabling gpu-unlock, while incremental prefill fell for Qwen3.8-27B and rose for Qwen3.6-35B-A3B. Three unseeded trials per model and condition; variable tool paths; no general speed-up claim.</p>
+    <p class="meta">Canonical source: <code>docs/GPU_UNLOCK_DUAL_RTX_3090_CASE_STUDY.md</code></p>
+    <p><strong>Status:</strong> published · <strong>Date:</strong> 2026-10-29 · <strong>Paper number:</strong> 1.49 (chronological) · <strong>Paper group:</strong> Local LLM Operator Judgment (confirmed)</p>
+<p><strong>Study:</strong> matched stock and <code>gpu-unlock</code> 1.0.0 runs on one operator-owned Local Lane task</p>
+<h2>Abstract</h2>
+<p>This case study measures a dual-RTX-3090 system before and after enabling <code>gpu-unlock</code> 1.0.0, using two local coding-agent model routes on the same operator-owned <code>constant-and-callers</code> L2 task. Each model/condition cell has three unseeded trials. Both routes had lower median task-session time in the unlocked condition: Qwen3.8-27B went from 15.0 to 13.1 seconds, and Qwen3.6-35B-A3B from 5.6 to 5.3 seconds. The lower session times do not imply a uniform throughput gain. Weighted incremental prefill fell 19.1% for Qwen3.8-27B and rose 6.7% for Qwen3.6-35B-A3B; decode changed by only +1.0% and +3.4%, respectively. All twelve task trials passed, and all selected tool calls were valid.</p>
+<p>The result is exploratory, not a general GPU-unlock claim. The sample is small, the model-selected tool trajectories were unseeded, and Qwen3.8-27B used fewer calls in its unlocked trials. The measured task is a small CAC L2 maintenance task, not a 12-step benchmark or a replication of a different author&#x27;s workload.</p>
+<h2>1. Question and scope</h2>
+<p>The question is practical: on this particular dual-3090 coding-agent setup, what changed when the cards were run with <code>gpu-unlock</code> enabled, while keeping the Local Lane task, models, server configuration, driver, power limits, and request settings fixed?</p>
+<p>This is a within-system case study, not a controlled estimate of the effect across GPUs, models, tasks, or software stacks. The two conditions were run sequentially on 2026-10-29, stock first and unlocked second. Within each condition, the models ran sequentially in the order shown. There was no randomized or counterbalanced order. The paper reports the observed run medians and server timings, without significance testing or causal generalization.</p>
+<h2>2. System and conditions</h2>
+<table class="paper-table">
+<thead><tr><th>Item</th><th>Setting</th></tr></thead>
+<tbody>
+<tr><td>GPUs</td><td>2× RTX 3090; GPU0 at <code>0000:01:00.0</code> (CPU x16), GPU1 at <code>0000:03:00.0</code> (chipset x4)</td></tr>
+<tr><td>Host</td><td>Debian 13; kernel <code>6.12.111+deb13-amd64</code>; NVIDIA driver <code>550.163.01</code></td></tr>
+<tr><td>Unlock</td><td><code>gpu-unlock</code> 1.0.0, built from checksum-verified 610.43.03 firmware inputs; both BDFs targeted; no P2P patch</td></tr>
+<tr><td>Power and thermal guard</td><td>350 W/card power limit in both conditions; 85 °C stop threshold</td></tr>
+<tr><td>Inference server</td><td>llama.cpp <code>b1-2851b3b</code>; 196,608-token configured context; layer split; 999 GPU layers; flash attention on; parallelism 1</td></tr>
+<tr><td>Qwen3.8 route</td><td>Qwen3.8-27B, Q4_K_M weights, F16 K/V cache</td></tr>
+<tr><td>Qwen3.6 route</td><td>Qwen3.6-35B-A3B, Q4_K_M weights, Q8_0 K/V cache</td></tr>
+<tr><td>Workload</td><td>Local Lane <code>constant-and-callers</code> L2: a bounded, multi-file retry-limit edit followed by its fixture check</td></tr>
+<tr><td>Sampling</td><td>Per-request temperature 0.8, top-p 0.95, top-k 20, min-p 0, presence penalty 0, repeat penalty 1; thinking off; 4,096-token request cap</td></tr>
+<tr><td>Replication</td><td>Three trials per model per condition; models run sequentially; no fixed random seed</td></tr>
+</tbody>
+</table>
+<p>The model routes were not simultaneously resident. The requested sampler values are taken from captured API request options, which explicitly carried these values on the measured requests in both conditions. In the unlocked packet, the server&#x27;s separate <code>/props</code> snapshots reported different defaults for some fields (Qwen3.8 temperature/min-p and Qwen3.6 top-k/min-p); those defaults are not substituted for the explicitly logged per-request options.</p>
+<p>The unlocked boot log recorded the module&#x27;s unlocked state for both target GPUs and NVIDIA DRM initialization. During unlocked trials, telemetry peaks were 79 °C and 76 °C, with peak power of 320 W and 310 W, below the unchanged 350 W/card limits and below the stop threshold.</p>
+<h2>3. Results</h2>
+<h3>Qwen3.8-27B</h3>
+<table class="paper-table">
+<thead><tr><th>Metric</th><th>Stock</th><th>Unlocked</th><th>Observed change</th></tr></thead>
+<tbody>
+<tr><td>CAC L2 task-session median</td><td>15.0 s</td><td>13.1 s</td><td>−12.7% time</td></tr>
+<tr><td>Incremental prefill, weighted</td><td>467 tok/s</td><td>378 tok/s</td><td>−19.1%</td></tr>
+<tr><td>Exact final-context replay median</td><td>2,394 tokens / 3.401 s</td><td>2,292 tokens / 3.202 s</td><td>−5.8% time; context sizes differ</td></tr>
+<tr><td>Fresh replay prefill median</td><td>1,293 tok/s</td><td>1,423 tok/s</td><td>+10.1%</td></tr>
+<tr><td>Agent-request decode, weighted</td><td>42.42 tok/s</td><td>42.84 tok/s</td><td>+1.0%</td></tr>
+<tr><td>Correct task trials</td><td>3/3</td><td>3/3</td><td>all passed</td></tr>
+<tr><td>Valid tool calls</td><td>24/24 (8, 7, 9)</td><td>20/20 (7, 7, 6)</td><td>all valid; path/count varied</td></tr>
+</tbody>
+</table>
+<h3>Qwen3.6-35B-A3B</h3>
+<table class="paper-table">
+<thead><tr><th>Metric</th><th>Stock</th><th>Unlocked</th><th>Observed change</th></tr></thead>
+<tbody>
+<tr><td>CAC L2 task-session median</td><td>5.6 s</td><td>5.3 s</td><td>−5.4% time</td></tr>
+<tr><td>Incremental prefill, weighted</td><td>868 tok/s</td><td>926 tok/s</td><td>+6.7%</td></tr>
+<tr><td>Exact final-context replay median</td><td>2,543 tokens / 1.870 s</td><td>2,542 tokens / 1.806 s</td><td>−3.4% time</td></tr>
+<tr><td>Fresh replay prefill median</td><td>1,790 tok/s</td><td>1,841 tok/s</td><td>+2.9%</td></tr>
+<tr><td>Agent-request decode, weighted</td><td>153.39 tok/s</td><td>158.62 tok/s</td><td>+3.4%</td></tr>
+<tr><td>Correct task trials</td><td>3/3</td><td>3/3</td><td>all passed</td></tr>
+<tr><td>Valid tool calls</td><td>23/23 (7, 8, 8)</td><td>23/23 (7, 8, 8)</td><td>all valid; same counts</td></tr>
+</tbody>
+</table>
+<p>The task-session latency excludes model load. It includes the agent&#x27;s variable task trajectory, so it is not a fixed-token inference benchmark. In particular, Qwen3.8-27B made four fewer tool calls in the unlocked trials; that trajectory change may contribute to the shorter session median. The Qwen3.6-35B-A3B trials had the same tool-call counts across conditions, but the three-trial sample still does not establish a stable effect.</p>
+<h2>4. Measurement definitions</h2>
+<ul>
+<li><strong>Incremental prefill:</strong> <code>sum(prompt_n) / sum(prompt_ms)</code> over non-initial agent requests. This weighted server-side rate is separate from the fresh replay measurement.</li>
+<li><strong>Fresh replay prefill:</strong> median of each trial&#x27;s llama.cpp <code>prompt_per_second</code> for an exact replay of the final messages and tools, with prompt cache disabled and a 64-token output cap.</li>
+<li><strong>Agent-request decode:</strong> weighted <code>sum(predicted_n) / sum(predicted_ms)</code> over the agent&#x27;s requests. It is server timing, not client wall-clock latency.</li>
+<li><strong>Task correctness and tool validity:</strong> correctness is the fixture grader&#x27;s pass/fail result; tool validity counts whether selected calls were valid. They are reported separately.</li>
+</ul>
+<p>The actual final histories were approximately 2.3–3.0K tokens. This study is not a 12-step task, and its values should not be presented as a direct replication or head-to-head comparison with a separate reference workload.</p>
+<h2>5. Interpretation</h2>
+<p>The narrow observation is that both model routes had lower median CAC L2 session time after the unlock, while server-side throughput results were mixed. Qwen3.8-27B&#x27;s incremental prefill rate was lower, even as its fresh replay rate was higher; Qwen3.6-35B-A3B improved modestly across the reported server rates. Decode-rate changes were small for both models.</p>
+<p>These measurements do not show that <code>gpu-unlock</code> makes coding agents generally faster. They do show why a single headline number is inadequate: the answer depends on whether the measurement is a variable agent session, a fresh replay, incremental prefill, or decode—and on which model route is being used. For this workload, the smaller relative session-time change on the already faster Qwen3.6-35B-A3B route is consistent with a lower available latency ceiling, but three trials cannot establish that explanation.</p>
+<h2>6. Limitations and evidence notes</h2>
+<ol>
+<li><strong>Small, unseeded sample:</strong> three trials per model/condition on one task; tool paths were model-selected and variable. No inferential statistics are claimed.</li>
+<li><strong>Sequential conditions:</strong> stock ran before unlocked, without counterbalancing; time/order effects are not ruled out.</li>
+<li><strong>Single hardware/software stack:</strong> results bind to this dual-3090 topology, 350 W/card settings, driver, llama.cpp build, quantizations, cache types, and Local Lane route.</li>
+<li><strong>Placement evidence boundary:</strong> a separate live gate recorded the same server process using both expected GPU UUIDs before task inference, with per-card memory records. The saved per-trace <code>proofs.placement</code> field is nevertheless false. Placement is supported by the independent run-level gate and placement records, not by that trace boolean.</li>
+<li><strong>Sampler reporting:</strong> captured request payloads carried the stated parameters; the server properties endpoint separately reported defaults that differed for some fields. The paper distinguishes these sources rather than treating server defaults as effective request settings.</li>
+<li><strong>Metadata correction:</strong> the unlocked packet&#x27;s first summary output inherited the stock study identifier. The raw summary was retained, the metadata-only correction was recorded, and the trial results file was not changed.</li>
+<li><strong>No power-limit change:</strong> both cards stayed at 350 W/card. This is not a test of higher power limits, overclocking, or a different driver.</li>
+</ol>
+<h2>7. Reproducibility and data availability</h2>
+<p>The stock and unlocked experiment packets are identified as <code>QWEN-DUAL-LANE-CAC-001</code> and <code>QWEN-DUAL-LANE-CAC-UNLOCKED-001</code>; the unlocked run began at <code>20261029T085122Z</code>. Raw traces, request timing records, exact replay inputs, placement artifacts, and telemetry were retained in the local evidence packets. They are not reproduced here because the task fixture and agent traces are operator-owned. The aggregate trial counts, formulas, model/server settings, and limitations needed to interpret this case are included above.</p>
+<h2>Conclusion</h2>
+<p>On one small, operator-owned coding-agent task, the dual-RTX-3090 unlocked condition coincided with lower median task-session times for both tested model routes. The component throughput results were mixed, and the Qwen3.8-27B tool trajectory changed between conditions. The defensible result is therefore workload-specific: measure the task and metric that matter on the target system; do not infer a general speed-up from this case study.</p>
+    <div class="release-line">
+      Published as part of the <a href="/bulkhead-tau/">Bulkhead &tau;</a> release line.
+      Paper inventory: <a href="/papers/">/papers/</a>.
+    </div>
+  </div>
+</body>
+</html>
