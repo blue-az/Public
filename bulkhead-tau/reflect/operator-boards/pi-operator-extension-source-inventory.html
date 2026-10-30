@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pi extension — documented feature inventory</title>
+<style>
+  :root { --bg:#0f1419; --card:#1a222c; --ink:#e8eef4; --muted:#9aa8b4; --warn:#f5c542; --run:#59c2ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.45 ui-sans-serif,system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header.top { padding:28px 32px 12px; }
+  .nav { color:var(--muted); margin-bottom:10px; }
+  .nav a, a { color:var(--run); text-decoration:none; }
+  .nav a:hover, a:hover { text-decoration:underline; }
+  h1 { margin:0 0 6px; font-size:28px; font-weight:650; }
+  .sub, .meta { color:var(--muted); }
+  main { padding:0 32px 48px; }
+  .notice { margin:0 0 18px; padding:14px 16px; background:#33280e; color:#ffebbd; border-left:4px solid var(--warn); border-radius:10px; }
+  .source-meta { color:var(--muted); overflow-wrap:anywhere; }
+  h2 { margin:24px 0 8px; font-size:19px; }
+  p { margin:0 0 14px; }
+  code { overflow-wrap:anywhere; color:#d5e9fa; }
+  .table-wrap { overflow-x:auto; background:var(--card); border-radius:12px; }
+  table { border-collapse:collapse; width:100%; min-width:960px; }
+  th, td { border-bottom:1px solid #3a4652; padding:12px 14px; text-align:left; vertical-align:top; }
+  thead th { background:#111820; color:var(--ink); }
+  tbody th { color:var(--run); white-space:nowrap; }
+  th:first-child { min-width:150px; }
+  td:nth-child(2) { min-width:220px; color:#dbe5ee; }
+  tbody tr:hover { background:#202b36; }
+  .history { background:var(--card); border-radius:12px; padding:16px; }
+  @media (max-width:700px) { header.top { padding:20px 16px 10px; } main { padding:0 16px 32px; } }
+</style></head><body>
+<header class="top">
+  <nav class="nav"><a href="pi-operator-extension.html">Main board</a></nav>
+  <h1>Pi extension: documented feature inventory</h1>
+  <p class="sub">Supplementary technical notes · frozen source snapshot · not a status dashboard</p>
+</header>
+<main>
+<p class="notice"><strong>Supplementary, document-based inventory.</strong>
+These 17 rows summarize what the pinned PBC says about planned Pi extension features. They do not show live task status. “Implemented” labels describe documentation and do not establish independent acceptance; use the main page for the dated board snapshot.</p>
+<p class="source-meta">Frozen source commit: <code>85379b888a57bf99e3c37c62d8dfc4a0d8be636d</code>.
+The source files are read directly from that commit, not from the working tree.</p>
+<p class="source-meta">Inventory source: <code>owners-manual/pbc/appendix-pi-operator-extension.pbc.md</code>, Candidate Reconciliation.
+PBC SHA-256: <code>78a31947001d5bab2e456de41490f619200ffb5d34796b826fd637ad907c6941</code>.</p>
+<section class="history"><h2>Board snapshot</h2>
+<p>The <a href="pi-operator-extension.html">main project board</a> shows the September 16, 2026 snapshot. Its task statuses and counts are historical, not current status. A separate <a href="pi-operator-extension-historical-2026-09-16.html">archive copy</a> is retained for reference.</p></section>
+<h2>Documented implementation and acceptance</h2>
+<p>Status and basis below are copied from source documentation. “Implemented”, “local task verified”,
+and owner-confirmed behavior do not imply independent acceptance. Missing acceptance information is unknown.
+Historical feature IDs are not an active-work queue. No runtime tests were run to establish the statements below.</p>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Documented status</th><th>Documented basis / remaining scope</th></tr></thead>
+<tbody><tr><th scope="row">POE-FUT-001–002</th><td>Implemented; not independently accepted</td><td>`/pbc:define` and `/pbc:feature` edit structured drafts, validate a temporary candidate, preview and confirm an append-only `pbc:grounding` proposal. Existing rules are unchanged; no ratification.</td></tr>
+<tr><th scope="row">POE-FUT-003</th><td>Not implemented</td><td>No lifecycle wizard.</td></tr>
+<tr><th scope="row">POE-FUT-004</th><td>Not implemented</td><td>Supervisor review remains scoped to one named claim.</td></tr>
+<tr><th scope="row">POE-FUT-005</th><td>Partially implemented</td><td>`client.ts` exports `CarrierNeutralOperatorClient`; `selftest.ts` tests argv and lifecycle retries. `adapters/opencode/` adds a core TUI consumer with mock-API and disposable-ledger tests and a live 1.18.22 check of all 13 core commands; optional workflows and Claude/MCP consumers remain.</td></tr>
+<tr><th scope="row">POE-FUT-006</th><td>Implemented; not independently accepted</td><td>`/op:targets` lists/adds/edits/removes target configuration with field prompts and confirmed preview. New/edited targets require a registered harness and resolved model; task routing and reviewer authority are untouched.</td></tr>
+<tr><th scope="row">POE-FUT-007</th><td>Prompt implemented; owner-confirmed popup success</td><td>The owner confirms the GUI popup worked; reviewer execution then failed on provider authentication. The popup itself does not set status, but launched code has verifier permissions. Its authorization dialog now shows the complete shell-quoted argv; only compact transcript reports abbreviate it. Read-only inspection of `.operator/tasks/review-delegate-gui-auth-popup.yaml` during release preparation still shows `assigned` with empty claims/evidence; this historical task is not closed by that observation.</td></tr>
+<tr><th scope="row">POE-FUT-008</th><td>Implemented</td><td>`/op:roadmap` reports ladder, current task, issues and futures; loader/handler selftests cover it. No new enhancement scope inferred.</td></tr>
+<tr><th scope="row">POE-FUT-009</th><td>Implemented; live privileged acceptance pending</td><td>`/op:verify-run` (labeled `[experimental]`; its dialog discloses that author-writable code runs under the verifier account) reuses GUI askpass, invokes a distinct-UID helper with confirmed input hashes (a freshness check, not code signing), retains private logs, and the helper itself attaches only after a reviewer decision file approves. The helper, `operator` and the verification command come from the author-writable checkout and run with the verifier&#x27;s permissions and credentials, so author-controlled code can still write verifier evidence without a decision; a resulting `uid_isolated` status shows a distinct UID launched the run, not independence from author code. No live sudo/model review is established by automated tests; see `docs/specs/VERIFY_RUN_SPEC.md`.</td></tr>
+<tr><th scope="row">POE-FUT-010</th><td>Implemented; local task verified</td><td>`/op:next-steps` exists; local `pi-operator-extension-next-steps` records verified status and claim-0157.</td></tr>
+<tr><th scope="row">POE-FUT-011</th><td>Implemented</td><td>`/op:project` and `/op:roadmap --project`.</td></tr>
+<tr><th scope="row">POE-FUT-012</th><td>Implemented</td><td>Cross-project installer and explicit ledger contract; consumer project trust remains a human step.</td></tr>
+<tr><th scope="row">POE-FUT-013</th><td>Closed as guidance-only</td><td>Optional `/op:next-steps` modes; do not add `/op:mode` or a new gate.</td></tr>
+<tr><th scope="row">POE-FUT-014</th><td>Implemented; not independently accepted</td><td>`/pbc:validate [path]` uses the pinned Route C wrapper with fixed argv; no upstream `--profile`.</td></tr>
+<tr><th scope="row">POE-FUT-015</th><td>Implemented; not independently accepted</td><td>`/op:crystal` captures reviewed current-session notes via installed crystallize 0.1.16; `/op:crystal-attach [path]` and `/op:crystal-import [path]` wrap draft-only backends. Chooser only when attach/import omit a path. No automatic download or attachment.</td></tr>
+<tr><th scope="row">POE-FUT-016</th><td>Not implemented; idea recorded 2026-09-23</td><td>Opt-in crystal prompt near a context threshold (suggested 90%) before compaction. Depends on post-release crystal validation and a Pi compaction/threshold hook.</td></tr>
+<tr><th scope="row">POE-FUT-017</th><td>Minimal slice implemented 2026-09-28 (freeze, reviewed attempt log, crystal, direction handback); supervisor launch not implemented</td><td>`/op:life-boat` doom-loop escape. Charter in `appendix-op-life-boat.pbc.md`; needs crystal capture validation and a supervisor-role decision first.</td></tr>
+<tr><th scope="row">POE-FUT-018</th><td>Not implemented; idea recorded 2026-09-23</td><td>Generalize the static boards beyond `pi-operator-extension`; optionally an `./operator` board command reading through `doctor`-level checks (Operator core change). Hub excluded.</td></tr></tbody></table></div>
+<p class="meta">This is supporting documentation, not a replacement for the board or a live project-status feed.</p>
+</main>
+</body></html>

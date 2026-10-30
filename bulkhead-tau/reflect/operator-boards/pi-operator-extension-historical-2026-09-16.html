@@ -38,14 +38,14 @@
   @media (max-width:800px) { section.lists { grid-template-columns:1fr; } }
   ul { margin:8px 0 0; padding-left:18px; color:var(--muted); }
   li { margin:0 0 8px; }
-  .history-banner { margin:0; padding:14px 32px; background:#fff3d6; color:#3b2b0a; border-bottom:3px solid #a26400; }
-  .history-banner a { color:#174f85; font-weight:700; }
+  .history-banner { margin:0; padding:9px 32px; background:var(--card); color:var(--muted); border-bottom:1px solid #445; font-size:13px; }
+  .history-banner a { color:var(--run); font-weight:650; }
 </style>
 </head>
 <body>
-<aside class="history-banner" role="note" aria-label="Historical snapshot notice"><strong>Historical snapshot — 2026-09-16 23:19 UTC.</strong> Task statuses and verification counts below are historical assertions, not current or independently revalidated facts. The linked issue/map pages are historical snapshots too. Some machine-local path text has been redacted in this archived copy. See the <a href="pi-operator-extension.html">current source-only inventory</a>.</aside>
+<aside class="history-banner" role="note" aria-label="Historical snapshot">Archive copy · 2026-09-16 23:19 UTC. Statuses are historical, not current. Return to the <a href="pi-operator-extension.html">main board</a> or read the <a href="pi-operator-extension-source-inventory.html">source inventory</a>.</aside>
 <header class="top">
-  <nav class="nav"><a href="pi-operator-extension.html">Current source inventory</a> · <a href="pi-operator-extension-issues.html">Historical issues</a> · <a href="pi-operator-extension-graph.html">Historical map</a></nav>
+  <nav class="nav"><a href="pi-operator-extension.html">Main board</a> · <a href="pi-operator-extension-issues.html">Historical issues</a> · <a href="pi-operator-extension-graph.html">Historical map</a> · <a href="pi-operator-extension-source-inventory.html">Source inventory</a></nav>
   <h1>pi-operator-extension — historical task snapshot</h1>
   <p class="sub">Simple Operator board · snapshot 2026-09-16 23:19 UTC · not Graphify, not a knowledge graph</p>
 </header>
@@ -303,7 +303,7 @@
         {
           "id": "claim-0161",
           "verified": true,
-          "text": "Repair of Route C provenance lookup after UID 966 claim-0156 gate failure. Established cause: Git 2.55 dubious-ownership on uid-1000-owned [machine-local path redacted] ("
+          "text": "Repair of Route C provenance lookup after UID 966 claim-0156 gate failure. Established cause: Git 2.55 dubious-ownership on uid-1000-owned repository ("
         }
       ],
       "verified": 2,
