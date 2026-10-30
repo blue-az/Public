@@ -3,24 +3,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pi extension — source-only inventory</title>
 <style>
-body {max-width:1100px;margin:2rem auto;padding:0 1rem;font:16px/1.5 system-ui,sans-serif;color:#17212b;background:#fafafa}
-.notice {border-left:5px solid #a26400;padding:1rem;background:#fff3d6}
-table {border-collapse:collapse;width:100%} th,td {border:1px solid #bbb;padding:.7rem;text-align:left;vertical-align:top}
-code {overflow-wrap:anywhere} .table-wrap {overflow-x:auto} th:first-child {min-width:135px;white-space:nowrap} a {color:#1752a0}
+  :root { --bg:#0f1419; --card:#1a222c; --ink:#e8eef4; --muted:#9aa8b4; --warn:#f5c542; --run:#59c2ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.45 ui-sans-serif,system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header.top { padding:28px 32px 12px; }
+  .nav { color:var(--muted); margin-bottom:10px; }
+  .nav a, a { color:var(--run); text-decoration:none; }
+  .nav a:hover, a:hover { text-decoration:underline; }
+  h1 { margin:0 0 6px; font-size:28px; font-weight:650; }
+  .sub, .meta { color:var(--muted); }
+  main { padding:0 32px 48px; }
+  .notice { margin:0 0 18px; padding:14px 16px; background:#33280e; color:#ffebbd; border-left:4px solid var(--warn); border-radius:10px; }
+  .source-meta { color:var(--muted); overflow-wrap:anywhere; }
+  h2 { margin:24px 0 8px; font-size:19px; }
+  p { margin:0 0 14px; }
+  code { overflow-wrap:anywhere; color:#d5e9fa; }
+  .table-wrap { overflow-x:auto; background:var(--card); border-radius:12px; }
+  table { border-collapse:collapse; width:100%; min-width:960px; }
+  th, td { border-bottom:1px solid #3a4652; padding:12px 14px; text-align:left; vertical-align:top; }
+  thead th { background:#111820; color:var(--ink); }
+  tbody th { color:var(--run); white-space:nowrap; }
+  th:first-child { min-width:150px; }
+  td:nth-child(2) { min-width:220px; color:#dbe5ee; }
+  tbody tr:hover { background:#202b36; }
+  .history { background:var(--card); border-radius:12px; padding:16px; }
+  @media (max-width:700px) { header.top { padding:20px 16px 10px; } main { padding:0 16px 32px; } }
 </style></head><body>
-<h1>Pi extension: source-only inventory</h1>
-<p class="notice"><strong>Local review candidate — not a live ledger board.</strong>
+<header class="top">
+  <nav class="nav"><a href="pi-operator-extension-historical-2026-09-16.html">Historical snapshot</a></nav>
+  <h1>Pi extension: source-only inventory</h1>
+  <p class="sub">Documented implementation scope · frozen source snapshot</p>
+</header>
+<main>
+<p class="notice"><strong>Source-only inventory — not a live ledger board.</strong>
 The historical ledger could not be located. This page reports documented implementation scope only.
 It does not recover task state, certify correctness, or establish independent acceptance.</p>
-<p>Frozen source commit: <code>85379b888a57bf99e3c37c62d8dfc4a0d8be636d</code>.
+<p class="source-meta">Frozen source commit: <code>85379b888a57bf99e3c37c62d8dfc4a0d8be636d</code>.
 The source files are read directly from that commit, not from the working tree.</p>
-<p>Inventory source: <code>owners-manual/pbc/appendix-pi-operator-extension.pbc.md</code>, Candidate Reconciliation.
+<p class="source-meta">Inventory source: <code>owners-manual/pbc/appendix-pi-operator-extension.pbc.md</code>, Candidate Reconciliation.
 PBC SHA-256: <code>78a31947001d5bab2e456de41490f619200ffb5d34796b826fd637ad907c6941</code>.</p>
-<h2>Historical snapshot — separate evidence</h2>
+<section class="history"><h2>Historical snapshot — separate evidence</h2>
 <p>The <a href="pi-operator-extension-historical-2026-09-16.html">historical project board snapshot</a>
 is preserved as a dated archive with a historical banner and machine-local path redaction. Its snapshot date is September 16, 2026, 23:19 UTC.
 Its task statuses and verification counts are historical assertions, not current or independently revalidated facts.
-This inventory supersedes neither those records nor their provenance.</p>
+This inventory supersedes neither those records nor their provenance.</p></section>
 <h2>Documented implementation and acceptance</h2>
 <p>Status and basis below are copied from source documentation. “Implemented”, “local task verified”,
 and owner-confirmed behavior do not imply independent acceptance. Missing acceptance information is unknown.
@@ -43,5 +69,6 @@ Historical feature IDs are not an active-work queue. No runtime tests were run t
 <tr><th scope="row">POE-FUT-016</th><td>Not implemented; idea recorded 2026-09-23</td><td>Opt-in crystal prompt near a context threshold (suggested 90%) before compaction. Depends on post-release crystal validation and a Pi compaction/threshold hook.</td></tr>
 <tr><th scope="row">POE-FUT-017</th><td>Minimal slice implemented 2026-09-28 (freeze, reviewed attempt log, crystal, direction handback); supervisor launch not implemented</td><td>`/op:life-boat` doom-loop escape. Charter in `appendix-op-life-boat.pbc.md`; needs crystal capture validation and a supervisor-role decision first.</td></tr>
 <tr><th scope="row">POE-FUT-018</th><td>Not implemented; idea recorded 2026-09-23</td><td>Generalize the static boards beyond `pi-operator-extension`; optionally an `./operator` board command reading through `doctor`-level checks (Operator core change). Hub excluded.</td></tr></tbody></table></div>
-<p>Prepared as a separate local review artifact. Publication requires review of the destination and explicit authorization.</p>
+<p class="meta">Published as a source-only documentation inventory. It does not read a live ledger or establish independent acceptance.</p>
+</main>
 </body></html>
