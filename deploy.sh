@@ -6,6 +6,7 @@
 #   ./deploy.sh bulkhead-tau      — sync generated papers
 #   ./deploy.sh domains           — sync domains catalog index
 #   ./deploy.sh local-models      — sync the Local Models umbrella and its nested pages
+#   ./deploy.sh local-models-layers — sync only the layer simulator page
 #   ./deploy.sh local-lane        — sync only the Local Lane report index
 #   ./deploy.sh operator-shell    — sync the Operator Shell page
 #   ./deploy.sh failure-details   — sync the Phoenix Boundary Results page
@@ -153,6 +154,9 @@ case "$TARGET" in
         # the umbrella's URLs depend on the 301s in the root .htaccess
         rsync_push "$LOCAL_ROOT/.htaccess" "$REMOTE_ROOT/.htaccess"
         ;;
+    local-models-layers)
+        rsync_push "$LOCAL_ROOT/local-models/layers/" "$REMOTE_ROOT/local-models/layers/"
+        ;;
     sensor-simulation)
         rsync_push "$LOCAL_ROOT/sensor-simulation/" "$REMOTE_ROOT/sensor-simulation/"
         ;;
@@ -219,6 +223,9 @@ case "$TARGET" in
     kernelcad-mount)
         rsync_push "$LOCAL_ROOT/kernelcad-mount/" "$REMOTE_ROOT/kernelcad-mount/"
         ;;
+    ppr-agent)
+        rsync_push "$LOCAL_ROOT/ppr-agent/" "$REMOTE_ROOT/ppr-agent/"
+        ;;
     all)
         rsync_push "$LOCAL_ROOT/papers/" "$REMOTE_ROOT/papers/"
         rsync_push "$LOCAL_ROOT/bulkhead-tau/" "$REMOTE_ROOT/bulkhead-tau/"
@@ -240,10 +247,11 @@ case "$TARGET" in
         rsync_push "$LOCAL_ROOT/skeleton-hud/" "$REMOTE_ROOT/skeleton-hud/"
         rsync_push "$LOCAL_ROOT/groundstroke-demos/" "$REMOTE_ROOT/groundstroke-demos/"
         rsync_push "$LOCAL_ROOT/kernelcad-mount/" "$REMOTE_ROOT/kernelcad-mount/"
+        rsync_push "$LOCAL_ROOT/ppr-agent/" "$REMOTE_ROOT/ppr-agent/"
         rsync_push "$LOCAL_ROOT/.htaccess" "$REMOTE_ROOT/.htaccess"
         ;;
     *)
-        echo "Usage: $0 [papers|bulkhead-tau|local-models|domains|honeywell|honeywell-landing|tour-agent|capture-integrity|operator-shell|failure-details|local-model-role-suitability|deep-dive-tennis-paper|local-lane|local-lane-qwen38|pose-showcase|labwired-serve-hud|skeleton-study|skeleton-hud|groundstroke-demos|kernelcad-mount|all]"
+        echo "Usage: $0 [papers|bulkhead-tau|local-models|local-models-layers|domains|honeywell|honeywell-landing|tour-agent|capture-integrity|operator-shell|failure-details|local-model-role-suitability|deep-dive-tennis-paper|local-lane|local-lane-qwen38|pose-showcase|labwired-serve-hud|skeleton-study|skeleton-hud|groundstroke-demos|kernelcad-mount|ppr-agent|all]"
         exit 1
         ;;
 esac
