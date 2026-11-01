@@ -11,7 +11,7 @@
     <div class="page">
 
         <header class="header">
-            <span class="badge">Umbrella · 11 Sep 2026 · revised 29 Sep 2026</span>
+            <span class="badge">Umbrella · 11 Sep 2026 · revised 31 Oct 2026</span>
             <h1>Local Models</h1>
             <p class="subtitle">Field notes from local models actually in use. What the measurements say, what the instrument got wrong, and which layer was carrying the result.</p>
         </header>
@@ -29,6 +29,12 @@
             <p>Personal benchmarking on hardware I actually use, published with the configuration attached. Each page carries its own date and moves when the numbers move.</p>
 
             <div class="grid">
+                <a class="card" href="benchmarks/#recent-evidence" style="text-decoration: none; color: inherit;">
+                    <h3>Dual-3090 findings: unlock and context fit</h3>
+                    <p>A small coding-task stock/unlocked comparison and synthetic extended-context ingestion checks. Workload-specific evidence, not a general speed or quality claim.</p>
+                    <span style="color: var(--accent); font-weight: bold;">Read the latest evidence &rarr;</span>
+                </a>
+
                 <a class="card" href="local-lane/" style="text-decoration: none; color: inherit;">
                     <h3>Local Lane</h3>
                     <p>RTX 3090 against a Ryzen AI MAX 390 on the same blobs. Which model holds the seat on each chip, and why decode rate does not decide it.</p>
@@ -69,7 +75,7 @@
 
         <section class="section">
             <h2>When one card is not enough</h2>
-            <p>Measured 28-29 Sep 2026 on two RTX 3090s in a headless test bench, one card against both. Most of the roster fits one 24&nbsp;GB card and gains nothing from a second. Two models do not fit, and they behave differently.</p>
+            <p>Measured 28-29 Sep 2026 on two RTX 3090s in a headless test bench, one card against both. Most of that historical roster fit one 24&nbsp;GB card; the benefit of a second depends on model, context, placement and workload, not card count alone. Two models do not fit, and they behave differently.</p>
 
             <table class="table">
                 <thead>
