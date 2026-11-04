@@ -23,7 +23,8 @@
 
         <section class="section">
             <h2>Request</h2>
-            <p>Run this same task once with GPT-OSS 20B on an RTX 4090 and once with GPT-OSS 120B on a DGX Spark. Use a fresh workspace and conversation for each run. Return the completed results row and a screenshot of the final test output. An optional 20B-on-Spark run helps compare model size on the same system.</p>
+            <p>Run this same task once with GPT-OSS 20B and once with GPT-OSS 120B on the same RTX 4090, then run GPT-OSS 120B on a DGX Spark. Use a fresh workspace and conversation for each run. Return the completed results rows and a screenshot of each final test output. An optional 20B-on-Spark run adds a same-model system comparison.</p>
+            <p>The first two runs compare model sizes on one host; the 120B runs compare systems. Record whether each model fits in GPU memory or spills to system RAM.</p>
             <p>This pilot compares the complete system setups; it is not a GPU-only comparison.</p>
         </section>
 
@@ -118,6 +119,7 @@ print("RETRY_AFTER_OK")</code></pre>
                     <thead><tr><th>Condition</th><th>Host/system</th><th>Model tag + quantization</th><th>Runtime/version</th><th>Settings</th><th>Time</th><th>Test result</th><th>Screenshot</th></tr></thead>
                     <tbody>
                         <tr><td>GPT-OSS 20B / RTX 4090</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>GPT-OSS 120B / RTX 4090</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                         <tr><td>GPT-OSS 120B / DGX Spark</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                         <tr><td>Optional: GPT-OSS 20B / Spark</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                     </tbody>
