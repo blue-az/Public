@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retry-After coding task | Bulkhead &tau;</title>
+    <meta name="description" content="A copyable, self-contained coding task for a small model-and-system pilot comparison.">
+    <link rel="stylesheet" href="../../../bulkhead-tau/style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <span class="badge">Pilot task &middot; copyable text</span>
+            <h1>Retry-After coding task</h1>
+            <p class="subtitle">A small, self-contained Python code-edit task for comparing complete model-and-system setups.</p>
+        </header>
+
+        <nav class="nav">
+            <a href="../../">Local Models</a>
+            <a href="../">Benchmark definitions</a>
+            <a href="../../../bulkhead-tau/">Bulkhead &tau;</a>
+        </nav>
+
+        <section class="section">
+            <h2>Request</h2>
+            <p>Run this same task once with GPT-OSS 20B on an RTX 4090 and once with GPT-OSS 120B on a DGX Spark. Use a fresh workspace and conversation for each run. Return the completed results row and a screenshot of the final test output. An optional 20B-on-Spark run helps compare model size on the same system.</p>
+            <p>This pilot compares the complete system setups; it is not a GPU-only comparison.</p>
+        </section>
+
+        <section class="section">
+            <h2>Exact task prompt</h2>
+            <pre><code>In this small Python package, implement support for the standard Retry-After response header.
+
+1. Implement retry_delay in src/retry_policy.py according to its docstring: exponential fallback 1 * 2**max(0, attempt) capped at 30 seconds; accept signed integer seconds or an HTTP date; treat naive datetimes as UTC; use current UTC when now is omitted; use the fallback for invalid headers; clamp the final delay to [0, 30].
+2. Update delay_for_response in src/client.py to pass the response's Retry-After header and forward now.
+3. Update docs/retries.md to document the behavior.
+4. Run python3 tests/check_retry_after.py from the starter root. It must exit 0 and print RETRY_AFTER_OK.
+
+Only change src/retry_policy.py, src/client.py, and docs/retries.md. Do not change the supplied test.</code></pre>
+        </section>
+
+        <section class="section">
+            <h2>Starter files</h2>
+            <h3>src/retry_policy.py</h3>
+            <pre><code>from datetime import datetime
+
+BASE_SECONDS = 1
+MAX_SECONDS = 30
+
+
+def retry_delay(attempt, retry_after=None, now=None):
+    """Return retry delay in seconds.
+
+    Exponential fallback is 1 * 2**max(0, attempt), capped at 30 seconds.
+    Retry-After may be a signed integer number of seconds or an HTTP date.
+    For a date, compare against `now`; naive datetimes mean UTC. If `now` is
+    None, use current UTC time. Invalid headers use the exponential fallback.
+    Clamp every final delay to [0, 30].
+    """
+    raise NotImplementedError</code></pre>
+            <h3>src/client.py</h3>
+            <pre><code>from src.retry_policy import retry_delay
+
+
+def delay_for_response(attempt, response, now=None):
+    """Return the retry delay for a response."""
+    return retry_delay(attempt)</code></pre>
+            <h3>docs/retries.md</h3>
+            <pre><code># Retry policy
+
+Retry-After headers are not currently supported.</code></pre>
+        </section>
+
+        <section class="section">
+            <h2>Supplied test: tests/check_retry_after.py</h2>
+            <pre><code>import sys
+from datetime import datetime, timedelta, timezone
+from email.utils import format_datetime
+
+sys.dont_write_bytecode = True
+sys.path.insert(0, ".")
+from src.retry_policy import retry_delay
+from src.client import delay_for_response
+
+NOW = datetime(2026, 2, 3, 12, 0, 0, tzinfo=timezone.utc)
+
+assert retry_delay(0, now=NOW) == 1
+assert retry_delay(1, now=NOW) == 2
+assert retry_delay(8, now=NOW) == 30
+assert retry_delay(2, "7", now=NOW) == 7
+assert retry_delay(2, "-4", now=NOW) == 0
+assert retry_delay(2, "31", now=NOW) == 30
+assert retry_delay(2, "not a date", now=NOW) == 4
+assert retry_delay(2, format_datetime(NOW + timedelta(seconds=9), usegmt=True), now=NOW) == 9
+assert retry_delay(2, format_datetime(NOW - timedelta(seconds=9), usegmt=True), now=NOW) == 0
+
+
+class Response:
+    headers = {"Retry-After": "6"}
+
+
+assert delay_for_response(2, Response(), now=NOW) == 6
+print("RETRY_AFTER_OK")</code></pre>
+            <p>The test is intentionally visible. This is a transparent pilot task, not a hidden-test benchmark. Do not edit the test to make a run pass.</p>
+        </section>
+
+        <section class="section">
+            <h2>Run settings and report</h2>
+            <ul>
+                <li>Suggested common settings: context 16,384; temperature 0; maximum output 4,096 tokens.</li>
+                <li>Use the same reasoning setting and agent/tool harness when available; record actual settings.</li>
+                <li>Do not run competing models concurrently on the same machine.</li>
+                <li>One clean run per condition for this pilot. Record time from prompt to passing test; report model-load time separately if included.</li>
+            </ul>
+            <p>For each run, send: host/system, exact model tag and quantization, runtime/version, context and prompt tokens if available, sampling/reasoning/output settings, elapsed time, test result, and screenshot filename.</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Condition</th><th>Host/system</th><th>Model tag + quantization</th><th>Runtime/version</th><th>Settings</th><th>Time</th><th>Test result</th><th>Screenshot</th></tr></thead>
+                    <tbody>
+                        <tr><td>GPT-OSS 20B / RTX 4090</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>GPT-OSS 120B / DGX Spark</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>Optional: GPT-OSS 20B / Spark</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Pass:</strong> <code>python3 tests/check_retry_after.py</code> exits 0 and prints <code>RETRY_AFTER_OK</code>.</p>
+        </section>
+
+        <footer class="footer">
+            <p>Bulkhead &tau; &middot; Copyable pilot task &middot; No private traces or user data are needed.</p>
+        </footer>
+    </div>
+</body>
+</html>
